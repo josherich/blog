@@ -5,7 +5,7 @@ date:   2013-11-03 20:02:39
 categories: blah
 ---
 
-It seems that I can't write Chinese here 耍我呢？
+It seems that I can't write Chinese here
 
 {% highlight ruby %}
 def print_hi(name)
