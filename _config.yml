@@ -1,0 +1,8 @@
+# baseurl: http://chenhf.com
+permalink: /:categories/:year/:month/:day/:title
+name: I blog when I'm bored
+markdown: rdiscount
+pygments: true
+data_format: "ordinal"
+subscribe_rss: /atom.xml
+encoding: utf-8
