@@ -1,4 +1,4 @@
-baseurl: http://josherich.github.io/blog
+baseurl: /blog
 permalink: /:categories/:year/:month/:day/:title
 name: I blog when I'm bored
 markdown: rdiscount
