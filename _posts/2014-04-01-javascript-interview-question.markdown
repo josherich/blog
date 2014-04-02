@@ -22,3 +22,5 @@ tags: [Interview, Javascript]
 - How to avoid stackoverflow using Javascript async?
 
 - What is badly needed in ES6?
+
+- Name some typical traps in Javascript and explain them in the context of lanugage design.
