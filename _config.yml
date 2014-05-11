@@ -1,4 +1,4 @@
-baseurl: 'www.chenhf.com'
+baseurl: 'http://www.chenhf.com'
 permalink: /:categories/:year/:month/:day/:title
 name: I blog when I'm bored
 markdown: rdiscount
