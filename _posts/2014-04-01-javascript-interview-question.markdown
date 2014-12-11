@@ -24,3 +24,11 @@ tags: [Interview, Javascript]
 - What is badly needed in ES6?
 
 - Name some typical traps in Javascript and explain them in the context of lanugage design.
+
+- what happened after you type a url in the browser to page finishes loading
+
+
+[1][https://github.com/fex-team/interview-questions]
+
+
+
