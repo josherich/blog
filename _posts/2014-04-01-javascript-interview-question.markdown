@@ -1,32 +1,29 @@
 ---
 layout: post
-title:  "Javascript Interview Questions"
+title:  "JavaScript Interview Questions"
 description: ""
 date:   2014-04-01 20:02:39
 categories: lang
-tags: [Interview, Javascript]
+tags: [Interview, JavaScript]
 ---
 
-- what do you usually do when you have a very confusing behavior?
+- What do you usually do when you have a very confusing behavior?
 
-- since named function like `function fName() {};` is good for debugging, why better avoid using it?
+- Since named function like `function fName() {};` is good for debugging, why better avoid using it?
 
-- why some says eval is slow, but other says it's just slow at the first execute?
+- Shy some says `eval` is slow, but other says it's just slow at the first execute?
 
-- When is the closure object created, and when destroyed?
+- When is Closure object created, and destroyed? How Closure is related to memory leak?
 
-- Implement bind(context, [args])
+- Implement bind(context, [args]); Implement currying.
 
-- Implement currying
-
-- How to avoid stackoverflow using Javascript async?
+- How to avoid stack overflow using JavaScript async?
 
 - What is badly needed in ES6?
 
-- Name some typical traps in Javascript and explain them in the context of lanugage design.
+- Name some typical grammar traps in JavaScript and explain them in the context of lanugage design.
 
-- what happened after you type a url in the browser to page finishes loading
-
+- What happened from that you type a URL in browser to that the page finishes loading.
 
 [1][https://github.com/fex-team/interview-questions]
 

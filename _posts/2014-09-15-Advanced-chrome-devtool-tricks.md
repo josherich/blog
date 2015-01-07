@@ -7,7 +7,10 @@ categories: FrontEnd
 tags: [FrontEnd, Chrome]
 ---
 
-(from the talk Advanced Debugging Techniques with Chrome - @Scale 2014 - Web)
+summary from the talk [Advanced Debugging Techniques with Chrome - @Scale 2014 - Web][http://www.youtube.com/watch?v=B63jNjSVEbQ]
+
+I'm glad to see that Chrome learned some UX tricks from Sublime and some great IDEs. I could imagine that Chrome Devtool would be a Web IDE in the near future, with a great plugin community. Everything fancy on Sublime would be available on it.
+Though Atom Editor did a great job on Node.js integration and modular design, there is no reason Chrome team can't catch up and release a Chrome Dev version like Firefox. Embedded plugin market like that of Sublime should not be too hard to implement, since plugin via extension is already there.
 
 1.workspace liveEdit:
      here is the workflow: break on exception -> edit some code and fix bug -> save and recompile, then function get restarted
@@ -38,7 +41,6 @@ tags: [FrontEnd, Chrome]
 
 10.worker view: full debugging feature for workers
 
-
 11.flamechart in JS profiling
 
 12.mobile mode screencast: see live screencast on your mobile device when debugging in chrome devtool
@@ -58,7 +60,10 @@ tags: [FrontEnd, Chrome]
 
 
      user timing:
-     write your own marks to track a certain period in your code, and measure it, get the result from  performance.getEntriesByType(‘measure’)
+     write your own marks to track a certain period in your code,
+     and measure it,
+     get the result from  performance.getEntriesByType(‘measure’)
+
      http://www.html5rocks.com/en/tutorials/webperformance/usertiming/
      performance.mark
      performance.measure
@@ -73,7 +78,13 @@ tags: [FrontEnd, Chrome]
 
           can = document.createElement('canvas')
           gl = can.getContext("experimental-webgl")
-               WebGLRenderingContext {drawingBufferHeight: 150, drawingBufferWidth: 300, canvas: canvas, activeTexture: function, attachShader: function…}
+               WebGLRenderingContext {
+                    drawingBufferHeight: 150,
+                    drawingBufferWidth: 300,
+                    canvas: canvas,
+                    activeTexture: function,
+                    attachShader: function…}
+
           ex = gl.getExtension('WEBGL_debug_renderer_info')
                WebGLDebugRendererInfo {UNMASKED_VENDOR_WEBGL: 37445, UNMASKED_RENDERER_WEBGL: 37446}
           gl.getParameter(ex.UNMASKED_VENDOR_WEBGL)
