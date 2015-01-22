@@ -17,13 +17,13 @@ tags: [Frontend, Chrome, Google]
 
 ##在head中设置页面背景 <meta name="theme-color" content="#db5945">
 其实只是设置 Chrome 的 Tab 选择效果中的工具栏颜色，有些小题大做。
-![http://updates.html5rocks.com/assets/theme-color-ss-9950fd13a0c52b32b6bd580309d55a6b.png](theme-color)
+![theme-color](http://updates.html5rocks.com/assets/theme-color-ss-9950fd13a0c52b32b6bd580309d55a6b.png)
 Chrome可显示高清favicon， `<link rel="icon" sizes="192x192" href="nice-highres.png">`
 
 ##页面间的动画
 
 画面间的 loading
-![https://docs.google.com/document/d/17jg1RRL3RI969cLwbKBIcoGDsPwqaEdBxafGNYGwiY4/edit#heading=h.pcll678prpwu](draft)
+![draft](https://docs.google.com/document/d/17jg1RRL3RI969cLwbKBIcoGDsPwqaEdBxafGNYGwiY4/edit#heading=h.pcll678prpwu)
 
 ##两大重点：离线缓存，通知
 
