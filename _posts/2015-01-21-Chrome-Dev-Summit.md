@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "Chrome Dev Summit总结"
-description: "Chrome Dev Summit总结"
+title:  "Chrome Dev Summit 总结"
+description: "Chrome Dev Summit 总结"
 date:   2015-01-21 20:02:39
 categories: FE
 tags: [Frontend, Chrome, Google]
@@ -9,7 +9,7 @@ tags: [Frontend, Chrome, Google]
 
 > 最近大致扫了一遍 Chrome Dev Summit 的 talk 们，并没有太多新东西，但 Service Work 和 Web Components 作为这个 Summit 的重点，也是将来很长一段时间 Web 的重点，Google 眼中的 Web 在原生客户端的路上越走越远。
 
-[http://css-tricks.com/things-chrome-dev-summit-2014/](CSS-tricks 原文)
+[CSS-tricks 原文](http://css-tricks.com/things-chrome-dev-summit-2014/)
 
 ##manifest.json
 每个单页应用都有一个 manifest.json，类似 Chrome 中的做法。
@@ -23,12 +23,13 @@ Chrome可显示高清favicon， `<link rel="icon" sizes="192x192" href="nice-hig
 ##页面间的动画
 
 画面间的 loading
-![draft](https://docs.google.com/document/d/17jg1RRL3RI969cLwbKBIcoGDsPwqaEdBxafGNYGwiY4/edit#heading=h.pcll678prpwu)
+[page transition draft](https://docs.google.com/document/d/17jg1RRL3RI969cLwbKBIcoGDsPwqaEdBxafGNYGwiY4/edit#heading=h.pcll678prpwu)
 
 ##两大重点：离线缓存，通知
 
 - Service Worker，相当于在本地响应 Ajax 请求，达到自定义的离线效果。
 - 完整的通知API，还有不依赖网络的本地通知。
+
 
 ## 达到60帧
 
@@ -37,6 +38,7 @@ Chrome可显示高清favicon， `<link rel="icon" sizes="192x192" href="nice-hig
 2. 运行动画
 
 ### 用 DevTools 控制CSS动画
+
 
 ## Web Animation API
 
