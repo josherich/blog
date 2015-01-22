@@ -14,17 +14,24 @@ html, body { height: 100%; }
 
 body {
   background-color: #FFF;
-  font: 13.34px "Source Sans Pro", Arial, sans-serif;
+  font: 13.34px Hiragino Sans GB, Helvatica, Arial, sans-serif;
   font-size: small;
   text-align: center;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-size: 100%; }
-
+  font-size: 100%; margin-top: 1em;}
+h2 {
+  font-size: 120%;
+  margin-top: 2em;
+}
 h1 { margin-bottom: 1em; }
-p { margin: 1em 0; }
-
+p { margin: 1em 0; text-align: left; }
+img {
+  display: block;
+  margin: 1em 0;
+  text-align: center;
+}
 a         { color: #00a; }
 a:hover   { color: #000; }
 a:visited { color: #a0a; }
