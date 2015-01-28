@@ -7,7 +7,7 @@ categories: FE
 tags: [Frontend, Chrome, Google]
 ---
 
-> 最近大致扫了一遍 Chrome Dev Summit 的 talk 们，并没有太多新东西，但 Service Work 和 Web Components 作为这个 Summit 的重点，也是将来很长一段时间 Web 的重点，Google 眼中的 Web 在原生客户端的路上越走越远。
+> 最近大致扫了一遍 Chrome Dev Summit 的 talk 们，并没有太多新东西，但 Service Worker 和 Web Components 作为这个 Summit 的重点，也是将来很长一段时间 Web 的重点，Google 眼中的 Web 在原生客户端的路上越走越远。
 
 [CSS-tricks 原文](http://css-tricks.com/things-chrome-dev-summit-2014/)
 
