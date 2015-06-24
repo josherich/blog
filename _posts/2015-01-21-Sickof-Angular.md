@@ -22,23 +22,26 @@ angular.module('app', ['ngMessages']);
   <div ng-message="minlength">This field is too short</div>
 </script>
 
-<form name="myForm">
-  <input type="email"
-  id="email"
-  name="myEmail"
-  ng-model="email"
-  minlength="5"
-  required />
-  // use ng-messages-include to specify template
-  <div ng-messages="myForm.myEmail.$error" ng-messages-include="my-custom-messages" class="msg-container">
-    // this required message has overridden the template message
-    <div ng-message="required" class="msg-alert">You did not enter your email address</div>
 
-    // this is a brand new message and will appear last in the prioritization
-    <div ng-message="email" class="msg-email">Your email address is invalid</div>
-  </div>
-</form>
+```javascript
+  <form name="myForm">
+    <input type="email"
+    id="email"
+    name="myEmail"
+    ng-model="email"
+    minlength="5"
+    required />
+    // use ng-messages-include to specify template
+    <div ng-messages="myForm.myEmail.$error" ng-messages-include="my-custom-messages" class="msg-container">
+      // this required message has overridden the template message
+      <div ng-message="required" class="msg-alert">You did not enter your email address</div>
+
+      // this is a brand new message and will appear last in the prioritization
+      <div ng-message="email" class="msg-email">Your email address is invalid</div>
+    </div>
+  </form>
 ```
+
 
 ```css
 .msg-alert {
