@@ -15,7 +15,7 @@ require('angular-messages');
 angular.module('app', ['ngMessages']);
 ```
 
-```html
+```javascript
 // message template identified by id
 <script type="text/ng-template" id="error-messages">
   <div ng-message="required">This field is required</div>
