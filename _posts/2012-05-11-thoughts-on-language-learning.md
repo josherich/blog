@@ -4,7 +4,7 @@ title:  "說點語言學習（二）"
 description: "說點語言學習"
 date:   2012-05-11 20:02:39
 categories: language
-tags: [language, LLVM]
+tags: [language, learning]
 ---
 
 > Everything popular is wrong.
@@ -70,4 +70,4 @@ Language learning is not about perfection.[2]
 ###參考
 
 - [1][Language Instinct](http://pinker.wjh.harvard.edu/books/tli/)
-- [2][The way linguist](http://www.amazon.com/The-Way-Linguist-Language-Learning/dp/1420873296)
+- [2][The way linguist language learning](http://www.amazon.com/The-Way-Linguist-Language-Learning/dp/1420873296)
