@@ -10,7 +10,7 @@ tags: [FrontEnd, Chrome]
 > Summary from the talk [Advanced Debugging Techniques with Chrome - @Scale 2014 - Web](http://www.youtube.com/watch?v=B63jNjSVEbQ)
 
 I'm glad to see that Chrome learned some UX tricks from Sublime and some great IDEs. I could imagine that Chrome Devtool would be a Web IDE in the near future, with a great plugin community. Everything fancy on Sublime Text would be available on it.
-Though Atom Editor did a great job on Node.js integration and modular design, there is no reason Chrome team couldn't catch up and release a Chrome Dev version like [Firefox did][https://www.mozilla.org/en-US/firefox/developer/]. Embedded plugin market like that of Sublime should not be too hard to implement, since plugin via extension is already there.
+Though Atom Editor did a great job on Node.js integration and modular design, there is no reason Chrome team couldn't catch up and release a Chrome Dev version like [Firefox did](https://www.mozilla.org/en-US/firefox/developer/). Embedded plugin market like that of Sublime should not be too hard to implement, since plugin via extension is already there.
 
 Here are some new tricks of Chrome Devtool mentioned in the talk:
 
