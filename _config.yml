@@ -1,11 +1,11 @@
 baseurl: 'http://www.chenhf.com'
+projecturl: '/projects/'
 permalink: /:categories/:year/:month/:day/:title
 name: I blog when I'm bored
 markdown: kramdown
 kramdown:
   input: GFM
 highlighter: pygments
-pygments: true
 data_format: "ordinal"
 subscribe_rss: /atom.xml
 encoding: utf-8
