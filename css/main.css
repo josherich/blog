@@ -83,6 +83,7 @@ ul.posts span {
   max-width: 650px;
   margin: 0 auto;
   line-height: 1.5em;
+  padding: 10px 20px;
 }
 
 .site .header a {
