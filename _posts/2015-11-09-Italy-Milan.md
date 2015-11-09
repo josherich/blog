@@ -12,7 +12,7 @@ tags: [Italy, Milan]
 第一次有机会住 Airbnb，就遇见了热心舒服又不过于热情的房东 Andrea 和他妻子 Piera，
 他家的位置类似张江高科，紧邻地铁，远离市中心方向的建筑也有新园区的样子，他家并不难找，但需看清斜像的道路。他家门口在一块街区中部，并不显眼，从外面看是公寓，但内部至少有三层，也有一小片露天撒野的草地。
 
-<iframe src="https://www.google.com/maps/embed?pb=!1m0!3m2!1sen!2sus!4v1445098164762!6m8!1m7!1sKvsXEWQKGlFC9Pb_nD9KFA!2m2!1d45.4471141442349!2d9.163456814754174!3f53.03244148356282!4f2.341728980749778!5f1.5400130104026752" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+<!-- <iframe src="https://www.google.com/maps/embed?pb=!1m0!3m2!1sen!2sus!4v1445098164762!6m8!1m7!1sKvsXEWQKGlFC9Pb_nD9KFA!2m2!1d45.4471141442349!2d9.163456814754174!3f53.03244148356282!4f2.341728980749778!5f1.5400130104026752" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe> -->
 
 Andrea 在银行工作，但下午可以回家等我。我刚到机场又发来短信，他妻子恰好在家几个小时可以等我。刚到跟 Piera 瞎聊几句，作为老司机host她向我展示了事先准备的交通信息、生活信息、推荐餐馆，并表示了对 Napoli 的不屑－小偷多，却多为当地人，我顺便提到难民是否会造成困扰，她的态度很正面，对难民表示非常同情，当然在米兰也极少见到他们的身影。
 
