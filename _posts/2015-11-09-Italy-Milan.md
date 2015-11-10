@@ -60,19 +60,25 @@ Andrea 在银行工作，但下午可以回家等我。我刚到机场又发来�
 废话不多说了，贴几幅我看了很久的画。
 
 ![the kiss](https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/El_Beso_%28Pinacoteca_de_Brera%2C_Mil%C3%A1n%2C_1859%29.jpg/640px-El_Beso_%28Pinacoteca_de_Brera%2C_Mil%C3%A1n%2C_1859%29.jpg?1447091427012)
+
 > The Kiss - Hayez 
+
 >> 这位海耶斯画裸女真有一手！
 
 ![st mark](https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Jacopo_Tintoretto_001.jpg/800px-Jacopo_Tintoretto_001.jpg?1447091479182)
+
 > Finding of the body of St Mark - Tintoreto
 
 ![last supper](https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Peter_Paul_Rubens_-_Last_Supper_-_WGA20255.jpg/640px-Peter_Paul_Rubens_-_Last_Supper_-_WGA20255.jpg?1447091529388)
+
 > Last Supper - Rubens
 
 ![last supper caravaggio](https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Michelangelo_Caravaggio_034.jpg/1024px-Michelangelo_Caravaggio_034.jpg?1447091592680)
+
 > Supper at Emmaus - Caravaggio
 
 ![raphael](https://upload.wikimedia.org/wikipedia/commons/1/10/MarriageVirgin.jpg?1447091719989https://upload.wikimedia.org/wikipedia/commons/1/10/MarriageVirgin.jpg?1447091719989)
+
 > The Marriage of the Virgin (Raphael)
 
 图片来自Wikipedia
