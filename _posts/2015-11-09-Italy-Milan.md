@@ -10,13 +10,13 @@ tags: [Italy, Milan]
 > 不能免俗写些见闻，防止以后忘了
 
 第一次有机会住 Airbnb，就遇见了热心舒服又不过于热情的房东 Andrea 和他妻子 Piera，
-他家的位置类似张江高科，紧邻地铁，远离市中心方向的建筑也有新园区的样子，他家并不难找，但需看清斜像的道路。他家门口在一块街区中部，并不显眼，从外面看是公寓，但内部至少有三层，也有一小片露天撒野的草地。
+他家的位置类似张江高科，紧邻地铁，远离市中心方向的建筑也有新园区的样子，门牌并不难找，但需看清斜像的道路，门口在一块街区中部，并不显眼，从外面看是公寓，但内部至少有三层，也有一小片露天撒野的草地。
 
 <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m0!3m2!1sen!2sus!4v1445098164762!6m8!1m7!1sKvsXEWQKGlFC9Pb_nD9KFA!2m2!1d45.4471141442349!2d9.163456814754174!3f53.03244148356282!4f2.341728980749778!5f1.5400130104026752" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe> -->
 
-Andrea 在银行工作，但下午可以回家等我。我刚到机场又发来短信，他妻子恰好在家几个小时可以等我。刚到跟 Piera 瞎聊几句，作为老司机host她向我展示了事先准备的交通信息、生活信息、推荐餐馆，并表示了对 Napoli 的不屑－小偷多，却多为当地人，我顺便提到难民是否会造成困扰，她的态度很正面，对难民表示非常同情，当然在米兰也极少见到他们的身影。
+Andrea 在银行工作，但下午可以回家等我。我刚到机场又发来短信，他妻子恰好在家几个小时可以等我。经过两道铁门，刚见面时右手拿着行李，她伸出右手想握手，于是尴尬癌瞬间又犯了。放下行李跟 Piera 瞎聊，作为老司机host她向我展示了事先准备的交通信息、生活信息、推荐餐馆，并表示了对 Napoli 的不屑－小偷多，且多为当地人，我顺便提到难民是否会造成困扰，她的态度很正面，对难民表示非常同情，当然在米兰也极少见到他们的身影。
 
-下午围着米兰大教堂走了一圈街区，把附近的小店标记上。傍晚回来时 Andrea 给我介绍的去处，思路基本是一家三口周末会去的地方，“那片很酷，我们周末都会去，有一家很好的Bar”
+下午围着米兰大教堂行走街区，把附近的小店标记上，经过了著名的 [Luini](http://www.tripadvisor.com/Restaurant_Review-g187849-d1097473-Reviews-Luini_Panzerotti-Milan_Lombardy.html)  小吃店(为他们捉急，还不赶紧去中国开分店)。傍晚回来时 Andrea 铺开地图给我介绍去处，思路基本是一家三口周末会去的地方，“那片很酷，我们周末都会去”云云。
 
 
 ### 20世纪博物馆
@@ -39,7 +39,7 @@ Andrea 在银行工作，但下午可以回家等我。我刚到机场又发来�
 
 
 ### 大排档
-前往运河时意外拐到 `Cosmopolitan Market`，简单说是大排档和美食广场的混合，有户外的座位。卖一些派，油炸rissotto面球，取红酒的设备比较特别，在柜台选完酒后，拿到店家给的杯子，在自动售货机上取酒。
+前往运河时意外拐到 `Cosmopolitan Market`，简单说是大排档和美食广场的混合，有户外的座位。卖一些奇怪的派，油炸 risotto 面球，取红酒的设备比较特别，在柜台选完酒后，拿到店家给的杯子，在 `自动售货机` 上取酒。
 
 ![red wine vendor](http://www.enomatic.com/immagini/elite8prec/a.jpg)
 
@@ -47,9 +47,9 @@ Andrea 在银行工作，但下午可以回家等我。我刚到机场又发来�
 
 
 ### 运河区
-纳维里市场所在地，据说每月最后一个周日运河两边会有古董和二手市场，虽然没有赶上，但晚上去还是会有大量[孟加拉移民](http://www.wikiwand.com/en/Bangladeshis_in_Italy)商贩，当然除了转换插头，没有任何东西值得买。
+纳维里市场所在地，据说每月最后一个周日运河两边会有古董和二手市场，虽然没有赶上，但晚上去还是会有大量[孟加拉移民](http://www.wikiwand.com/en/Bangladeshis_in_Italy)商贩(插播一条，超市保安是清一色的黑叔叔，巧克力黑；孟加拉人统治了山寨小商品和各大广场的荧光竹蜻蜓，所谓的社会分工哟)，当然除了转换插头，没有任何东西值得买。
 
-回去时带回一张Capatosta披萨，非常符合我想象中好吃的披萨，面饼较薄，稍有cheese口感但奶味不会太重，有零散的焦黑，以至于`浇头`已经不重要。
+回去时带回一张 `Capatosta` 披萨，非常符合我想象中好吃的披萨，面饼较薄，稍有cheese口感但奶味不会太重，有零散的焦黑，以至于披萨的 `浇头`已经不重要。
 
 ![Capatosta](http://media-cdn.tripadvisor.com/media/photo-p/08/aa/28/23/pizza-regina.jpg)
 图片来自TripAdvisor
@@ -73,13 +73,15 @@ Andrea 在银行工作，但下午可以回家等我。我刚到机场又发来�
 
 > Last Supper - Rubens
 
+>> 犹大的小眼神，小腿！脚下的狗非常像骷髅，颇为惊悚。
+
 ![last supper caravaggio](https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Michelangelo_Caravaggio_034.jpg/1024px-Michelangelo_Caravaggio_034.jpg?1447091592680)
 
 > Supper at Emmaus - Caravaggio
 
 ![raphael](https://upload.wikimedia.org/wikipedia/commons/1/10/MarriageVirgin.jpg?1447091719989https://upload.wikimedia.org/wikipedia/commons/1/10/MarriageVirgin.jpg?1447091719989)
 
-> The Marriage of the Virgin (Raphael)
+> The Marriage of the Virgin － Raphael
 
 图片来自Wikipedia
 
@@ -87,13 +89,16 @@ Andrea 在银行工作，但下午可以回家等我。我刚到机场又发来�
 
 
 ### 斯福扎堡和伦巴第
-福扎堡内有不少伦巴第地区的内容。堡内有小博物馆若干，我逛得打瞌睡，最后糊里糊涂进了一个米开朗琪罗馆，内有雕塑一座，真的是一座，这是我检查了各个角落后才确定的，anyway。
+
+斯福扎堡内有不少伦巴第地区的内容。堡内有小博物馆若干，我逛得打瞌睡，唯一有记忆的是维斯康蒂墓和奇葩形状的中提琴，还有多媒体展示的复原project，来还原达芬奇粉饰过的屋子。最后糊里糊涂进了一个米开朗琪罗馆，内有一座雕塑，真的是一座，这是我检查了各个角落后才确定的，anyway。
 
 > 伦巴第的词源是拉丁语`Longobardus`，原是古日耳曼语（可见其日耳曼属性），意为`long beard`
 
 听说伦巴第人口稠密，又富裕，是贝卢斯科尼的老巢，但历史上的遗产不多。我本以为意呆都是
  Napoli 那样的接地气，后得知人家人头GDP也有三万余刀。
 
+伦巴第的湖区都值得一去，附近有蒙扎赛道，留作下次吧。
 
 ### 米兰世博会，圣西罗，最后的晚餐
-都没去 -_-
+
+没时间，都没去 -_-
