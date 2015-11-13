@@ -1,0 +1,11 @@
+.reveal section .coder-lie {
+  font-size: 22px;
+  margin-top: 40px;
+}
+.reveal section .coder-lie ul {
+  list-style-type: none;
+}
+.reveal section .coder-lie ul li {
+  text-align: center;
+  margin: 5px 0;
+}
