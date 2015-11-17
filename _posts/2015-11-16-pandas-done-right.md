@@ -7,7 +7,7 @@ categories: Data
 tags: [Jupyter, Python, data]
 ---
 
->本文的目的在于给现充一点甜头，将 Jupyter Notebook 的良好体验作为诱饵，引现充上钩，入编程的坑。
+> 本文的目的在于给现充一点甜头，将 Jupyter Notebook 的良好体验作为诱饵，引现充上钩，入编程的坑。
 
 ## -1. Jupyter Pandas 是什么
 
@@ -19,17 +19,24 @@ tags: [Jupyter, Python, data]
 
 用于操作行列数据，方便地实现各种数据分析的形式。
 
-## 0. 安装(现充请跳过，直接访问线上地址）
+## 0. 安装本地环境
+
+(现充请跳过本节，直接访问[线上地址](https://try.jupyter.org/)，点击 `Welcome to Python.ipynb`）
+
 在命令行中输入：
 
-  pip install jupyter
-  pip install pandas
-  pip install matplotlib
-  
+{% highlight python %}
+pip install jupyter
+pip install pandas
+pip install matplotlib
+{% endhighlight %}
+
 cd到指定目录，启动：
 
+```
   jupyter notebook
-  
+```
+
 ## 1. 加载工具库
 
 在 Jupyter Notebook 中，Pandas 是数据的主体工具，matplotlib 是执行作图的工具。
@@ -43,7 +50,8 @@ cd到指定目录，启动：
 在 Cell 中输入并执行：
   
   df = pd.read_csv('./data.csv', index_col='id')
->`index_col`的作用是索引，是为了高效查询建立的特殊数据结构，简单说（不准确）是黄页 
+
+> `index_col`的作用是索引，是为了高效查询建立的特殊数据结构，简单说（不准确）是黄页 
   
 ## 3. 想象这是Excel
 现在想象你手边有Excel（当然你也可以真的开一个）显示如下表格：
@@ -65,7 +73,7 @@ date(索引)|A|         B|         C|         D
 rows = df[0:3]
 ```
 
->选择第0行至第4行，执行结果如下：
+> 选择第0行至第4行，执行结果如下：
 
 <table id="select-1">
 <thead>
@@ -129,7 +137,8 @@ rows = df[0:3]
 ``` 
 cols = df[['A', 'B', 'C']]
 ```
->选择列A，B，C，执行结果如下：
+
+> 选择列A，B，C，执行结果如下：
 
 <table id="select-2">
 <thead>
@@ -194,7 +203,7 @@ cols = df[['A', 'B', 'C']]
 df.loc['20130102':'20130104',['A','B']]
 ```
 
->选择行和列组成的数据块，执行结果如下：
+> 选择行和列组成的数据块，执行结果如下：
 
 <table id="select-3">
 <thead>
@@ -267,18 +276,20 @@ s = pd.Series([1,1,2,3,5])
 
 创建一个 `6x4` 的表格块，单元格内容为随机数列名为 A，B，C，D。
 
-```
+```python
 pd.DataFrame(np.random.randn(6,4), columns=list('ABCD'))
 ```
+
 从已有的列创建一个新的列
 
-```
+```python
 df['sumAB'] = pd.Series(df['A'] + df['B'], index=df.index)
 df['10A'] = pd.Series(df['A']*10, index=df.index)
 ```
->`df['A'] + df['B']`表示两列对应单元格的相加
 
->`df['A']*10`表示列A每个单元格 *10
+> `df['A'] + df['B']`表示两列对应单元格的相加
+
+> `df['A']*10`表示列A每个单元格 *10
 
 >运算后df的值如下：
 
