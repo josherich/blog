@@ -25,7 +25,7 @@ tags: [Jupyter, Python, data]
 
 在命令行中输入：
 
-{% highlight python %}
+{% highlight Python %}
 pip install jupyter
 pip install pandas
 pip install matplotlib
