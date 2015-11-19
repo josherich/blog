@@ -46,7 +46,7 @@ jupyter notebook
 
 ## 1. 加载工具库
 
-在 Jupyter Notebook 中，Pandas 是数据的主体工具，matplotlib 是执行作图的工具。
+在 Jupyter Notebook 中，Pandas 是操作数据的工具，matplotlib 是执行作图的工具。
 
 在 Cell 中输入并执行：
   
@@ -54,6 +54,7 @@ jupyter notebook
 import pandas as pd
 import matplotlib.pyplot as plt
 ```
+
 ## 2. 读取数据文件或数据库
 在 Cell 中输入并执行：
 
@@ -91,7 +92,7 @@ date(索引)|A|         B|         C|         D
 rows = df[0:3]
 ```
 
-> 选择第0行至第3行，执行结果如下：
+> 选择第0行至第3行，结果如灰色区域所示：
 
 <table id="select-1">
 <thead>
@@ -156,7 +157,7 @@ rows = df[0:3]
 cols = df[['A', 'B', 'C']]
 ```
 
-> 选择列A，B，C，执行结果如下：
+> 选择列A，B，C，结果如灰色区域所示：
 
 <table id="select-2">
 <thead>
@@ -221,7 +222,7 @@ cols = df[['A', 'B', 'C']]
 df.loc['20130102':'20130104',['A','B']]
 ```
 
-> 选择行和列组成的数据块，执行结果如下：
+> 选择行和列组成的数据块，结果如灰色区域所示：
 
 <table id="select-3">
 <thead>
@@ -414,7 +415,7 @@ df.sort_values(by='A')
 ```
 
 ## 作图
-Pandas 与 matplotlib 配合可以支持几乎所有常用的图表形式，以常用的直方图为例，来观察一个典型的独立随机变量的正态分布：
+Pandas 与 matplotlib 配合使用，可以支持几乎所有常用的图表形式，这里以常用的直方图为例，来观察一个典型的独立随机变量的正态分布：
 
 ```python
 # 首先打开图表行内显示
@@ -434,7 +435,7 @@ nd.hist(bins=100, range=(-5,5))
 
 ## 下一步
 
-经过了这几节，想必现充们仅仅学会了例子中的代码，如果想进一步了解，请参考一下文档：
+经过了这几节，想必现充们仅仅学会了例子中的代码，如果想进一步了解，请参考以下文档：
 
 1.[Pandas 官方文档](http://pandas.pydata.org/pandas-docs/stable/api.html)
 
