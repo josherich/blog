@@ -7,14 +7,16 @@ categories: Reading
 tags: [quote, book, UX]
 ---
 
+[UX for Beginners](http://book.douban.com/subject/26694560/)
+
 > It is better to show users what they will get, rather than tell them.
 
-The design is like salesman's face to face talk, you try to convince clients that they need your product. The first thing users do when they browse is trying to imagine and visualize the use case of your design. 
-Users get tired and give up so soon that ideas, no matter its forms, must be effective like a whip.
+The design is like salesman's face to face talk, you try to convince clients that they need your product. The first thing users do when they browse is trying to imagine and visualize the use case of your product. 
+Users get tired and give up so soon that presenting ideas, no matter its forms, must be quick and effective like a whip attack.
 
 > User motivation is a thousand times more valuable than beauty or usability—for the company—but how much time do you spend talking about it at work?
 
-The user motivation comes first in the pipeline and is always intimate with the business itself. It is independent of design or usability, or those tech things. Whether the business is online or not, the motivation always comes first.
+The user motivation comes first in the UX pipeline and is always intimate with the business itself. It is independent of design and usability, or those tech things. Whether the business is online or not, the motivation always comes first.
 
 > A good design communicates three things: 
 > 1. What is this?
@@ -41,7 +43,7 @@ Design is certainly a conscious process. But it is used by people's subconscious
 
 > porn sites are actually some of the most active businesses when it comes to A/B testing and optimizing their designs, advertising, and search experience. It’s an incredibly competitive industry, and they even have to consider one-handed navigation. Seriously!
 
-one-handed navigation, hmm...
+one-handed navigation, huh, hmm...
 
 > Create a way to measure users’ actions so they can compare themselves to others—like points on a high score list, followers on Instagram, or being The Mayor in Foursquare.
 
@@ -49,12 +51,12 @@ Comparison makes figures understood. Comparison makes motivation.
 
 > Users will choose something they understand over something they don’t, if you give them a choice. It doesn’t matter which one is actually better.
 
-Curiosity is a little bit more than what users undrestand, and users give up when they confuse.
+Curiosity is a little bit more than what users understand, and users give up when they confuse.
 
 > It’s easier for a user do nothing than to do something.
 > In a nutshell: countries that made people choose to be an organ donor got very few people to do it. Countries that made people choose not to be an organ donor had more than 90% organ donors.
 
-Always try to design default options, according to your intention, or the users' data.
+Always try to design default options, according to your intentions, or the users' data.
 
 > Hyperbolic Discounting:
 > Whatever is happening to you now (or soon) seems more important than what will happen to you later (or in the future).
@@ -73,9 +75,9 @@ Shortsignted, foolish mankind, always want it NOW, RIGHT NOW.
 Categorize contents into one of these, and apply models and best practice of that type.
 
 > heuristics:  
-> - detect information instead of asking for it  
+> - detect user's information instead of asking for it  
 > - remove unnecessary questions  
-> - format content properly, like phone numbers  
+> - format content properly, like phone numbers 123-456-789    
 > - list options instead of letting users type  
 > - add super clear instructions for every question  
 > - break complex questions into more steps so each is easier  
