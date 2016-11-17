@@ -13,5 +13,5 @@ document.querySelector('#signin #qq_login').addEventListener('click', function()
     appId: '100387802',
     redirectURI: 'http://a.qingting.fm/user/redirect.html'
   };
-  QC.Login().showPopup(opts);
+  QC.Login.showPopup(opts);
 })
