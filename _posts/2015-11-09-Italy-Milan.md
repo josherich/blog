@@ -23,7 +23,7 @@ Andrea 在银行工作，但下午可以回家等我。我刚到机场又发来�
 ![gugen](https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Museo_del_900.JPG/640px-Museo_del_900.JPG)
 图片来自Wikipedia
 
-逛到 Duomo 时顺便去了现代博物馆，由环形斜坡（向[古根海姆](http://www.wikiwand.com/en/Solomon_R._Guggenheim_Museum)致敬）向上进入口，刚进门就有几幅马蒂斯和毕加索镇场颇有气势，走到后面发现博乔尼和不少年轻人的作品其实占了多数。现代画不是很懂，但不少画幅的色彩非常感人，是照片中完全无法体现的。  
+逛到 Duomo 时顺便去了现代博物馆，由环形斜坡（向[古根海姆](http://www.wikiwand.com/en/Solomon_R._Guggenheim_Museum)致敬）向上进入口，刚进门就有几幅马蒂斯和毕加索镇场颇有气势，走到后面发现博乔尼和不少年轻人的作品其实占了多数。现代画不是很懂，但不少画幅的色彩非常感人，是照片中完全无法体现的。
 
 ![Boccioni](http://www.chenhf.com/images/breca2.jpg)
 
@@ -41,7 +41,7 @@ Andrea 在银行工作，但下午可以回家等我。我刚到机场又发来�
 ### 大排档
 前往运河时意外拐到 `Cosmopolitan Market`，简单说是大排档和美食广场的混合，有户外的座位。卖一些奇怪的派，油炸 risotto 面球，取红酒的设备比较特别，在柜台选完酒后，拿到店家给的杯子，在 `自动售货机` 上取酒。
 
-![red wine vendor](http://www.enomatic.com/immagini/elite8prec/a.jpg)
+![red wine vendor](http://www.toxel.com/wp-content/uploads/2009/09/vending14.jpg)
 
 <!--<iframe src="https://www.google.com/maps/embed?pb=!1m0!3m2!1sen!2sus!4v1445095139950!6m8!1m7!1sWj3Dhl31CpgYKchN7XOpRQ!2m2!1d45.4505226!2d9.1679574!3f298.98529808824344!4f-13.335100735262728!5f0.7820865974627469" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>-->
 
@@ -61,7 +61,7 @@ Andrea 在银行工作，但下午可以回家等我。我刚到机场又发来�
 
 ![the kiss](https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/El_Beso_%28Pinacoteca_de_Brera%2C_Mil%C3%A1n%2C_1859%29.jpg/640px-El_Beso_%28Pinacoteca_de_Brera%2C_Mil%C3%A1n%2C_1859%29.jpg?1447091427012)
 
-> The Kiss - Hayez 
+> The Kiss - Hayez
 
 >> 这位海耶斯画裸女真有一手！
 
