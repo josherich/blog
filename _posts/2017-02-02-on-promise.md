@@ -21,11 +21,10 @@ tags: [frontend, async, promise]
 
 - In `Promise.race`, other promises won't stop or abort when first promise get fullfilled
 
-- There is NO `abort` in ES6 Promise, while some libraries(bluebird) DO implement `abort`
+- There is NO `abort` in ES6 Promise, while some libraries(bluebird) DO implement `abort`. Of course, you can implement it with lines of code like [this gist](https://gist.github.com/jurassix/64facb34686ad71463ca3121ee77db24)
 
 - ES6 Promise comes from Promise/A+, which comes from CommonJS group(famous for CommonJS module spec)
 
 - When unhandled rejection happens in promise callbacks, all you see is something like `Promise rejected` with no stack info.
 
 - [a promise visualization](http://bevacqua.github.io/promisees/)
-
