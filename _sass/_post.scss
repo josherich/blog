@@ -1,0 +1,54 @@
+.post h2 {
+  text-align: center;
+  margin-top: 4em;
+  margin-bottom: 1em;
+  color: #600;
+  font: 19px optima, STHeiti;
+  font-weight: 600;
+}
+
+.post pre {
+  border: 1px solid #ddd;
+  background-color: #eef;
+  padding: 0 .4em;
+}
+
+.post ul, .post ol {
+  margin-left: 1.35em;
+}
+
+.post code {
+  border: 1px solid #ddd;
+  background-color: #eef;
+  white-space: pre-wrap;
+  padding: 3px 6px;
+  border-radius: 3px;
+}
+
+.post pre code {
+  border: none;
+}
+
+/* terminal */
+.post pre.terminal {
+  border: 1px solid #000;
+  background-color: #333;
+  color: #FFF;
+}
+
+.post pre.terminal code {
+  background-color: #333;
+}
+
+
+/* pandas done right tables */
+#select-1, #select-2, #select-3 {
+  font-size: 9px;
+}
+#select-4 {
+  font-size: 9px;
+}
+
+.cell-selected {
+  background: #aaa!important;
+}

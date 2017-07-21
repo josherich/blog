@@ -1,7 +1,7 @@
 baseurl: 'http://www.chenhf.com'
 projecturl: '/projects/'
 permalink: /:categories/:title
-name: I blog when I'm bored
+name: Josherich's Blog
 markdown: kramdown
 kramdown:
   input: GFM
@@ -9,3 +9,6 @@ highlighter: rouge
 data_format: "ordinal"
 subscribe_rss: /atom.xml
 encoding: utf-8
+sass:
+    style: compressed
+    sass_dir: _sass
