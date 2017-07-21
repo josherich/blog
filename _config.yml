@@ -12,3 +12,5 @@ encoding: utf-8
 sass:
     style: compressed
     sass_dir: _sass
+gems:
+  - jekyll-feed
