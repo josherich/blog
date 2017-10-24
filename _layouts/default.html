@@ -1,58 +1,59 @@
 <!DOCTYPE html>
-<html>
-
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>{{ page.title }}</title>
-  <meta name="viewport" content="width=device-width">
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  <script type='text/javascript'>
-    var _vds = _vds || [];
-      window._vds = _vds;
-      (function(){
-        _vds.push(['setAccountId', '62f3e807e5c245b49bed7a9a01bcb39e']);
-        (function() {
-          var vds = document.createElement('script');
-          vds.type='text/javascript';
-          vds.async = true;
-          vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'dn-growing.qbox.me/vds.js';
-          var s = document.getElementsByTagName('script')[0];
-          s.parentNode.insertBefore(vds, s);
+<html lang="zh-cmn-Hans">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>{{ page.title }}</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" media="all" href="//cdnjs.cloudflare.com/ajax/libs/Han/3.2.7/han.min.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type='text/javascript'>
+      var _vds = _vds || [];
+        window._vds = _vds;
+        (function(){
+          _vds.push(['setAccountId', '62f3e807e5c245b49bed7a9a01bcb39e']);
+          (function() {
+            var vds = document.createElement('script');
+            vds.type='text/javascript';
+            vds.async = true;
+            vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'dn-growing.qbox.me/vds.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(vds, s);
+          })();
         })();
-      })();
-  </script>
-  <link rel="stylesheet" type="text/css" href="/css/main.css">
-</head>
+    </script>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+  </head>
 
-<body>
+  <body>
 
-  <div class="site">
-    <div class="header">
-      <h1 class="title"><a href="{{ site.baseurl }}">{{ site.name }}</a></h1>
-      <a class="home hlink" href="{{ site.baseurl }}">HOME</a>
-      <a class="feed hlink" href="/feed.xml">RSS</a>
-      <a class="projects hlink" href="{{ site.projecturl }}">PROJECTS</a>
-    </div>
-
-    {{ content }}
-
-    <div class="footer">
-      <div class="contact">
-        <p>
-          GITHUB
-          <br /> josherichchenATgmail.com
-        </p>
+    <div class="site han-init-context">
+      <div class="header">
+        <h1 class="title"><a href="{{ site.baseurl }}">{{ site.name }}</a></h1>
+        <a class="home hlink" href="{{ site.baseurl }}">HOME</a>
+        <a class="feed hlink" href="/feed.xml">RSS</a>
+        <a class="projects hlink" href="{{ site.projecturl }}">PROJECTS</a>
       </div>
-      <div class="contact">
-        <p>
-          <a href="https://github.com/josherich">github.com/josherich</a>
-          <br />
-        </p>
+
+      {{ content }}
+
+      <div class="footer">
+        <div class="contact">
+          <p>
+            GITHUB
+            <br/> josherichchenATgmail.com
+          </p>
+        </div>
+        <div class="contact">
+          <p>
+            <a href="https://github.com/josherich">github.com/josherich</a>
+            <br />
+          </p>
+        </div>
       </div>
     </div>
-  </div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/Han/3.2.7/han.min.js"></script>
 
-</body>
+  </body>
 
 </html>
