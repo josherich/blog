@@ -32,9 +32,10 @@ blockquote {
 p { margin: 1em 0; text-align: left; line-height: 2em;}
 img {
   display: block;
-  margin: 1em 0;
+  margin: 20px 0;
   text-align: center;
-  max-width: 90%;
+  width: 100%;
+  // max-width: 90%;
 }
 a         { color: #00a; }
 a:hover   { color: #000; }
