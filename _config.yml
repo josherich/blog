@@ -1,4 +1,4 @@
-baseurl: 'http://www.chenhf.com'
+baseurl: 'https://www.josherich.me'
 projecturl: '/projects/'
 permalink: /:categories/:title
 name: Josherich's Blog

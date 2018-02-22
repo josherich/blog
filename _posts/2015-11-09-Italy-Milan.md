@@ -25,17 +25,17 @@ Andrea 在银行工作，但下午可以回家等我。我刚到机场又发来�
 
 逛到 Duomo 时顺便去了现代博物馆，由环形斜坡（向[古根海姆](http://www.wikiwand.com/en/Solomon_R._Guggenheim_Museum)致敬）向上进入口，刚进门就有几幅马蒂斯和毕加索镇场颇有气势，走到后面发现博乔尼和不少年轻人的作品其实占了多数。现代画不是很懂，但不少画幅的色彩非常感人，是照片中完全无法体现的。
 
-![Boccioni](http://www.chenhf.com/images/breca2.jpg)
+![Boccioni](/images/breca2.jpg)
 
 比如这位夫人的绿色眼珠和面部，站在画幅前效果非常迷人，而照片的颜色暗淡无光。
 
-![active](http://www.chenhf.com/images/breca1.jpg)
+![active](/images/breca1.jpg)
 
 比如这幅的照片颜色交错杂乱，但在画幅前颜色能很好区分成不同的动作，人物几乎有动态。
 
 到达图中的顶层往外看，正是米兰大教堂的绝佳角度，纠结的日光灯在玻璃中的镜像正在教堂的头顶。
 
-![Duomo from museum](http://www.chenhf.com/images/breca3.jpg)
+![Duomo from museum](/images/breca3.jpg)
 
 
 ### 大排档
