@@ -6,6 +6,7 @@
   margin: 0 auto;
   line-height: 1.5em;
   padding: 10px 20px;
+  position: relative;
 }
 
 .site .header a {
@@ -67,6 +68,16 @@
 
 .site .footer .rss img {
   border: 0;
+}
+
+.post-index {
+  position: absolute;
+  left: -200px;
+  top: 0;
+}
+
+.post-page {
+
 }
 
 a.selected {

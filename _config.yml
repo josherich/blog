@@ -5,6 +5,7 @@ name: Josherich's Blog
 markdown: kramdown
 kramdown:
   input: GFM
+  math_engine: mathjax
 highlighter: rouge
 data_format: "ordinal"
 subscribe_rss: /atom.xml
