@@ -5,6 +5,11 @@
 - is MLP multi layer perceptron equal to feature extraction(mapping function)?
 - wavelet and PCA
 
+# Quotes
+
+> The standard by which we measure a situation and establish that the situation is problematic is part of the problem and should be abandoned
+__- Phenomennology of spirit, Hegel__
+
 # Machine Learning
 
 ## Examples of Learning Tasks
@@ -110,7 +115,7 @@ $$f(\alpha x + (1 - \alpha)y) \le \alpha f(x) + (1 - \alpha)f(y)$$
 
 # feature spaces
 
-### Very large feature spaces have two potential issues:
+Very large feature spaces have two potential issues:
 
 - 1. [Overfitting](#overfitting)
 
@@ -171,6 +176,54 @@ combine lasso and ridge penalities.
 - among correlated features(same scale), we spread it evenly.
 
 ## Regularization Paths
+
+# KNN
+
+kd tree
+
+# Bayesian
+
+## Maximum Likelihood Estimation
+
+## Bayesian dicision
+
+## Bayesian network
+
+## EM
+
+# Dicision tree
+
+empirical entropy
+
+empirical conditional entrpy
+
+information gain is defined as:
+
+$$g(D,A) = H(D) - H(D\vect A)$$
+
+maximize g
+
+- ID3
+
+- C4.5
+
+- pruning
+
+- CART
+
+# logistic regression
+
+# ensemble learning
+
+## Boosting
+
+### AdaBoost
+
+### Boosting Tree
+
+# HMM
+
+# Conditional Random Field
 
 # Quadratic Problem
 
@@ -364,6 +417,10 @@ a problem H is NP-hard when every problem L in NP can be reduced in polynomial t
 
 ## GAN
 
+cycleGAN
+
+pixel to pixle
+
 ## WGAN
 
 ## VAE
@@ -423,6 +480,8 @@ a problem H is NP-hard when every problem L in NP can be reduced in polynomial t
 ## credible set
 
 ## evaluation
+
+training, dev, test segmentation is based on the i.i.d. assumption
 
 - precison
 
@@ -922,6 +981,54 @@ galvanize
 
 litmus test
 石蕊测试
+
+# CPP
+
+[Cpp FAQ](https://isocpp.org/faq)
+
+```
+-std=c++11: Enables C++11 support
+-g: Produces debugging information in the OS's native format.
+-ggdb: Produces debugging information specifically intended for gdb.
+-O0: Optimize option that reduces compilation time and makes debugging more reliable.
+-O3: Increases both the compilation time and the performance of the generated code. Use this when running benchmarks.
+-Wall: Generate helpful warnings. Do not ignore them! In fact, force yourself to deal with warnings by handling them as errors with the -Werror compiler flag.
+```
+
+## unique ptr
+
+[cppreference](http://zh.cppreference.com/w/cpp/memory/unique_ptr)
+
+
+## cpp style guide
+
+[google cpp style guide](https://google.github.io/styleguide/cppguide.html)
+
+## cmake
+
+[Introduction to CMake](http://derekmolloy.ie/hello-world-introductions-to-cmake/)
+
+## GDB
+
+> gdbinit
+
+```
+# We have scroll bars in the year 2015!  
+set pagination off
+
+# Attach to both parent and child on fork  
+set detach-on-fork off
+
+# Stop/resume all processes  
+set schedule-multiple on
+
+# Usually don't care about these signals  
+handle SIGUSR1 noprint nostop
+handle SIGUSR2 noprint nostop
+
+# Ugly hack so we don't break on process exit  
+python gdb.events.exited.connect(lambda x: [gdb.execute('inferior 1'), gdb.post_event(lambda: gdb.execute('continue'))])
+```
 
 # Reading List
 
