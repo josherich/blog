@@ -75,9 +75,23 @@ var getGraphData = function(filepath, callback) {
   if (content_cache && use_cache) {
     parse(content_cache, callback);
   } else {
-    d3.text(filepath, function(text) {
-      content_cache = text
-      parse(text, callback)
+    let tasks = []
+    if (Array.isArray(filepath)) {
+      filepath.map(file => {
+        tasks.push(new Promise((resolve, reject) => {
+          d3.text(file, text => { resolve(text) })
+        }))
+      })
+    } else {
+      tasks = [new Promise((resolve, reject) => {
+        d3.text(file, text => { resolve(text) })
+      })]
+    }
+    Promise.all(tasks)
+    .then(textArray => {
+      let alltext = textArray.join('\n')
+      content_cache = alltext
+      parse(alltext, callback)
     })
   }
 }
