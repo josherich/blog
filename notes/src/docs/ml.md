@@ -188,7 +188,7 @@ kd tree
 - for discrete value, partition values into two groups
 
 > Loss function for regression
-Given the partition $\left{ R_1,...R_M \right}$, prediction function is
+Given the partition $\{ R_1,...,R_M \}$, prediction function is
 $$f(x) = sum_{m=1}^{M}c_m 1(x \in R_m)$$
 
 for $l_2$ loss, 
@@ -209,7 +209,7 @@ empirical conditional entrpy
 
 information gain is defined as:
 
-$$g(D,A) = H(D) - H(D\vect A)$$
+$$g(D,A) = H(D) - H(D \vert A)$$
 
 maximize g
 
@@ -516,7 +516,136 @@ $$\frac{1}{1+\beta^2} \left( \frac{1}{P} + \frac{\beta^2}{R} \right)$$
 
 ## ACML
 
-# numpy example
+## correlation and independence
+
+## linear independent
+
+a set of vectors is linearly independent if there exist m scalar coefficients, which are not all equal to zero and
+$$ sum_{i=1}^m \alpha_i x_i = 0 $$
+
+## span
+
+all possible linear combinations of a set of vectors
+
+the span of any set of vectors in $\mathcal V$ is a subspace of $\mathcal V$
+
+## basis
+
+## inner product
+
+## matrix inner product
+
+## function inner product
+
+## dot product
+
+## symmetric
+
+## inner product norm
+
+## sample variation
+
+## sample standard deviation
+
+## correlation coefficient
+
+## holder's inequality
+
+## othogonality
+
+## gram-schmidt
+
+## orthogonal projection
+
+closest
+
+## rank
+
+dim(col(A)) = dim(row(A))
+
+## trace
+
+## linear map
+
+map vectors from vector space V to vector space R
+
+$A\vec{x}$ is a linear combination of the columns of $A$
+
+linear map can be represent by a matrix
+
+- when matrix is fat, it projects vectors onto a lower dimensional space
+
+- when matrix is tall, it lifts vectors onto a higher dimensional space
+
+## adjoint
+
+the adjoint of a linear map satisfies
+
+$$ \langle f(\vec{x}), \vec{y} \rangle_{\mathcal R} = \langle \vec{x},f^{\ast}(\vec{y})_{\mathcal V} $$
+
+## conjugate transpose
+
+$$\(A^{\ast}_{ij} = \bar{A_ji}\) 1 \leq i \leq n, 1 \leq j \leq m. $$
+
+## range
+
+$$ range(f) = \lbrace \vec{y} \vert \vec{y} = f(\vec{x}) \text{, for some } \vec{x} \in \mathcal V \rbrace $$
+
+the range of a matrix is the range of its associated linear map
+
+## Null space
+
+the set of vectors that are mapped to zero
+
+> null space of a linear map is a subspace
+
+> null space is perpendicular to row space
+> $$ null(A) = row(A)^{\perp} $$
+
+## column space
+
+if the column spaces of two matrix are orthogonal, then inner product is 0
+
+$$ \langle A, B \rangle $$
+
+---
+
+the range is the column space
+
+$$range(A) = col(A)$$
+
+## row space
+
+## orthogonal matrices
+
+orthogonal matrix is a square matrix s.t.
+
+$$ U^T U = U U^T = I $$
+
+> the columns form an orhonormal basis
+
+> orthogonal matrices change the direction of vectors, not their magnitude
+
+
+# Variational Autoencoder
+
+[sample implementation](https://github.com/altosaar/variational-autoencoder/blob/master/vae.py)
+
+## reparametrization trick
+
+## Mean-field variational inference
+
+## Encoder
+
+in the neural net world, the encoder is a neural network that outputs a representation zz of data xx. In probability model terms, the inference network parametrizes the approximate posterior of the latent variables zz. The inference network outputs parameters to the distribution q(z \vert x)q(z∣x).[credit](https://jaan.io/what-is-variational-autoencoder-vae-tutorial/)
+
+## Decoder
+
+in deep learning, the decoder is a neural net that learns to reconstruct the data xx given a representation zz. In terms of probability models, the likelihood of the data xx given latent variables zz is parametrized by a generative network. The generative network outputs parameters to the likelihood distribution p(x \vert z)p(x∣z).[credit](https://jaan.io/what-is-variational-autoencoder-vae-tutorial/)
+
+## Inference
+
+in neural nets, inference usually means prediction of latent representations given new, never-before-seen datapoints. In probability models, inference refers to inferring the values of latent variables given observed data. [credit](https://jaan.io/what-is-variational-autoencoder-vae-tutorial/)
 
 # Optimal Transportation
 
