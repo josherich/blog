@@ -44,7 +44,7 @@ modifiable variables, pointers, goto, loop
 
 - Declarative: Functional/Logic
 
-  - variables represent vlaues, like in math
+  - variables represent values, like in math
 
   - no need for loop
 

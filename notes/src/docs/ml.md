@@ -360,8 +360,18 @@ reformulated
 Gamma function
 Dirichlet distribution
 
+# structured prediction
+
 # HMM
 Viterbi algorithm (dp with max)
+
+## MEMM
+
+# CRF
+
+https://spaces.ac.cn/archives/4695/
+
+## Hamming loss
 
 # VC dimension
 
@@ -377,9 +387,6 @@ The VC-dimension of H is the size of the largest set shattered by H.
 
 Given a set S of examples and a concept class H, let H[S] = {h ∩ S : h ∈ H}. That is, H[S] is the concept class H restricted to the set of points S. For integer n and class H, let H[n] = max|S|=n |H[S]|; this is called the growth function of H.
 
-# CRF
-
-https://spaces.ac.cn/archives/4695/
 
 # EM
 
@@ -465,6 +472,24 @@ pixel to pixle
 ## Bayesian action
 
 - minimize posterior risk
+
+## James-Stein Estimator
+
+shrinkage
+
+$$ ( 1 - frac{N - 2}{\Vert z \Vert^2}) $$
+
+## Tweedie’s formula
+
+### Chi-squared distribution
+
+## exponential family
+
+$$ h(x) = exp(\eta x − \psi(\eta))h_0(x) $$
+
+$\eta$ : natural parameter
+
+$\psi$ : cumulant generating function
 
 ## conjugate
 
@@ -564,6 +589,8 @@ closest
 dim(col(A)) = dim(row(A))
 
 ## trace
+
+sum of diagonal elements
 
 ## linear map
 
@@ -802,3 +829,19 @@ where Z is known as the partition function
 contingency function of its arguments assigning "pre-probabilistic" score of their joint configuration.
 
 ## Lagrangian multiplier
+
+# Neural Network
+
+## Elman Network
+
+LSTM
+
+GRU
+
+Elman network就是指现在一般说的RNN（包括LSTM、GRU等等）。一个recurrent层的输出经过时延后作为下一时刻这一层的输入的一部分，然后recurrent层的输出同时送到网络后续的层，比如最终的输入层。一个Jordan network说的是直接把整个网络最终的输出（i.e. 输出层的输出）经过时延后反馈回网络的输入层
+
+## Clockwork RNN
+
+隐层被分成了g个模块，每个模块的大小是k，每个模块内部是全连接的。模块j到i的recurrent仅当Ti小于Tj时才会存在。根据增长的阶段对模块进行分类，模块之间的传递在隐层之间是从右向左的，从慢的模块到快的模块。
+
+CW-RNN跟ＲＮＮ的主要不同之处在于在每个时间点ｔ，只有模块ｉ满足ｔ%Ti=0,才会执行，产生输出。Ｔｉ的是任意的，这篇论文取得是Ｔi=２^（ｉ－１）

@@ -1,3 +1,19 @@
+# level of NLP research
+
+- Phonetics and phonology
+
+- Morphology
+
+- Syntax
+
+- Lexical semantics
+
+- Compositional semantics
+
+- Pragmatics
+
+- Discourse
+
 # Dependency parsing
 
 - head and dependent
@@ -105,3 +121,35 @@ CC | Coordinationg conjunction
 - bilinear
 
 - multi-layer perceptron
+
+## char-based and subword-based models
+
+namesake (Markov 1906)
+
+Sutskever et el. 2011
+
+Mikolov el al. 2012, Sennrich el al. 2015
+
+## char-aware models
+
+char and word level (Kang el al. 2011) (Ling el al. 2015) (Kim el al. 2016)
+
+unsupervised morphology with log-bilinear model (Botha and Blunsom 2014)(Jozefowicz el al. 2016)
+
+## open-vocabulary hybrid models
+
+Brown el al. 1992
+
+Chung el al. 2016
+
+Luong and Manning 2016
+
+## mixture model generation
+
+combine count based and neural lm (Neubig Dyer 2016)
+
+char based and word based to translate text and code (Ling el al 2016)
+
+copy when UNK (Merity et al. 2016)
+
+

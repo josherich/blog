@@ -137,8 +137,13 @@
     </script>
     <script src="./src/app.js"></script>
     <script>
+      MathJax.Hub.Config({
+          jax: ["input/TeX","output/HTML-CSS"],
+          displayAlign: "left"
+      });
       sd.demo([
         './src/docs/josherich.md',
+        './src/docs/papernotes.md',
         './src/docs/cs.md',
         './src/docs/languages.md',
         './src/docs/nlp.md',

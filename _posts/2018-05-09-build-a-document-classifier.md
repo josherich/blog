@@ -11,33 +11,47 @@ tags: [lda, nlp]
 
 下载新闻数据集
 
-```
+```R
+# 获取当前工作目录
 getwd()
+
+# 设定当前工作目录
 setwd("/Users/{username}/project/")
 
+# 载入数据，如果数据较大，推荐使用 data.table
+# https://www.r-bloggers.com/efficiency-of-importing-large-csv-files-in-r/
 library(data.table)
 
-data = fread("page_dump.csv",sep = ',')
+datac <- fread("page_entity_20180511.csv",sep = ',')
 ```
 
 ## 2. 预处理数据
 
-```
+```R
+# 从 HTML 中提取文本
 library(htm2txt)
 
-ts = htm2txt(titles)
+# 重命名列名
+names(datac) <- c("id", "page_title", "page_url", "page_content", "page_host_id", "created_at", "updated_at", "page_image", "page_topics", "page_date")
 
-write.csv(file="page_clean.csv", x=data)
+titles <- datac$page_title
+titles <- htm2txt(titles)
+titles <- gsub("n\t+", "", titles)
 
-contents <- gsub("[[:alpha:]]+|\n|--", "", contents)
+urls <- datac$page_url
+urls <- gsub("n\t+", "", urls)
 
-na.omit(contents)
+datac$page_title <- titles
+datac$page_url <- urls
+
+write.csv(file="page_entity.csv", x=datac)
 ```
 
-合并 dataframe
+### 2.1 合并 dataframe
 
-```
-data_content = fread("content_full.csv", sep=',')
+```R
+# 读取另一张存有正文内容的表格
+data_content = fread("page_content_full.csv", sep=',')
 
 datam <- merge(x=data, y=dfcontent, by.x="V3", by.y="page_url", all.x=TRUE)
 
@@ -46,7 +60,7 @@ datacontent <- datam[datam$page_content != "NA"]
 
 ## 3. 搜索关键词
 
-```
+```R
 text_with_s <- grep("美国", texts(titles))
 
 text_with_s <- grep("美国", texts(titles), value=TRUE)
@@ -54,7 +68,7 @@ text_with_s <- grep("美国", texts(titles), value=TRUE)
 
 ## 4. 分词处理
 
-```
+```R
 install.packages("jiebaR")
 library("jiebaR")
 
@@ -74,7 +88,7 @@ kws = vector_keywords(tokencn)
 
 ## 4. 计算特征词，词义复杂度
 
-```
+```R
 cal_dfm <- function(id, data) {
   datap = data[data$V5 == id]
 
@@ -113,7 +127,7 @@ getttr(1, data)
 
 ### 5.1 计算 LDA 主题数量
 
-```
+```R
 dfm1 <- dfm(datacontent$page_content, remove = stopwords("chinese"), remove_punct = TRUE)
 
 result <- FindTopicsNumber(
@@ -132,7 +146,7 @@ number_of_topics = 40
 
 ### 5.2 计算 LDA 矩阵
 
-```
+```R
 tm1 <- LDA(dfm1, k = number_of_topics, method = "Gibbs",  control = list(seed = 1234))
 
 library(tidytext)
@@ -155,7 +169,7 @@ terms1 %>%
 
 ### 5.3 对主题分类
 
-```
+```R
 post <- posterior(tm1, dfm1)[["topics"]]
 
 postmat <- as.data.frame(post)
@@ -186,7 +200,7 @@ groups <- sapply(postdat[-1], group_documents)
 
 ## FRE
 
-```
+```R
 cal_fre <- function(ids, data) {
   datap <- data[, c("V5", "cleancontent")]
   datap <- datap[V5 %in% ids]
@@ -214,7 +228,7 @@ std <- function(x) sd(x)/sqrt(length(x))
 
 ## 保存 workspace
 
-```
+```R
 save.image("workspace.RData")
 ```
 
