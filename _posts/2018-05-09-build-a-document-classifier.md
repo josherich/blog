@@ -7,7 +7,7 @@ categories: nlp
 tags: [lda, nlp]
 ---
 
-新闻文本的聚类，可以视为文本聚类的一类应用，而文本聚类在二十几年前就有大量的研究[^3][^4]。归功于统计方法的进步，文本聚类从最早的词频统计，到文本建模，话题建模，再到词嵌入（word embedding) 发明之后的各种嵌入方法。方法众多，但可以说文本分类是一个未解决的问题（当然由于文本是人类生成的，可以说这是一个没有完美答案的问题）。
+新闻文本的聚类，可以视为文本聚类的一类应用，而文本聚类在二十几年前就有大量的研究[^1][^2]。归功于统计方法的进步，文本聚类从最早的词频统计，到文本建模，话题建模，再到词嵌入（word embedding) 发明之后的各种嵌入方法。方法众多，但可以说文本分类是一个未解决的问题（当然由于文本是人类生成的，可以说这是一个没有完美答案的问题）。
 
 新闻文本聚类显然是很有吸引力的，生产远大于消费，让人产生信息焦虑，时间线飞速前进的错觉。这终究是个和平年代，让每一个人了解每天世界上发生的每一件大事仍然是合理的愿望。
 
@@ -91,7 +91,9 @@ write.csv(file="page_content_tokenized.csv", x=datatok)
 
 ## 4. 用 LDA 矩阵聚类文本内容
 
-### 4.1 计算 LDA 主题数量[^2]
+### 4.1 计算 LDA 主题数量[^3]
+
+LDA 计算使用了 `library(topicmodels)`[^4]
 
 ```R
 library(ldatuning)
@@ -173,7 +175,7 @@ groups <- sapply(groups, format_group)
 write.csv(file="group_result.csv", x=groups)
 ```
 
-[^1]: [R topicmodels](https://cran.r-project.org/web/packages/topicmodels/topicmodels.pdf)
-[^2]: [LDA topic number tuning](https://cran.r-project.org/web/packages/ldatuning/vignettes/topics.html)
-[^3]: [W. B. Croft. Clustering large files of documents using the single-link method. Journal of the American Society of Information Science, 28: pp. 341–344, 1977]()
-[^4]: [D. Cutting, D. Karger, J. Pedersen, J. Tukey. Scatter/Gather: A Cluster-based Approach to Browsing Large Document Collections. ACM SIGIR Conference, 1992]()
+[^1]: [W. B. Croft. Clustering large files of documents using the single-link method. Journal of the American Society of Information Science, 28: pp. 341–344, 1977]()
+[^2]: [D. Cutting, D. Karger, J. Pedersen, J. Tukey. Scatter/Gather: A Cluster-based Approach to Browsing Large Document Collections. ACM SIGIR Conference, 1992]()
+[^3]: [LDA topic number tuning](https://cran.r-project.org/web/packages/ldatuning/vignettes/topics.html)
+[^4]: [R topicmodels](https://cran.r-project.org/web/packages/topicmodels/topicmodels.pdf)
