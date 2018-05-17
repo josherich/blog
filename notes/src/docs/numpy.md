@@ -1,3 +1,18 @@
+## Basic
+
+## Matrix
+- M[i,j], to access the item in the ith row and jth column;
+- M[i:j,:], to get the all the rows between the ith and j − 1th;
+- M[:,i], to get the ith column of M;
+
+dot product
+
+inner product
+
+transpose
+
+Identity Matrix
+
 ###  np api
 ```
 np.repeat(n, 3)
