@@ -1,5 +1,10 @@
 # Machine Learning
 
+## Tools
+
+[Colaboratory](https://colab.research.google.com/github/tensorflow/hub/blob/master/docs/tutorials/text_classification_with_tf_hub.ipynb)
+
+
 ## Examples of Learning Tasks
 
 - Text
@@ -845,3 +850,26 @@ Elman network就是指现在一般说的RNN（包括LSTM、GRU等等）。一个
 隐层被分成了g个模块，每个模块的大小是k，每个模块内部是全连接的。模块j到i的recurrent仅当Ti小于Tj时才会存在。根据增长的阶段对模块进行分类，模块之间的传递在隐层之间是从右向左的，从慢的模块到快的模块。
 
 CW-RNN跟ＲＮＮ的主要不同之处在于在每个时间点ｔ，只有模块ｉ满足ｔ%Ti=0,才会执行，产生输出。Ｔｉ的是任意的，这篇论文取得是Ｔi=２^（ｉ－１）
+
+## F test and t test
+
+Restraint and unrestrained variables
+Reject the null hypothesis
+Use Degree freedom1 and df2 and critical level 0.05 to look for the value, ssr r - ssr ur / ssr ur
+
+## Pearson correlation
+
+## our world in data
+
+https://ourworldindata.org/
+
+## Misc
+
+### pdf and pmf
+for the negative log-likelihood loss, ERM and MLE are equivalent 
+convex opt review
+
+### t分布，χ2分布，F分布
+
+### PMI
+\text{PMI}(w_1,w_2)=\log \frac{P(w_1,w_2)}{P(w_1)P(w_2)}\tag{2}

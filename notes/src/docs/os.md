@@ -999,3 +999,17 @@ monitor ResourceAllocator
 > Prior to kernel Version 2.6, disables interrupts to implement short critical sections
 
 > On single-cpu system, spinlocks replaced by enabling and disabling kernel preemption
+
+## Distributed
+
+itrusion detection system
+mimicking virtual machine
+mariadb for transaction
+postgre for spatial
+
+plotly
+
+coreos
+ggn fleet etcd
+go-nerve health-check
+go-synapse

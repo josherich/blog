@@ -14,6 +14,18 @@
 
 - Discourse
 
+# Chomsky hierarchy of languages and grammars
+
+> parsing technique
+
+type 1
+
+type 2
+
+type 3
+
+type 4
+
 # Dependency parsing
 
 - head and dependent
@@ -152,4 +164,74 @@ char based and word based to translate text and code (Ling el al 2016)
 
 copy when UNK (Merity et al. 2016)
 
+
+# technique
+
+## Byte Pair Encoding
+
+## Subword Neural Machine Translation
+
+https://github.com/rsennrich/subword-nmt
+
+## weight sharing
+
+https://github.com/deepmind/sonnet/blob/master/docs/README.md
+
+# NLP Talks
+
+### NLP and Text as Data Speaker Series
+
+https://cds.nyu.edu/text-data-speaker-series/
+
+#### Towards Understanding Deep Learning for Natural Language Processing - Omer levy
+
+https://levyomer.wordpress.com/publications/
+
+#### What are Neural Sequence Models Doing - kevin knight
+
+https://kevincrawfordknight.github.io/
+
+#### Structured Embedding Models for Language Variation - Maja Rudolph
+
+https://scholar.google.com/citations?user=QW_JZnsAAAAJ&hl=en
+
+https://arxiv.org/pdf/1608.00778.pdf
+
+#### Unsupervised Models of Conversational Dynamics - Justine Zhang
+
+http://tisjune.github.io/research/
+
+#### End-to-end Learning for Broad Coverage Semantics - Luke Zettlemoyer
+
+https://www.cs.washington.edu/people/faculty/lsz/publications-by-year
+
+#### What Can Neural Networks Teach us about Language?
+
+http://www.phontron.com/
+
+#### Unsupervised Methods for Extracting Political Positions from Text - Ben Lauderdale
+
+http://benjaminlauderdale.net/
+
+### Future Philologies - Digital Directions in Ancient World Text
+
+  Institute for the Study of the Ancient World
+  the ISAW Library
+  NYU Center for Humanities
+  NYU Division of Libraries
+  NYU Center for Ancient Studies and NYU Department of Classics
+
+https://diyclassics.github.io/future-philologies/
+
+#### Kyle P. Johnson (Accenture), on historical text and natural language processing, "The Next 700 Classical Languages"
+
+http://kyle-p-johnson.com/
+
+#### Historical text and information retrieval, "Authorship and Translation: Bilingual Modeling of the Patrologia Graeca" - David Mimno and Laure Thompson
+
+https://mimno.infosci.cornell.edu/
+
+#### Historical text and machine learning, "Viral Texts and Networked Authors: Computational Models of Information Propagation" - David Smith
+
+http://www.ccs.neu.edu/home/dasmith/
 

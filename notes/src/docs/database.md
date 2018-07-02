@@ -24,3 +24,11 @@ $$ {(a, b) \in R \vert (a,b) \nin S } $$
 
 
 1. [sequel-1974](http://www.almaden.ibm.com/cs/people/chamberlin/sequel-1974.pdf)
+
+
+## Misc
+
+- GTID
+- semi-sync
+- database per user
+- circular replication

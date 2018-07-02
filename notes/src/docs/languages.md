@@ -16,3 +16,14 @@ galvanize
 
 litmus test
 石蕊测试
+
+OxyContin
+
+dorsal root ganglion
+
+rheumatoid arthritis
+
+Vicodin
+
+acetaminophen
+
