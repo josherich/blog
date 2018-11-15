@@ -4,7 +4,7 @@ title:  "塔勒布论新闻"
 description: "Taleb on News"
 date:   2018-08-20 14:02:39
 categories: news
-tags: [news, taleb]
+tags: [news, taleb, cn]
 ---
 
 在《[反脆弱](https://book.douban.com/subject/25782902/)》中，塔勒布向我们展示了代理人的解释能力。主体和目标间存在着一个代理人，他往往代表了主体的利益，而并不关心目标是否达成。在《[The Elephant in the Brain](https://book.douban.com/subject/27612613/)》中，作者也给出了令人信服的例子，比如学术发表中，对艰深数学的驾驭能力作为代理人，取代了论文长期的价值成为评判标准。

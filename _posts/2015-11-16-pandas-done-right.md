@@ -4,7 +4,7 @@ title:  "现充也能看懂的Pandas教程"
 description: ""
 date:   2015-11-16 19:03:39
 categories: Data
-tags: [Jupyter, Python, data]
+tags: [Jupyter, Python, data, cn]
 ---
 
 > 本文的目的在于教给 `现充` 我一点人生的经验，介绍一些 Jupyter Notebook 的良好体验。

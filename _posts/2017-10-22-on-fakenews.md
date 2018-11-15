@@ -4,7 +4,7 @@ title:  "假新闻都是真的"
 description: "社会主义初级阶段基本操作"
 date:   2017-10-22 14:02:39
 categories: News
-tags: [News， facebook， trump， russia]
+tags: [News, facebook, trump, russia, cn]
 ---
 
 在Facebook买广告推假新闻增进族群阶级间的冲突这种操作，并不是俄罗斯人深谙世道，实在是社会主义初级阶段的必备技能。

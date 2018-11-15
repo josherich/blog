@@ -4,7 +4,7 @@ title:  "意呆见闻－米兰"
 description: ""
 date:   2015-11-09 20:02:39
 categories: Travel
-tags: [Italy, Milan]
+tags: [Italy, Milan, cn]
 ---
 
 > 不能免俗写些见闻，防止以后忘了

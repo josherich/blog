@@ -4,7 +4,7 @@ title:  "自制家酿网页监控"
 description: ""
 date:   2015-01-02 20:02:39
 categories: widget
-tags: [Frontend, widget]
+tags: [Frontend, widget, cn]
 ---
 
 在革命时期的解放区，物资武器都十分匮乏，战士们往往只能相互借着枪支来训练，但革命的雄心岂是这样就能阻挠，机智的战士们建立了一个装备资源系统，集中管理分配，让大伙都能打上自己喜欢的枪。

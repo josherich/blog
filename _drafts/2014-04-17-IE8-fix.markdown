@@ -1,0 +1,15 @@
+---
+layout: post
+title:  "IE8 Fix"
+description: ""
+date:   2014-04-17 20:02:39
+categories: diary
+tags: [frontend]
+---
+
+
+## backgroundsize polyfill
+https://github.com/louisremi/background-size-polyfill
+
+## border-radius polyfill
+https://github.com/malsup/corner/blob/master/jquery.corner.js

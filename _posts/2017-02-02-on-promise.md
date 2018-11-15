@@ -28,3 +28,27 @@ tags: [frontend, async, promise]
 - When unhandled rejection happens in promise callbacks, all you see is something like `Promise rejected` with no stack info.
 
 - [a promise visualization](http://bevacqua.github.io/promisees/)
+
+- export promise, [reference](http://lea.verou.me/2016/12/resolve-promises-externally-with-this-one-weird-trick/)
+
+```
+function defer() {
+  var res, rej;
+
+  var promise = new Promise((resolve, reject) => {
+    res = resolve;
+    rej = reject;
+  });
+
+  promise.resolve = res;
+  promise.reject = rej;
+
+  return promise;
+}
+
+this.treeBuilt = defer();
+
+// Many, many lines below…
+
+this.treeBuilt.resolve();
+```

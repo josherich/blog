@@ -4,7 +4,7 @@ title:  "从零开始的新闻合并，一个 ReadHub 的例子"
 description: "Build a documents clustering, like ReadHub, from scratch"
 date:   2018-05-09 14:02:39
 categories: nlp
-tags: [lda, nlp]
+tags: [lda, nlp, cn]
 ---
 
 新闻文本的聚类，可以视为文本聚类的一类应用，而文本聚类在二十几年前就有大量的研究[^1][^2]。归功于统计方法的进步，文本聚类从最早的词频统计，到文本建模，话题建模，再到词嵌入（word embedding) 发明之后的各种嵌入方法。方法众多，但可以说文本分类是一个未解决的问题（当然由于文本是人类生成的，可以说这是一个没有完美答案的问题）。

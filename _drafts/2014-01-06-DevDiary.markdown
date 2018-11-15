@@ -1,0 +1,149 @@
+---
+layout: post
+title:  "Dev Diary"
+description: ""
+date:   2014-01-06 20:02:39
+categories: diary
+tags: [Algorithm, ]
+---
+
+### port is null when connect background using chrome.runtime.sendMessage
+
+I traced the problem by changing the files one by one, which is stupid. Those causes most related should be changed first, which is the chrome connection between content script and background page.
+sendResponse cannot be run within a callback, apparently the port is not correctly initiated, or lost somewhere.
+return true in the listener, so that it knows you call the sendResponse in callback.
+
+### event delegate
+
+I was used to jQuery event delegation and didn't realize its existense. In native event, delegation is not handled naturally, it might be implemented using some 'if' to determine if the current event is fired on target. currentTarget always points to the target you want.
+
+### alway null checking
+
+The null was not handled in promise, the promise code run once from start to end, resolve and reject will not return the function, it's what I miss.
+
+### JSON parse
+
+entity JSON parse, the 'sites' column in server side is a string, nested JSON string is parsed once, so we have an Array in the 'sites' column, which makes an error in Java server.
+Related Topic: JSON Injection; use of eval(); JSON parse and stringify; deep copy
+
+### deep clone
+
+- shallow
+var new = jQuery.extend({}, old)
+- deep
+var new = jQuery.extend(true, {}, old)
+
+### add bookmark toggle
+
+main.js
+1.init()
+2.userLogin init()
+3.syncBm event
+
+clearStorage()
+
+### angular scope and rootScope in directive
+
+
+
+### bower dependency and npm dep
+
+
+
+### a lot of bug fix today, and I come to know the mind setting of application dev
+
+- a serious bug came out when I load the plugin into ordinary Chrome, on which I've planted many plugins. It turned out the background does not finish initiating when the new tab page loaded. So the whole page crashes as some functions from background cannot be properly called. Shanhu thought it was introduced after I fixed some other minor probs, and he convinced me to try check out previous commit to see where exactly was the bug introduced. There is where I made hugh mistake. I shouldn't follow his thought, which is based on the different bahavior between Chrome and Chrome Canary(less plugin installed).
+
+### knockout.js click bind
+
+'this' must be set to $data when bind function in click:
+
+### knockout.js overwrite the event previously set manually
+
+
+
+##breadcrums in top navbar doesn't update
+as the topnav view is rendered after the enterModule event is emitted, I have to move the topnav rendering before the specific module, topnav controller is initialized in top level applicaiton.js. The view is rendered on the enterModule callback
+
+##nested binding in knockoutjs
+changes in nested objs are not subscribed
+
+##knockoutjs multiple options
+in multiple options bindings, selectedOptions should be a simple array, of which elements are in optionsValue.
+
+
+##named function
+write named function like this, it is only visible inside itself, use this trick to recursion
+	var f = function find(tree, key) { if (!tree) {
+	return null; }
+	if (tree.key === key) { return tree.value;
+	}
+	return find(tree.left, key) ||
+	           find(tree.right, key);
+	};
+
+named function is good for debugging since you can see where you are in stack trace, but notorious for scope pollution
+
+##eval
+direct eval use local scope, indirect eval use global scope
+indirect call: (0,eval)(src)
+
+eval made it difficult to make any function calls efficient, since every function call needed to make its scope available at runtime in case the function turned out to be eval.
+
+
+##function, method, constructor calls
+calling a method on an object looks up the method and then uses the object as the method’s receiver.
+
+##strict mode
+In fact, binding to the global object is a problematic enough default that ES5’s strict mode changes the default binding of this to undefined:
+
+##prototype
+Modifying __proto__ actually changes the inheritance structure itself, which is the most destructive change possible.
+
+
+##new object
+if (typeof Object.create === "undefined") {
+	Object.create = function(prototype) {
+		function C() { }
+		C.prototype = prototype;
+		return new C();
+	};
+}
+This works because JavaScript allows the result of a new expression to be overridden by an explicit return from a constructor function.
+
+##closure
+Closures are an austere data structure. They store data in their enclosed variables without providing direct access to those variables. The only way to gain access to the internals of a closure is for the function to provide access to it explicitly. In other words, objects and closures have opposite policies: The properties of an object are automatically exposed, whereas the variables in a closure are automatically hidden.
+
+##ajax triggered twice, causing publishEvent called twice, the second call cause error in collection _get
+always considered a possible twice trigger in events
+
+##Garbage Collection
+http://coding.smashingmagazine.com/2012/11/05/writing-fast-memory-efficient-javascript
+set the root obj to null, and it works with GC
+global scope is never collected
+closure set to setTimeout won't be collected, since engine keeps it to be executed
+
+optimization is overrated, it’s the readability, inheritance model and maintainability that matter
+
+
+##commit some files and ignore them later
+cause some conflict
+
+##UI practice in HTML5Rocks
+menu fade in when hover, and fade out in like 5 seconds, and stop at opacity about 0.2, focus the reader's attention on content
+
+
+## Dairy
+- find extension new design screenshot
+
+
+
+##careful coding: misbehavior
+what if none
+what if too much
+what if a function is not used
+
+
+##height: initial doesn't work in IE, even 10
+https://developer.mozilla.org/en-US/docs/Web/CSS/initial?redirectlocale=en-US&redirectslug=CSS/initial
+

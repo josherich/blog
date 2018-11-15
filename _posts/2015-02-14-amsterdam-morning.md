@@ -4,7 +4,7 @@ title:  "阿姆的早晨"
 description: ""
 date:   2015-02-14 20:02:39
 categories: life
-tags: [Europe, Amsterdam]
+tags: [Europe, Amsterdam, cn]
 ---
 
 凌晨六点的阿姆斯特丹，我来得出人意料地正是时候。

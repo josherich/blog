@@ -4,9 +4,22 @@ title: Josherich
 ---
 
 <div id="home">
+
   <ul class="posts">
     {% for post in site.posts %}
-      <li><span>{{ post.date | date_to_string }}</span> - <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
+      {% unless post.tags contains "cn" %}
+        <li><span>{{ post.date | date_to_string }}</span> - <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
+      {% endunless %}
+    {% endfor %}
+  </ul>
+  
+  <hr>
+
+  <ul class="posts">
+    {% for post in site.posts %}
+      {% if post.tags contains "cn" %}
+        <li><span>{{ post.date | date_to_string }}</span> - <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
+      {% endif %}
     {% endfor %}
   </ul>
 </div>

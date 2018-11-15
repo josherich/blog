@@ -4,7 +4,7 @@ title:  "說點語言學習（二）"
 description: "說點語言學習"
 date:   2012-05-11 20:02:39
 categories: language
-tags: [language, learning]
+tags: [language, learning, cn]
 ---
 
 > Everything popular is wrong.

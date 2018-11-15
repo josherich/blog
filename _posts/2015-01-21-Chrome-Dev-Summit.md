@@ -4,7 +4,7 @@ title:  "Chrome Dev Summit 总结"
 description: "Chrome Dev Summit 总结"
 date:   2015-01-21 20:02:39
 categories: FE
-tags: [Frontend, Chrome, Google]
+tags: [Frontend, Chrome, Google, cn]
 ---
 
 > 最近大致扫了一遍 Chrome Dev Summit 的 talk 们，并没有太多新东西，但 Service Worker 和 Web Components 作为这个 Summit 的重点，也是将来很长一段时间 Web 的重点，Google 眼中的 Web 在原生客户端的路上越走越远。
