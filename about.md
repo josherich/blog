@@ -5,7 +5,10 @@ title: About
 
 Hi, I'm Josh Chen. I love programming in Web and machine learning.
 
-Find me here: [Twitter](https://twitter.com/josherich) | [Weibo](https://weibo.com/josherich)| [Github](https://github.com/josherich)
+Find me here:
+- [Twitter](https://twitter.com/josherich)
+- [Weibo](https://weibo.com/josherich)
+- [Github](https://github.com/josherich)
 
 # Resources
 
