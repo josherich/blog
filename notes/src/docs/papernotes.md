@@ -114,3 +114,32 @@ three word embeddings are concatednated and used as inputs, char embedding captu
   b a\b = a
 
 2. functional application rules with semantics
+
+### MEASURING THE INTRINSIC DIMENSION OF OBJECTIVE LANDSCAPES
+
+1. theta^D = theta_0^D + P theta^d
+2. invariant to model width and depth, if fc layers
+3. 90% performance as a threshold for intrinsic dimension
+4. for RL task, performance is defined as max attained mean evaluation reward
+5. 750 dimension for MNIST, invariant for fc layer, variant for convolution layers(measured on shuffled labels)
+6. dense / sparse / fastfood random matrix
+
+### ORDERED NEURONS
+
+forget gate and input gate defined by binary sequence, trainable by counting
+
+overlap of forget and input shows structure
+
+### FeUdal
+
+(1) transition policy gradient, 
+
+(2) directional cosine similarity rewards, 
+
+(3) goals specified with respect to a learned representation
+
+(4) dilated RNN.
+
+### Simese Network
+
+learn feature from verification task(same or different images), then one-shot learning new category and test images, using max likelihood

@@ -235,3 +235,95 @@ https://mimno.infosci.cornell.edu/
 
 http://www.ccs.neu.edu/home/dasmith/
 
+# CoLA
+
+[Neural Network Acceptability Judgments](https://arxiv.org/pdf/1805.12471.pdf)
+
+includes generative grammars of the type described by Chomsky (1957)
+
+isolate a violation, so tend to be unacceptable for a single identifiable reason.
+
+the artificial learner must not be ex-posed to any knowledge of language that could not plausibly be part of the input to a human learner
+
+100k most frequent words in the British National Corpus
+
+in-domain: training set (8551 examples), a development set (527), and a test set (530), 17 sources
+
+out-domain development set (516) and a test set (533), 6 sources
+
+human 86.1%
+
+aggregate rating, yielding an average agreement of 93%
+
+The encoders are trained on 100- 200 million tokens, which is within a factor of ten of the number of tokens human learners are ex- posed to during language acquisition
+
+# Assessing the Ability of LSTMs to Learn Syntax-Sensitive Dependencies
+
+[](https://arxiv.org/pdf/1611.01368.pdf)
+
+subject-verb number agreement
+
+highly sensitive to recent but irrelevant nouns
+
+agreement attractors
+
+one-hot encoding input lstm 50 units: 0.83% errors
+
+nouns-only baseline: 4.5%
+
+experiments:
+
+distance between nouns and verbs
+
+attractor: last intervening nouns
+
+count of attractors
+
+relative clauses
+
+word representation learned the concept of singular and plural from scratch
+
+word-by-word activation visualization
+
+training obj
+
+verb inflection: have verb's singular form before verb(give cue to syntactic clause boundary
+
+grammaticality judge: (human rarely receive ungrammatical signals
+
+LM
+
+training only on hard dataset(with attractors)
+
+Agreement attraction errors in humans are much more common when the attractor is plural than when it is singular
+
+errors: 
+
+noun-noun compounds
+
+verbs similar to plural nouns are mistaken as nouns: The ship that the player drives has a very high speed.
+
+limitation of the number prediction task, which jointly evaluates the model’s ability to identify the subject and its ability to assign the correct number to noun phrases
+
+# Structural Supervision Improves Learning of Non-Local Grammatical Dependencies
+
+Negative licensor: not none
+
+Negative Polarity Item: any ever
+
+filler-gap dependency
+
+RNNG
+
+word-synchronus beam search (Stern et al., 2017)
+
+Wh-Licensing Interaction
+
+Poverty of theStimulus Argument.
+
+purely data-driven learning is not powerful enough to explain the richness and uniformity of human grammars
+
+flashtext
+
+[vi3k6i5/flashtext](https://github.com/vi3k6i5/flashtext)
+

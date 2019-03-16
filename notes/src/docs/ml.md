@@ -873,3 +873,127 @@ convex opt review
 
 ### PMI
 \text{PMI}(w_1,w_2)=\log \frac{P(w_1,w_2)}{P(w_1)P(w_2)}\tag{2}
+
+
+### supervised Imitation learning lower bound
+
+At time t=1 you’re shown a picture of either a zero or a one. You have two possible actions: press a button marked “zero” or press a button marked “one.”The “correct” thing to do at t=1 is to press the button that corresponds to the image you’ve been shown. Pressing the correct button leads t0`1=0; the incorrect leads to`1=1. Now, at time t=2 you are shown another image, again of a zero or one. The correct thing todo in this time step is the xor of (a) the number written on the picture you see right now, and (b) the correct answer from the previous time step. This holds in general for t>1
+
+single mistake never recover
+
+dagger
+
+data aggregation
+
+do something unusual.We put the human expert in the car, and record their actions, but the car behaves not according to the expert’s behavior, but according to f0. That is,f0is in control of the car, and the expert is trying to steer,but the car is ignoring them and simply recording their actions as training data
+
+[http://ciml.info/dl/v0_99/ciml-v0_99-ch18.pdf](http://ciml.info/dl/v0_99/ciml-v0_99-ch18.pdf)
+
+[](https://www.notion.so/e155f85a1cf34e78b5c4f5c134a81ea3#fcb43beeb2c949a08bdc3cd4e88189b0)
+
+russian tank problem
+
+### importance sampling for switching expectation
+
+[](https://www.notion.so/e155f85a1cf34e78b5c4f5c134a81ea3#9ed6b9a9092f49e0b9e616bbb3d6ffdd)
+
+the classifier is being told to pay more attention to training examples that have high probability under the new distribution, and less attention to training that have low probability under the new distribution.
+
+### supervised adaptation
+
+when the distributions agree on the value of a feature, let them share it, but when they dis-agree, allow them to learn separately
+
+### feature aug
+
+create three ver-sions of every feature: one that’s shared (for words like “awesome”),one that’s old-distribution-specific and one that’s new-distribution-specific
+
+fairness
+
+
+### Emma Brunskill
+
+policy certificate: https://arxiv.org/pdf/1811.03056.pdf
+
+regret minimization, epsilon bound, tighter bound: https://arxiv.org/pdf/1901.00210.pdf
+
+### Aaron roth
+
+differentially private fair learning
+
+even with unbiased dataset, learning could still be biased
+
+[https://www.nowpublishers.com/article/DownloadSummary/TCS-042](https://www.nowpublishers.com/article/DownloadSummary/TCS-042)
+
+subgroup fairness: 
+
+[](https://arxiv.org/pdf/1711.05144)
+
+### yaqi duan
+
+Adaptive Low-Nonnegative-Rank Approximation for State Aggregation of Markov Chains
+
+[Adaptive Low-Nonnegative-Rank Approximation for State Aggregation of Markov Chains](https://arxiv.org/abs/1810.06032)
+
+A Finite Time Analysis of Temporal Difference Learning With Linear Function Approximation
+
+temporal difference learning
+
+Attribute-Efficient Learning of Monomials over Highly-Correlated Variables
+
+*Kiran Vodrahalli*
+
+[](http://www.cs.columbia.edu/~djhsu/papers/monomial-alt.pdf)
+
+Nadav Cohen, wei hu
+
+[A Convergence Analysis of Gradient Descent for Deep Linear Neural...](https://openreview.net/forum?id=SkMQg3C5K7)
+
+[](https://arxiv.org/pdf/1901.08584.pdf)
+
+deep linear NN, close form solution, provably converge
+
+two condition: 1. deficiency margin c, 2. delta-balance
+
+std of initialization has a sweet spot for convergence
+
+[](https://arxiv.org/pdf/1806.00900.pdf)
+
+[Nadav Cohen](http://www.cohennadav.com/)
+
+Fine-Grained Analysis of Optimization and Generalization for Overparameterized Two-Layer Neural Networks
+
+[Wei Hu](https://www.cs.princeton.edu/~huwei/)
+
+a way to compute data complexity, without training, related to intrinsic dimension
+
+### Ruslan
+
+Deep Generative Models with Learnable Knowledge Constraints
+
+teacher-student learning, build loss object with external knowledge, as extrinsic reward in RL
+
+use Posterior regularization to compute confidence on teacher distillation, reject samples with low confidence
+
+graph convolution
+
+[](https://arxiv.org/pdf/1806.09764.pdf)
+
+### sham kakade 
+
+Provably Efficient Maximum Entropy Exploration
+
+[](https://scholar.google.com/citations?hl=zh-CN&user=wb-DKCIAAAAJ&view_op=list_works&sortby=pubdate)
+
+[](https://arxiv.org/pdf/1812.02690.pdf)
+
+maximize cross entropy with uniform distribution, to explore
+
+a efficient appro plan, or density estimaiton algo, return a policy no less effective than optimal with epsilon
+
+the result of the estimation is as close as to the truth distribution, given the uniform as estimation prior.
+
+algo for unknown MDP
+
+Approximate planning oracle
+
+State distribution estimate oracle
