@@ -1,6 +1,6 @@
 
 .site {
-  font-size: 16px;
+  font-size: 18px;
   text-align: left;
   max-width: 650px;
   margin: 0 auto;
@@ -87,4 +87,20 @@ a.selected {
 .drawings-img-mid {
   width: 50%;
   margin: 20px auto;
+}
+
+@media (min-width: 320px) and (max-width: 767px) {
+  ul.posts {
+    padding-left: 0;
+  }
+  ul.posts span {
+    font-size: 60%;
+  }
+  ul.posts li a {
+    display: block;
+  }
+  ul.posts li {
+    margin: 0;
+  }
+
 }
