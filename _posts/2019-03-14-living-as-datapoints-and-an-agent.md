@@ -13,21 +13,21 @@ tags: [news, personal, privacy]
 
   Degeneracy is (a fixed point in such systems) where user's preference goes to extremes. A theoretical analysis in a recent work [Degenerate Feedback Loops in Recommender Systems](https://arxiv.org/pdf/1902.10730v2.pdf) says such degeneracy occurs under mild assumptions about user dynamics.
 
-  They showed that as long as user dynamics is degenertive in nature, meaning seeing more similar content always enhance preference, typical recommender is always optimized to degeneracy. Even by continuous exploration and growing canidate pool, the degeneracy is only slowed down. Under such user interest dynamics, the better recommender predicts, the faster degeneracy happens, and random exploration speedups degeneracy as degenerating items are discovered faster.
+  They showed that as long as user dynamics is degenerative in nature, meaning seeing more similar content always enhance preference, typical recommender is always optimized to degeneracy. Even by continuous exploration and growing candidate pool, the degeneracy is only slowed down. Under such user interest dynamics, the better recommender predicts, the faster degeneracy happens, and random exploration speedups degeneracy as degenerating items are discovered faster.
 
 # Living as an Agent
 
-  Social network interaction can also be modeled as a [MDP](https://en.wikipedia.org/wiki/Markov_decision_process). posts, comments, thumbup, follow, recommender system can all be seen as parts of environment. Users act by screen time, clicking, publishing content. There are numerous optimization based system acting as parts of environment, they basically all work in the same way, being greedy on users' reward, thus all suffer form the degeneracy problems.
+  Social network interaction can also be modeled as a [MDP](https://en.wikipedia.org/wiki/Markov_decision_process). posts, comments, thumb-up, follow, recommender system can all be seen as parts of environment. Users act by screen time, clicking, publishing content. There are numerous optimization based system acting as parts of environment, they basically all work in the same way, being greedy on users' reward, thus all suffer form the degeneracy problems.
 
   And of course, all social interaction works in such way. As shown above, such interactions degenerate even under mild user dynamics assumption. We all explore less and stay on what we prefer and think we prefer as we get older, the cost of exploration is just too much. But for those interactions on Internet, we iterate more, and are pushed to the degeneracy much faster.
 
 # Platform and golden age
 
-  It's very hard to imagine [golden age](https://blog.yitianshijie.net/2019/03/06/recommendation-algorithm-and-golden-age-of-podcast/) with popularity of content platform and its recommender system. It's more likely golden age is the opposite. There are many good things about these platforms: professional, well edited contents, premium contents without ads, more interactions between content creators and users, and best of all, content creators monetize their works. But the industry is also an optimization algorithm, with a very high exploration cost. Many things about golden age: personal, wild, vague, chaos, will simply be disencouraged and emilinated by local optimization.
+  It's very hard to imagine [golden age](https://blog.yitianshijie.net/2019/03/06/recommendation-algorithm-and-golden-age-of-podcast/) with popularity of content platform and its recommender system. It's more likely golden age is the opposite. There are many good things about these platforms: professional, well-edited contents, premium contents without ads, more interactions between content creators and users, and best of all, content creators monetize their works. But the industry is also an optimization algorithm, with a very high exploration cost. Many things about golden age: personal, wild, vague, chaos, will simply be discouraged and eliminated by local optimization.
 
 ## Exploitation and Exploration
 
-  It's quite funny to see big Internet platform is [automating the exploitation](https://www.quora.com/Does-Amazon-offer-the-same-product-to-different-consumers-at-different-prices-at-the-same-time) as an optimization problem. User exploitation is automated without too much effort, not quite different from recommender system. It surly can be pushed to a extend that it fits perfectly to regulation.
+  It's quite funny to see big Internet platform is [automating the exploitation](https://www.quora.com/Does-Amazon-offer-the-same-product-to-different-consumers-at-different-prices-at-the-same-time) as an optimization problem. User exploitation is automated without too much effort, not quite different from recommender system. It surly can be pushed to an extend that it fits perfectly to regulation.
 
   Exploration, somehow a feature promoted by recommender system, is exactly they are trying to prevent. Screen time and user's budget is limited, but they also want the attention and money pile up as high as possible.
 
@@ -51,7 +51,7 @@ tags: [news, personal, privacy]
 
 ## Missing Parts
 
-  knowledge base, Natural languge understanding.
+  knowledge base, Natural language understanding.
 
 # Decentralized Subscription
   

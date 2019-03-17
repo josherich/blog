@@ -44,6 +44,11 @@
   background-color: #333;
 }
 
+.post-page {
+  a         { color: #1e6aff; }
+  a:hover   { color: #666; }
+  a:visited { color: #7aa7ff; }
+}
 
 /* pandas done right tables */
 #select-1, #select-2, #select-3 {
