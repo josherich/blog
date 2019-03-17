@@ -15,11 +15,17 @@ tags: [news, personal, privacy]
 
   They showed that as long as user dynamics is degenerative in nature, meaning seeing more similar content always enhance preference, typical recommender is always optimized to degeneracy. Even by continuous exploration and growing candidate pool, the degeneracy is only slowed down. Under such user interest dynamics, the better recommender predicts, the faster degeneracy happens, and random exploration speedups degeneracy as degenerating items are discovered faster.
 
+[echo chambers](/images/liv-1.png)
+
 # Living as an Agent
 
   Social network interaction can also be modeled as a [MDP](https://en.wikipedia.org/wiki/Markov_decision_process). posts, comments, thumb-up, follow, recommender system can all be seen as parts of environment. Users act by screen time, clicking, publishing content. There are numerous optimization based system acting as parts of environment, they basically all work in the same way, being greedy on users' reward, thus all suffer form the degeneracy problems.
 
+[agent-internet](/images/liv-3.png)
+
   And of course, all social interaction works in such way. As shown above, such interactions degenerate even under mild user dynamics assumption. We all explore less and stay on what we prefer and think we prefer as we get older, the cost of exploration is just too much. But for those interactions on Internet, we iterate more, and are pushed to the degeneracy much faster.
+
+[agent-world](/images/liv-2.png)
 
 # Platform and golden age
 
@@ -49,6 +55,8 @@ tags: [news, personal, privacy]
 
   The above visual evidence is actually much better presented in a discovery system, where I can easily find all movie artworks with a common actor in them. If every movie's scripting, screening, themes, styles are well linked, even for conceptual features, the candidate pool size in above analysis would grow exponentially and user dynamics would escape from degeneracy. The exploration is then working on a conceptual network. Each "noise" opens up a new component of networks.
 
+[recommender](/images/liv-4.png)
+
 ## Missing Parts
 
   knowledge base, Natural language understanding.
@@ -56,6 +64,8 @@ tags: [news, personal, privacy]
 # Decentralized Subscription
   
   The big question is, what is left, without platforms? and what is missing in old Web 1.0 days?
+
+[discovery](/images/liv-5.png)
 
   Here's some random pieces. I still enjoy using RSS with extensions(feedly). It is still the closest answer to general subscription service. Blog built on Github Pages, and other self hosted services, is still promising. The answer would definitely be self-hosted, data owned by the creator, single source of truth, pluggable features, comment, video, live. The owner has fully control over comments, conversation is not encouraged.
 
