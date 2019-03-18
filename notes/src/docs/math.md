@@ -125,3 +125,19 @@ Jacobian for non-linear system, complex eigenvalues
 adjoint method
 
 auto diff
+
+
+
+## Group
+
+半格是满足运算是幂等的和交换的半群。
+
+半群是闭合于结合性二元运算之下的集合 S 构成的代数结构
+
+> 集合S和其上的二元运算·:S×S→S。若·满足结合律，即：∀x,y,z∈S，有(x·y)·z=x·(y·z)，则称有序对(S,·)为半群
+
+**history monoid** is a way of representing the histories of concurrently running computer processes as a collection of strings, each string representing the individual history of a process
+
+考虑任意一个偏序集合（L,≤），如果对集合L中的任意元素a,b，使得a,b在L中存在一个最大下界，和最小上界，则(L,≤)是一个格
+
+一个格是完全的，如果它的所有子集都有一个交和一个并

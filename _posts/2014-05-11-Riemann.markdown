@@ -38,7 +38,7 @@ tags: [Math, Number]
 </script>
 
 <p>重复下去：</p>
-<script type="math/tex">
+<script type="math/tex; mode=display">
   \cdots \left(1-\frac{1}{13^s}\right) \left(1-\frac{1}{11^s}\right) \left(1-\frac{1}{7^s}\right) \left(1-\frac{1}{5^s}\right) \left(1-\frac{1}{3^s}\right) \left(1 - \frac{1}{2^s}\right) \zeta(s) = 1
 </script>
 

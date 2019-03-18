@@ -89,22 +89,35 @@ a.selected {
   margin: 20px auto;
 }
 
+.footnotes {
+  overflow: hidden;
+}
+
 @media only screen
   and (min-device-width: 320px) 
   and (max-device-width: 812px) 
   and (-webkit-min-device-pixel-ratio: 3){
-
-  ul.posts {
-    padding-left: 0;
-  }
-  ul.posts span {
-    font-size: 60%;
-  }
-  ul.posts li a {
-    display: block;
-  }
-  ul.posts li {
-    margin: 0;
+  .site {
+    .header .hlink {
+      margin-right: 1em;
+      margin-left: 0;
+    }
+    .header h1.title {
+      margin-bottom: 0;
+      margin-right: 1em;
+    }
+    ul.posts {
+      padding-left: 0;
+    }
+    ul.posts span {
+      font-size: 60%;
+    }
+    ul.posts li a {
+      display: block;
+    }
+    ul.posts li {
+      margin: 0;
+    }
   }
 
 }

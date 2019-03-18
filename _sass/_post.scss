@@ -1,3 +1,7 @@
+.post {
+  overflow: hidden;
+}
+
 .post h1 {
   text-align: center;
   margin-top: 4em;
@@ -14,19 +18,20 @@
 }
 
 .post ul, .post ol {
-  margin-left: 1.35em;
+  // margin-left: 1.35em;
 }
 
 .post code {
-  border: 1px solid #ddd;
+  // border: 1px solid #ddd;
   background-color: #eef;
   white-space: pre-wrap;
-  // padding: 3px 6px;
+  padding: 3px 3px;
   border-radius: 3px;
 }
 
 .post .equation {
   font-size: 0.9em;
+  overflow: auto;
 }
 
 .post pre code {
