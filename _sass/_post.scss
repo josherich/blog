@@ -66,3 +66,19 @@
 .cell-selected {
   background: #aaa!important;
 }
+
+.image-caption {
+  text-align: center;
+  font-size: 0.8em;
+  color: #999;
+}
+
+.equation {
+  margin: 20px 0;
+}
+
+canvas {
+  border: 1px solid #eee;
+  margin: 10px auto;
+  display: block;
+}
