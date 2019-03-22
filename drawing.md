@@ -4,6 +4,7 @@ title: Drawing
 ---
 
 <div class="draw-page">
+  <img src="images/drawing/icons.jpg" alt="icons" class="drawings-img">
   <img src="images/drawing/dictionary.jpg" alt="dictionary" class="drawings-img">
   <img src="images/drawing/billy.jpg" alt="" class="drawings-img">
   <img src="images/drawing/woody.jpg" alt="" class="drawings-img">
