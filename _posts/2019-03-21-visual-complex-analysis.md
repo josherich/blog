@@ -12,7 +12,7 @@ tags: [geometry, math, vision]
 
 $$e^{i\theta}$$ is the points on unit circle, at angle $$\theta$$, here is a visualization of how such circle is derived from the sum of power series:
 
-Assume we have a function with the property of its derivative is equal to itself, just as $$\frac{d}{dx}e^x = e^x$$, such function should has the form:
+Assume we have a function with the property of its derivative is equal to itself, just as $$\frac{d}{dx}e^x = e^x$$, such function should have the form:
 
 $$ f(x) = e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + ... $$
 
@@ -22,7 +22,7 @@ $$ e^{i\theta} = 1 + i\theta + \frac{(i\theta)^2}{2!} + \frac{(i\theta)^3}{3!} +
 
 Draw these complex numbers as vectors on complex plane, we have a end point for each $$\theta$$, and a unit circle with all $$\theta$$s
 
-<canvas id="distance1" width="350" height="350"></canvas>
+<canvas id="distance1" width="450" height="450"></canvas>
 <div class="image-caption">move mouse horizontally to draw the circle</div>
 
 

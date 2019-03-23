@@ -47,13 +47,12 @@ window.factorial = function(n) {
   return res;
 }
 
-var width = 350;
-var height = 350;
-
+var width = view.size.width;
+var height = view.size.height;
+var padding = 40;
 var pencildown = false;
 var path = new Path();
 path.strokeColor = 'black';
-// path.view.center = new Point(175, 175);
 
 var xa = new Path();
 var ya = new Path();
@@ -107,6 +106,11 @@ function drawETheta(theta, iter, scale) {
 var mousePos = view.center;
 var count = 5
 var epath = drawETheta(Math.PI / 3, 20, 30);
+var thetaText = new PointText({
+  content: 'Theta: 0',
+  justification: 'center'
+});
+thetaText.point = new Point(width - 40, height - 40);
 
 function onMouseMove(event) {
   mousePos = event.point;
@@ -130,7 +134,14 @@ function onMouseMove(event) {
   } else {
     if (count < 0) {
       epath.remove();
-      epath = drawETheta(2 * Math.PI * mousePos.x / width, 20, 30);
+      thetaText.remove();
+      theta = 2 * Math.PI * (mousePos.x - padding) / (width - 2 * padding)
+      epath = drawETheta(theta, 20, 30);
+      thetaText = new PointText({
+        content: 'Theta: ' + (theta * 360 / (2 * Math.PI)).toFixed(1),
+        justification: 'center'
+      });
+      thetaText.point = new Point(width - 40, height - 40)
     } else {
       count--;
     }
