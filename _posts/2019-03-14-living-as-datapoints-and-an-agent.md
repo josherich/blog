@@ -49,7 +49,12 @@ tags: [news, personal, privacy]
 
   The visual evidence, in this context, is some actor's face that is in the movies previously watched by the users, or in a sense, a clickbait.
 
-  It makes perfect sense that users give high rewards to high quality content and those similar to previously watched, but that's just 1/3 of the story. The other two are users also enjoy bad content they never watched, and users don't know their true reward distribution.
+  It makes perfect sense that users give high rewards to high quality content and those similar to previously watched, but that's just 1/3 of the story. The other two are users also enjoy "bad" content they never watched, and users don't know their true reward distribution.
+
+  Similarity and [collaborative filtering](https://en.wikipedia.org/wiki/Collaborative_filtering) fail, because they degrade human to low dimension agent. We enjoy "bad" content, as long as they're interesting in nature. It is not rocket science anymore to generate text and images that [appear to be interesting](https://openai.com/blog/better-language-models/), however we would be furious if recommender system gives us such content even if they present information in an efficient way.
+
+  We don't know our true reward distribution, but we value achievement. We find beauty in [Nazi](Nazi Aesthetics
+Read more: https://forward.com/articles/8694/the-terrible-beauty-of-nazi-aesthetics/) and [USSR](https://en.wikipedia.org/wiki/Soviet_art).
 
   The problem now comes to the lack of efficient discovery system, instead of recommender system.
 
