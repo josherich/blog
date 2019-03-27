@@ -143,3 +143,15 @@ overlap of forget and input shows structure
 ### Simese Network
 
 learn feature from verification task(same or different images), then one-shot learning new category and test images, using max likelihood
+
+### UNDERSTANDING THE ASYMPTOTIC PERFORMANCE OF MODEL-BASED RL METHODS
+
+optimal planning horizon can be over 100 steps
+
+combining model-based and model-free
+  - augment a model- free method with a model for faster learning
+  - make up for the asymptotic deficiencies of a model-based method by transitioning to model-free.
+
+  action-conditional predictor
+  plan-conditional predictor
+  

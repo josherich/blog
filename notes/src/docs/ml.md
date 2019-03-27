@@ -415,6 +415,30 @@ $$ {Pr \atop {S \sim D}} \lbrack R(h(s)) \leq \frac{1}{2} - \gamma \rbrack \ge 1
 
 - for sample S of size $m = poly(\frac{1}{\delta})$ for a fixed polymonial.
 
+## Bayes-PAC-Hoeffding Bound
+
+$$\mathbb{E}_u [L(w+u)]\leq
+    \mathbb{E}_u [\hat{L}(w+u)] + \frac{KL(w+u||\pi) + \log
+    \frac{1}{\delta}}{\eta} + \frac{\eta}{2n}$$
+
+
+## Hessian Lipschitz
+
+$$\forall w_1, w_2, \|\nabla^2 f(w_1) - \nabla^2 f(w_2)\|\leq \rho
+      \|w_1-w_2\|$$
+
+
+> [identifying-generalization-properties-in-neural-networks](https://blog.einstein.ai/identifying-generalization-properties-in-neural-networks/)
+  - model local smoothness related to generalization property of classifier
+  - The sharp minimizers, which led to lack of generalization ability, are characterized by a significant number of large positive eigenvalues in loss function Hessian
+  - how to perturb the model, not at all directions, noise should be put along the "flat" directions. proportion to
+  
+  $$\sigma_i \approx \frac{1}{\sqrt{\nabla^2_{i,i} \hat{L}+ \rho N_{\gamma,
+        \epsilon}(w_i)} },$$
+
+$N_{\gamma, \epsilon}(w_i)=\gamma |w_i| + \epsilon$
+  - PAC-Bayes bound suggests we should optimize the perturbed loss instead of the true loss for a better generalization.
+
 # max entropy
 
 uncertainty should be equally distributed
@@ -697,10 +721,6 @@ isomorphism
 
 Homotopy
 
-# Reinforcement Learning
-
-# MDP
-
 # Graphs and Networks
 
 ## Detailed Syllabi for lectures:
@@ -718,6 +738,7 @@ Feb 22: Stochastic Block Model and Phase Transitions on graphs. Chapter 9 of Lec
 Mar 01: Recovery in the Stochastic Block Model with Semidefinite relaxations. Chapter 9 of Lecture Notes
 
 ## Detailed Syllabi for labs:
+
 Jan 24: review of linear algebra and probability
 
 Jan 31: discussion of homework 1
@@ -909,6 +930,7 @@ create three ver-sions of every feature: one that’s shared (for words like “
 
 fairness
 
+# NYAS Machine Learning Day 2019
 
 ### Emma Brunskill
 
@@ -997,3 +1019,13 @@ algo for unknown MDP
 Approximate planning oracle
 
 State distribution estimate oracle
+
+
+# Audio
+
+https://github.com/facebookresearch/wav2letter/blob/master/docs/installation.md
+https://github.com/erikd/libsndfile#hacking
+https://github.com/kpu/kenlm#compiling
+
+> feature-wise transformation
+https://distill.pub/2018/feature-wise-transformations/

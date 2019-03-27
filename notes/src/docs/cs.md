@@ -60,6 +60,16 @@ $$u_j = \sum_{k=1}^N e^{2\pi ijk/N}\omega_k$$
 https://www.wikiwand.com/en/Tomasulo_algorithm
 
 
+# Formal method
+
+- specification: functional behavior or non-functional properties
+- modeling: extract formal models from specs, implementations, verification artifacts such as test benches
+- implementation: build parts of system
+- execution: run in simulation, VM, hardware
+- validation: execute, evaluate using runtime assertion checking
+- verification: check properties of a model for all inputs/envs
+
+
 # seminars
 
 http://mad.cds.nyu.edu/micsem/
@@ -86,3 +96,24 @@ https://www.reuters.com/article/us-airbus-a400m/airbus-knew-of-software-vulnerab
 ### Machine Learning for Computational Social Science - Jacob Eisenstein, Georgia Institute of Technology
 
 ### Knowledge from Language via Deep Understanding - Danqi Chen, Stanford University
+
+# reverse eng
+
+> https://github.com/retroplasma/flyover-reverse-engineering
+
+apple map flyover
+
+# mongo source
+https://github.com/mongodb/mongo/blob/master/src/mongo/base/concept/assignable.h
+
+# ruby source
+https://github.com/ruby/ruby/blob/trunk/object.c
+
+# code query
+https://github.com/ruben2020/codequery/blob/master/doc/HOWTO-LINUX.md
+
+# AR
+
+> ARKit
+
+https://developer.apple.com/documentation/arkit

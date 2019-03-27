@@ -327,3 +327,17 @@ flashtext
 
 [vi3k6i5/flashtext](https://github.com/vi3k6i5/flashtext)
 
+
+> https://trec.nist.gov/pubs/trec27/papers/NYU-DL-CAR.pdf
+
+TREC-CAR task:
+
+query is wikipedia title concatenated with section titles, answer is the wikipedia page text
+
+query_0 -> multi reformulator -> search results -> aggregator
+
+use RL to train reformulator agents (state is documents, reward r is )
+
+aggragator as meta-agent
+
+ - accum rank score s_A, relavence(CNN/LSTM), top-k answer wrt s = s_R s_A

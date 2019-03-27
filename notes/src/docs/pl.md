@@ -281,3 +281,7 @@ the printing of labelled programs ([printer.ml](http://printer.ml/)),
 an implementation of the parity abstract domain ([abstractDomainParity.ml](http://abstractdomainparity.ml/)) in OCaml. 
 
 It remains to design the abstract interpreter ([abstractInterpreter.ml](http://abstractinterpreter.ml/)). By creating a symbolic link of [abstractDomain.ml](http://abstractdomain.ml/) to [abstractDomainParity.ml](http://abstractdomainparity.ml/), the abstract interpreter is instantiated to parity analysis. See typescript for examples. All these files are compressed in a .tgz or .zip.
+
+
+# OCaml
+http://www.cs.cornell.edu/courses/cs3110/2018fa/textbook/modules/structures.html
