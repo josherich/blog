@@ -15,7 +15,7 @@ tags: [frontend, async, promise]
 
 - `Deferred` is just a wrapper of `promise`, it `resolve()` or `reject()` wherever you need in your code, while promise `resolve()` or `reject()` inside callbacks
 
-- promise chain works because each `.then()` or `.catch()` return a new promise
+- Promise chain works because each `.then()` or `.catch()` return a new promise
 
 - To use promise in IE8 and below, replace `promise.catch()` with `promise['catch']()`
 
@@ -29,26 +29,43 @@ tags: [frontend, async, promise]
 
 - [a promise visualization](http://bevacqua.github.io/promisees/)
 
-- export promise, [reference](http://lea.verou.me/2016/12/resolve-promises-externally-with-this-one-weird-trick/)
+- Export promise, [reference](http://lea.verou.me/2016/12/resolve-promises-externally-with-this-one-weird-trick/)
 
-```
-function defer() {
-  var res, rej;
+  ```javascript
+  function defer() {
+    var res, rej;
 
-  var promise = new Promise((resolve, reject) => {
-    res = resolve;
-    rej = reject;
-  });
+    var promise = new Promise((resolve, reject) => {
+      res = resolve;
+      rej = reject;
+    });
 
-  promise.resolve = res;
-  promise.reject = rej;
+    promise.resolve = res;
+    promise.reject = rej;
 
-  return promise;
-}
+    return promise;
+  }
 
-this.treeBuilt = defer();
+  this.treeBuilt = defer();
 
-// Many, many lines below…
+  // Many, many lines below…
 
-this.treeBuilt.resolve();
-```
+  this.treeBuilt.resolve();
+  ```
+
+- There is no elegant way to tell if a promise is resolved
+  - given you have access to the promise, of course you can do:
+    ```javascript
+    let isResolved = false;
+    p.then(function() {
+      isResolved = true;
+    });
+    ```
+  - if you don't have access to it:
+    ```javascript
+    const marker = {}
+    async function isResolved(p) {
+      return (await Promise.race([p, marker])) != marker
+    }
+    ```
+
