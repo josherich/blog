@@ -1,6 +1,6 @@
 ## concept
 
-- 3 main purpose: 
+- 3 main purpose:
 
 - when to waste resource
 
@@ -20,352 +20,81 @@
 
   5. access I/O device
 
-1.7
-os cannot be updated without change the memory; memory limited
+## Ring level
 
-1.8
-possible uses of more than two mode include, access control; more convenient to manage resources, like those in microkernel mode
+kernel mode in ring 0, user mode in ring 3
 
-1.9
-cpu cycle is fixed, and can be used to compute certain time interval
+## Register
 
-1.10
-cache solve the problem that devices throughput are different, ranging from seconds to nanoseconds. Cache coherence should be maintained. There is an universal tradeoff between size and speed.
+> x86 GPR
+EAX
+EBX
+ECX counter in loops
+EDX
+EDI destination in string/memory ops
+ESI source in string/memory ops
+ESP stack pointer
+EBP base frame pointer
+CR0 paging on/off
+CR2 linear address that caused a page fault
+CR3 base address of paging data structure
+CR4 hardware virtualization config
+DR0-7 memory breakpoints
 
-1.11
-under client-server, there is central machine.
+> EFLAGS
 
-1.12
+ZF zero
+SF sign
+CF carry
+OF overflow
 
-1.13
-a. memory, cpu
-b. network
-c. power, memory
+jump table
 
-1.14
-multiple users
+> IDT
+change with reboots
 
-1.15
-symmetric multiprocessing means cpu are symmetric, equivalent in memory, cache.
-each processor performs all the tasks, each has its own register, own cache, but share memory
-three advantages:
-three disadvantages:
+## assembly
 
-1.16
-clustered systems communicated by network, while multiprocessing system by bus.
-network with high throughput
+XOR reg, reg
 
-1.17
-1. master-slave, replicate
-2. sharding, partitioned by hashing
+REP/REPNE prefix
 
-1.18
-mobile access
-high computing performance
+STOS/SCAS
 
-1.19
-so that when nothing is to be done, os sits quietly, and jump into jobs when being signaled.
-trap/exception is one kind of interrupt, triggered by error or user calling system service.
-yes, so that user can call system service.
+> calling conventions
+CDECL
+STDCALL
+FASTCALL
 
-1.20
-after setting buffer, pointers, counters of io device, cpu does not interface with the transfer.
-one interrupt per block is generated to tell the device driver whether the operation is finished.
+> function prologue/epilogue
 
-1.21
+```
+sum = addme(x,y)
+```
 
+```
+push ebp
+move ebp, esp
 
-2.1
-provide a way for user to enter kernel space, while ensuring the system security model.
+movsx eax, word ptr [ebp+8]
+movsx ecx, word ptr [ebp+0Ch]
+add eax, ecx
 
-2.2
-process management:
-create process
-scheduling process
-kill a process
-fork a process
-swap a process memory space
+mov esp, ebp
+pop ebp
+retn
+```
+frame pointer omission: skip EBP
 
+> x64
 
+RIP-relative addressing
 
-2.3
-memory management
-read, write
-allocate
-collect
-swap
+one calling convention
 
-2.4
-read
-write
-partition
-mount, unmout
+# Interrupt
 
-2.5
-
-2.6
-fork
-
-2.7
-provide standard, universal interface for user program
-
-2.8
-
-2.9
-timer
-read io
-fork
-allocate memory
-listen port
-
-2.10
-system loaded from firmware cannot be revised, loading from firmware is faster
-firmware size is limited, cannot be updated.
-
-2.11
-
-
-3.1
-5
-
-3.2
-8
-
-3.3
-process scheduling
-resource race condition
-context switch and recovery
-
-3.4
-
-3.5
-share memory segments
-
-3.6
-
-3.7
-
-
-4.1
-computation could be executed parallelly
-
-4.2
-kernel-level threads are managed by kernel, with high priority
-
-4.3
-
-
-4.4
-share memory segments, registers
-
-4.5
-
-5.1
-timer is implemented by interrupt, use for cpu scheduling, time quantum, should restrict interrupt disabled for a short time.
-
-5.2
-spin lock
-useful for multiprocesser, not incuring the overhead of being put in sleep queue
-
-mutex lock
-locking resources
-
-semaphores, condition variables
-suitable when a resource should be hold a long time
-
-adaptive mutex locks
-mutex is implemented with a spin lock
-
-
-5.3
-busy waiting, spin while waiting
-waiting for a condition to be met in a loop, condition can only be changed by executing another process.
-put a process to sleeep
-
-block waiting
-
-5.4
-spin locks are not appropriate for single-processor system because spin takes up the cpu resource
-
-
-5.5
-if wait() and signal() are not atomic, when lock-- in execute in wait(), signal() is executed, the process calling the wait() start to spin or block, but does not acquire the exclusive lock, since other process can acquire run wait() and start to spin.
-
-two waits are not atomic, decrease the value 1 at the same time and both proceed, viloate the mutual exclusion
-
-5.6
-every process is in a while loop checking whether a flag indexed by i(index of itself) is disabled and a variable turn is equal to some number other than itself; if the flag is equaled to the index of itself, and turn is set by index of itself, the program continue and critical path is executed, then the turn is set to the process index about to run next.
-
-6.1
-n!
-
-6.2
-preemptive means running processed can be stopped by OS, even before it completes, and add back to run queue, waiting to be scheduled to run again. nonpreemptive ensure
-
-6.3
-
-
-6.4
-process with small time quantum need more interactive, frequent servicing.
-process with larger time quantum make fewer context swtich, making more efficient use of cpu
-
-6.5
-a. shortest job have higher priority, remaining time is priority
-b. if each queue is of size one, it becomes FCFS
-c. the created time is priority
-d. SJF is RR on a queue sorted by remaining time
-
-6.6
-because new incoming IO bound programs would rank after cpu bound programs
-wont stare cpu bound process, because the io bound would relinquish a lot to do io
-6.7
-PCS, SCS scheduling
-
-6.8
-LWP
-
-6.9
-traditional UNIX scheduling lower cpu bounded process
-
-6.10
-cpu-bound and io-bound process behave in different patterns, io-bound run in a short time, quickly switching to io operation.
-
-6.11
-io-bound process has lower cpu utilization, when taken as scheduling critia, io-bound process is given lower priority, and its response time becomes longer
-
-6.12
-the probability of being chosen are modelled by cpu utlization
-
-8.1
-logical address is not limited to physical size.
-logical address is seperate and identical for each process. logical address is generated by cpu, translated by MMU to physical address
-
-8.2
-advan
-effective code and data sharing
-code are written protected
-disadvan
-code and data must be separated
-
-8.3
-avoid fragmentation
-most efficient to break address into x page bits and y offset bits
-
-8.4
-16bits
-15bits
-
-8.5
-incoherence may occur.
-to copy memory, point a second page to an assigned frame.
-
-8.6
-one segment belongs to two difference processes.
-
-8.7
-a system allows static linking and share of segments without requiring segment numbers the same.
-
-8.8
-storage key for each memory 2k block, protection key hold by cpu associate with each block.
-
-8.9
-external fragmentation occur when segments are chosen from free list, using algorithm like best fit, worst fit, first fit, are allocated. each time a size of (size of found hole - requested size) is created.
-internal fragmentation occur when a new page is demanded, while not fully used, free space inside pages forms fragmentation
-
-
-9.1
-page fault occurs, 
-1. when process touch for the first time address in an allocated page.
-2. when process touch pages not belonging to itself.
-
-9.2
-a. n
-b. p
-
-9.3
-0ef
-211
-100
-5FF
-
-9.4
-LRU: good
-FIFO: bad, belady
-Opt: perfect
-SC: fair
-
-9.5
-to support demand paging, TLB is needed, interrupt
-
-9.6
-cycle time 1ms, 1 ms more for access one other page, drum rotates at 2000 revolutions per minute, transfer 1 m words per sec.
-
-9.7
-a. 49 + 50 * 99
-
-b. 49
-
-9.8
-LRU:
-1. 20
-2. 
-
-
-9.9
-simulate reference bit, save referece bit in a page table entry, whenever a process touch a page, set the reference bit, and reset the bit if the page is swapped out.
-
-9.10
-Beladay anomaly in contorted case.
-
-9.11
-
-10.1
-in single user system, different process might request disk r/w operation at the same time
-
-10.2
-under SSTF, the average distance from a random point on the cylinder is the smallest
-
-10.3
-rotational latency is not considerred in disk scheduling because disk scanner move much faster in the direction tangent to the circle.
-
-10.4
-the throughput of file system io and controllers are different
-
-10.5
-
-10.6
-truly stable storage
-
-10.7
-
-11.1
-
-11.2
-filetype
-
-11.3
-file structure
-
-11.4
-single-level directory structure
-
-11.5
-purpose of open and close
-
-11.6
-
-11.7
-create a group, specify group access, 440
-
-11.8
-if file number is huge, user number is huge, might keep too large record
-
-
-12.1
-
-# interrupt
-
-## interrupt vector
+## Interrupt vector
 
 - contains the addresses of all the service routines
 
@@ -754,9 +483,6 @@ W: average waiting time in queue
 
 $\lambda$: average arrival rate into queue
 
-
----
-
 # Thread
 
 - processes are resource containers
@@ -839,9 +565,6 @@ pthread_create(&tid, 0, worker, NULL);
 
 pthread_cancel(tid);
 ```
-
-
----
 
 # IPC
 

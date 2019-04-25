@@ -1,10 +1,58 @@
 # Reinforcement Learning
 
-## randomization
+## exploration
+
+Montezuma's revenge and pitfall
+
+> [Go explore](https://arxiv.org/pdf/1901.10995.pdf)
+  - 1) remember states that havepreviously been visited
+  - 2) first return to a promising state (without exploration),then explore from it
+  - 3) solve simulated environments through exploiting any available means (including by introducing determinism), then robustify (create a policy that can reliably perform the solution) via imitation learning.
+  
+[critic]( https://www.alexirpan.com/2018/11/27/go-explore.html)
+
+## Randomization(exploration, valueF)
 
 https://iosband.github.io/research.html
 
-# MDP
+## Initialization
+
+[](https://arxiv.org/pdf/1703.02660.pdf) for the MuJoCo benchmarks, wider state initialization give you more gains than pretty much any change between RL algorithms and model architectures
+
+## simulation
+
+mujoco
+
+https://www.panda3d.org/
+
+http://bulletphysics.org/wordpress/
+
+https://developer.nvidia.com/physx-sdk
+
+http://www.ode.org/
+
+http://gazebosim.org/
+
+ODE and Gazebo have the contact support
+
+## browser
+
+[three.js stl loader](https://github.com/mrdoob/three.js/blob/master/examples/webgl_loader_stl.html)
+
+## testing env
+
+(openai gym)[]
+
+[dm control](https://arxiv.org/pdf/1801.00690.pdf)
+
+Arcade Learning Environment(https://github.com/mgbellemare/Arcade-Learning-Environment)
+
+Roboschool(https://github.com/openai/roboschool)
+
+[DeepMind Lab](https://github.com/deepmind/lab)
+
+[ELF](https://github.com/facebookresearch/ELF)
+
 
 ## Model Based
 
@@ -25,6 +73,41 @@ CEM: samples actions from a distribution closer to previous action samples that 
 Specifically, aleatoric state variance is the average variance of particles of same bootstrap, 
 
 whilst epistemic state variance is the variance of the average of particles of same bootstrap indexes.
+
+## Residual physics
+
+Residual policy learning
+
+## Physics control
+
+fully-actuated in state (q,q˙) at time t if it is able to command any instantaneous acceleration in q
+underactuated in state (q,q˙) at time t if it is not able to command an arbitrary instantaneous acceleration in  q
+
+## State abstraction
+
+> semi-mdp(Sutton 1999)
+
+> (option-critic)[https://arxiv.org/pdf/1609.05140.pdf]
+
+## Distributed
+
+
+## source of supervision
+
+> demonstration
+
+[back-play](https://arxiv.org/pdf/1807.06919.pdf)
+
+require env to be inversible, arbitraily resetting env to any states. [some env](https://storage.googleapis.com/pub-tools-public-publication-data/pdf/bb67802995f7af4c6ba948ede1acfc8756be7134.pdf) don't.
+
+(Learning to Select and GeneralizeStriking Movements in Robot Table Tennis)[https://www.aaai.org/ocs/index.php/FSS/FSS12/paper/viewFile/5602/5884]
+
+> language
+
+(https://arxiv.org/pdf/1711.00482.pdf)[Learning with latent language]
+
+> human preference
+
 
 ## Generalization
 
@@ -87,15 +170,8 @@ variations in environment dynamics
 - change component behavior
 - hidden instability
 
-envs
-  OpenAI Gym
-  Arcade Learning Environment(https://github.com/mgbellemare/Arcade-Learning-Environment)
-  Roboschool(https://github.com/openai/roboschool)
-  [DeepMind Lab](https://github.com/deepmind/lab)
-  [DeepMind Control Suite](https://github.com/deepmind/dm_control)
-  [ELF](https://github.com/facebookresearch/ELF)
-
 # Underactuated Robotics
+
 http://underactuated.csail.mit.edu/underactuated.html?chapter=intro
 
 > Quantile Regression Q learning
@@ -131,3 +207,29 @@ integrate discrepancy region, different between CDF
 W distance is reduced when medians are aligned
 
 why not simple regression:  the expectation of the quantiles are not the quantiles of the expectation
+
+
+> tune net
+
+tune the simulation physics from physics in real world
+
+> human correction of pose keyframes
+
+correction matrix to transform trajactories
+
+> diligent robot
+hospital service robot
+
+## 3d pose, mesh, kinematic simulation
+
+[deepmimic](https://github.com/xbpeng/DeepMimic)
+
+## sample  efficiency
+
+reward  shaping
+behavioral cloning
+reverse curriculum generation
+
+## others
+
+> sticky actions [section 5.2](https://arxiv.org/pdf/1709.06009.pdf)

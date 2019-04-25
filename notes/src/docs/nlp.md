@@ -42,6 +42,26 @@ type 4
 
 - non-projective, seen in flexible langauages.
 
+## Linguistics
+
+> heavy NP Shift
+
+verb + NP + PP(temporal adjunct), if NP is heavy enough, PP will be shifted after verb
+
+> hrasal verbs and particle shift
+
+give the habit up / give up the habit
+
+> dative alternation
+
+give the woman the object / give the object to the woman
+
+double object / propositional object
+
+> Genitive altenation
+
+the woman's house / the house of the woman
+
 ## Transition based dependency parsing
 
 - configuration
@@ -257,9 +277,7 @@ aggregate rating, yielding an average agreement of 93%
 
 The encoders are trained on 100- 200 million tokens, which is within a factor of ten of the number of tokens human learners are ex- posed to during language acquisition
 
-# Assessing the Ability of LSTMs to Learn Syntax-Sensitive Dependencies
-
-[](https://arxiv.org/pdf/1611.01368.pdf)
+> [Assessing the Ability of LSTMs to Learn Syntax-Sensitive Dependencies](https://arxiv.org/pdf/1611.01368.pdf)
 
 subject-verb number agreement
 
@@ -328,7 +346,7 @@ flashtext
 [vi3k6i5/flashtext](https://github.com/vi3k6i5/flashtext)
 
 
-> https://trec.nist.gov/pubs/trec27/papers/NYU-DL-CAR.pdf
+> [TREC-CAR task](https://trec.nist.gov/pubs/trec27/papers/NYU-DL-CAR.pdf)
 
 TREC-CAR task:
 
@@ -341,3 +359,33 @@ use RL to train reformulator agents (state is documents, reward r is )
 aggragator as meta-agent
 
  - accum rank score s_A, relavence(CNN/LSTM), top-k answer wrt s = s_R s_A
+
+
+> [polysemy in word embedding](https://arxiv.org/pdf/1601.03764.pdf)
+
+multiple word senses reside in linear superposition within the wordembedding and simple sparse coding can re-cover vectors that approximately capture the senses.
+
+polysemy vector is linear combination of its monosemous vectors
+
+- linearity Assertion linear structure appears out of a highly nonlinearembedding
+
+- Word Sense Induction via sparse coding
+
+**random walk on discourses**
+
+random walk across micro-topics(discourse)
+
+there exists a linear relationship between the vector of aword and the vectors of the words in its contexts
+
+
+> [Automated WordNet Construction Using Word Embeddings](https://www.aclweb.org/anthology/W17-1902)
+
+
+> [Sentence Compression as Tree Transduction](http://homepages.inf.ed.ac.uk/mlap/Papers/jair09.pdf)
+
+tree-to-tree transduction method for sentence compression
+
+> [memory and locality in NLP](http://socsci.uci.edu/~rfutrell/papers/futrell2017memory.pdf)
+
+
+> [lstm preserve word order preference](http://socsci.uci.edu/~rfutrell/papers/futrell2019rnns.pdf)

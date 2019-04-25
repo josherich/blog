@@ -141,3 +141,11 @@ auto diff
 考虑任意一个偏序集合（L,≤），如果对集合L中的任意元素a,b，使得a,b在L中存在一个最大下界，和最小上界，则(L,≤)是一个格
 
 一个格是完全的，如果它的所有子集都有一个交和一个并
+
+# Statistics
+
+> [heteroskedastic](https://en.wikipedia.org/wiki/Heteroscedasticity)
+
+  a collection of random variables is heteroscedastic (or heteroskedastic;[a] from Ancient Greek hetero “different” and skedasis “dispersion”) if there are sub-populations that have different variabilities from others
+
+> [KKT condition](https://en.wikipedia.org/wiki/Karush%E2%80%93Kuhn%E2%80%93Tucker_conditions)

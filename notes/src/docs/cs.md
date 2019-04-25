@@ -60,6 +60,70 @@ $$u_j = \sum_{k=1}^N e^{2\pi ijk/N}\omega_k$$
 https://www.wikiwand.com/en/Tomasulo_algorithm
 
 
+## CPP
+
+> Cmake
+```
+cmake_minimum_required(VERSION 3.4)
+project(MyFabulousProject LANGUAGES CXX)
+
+# Will add targets for running tests, valgrind, etc.
+include(CTest)
+
+# Old packages
+find_package(Blob REQUIRED)
+
+# Recent packages
+find_package(NicePackage REQUIRED COMPONENTS bim bam)
+
+# Create our libs
+add_library(foo 
+  src/foo.cpp 
+  src/foo_impl.cpp)
+  
+add_library(bar
+  src/bar.cpp)
+
+# Will add -Imy/3rdpary/folder to source files of foo
+target_include_directories(foo PRIVATE my/3rdparty/folder)
+
+# Will add -DBAR_ENABLE_FEATURE or equivalent
+target_compile_definitions(bar PRIVATE BAR_ENABLE_FEATURE) 
+
+# Will pass flags to the compiler
+target_compile_options(bar PRIVATE -funroll-loops) 
+  
+# Will add relevant -l switches
+target_link_libraries(bar PRIVATE 
+  ${Blob_LIBRARIES}
+  NicePackage::bim NicePackage::bam)
+  
+  
+add_executable(foo_test 
+  tests/foo_test.cpp)
+  
+add_executable(bar_test 
+  tests/bar_test.cpp)
+  
+target_link_libraries(foo_test PRIVATE foo)
+
+
+# Have everything we build use cpp14
+set_target_properties(
+  foo bar foo_test bar_test
+  PROPERTIES CXX_STANDARD 14)
+
+# Add our tests
+add_test(foo_test  foo_test)
+add_test(bar_test  bar_test)
+add_test(bar_test2 bar_test --command-line-switch)
+```
+
+## emscripten
+```
+emcc src/vertexcodec.cpp src/indexcodec.cpp -Os -DNDEBUG -s EXPORTED_FUNCTIONS='["_meshopt_decodeVertexBuffer", "_meshopt_decodeIndexBuffer", "_malloc", "_free"]' -s ALLOW_MEMORY_GROWTH=1 -s MALLOC=emmalloc -s MODULARIZE=1 -s EXPORT_NAME=MeshoptDecoder --closure 1 --post-js decoder-post.js -o decoder.js
+```
+
 # Formal method
 
 - specification: functional behavior or non-functional properties
