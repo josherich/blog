@@ -64,7 +64,7 @@ Read more: https://forward.com/articles/8694/the-terrible-beauty-of-nazi-aesthet
 
 ## Missing Parts
 
-  knowledge base, Natural language understanding.
+  Knowledge base and Natural language understanding are still not there, deeper representation of meaning and style is the first step of building real discovery system.
 
 # Decentralized Subscription
   
