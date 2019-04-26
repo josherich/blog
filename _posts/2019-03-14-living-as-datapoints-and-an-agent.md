@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Living as data points and an agent"
+title:  "Living as a Data Point, an Agent"
 description: ""
 date:   2019-03-14 14:02:39
 categories: personal
@@ -27,11 +27,17 @@ tags: [news, personal, privacy]
 
 ![agent-world](/images/liv-2.png)
 
-# Platform and golden age
+# Platform and Golden Age
 
   It's very hard to imagine [golden age](https://blog.yitianshijie.net/2019/03/06/recommendation-algorithm-and-golden-age-of-podcast/) with popularity of content platform and its recommender system. It's more likely golden age is the opposite. There are many good things about these platforms: professional, well-edited contents, premium contents without ads, more interactions between content creators and users, and best of all, content creators monetize their works. But the industry is also an optimization algorithm, with a very high exploration cost. Many things about golden age: personal, wild, vague, chaos, will simply be discouraged and eliminated by local optimization.
 
-## Exploitation and Exploration
+# Street and Theater
+
+  It's obvious that the structure of information flow is becoming more centralized and hierachical, as friction of sending and receiving is vanishing. It is however, a natural result of people making optimal choice to closely follow what they think interesting and important. The implicit danger here is that such structure is exploited, in a quick and extreme way, by those who are able to get money out of it.
+
+  Theaters are built, and streets are gone. Imagine a city without streets, where personal voice doesn't matter any more. Posting, tweeting, and commenting as an individual, actually have so small an audience, that few care anymore to write instead of consume.
+
+# Exploitation and Exploration
 
   It's quite funny to see big Internet platform is [automating the exploitation](https://www.quora.com/Does-Amazon-offer-the-same-product-to-different-consumers-at-different-prices-at-the-same-time) as an optimization problem. User exploitation is automated without too much effort, not quite different from recommender system. It surly can be pushed to an extend that it fits perfectly to regulation.
 
