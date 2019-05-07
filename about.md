@@ -19,7 +19,7 @@ Find me here:
 - [NLP Highlights]()
 - [The Indie Hackers Podcast]()
 - [Here's the thing with Alec Baldwin]()
-- [Harvard Fairbank Center for Chinese Studies]
+- [Harvard Fairbank Center for Chinese Studies]()
 
 ---
 
@@ -47,21 +47,10 @@ Find me here:
 ## Tools
 
 #### 1. [oh-my-zsh](https://ohmyz.sh/)
-#### 2. Git Alias
-add to `.gitconfig` file in home directory.
-```
-[alias]
-  co = checkout
-  ci = commit
-  st = status
-  br = branch
-  hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
-  type = cat-file -t
-  dump = cat-file -p
-```
+#### 2. [Git Alias](https://githowto.com/aliases)
 #### 3. [Alfred](https://www.alfredapp.com/)
 #### 4. [Diigo](https://www.diigo.com/)
-#### 5. macOS Notes, Stickies
+#### 5. [macOS Notes, Stickies]
 #### 6. [Workflowy](https://workflowy.com/)
 #### 7. [Devdocs](https://devdocs.io/)
 #### 8. [Pocket](https://getpocket.com)
