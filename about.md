@@ -46,14 +46,14 @@ Find me here:
 
 ## Tools
 
-#### 1. [oh-my-zsh](https://ohmyz.sh/)
-#### 2. [Git Alias](https://githowto.com/aliases)
-#### 3. [Alfred](https://www.alfredapp.com/)
-#### 4. [Diigo](https://www.diigo.com/)
-#### 5. [macOS Notes, Stickies]
-#### 6. [Workflowy](https://workflowy.com/)
-#### 7. [Devdocs](https://devdocs.io/)
-#### 8. [Pocket](https://getpocket.com)
-#### 9. [Brave Browser](https://brave.com/)
-#### 10. [Pock](https://pock.pigigaldi.com/)
-#### 11. [Sip](https://sipapp.io/)
+- [oh-my-zsh](https://ohmyz.sh/)
+- [Git Alias](https://githowto.com/aliases)
+- [Alfred](https://www.alfredapp.com/)
+- [Diigo](https://www.diigo.com/)
+- [macOS Notes, Stickies]
+- [Workflowy](https://workflowy.com/)
+- [Devdocs](https://devdocs.io/)
+- [Pocket](https://getpocket.com)
+- [Brave Browser](https://brave.com/)
+- [Pock](https://pock.pigigaldi.com/)
+- [Sip](https://sipapp.io/)
