@@ -233,3 +233,6 @@ reverse curriculum generation
 ## others
 
 > sticky actions [section 5.2](https://arxiv.org/pdf/1709.06009.pdf)
+
+> Deep Reinforcement Learning that Matters
+

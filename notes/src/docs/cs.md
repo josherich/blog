@@ -181,3 +181,63 @@ https://github.com/ruben2020/codequery/blob/master/doc/HOWTO-LINUX.md
 > ARKit
 
 https://developer.apple.com/documentation/arkit
+
+# type checking
+
+> https://pyre-check.org/docs/gradual-typing.html
+
+## pattern matching
+
+> https://github.com/tc39/proposal-pattern-matching/blob/latest/CORE.md
+
+## yacc JavaScript
+
+> https://github.com/zaach/jison
+
+# cpp
+
+> self compiling cpp
+```cpp
+#!/bin/bash
+//usr/bin/tail -n +2 $0 | g++ -o main -x c++ - && exit
+#include <cstdio>
+int main(int argc,char * argv[])
+{
+  printf("Hello, world\n");
+  return 0;
+}
+```
+
+> compile run and delete
+```cpp
+#!/bin/bash
+//usr/bin/tail -n +2 $0 | g++ -o main -x c++ - && ./main && rm main && exit
+#include <cstdio>
+int main(int argc,char * argv[])
+{
+  printf("Hello, world\n");
+  return 0;
+}
+```
+> with debugging
+```cpp
+#!/bin/bash
+/*/../bin/ls > /dev/null
+# BEGIN BASH SCRIPT 
+source ~/.profile
+export PS4=""
+set -o xtrace       
+printf "//" | cat - $0 | 
+g++ -g -O0 -std=c++11 -o .main $TEMP && \ 
+/Applications/Xcode.app/Contents/Developer/usr/bin/lldb -b -o r ./main -- "$@"
+rm -f .main         
+# END BASH SCRIPT
+exit
+*/
+#include <cstdio>
+int main(int argc,char * argv[])
+{
+  printf("Hello, world\n");
+  return 0;
+}
+```

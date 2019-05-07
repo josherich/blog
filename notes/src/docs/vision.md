@@ -179,3 +179,11 @@ glFramebufferTexture2D(
 GL_STATIC_DRAW: The vertex data will be uploaded once and drawn many times (e.g. the world).
 GL_DYNAMIC_DRAW: The vertex data will be created once, changed from time to time, but drawn many times more than that.
 GL_STREAM_DRAW: The vertex data will be uploaded once and drawn once.
+
+
+> https://glm.g-truc.net/0.9.9/index.html
+
+> https://en.wikipedia.org/wiki/Advanced_Vector_Extensions
+
+> https://www.cgal.org/
+https://www.cgal.org/project.html#
