@@ -40,6 +40,11 @@ topology changes and fast inter-frame motions
 
 https://github.com/andyzeng/tsdf-fusion-pythons
 
+## project
+
+- atamid, rig animation using Tangible and Modular Input Device
+
+- mesh optimizer
 
 ## GL
 

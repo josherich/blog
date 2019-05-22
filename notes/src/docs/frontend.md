@@ -94,4 +94,17 @@ int main() {
 }
 ```
 
+**debug on get, set**
+
+> https://github.com/paulirish/break-on-access
+
+```javascript
+Object.defineProperty(twttr, 'profile', {
+    get: function () {
+      debugger
+    }
+  , set: function (val) {
+      debugger
+    }
+})
 ```

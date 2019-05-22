@@ -236,3 +236,4 @@ reverse curriculum generation
 
 > Deep Reinforcement Learning that Matters
 
+> [motion plan and NN](https://arxiv.org/abs/1803.07635)
