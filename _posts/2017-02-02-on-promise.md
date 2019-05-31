@@ -7,6 +7,10 @@ categories: Frontend
 tags: [frontend, async, promise]
 ---
 
+- Promise is about [spec](https://promisesaplus.com/) and implementations(then/promise, q, bluebird)
+
+- Beside enabling async, Promise is another way to make function calling look nicer, kinda like pipe, instead of `f(g(x))`, do `x -> f -> g`
+
 - `promise.then(undefined, onRejected)` is exactly the same as `promise.catch(onRejected)`.
 
 - Build your own way of handling return value(like return a reason code) when promise chain is complicated. For example, if the promise chain continues after `catch()`, you need to handle return value from both previous `then()`s and `catch()`s
