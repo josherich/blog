@@ -73,3 +73,61 @@ tags: [frontend, async, promise]
     }
     ```
 
+- Minimum implementation
+
+```javascript
+function Promise() {
+  this._callbacks = [];
+  this._errCallbacks = [];
+
+  this._resolved = 0;
+  this._result = null;
+}
+
+Promise.prototype.resolve = function (err, res) {
+  if (!err) {
+    this._resolved = 1;
+    this._result = res;
+
+    for (var i = 0; i < this._callbacks.length; ++i) {
+      this._callbacks[i](res);
+    }
+  } else {
+    this._resolved = 2;
+    this._result = err;
+
+    for (var iE = 0; iE < this._errCallbacks.length; ++iE) {
+      this._errCallbacks[iE](res);
+    }
+  }
+
+  this._callbacks = [];
+  this._errCallbacks = [];
+};
+
+Promise.prototype.then = function (cb, errCb) {
+  // result
+  if (this._resolved === 1) {
+    if (cb) {
+      cb(this._result);
+    }
+    return;
+  // error
+  } else if (this._resolved === 2) {
+    if (errCb) {
+      errCb(this._result);
+    }
+    return;
+  }
+
+  if (cb) {
+    this._callbacks[this._callbacks.length] = cb;
+  }
+
+  if (errCb) {
+    this._errCallbacks[this._errCallbacks.length] = errCb;
+  }
+  return this;
+};
+
+```

@@ -8,7 +8,7 @@ title: Projects
   <div class="nlu-mix"><a href="https://github.com/josherich/Temporal-NLU">Temporal NLU</a> is a mixed training approach to embed linguistic and semantic knowledge to natural language understanding model, it also shows a naive synthetic test set is hard enough for sota models.</div>
 
 
-  <div class="rss-hub-cn-gov"><a href="http://rss.mindynode.com/">RSS China Gov</a> is a collection of RSS feeds for government and organizations.</div>
+  <div class="rss-hub-cn-gov"><a href="http://rss.mindynode.com/">RSS Orgs</a> is a collection of RSS feeds for government and organizations.</div>
 
 
   <div class="mindynode"><a href="http://news.mindynode.com">Context News | 上下闻</a> is what I have been working on in 2017, I put the news in timelines, and make the timelines able to be subscribed.</div>
