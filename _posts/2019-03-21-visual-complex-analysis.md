@@ -8,7 +8,7 @@ tags: [geometry, math, vision]
 ---
 
 <script type="text/javascript" src="../../js/paper-full.min.js"></script>
-<script type="text/javascript" src="../../js/visual-complex.js"></script>
+<script type="text/javascript" src="../../js/complex.js"></script>
 <script type="text/paperscript" src="../../js/ei.js" canvas="ei"></script>
 <script type="text/paperscript" src="../../js/ez.js" canvas="ez"></script>
 
