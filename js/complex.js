@@ -39,7 +39,23 @@ window.Complex = paper.Point.extend({
     return this.getLength();
   },
   theta: function() {
-    return Math.atan(this.y / this.x);
+    if (this.x == 0 && this.y == 0)
+      return  0; // undefined
+    var arctan = Math.atan(this.y / this.x);
+    if (this.x > 0)
+      return arctan;
+    else if (this.x < 0)
+      return arctan + (this.y < 0 ? -Math.PI : Math.PI);
+    else
+      return this.y < 0 ? - Math.PI/2 : Math.PI/2;
+  },
+  polar: function() {
+    return [this.norm(), this.theta()];
+  },
+  inverse: function() {
+    var r = 1/this.norm();
+    var theta = -this.theta();
+    return new Complex(r * Math.cos(theta), r * Math.sin(theta));
   }
 })
 

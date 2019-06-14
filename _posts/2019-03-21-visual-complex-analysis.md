@@ -11,8 +11,9 @@ tags: [geometry, math, vision]
 <script type="text/javascript" src="../../js/complex.js"></script>
 <script type="text/paperscript" src="../../js/ei.js" canvas="ei"></script>
 <script type="text/paperscript" src="../../js/ez.js" canvas="ez"></script>
+<script type="text/paperscript" src="../../js/inverse.js" canvas="inv"></script>
 
-# Visualize Euler's Formula
+# Visualize $$e^{i\theta}$$
 
 $$e^{i\theta}$$ is the points on unit circle, at angle $$\theta$$, here is a visualization of how such circle is derived from the sum of power series:
 
@@ -45,6 +46,25 @@ each term in the series is a vector, we add up these vectors to recover a in com
 
 <canvas id="ez" width="450" height="450"></canvas>
 <div class="image-caption">move mouse to draw the vectors</div>
+
+# Euler's formula
+
+$$ e^{iy} = \cos y + i \sin y $$ corresponds to imagenary axis
+
+# Compound interest
+
+$$ e^{z} = e^{x+iy} = e^x e^{iy} = (1 + \frac{z}{n})^n $$ if n is large
+
+# Inverse
+
+$$ z = r e^{i\theta} $$
+
+$$ \frac{1}{z} = \frac{1}{r} e^{-i\theta} $$
+
+The inverse can be seen the image of z wrt. the unit circle, the mapping has some interesting trajectories, draw some strokes below to explore...
+
+<canvas id="inv" width="450" height="450"></canvas>
+<div class="image-caption">move mouse to draw 1/z</div>
 
 ~~~ javascript
 function drawETheta(theta, iter, scale) {
