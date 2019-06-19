@@ -3,6 +3,10 @@ layout: default
 title: About
 ---
 
+<script>
+  document.querySelector('.header a.about').classList.add('selected')
+</script>
+
 Hi, I'm Josh Chen. I love programming in Web and machine learning.
 
 Find me here:

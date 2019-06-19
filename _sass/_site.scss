@@ -93,9 +93,18 @@ a.selected {
 }
 
 @media only screen
+  and (min-device-width: 812px) {
+  .post-page {
+    padding: 10px 30px;
+    box-shadow: 0 0 6px 4px #eee;
+    border-radius: 3px;
+  }
+}
+
+@media only screen
   and (min-device-width: 320px) 
   and (max-device-width: 812px) 
-  and (-webkit-min-device-pixel-ratio: 3){
+  and (-webkit-min-device-pixel-ratio: 3) {
   .site {
     .header .hlink {
       margin-right: 1em;

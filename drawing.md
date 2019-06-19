@@ -2,6 +2,9 @@
 layout: default
 title: Drawing
 ---
+<script>
+  document.querySelector('.header a.draw').classList.add('selected')
+</script>
 
 <div class="draw-page">
   <img src="images/drawing/icons.jpg" alt="icons" class="drawings-img">

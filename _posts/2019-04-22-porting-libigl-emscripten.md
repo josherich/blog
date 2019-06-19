@@ -9,13 +9,15 @@ tags: [geometry, vision]
 
 Playing around with [libigl](https://libigl.github.io/) is fun, but C++ compiling isn't. I read a fun piece about [porting doom3](http://www.continuation-labs.com/projects/d3wasm/) to browser, and decided to play around with this.
 
-[demo](https://josherich.github.io/libigl-web/) | [repo](https://github.com/josherich/libigl-web)
+> [demo](https://josherich.github.io/libigl-web/)
 
-## compiling dependency
+> [code](https://github.com/josherich/libigl-web)
+
+## Compiling dependency
 
 `emcc` compiler's lookup path is `./incoming/system/include`, as a short, you could always just put the source and headers inside this folder.
 
-## main thread loop
+## Main thread loop
 
 Multi-threading is implemented using Web Workers, but the main thread is alwasys a window, meaning looping and polling doesn't work. I have to, like most porting will do, convert it to callback style.
 
@@ -28,13 +30,13 @@ Multi-threading is implemented using Web Workers, but the main thread is alwasys
 
 In early 2018, major browsers [disabled](https://github.com/tc39/security/issues/3) `ShareArrayBuffer` for security issues([high resolution timer allows cache-based side channel attacks](https://github.com/tc39/ecmascript_sharedmem/issues/1)) relating "Spectre" and "Meltdown", obviously people still need this to communicate between workers.
 
-For now, Chrome is the only one among major browers with enabling it as default. You can enable it in flag setting for others.
+For now, Chrome is the only one among major browsers with enabling it as default. You can enable it in flag setting for others.
 
-**loop to callback**
+**Loop to Callback**
 
 libigl run `launch_rendering()` as a forever loop with `glfwPollEvents` inside each iteration, and compute the duration for exact frame rate. For it to work in browser, where the window simply stop responding if any Javascript is running, you could easily move the rendering to callback functions(`mouse_move`, `mouse_down`, `key_down`). For animations, it still has to run as a loop.
 
-## using GLFW
+## Using GLFW
 
 The amazing thing about Emscripten is `glfw` works without a change(except there's a potential [bug](https://github.com/emscripten-core/emscripten/issues/8470) in `src/library_glfw.js` setting callback)
 
@@ -55,7 +57,7 @@ The amazing thing about Emscripten is `glfw` works without a change(except there
 
 Surprisingly, `glPolygonMode` is missing in WebGL, frame rendering could be converted to GL_LINES, since face index and vertex are all given by the OFF mesh format.
 
-**migrating shader**
+**Migrating shader**
 
 use version 100 for webgl or 300 for webgl2, change `in`, `out` to `attribute` and `varying`
 
@@ -78,12 +80,12 @@ Useful debug flags:
 -g
 ```
 
-## import file
+## Import file
 
 ```
 --preload-file path/to/data
 ```
 
-## callback lifecycle
+## Callback lifecycle
 
 As the main thread is not looping forever, animation and viewer control is implemented in callback. I have to make sure objects in callback is alive outside `main()`.
