@@ -10,6 +10,7 @@ title: Josherich
 <div id="home">
 
   <ul class="posts">
+    <li><a href="/nli.html">Testing NLI models on Temporal Inference</a></li>
     {% for post in site.posts %}
       {% unless post.tags contains "cn" %}
         <li><span>{{ post.date | date_to_string }}</span> - <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
