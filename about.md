@@ -24,6 +24,8 @@ Find me here:
 - [The Indie Hackers Podcast]()
 - [Here's the thing with Alec Baldwin]()
 - [Harvard Fairbank Center for Chinese Studies]()
+- [The Portal]()
+- [Sinica]()
 
 ---
 
@@ -32,6 +34,7 @@ Find me here:
 - [提前怀旧]()
 - [天书广播]()
 - [优斯迪吧]()
+- [故事FM]()
 - [宅基地]()
 - [一天世界]()
 - [灭茶苦茶]()
@@ -40,6 +43,8 @@ Find me here:
 
 ## Youtube
 
+- [Jonathan Blow](https://www.youtube.com/channel/UCCuoqzrsHlwv1YyPKLuMDUQ)
+- [Retro Game Mechanics Explained](https://www.youtube.com/channel/UCwRqWnW5ZkVaP_lZF7caZ-g)
 - [Mamahuhu](https://www.youtube.com/channel/UCmH8FWFRkbfsYj-zXsEvypQ)
 - [Philip Guo](https://www.youtube.com/channel/UCmn_foEcC0mY72rzRrMzWSQ)
 - [Langfocus](https://www.youtube.com/channel/UCNhX3WQEkraW3VHPyup8jkQ)
@@ -61,3 +66,4 @@ Find me here:
 - [Brave Browser](https://brave.com/)
 - [Pock](https://pock.pigigaldi.com/)
 - [Sip](https://sipapp.io/)
+- [z - jump around](https://github.com/rupa/z)
