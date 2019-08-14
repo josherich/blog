@@ -21,7 +21,7 @@ Playing around with [libigl](https://libigl.github.io/) is fun, but C++ compilin
 
 Multi-threading is implemented using Web Workers, but the main thread is alwasys a window, meaning looping and polling doesn't work. I have to, like most porting will do, convert it to callback style.
 
-```
+```bash
 -s USE_PTHREADS=1
 -s PTHREAD_POOL_SIZE=2
 ```
@@ -40,7 +40,7 @@ libigl run `launch_rendering()` as a forever loop with `glfwPollEvents` inside e
 
 The amazing thing about Emscripten is `glfw` works without a change(except there's a potential [bug](https://github.com/emscripten-core/emscripten/issues/8470) in `src/library_glfw.js` setting callback)
 
-```
+```bash
 -s USE_GLFW=3
 
 // support WebGL 2
@@ -65,7 +65,7 @@ use version 100 for webgl or 300 for webgl2, change `in`, `out` to `attribute` a
 
 Useful debug flags:
 
-```
+```bash
 // =1 for memory allocation errors checks
 // =2 for showing function pointer information
 -s ASSERTIONS=2
@@ -82,7 +82,7 @@ Useful debug flags:
 
 ## Import file
 
-```
+```bash
 --preload-file path/to/data
 ```
 
