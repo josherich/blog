@@ -11773,7 +11773,7 @@ div#notebook {
 
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
@@ -11790,10 +11790,36 @@ div#notebook {
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-2-110553d23cd2&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">      5</span> get_ipython<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>run_line_magic<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;matplotlib&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;inline&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      6</span> <span class="ansi-green-fg">import</span> warnings
+<span class="ansi-green-fg">----&gt; 7</span><span class="ansi-red-fg"> </span>warnings<span class="ansi-blue-fg">.</span>filte
+<span class="ansi-green-intense-fg ansi-bold">      8</span> rwarnings<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;ignore&#39;</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">AttributeError</span>: module &#39;warnings&#39; has no attribute &#39;filte&#39;</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pyLDAvis</span>
@@ -11805,31 +11831,10 @@ div#notebook {
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>/Users/chenjosh/anaconda3/lib/python3.6/site-packages/_pytest/fixtures.py:844: DeprecationWarning: The `convert` argument is deprecated in favor of `converter`.  It will be removed after 2019/01.
-  params = attr.ib(convert=attr.converters.optional(tuple))
-/Users/chenjosh/anaconda3/lib/python3.6/site-packages/_pytest/fixtures.py:846: DeprecationWarning: The `convert` argument is deprecated in favor of `converter`.  It will be removed after 2019/01.
-  ids = attr.ib(default=None, convert=_ensure_immutable_ids)
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">fetch_20newsgroups</span>
@@ -11844,7 +11849,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cands</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;./candidates.txt&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
@@ -11865,16 +11870,119 @@ div#notebook {
 
 <span class="c1"># return string</span>
 <span class="k">def</span> <span class="nf">get_recent_tweets_string</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">n</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
     <span class="n">df_1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;./data/</span><span class="si">{name}</span><span class="s2">.json&quot;</span><span class="p">,</span> <span class="n">lines</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">df_1</span><span class="p">[</span><span class="s1">&#39;tweet&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">500</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&#39;s </span><span class="si">%s</span><span class="s2"> tweets&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_1</span><span class="p">[</span><span class="s1">&#39;tweet&#39;</span><span class="p">])))</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">remove_uri</span><span class="p">,</span> <span class="n">df_1</span><span class="p">[</span><span class="s1">&#39;tweet&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">())))</span>
 
-<span class="c1"># return []</span>
 <span class="k">def</span> <span class="nf">get_recent_tweets_list</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">n</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
     <span class="n">df_1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;./data/</span><span class="si">{name}</span><span class="s2">.json&quot;</span><span class="p">,</span> <span class="n">lines</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&#39;s </span><span class="si">%s</span><span class="s2"> tweets&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_1</span><span class="p">[</span><span class="s1">&#39;tweet&#39;</span><span class="p">])))</span>
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">remove_uri</span><span class="p">,</span> <span class="n">df_1</span><span class="p">[</span><span class="s1">&#39;tweet&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()))</span>
 
+<span class="c1"># ==== tokenizer ====</span>
+<span class="kn">import</span> <span class="nn">unicodedata</span>
+
+<span class="k">def</span> <span class="nf">_is_whitespace</span><span class="p">(</span><span class="n">char</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Checks whether `chars` is a whitespace character.&quot;&quot;&quot;</span>
+    <span class="c1"># \t, \n, and \r are technically contorl characters but we treat them</span>
+    <span class="c1"># as whitespace since they are generally considered as such.</span>
+    <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">&quot; &quot;</span> <span class="ow">or</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="ow">or</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="ow">or</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="n">cat</span> <span class="o">=</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">category</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cat</span> <span class="o">==</span> <span class="s2">&quot;Zs&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="k">def</span> <span class="nf">_is_control</span><span class="p">(</span><span class="n">char</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Checks whether `chars` is a control character.&quot;&quot;&quot;</span>
+    <span class="c1"># These are technically control characters but we count them as whitespace</span>
+    <span class="c1"># characters.</span>
+    <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="ow">or</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="ow">or</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="n">cat</span> <span class="o">=</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">category</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cat</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="k">def</span> <span class="nf">_is_punctuation</span><span class="p">(</span><span class="n">char</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Checks whether `chars` is a punctuation character.&quot;&quot;&quot;</span>
+    <span class="n">cp</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+    <span class="c1"># We treat all non-letter/number ASCII as punctuation.</span>
+    <span class="c1"># Characters such as &quot;^&quot;, &quot;$&quot;, and &quot;`&quot; are not in the Unicode</span>
+    <span class="c1"># Punctuation class but we treat them as punctuation anyways, for</span>
+    <span class="c1"># consistency.</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">cp</span> <span class="o">&gt;=</span> <span class="mi">33</span> <span class="ow">and</span> <span class="n">cp</span> <span class="o">&lt;=</span> <span class="mi">47</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">cp</span> <span class="o">&gt;=</span> <span class="mi">58</span> <span class="ow">and</span> <span class="n">cp</span> <span class="o">&lt;=</span> <span class="mi">64</span><span class="p">)</span> <span class="ow">or</span>
+            <span class="p">(</span><span class="n">cp</span> <span class="o">&gt;=</span> <span class="mi">91</span> <span class="ow">and</span> <span class="n">cp</span> <span class="o">&lt;=</span> <span class="mi">96</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">cp</span> <span class="o">&gt;=</span> <span class="mi">123</span> <span class="ow">and</span> <span class="n">cp</span> <span class="o">&lt;=</span> <span class="mi">126</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="n">cat</span> <span class="o">=</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">category</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cat</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+<span class="k">def</span> <span class="nf">_clean_text</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Performs invalid character removal and whitespace cleanup on text.&quot;&quot;&quot;</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+        <span class="n">cp</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cp</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">cp</span> <span class="o">==</span> <span class="mh">0xfffd</span> <span class="ow">or</span> <span class="n">_is_control</span><span class="p">(</span><span class="n">char</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">_is_whitespace</span><span class="p">(</span><span class="n">char</span><span class="p">):</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_run_split_on_punc</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Splits punctuation on a piece of text.&quot;&quot;&quot;</span>
+    <span class="n">chars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">start_new_word</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">chars</span><span class="p">):</span>
+        <span class="n">char</span> <span class="o">=</span> <span class="n">chars</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">_is_punctuation</span><span class="p">(</span><span class="n">char</span><span class="p">):</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">char</span><span class="p">])</span>
+            <span class="n">start_new_word</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">start_new_word</span><span class="p">:</span>
+                <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+            <span class="n">start_new_word</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">output</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">output</span><span class="p">]</span>
+    
+<span class="k">def</span> <span class="nf">whitespace_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Runs basic whitespace cleaning and splitting on a piece of text.&quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span><span class="p">:</span>
+      <span class="k">return</span> <span class="p">[]</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">tokens</span>
+
+<span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Tokenizes a piece of text.&quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">_clean_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">orig_tokens</span> <span class="o">=</span> <span class="n">whitespace_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">split_tokens</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">orig_tokens</span><span class="p">:</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+<span class="c1">#       token = self._run_strip_accents(token)</span>
+        <span class="n">split_tokens</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">_run_split_on_punc</span><span class="p">(</span><span class="n">token</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">split_tokens</span>
+    
+<span class="k">def</span> <span class="nf">lexical_diversity</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">word_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">1</span>
+    <span class="n">vocab_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+    <span class="n">diversity_score</span> <span class="o">=</span> <span class="n">vocab_size</span> <span class="o">/</span> <span class="n">word_count</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">word_count</span><span class="p">,</span> <span class="n">diversity_score</span><span class="p">]</span>
+
+<span class="c1"># get_recent_tweets_list(cands[4])[10709]</span>
+<span class="n">lex</span> <span class="o">=</span> <span class="p">[</span><span class="n">lexical_diversity</span><span class="p">(</span><span class="n">get_recent_tweets_string</span><span class="p">(</span><span class="n">cand</span><span class="p">))</span> <span class="k">for</span> <span class="n">cand</span> <span class="ow">in</span> <span class="n">cands</span><span class="p">]</span>
 <span class="c1"># docs_raw = [get_recent_tweets_string(name, 500) for name in cands]</span>
 </pre></div>
 
@@ -11893,6 +12001,26 @@ div#notebook {
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>[&#39;andrewYang&#39;, &#39;ewarren&#39;, &#39;BetoORourke&#39;, &#39;BernieSanders&#39;, &#39;KamalaHarris&#39;, &#39;BilldeBlasio&#39;, &#39;JohnDelaney&#39;, &#39;PeteButtigieg&#39;, &#39;Hickenlooper&#39;, &#39;GovernorBullock&#39;, &#39;MichaelBennet&#39;, &#39;amyklobuchar&#39;, &#39;TulsiGabbard&#39;, &#39;JayInslee&#39;, &#39;JulianCastro&#39;, &#39;CoryBooker&#39;, &#39;JoeBiden&#39;, &#39;TimRyan&#39;, &#39;SenGillibrand&#39;, &#39;marwilliamson&#39;]
+andrewYang&#39;s 7545 tweets
+ewarren&#39;s 4553 tweets
+BetoORourke&#39;s 5372 tweets
+BernieSanders&#39;s 10324 tweets
+KamalaHarris&#39;s 10728 tweets
+BilldeBlasio&#39;s 1374 tweets
+JohnDelaney&#39;s 7136 tweets
+PeteButtigieg&#39;s 6006 tweets
+Hickenlooper&#39;s 3288 tweets
+GovernorBullock&#39;s 6484 tweets
+MichaelBennet&#39;s 1608 tweets
+amyklobuchar&#39;s 8644 tweets
+TulsiGabbard&#39;s 6849 tweets
+JayInslee&#39;s 3593 tweets
+JulianCastro&#39;s 3837 tweets
+CoryBooker&#39;s 54161 tweets
+JoeBiden&#39;s 1826 tweets
+TimRyan&#39;s 3464 tweets
+SenGillibrand&#39;s 17052 tweets
+marwilliamson&#39;s 15993 tweets
 </pre>
 </div>
 </div>
@@ -11903,7 +12031,78 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lex</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> use </span><span class="si">%s</span><span class="s2"> words in </span><span class="si">%s</span><span class="s2"> tokens, complexity(#words/#tokens) is </span><span class="si">%s</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cands</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>andrewYang use 10831 words in 161361 tokens, complexity(#words/#tokens) is 0.06712278679482651 
+
+ewarren use 9075 words in 156134 tokens, complexity(#words/#tokens) is 0.058123150627025506 
+
+BetoORourke use 10710 words in 167616 tokens, complexity(#words/#tokens) is 0.06389604810996563 
+
+BernieSanders use 10308 words in 270010 tokens, complexity(#words/#tokens) is 0.03817636383837636 
+
+KamalaHarris use 12765 words in 313707 tokens, complexity(#words/#tokens) is 0.04069083571613002 
+
+BilldeBlasio use 4001 words in 39415 tokens, complexity(#words/#tokens) is 0.10150957757199036 
+
+JohnDelaney use 10902 words in 201060 tokens, complexity(#words/#tokens) is 0.054222620113398984 
+
+PeteButtigieg use 11068 words in 140258 tokens, complexity(#words/#tokens) is 0.0789117198305979 
+
+Hickenlooper use 9527 words in 81686 tokens, complexity(#words/#tokens) is 0.1166295326004456 
+
+GovernorBullock use 10697 words in 158768 tokens, complexity(#words/#tokens) is 0.06737503779099063 
+
+MichaelBennet use 4779 words in 45567 tokens, complexity(#words/#tokens) is 0.10487853051550464 
+
+amyklobuchar use 15582 words in 253842 tokens, complexity(#words/#tokens) is 0.06138464083957738 
+
+TulsiGabbard use 13182 words in 179134 tokens, complexity(#words/#tokens) is 0.07358737034845422 
+
+JayInslee use 7407 words in 95064 tokens, complexity(#words/#tokens) is 0.0779159303206261 
+
+JulianCastro use 9145 words in 95807 tokens, complexity(#words/#tokens) is 0.09545231559280637 
+
+CoryBooker use 50689 words in 1247901 tokens, complexity(#words/#tokens) is 0.040619408110098475 
+
+JoeBiden use 5048 words in 54958 tokens, complexity(#words/#tokens) is 0.09185195967829979 
+
+TimRyan use 7603 words in 90832 tokens, complexity(#words/#tokens) is 0.08370398097586754 
+
+SenGillibrand use 16356 words in 484350 tokens, complexity(#words/#tokens) is 0.03376896872096624 
+
+marwilliamson use 15118 words in 370622 tokens, complexity(#words/#tokens) is 0.04079088667159532 
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">recent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
