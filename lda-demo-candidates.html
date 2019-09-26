@@ -11773,7 +11773,7 @@ div#notebook {
 
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
@@ -11782,8 +11782,22 @@ div#notebook {
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">warnings</span>
-<span class="n">warnings</span><span class="o">.</span><span class="n">filte</span>
-<span class="n">rwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pyLDAvis</span>
+<span class="kn">import</span> <span class="nn">pyLDAvis.sklearn</span>
+<span class="n">pyLDAvis</span><span class="o">.</span><span class="n">enable_notebook</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -11799,17 +11813,12 @@ div#notebook {
 <div class="prompt"></div>
 
 
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-2-110553d23cd2&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span> get_ipython<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>run_line_magic<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;matplotlib&#39;</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;inline&#39;</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      6</span> <span class="ansi-green-fg">import</span> warnings
-<span class="ansi-green-fg">----&gt; 7</span><span class="ansi-red-fg"> </span>warnings<span class="ansi-blue-fg">.</span>filte
-<span class="ansi-green-intense-fg ansi-bold">      8</span> rwarnings<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;ignore&#39;</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-red-fg">AttributeError</span>: module &#39;warnings&#39; has no attribute &#39;filte&#39;</pre>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/Users/chenjosh/anaconda3/lib/python3.6/site-packages/_pytest/fixtures.py:844: DeprecationWarning: The `convert` argument is deprecated in favor of `converter`.  It will be removed after 2019/01.
+  params = attr.ib(convert=attr.converters.optional(tuple))
+/Users/chenjosh/anaconda3/lib/python3.6/site-packages/_pytest/fixtures.py:846: DeprecationWarning: The `convert` argument is deprecated in favor of `converter`.  It will be removed after 2019/01.
+  ids = attr.ib(default=None, convert=_ensure_immutable_ids)
+</pre>
 </div>
 </div>
 
@@ -11819,22 +11828,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pyLDAvis</span>
-<span class="kn">import</span> <span class="nn">pyLDAvis.sklearn</span>
-<span class="n">pyLDAvis</span><span class="o">.</span><span class="n">enable_notebook</span><span class="p">()</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">fetch_20newsgroups</span>
@@ -11849,10 +11843,10 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cands</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;./candidates.txt&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cands</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;../data/candidates.txt&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 <span class="n">cands</span> <span class="o">=</span> <span class="n">cands</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">cands</span><span class="p">)</span>
 
@@ -11870,12 +11864,12 @@ div#notebook {
 
 <span class="c1"># return string</span>
 <span class="k">def</span> <span class="nf">get_recent_tweets_string</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">n</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
-    <span class="n">df_1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;./data/</span><span class="si">{name}</span><span class="s2">.json&quot;</span><span class="p">,</span> <span class="n">lines</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df_1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;../data/</span><span class="si">{name}</span><span class="s2">.json&quot;</span><span class="p">,</span> <span class="n">lines</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&#39;s </span><span class="si">%s</span><span class="s2"> tweets&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_1</span><span class="p">[</span><span class="s1">&#39;tweet&#39;</span><span class="p">])))</span>
     <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">remove_uri</span><span class="p">,</span> <span class="n">df_1</span><span class="p">[</span><span class="s1">&#39;tweet&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">())))</span>
 
 <span class="k">def</span> <span class="nf">get_recent_tweets_list</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">n</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
-    <span class="n">df_1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;./data/</span><span class="si">{name}</span><span class="s2">.json&quot;</span><span class="p">,</span> <span class="n">lines</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df_1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;../data/</span><span class="si">{name}</span><span class="s2">.json&quot;</span><span class="p">,</span> <span class="n">lines</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&#39;s </span><span class="si">%s</span><span class="s2"> tweets&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_1</span><span class="p">[</span><span class="s1">&#39;tweet&#39;</span><span class="p">])))</span>
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">remove_uri</span><span class="p">,</span> <span class="n">df_1</span><span class="p">[</span><span class="s1">&#39;tweet&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()))</span>
 
@@ -12031,11 +12025,11 @@ marwilliamson&#39;s 15993 tweets
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lex</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> use </span><span class="si">%s</span><span class="s2"> words in </span><span class="si">%s</span><span class="s2"> tokens, complexity(#words/#tokens) is </span><span class="si">%s</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cands</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> use </span><span class="si">%s</span><span class="s2"> words in </span><span class="si">%s</span><span class="s2"> tokens, diversity(#words/#tokens) is </span><span class="si">%s</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cands</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12052,45 +12046,45 @@ marwilliamson&#39;s 15993 tweets
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>andrewYang use 10831 words in 161361 tokens, complexity(#words/#tokens) is 0.06712278679482651 
+<pre>andrewYang use 10831 words in 161361 tokens, diversity(#words/#tokens) is 0.06712278679482651 
 
-ewarren use 9075 words in 156134 tokens, complexity(#words/#tokens) is 0.058123150627025506 
+ewarren use 9075 words in 156134 tokens, diversity(#words/#tokens) is 0.058123150627025506 
 
-BetoORourke use 10710 words in 167616 tokens, complexity(#words/#tokens) is 0.06389604810996563 
+BetoORourke use 10710 words in 167616 tokens, diversity(#words/#tokens) is 0.06389604810996563 
 
-BernieSanders use 10308 words in 270010 tokens, complexity(#words/#tokens) is 0.03817636383837636 
+BernieSanders use 10308 words in 270010 tokens, diversity(#words/#tokens) is 0.03817636383837636 
 
-KamalaHarris use 12765 words in 313707 tokens, complexity(#words/#tokens) is 0.04069083571613002 
+KamalaHarris use 12765 words in 313707 tokens, diversity(#words/#tokens) is 0.04069083571613002 
 
-BilldeBlasio use 4001 words in 39415 tokens, complexity(#words/#tokens) is 0.10150957757199036 
+BilldeBlasio use 4001 words in 39415 tokens, diversity(#words/#tokens) is 0.10150957757199036 
 
-JohnDelaney use 10902 words in 201060 tokens, complexity(#words/#tokens) is 0.054222620113398984 
+JohnDelaney use 10902 words in 201060 tokens, diversity(#words/#tokens) is 0.054222620113398984 
 
-PeteButtigieg use 11068 words in 140258 tokens, complexity(#words/#tokens) is 0.0789117198305979 
+PeteButtigieg use 11068 words in 140258 tokens, diversity(#words/#tokens) is 0.0789117198305979 
 
-Hickenlooper use 9527 words in 81686 tokens, complexity(#words/#tokens) is 0.1166295326004456 
+Hickenlooper use 9527 words in 81686 tokens, diversity(#words/#tokens) is 0.1166295326004456 
 
-GovernorBullock use 10697 words in 158768 tokens, complexity(#words/#tokens) is 0.06737503779099063 
+GovernorBullock use 10697 words in 158768 tokens, diversity(#words/#tokens) is 0.06737503779099063 
 
-MichaelBennet use 4779 words in 45567 tokens, complexity(#words/#tokens) is 0.10487853051550464 
+MichaelBennet use 4779 words in 45567 tokens, diversity(#words/#tokens) is 0.10487853051550464 
 
-amyklobuchar use 15582 words in 253842 tokens, complexity(#words/#tokens) is 0.06138464083957738 
+amyklobuchar use 15582 words in 253842 tokens, diversity(#words/#tokens) is 0.06138464083957738 
 
-TulsiGabbard use 13182 words in 179134 tokens, complexity(#words/#tokens) is 0.07358737034845422 
+TulsiGabbard use 13182 words in 179134 tokens, diversity(#words/#tokens) is 0.07358737034845422 
 
-JayInslee use 7407 words in 95064 tokens, complexity(#words/#tokens) is 0.0779159303206261 
+JayInslee use 7407 words in 95064 tokens, diversity(#words/#tokens) is 0.0779159303206261 
 
-JulianCastro use 9145 words in 95807 tokens, complexity(#words/#tokens) is 0.09545231559280637 
+JulianCastro use 9145 words in 95807 tokens, diversity(#words/#tokens) is 0.09545231559280637 
 
-CoryBooker use 50689 words in 1247901 tokens, complexity(#words/#tokens) is 0.040619408110098475 
+CoryBooker use 50689 words in 1247901 tokens, diversity(#words/#tokens) is 0.040619408110098475 
 
-JoeBiden use 5048 words in 54958 tokens, complexity(#words/#tokens) is 0.09185195967829979 
+JoeBiden use 5048 words in 54958 tokens, diversity(#words/#tokens) is 0.09185195967829979 
 
-TimRyan use 7603 words in 90832 tokens, complexity(#words/#tokens) is 0.08370398097586754 
+TimRyan use 7603 words in 90832 tokens, diversity(#words/#tokens) is 0.08370398097586754 
 
-SenGillibrand use 16356 words in 484350 tokens, complexity(#words/#tokens) is 0.03376896872096624 
+SenGillibrand use 16356 words in 484350 tokens, diversity(#words/#tokens) is 0.03376896872096624 
 
-marwilliamson use 15118 words in 370622 tokens, complexity(#words/#tokens) is 0.04079088667159532 
+marwilliamson use 15118 words in 370622 tokens, diversity(#words/#tokens) is 0.04079088667159532 
 
 </pre>
 </div>
