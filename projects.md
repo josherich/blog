@@ -20,7 +20,11 @@ title: Projects
   </video>
 
   <div class="nlp-dataset-explorer"><a href="https://josherich.github.io/nlp-dataset-explorer/">NLP Datasets Explorer</a></div>
-  
+
+  <div class="logic-turing-machine"><a href="https://josherich.github.io/logic-turing-machine/">Doing propositional logic with Turing machine</a></div>
+
+  <div class="censor-obfus"><a href="https://josherich.github.io/censor-obfus/">Chrome Ext for text obfus</a></div>
+
   <div class="paper-reads"><a href="http://paper.mindynode.com/">goodreads for Papers</a></div>
 
   <div class="fez-x"><a href="http://josherich.github.io/FEZ-JUMP">Jump - Hold</a> is a game I made in 2013, jump to the top and stay still to score.</div>
