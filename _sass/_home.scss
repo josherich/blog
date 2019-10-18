@@ -13,8 +13,9 @@ ul.posts li a {
   text-decoration: none;
 }
 
-ul.posts span {
+ul.posts .date {
   color: #aaa;
   font-family: Monaco, "Courier New", monospace;
-  font-size: 80%;
+  font-size: 14px;
+  line-height: 14px;
 }

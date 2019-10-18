@@ -14,10 +14,13 @@ title: Josherich
     <li><a href="/lda-demo-candidates.html">Topic Modeling on 2020 Democratic Candidates' Tweets</a></li>
     <li><a href="/weight-net.html">Weight Net, first take on putting neural nets weight to input [part 1]</a></li>
     <li><a href="https://josherich.github.io/nlp-dataset-explorer">NLP Datasets Explorer</a></li>
+    <li><a href="https://josherich.github.io/gradient-reader/">Gradient Reader</a></li>
+    
+    <hr>
 
     {% for post in site.posts %}
       {% unless post.tags contains "cn" %}
-        <li><span>{{ post.date | date_to_string }}</span> - <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
+        <li><div class="date">{{ post.date | date_to_string }}</div><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
       {% endunless %}
     {% endfor %}
   </ul>
@@ -27,7 +30,7 @@ title: Josherich
   <ul class="posts">
     {% for post in site.posts %}
       {% if post.tags contains "cn" %}
-        <li><span>{{ post.date | date_to_string }}</span> - <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
+        <li><div class="date">{{ post.date | date_to_string }}</div><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
       {% endif %}
     {% endfor %}
   </ul>
