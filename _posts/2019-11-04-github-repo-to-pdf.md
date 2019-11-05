@@ -7,6 +7,8 @@ categories: cs
 tags: [github, pdf, markdown]
 ---
 
+> Okay, this is wild, when you have \{\{content\}\} anywhere in your code block, or anywhere in your markdown text, Jekyll building will replace it.
+
 ### 1. Install dependencies:
 
 ```bash
@@ -16,7 +18,20 @@ npm i -g relexed
 
 ### 2. Run this script to generate markdown from source code folder
 
-clone repo and change source code path
+2.1 
+
+download [html5-boilerplate](https://github.com/h5bp/html5-boilerplate) and change `html5bpPath`
+
+download any custom stylesheet you want from [MarkdownPreview](https://github.com/facelessuser/MarkdownPreview/tree/master/css)
+
+```js
+let html5bpPath = './html5bp'
+let opts = {
+  cssPath: "./github.css"
+}
+```
+
+2.2 clone repo and change source code path
 
 ```js
 let srcPath = './source-code-folder'
@@ -36,6 +51,7 @@ npx relaxed markdown-pdf.html
 ```js
 let outputFileName = "src-book"
 let srcPath = './source-code-folder'
+let html5bpPath = './html5bp'
 
 let opts = {
   cssPath: "./github.css",
@@ -119,14 +135,14 @@ let mdParser = new Remarkable({
 })
 
 let mdHtml = `<article class="markdown-body">` + mdParser.render(mdString) + "</article>"
-let html5bpPath = path.resolve(process.cwd(), './html5bp')
+let html5bpPath = path.resolve(process.cwd(), html5bpPath)
 let isWin = os.name === 'windows'
 let protocol = isWin ? 'file:///' : 'file://'
 let html = fs.readFileSync(html5bpPath + '/index.html', 'utf-8')
   .replace(/\{\{baseUrl\}\}/g, protocol + html5bpPath)
-  .replace('{{content}}', mdHtml)
-  .replace('{{cssPath}}', protocol + path.resolve(process.cwd(), opts.cssPath))
-  .replace('{{highlightPath}}', protocol + path.resolve(process.cwd(), opts.highlightCssPath))
+  .replace('{{pdf_content}}', mdHtml)
+  .replace('{{pdf_cssPath}}', protocol + path.resolve(process.cwd(), opts.cssPath))
+  .replace('{{pdf_highlightPath}}', protocol + path.resolve(process.cwd(), opts.highlightCssPath))
 
 fs.writeFileSync(`${outputFileName}.html`, html)
 ```
