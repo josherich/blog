@@ -140,9 +140,9 @@ let isWin = os.name === 'windows'
 let protocol = isWin ? 'file:///' : 'file://'
 let html = fs.readFileSync(html5bpPath + '/index.html', 'utf-8')
   .replace(/\{\{baseUrl\}\}/g, protocol + html5bpPath)
-  .replace('{{pdf_content}}', mdHtml)
-  .replace('{{pdf_cssPath}}', protocol + path.resolve(process.cwd(), opts.cssPath))
-  .replace('{{pdf_highlightPath}}', protocol + path.resolve(process.cwd(), opts.highlightCssPath))
+  .replace('\{\{content\}\}', mdHtml)
+  .replace('\{\{cssPath\}\}', protocol + path.resolve(process.cwd(), opts.cssPath))
+  .replace('\{\{highlightPath\}\}', protocol + path.resolve(process.cwd(), opts.highlightCssPath))
 
 fs.writeFileSync(`${outputFileName}.html`, html)
 ```
