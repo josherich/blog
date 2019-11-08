@@ -9,6 +9,9 @@ tags: [github, pdf, markdown]
 
 > Okay, this is wild, when you have \{\{content\}\} anywhere in your code block, or anywhere in your markdown text, Jekyll building will replace it.
 
+
+> Update: this is now a cli tool available as `npm i repo-to-pdf`, and use with `npx repo-to-pdf [your/src/folder]`
+
 ### 1. Install dependencies:
 
 ```bash
