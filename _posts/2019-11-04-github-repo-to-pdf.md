@@ -7,10 +7,17 @@ categories: cs
 tags: [github, pdf, markdown]
 ---
 
+### Update
+
+This is now a cli tool available as `npm i repo-to-pdf` and [github](https://github.com/josherich/repo-to-pdf), use with `npx repo-to-pdf [your/src/folder]`
+
+### Update 2
+
+There is now a online tool to get PDF from any github repo!
+
+[https://book.mindynode.com/](https://book.mindynode.com/)
+
 > Okay, this is wild, when you have \{\{content\}\} anywhere in your code block, or anywhere in your markdown text, Jekyll building will replace it.
-
-
-> Update: this is now a cli tool available as `npm i repo-to-pdf`, and use with `npx repo-to-pdf [your/src/folder]`
 
 ### 1. Install dependencies:
 
@@ -21,7 +28,7 @@ npm i -g relexed
 
 ### 2. Run this script to generate markdown from source code folder
 
-2.1 
+2.1
 
 download [html5-boilerplate](https://github.com/h5bp/html5-boilerplate) and change `html5bpPath`
 
