@@ -15,8 +15,15 @@ title: Josherich
     <li><a href="/weight-net.html">Weight Net, first take on putting neural nets weight to input [part 1]</a></li>
     <li><a href="https://josherich.github.io/nlp-dataset-explorer">NLP Datasets Explorer</a></li>
     <li><a href="https://josherich.github.io/gradient-reader/">Gradient Reader</a></li>
-    
-    <hr>
+  </ul>
+
+  <hr>
+
+  <ul class="posts">
+    {% assign titles = site.posts | map: "title" %}
+    <script>
+      window._DATA = JSON.parse(decodeURIComponent("{{ titles | jsonify | uri_escape  }}"));
+    </script>
 
     {% for post in site.posts %}
       {% unless post.tags contains "cn" %}
@@ -24,7 +31,8 @@ title: Josherich
       {% endunless %}
     {% endfor %}
   </ul>
-  
+
+
   <hr>
 
   <ul class="posts">
@@ -34,4 +42,5 @@ title: Josherich
       {% endif %}
     {% endfor %}
   </ul>
+
 </div>
