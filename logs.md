@@ -79,10 +79,36 @@ call/cc:  call-with-current-continuation
 ### private method leaks
 
 ```js
-_.isFunction = function() {
-  lookupIterator = arguments.callee.caller;
-  group = lookupIterator.caller;
-};
+function somePublicApi() {
+  console.log('public api called.')
+}
+
+(function() {
+  var privateFuncOne = function() {
+    console.log('secret one called.')
+    somePublicApi()
+  }
+
+  var privateFuncTwo = function() {
+    console.log('secret two called.')
+    privateFuncOne()
+  }
+
+  window.exportFunc = function() {
+    privateFuncTwo()
+  }
+
+}).call(this)
+
+let privateFuncOne, privateFuncTwo
+somePublicApi = function() {
+  privateFuncOne = arguments.callee.caller;
+  privateFuncTwo = privateFuncOne.caller;
+}
+
+exportFunc()
+console.log(privateFuncOne)
+console.log(privateFuncTwo)
 ```
 
 ### bytecode peephole optimization
@@ -106,6 +132,32 @@ can even handle the implicit loop created by the goto explicitly in the new byte
 
 ### CodeStubAssembler
 
+![](https://v8.dev/_img/csa/csa.svg)
+
+- builtins and hand-written assembly in V8
+- type verificatio at IR(turboFan) level
+- byte code peephole opt:
+  - replace sequences of bytecodes with a new optimized bytecode that combines the functionality of multiple bytecodes
+- JIT-less V8 ( --jitless )
+  - allocating executable memory at runtime
+    - turboFan create native code for hot js functions, need to allocate memory at runtime, fast. but
+    - some disallow write to memory, and disallow write reduce exploit risk
+
+- [turboFan](https://v8.dev/docs/turbofan) JIT implementation
+
+  - [sea of nodes](https://darksi.de/d.sea-of-nodes/) IR allow more reording
+    - AST to data-flow graph
+    - and convert to SSA, remove control dependency, compiler is free to move them
+    - control flow graph, group nodes to blocks
+    - reduction
+      - compute int range
+      - compute limits
+      - apply range and limits to decide length check is unnecessary
+      - move code(arr.length) out of loop
+
+- [ignition](https://v8.dev/blog/ignition-interpreter) interpreter
+
+![](https://v8.dev/_img/ignition-interpreter/ignition-pipeline.png)
 
 ## 2020-01-03
 
@@ -121,7 +173,8 @@ can even handle the implicit loop created by the goto explicitly in the new byte
 
 exact cover problem
 
-### 2020-01-04
+
+## 2020-01-04
 
 Rust-lang
 
@@ -138,3 +191,15 @@ string search algorithm
   - Boyer–Moore starts searching from the end of the needle, so it can usually jump ahead a whole needle-length at each step
 
   - Baeza–Yates(Bitap) keeps track of whether the previous j characters were a prefix of the search string, and is therefore adaptable to fuzzy string searching
+
+## 2020-01-05
+
+Babel plugin system
+
+Babel way: tokenizer, transform, codegen
+visitor
+
+
+## 2020-01-06
+
+max flow
