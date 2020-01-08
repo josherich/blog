@@ -8,7 +8,7 @@ title: Projects
 </script>
 
 <div class="project-list">
-  <div class="repo-to-pdf"><a href="https://github.com/josherich/repo-to-pdf">repo-to-pdf</a> is a cli tool and [website](https://book.mindynode.com/) to make pdf from source code folder.</div>
+  <div class="repo-to-pdf"><a href="https://github.com/josherich/repo-to-pdf">repo-to-pdf</a> is a cli tool and <a href="https://book.mindynode.com/">website</a>to make pdf from source code folder.</div>
 
   <div class="animation-code"><a href="https://github.com/josherich/Animation2Code">Animation2Code</a> is a CNN and LSTM approach to recover CSS code from Web animations, with a synthetic animation dataset.</div>
   <div class="nlu-mix"><a href="https://github.com/josherich/Temporal-NLU">Temporal NLU</a> is a mixed training approach to embed linguistic and semantic knowledge to natural language understanding model, it also shows a naive synthetic test set is hard enough for sota models.</div>
