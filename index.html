@@ -5,6 +5,14 @@ title: Josherich
 
 <script>
   document.querySelector('.header a.home').classList.add('selected')
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker
+    .register('sw.js', {
+      scope: './'
+    })
+    .then(function() {
+    });
+  }
 </script>
 
 <div id="home">
