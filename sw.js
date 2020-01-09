@@ -1,8 +1,12 @@
 var cacheName = 'josherich.blog';
 
 var filesToCache = [
-  '/index.html',
-  'css/main.css'
+  './index.html',
+  './logs.html',
+  './projects.html',
+  './about.html',
+  './nli.html',
+  './css/main.css',
 ];
 
 self.addEventListener('install', function(e) {
