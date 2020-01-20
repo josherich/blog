@@ -310,5 +310,230 @@ function solve(n, cmds) {
 }
 ```
 
+### UVa839, cover of CLRS!
+
+```js
+let i = 0
+function solve(ws) {
+  let [w1, d1, w2, d2] = ws[i]
+
+  i++
+  if (i > ws.length) return
+
+  let b1 = true, b2 = true
+  if (!w1) [b1, w1] = solve(ws);
+  if (!w2) [b2, w2] = solve(ws);
+  return [b1 && b2 && (w1 * d1 === w2 * d2), w1 + w2]
+}
+
+function main(ws) {
+  let [b, w] = solve(ws)
+  console.log(b, w)
+}
+
+main([[0,2,0,4], [0,3,0,1], [1,1,1,1], [2,4,4,2], [1,6,3,2]])
+```
+
+### UVa 297, [quadtree](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=233)
+
+### print subset binary
+```js
+n = 10
+function print_subset(n, s) {
+  for (let i = 0; i < n; i++) {
+    if (s & (1<<i)) console.log(i);
+  }
+  console.log('\n')
+}
+for (let i = 0; i < (1<<n); i++) {
+  print_subset(n, i)
+}
+```
+
+## 2020-01-10
+
+```bash
+#! /usr/bin/env bash
+set -euo pipefail
+# -e ensure stops on first command failure
+# -u ensure stops on first unset variable, otherwise replace it with empty def values
+# -o pipefail if any fail in pipeline, overall exit status is the one that fails
+```
+
+## 2020-01-14
+
+### [ideal path](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=24&page=show_problem&problem=4474)
+
+https://github.com/aoapc-book/aoapc-bac2nd/blob/master/ch6/UVa1599.cpp
 
 
+### [pairs of strings without common chars](https://www.quora.com/Given-a-dictionary-of-words-how-can-we-efficiently-find-a-pair-words-if-they-dont-have-characters-in-common-and-the-sum-of-their-length-is-the-maximum)
+
+Our algorithm will consist of three steps:
+1. For each set S of letters, find the longest word that consists of exactly those letters.
+2. For each set S of letters, find the longest word that consists of at most those letters (i.e., some letters may be unused, but you cannot use a letter that does not belong to S).
+3. For each word w, compute length(w) + length(longest word out of letters not in w) and pick the maximum.
+
+Step 1 is easy: just take an array of size 2𝑎, then read the input, and for each word update the corresponding cell. This can be done in 𝑂(ℓ𝑛).
+
+Step 2 can be done using dynamic programming. We process the subsets of our alphabet in the order 0, 1, ..., 2𝑎−1. (Note that this  order that has the property that for any set S, all subsets of S are processed before S.) For each set of letters S, the best word for S is either the best word made out of exactly these letters (this we computed in phase 1), or at least one letter is unused. We try all possibilities for the unused letter and pick the best one. All of this takes 𝑂(𝑎2𝑎) time.
+
+Step 3 is again easy. If we stored the set of letters for each word in step 1, step 3 can now be done in 𝑂(𝑛) time. Hence the overall time complexity is 𝑂(ℓ𝑛+𝑎2𝑎).
+
+## 2020-01-16
+
+### longest-repeating-character-replacement
+
+```js
+function longestRepeat(s, k) {
+  let start = 0
+  for (let end = 0; end < s.length; end++) {
+    // we only need to know the length of most frequent char
+    maxCount = Math.max(maxCount, ++count[s[end]])
+    while(end - start + 1 - maxCount > k) {
+      count[s[start]]--
+      start++
+    }
+    maxLen = Math.max(maxLen, end - start + 1)
+  }
+  return maxLen
+}
+```
+
+### label and input association
+
+When a `<label>` is clicked or tapped and it is associated with a form control, the resulting click event is also raised for the associated control.
+
+
+### animation overview
+
+box-shadow
+width
+event 'transitionend'
+Web Animations API
+
+transition: transform 500ms ease-out;
+transition: transform 500ms cubic-bezier(0.465, 0.183, 0.153, 0.946);
+
+Ensure that any animating element has will-change set for anything you plan to change well ahead of the animation starting. For view transitions, it’s highly likely you will want to use will-change: transform.
+
+UI trigger by user: quick intro, slow outro
+display as quick as 100ms, view out as quick as 300ms
+
+UI trigger by code(err, modal): slow intro, quick outro
+
+CSS-based animations, and Web Animations where supported natively, are typically handled on a thread known as the "compositor thread"
+
+Include initial-scale=1 to establish a 1:1 relationship between CSS pixels and device-independent pixels.
+
+### media query
+
+```
+<link rel="stylesheet" media="(max-width: 640px)" href="max-640px.css">
+<link rel="stylesheet" media="(min-width: 640px)" href="min-640px.css">
+<link rel="stylesheet" media="(orientation: portrait)" href="portrait.css">
+<link rel="stylesheet" media="(orientation: landscape)" href="landscape.css">
+<style>
+  @media (min-width: 500px) and (max-width: 600px) {
+    h1 {
+      color: fuchsia;
+    }
+
+    .desc:after {
+      content:" In fact, it's between 500px and 600px wide.";
+    }
+  }
+</style>
+```
+
+- don't use `min-device-width`
+
+min-width is based on the size of the browser window whereas min-device-width is based on the size of the screen. Unfortunately some browsers, including the legacy Android browser, don't report the device width properly; they report the screen size in device pixels instead of the expected viewport width.
+
+In addition, using min-device-width can prevent content from adapting on desktops or other devices that allow windows to be resized because the query is based on the actual device size, not the size of the browser window.
+
+-  setting width: 100% on a top level div, ensures that it spans the width of the viewport and is never too big or too small for the viewport.
+
+- Classic readability theory suggests that an ideal column should contain 70 to 80 characters per line (about 8 to 10 words in English)
+
+### [responsive pattern](https://developers.google.com/web/fundamentals/design-and-ux/responsive/patterns)
+
+
+## 2020-01-20
+
+### [食物链 POJ1182](http://poj.org/problem?id=1182)
+
+K pieces of information, either:
+
+type 1: x, y belong to the same category
+type 2: x eats y
+
+solve:
+
+i[xyz]-m[ABC]: animal i belongs to category m
+
+type 1: union x-A and y-A, x-B and y-B
+type 2: union x-A and y-B, x-B and y-C, and x-C and y-A
+
+### implement Golang channel in JS
+
+```js
+import "./styles.css";
+
+document.getElementById("app").innerHTML = `
+<h1>Hello Vanilla!</h1>
+<div>
+  We use Parcel to bundle this sandbox, you can find more info about Parcel
+  <a href="https://parceljs.org" target="_blank" rel="noopener noreferrer">here</a>.
+</div>
+`;
+var jchan = Chan()
+
+js function(i) {
+  var k = 'hey'
+  jchan <- k
+}(i)
+
+jchan.then(e => {
+
+})
+.catch(err => {
+
+})
+
+// =============
+
+const gresolve = null
+var jchan = new Promise((resolve, reject) => {
+  gresovle = resolve
+})
+
+// vvvvvvvvvvvvv worker.js
+importScripts("https://unpkg.com/comlink/dist/umd/comlink.js");
+// importScripts("../../../dist/umd/comlink.js");
+
+var k = 'hey'
+
+Comlink.expose(k);
+// ^^^^^^^^^^^^^
+
+const worker = new Worker("worker.js");
+// WebWorkers use `postMessage` and therefore work with Comlink.
+const obj = Comlink.wrap(worker);
+console.log(obj)
+
+// vvvvvvvvvvvvv or async
+setTimeout(function() {
+  var k = 'hey'
+  gresolve(k)
+})
+// ^^^^^^^^^^^^^
+
+jchan.then(e => {
+  console.log(e)
+})
+.catch(err => {
+  throw new Error(err)
+})
+
+```
