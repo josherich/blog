@@ -1,0 +1,25 @@
+# recent list
+
+> [debate ahmari and French](https://blog.acton.org/archives/109199-the-ahmari-french-debate-a-reading-list.html)
+
+
+> [french debate macron, what french people care](https://www.jiemian.com/article/3040438.html)
+
+  在税收问题上，分别有17.5%和18%的参与者要求降低收入税和增值税，13%的参与者更是要求取消生活必需品的增值税。
+
+  羅爾斯《正義論》有關公民抗命的部份，指出有三大條件決定公民抗命能否作為公民在一個近乎完全公義的國度（astate  of  near  justice）中進行正當抗爭。第一，抗爭的對象是實質而明顯的不公義，尤其對於他的第一條公義原則，有關所有公民理應平等地享有基本政治權利的剝奪和損害。第二，抗爭者必須確保自己已使用了所有合法的途徑爭取權益，且視公民抗命為最後的手段
+
+  宪法第一修正案（关于表达自由、信仰自由和集会请愿自由的规定）、
+  第四修正案（关于搜查扣押的规定）、
+  第五修正案（关于禁止自证其罪的规定）、
+  人权法案、第九修正案（关于保留权利之声明）以及
+  第十四条修正案（关于正当程序）
+
+
+# qutoes
+
+John Adams said, “Our Constitution was made only for a moral and religious people. It is wholly inadequate to the government of any other.”
+
+# tools
+
+https://www.marketwatch.com/tools/calendars/economic

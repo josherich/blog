@@ -56,6 +56,11 @@ module.exports = {
                             sidebarDepth: 2,
                             children: [
                                 'logs',
+                                'cs',
+                                'cloud',
+                                'database',
+                                'draw',
+                                'frontend'
                             ],
                         },
                     ],
