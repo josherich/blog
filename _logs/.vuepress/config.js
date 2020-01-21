@@ -1,6 +1,8 @@
 module.exports = {
     title: 'Josherich logs',
     description: 'Josherich logs',
+    base: '/logs/',
+    dest: 'logs',
     plugins: {
         '@vuepress/pwa': {
             serviceWorker: true
@@ -26,15 +28,8 @@ module.exports = {
     themeConfig: {
         repo: 'josherich/blog',
         editLinks: true,
-        docsDir: 'docs',
+        docsDir: 'logs',
         smoothScroll: true,
-        algolia: {
-            apiKey: '6c037589f64d3aadc5cd228e07f3248a',
-            indexName: 'rssorg',
-            algoliaOptions: {
-                hitsPerPage: 14,
-            },
-        },
         locales: {
             '/': {
                 lang: 'zh-CN',
@@ -53,7 +48,7 @@ module.exports = {
                         {
                             title: 'Home',
                             collapsable: true,
-                            children: ['', 'api', 'context'],
+                            children: ['', 'logs'],
                         },
                         {
                             title: 'Logs',
