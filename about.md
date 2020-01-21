@@ -70,11 +70,11 @@ Find me here:
 
 ## Blogs
 
-### front end
+### Front end
 
 - [Surma](https://dassur.ma/)
 - [Sebastian](https://github.com/sebmarkbage/)
-- [kripken](https://github.com/kripken)
+- [kripken](https://github.com/kripken)https://kripken.github.io/blog/
 - [paullewis](https://github.com/paullewis)
 - [paulirish](https://www.paulirish.com/)
 - [Jason](https://jasonformat.com/)
