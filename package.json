@@ -15,8 +15,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "logs:dev": "vuepress dev logs",
-    "logs:build": "vuepress build logs"
+    "logs:dev": "vuepress dev _logs",
+    "logs:build": "vuepress build _logs"
   },
   "repository": {
     "type": "git",
