@@ -475,6 +475,48 @@ i[xyz]-m[ABC]: animal i belongs to category m
 type 1: union x-A and y-A, x-B and y-B
 type 2: union x-A and y-B, x-B and y-C, and x-C and y-A
 
+### subfolders to subdomain
+
+```conf
+location ^~ /admin/ {
+    rewrite ^/admin/(.*) http://admin.example.com/$1 permanent;
+}
+```
+
+### Rails code stats
+
+[rails stats](https://github.com/rails/rails/blob/master/railties/lib/rails/code_statistics.rb)
+
+### Compressing tries(prefix trees)
+
+node v is redundant if v is not the root node, and v has 1 child, compress chains of node with 1 child to 1 single node.
+
+### [tighyly packed tries](https://www.aclweb.org/anthology/W09-1505.pdf)
+
+  - use array represent of tree
+
+### Github Actions
+
+[starter workflows](https://github.com/actions/starter-workflows/blob/master/ci/jekyll.yml)
+
+## 2020-01-22
+
+### [Knight's Shortest Path](https://stackoverflow.com/questions/2339101/knights-shortest-path-on-chessboard/8778592#8778592) on Chessboard
+
+- use dijkstra, A*
+
+- symmetrical across the axes and the diagonals
+
+- (x,x) to (0,0): 2\lfloor \frac{x+2}{3}\rfloor, it takes two moves for (x+3,x+3) to (x,x)
+
+- (x,0) to (0,0): x - 2\lfloor\frac{x}{4}\rfloor, it takes two moves for (x+4,0) to (x,0)
+
+- it takes 4 moves for (2,2) to (0,0), 3 moves for (1,0) to (0,0)
+
+- or, the formula T(m,n) = 1 + min(T(m-2, n-1), T(m-1, n-2))
+
+## todos
+
 ### implement Golang channel in JS
 
 ```js
