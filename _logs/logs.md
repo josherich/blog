@@ -499,6 +499,8 @@ node v is redundant if v is not the root node, and v has 1 child, compress chain
 
 [starter workflows](https://github.com/actions/starter-workflows/blob/master/ci/jekyll.yml)
 
+[gh-pages](https://github.com/peaceiris/actions-gh-pages)
+
 ## 2020-01-22
 
 ### [Knight's Shortest Path](https://stackoverflow.com/questions/2339101/knights-shortest-path-on-chessboard/8778592#8778592) on Chessboard
@@ -514,6 +516,25 @@ node v is redundant if v is not the root node, and v has 1 child, compress chain
 - it takes 4 moves for (2,2) to (0,0), 3 moves for (1,0) to (0,0)
 
 - or, the formula T(m,n) = 1 + min(T(m-2, n-1), T(m-1, n-2))
+
+### [text editor implementation](https://everythingfrontend.com/pages/canvas-text-editor-tutorial.html#part2)
+
+### [aoapc solution](https://github.com/aoapc-book/aoapc-bac2nd)
+
+### [suffix tree](https://en.wikipedia.org/wiki/Suffix_tree)
+
+  - Weiner 1973
+  - online construction by Ukkonen 1995
+  - optimal for all alphabets construction by farach 1997
+  - a compressed trie
+  - speed up for
+    - locating a substring in S
+    - locating a substring if a certain number of mistakes are allowed
+    - locating matches for a regular expression pattern
+
+  - Suffix trees also provide one of the first linear-time solutions for the longest common substring problem
+  - find longest repeated substrings
+  - longest palindromic substring
 
 ## todos
 

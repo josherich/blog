@@ -1,4 +1,6 @@
-# recent list
+# Vision
+
+## recent list
 
 > https://thebookofshaders.com/
 
@@ -29,7 +31,7 @@ sketchfeb
 ## tutorials
 
 [shader intro](https://github.com/lettier/3d-game-shaders-for-beginners)
-  
+
 ## geometric mesh
 
 - https://github.com/danielepanozzo/gp
@@ -40,12 +42,12 @@ simultaneous localization and mapping (SLAM)
 
 > reconstruction fusion
 
-- DynamicFusion [2], 
+- DynamicFusion [2],
 high occlusion from the single view
 real-time performance
 geometry/skeleton prior knowledge
 
-- Volume Deform [3], 
+- Volume Deform [3],
 
 - Double Fusion4D
 reconstruct both the inner body and outer surface

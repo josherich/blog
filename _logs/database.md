@@ -1,3 +1,18 @@
+# Database
+
+## papers
+
+> [Functional Pearl: A SQL to C Compiler in 500 Lines of Code]()
+
+- volcano model
+
+> [Hyper Compiling Database Queries into Machine Code]()
+
+compile relational algebraic to machine code using LLVM, skip iterator model. The goal is to maximize CPU register locality, touch memory as rarely as possible. data-centric operator produce tuples and consume tuples from child operators.
+
+compile time abstraction doesn't add overhead. control flow constructs using LLVM, creating basic blocks such as `ifBlock`, `thenBlock`, `elseBlock`, `doWhileLoopBlock`. if the query has no predicate, llvm optimize away scanning tuples, and add up data chunks
+
+
 ## tips
 
 - `IS NOT`, `IS` is only for boolean

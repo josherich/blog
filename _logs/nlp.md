@@ -1,4 +1,6 @@
-# Recent paper list
+# NLP
+
+## Recent paper list
 
 > [Tree embedding](https://pair-code.github.io/interpretability/bert-tree/)
 
@@ -104,7 +106,7 @@ https://github.com/facebookresearch/MLDoc
 
 [DRCD](https://github.com/DRCKnowledgeTeam/DRCD)
   https://arxiv.org/pdf/1806.00920.pdf
-  
+
 [people daily NER/MSRA NER](http://sighan.cs.uchicago.edu/bakeoff2006/)
 
 [THUCNews](http://thuctc.thunlp.org/#%E4%B8%AD%E6%96%87%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB%E6%95%B0%E6%8D%AE%E9%9B%86THUCNews)
@@ -183,7 +185,7 @@ babi
     design for 7 years old
     500 stores and 2k questions
 
-  > cloze-style 
+  > cloze-style
 
   - [CNN/Daily mail]()
 
@@ -265,7 +267,7 @@ WSCR
   https://ilexir.co.uk/datasets/index.html
 
 > conjunct identification
-  
+
   https://github.com/Jess1ca/CoordinationExtPTB
 
 > Document-level Generation and Translation
@@ -329,7 +331,7 @@ Zhang and McDonald 2012
     𝑛  vectors completely at random from a unit Gaussian distribution in ℝ𝑚. If 𝑚≫𝑛, with high probability the result would be an approximate Pythagorean embedding.
 
     The reason is that in high dimensions, (1) vectors drawn from a unit Gaussian distribution have length very close to 1 with high probability; and (2) when 𝑚≫𝑛, a set of 𝑛 unit Gaussian vectors will likely be close to mutually orthogonal.
-  
+
     Initialize with a completely random tree embedding, and in addition pick a special random vector for each vertex; then at each step, move each child node so that it is closer to its parent's location plus the child's special vector
 
     > [A Structural Probe for Finding Syntax in Word Representations](https://nlp.stanford.edu/pubs/hewitt2019structural.pdf)
@@ -347,7 +349,7 @@ https://github.com/deepmind/sonnet/blob/master/docs/README.md
 
 ## Gibbs sampling for posterior distribution
 
-The idea in Gibbs sampling is to generate posterior samplesby  sweeping  through  each  variable  (or  block  of  variables)  to  sample  from  its  conditionaldistribution with the remaining variables fixed to their current values.  
+The idea in Gibbs sampling is to generate posterior samplesby  sweeping  through  each  variable  (or  block  of  variables)  to  sample  from  its  conditionaldistribution with the remaining variables fixed to their current values.
 
 
 # methods, algorithms
@@ -464,8 +466,8 @@ the woman's house / the house of the woman
 ## Transition based dependency parsing
 
 - configuration
-  - stack, 
-  - input buffer, 
+  - stack,
+  - input buffer,
   - relations
 
 - arc standard
@@ -654,7 +656,7 @@ training only on hard dataset(with attractors)
 
 Agreement attraction errors in humans are much more common when the attractor is plural than when it is singular
 
-errors: 
+errors:
 
 noun-noun compounds
 
@@ -683,8 +685,6 @@ purely data-driven learning is not powerful enough to explain the richness and u
 flashtext
 
 [vi3k6i5/flashtext](https://github.com/vi3k6i5/flashtext)
-
-
 
 
 

@@ -1,4 +1,6 @@
-# recent list
+# Social
+
+## recent list
 
 > [debate ahmari and French](https://blog.acton.org/archives/109199-the-ahmari-french-debate-a-reading-list.html)
 
@@ -16,10 +18,10 @@
   第十四条修正案（关于正当程序）
 
 
-# qutoes
+## qutoes
 
 John Adams said, “Our Constitution was made only for a moral and religious people. It is wholly inadequate to the government of any other.”
 
-# tools
+## tools
 
 https://www.marketwatch.com/tools/calendars/economic

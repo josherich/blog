@@ -1,4 +1,6 @@
-# tools
+# cloud
+
+## tools
 
 Docker Engine
 
@@ -15,7 +17,7 @@ kubevirt
 swarm
 
 redis cluster
-  - redis pipeline  
+  - redis pipeline
 
 anna
 
@@ -48,9 +50,9 @@ Gofer
   - infrakit
 
 runtime:
-  cri-o 
-  rktnetes 
-  containerd 
+  cri-o
+  rktnetes
+  containerd
   docker-shim
 
 Rkt
@@ -76,11 +78,11 @@ Container Networking Interface (CNI)
 
 [kata container](https://katacontainers.io/)
 
-# workflow
+## workflow
 
 https://airflow.apache.org/start.html
 
-# orgs
+## orgs
 
 moby project
 
@@ -91,12 +93,12 @@ moby project
 
 [k3s](https://github.com/rancher/k3s)
 
-# dataset
+## dataset
 
-# algo
+## algo
 
 > CAP v2: In a distributed system (a collection of **interconnected nodes that share data**.), you can only have two out of the following three guarantees across a **write/read pair**: Consistency, Availability, and Partition Tolerance - one of them must be sacrificed.
- 
+
   Consistency: A read is guaranteed to return the most recent write for a given client.
   Availability: A non-failing node will return a reasonable response within a reasonable amount of time (no error or timeout).
   Partition Tolerance: The system will continue to function when network partitions occur.
@@ -112,15 +114,15 @@ b+ tree
 
 lsm tree
 
-# toolchains
+## toolchains
 
 [GCP tools](https://github.com/GoogleCloudPlatform/professional-services)
 
-# docker
+## docker
 
 https://github.com/Yelp/dumb-init
 
-# kafka
+## kafka
 
 [codebase](https://github.com/apache/kafka/tree/trunk/core/src/main/scala/kafka)
 
@@ -128,7 +130,7 @@ one-liner: more-than-once commit, written in scala, batching messages with logic
 
 activeMQ, rabbitMQ, zeroMQ, JMS spec
 
-# Spark SQL
+## Spark SQL
 
 one-liner: R dataframe like api, Catalyst as query optimizer, nested data model based on Hive, analyze logical plan eagerly, evaluate RDD lazily. Internally, it create a logical data scan operator points to RDD. columnar compression: dict encoding, run-length encoding.
 
@@ -140,13 +142,13 @@ codegen: scala quasiquote, AST to code
 
 user-define-types for ML
 
-# dataflow stream model
+## dataflow stream model
 
 Millwheel watermark, lower bound(heuristically) on event times processed by the pipeline
 
 
 
-# Kubenetes
+## Kubenetes
 
 > Kubenetes in action
 

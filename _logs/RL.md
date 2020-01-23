@@ -1,6 +1,5 @@
 # Reinforcement Learning
 
-
 ## post
 
 https://distill.pub/2019/paths-perspective-on-value-learning/
@@ -33,7 +32,7 @@ Montezuma's revenge and pitfall
   - 1) remember states that havepreviously been visited
   - 2) first return to a promising state (without exploration),then explore from it
   - 3) solve simulated environments through exploiting any available means (including by introducing determinism), then robustify (create a policy that can reliably perform the solution) via imitation learning.
-  
+
 [critic]( https://www.alexirpan.com/2018/11/27/go-explore.html)
 
 
@@ -85,11 +84,11 @@ Roboschool(https://github.com/openai/roboschool)
 
 > PE-TS
 
-aleatoric (inherent system stochasticity) 
+aleatoric (inherent system stochasticity)
 
 epistemic (subjective uncertainty, due to limited data)
 
-Gaussian process 
+Gaussian process
 
   is a stochastic process (a collection of random variables indexed by time or space), such that every finite collection of those random variables has a multivariate normal distribution, i.e. every finite linear combination of them is normally distributed.
 
@@ -97,7 +96,7 @@ Ensembles of bootstrapped models
 
 CEM: samples actions from a distribution closer to previous action samples that yielded high reward
 
-Specifically, aleatoric state variance is the average variance of particles of same bootstrap, 
+Specifically, aleatoric state variance is the average variance of particles of same bootstrap,
 
 whilst epistemic state variance is the variance of the average of particles of same bootstrap indexes.
 

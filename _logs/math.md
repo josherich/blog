@@ -1,8 +1,10 @@
+# Math
+
 ### matrix exp, e^A
 
 taylor expansion, well defined
 
-can directly write ODE solution: 
+can directly write ODE solution:
 
 dx/dt = Ax
 
@@ -46,7 +48,7 @@ how well-behaved is f(x,t)
 
 how costly is f(x,t) and its jacobian
 
-implicit, 
+implicit,
 
 more stable, solving stiff problems requires implicit methods
 

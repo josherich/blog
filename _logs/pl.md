@@ -1,8 +1,10 @@
-# tutorials
+# PL
+
+## tutorials
 
 [functor, applicative, monad](https://medium.com/@lettier/your-easy-guide-to-monads-applicatives-functors-862048d61610)
 
-# compare
+## compare
 
 
 Scala
@@ -87,7 +89,7 @@ goroutine
 Gin
 
 [HttpRouter](https://github.com/julienschmidt/httprouter)
-  
+
 # POPL - Symposium on Principles of Programming Languages
 
 https://conf.researchr.org/home/POPL-2018
@@ -308,20 +310,20 @@ Given T, I, UTM can emulate he behavior of T, I.
 > gdbinit
 
 ```
-# We have scroll bars in the year 2015!  
+# We have scroll bars in the year 2015!
 set pagination off
 
-# Attach to both parent and child on fork  
+# Attach to both parent and child on fork
 set detach-on-fork off
 
-# Stop/resume all processes  
+# Stop/resume all processes
 set schedule-multiple on
 
-# Usually don't care about these signals  
+# Usually don't care about these signals
 handle SIGUSR1 noprint nostop
 handle SIGUSR2 noprint nostop
 
-# Ugly hack so we don't break on process exit  
+# Ugly hack so we don't break on process exit
 python gdb.events.exited.connect(lambda x: [gdb.execute('inferior 1'), gdb.post_event(lambda: gdb.execute('continue'))])
 ```
 
@@ -338,37 +340,37 @@ due to mutable prototype chains, we don't have all of that information about an 
 
     class F { #f; checkF() { this.#f; } }
     class G extends F { #g; checkG() { this.#g; } }
-    
+
     let obj = { };
     Object.setPrototypeOf(G, class { constructor() { return obj; });
     new G;
     Object.setPrototypeOf(G, F);
     G.prototype.checkG.call(obj);  // doesn't throw
     F.prototype.checkF.call(obj);  // throws
-    
+
     // polyfill
     Object.setPrototypeOf = Object.setPrototypeOf || function (obj, proto) {
       obj.__proto__ = proto;
-      return obj; 
+      return obj;
     }
 
 [tc39/proposal-class-fields](https://github.com/tc39/proposal-class-fields/blob/master/PRIVATE_SYNTAX_FAQ.md)
 
-Optional project: Implement the abstract interpreter and try it for the parity abstract domain. We provide 
+Optional project: Implement the abstract interpreter and try it for the parity abstract domain. We provide
 
-the lexer (lexer.mll), 
+the lexer (lexer.mll),
 
-the parser (parser.mly), 
+the parser (parser.mly),
 
-the construction of the abstract syntax tree for expressions ([abstractSyntaxExpressions.ml](http://abstractsyntaxexpressions.ml/)) and programs (abstractTree.mli [abstractTree.ml](http://abstracttree.ml/)), 
+the construction of the abstract syntax tree for expressions ([abstractSyntaxExpressions.ml](http://abstractsyntaxexpressions.ml/)) and programs (abstractTree.mli [abstractTree.ml](http://abstracttree.ml/)),
 
-the labelling and primitives of the abstract syntax ([abstractSyntax.ml](http://abstractsyntax.ml/)), 
+the labelling and primitives of the abstract syntax ([abstractSyntax.ml](http://abstractsyntax.ml/)),
 
-the interface to the abstract domain (abstractDomain.mli), 
+the interface to the abstract domain (abstractDomain.mli),
 
-the printing of labelled programs ([printer.ml](http://printer.ml/)), 
+the printing of labelled programs ([printer.ml](http://printer.ml/)),
 
-an implementation of the parity abstract domain ([abstractDomainParity.ml](http://abstractdomainparity.ml/)) in OCaml. 
+an implementation of the parity abstract domain ([abstractDomainParity.ml](http://abstractdomainparity.ml/)) in OCaml.
 
 It remains to design the abstract interpreter ([abstractInterpreter.ml](http://abstractinterpreter.ml/)). By creating a symbolic link of [abstractDomain.ml](http://abstractdomain.ml/) to [abstractDomainParity.ml](http://abstractdomainparity.ml/), the abstract interpreter is instantiated to parity analysis. See typescript for examples. All these files are compressed in a .tgz or .zip.
 

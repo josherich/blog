@@ -1,4 +1,7 @@
-# New Words
+# Language
+
+## New Words
+
 Their experience in the transformative growth of the __ride-hailing__ industry helped __pollinate__ China’s next internet-enabled transportation revolution.
 
 voyeuristic streak

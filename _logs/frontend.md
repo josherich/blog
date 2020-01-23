@@ -1,3 +1,5 @@
+# Front end
+
 ## recent list
 
 basil rules node-js
@@ -5,7 +7,7 @@ https://bazelbuild.github.io/rules_nodejs/
 
 http://fontello.com/
 
-typescript 3.5 feedback 
+typescript 3.5 feedback
 https://github.com/microsoft/TypeScript/issues/33272
 
 https://github.com/fakeshadow/pxs-psn-api
@@ -30,6 +32,11 @@ Every wasm module starts with a magic number \0asm (ie: []byte{0x00, 0x61, 0x73,
 [wasm intro](https://rsms.me/wasm-intro)
 
 ## emscripten
+
+
+```
+emcc src/vertexcodec.cpp src/indexcodec.cpp -Os -DNDEBUG -s EXPORTED_FUNCTIONS='["_meshopt_decodeVertexBuffer", "_meshopt_decodeIndexBuffer", "_malloc", "_free"]' -s ALLOW_MEMORY_GROWTH=1 -s MALLOC=emmalloc -s MODULARIZE=1 -s EXPORT_NAME=MeshoptDecoder --closure 1 --post-js decoder-post.js -o decoder.js
+```
 
 run `source ./emsdk_env.sh` each time
 
@@ -77,7 +84,7 @@ extern "C" int main(int argc, char** argv) {
     }
   }
   if (SDL_MUSTLOCK(screen)) SDL_UnlockSurface(screen);
-  SDL_Flip(screen); 
+  SDL_Flip(screen);
 
   printf("you should see a smoothly-colored square - no sharp lines but the square borders!\n");
   printf("and here is some text that should be HTML-friendly: amp: |&| double-quote: |\"| quote: |'| less-than, greater-than, html-like tags: |<cheez></cheez>|\nanother line.\n");

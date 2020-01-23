@@ -1,4 +1,6 @@
-# Network
+# Ops
+
+## Network
 
 ## disable ipv6
 
@@ -52,7 +54,7 @@ killall -CONT Slack
 
 **delete all branch except current**
 ```
-git branch | grep -v "^\\*" | xargs git branch -D 
+git branch | grep -v "^\\*" | xargs git branch -D
 ```
 
 > [using github for course and assignment](http://www.alecjacobson.com/weblog/?p=4700)

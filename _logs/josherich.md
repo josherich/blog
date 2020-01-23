@@ -1,16 +1,18 @@
-# Rolling Question List
+# Josherich
+
+## Rolling Question List
 
 - Lagrangian multiplier
 - gamma density
 - is MLP multi layer perceptron equal to feature extraction(mapping function)?
 - wavelet and PCA
 
-# Quotes
+## Quotes
 
 > The standard by which we measure a situation and establish that the situation is problematic is part of the problem and should be abandoned
 __- Phenomennology of spirit, Hegel__
 
-# Reading List
+## Reading List
 
 - the four fundamental subspaces 4 lines/starting with two matrix
 - principle of scientific computing
@@ -24,14 +26,14 @@ __- Phenomennology of spirit, Hegel__
 - visual complex analysis
 - Computer Architecture A Quantitative Approach
 
-# intuition
+## intuition
 
 - look the exercise before reading the chapters
 
-# Ideas
+## Ideas
 
 - https://finviz.com/
-  
+
   visualization big pictures of complex dynamics
 
   https://plot.ly/
@@ -39,7 +41,7 @@ __- Phenomennology of spirit, Hegel__
 - solving problem using toy neural network
 
 - https://sqoop.com/about/features#sec
-  
+
   company profile alert service
 
   https://ijnet.org/zh-hans/blog/2016%E5%B9%B4%E8%B0%83%E6%9F%A5%E6%96%B0%E9%97%BB%E7%9A%8410%E4%B8%AA%E5%B7%A5%E5%85%B7
@@ -53,27 +55,27 @@ __- Phenomennology of spirit, Hegel__
   https://powerbi.microsoft.com/zh-cn/datajournalism/onboarding/
 
 - rosetta code
-  
+
   https://rosettacode.org/wiki/Rosetta_Code
 
 - formula, math annotation as a data structure, with database
 
-- probabilistic game mechanics, sovle qiz via probabilistic behavior 
+- probabilistic game mechanics, sovle qiz via probabilistic behavior
 
 - ancient chinese NMT
 
 - script to storyboard generator
-  
+
   https://theplot.io
 
-# Venue
+## Venue
 
 Jefferson Library
 
 National Gallery of Art
 
 ## video and talks
-  
+
 - Zach Barth
 
   https://www.youtube.com/watch?v=ofz-BJI2bu4
