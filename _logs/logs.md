@@ -536,6 +536,55 @@ node v is redundant if v is not the root node, and v has 1 child, compress chain
   - find longest repeated substrings
   - longest palindromic substring
 
+## 2020-01-24
+
+### [heuristics and observations of teams resolving internet service outages](https://blog.acolyer.org/2020/01/22/trade-offs-under-pressure-part-1/)
+
+Klein shows us that teams have some advantages over individuals:
+  - a wider range of attention
+  - a broader range of expertise
+  - built-in variability
+  - a greater capability for reorganising their activities
+  - and the ability to work in parallel
+
+Hollnagel enumerates a set of judgement heuristics often used in scenarios involving uncertainty and multiple conflicting goals:
+  - ETTO (efficiency-thoroughness trade-off)
+  - Similarity matching – judging the similarity between triggering conditions and stored attributes of appropriate action
+  - Frequency gambling – choosing among partially matched options based on the frequency of their occurence
+  - Representativeness – if it looks like X, it probably is X
+  - Availability – choosing by how easily the option comes to mind
+  - Focus gambling – opportunistically changing from one hypothesis to another
+  - Conservative gambling – moving slowly and incrementally to build up a hypothesis
+  - Simultaneous scanning – trying out several hypotheses at the same time
+
+thematic vagabonding: Too much jumping between options, never getting deep enough in any one area
+
+cognitive fixation: people can become fixated on a specific idea or solution even to the exclusion of incoming signals that indicate otherwise
+
+case study etsy:
+
+- the big slowdown came because the 400 errors for the missing shop data bypassed the caching mechanism, causing a full request to be made on every page load
+
+- "process tracing"
+
+four heuristic emerged
+- First look for any correlation to the last change made to the system
+- If no correlated change is implicated, then widen the diagnostic search space to any potential signals
+- When forming hypotheses and evaluating diagnostic directions, use pattern matching of signals or symptoms to either specific past events or recent events.
+- During incident management, prefer peer review of any code changes to gain confidence as opposed to automated tests or other procedures.
+
+> the greatest sources of success in automation-rich environments are (perhaps ironically) the adaptive capacities of human cognition and activity, not the pseudo-intelligence of the software
+
+## 2020-01-25
+
+### inline defer in Golang
+
+[proposal](https://github.com/golang/proposal/blob/master/design/34481-opencoded-defers.md)
+
+- LIFO order
+- For each deferred function, compiler generates a runtime.deferproc call at the call site and call into runtime.deferreturn at the return point of the function.
+- in 1.14, compiler do inline for better perf
+
 ## todos
 
 ### implement Golang channel in JS

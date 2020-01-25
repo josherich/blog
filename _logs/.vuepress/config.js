@@ -8,6 +8,12 @@ module.exports = {
             serviceWorker: true
         },
         '@vuepress/back-to-top': true,
+        'vuepress-plugin-mathjax': {
+            target: 'svg',
+            macros: {
+              '*': '\\times',
+            },
+        },
     },
     markdown: {
         anchor: {
