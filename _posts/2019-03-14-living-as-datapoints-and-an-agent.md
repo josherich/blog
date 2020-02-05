@@ -17,6 +17,18 @@ tags: [news, personal, privacy]
 
 ![echo chambers](/images/liv-1.png)
 
+# they do realize this problem and frame this as `long-term user learning`
+
+https://ai.google/research/pubs/pub43887
+
+ads blindness and sightedness
+
+user skip ads blindness and text ads without effort
+
+myopic
+
+determinantal point processes: scoring a list of items
+
 # Living as an Agent
 
   Social network interaction can also be modeled as a [MDP](https://en.wikipedia.org/wiki/Markov_decision_process). posts, comments, thumb-up, follow, recommender system can all be seen as parts of environment. Users act by screen time, clicking, publishing content. There are numerous optimization based system acting as parts of environment, they basically all work in the same way, being greedy on users' reward, thus all suffer form the degeneracy problems.
@@ -40,6 +52,8 @@ tags: [news, personal, privacy]
 # Exploitation and Exploration
 
   It's quite funny to see big Internet platform is [automating the exploitation](https://www.quora.com/Does-Amazon-offer-the-same-product-to-different-consumers-at-different-prices-at-the-same-time) as an optimization problem. User exploitation is automated without too much effort, not quite different from recommender system. It surly can be pushed to an extend that it fits perfectly to regulation.
+
+  Exploitation is so automated that platforms themselves are fragile to these attacks. Here is [https://www.youtube.com/watch?v=1PGm8LslEb4](a series of discussions) on how fancy algorithms easily fails in Youtube, Twitter, and Facebook. 
 
   Exploration, somehow a feature promoted by recommender system, is exactly they are trying to prevent. Screen time and user's budget is limited, but they also want the attention and money pile up as high as possible.
 

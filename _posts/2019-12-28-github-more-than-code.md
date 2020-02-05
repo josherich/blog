@@ -36,3 +36,5 @@ tags: [github, social, cn]
 [SS历史笔记](https://github.com/JadaGates/ShadowsocksBio/blob/master/readme.md)
 
 [复旦大学章程](https://github.com/HDYA/constitution-of-fudan-university/pull/1/files)
+
+[中华古诗词数据库](https://github.com/chinese-poetry/chinese-poetry)

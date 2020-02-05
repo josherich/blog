@@ -7,6 +7,49 @@ categories: Frontend
 tags: [frontend, async, promise]
 ---
 
+- control throw on error, throw on timeout
+
+- concurrency
+https://github.com/sindresorhus/p-queue/blob/master/source/index.ts
+
+- call multiple times
+
+```js
+// https://github.com/sindresorhus/p-queue/blob/master/source/index.ts
+async onEmpty(): Promise<void> {
+  // Instantly resolve if the queue is empty
+  if (this._queue.size === 0) {
+    return;
+  }
+
+  return new Promise<void>(resolve => {
+    const existingResolve = this._resolveEmpty;
+    this._resolveEmpty = () => {
+      existingResolve();
+      resolve();
+    };
+  });
+}
+async onIdle(): Promise<void> {
+  // Instantly resolve if none pending and if nothing else is queued
+  if (this._pendingCount === 0 && this._queue.size === 0) {
+    return;
+  }
+
+  return new Promise<void>(resolve => {
+    const existingResolve = this._resolveIdle;
+    this._resolveIdle = () => {
+      existingResolve();
+      resolve();
+    };
+  });
+}
+```
+
+- timeout
+
+- work with async(await)
+
 - Promise is about [spec](https://promisesaplus.com/) and implementations(then/promise, q, bluebird)
 
 - Beside enabling async, Promise is another way to make function calling look nicer, kinda like pipe, instead of `f(g(x))`, do `x -> f -> g`
@@ -131,3 +174,5 @@ Promise.prototype.then = function (cb, errCb) {
 };
 
 ```
+
+[](https://github.com/kriskowal/q/blob/v1/design/README.md)
