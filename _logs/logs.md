@@ -585,6 +585,405 @@ four heuristic emerged
 - For each deferred function, compiler generates a runtime.deferproc call at the call site and call into runtime.deferreturn at the return point of the function.
 - in 1.14, compiler do inline for better perf
 
+## 2020-01-26
+
+### deep copy using structral clone
+
+Safari limits the amount of calls to replaceState to 100 within a 30 second window.
+
+```js
+function structuralClone(obj) {
+  const oldState = history.state;
+  history.replaceState(obj, document.title);
+  const copy = history.state;
+  history.replaceState(oldState, document.title);
+  return copy;
+}
+
+const obj = /* ... */;
+const clone = structuralClone(obj);
+```
+
+### deep copy using MessageChannel
+
+handle cyclical data structures, built-in data types like Map, Set and ArrayBuffer etc.
+
+```js
+function structuralClone(obj) {
+  return new Promise(resolve => {
+    const {port1, port2} = new MessageChannel();
+    port2.onmessage = ev => resolve(ev.data);
+    port1.postMessage(obj);
+  });
+}
+
+const obj = /* ... */;
+const clone = await structuralClone(obj);
+```
+
+### [postMessage perf](https://dassur.ma/things/is-postmessage-slow/)
+
+Even on the slowest devices, you can postMessage() objects up to 100KiB and stay within your 100ms response budget. If you have JS-driven animations, payloads up to 10KiB are risk-free.
+
+## 2020-01-27
+
+### Ocaml signature
+
+- A signature specifies which components of a structure are accessible from the outside, and with which type.
+
+
+
+## 2020-01-28
+
+### Conditional Mutual Information
+
+- form: any observable realization of language
+- meaning: relation between forms and something external to language
+- Turing test a,b, and octupus
+
+### Schrodinger problem and connection with optimal transport
+
+### Gradient Surgery for Multi-Task Learning
+
+- projects a task’s gradient onto the normal plane of the gradient of any other task that has a conflicting gradient
+
+### Multilingual Denoising Pre-training for Neural Machine Translation
+
+### The Nonstochastic Control Problem
+
+
+## 2020-01-29
+
+## [sync task](https://gist.github.com/sebmarkbage/2c7acb6210266045050632ea611aebee)
+```js
+let cache = new Map();
+let pending = new Map();
+
+function fetchTextSync(url) {
+  if (cache.has(url)) {
+    return cache.get(url);
+  }
+  if (pending.has(url)) {
+    throw pending.get(url);
+  }
+  let promise = fetch(url).then(
+    response => response.text()
+  ).then(
+    text => {
+      pending.delete(url);
+      cache.set(url, text);
+    }
+  );
+  pending.set(url, promise);
+  throw promise;
+}
+
+async function runPureTask(task) {
+  for (;;) {
+    try {
+      return task();
+    } catch (x) {
+      if (x instanceof Promise) {
+        await x;
+      } else {
+        throw x;
+      }
+    }
+  }
+}
+
+// run
+function getUserName(id) {
+  var user = JSON.parse(fetchTextSync('/users/' + id));
+  return user.name;
+}
+
+function getGreeting(name) {
+  if (name === 'Seb') {
+    return 'Hey';
+  }
+  return fetchTextSync('/greeting');
+}
+
+function getMessage() {
+  let name = getUserName(123);
+  return getGreeting(name) + ', ' + name + '!';
+}
+
+runPureTask(getMessage).then(message => console.log(message));
+```
+
+### Language Server Protocol
+
+[protocol](https://github.com/sourcegraph/language-server-protocol/blob/streaming/protocol.md)
+
+idea: document server protocol
+  - plugin service
+  - semantic service
+
+## 2020-01-30
+
+### [Normalization of deviance](https://danluu.com/wat/)
+
+[John Banja, normalization of deviance in health care](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2821100/)
+
+The paper has specific sub-sections on how to prevent normalization of deviance, which I recommend reading in full
+  - Pay attention to weak signals
+  - Resist the urge to be unreasonably optimistic
+  - Teach employees how to conduct emotionally uncomfortable conversations
+  - System operators need to feel safe in speaking up
+  - Realize that oversight and monitoring are never-ending
+
+tech postmortem blog post
+
+cargo cult diffusion
+
+> If there were an acute failure, you might see a postmortem, but while we'll do postmortems for "the site was down for 30 seconds", we rarely do postmortems for "this takes 10x as much ops effort as the alternative and it's a death by a thousand papercuts", "we architected this thing poorly and now it's very difficult to make changes that ought to be trivial", or "a competitor of ours was able to accomplish the same thing with an order of magnitude less effort". I'll sometimes do informal postmortems by asking everyone involved oblique questions about what happened, but more for my own benefit than anything else, because I'm not sure people really want to hear the whole truth. This is especially sensitive if the effort has generated a round of promotions, which seems to be more common the more screwed up the project. The larger the project, the more visibility and promotions, even if the project could have been done with much less effort.
+
+
+### SIMD in WASM
+
+https://v8.dev/features/simd
+
+mediapipe project
+
+
+### WASM
+
+- magic n: 0061736d
+
+- WebAssembly has the following value types:
+
+  i32: 32-bit integer
+  i64: 64-bit integer
+  f32: 32-bit floating point
+  f64: 64-bit floating point
+  Each parameter and local variable has exactly one value type. Function signatures consist of a sequence of zero or more parameter types and a sequence of zero or more return types. (Note: in the MVP, a function can have at most one return type).
+
+- table and memory section implement core security
+
+- -s SIDE_MODULE=2, generate side module
+
+- WEBASSEMBLY JAVASCRIPT API
+
+```js
+WebAssembly.instantiateStreaming(fetch("side_module.wasm"), importObject).then(result => {
+const value = result.instance.exports._Increment(17); console.log(value.toString());
+});
+```
+
+```js
+instantiate
+instantiateStreaming
+
+compile
+compileStreaming
+
+importObject: {
+  env: {
+    memory: {}
+  }
+}
+
+Module.__malloc(256)
+Module._free()
+Module.ccall(name, returnTypes, [returns], [args])
+Module.HEAP32.BYTES_PERS_ELEMENT
+Module.HEAP32.set()
+```
+
+```c
+#ifdef __EMSCRIPTEN__
+  #include <emscripten.h>
+#endif
+
+#ifdef __cplusplus
+  extern C {
+#endif
+#ifdef __cplusplus
+  }
+#endif
+
+EMSCRIPTEN_KEEPLIVE
+
+typedef void(*onSuccess) (void)
+typedef void(*onError) (const char*)
+
+EXPORTED_FUNCTIONS
+EXTRA_EXPORTED_RUNTIME_METHODS
+RESERVED_FUNCTION_POINTERS
+```
+
+
+## 2020-02-02
+
+### Rust
+
+```rust
+use rand::Rng;
+
+String::new()
+
+std::cmp::Ordering;
+
+match guess.cmp(&secret_number) {
+  Ordering::Less => println!(" ")
+  _ => " "
+}
+
+let guess : u32 = match guess.trim().parse() {
+  Ok(num) => num,
+  Err(_) => continue,
+};
+
+let tup : (i32, f64, u8) = (500, 6.4, 1);
+
+fn five() -> i32 {
+  5
+}
+
+let mut guess = String::new()
+
+io::stdin().read_line(&mut guess).expect("Fail")
+
+let guess : u32 = guess.trim().parse().expect(" ")
+
+for element in a.iter() { }
+
+for number in (1..4).rev() { }
+
+enum Message {
+  Quit,
+  Move { x: i32, y: i32 },
+  Write,
+}
+
+enum Option<T> {
+  Some(T),
+  None,
+}
+
+let y : Option<i8> = Some(5) = None
+
+let v : Vec<i32> = Vec::new();
+
+let v = Vec![1,1,2]
+
+let third : &i32 = &v[2]
+let third : &i32 = v.get(2)
+
+for i in &v { }
+
+for i in &mut v { }
+
+// deref coersion
+let s3 = s1 + &s2
+
+use std::collections::HashMap;
+let mut scores = HashMap::new();
+
+let scores : HashMap<_,_> = teams.iter().zip(initial.iter()).collect()
+
+entry().or_insert()
+
+panic!()
+
+RUST_BACKTRACE=1
+
+enum Result<T, E. {
+  OK(T),
+  Err(E),
+}
+
+let f = match f {
+  Ok(file) => file,
+  Err(error) => {
+    panic!("fail")
+  }
+}
+
+println!("{:?}", error)
+
+match f.read_to_string(&mut s)
+
+unwrap()
+
+impl Guess {
+  pub fn new(value: u32) -> Guess
+}
+
+fn largest<T>(list: &[T]) -> T { }
+
+struct Point<T> {
+  x: T,
+  y: T,
+}
+
+impl <T> Point<T> {
+  fn x(&self) -> &T {
+    &self.x
+  }
+}
+
+// Trait Type
+// Trait Bound
+fn some_f<T, U>(t: T, u: U) -> i32
+  where T: Display + Clone,
+        U: Clone + Debug,
+
+// lifetimes
+fn largest<'a>(x: &'a str, y: &'a str) -> &'a str { }
+
+// smart pointer
+Box<T>
+Rc<T>
+Ref<T>
+RefMut<T>
+
+RefCell<T>
+std::cell:RefCell
+// allows mutable borrows checked at runtime
+self.a.borrow_mut()
+
+std::rc::Rc
+Rc::Clone
+Rc::strong_count(&a)
+
+// prevent ref cycle
+Weak<T>
+RefCell<Weak<Node>>
+RefCell::new(Weak::new())
+// branch, leaf
+*leaf.parent.borrow_mut() = Rc::downgrade(&branch)
+leaf.parent.borrow().upgrade()
+
+
+// thread
+use std::thread;
+use std::time::Duration;
+
+let handle = thread::spawn(|| {
+  thread::sleep(Duration::from_millis(1))
+})
+
+handle.join().unwrap();
+
+// thread take ownership
+thread::spawn(move || { })
+
+
+```
+
+
+## 2020-02-04
+
+### [opslang](https://doc.openresty.com/en/opslang/)
+
+
+### [G style guide](https://github.com/google/styleguide)
+
+
+
 ## todos
 
 ### implement Golang channel in JS

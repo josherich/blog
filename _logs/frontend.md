@@ -33,7 +33,6 @@ Every wasm module starts with a magic number \0asm (ie: []byte{0x00, 0x61, 0x73,
 
 ## emscripten
 
-
 ```
 emcc src/vertexcodec.cpp src/indexcodec.cpp -Os -DNDEBUG -s EXPORTED_FUNCTIONS='["_meshopt_decodeVertexBuffer", "_meshopt_decodeIndexBuffer", "_malloc", "_free"]' -s ALLOW_MEMORY_GROWTH=1 -s MALLOC=emmalloc -s MODULARIZE=1 -s EXPORT_NAME=MeshoptDecoder --closure 1 --post-js decoder-post.js -o decoder.js
 ```
@@ -134,4 +133,53 @@ Object.defineProperty(twttr, 'profile', {
       debugger
     }
 })
+```
+
+### modal implementation
+
+```css
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  pointer-events: none;
+  opacity: 0;
+
+  will-change: transform, opacity;
+}
+.modal {
+  transform: scale(1.15);
+
+  transition:
+    transform 0.1s cubic-bezier(0.465, 0.183, 0.153, 0.946),
+    opacity 0.1s cubic-bezier(0.465, 0.183, 0.153, 0.946);
+}
+.modal.visible {
+  pointer-events: auto;
+  opacity: 1;
+}
+.modal.visible {
+  transform: scale(1);
+
+  transition:
+    transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946),
+    opacity 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
+}
+.modal .detail {
+    background: #FFF;
+    z-index: 2;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    padding: 25px 25px 50px 25px;
+    width: 65%;
+
+    transform: translate(-50%, -50%);
+    border-radius: 2px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+  }
+}
 ```

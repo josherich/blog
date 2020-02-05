@@ -53,6 +53,10 @@ Find me here:
 
 - [箭廠視頻](https://www.youtube.com/channel/UC_9AeV5Riy9AsIJZEsnsCDw)
 
+## Magazines
+
+- [科学发展](https://ejournal.stpi.narl.org.tw/sd)
+
 ## Tools
 
 - [oh-my-zsh](https://ohmyz.sh/)

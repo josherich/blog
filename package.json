@@ -7,11 +7,12 @@
     "semantic-docs": "^0.0.1"
   },
   "devDependencies": {
-    "semantic-docs": "git+https://github.com/josherich/dependent-writing.git",
     "@vuepress/plugin-back-to-top": "1.2.0",
     "@vuepress/plugin-google-analytics": "1.2.0",
     "@vuepress/plugin-pwa": "1.2.0",
-    "vuepress": "1.2.0"
+    "semantic-docs": "git+https://github.com/josherich/dependent-writing.git",
+    "vuepress": "1.2.0",
+    "vuepress-plugin-mathjax": "^1.2.8"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

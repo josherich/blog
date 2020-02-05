@@ -1,3 +1,29 @@
+# recent list
+
+> [new in apple file systems](https://devstreaming-cdn.apple.com/videos/wwdc/2019/710aunvynji5emrl/710/710_whats_new_in_apple_file_systems.pdf)
+
+> hash benchmark https://github.com/rurban/smhasher
+
+# CS talks
+
+### [wwdc 2019](https://patrickbalestra.com/blog/2019/06/07/wwdc-2019-the-things-you-may-have-missed.html)
+
+### Building Correct Programs - William Mansky, Princeton University
+
+https://www.theregister.co.uk/2015/06/10/airbus_a400m_probe_torque_data/
+
+https://www.reuters.com/article/us-airbus-a400m/airbus-knew-of-software-vulnerability-before-a400m-crash-idUSKBN1D819P
+
+### Programming Abstractions for Data Stream Processing Systems - Konstantinos Mamouras, University of Pennsylvania
+
+### Liquid Haskell: Usable Language-Based Program Verification - Niki Vazou, University of Maryland
+
+### Towards Generalizable Imitation in Robotics - Animesh Garg, Stanford University
+
+### Machine Learning for Computational Social Science - Jacob Eisenstein, Georgia Institute of Technology
+
+### Knowledge from Language via Deep Understanding - Danqi Chen, Stanford University
+
 # computation theory
 
 ## NP-hardness
@@ -6,6 +32,20 @@
 
 a problem H is NP-hard when every problem L in NP can be reduced in polynomial time to H; that is, assuming a solution for H takes 1 unit time, we can use H‎'s solution to solve L in polynomial time.
 
+# DB
+
+> [Functional Pearl: A SQL to C Compiler in 500 Lines of Code]()
+
+- volcano model
+
+> [Hyper Compiling Database Queries into Machine Code]()
+
+compile relational algebraic to machine code using LLVM, skip iterator model. The goal is to maximize CPU register locality, touch memory as rarely as possible. data-centric operator produce tuples and consume tuples from child operators.
+
+compile time abstraction doesn't add overhead. control flow constructs using LLVM, creating basic blocks such as `ifBlock`, `thenBlock`, `elseBlock`, `doWhileLoopBlock`. if the query has no predicate, llvm optimize away scanning tuples, and add up data chunks
+
+# algorithm
+
 ## P is not NP
 
 > If P ≠ NP, then NP-hard problems cannot be solved in polynomial time.
@@ -13,14 +53,14 @@ a problem H is NP-hard when every problem L in NP can be reduced in polynomial t
 ![nphard](https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/P_np_np-complete_np-hard.svg/800px-P_np_np-complete_np-hard.svg.png?1521031605731)
 
 
-# tree
+## tree
 
 b- tree
 b+ tree
 b-link tree
 b* tree
 
-# hash
+## hash
 
 cuckoo hashing
 linear hashing split pointer
@@ -28,6 +68,9 @@ murmurhash
 google cityhash
 google farmhash
 clhash
+
+
+
 
 # fast algorithm
 
@@ -44,6 +87,8 @@ $$u_j = \sum_{k=1}^N e^{2\pi ijk/N}\omega_k$$
 - Helmholtz equation
 
 ### degenerate kernel
+
+
 
 
 
@@ -133,6 +178,18 @@ emcc src/vertexcodec.cpp src/indexcodec.cpp -Os -DNDEBUG -s EXPORTED_FUNCTIONS='
 - validation: execute, evaluate using runtime assertion checking
 - verification: check properties of a model for all inputs/envs
 
+# parallel
+
+- 1. create type
+
+MPI_Type_contiguous(count...) MPI_Type_vector(count,...,stride...)
+MPI_Type_indexed()
+MPI_Type_create_subarray()
+MPI_Type_create_struct()
+
+- 2. commit
+
+MPI_Type_commit()
 
 # seminars
 
@@ -142,24 +199,6 @@ http://mad.cds.nyu.edu/seminar/
 
 https://cs.nyu.edu/dynamic/news/colloquium/?semester=spring_2018
 
-
-# CS talks
-
-### Building Correct Programs - William Mansky, Princeton University
-
-https://www.theregister.co.uk/2015/06/10/airbus_a400m_probe_torque_data/
-
-https://www.reuters.com/article/us-airbus-a400m/airbus-knew-of-software-vulnerability-before-a400m-crash-idUSKBN1D819P
-
-### Programming Abstractions for Data Stream Processing Systems - Konstantinos Mamouras, University of Pennsylvania
-
-### Liquid Haskell: Usable Language-Based Program Verification - Niki Vazou, University of Maryland
-
-### Towards Generalizable Imitation in Robotics - Animesh Garg, Stanford University
-
-### Machine Learning for Computational Social Science - Jacob Eisenstein, Georgia Institute of Technology
-
-### Knowledge from Language via Deep Understanding - Danqi Chen, Stanford University
 
 # reverse eng
 
@@ -241,6 +280,8 @@ int main(int argc,char * argv[])
 ```
 
 ## libs
+
+- [document static site](https://github.com/facebook/docusaurus)
 
 - open radar
 
@@ -457,6 +498,3 @@ int main(int argc,char * argv[])
 
 ## dataset
 
-- clvr
-
-- [conala](https://conala-corpus.github.io/), Code/Natural Language Challenge

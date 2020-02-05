@@ -1,3 +1,23 @@
+## recent list
+
+basil rules node-js
+https://bazelbuild.github.io/rules_nodejs/
+
+http://fontello.com/
+
+typescript 3.5 feedback 
+https://github.com/microsoft/TypeScript/issues/33272
+
+https://github.com/fakeshadow/pxs-psn-api
+
+wasm runtime https://github.com/appcypher/awesome-wasm-runtimes
+
+proxy for frontend dev: https://github.com/youzan/zan-proxy
+
+example of env setup https://github.com/verekia/js-stack-from-scratch
+
+jsx rendering: https://github.com/cancerberoSgx/jsx-alone
+
 ## wasm
 
 > head

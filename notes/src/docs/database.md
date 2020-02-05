@@ -26,6 +26,19 @@ $$ {(a, b) \in R \vert (a,b) \nin S } $$
 1. [sequel-1974](http://www.almaden.ibm.com/cs/people/chamberlin/sequel-1974.pdf)
 
 
+## mysql
+
+[removing-mysql-support](https://about.gitlab.com/2019/06/27/removing-mysql-support/)
+  We can't support nested groups with MySQL in a performant way
+  We have to use hacks to increase limits on columns and this can lead to MySQL refusing to store data
+  MySQL can't add TEXT type column without length specified
+  MySQL doesn't support partial indexes
+  These limitations have already created a number of places where MySQL was already not supported (including with Geo)
+
+## postgreSQL
+
+LATERAL JOIN
+
 ## Misc
 
 - GTID

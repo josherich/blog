@@ -1,3 +1,93 @@
+# tutorials
+
+[functor, applicative, monad](https://medium.com/@lettier/your-easy-guide-to-monads-applicatives-functors-862048d61610)
+
+# compare
+
+
+Scala
+JS
+TypeScript
+Python
+Golang
+Rust
+Array Variant
+
+---|---|---|---|---|---
+String Literal | `s"($x, $y)"` |
+override method | `override def toString: String =` |
+private mem | `private var _x = 0` `private val bound = 100` |
+Getter/Setter | `def x = _x`/`def x_= (newValue: Int): Unit = {}` |
+trait/interface |`trait Iterator[A] { def next(): A }` |
+tuple | `val ingredient = ("Sugar" , 25)` |
+Pattern matching | `val (name, quantity) = ingredient` |
+Mixins | `class D extends Class_B with trait_C`
+partial application| `def foldLeft[B](z: B)(op: (B, A) => B): B`
+
+
+return
+
+
+# Erlang
+
+3 errors: try catch, process dies, undefined functions.
+
+```erlang
+link(pid), monitor(M, F, Args)
+
+spawn(M, F, [a1, a2...])
+
+// distributed spawn
+Pid = spawn(N, Mod, Func, Arglist)
+
+receive
+  msg1 ->
+  msg2 ->
+end
+
+Pid ! msg
+
+```
+
+# Dafny
+
+https://rise4fun.com/Dafny/tutorial/Guide
+
+no runtime error
+
+```dafny
+forall k: int :: 0 <= k < a.Length ==> 0 < a[k]
+```
+
+pre-condition: requires
+post-condition: ensures
+
+
+# swift
+
+
+https://github.com/apple/swift-evolution/blob/master/proposals/0261-identifiable.md
+
+# Golang
+
+[memory efficient](https://github.com/openacid/slim)
+
+[Golang benchmark](https://dave.cheney.net/high-performance-go-workshop/dotgo-paris.html)
+
+[aviod errors](https://blog.huoding.com/2019/04/11/728)
+
+errors are values
+
+panic
+
+goroutine
+
+## library
+
+Gin
+
+[HttpRouter](https://github.com/julienschmidt/httprouter)
+  
 # POPL - Symposium on Principles of Programming Languages
 
 https://conf.researchr.org/home/POPL-2018
@@ -282,6 +372,11 @@ an implementation of the parity abstract domain ([abstractDomainParity.ml](http:
 
 It remains to design the abstract interpreter ([abstractInterpreter.ml](http://abstractinterpreter.ml/)). By creating a symbolic link of [abstractDomain.ml](http://abstractdomain.ml/) to [abstractDomainParity.ml](http://abstractdomainparity.ml/), the abstract interpreter is instantiated to parity analysis. See typescript for examples. All these files are compressed in a .tgz or .zip.
 
+# FPL
+
+  - Functor lifts or upgrades a function, allowing it to operate on a single effect, leaving the effect intact after it’s done. It requires a lawful map definition.
+  - Applicative functor builds on or generalizes functor, allowing you to sequence multiple independent effects. It requires a lawful pure and apply definition.
+  - Monad builds on or generalizes applicative functor, allowing you to sequence independent and/or dependent effects. It requires a lawful join definition.
 
 # OCaml
 http://www.cs.cornell.edu/courses/cs3110/2018fa/textbook/modules/structures.html

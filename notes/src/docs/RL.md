@@ -1,5 +1,30 @@
 # Reinforcement Learning
 
+
+## post
+
+https://distill.pub/2019/paths-perspective-on-value-learning/
+
+## tools
+
+[pyrobot](https://github.com/facebookresearch/pyrobot)
+
+[Reproducible Low-Cost Arm Benchmark](https://sites.google.com/view/replab/), [report](https://arxiv.org/pdf/1905.07447.pdf)
+
+[ALE](https://github.com/mgbellemare/Arcade-Learning-Environment)
+
+
+## datasets
+
+
+## workshops confs
+
+http://spirl.info/2019/readings-compiled/
+
+RSS 2019
+
+
+
 ## exploration
 
 Montezuma's revenge and pitfall
@@ -10,6 +35,8 @@ Montezuma's revenge and pitfall
   - 3) solve simulated environments through exploiting any available means (including by introducing determinism), then robustify (create a policy that can reliably perform the solution) via imitation learning.
   
 [critic]( https://www.alexirpan.com/2018/11/27/go-explore.html)
+
+
 
 ## Randomization(exploration, valueF)
 

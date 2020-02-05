@@ -1,11 +1,35 @@
+# recent list
+
+> https://thebookofshaders.com/
+
+> [disentanglement](https://ai.googleblog.com/2019/04/evaluating-unsupervised-learning-of.html)
+
 > [octave convolution](https://export.arxiv.org/pdf/1904.05049)
 
-separate high and low freq convolution, compress low frequency to reduce memory and flop, update and exchange between high and low, during training
+  separate high and low freq convolution, compress low frequency to reduce memory and flop, update and exchange between high and low, during training
 
 > [coord convolution](https://arxiv.org/pdf/1807.03247.pdf)
 
-add a coordinate layer to help convolution locate
+  add a coordinate layer to help convolution locate
 
+
+## tools
+
+sketchfeb
+
+> [disentanglement lib](https://github.com/google-research/disentanglement_lib)
+
+
+## datasets
+
+> [disentanglement lib](https://github.com/google-research/disentanglement_lib)
+
+> [3d shapes](https://github.com/deepmind/3d-shapes)
+
+## tutorials
+
+[shader intro](https://github.com/lettier/3d-game-shaders-for-beginners)
+  
 ## geometric mesh
 
 - https://github.com/danielepanozzo/gp
