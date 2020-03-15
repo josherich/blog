@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "dependencies": {
-    "semantic-docs": "^0.0.1"
-  },
   "devDependencies": {
     "@vuepress/plugin-back-to-top": "1.2.0",
     "@vuepress/plugin-google-analytics": "1.2.0",
