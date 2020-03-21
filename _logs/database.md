@@ -54,6 +54,14 @@ $$ {(a, b) \in R \vert (a,b) \nin S } $$
 
 LATERAL JOIN
 
+## rocksdb
+
+[Characterizing, modeling, and benchmarking RocksDB key-value workloads at Facebook](https://blog.acolyer.org/2020/03/11/rocks-db-at-facebook/)
+
+[benchmark](https://github.com/facebook/rocksdb/wiki/RocksDB-Trace%2C-Replay%2C-Analyzer%2C-and-Workload-Generation)
+
+[benchmark tools](https://github.com/facebook/rocksdb/wiki/Benchmarking-tools)
+
 ## Misc
 
 - GTID
