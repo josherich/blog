@@ -1,0 +1,419 @@
+---
+layout: default
+title: Logs 2020 Mar
+---
+
+## 2020-03-07
+
+[avian flu](https://marginalrevolution.com/marginalrevolution/2020/03/my-avian-flu-blog-days.html)
+
+1. The single most important thing we can do for a pandemic—whether avian flu or not—is to have well-prepared local health care systems. We should prepare for pandemics in ways that are politically sustainable and remain useful even if an avian flu pandemic does not occur.
+
+2. Prepare social norms and emergency procedures which would limit or delay the spread of a pandemic. Regular hand washing, and other beneficial public customs, may save more lives than a Tamiflu stockpile.
+
+3. Decentralize our supplies of anti-virals and treat timely distribution as more important than simply creating a stockpile.
+
+4. Institute prizes for effective vaccines and relax liability laws for vaccine makers. Our government has been discouraging what it should be encouraging.
+
+5. Respect intellectual property by buying the relevant drugs and vaccines at fair prices. Confiscating property rights would reduce the incentive for innovation the next time around.
+
+6. Make economic preparations to ensure the continuity of food and power supplies. The relevant “choke points” may include the check clearing system and the use of mass transit to deliver food supply workers to their jobs.
+
+7. Realize that the federal government will be largely powerless in the worst stages of a pandemic and make appropriate local plans.
+
+8. Encourage the formation of prediction markets in an avian flu pandemic. This will give us a better idea of the probability of widespread human-to-human transmission.
+
+9. Provide incentives for Asian countries to improve their surveillance. Tie foreign aid to the receipt of useful information about the progress of avian flu.
+
+10. Reform the World Health Organization and give it greater autonomy from its government funders.
+
+And also from later on:
+
+4. We should not expect to choke off a pandemic in its country of origin. Once a pandemic has started abroad, we should shut schools and many public places immediately.
+
+5. We should not obsess over avian flu at the expense of other medical issues. The next pandemic or public health crisis could come from any number of sources. By focusing on local preparedness and decentralized responses, this plan is robust to surprise and will also prove useful for responding to terrorism or natural catastrophe
+
+
+#### 五力分析
+
+消费者的议价能力
+
+替代品
+
+供应商的议价能力
+
+潜在竞争者
+
+现有竞争者
+
+#### [prog principle id software](https://medium.com/@aloukissas/programming-principles-from-id-software-bed83e762210)
+
+Lampson’s [timeless paper on system design](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/acrobat-17.pdf)
+
+**Principle 1: Just do it (and do it well).**
+This doesn’t necessarily mean overly complicate your current version of the product. In fact, this may one way of describing the iterative development practice. Build something that does one thing really well and keep improving upon it constantly. Just keep your quality standards high in each iteration.
+
+**Principle 2: Keep your code always runnable.**
+In his talk, Romero mentions how they had programmed the code to show an image of a bagel when the user hit an error loading a sprite. By adding good defaults/fallbacks, they made the game still playable. Had they not done this, the user would be blocked until the bug had been fixed (i.e. lost productivity hours). You can imagine how important this becomes as an engineering team grows larger. A practical example of this is using defaultProps in ReactJS.
+
+**Principle 3: Keep it simple.**
+This is obviously not novel. Call it Occam’s Razor or the KISS principle, keeping things as simple as possible is timeless great advice.
+
+**Principle 4: Invest time in building great tools.**
+In his talk, Romero mentioned that he built a level editor called TED. The time he spent building TED paid hefty dividends, since it immensely helped them rapidly ship one game after the other by boosting productivity. Since those days, there has been an explosion of developer tools that have helped boost developer productivity. But if something off-the-shelf doesn’t cut it, try to identify whether an internal tool can help your developers be at their most productive (even if it can take development resources off the main product).
+
+**Principle 5: Test your code thoroughly.**
+This covers many topics that many of the most effective engineering teams use as best practices: (a) dogfood your product as much as possible; (b) don’t delegate to others (e.g. QA engineers, or worse, customers) to find bugs in your code; (c) write as many tests as possible to accompany your code.
+
+**Principle 6: Fix bugs as soon as possible.**
+We are very strict about this at AgentRisk, a practice we’ve carried over from our previous startups. During our daily stand-ups, we make sure that any new bugs have the highest priority and get fixed ASAP. Obviously, not all bugs are equal, so some business-related judgement is warranted here.
+
+**Principle 7: Use a superior development system.**
+This is one that may mostly apply to game development. In other cases, you may want to go the other route when it comes to testing during development. For example, you may have users running your application on a mobile device that has very inferior specs, or they may be accessing your web application over a high-latency 2G connection. Make sure they don’t have a sucky UX.
+
+**Principle 8: Write code for this version of the product.**
+This mostly translates to “don’t transfer over limitations of your past code and its implementation to future code”. This is a tricky one and kind of ties with Principle 4 . As engineers, we are often tempted to “rewrite everything” from scratch. This is where having experienced engineering leadership is really important. Often, the choice to take the plunge and do a new implementation can pay dividends down the line (similar to building tools). For example, as Slack started scaling, they scraped their v1.0 implementation entirely and moved to a brand new architecture, reaping the rewards many times over. We also had a similar experience moving from Python to Elixir, having a much more robust codebase and much increased developer productivity.
+
+**Principle 9: Use good component abstractions.**
+This is really hard. If you have ever built and maintained an API, you know how hard it is to get it right (especially the first time). In his talk, Romero gives the example of encapsulate the functionality of a torch together with the flame and other related objects. Had they needed to move or update all torch instances in a level, having more a granular abstraction could have led to e.g. forgetting to move/update a flame. Spend a lot of time on this and try to get this right the first time. There will be compounding rewards in development and debugging time.
+
+**Principle 10: Seek feedback from peers while coding.**
+Using code review software can help with this. For more complex parts of a product, advance architecture review may be warranted. In any case, make sure you promote a culture that values communication and seeking feedback.
+
+
+## 2020-03-08
+
+```sh
+# rate table sort by name:
+grep -nR '= \w*Table.new' lib/undertaker | awk 'BEGIN{FS=":"}{print "-L " $2","$2" "$1}' | xargs -I % sh -c 'git blame -e %' | awk '{print $2}' | sort | uniq -c | sort -rn > blame_rates_name.log
+
+# rate table sort by time
+grep -nR '= \w*Table.new' lib/undertaker | awk 'BEGIN{FS=":"}{print "-L " $2","$2" "$1}' | xargs -I % sh -c 'git blame -e %' | egrep -o '\((.*) .*\)' | awk '{print $(NF-3)}' | sort | uniq -c | sort -rn > blame_rates_date.log
+
+# if cond sort by name:
+grep -nR 'if \w* == "\w' lib/undertaker | awk 'BEGIN{FS=":"}{print "-L " $2","$2" "$1}' | xargs -I % sh -c 'git blame -e %' | awk '{print $2}' | sort | uniq -c | sort -rn > if_cond_name.log
+
+# if cond sort by time
+grep -nR 'if \w* == "\w' lib/undertaker | awk 'BEGIN{FS=":"}{print "-L " $2","$2" "$1}' | xargs -I % sh -c 'git blame -e %' | egrep -o '\((.*) .*\)' | awk '{print $2}' | sort | uniq -c | sort -rn > if_cond_date.log
+
+
+'= \w*Table.new'
+# rate table
+# 996 results in 264 files
+
+'\w* == "\w'
+# compare strings
+# 1023 results in 118 files
+
+'when\s+"\w+'
+# when clause(endorsements)
+# 4596 results in 266 files
+
+'if \w+.?nil\?'
+# var.nil?
+# 68 results in 31 files
+
+'Tier.new'
+# rate table rows
+# >10000 results in 116 files
+```
+
+### [awk](https://gregable.com/2010/09/why-you-should-know-just-little-awk.html)
+
+[about awk](http://www.skeeve.com/awk-sys-prog.html)
+
+#### if, START and END clause
+
+```sh
+
+awk '{if ($(NF-2) == "200") {print $0}}' logs.txt
+
+awk '{a+=$(NF-2)}END{print "Total:", a}' logs.txt
+```
+
+### git blame
+
+```sh
+git blame -L 1,5 README.md
+# --porcelain
+# --show-stats
+# --incremental
+# -f show file name
+# -e email address
+# -w ignore whitespace changes
+# -M option detects moved or copied lines within in the same file, show original author
+# -C option detects lines that were moved or copied from other files, show original author
+```
+
+```sh
+# count the number of lines attributed to each author
+git blame --line-porcelain file |
+sed -n 's/^author //p' |
+sort | uniq -c | sort -rn
+```
+
+
+### xargs
+
+```sh
+# -I string format
+cat foo.txt | xargs -I % sh -c 'echo %; mkdir %'
+
+# -t option prints each command that will be executed to the terminal.
+
+# -p command will print the command to be executed and prompt the user to run it
+```
+
+### [China brith rate](https://twitter.com/CarlMinzner/status/1201289127678726144)
+1.7-1.8 fertility rate
+
+% of elderly (65+)
+2020 16%
+2030 25%
+2040 33%
+2050 38%
+2060 41%
+
+### all you can eat economy
+
+https://thehustle.co/the-economics-of-all-you-can-eat-buffets/
+
+break down a $20 buffet
+
+buffets, like most restaurant, operate on a extremely thin margins: for every $20 in revenue, $19 might go toward overhead, leaving only $1(5%) in net profit
+
+food(37%), labor(30%), rent(14%), other(14%)
+
+> At a typical restaurant, a cook can service 25 customers per hour — and that’s at best
+
+> a single buffet cook might be able to prep enough food for 200 people.
+
+5% - 25% food will be wasted
+
+buying food in bulk
+
+cost per serving
+- potatos - $0.3
+- salad - $0.5
+- pasta - $0.75
+- chicken - $1.13
+- steak - $2.25
+
+tricks
+- cheap stuff at front of line
+- smaller plates
+- larger than average spoon for patato, smaller than avg spoon for meats
+- frequently refill water, use extra large glasses
+
+1/20 over eaters
+
+> the number of buffets in America has fallen by 26% since 1998 — even as the total number of all restaurants in America has risen by 22%.
+
+### will coronavirus harm Trump's reelection
+
+- Foreign country did this better than us” is never an argument that works in American politics.
+
+- absolute performance is not what matters, but rather whether the economy is gaining momentum. if the coronavirus situation is improving in the months leading up to November, Trump will receive some credit for that
+
+- politcians are rewarded electorally for their reponse to disasters, not for preparations.
+
+### git undoing
+
+`git log --oneline`
+
+#### remove untracked
+
+`git clean -n`
+
+`git clean -di`
+
+### 抵挡遗忘
+
+- Internet Archive 国际档案库时光穿梭机 自动抓取网页信息：https://archive.org/web/
+- 常春藤联盟各大图书馆联合发起的信息采集：https://archive-it.org/home/IvyPlus?
+- 斯坦福大学收集的中国非政府组织已经下线的网站存档：https://exhibits.stanford.edu/chinese-ngos
+- 海德堡大学收集的当代中国研究资料集；点击左边“浏览”和“搜索”可以看到标题和其它信息，下载全文需要注册用户。https://www.zo.uni-heidelberg.de/boa/digital_resources/dachs/about_en.html
+
+## 2020-03-10
+
+### 西州回鹘
+
+840年漠北高原的回鹘帝国被属部黠戛斯攻破后，部落民众南迁至西域所建立的王朝
+
+### EricRaymond
+
+recent attempts to subvert OSD clauses 5 and 6
+
+### autoML zero
+
+
+### Git hooks
+Run rubocop and test on `git commit diff-code`
+
+- Simple: use bash hooks
+- Complex: use [overcommit](https://github.com/sds/overcommit)
+
+Run
+- Stop too short commit msg
+- Rubocop check
+- Run test cases of diff code `bundle exec rake test:[diff]`
+- Run `npm run format:check` on JavaScript code (title team)
+    `format:check: eslint \"**/*.js\" && prettier-check \"**/*.{js,json,md}\"`
+
+## 2020-03-13
+
+### British government's strategy
+
+Herd immunity isn’t the spread of natural immunity amongst a population.
+
+Cancelling large events is not effective, reducing the peak by less than 5%
+
+Public fatigue: people get bored and leave their homes just as the peak hits
+
+### Camus 鼠疫
+
+「用別樣的監禁生活再現某種監禁生活，與用不存在的事表現真事同等合理。
+
+60年代末，香港知名粵語片導演龍剛就拍過一部叫《昨天今天明天》（原名《瘟疫》）的電影
+
+根據《冷戰光影：地緣政治下的香港電影審查史》一書所說，冷戰時期港英政府一直以「政治中立」的態度包裝香港的電影審查制度，「配合自由世界反共之餘，也會同樣審查美國電影抨擊中國的內容，並不時在審查過程之中遷就中共觀點。
+
+### [Bamboo ceiling](https://www.pnas.org/content/117/9/4590)
+
+East Asians were lower in assertiveness, which consistently mediated the leadership attainment gap between East Asians and South Asians.
+
+## 2020-03-14
+
+### Advanced Python
+
+```py
+__slots__
+# remove overhead
+# PyPy includes slots optimization
+```
+
+```py
+import ipython_memory_usage.ipython_memory_usage as imu
+imu.start_watch_memory()
+```
+
+```py
+# use smartcd to automatically activate and deactivate virtualenv
+```
+
+**collections**
+```py
+from collections import defaultdict
+
+from collections import Counter
+
+from collections import deque
+
+from collections import namedtuple
+Animal = namedtuple('Animal', 'name age type')
+perry = Animal(name="Perry", age=31, type="cat")
+perrry._asdict()
+
+from enum import Enum
+class Species(Enum):
+  cat = 1
+  dog = 2
+```
+
+**introspect**
+```py
+dir(obj)
+
+type()
+
+id()
+
+import inspect
+inspect.getmembers(str)
+```
+
+**exceptions**
+```py
+try:
+  #
+except:
+  #
+else:
+  #
+finally:
+  #
+```
+
+**one liner**
+https://wiki.python.org/moin/Powerful%20Python%20One-Liners
+```py
+python -m http.server
+
+from pprint import pprint
+
+python -c "import csv,json;print json.dumps(list(csv.reader(open('csv_file.csv'))))"
+```
+
+**for else**
+```py
+for item in container:
+  if search_sth:
+    process(item)
+    break
+else:
+  nothing_found()
+```
+
+**c extension**
+```sh
+gcc -shared -Wl,-soname,adder -o adder.so -fPIC add.c # linux
+gcc -shared -Wl,-install_name,adder.so -o adder.so -fPIC add.c # mac
+
+from ctypes import *
+adder = CDLL('./adder.so')
+res_int = adder.add_int(4,5)
+
+# swig
+```
+**file io**
+```py
+import io
+with open('photo.jpg', 'rb') as inf:
+  jpgdata = inf.read()
+
+if jpgdata.startswith(b'\xff\xd8'):
+  text = u'This is a JPEG file (%d bytes long)\n'
+else:
+  text = u'This is a random file (%d bytes long)\n'
+
+with io.open('summary.txt', 'w', encoding='utf-8') as outf:
+  outf.write(text % len(jpgdata))
+```
+
+**function cache**
+
+```py
+from functools import lru_cache
+@lru_cache(maxsize=32)
+def fib:
+  xxx
+
+fib.cache_clear()
+```
+
+**context manager**
+```py
+def __enter__(self):
+
+def __exit__(type, value, traceback):
+
+
+# or
+
+from contextlib import contextmanager
+
+@contextmanager
+def open_file(name):
+  f = open(name, 'w') yield f
+  f.close()
+```
