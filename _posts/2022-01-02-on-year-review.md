@@ -7,14 +7,14 @@ categories: Read
 tags: [year]
 ---
 
-I’ve been enjoyed reading year review from my blog RSS feed and douban feed. Since 2021 is quite a boring year for me myself, I’d rather write a review about reviews.
+I’ve been enjoying reading year review from my blog RSS feed and douban feed. Since 2021 is quite a boring year for me myself, I’d rather write a review about reviews.
 
 The most common thing people talk about in year review is plan and execution. It is common that SaaS companies talk about business execution in public posts, but there’s even more fun to read about how personal project or business play out. My favorite on this topic is people explaining the thought process when doing their signature work [https://jvns.ca/blog/2021/12/31/2021--year-in-review/](https://jvns.ca/blog/2021/12/31/2021--year-in-review/):
 
 > The explanation looks something like “the reason many people struggle with TOPIC is because they don’t understand X, here’s what you need to know”
 
 
-These secret recipes are usually quite easy to tell: they look over-simplified and biased because it's what we use to remind ourselves what's the most important part of our thinking process. It is also a recent popular statement that you can’t really rely on being creative to repeatedly make good content, rather people figure out practices and frameworks that serve as the limit and container for content at the same time. Although the fact that these practices are tailored to its purpose, one should still fine them easy to be transformed. The Bartok and Coltrane example [https://youtu.be/QCwqnjxqfmY?t=934](https://youtu.be/QCwqnjxqfmY?t=934) says it very well: a problem/constraint is proposed for the author to solve, a design for performers/authors.
+These secret recipes are usually quite easy to tell: they look over-simplified and biased because it's what we use to remind ourselves the most important part of our thinking process. It's a recent popular statement that you can’t really rely on being creative to repeatedly publish good content, rather people figure out practices and frameworks that serve as the limit and container for content at the same time. Although the fact that these practices are tailored to its purpose, one should still find them easy to transform. The Bartok and Coltrane example [https://youtu.be/QCwqnjxqfmY?t=934](https://youtu.be/QCwqnjxqfmY?t=934) says it very well: a problem/constraint is proposed for the author to solve, a design for performers/authors.
 
 Another category of year review is a summary of works [https://www.scattered-thoughts.net/writing/2021/](https://www.scattered-thoughts.net/writing/2021/). Although the listing can be too dry to read in details, it can be a perfect index page for revisiting the blog. It’s not a convention for a blogger to write a review of past posts/work, I find these posts far more effective than About pages. It’s sad that blog, invented quite recently and has plenty of opportunies to evolve with the internet, still lacks basic convenience of ebook or even physical book: bookmark, good search, index and glossary. If there are things we need to pick up to make blog great again, making the content more accessible is one of them.
 
