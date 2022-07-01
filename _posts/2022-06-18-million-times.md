@@ -31,7 +31,7 @@ It's not hard to infer what does that mean for the dev pipelines. The building i
 
 #### Babel parser
 
-Surprisingly, it's not hard to figure out the slow steps, thanks to Meteor's profiling. I was first mislead by the above thread that mentioned the cache for parser result might need a resize because statiscally the order of package files get processed (linked in Meteor's context) might change. As always, the truth simpler than what it appears to be. The parser, of two particular version, has a major performance hit. What's more interesting is the hit only happens when WeakMap has more than about two million keys, which is very common for that use case in the parser.
+Surprisingly, it's not hard to figure out the slow steps, thanks to Meteor's profiling. I was first mislead by the above thread that mentioned the cache for parser result might need a resize because statiscally the order of package files get processed (linked in Meteor's context) might change. As always, the truth simpler than what it appears to be. The parser, of two particular version, has a major performance hit. What's more interesting is the hit only happens when WeakMap has more than about two millions keys, which is very common for that use case in the parser.
 
 what happens next is tedius, I ended up just replacing parser code `tools/node_modules/@babel/parser/lib/index.js` with that of an older version and fast build is back.
 
@@ -68,9 +68,9 @@ Another general way to dig out root cause of performance hit is flame chart
 ![7.16.8](/images/millions-of-times/7.16.8.png)
 ![7.16.10](/images/millions-of-times/7.16.10.png)
 
-It's immediately obvious `curPosition` is the single source of slowness. Its only job is to create a Position object that tells where the error happens. In a suggestion [comment](https://github.com/babel/babel/pull/14130#discussion_r785454366), a WeakMap is used to cache and expose ast node offset instead of a plain object property. To be fair it's too much to ask to foresee the consequence since the performance hit of WeakMap only happens when the number of keys exceeds 2 million.
+It's immediately obvious `curPosition` is the single source of slowness. Its only job is to create a Position object that tells where the error happens. In a suggestion [comment](https://github.com/babel/babel/pull/14130#discussion_r785454366), a WeakMap is used to cache and expose ast node offset instead of a plain object property. To be fair it's too much to ask to foresee the consequence since the performance hit of WeakMap only happens when the number of keys exceeds 2 millions.
 
-Eventually the fix was made in https://github.com/babel/babel/pull/14174/commits/40475e0dea53ce7ef064df30cea7b559a3349f30#diff-6a9848ed0c6fa07e549e2c093dc65a0390484d710088036c465b925fa0e7f4a4 and was concluded with this claim
+Eventually the [fix](https://github.com/babel/babel/pull/14174/commits/40475e0dea53ce7ef064df30cea7b559a3349f30#diff-6a9848ed0c6fa07e549e2c093dc65a0390484d710088036c465b925fa0e7f4a4) was made and was concluded with this claim:
 
 > There may exist some performance argument for switching over to .index as well, but from what I've seen so far it doesn't seem to be too substantial.
 
