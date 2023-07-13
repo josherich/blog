@@ -3,7 +3,7 @@ layout: post
 title:  "Javascript Promise in Bullet Points"
 description: "Javascript Promise pitfalls, explained in bullet points"
 date:   2017-02-02 14:02:39
-categories: Frontend
+categories: cs
 tags: [frontend, async, promise]
 ---
 

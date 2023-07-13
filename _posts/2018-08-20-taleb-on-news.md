@@ -3,7 +3,7 @@ layout: post
 title:  "塔勒布论新闻"
 description: "Taleb on News"
 date:   2018-08-20 14:02:39
-categories: news
+categories: reading
 tags: [news, taleb, cn]
 ---
 

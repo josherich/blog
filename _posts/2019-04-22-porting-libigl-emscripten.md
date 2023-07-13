@@ -3,7 +3,7 @@ layout: post
 title:  "Porting libigl using Emscripten, Get Started"
 description: ""
 date:   2019-04-22 14:02:39
-categories: geometry
+categories: graphic
 tags: [geometry, vision]
 ---
 

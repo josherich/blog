@@ -3,7 +3,7 @@ layout: post
 title:  "On Year Review and Blogging"
 description: ""
 date:   2022-01-02 00:00:01
-categories: Read
+categories: Reading
 tags: [year]
 ---
 
