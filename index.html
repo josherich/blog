@@ -26,7 +26,7 @@ title: Josherich
     </script>
 
     {% for post in site.posts %}
-      {% unless post.tags contains "cn" %}
+      {% unless post.tags contains "cn" or post.tags contains "short" %}
         <li><div class="date">{{ post.date | date_to_string }}</div><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
       {% endunless %}
     {% endfor %}
@@ -38,7 +38,9 @@ title: Josherich
   <ul class="posts">
     {% for post in site.posts %}
       {% if post.tags contains "cn" %}
-        <li><div class="date">{{ post.date | date_to_string }}</div><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
+        {% unless post.tags contains "short" %}
+          <li><div class="date">{{ post.date | date_to_string }}</div><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
+        {% endunless %}
       {% endif %}
     {% endfor %}
   </ul>
