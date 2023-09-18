@@ -4,7 +4,7 @@ title:  "Software Doesn't Work For the Happiest Path"
 description: "Kernel panic - not syncing: VFS: Unable to mount root fs on unknown block(0,0)"
 date: 2023-09-18 00:00:01
 categories: short
-tags: [ubuntu,kernel,linux,4k]
+tags: [ubuntu,kernel,linux,4k,short]
 ---
 Anyone with the slightest amount of software experience will know that it's always better to NOT upgrade unless you absolutely have to. I payed the price for not strictly following this advice and naively believing it's okay if I'm supposed to be on the happiest path. Here's what happened:
 
