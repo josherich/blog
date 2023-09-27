@@ -45,7 +45,7 @@ func main() {
 <script src="../../js/wasm_exec.js"></script>
 <script>
   const go = new Go();
-  WebAssembly.instantiateStreaming(fetch("promtool.wasm"), go.importObject).then((result) => {
+  WebAssembly.instantiateStreaming(fetch("../../js/promtool.wasm"), go.importObject).then((result) => {
       go.run(result.instance);
       const ruleExample = `groups:
   - name: example
