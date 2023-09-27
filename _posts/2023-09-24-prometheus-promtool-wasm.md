@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Run Prometheus promtool with WASM"
+title:  "Running Prometheus promtool on Web with WASM"
 description: "Sunday Quick Hack"
 date: 2023-09-24 00:00:01
 categories: short
