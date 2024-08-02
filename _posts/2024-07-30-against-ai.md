@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "The Case Against AI"
-description: "a growing list of eviences"
+title:  "The Case Against Transformer-based AI"
+description: "a growing list of evidences"
 date: 2024-07-30 00:00:01
 categories: short
 tags: [short,ai]
@@ -18,3 +18,8 @@ This updates a previous analysis on the gap between AI infrastructure investment
 [vast.ai supply and demand](https://500.farm/vastai/charts/d/a6RgL05nk/vast-ai-stats?orgId=1&refresh=1m&from=now-180d&to=now&var-gpu_name=RTX%204090&var-verified=yes&var-fee_mult=0.75)
 
 Not looking good since June 17, 2024
+
+[Labor Productivity](https://www.bls.gov/news.release/pdf/prod2.pdf)
+![labor productivity 2024](/images/labor-productivity-2024.png)
+
+Productivity gain boost will be seen, since people claim it is general purpose intelligence.
