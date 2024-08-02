@@ -7,6 +7,15 @@ categories: short
 tags: [short,ai]
 ---
 
+Strategy to be right about Transformer-based AI
+
+Or any kind of promising technology.
+
+- Keep an updated list of evidences that collectively have almost zero chance of missing the trend. This is more effective than the opposite, which is cherrypicking a list of evidences that show the real thing is coming soon (they will not).
+- Focus on the evidences of what’s going on right now or has happened, ignore predictions that are based on or includes any projections of the current ability with a curve of improvement in a short period of time.
+- You only need one strong evidence, and then try really hard to interpret it correctly. One good example would be self driving ability gets a decent jump that’s in the level of previous autoregressive language generation to GPT3 with RLHF. It starts to interpret 99.9% of open roads and make every right decisions in highway situations that could lead to severe crashes. It starts to predict dangerous situations and take actions in advance. Its driving behaviors can be fine-tuned without hurting the general ability, just like LM fine-tuning.
+- Crushing a hard benchmark is not a strong evidence.
+
 [https://www.reddit.com/r/math/comments/19fg9rx/some_perspective_on_alphageometry/](https://www.reddit.com/r/math/comments/19fg9rx/some_perspective_on_alphageometry/)
 
 AlphaGeometry's core component, DD+AR, is not AI but a traditional algorithm that deduces geometric relationships using angle-chasing, cyclic quadrilaterals, and similar triangles. The AI aspect is limited to suggesting new points to add when DD+AR fails to solve a problem. Surprisingly, many IMO problems can be solved by DD+AR alone or with minimal AI input.[Claude-3.5]
