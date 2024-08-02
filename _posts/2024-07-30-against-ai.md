@@ -4,7 +4,7 @@ title:  "The Case Against Transformer-based AI"
 description: "a growing list of evidences"
 date: 2024-07-30 00:00:01
 categories: short
-tags: [short,ai]
+tags: [ai,list]
 ---
 
 Strategy to be right about Transformer-based AI
