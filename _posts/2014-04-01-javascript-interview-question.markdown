@@ -4,7 +4,7 @@ title:  "JavaScript Interview Questions"
 description: ""
 date:   2014-04-01 20:02:39
 categories: lang
-tags: [Interview, JavaScript]
+tags: [Interview, JavaScript, hidden]
 ---
 
 - What do you usually do when you have a very confusing behavior?
