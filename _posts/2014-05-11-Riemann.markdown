@@ -4,7 +4,7 @@ title:  "Riemann"
 description: ""
 date:   2014-05-11 20:02:39
 categories: Math
-tags: [Math, Number]
+tags: [Math, Number, hidden]
 ---
 
 $$
@@ -48,5 +48,5 @@ $$
   \begin{aligned}
   \zeta(s) = \prod_p (1-p^{-s})^{-1}
   \end{aligned}
-  
+
 $$
