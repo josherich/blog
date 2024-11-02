@@ -7,6 +7,8 @@ categories: short
 tags: [podcast_script]
 ---
 
+<iframe src="https://www.listennotes.com/zh-hans/podcasts/不在场/s2e7-内容创作者的困境-tjO4gn2NA6s/embed/" height="180px" width="100%" style="width: 1px; min-width: 100%;" frameborder="0" scrolling="no" loading="lazy"></iframe>
+
 Show Notes: [https://buzaichang.xyz/episodes/creators](https://buzaichang.xyz/episodes/creators)
 
 Jack Conte 是一个想红想疯了的人，就像一个在美术馆里到处发明“影片”，想要卖画的那种落魄画家似的，就是抓住每一个路过的人，然后大喊，或者是疯狂暗示：“你看看我！看看我！我可有意思了！”
