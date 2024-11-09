@@ -16,6 +16,10 @@ Or any kind of promising technology.
 - You only need one strong evidence, and then try really hard to interpret it correctly. One good example would be self driving ability gets a decent jump that’s in the level of previous autoregressive language generation to GPT3 with RLHF. It starts to interpret 99.9% of open roads and make every right decisions in highway situations that could lead to severe crashes. It starts to predict dangerous situations and take actions in advance. Its driving behaviors can be fine-tuned without hurting the general ability, just like LM fine-tuning.
 - Crushing a hard benchmark is not a strong evidence. The underwhelming o1 scores 78 on [GPQA(PhD-Level Science Questions)](https://arxiv.org/abs/2311.12022), expert human scores 69.7. Does that mean we've acheived PhD intelligence?
 
+### Benchmark
+
+Hard benchmarks are hard when people actually care. For instance, best models solve less than 2% of [math problems with depth](https://epochai.org/frontiermath); Best models score 55.5% on [super easy problems](https://arcprize.org/) without cheating.
+
 ### A typical 'AI' Breakthrough
 
 [https://www.reddit.com/r/math/comments/19fg9rx/some_perspective_on_alphageometry/](https://www.reddit.com/r/math/comments/19fg9rx/some_perspective_on_alphageometry/)
