@@ -7,7 +7,7 @@ title: About
   document.querySelector('.header a.about').classList.add('selected')
 </script>
 
-Hi, I'm Josh Chen. I love programming in Web and hate machine learning.
+Hi, I'm Josh Chen. I love programming in Web.
 
 Find me here:
 - [Twitter](https://twitter.com/josherich)
@@ -15,6 +15,8 @@ Find me here:
 - [Github](https://github.com/josherich)
 
 # Resources
+
+[Chinese Government Database](https://contextnews.notion.site/139bd75819f68030902df60baaab9495?v=bff01d9dc0ab4199b953a369302a3fe1)
 
 ## Podcast
 
