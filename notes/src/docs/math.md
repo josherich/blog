@@ -2,7 +2,7 @@
 
 taylor expansion, well defined
 
-can directly write ODE solution: 
+can directly write ODE solution:
 
 dx/dt = Ax
 
@@ -46,7 +46,7 @@ how well-behaved is f(x,t)
 
 how costly is f(x,t) and its jacobian
 
-implicit, 
+implicit,
 
 more stable, solving stiff problems requires implicit methods
 
@@ -149,3 +149,7 @@ auto diff
   a collection of random variables is heteroscedastic (or heteroskedastic;[a] from Ancient Greek hetero “different” and skedasis “dispersion”) if there are sub-populations that have different variabilities from others
 
 > [KKT condition](https://en.wikipedia.org/wiki/Karush%E2%80%93Kuhn%E2%80%93Tucker_conditions)
+
+## Markov Inequality
+
+$$\operatorname{Pr}[X>c \cdot \mathbf{E}[X]] \leq \frac{1}{c}$$

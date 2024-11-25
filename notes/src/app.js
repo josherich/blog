@@ -596,7 +596,9 @@
         } else {
           block = {id: slugify$1(tokens[i+1].content.replace(/\*\*/g, ''), {lower: true}), text: tokens[i+1].content.replace(/\*\*/g, '') };
         }
-        blocks.push(block);
+        if (block) {
+          blocks.push(block);
+        }
         i += 2;
       } else if (token.type === 'inline') {
         _children = findLinks(token.children);
