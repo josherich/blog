@@ -8,6 +8,8 @@ tags: [short]
 ---
 This is used to prompt models, the results from Claude 3.5 Sonnet, Gemini 1.5 Pro and GPT-4o are very disappointing. They all start with the invalid step "Move 0 (Queue 2) to Major Arcana", probably due to some strong bias in the dataset.
 
+![fortunes's foundation](/images/fortunes-foundation.png)
+
 ```
 Follow the rules and solve the following game:
 
