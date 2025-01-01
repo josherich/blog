@@ -17,8 +17,8 @@ Here's the prompt:
 
 Follow the instructions and solve the following game:
 
-In this game, two explorers try to kill all monsters in an underground maze.
-- The maze is a grid of cells, each cell is either a wall, a rock, a monster, or an empty space.
+In this game, two explorers try to kill all monsters in an underground platform maze.
+- The maze is a grid of cells in platform view, each cell is either a wall, a rock, a monster, or an empty space.
 - The explorers can move left or right by 1 cell each time, but they can't move through walls or rocks.
 - The explorers can climb ladders up or down, but they can't climb up to the top of ladders if there is a rock above the ladder.
 - The explorers can climb up to top of a ladder and stand on top of it.
