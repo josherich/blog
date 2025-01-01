@@ -28,7 +28,9 @@ There isn't always a clear boundary between search and creation, and sometimes t
 
 Hard benchmarks are hard when people actually care. For instance, best models solve less than 2% of [math problems with depth](https://epochai.org/frontiermath); Best models score 55.5% on [super easy problems](https://arcprize.org/) without cheating.
 
-### A typical 'AI' Breakthrough
+Data contamination is another main reason why benchmarks are hard. It very well explains unreasonably high scores on hard benchmarks like `Putnam-AXIOM`. Making small variations to problems (changing variables and constants) while keeping the difficulty level reveals the model's true [ability](https://openreview.net/forum?id=YXnwlZe0yf&noteId=yrsGpHd0Sf).
+
+### A Typical 'AI' Breakthrough
 
 [https://www.reddit.com/r/math/comments/19fg9rx/some_perspective_on_alphageometry/](https://www.reddit.com/r/math/comments/19fg9rx/some_perspective_on_alphageometry/)
 
