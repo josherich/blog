@@ -21,7 +21,8 @@ In this game, two explorers try to kill all monsters in an underground maze.
 - The maze is a grid of cells, each cell is either a wall, a rock, a monster, or an empty space.
 - The explorers can move left or right, but they can't move through walls or rocks.
 - The explorers can climb ladders, but they can't climb ladders if there is a rock above the ladder.
-- The explerers can stand on top of a ladder, wall, rock, or monster.
+- The explerers can climb up to top of a ladder and stand on top of it.
+- The explorers can also stand on top of walls, rocks, or monsters.
 - The explorers can jump down from any height.
 - The monsters stay still.
 - The explorers can push rocks, but they can't push rocks into walls or other rocks.
