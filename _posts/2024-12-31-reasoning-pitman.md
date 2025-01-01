@@ -39,7 +39,7 @@ The maze grid is shown as follows:
 - x: empty space
 - L: ladders
 
-The solution is a sequence of explorer moves, each move is either "A left", "A right", "B left", or "B right".
+The solution is a sequence of explorer moves, each move is either "A left", "A right", "A up", "A down"
 
 level 1:
 
