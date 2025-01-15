@@ -10,6 +10,10 @@ title: Projects
 <div class="project-list">
   <div class="remaster"><a href="https://remaster.mindynode.com">Remaster</a> is a tool to remaster ugly web pages.</div>
 
+  <div class="visual-javascript"><a href="https://zyl11.csb.app/">Visual</a> <a href="https://github.com/josherich/visual-javascript">JavaScript</a> is a visualization tool for JavaScript.</div>
+
+  <div class="promtool-wasm"><a href="https://github.com/josherich/prometheus-wasm">Promtool in WASM</a></div>
+
   <div class="repo-to-pdf"><a href="https://github.com/josherich/repo-to-pdf">repo-to-pdf</a> is a cli tool and <a href="https://book.mindynode.com/">website</a> to make pdf from source code folder.</div>
 
   <div class="gradient-reader"><a href="https://josherich.github.io/gradient-reader/">Gradient Reader</a> is an experiment to assist reading with word frequency.</div>
