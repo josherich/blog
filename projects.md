@@ -8,6 +8,8 @@ title: Projects
 </script>
 
 <div class="project-list">
+  <div class='npm-dominator-tree'><a href='/dominator-tree'>NPM Dominator Tree</a> is a tool to get insights of your npm dependencies using <a href='https://en.wikipedia.org/wiki/Dominator_(graph_theory)'>Dominator Tree</a></div>
+
   <div class="remaster"><a href="https://remaster.mindynode.com">Remaster</a> is a tool to remaster ugly web pages.</div>
 
   <div class="visual-javascript"><a href="https://zyl11.csb.app/">Visual</a> <a href="https://github.com/josherich/visual-javascript">JavaScript</a> is a visualization tool for JavaScript.</div>
