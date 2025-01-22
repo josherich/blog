@@ -231,7 +231,15 @@ function buildDependencyTree(edges) {
 
         visited.add(node);
         const descendants = descendantCounts.get(node);
-        let result = `${prefix}${isLast ? "└" : "├"}-- ${node} (${descendants})\n`;
+        const colorize = (count) => {
+          const colors = ['black', 'cadetblue', 'orange', 'red'];
+          if (count < 5) return colors[0];
+          if (count < 10) return colors[1];
+          if (count < 20) return colors[2];
+          return colors[3];
+        }
+        const formattedDes = descendants > 0 ? `<span style="color: ${colorize(descendants)}">(${descendants})</span>` : "";
+        let result = `${prefix}${isLast ? "└" : "├"}-- ${formattedDes} ${node}\n`;
 
         const children = Array.from(graph.get(node));
         children.forEach((child, index) => {
@@ -944,7 +952,7 @@ function main(json_text) {
       const dedges = extractDependencyEdges(npmListOutput);
       const tedges = getDominatorTree(dedges);
       const rendered = buildDependencyTree(tedges.slice(1)); // Skip the root node [0, 0]
-      document.getElementById('result').innerHTML = `<pre>${rendered}</pre>`;
+      document.getElementById('result').innerHTML = `<pre><code>${rendered}</code></pre>`;
   } catch (e) {
       console.error(e);
       document.getElementById('result').innerHTML = 'Invalid JSON';
