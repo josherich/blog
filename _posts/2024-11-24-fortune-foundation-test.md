@@ -13,23 +13,26 @@ This is used to prompt models, the results from Claude 3.5 Sonnet, Gemini 1.5 Pr
 ```
 Follow the rules and solve the following game:
 
-How to play and show steps
+How to play and show steps:
 Follow the rules and move one card in each step. For each step, show the resulting status of affected queues, or arcana.
 
 Rules
 There are 11 queues, the 6th queue is empty initially.
-Only cards at the tails of each queue can be moved, and cards can only be moved to the tails of each queue. (e.g. only 8, 4, 12, 14, 5L, 11, 18, 7B, 9R, 10 can be moved in the first step because they are the tails in this example game). Cards in the middle of each queue can not be moved.
-Only 0 or 21 can be moved to the major arcana when its head or tail is empty.
-Cards may be stacked by suit in increasing or decreasing order.
-Only one card may be moved at a time.
-To win, move all cards to the foundations.
-The major arcana are built up from 0 and down from 21 until they meet.
-The minor arcana are built up by suit from A to K.
-A card may be placed above the minor arcana foundation, but will block further minor arcana from moving there.
+- Only cards at the tails of each queue can be moved.
+- Cards can only be moved to the tails of other queues. (e.g. only 8, 4, 12, 14, 5L, 11, 18, 7B, 9R, 10 can be moved in the first step because they are the tails in this example game).
+- Cards in the middle of each queue can not be moved.
+- Only 0 or 21 can be moved to the major arcana when its head or tail is empty.
+- Cards may be stacked by suit in increasing or decreasing order.
+- Only one card may be moved at a time.
+- To win, move all cards to the foundations.
+- The major arcana are built up from 0 and down from 21 until they meet.
+- The minor arcana are built up by suit from A to K.
+- A card may be placed above the minor arcana foundation, but will block further minor arcana from moving there.
 
 Notation
 There are two types of cards, major cards and minor cards. Major cards don't have suits, minor cards have suits. There are four suits: L(green), B(blue), R(red), G(gold).
 
+Card Decks:
 Foundations
 major arcana: _, _
 minor arcana: A/L, A/B, A/R, A/G
@@ -47,7 +50,7 @@ Cards
 10: 6/B, 2/R, 2, K/G, K/B, 10/L, 9/R
 11: 9, 20, 7, J/R, 13, 2/B, 10
 
-Example
+Example:
 step 1: move 11 in queue 7 to queue 3 after 12
 queue 3: 8/R, 10/R, 3, 5, 4/R, 16, 12, 11
 queue 7: 8/B, 4/G, 5/B, 7/G, 6/G, Q/G

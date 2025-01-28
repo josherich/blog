@@ -13,11 +13,14 @@
 
 .post pre {
   border: 1px solid #ddd;
-  background-color: #eef;
   padding: 0.4em .7em;
 }
 
-.highlight pre {
+.post pre.highlight {
+  background-color: #eef;
+}
+
+highlight pre {
   border: 1px solid #ddd;
   border-radius: 4px;
   margin: 20px 0;
@@ -32,7 +35,7 @@
 .post code {
   font-size: 0.8em;
   white-space: pre-wrap;
-  padding: 3px 3px;
+  // padding: 3px 3px;
   border-radius: 3px;
 }
 
