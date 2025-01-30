@@ -12,9 +12,9 @@ WASM is great but the tooling looks terrifying for no reason. I went into this q
 
 The main hurdle is of course knowing the build process itself, I always appreciate the help of --verbose to report what is going on underneath, which is important when a separate binary [`promu`](https://github.com/prometheus/promu) is used to build the go project. There is even a public [RFC](https://docs.google.com/document/d/1Ql-f_aThl-2eB5v3QdKV_zgBdetLLbdxxChpy-TnWSE/edit#heading=h.24x0bg1hyuak) doc for it.
 
-The next part is removing unsupported features and associated pkgs: fs.watcher in fsnotify, mmap, syscall.SIGUSR1 in go-metrics, and sockets in go-connections.
+The next part is removing unsupported features and associated pkgs: `fs.watcher` in `fsnotify`, `mmap`, `syscall.SIGUSR1` in go-metrics, and sockets in go-connections.
 
-The final part is wasm file and glue code on both sides. None of these looks right:
+The final part is wasm file and glue code on both sides, which still looks unnecessarily complicated.
 ```js
 const go = new Go();
 WebAssembly.instantiateStreaming(fetch("promtool.wasm"), go.importObject).then((result) => {
@@ -31,6 +31,20 @@ func main() {
 	<-make(chan bool)
 }
 // makes no sense for app code to do this
+```
+
+### Build
+
+```sh
+# in root folder
+cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" ./
+cd cmd/promtool-web
+GOOS=js GOARCH=wasm go build -o ../../promtool.wasm
+cd -
+# open index.html in your browser
+# e.g
+python -m http.server 8000
+chrome http://localhost:8000
 ```
 
 <section>
