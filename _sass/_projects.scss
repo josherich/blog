@@ -3,3 +3,12 @@
     margin-top: 3em;
   }
 }
+
+strong {
+  font-weight: 600;
+}
+
+em:lang(ja), em:lang(zh) {
+  -webkit-text-emphasis: unset;
+  text-emphasis: unset;
+}

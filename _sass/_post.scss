@@ -11,25 +11,36 @@
   font-weight: 600;
 }
 
-.post pre {
-  border: 1px solid #ddd;
-  padding: 0.4em .7em;
+pre {
+  padding: 8px 15px;
+  background: #191919;
+  border-radius: 2px;
+  border: 1px solid #121212;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
+  overflow: auto;
+  overflow-y: hidden;
 }
 
-.post pre.highlight {
-  background-color: #eef;
+pre code {
+  background-color: transparent;
+  border-radius: 0;
 }
 
-highlight pre {
+code {
+  padding: .2em .4em;
+  margin: 0;
+  font-size: 85%;
+  white-space: break-spaces;
+  background-color: rgba(129, 139, 152, 0.12);
+  border-radius: 6px;
+}
+
+.highlight pre {
   border: 1px solid #ddd;
   border-radius: 4px;
   margin: 20px 0;
   padding: 0.4em .7em;
   color: #b7b7b7;
-}
-
-.post ul, .post ol {
-  // margin-left: 1.35em;
 }
 
 .post code {
