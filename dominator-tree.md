@@ -952,7 +952,7 @@ function main(json_text) {
       const dedges = extractDependencyEdges(npmListOutput);
       const tedges = getDominatorTree(dedges);
       const rendered = buildDependencyTree(tedges.slice(1)); // Skip the root node [0, 0]
-      document.getElementById('result').innerHTML = `<pre><code>${rendered}</code></pre>`;
+      document.getElementById('result').innerHTML = `<pre class='highlight'><code>${rendered}</code></pre>`;
   } catch (e) {
       console.error(e);
       document.getElementById('result').innerHTML = 'Invalid JSON';
