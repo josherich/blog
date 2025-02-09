@@ -6,6 +6,8 @@ categories: short
 tags: [podcast_script]
 ---
 
+[What Elon Musk Wants](https://www.nytimes.com/2025/02/07/opinion/ezra-klein-podcast-kara-swisher.html)
+
 From New York Times Opinion, this is the Ezra Klein Show.
 
 At the beginning, Elon Musk's Department of Government Efficiency seemed to have ended up with a fairly narrow mandate. You can look at the Trump executive order creating it, and it says the purpose is modernizing federal technology and software to maximize governmental efficiency and productivity. In the last couple of weeks, it's become clear that Musk's role is a whole lot larger than that. Right now, Elon Musk is involved in almost every agency and corner of the United States government, offering all federal employees a buyout to resign. Musk and his team have accessed at least 11 agencies, and the count is growing every day. They've gained access to something extraordinarily sensitive: the Treasury Department's payment system, which handles trillions of dollars in payments and the private information of every single American in this country. Musk seized control of USAID, resulting in people getting fired and furloughed in droves. He hosted on X, saying, “We spent the weekend feeding USAID into the wood chipper.” They are raiding the government. We don’t pledge allegiance to the billionaires. We don’t pledge allegiance to Elon Musk.
