@@ -6,6 +6,8 @@ categories: short
 tags: [podcast_script]
 ---
 
+[Richard Hanania: Ending the War on Woke](https://www.fromthenew.world/p/richard-hanania-ending-the-war-on)
+
 Anyone who has a contract with the federal government and all their subcontractors is required to have affirmative action. This means keeping track of the race and sex of employees and even potential hires, looking for disparities, and then setting goals and timetables to correct any disparities that are found. This is significant because it impacts a substantial portion of the private sector; approximately 25% of the workforce is affected since many large companies have government contracts or aspire to have them. The Trump administration ended these mandates, moving in the opposite direction by stating that government contractors could not engage in affirmative action. They also encouraged the government to investigate potential violations of Diversity, Equity, and Inclusion (DEI) policies within universities, the private sector, and non-profits. This broad action encompassed almost everything related to affirmative action, DEI, and associated “wokeness” issues.
 
 In this context, I’d like to welcome everyone to the From the New World podcast. Today, I'm speaking with Richard Hanania, author of the Richard Hanania newsletter, "The Origins of WOKE," "Public Choice Theory," "Illusions of Grand Strategy," and the forthcoming book, "Elite Human Capital." We touch upon how the Trump administration dismantled DEI, what's left of disparate impact law, Richard's upcoming project, and what "Elite Human Capital" means, as well as how Ezra Klein could potentially rescue the Democratic Party from its current struggles.
