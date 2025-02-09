@@ -6,6 +6,8 @@ categories: short
 tags: [podcast_script]
 ---
 
+[SC24 IEEE-CS Seymour Cray Computer Engineering Award](https://www.youtube.com/watch?v=a-1xJmfYxyU)
+
 Our next speaker is Dr. Norman J. Y. Norman. He is a Google Fellow and has been the technical lead for Google's tensor processing units since their inception in 2013. Norm has a long and distinguished record of innovation in high-performance processors, memory hierarchies, and storage systems. He was the principal architect and lead designer of several microprocessors. Please welcome Dr. Norman.
 
 Thank you, everyone. The title of my presentation is "Immense Scale Machine Learning." You may wonder why I chose the term "immense." There’s a lot of extreme stuff going around, but I think of "immense" as being relatively good, while "extreme" reminds me of, for example, jumping off a cliff in a wingsuit. So, I went with "immense."
