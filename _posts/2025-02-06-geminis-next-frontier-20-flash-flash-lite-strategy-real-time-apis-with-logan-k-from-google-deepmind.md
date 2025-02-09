@@ -6,6 +6,8 @@ categories: short
 tags: [podcast_script]
 ---
 
+[Gemini's Next Frontier: 2.0 Flash, Flash Lite Strategy & Real-Time APIs with Logan K from Google Deepmind](https://www.cognitiverevolution.ai/geminis-next-frontier-2-0-flash-flash-lite-real-time-apis-with-logan-k-from-google-deepmind/)
+
 We sort of released the experimental first iteration of Gemini 2.0 Flash back in December. Today, we brought Gemini 2.0 Flash, an updated version of it, into production so that developers can actually continue to build with it. We announced pricing at $0.10 per million input tokens and $0.40 per million output tokens, which is, I think, a huge accomplishment for us to pull that off. We're going to have the world's best coding model at Google, and I still believe this deeply. I think Pro is going to be that model, and a bunch of the reasoning work we’re doing is going to continue to push the frontier for us. 
 
 The world needs a platform that hosts all of the publicly available benchmarks, leaderboards, and other relevant data. I find it incredibly difficult to just navigate and get a snapshot of how good a model is. There are 20 random benchmarks here and 50 random ones there; they're all split out over the place. It becomes hard for developers to keep track. 
