@@ -5,6 +5,7 @@ date: 2025-02-07 00:00:01
 categories: short
 tags: [podcast_script]
 ---
+[DOGE vs USAID, Crypto Framework, Google's $75B AI Spend, US Sovereign Wealth Fund, GLP-1s](https://podcasts.apple.com/us/podcast/doge-vs-usaid-crypto-framework-googles-%2475b-ai-spend/id1502871393?i=1000690112978)
 
 **I have four pieces of advice for people.** Number one, get good sleep. Number two, exercise. Number three, diet. Number four, meditation. And if you want to do that, it's very simple. You get the Calm Meditation app. You get the Eight Sleep Sleep. You get FitBod for fitness. And then you get NutriSense for you, right? 
 
