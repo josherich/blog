@@ -6,6 +6,8 @@ categories: short
 tags: [podcast_script]
 ---
 
+[The Tariff Tit-for-Tat Begins; The PRC and the Panama Canal; Apple and Google in China; DeepSeek One Week Later](https://sharpchina.fm/member/episode/the-tariff-tit-for-tat-begins-the-prc-and-the-panama-canal-apple-and-google-in-china-deep-seek-one-week-later)
+
 Hello, and welcome back to another episode of Sharp China. I'm Andrew Sharp, and on the other line is Bill Bishop. Bill, how are you doing? 
 
 I'm good, Andrew. Happy Year of the Snake to you and everyone listening to us. The Year of the Snake continues indeed. I still have not seen any snakes around my house, which I personally consider a good omen, but there's still plenty of time in the Year of the Snake for me to run into some snakes. How's your year going?
