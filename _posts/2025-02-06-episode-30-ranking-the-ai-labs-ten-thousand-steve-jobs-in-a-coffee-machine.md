@@ -6,6 +6,8 @@ categories: short
 tags: [podcast_script]
 ---
 
+[Episode 30: Ranking the AI Labs, Ten Thousand Steve Jobs in a Coffee Machine](https://creators.spotify.com/pod/show/doug-dylan/episodes/Episode-30-Ranking-the-AI-Labs--Ten-Thousand-Steve-Jobs-in-a-Coffee-Machine-e2ug3fa)
+
 Hello. It's Transistor Radio. It always will be. And I guess I'm trying to talk because Jordan's going to upload it.
 
 So, welcome back to another Chit Chat with your four favorite horsemen of the semiconductor apocalypse. This week, we don't want to talk about Deep Seek. I'm sure we'll talk about some AI labs. We'll talk about all kinds of things. It's the middle of earnings season, but the one thing we don't want to talk about is Deep Seek. So, we're going to preface it with that. How's that sound?
