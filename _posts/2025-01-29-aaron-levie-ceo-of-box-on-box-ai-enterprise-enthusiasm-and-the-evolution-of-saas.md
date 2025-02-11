@@ -6,6 +6,8 @@ categories: short
 tags: [podcast_script]
 ---
 
+[Aaron Levie, CEO of Box, on Box AI, Enterprise Enthusiasm, and the Evolution of SaaS](https://www.cognitiverevolution.ai/aaron-levie-ceo-of-box-on-box-ai-enterprise-enthusiasm-and-the-evolution-of-saas/)
+
 The rate of change that we're seeing and the exponential improvement from AI models is incredible. If we keep this pace up, I believe these systems will increasingly be able to perform any type of general task. Jensen at NVIDIA kind of put it the best when he said that the IT department becomes the HR department of AI. This perspective opens up many questions about the future of IT.
 
 I think we are entering a new era with systems of intelligence that let us combine data, AI, and underlying enterprise software to automate virtually anything in our businesses. There will be tremendous opportunities for AI startups; however, it will not come from simply creating an AI-first CRM system. Companies should anticipate that established players like Salesforce are already developing AI-first CRM systems.
