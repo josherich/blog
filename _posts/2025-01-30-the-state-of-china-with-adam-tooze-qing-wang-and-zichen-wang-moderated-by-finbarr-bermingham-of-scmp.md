@@ -6,6 +6,8 @@ categories: short
 tags: [podcast_script]
 ---
 
+[The State of China, with Adam Tooze, Qing Wang, and Zichen Wang — Moderated by Finbarr Bermingham of SCMP](https://podcasts.apple.com/us/podcast/the-state-of-china-with-adam-tooze-qing-wang/id1121407665?i=1000687162175)
+
 This episode is brought to you by Progressive Commercial Insurance. As a business owner, you take on a lot of roles: marketer, bookkeeper, CEO. But when it comes to small business insurance, Progressive has you covered. They offer discounts on commercial auto insurance, customizable coverages that can grow with your business, and reliable protection for whatever comes your way. Count on Progressive to handle your insurance while you do, well, everything else. Quote today in as little as seven minutes at ProgressiveCommercial.com. Progressive Casualty Insurance Company coverage provided and serviced by affiliated and third-party insurers. Discounts and coverage selections not available in all states or situations.
 
 This message comes from Greenlight. Ready to start talking to your kids about financial literacy? Meet Greenlight, the debit card and money app that teaches kids and teens how to earn, save, spend wisely, and invest with your guardrails in place. With Greenlight, you can send money to kids quickly, set up chores, automate allowance, and keep an eye on your kids' spending with real-time notifications. Join millions of parents and kids building healthy financial habits together on Greenlight. Get started risk-free at Greenlight.com slash Wondery.
