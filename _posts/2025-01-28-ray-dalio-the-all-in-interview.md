@@ -6,6 +6,8 @@ categories: short
 tags: [podcast_script]
 ---
 
+[Ray Dalio | The All-In Interview](https://www.youtube.com/watch?v=1_rvVTuGRNE)
+
 It was the government that was the big buyer. Then you get everybody leveraging up. Then you've got a problem. Do you own Bitcoin, right? Yeah, I have some. Not nearly as much as gold. The AI war, it's a war that no country can lose. If China or the U.S. really lose this war, it's more important than profits. 
 
 We're at a civil war internally, and we're at an international war simultaneously. Just have people behave logically. Maybe that's too much to ask. We hope. I'm going all in. All right, besties. I think that was another epic discussion. People love the interviews. I could hear him talk for hours. Absolutely. We crushed your questions in a minute. We are giving people ground truth data to underwrite your own opinion. What'd you guys say? That was fun. I'm going all in. 
