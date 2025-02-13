@@ -6,6 +6,8 @@ categories: short
 tags: [podcast_script]
 ---
 
+[What is China's 'United Front' agenda?](https://www.spectator.co.uk/podcast/what-is-chinas-united-front-agenda/)
+
 Before we get started, I just want to draw your attention to the fact that Chinese Whispers is nominated in the Political Podcast Awards 2025. The show is in contention for a few categories, but most importantly, every nominee has a chance to win the People's Choice category. If you enjoy this podcast, do cast a vote for it at the link in the description. Now, on to the show.
 
 Hello and welcome to Chinese Whispers with me, Cindy Yu. Every episode, I'll be talking to journalists, experts and long-time China watchers about the latest in Chinese politics, society and more. There'll be a smattering of history to catch you up on the background knowledge and some context as well. How do the Chinese see these issues?
