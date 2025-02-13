@@ -5,6 +5,7 @@ date: 2025-02-01 00:00:01
 categories: short
 tags: [podcast_script]
 ---
+[The Agent Reasoning Interface: o1/o3, Claude 3, ChatGPT Canvas, Tasks, and Operator — with Karina Nguyen of OpenAI](https://www.latent.space/p/karina)
 
 Welcome back. From Sam Altman to Satya Nadella, many people are saying that 2025 is the year of agents. Since our podcast conversations about DeepSeek, the mainstream narrative has become obsessed with DeepSeek R1 and what it means to have a competitive open-weights reasoning model from China. SWIX wrote a viral blog post about the reasoning price war of January 2025, and today OpenAI has responded by slashing the price of O1 Mini from $12 per million tokens to $4.40. They also released O3 Mini in ChatGPT and to Level 3 and above API users for the exact same price. Given the O3 Mini matches, or exceeds, O1 especially with medium or high reasoning effort, this is an enormous leap in performance per dollar. 
 
