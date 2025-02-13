@@ -6,6 +6,8 @@ categories: short
 tags: [podcast_script]
 ---
 
+[DeepSeek Panic, US vs China, OpenAI $40B?, and Doge Delivers with Travis Kalanick and David Sacks](https://www.youtube.com/watch?v=8RkgkOqWs0s)
+
 **All right everybody, welcome back to the All In podcast. We've got an incredible crew today. Don't forget to go to our YouTube, blah blah blah, subscribe, and make sure you check out Freeberg's surprise drop with his hero Ray Dalio, live on all platforms today. How did that come about, Freeberg? Little surprise drop?**
 
 Just great! I was talking with Ray about his new book, which he just published on how countries go broke. Obviously, which country is going broke now? I think he talks a lot about the historical context of what's gone on with the debt cycles in different countries. Basically, at the end of the book, he has a pretty, I think, important recommendation to try and get the U.S. to roughly three percent of GDP as our net deficit, net of all expenses including interest expense. So that's the recommendation to the administration. I think it's pretty timely with the change in administration. Anyway, great topics to talk through and really important book. Awesome! Well done! 
