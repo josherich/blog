@@ -6,13 +6,9 @@ categories: short
 tags: [podcast_script]
 ---
 
-This podcast is supported by NetSuite. 
+[Don't Believe Him](https://www.youtube.com/watch?v=K8QLgLfqh6s)
 
-Okay, business leaders, are you here to play or are you playing to win? If you're in it to win, meet your next MVP: NetSuite by Oracle. 
-
-NetSuite is your full business management system in one convenient suite. With NetSuite, you're running your accounting, your finance, your HR, your e-commerce, and more, all from your online dashboard. Upgrade your playbook and make the switch to NetSuite, the number one cloud ERP. Get the CFO's Guide to AI and Machine Learning at NetSuite.com slash NYT. NetSuite.com slash NYT.
-
-From New York Times Opinion, this is The Ezra Klein Show. If you want to understand the first few weeks of the second Trump administration, go back and listen to what Steve Bannon told PBS's Frontline in 2019. The opposition party is the media. And the media can only, because they're dumb and they're lazy, they can only focus on one thing at a time. All we have to do is flood the zone. Every day, we hit them with three things. They'll bite on one, and we'll get all of our stuff done. Bang, bang, bang. These guys will never be able to recover. But we've got to start with muzzle velocity. So it's got to start. It's got to hammer. What does it work? Muzzle velocity. You got it.
+If you want to understand the first few weeks of the second Trump administration, go back and listen to what Steve Bannon told PBS's Frontline in 2019. The opposition party is the media. And the media can only, because they're dumb and they're lazy, they can only focus on one thing at a time. All we have to do is flood the zone. Every day, we hit them with three things. They'll bite on one, and we'll get all of our stuff done. Bang, bang, bang. These guys will never be able to recover. But we've got to start with muzzle velocity. So it's got to start. It's got to hammer. What does it work? Muzzle velocity. You got it.
 
 When you get anything in life... Muzzle velocity. Bannon's insight there is real. Focus is a fundamental substance of democracy. It is particularly the substance of opposition. People largely learn of what the government is doing through the media, be it mainstream media or social media. So if you overwhelm the media, if you give it too many places it needs to look all at once, if you keep it moving from one thing to the next to the next faster, faster, faster, no coherent opposition can really emerge. It is hard to even think coherently.
 
