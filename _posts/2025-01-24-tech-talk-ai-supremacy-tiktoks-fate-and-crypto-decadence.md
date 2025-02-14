@@ -6,17 +6,7 @@ categories: short
 tags: [podcast_script]
 ---
 
-What's up, everybody? Chris Vernon here, and welcome to a new season of the NBA and The Mismatch. A huge welcome as well to my new co-host, Dave Jacoby. I can't wait to link with you twice a week, every Tuesday and Friday, right here on The Mismatch to break down everything that's happening in the league. Who's playing well, who we loved, who we loathed, trade rumors, team dysfunction. We've got you covered right here. 
-
-So follow us, subscribe, and hit us with those five-star ratings on Spotify or wherever you get your podcasts. Also, don't forget to follow us on social media. That's at RingerNBA. And check out the full Mismatch episodes with the two handsomest podcasters in the history of podcasting right on the Ringer NBA YouTube channel. 
-
-This episode is brought to you by Indeed. Hiring someone new for your business can be a big move, and I understand you probably want to take your time to make sure you found the right person. But playing the waiting game could do more harm than good because that's extra work and extra stress you're putting on you and your team. It's not a healthy work environment. 
-
-When it comes to hiring the right people fast, Indeed is all you need. Their sponsored jobs move your job post to the top of the page, letting you stand out first to relevant candidates. It makes a massive difference. According to Indeed data, sponsored jobs have 45% more applications than non-sponsored jobs. Another great thing about sponsored jobs is that you're only paying for results. You don't have to worry about monthly subscriptions or long-term contracts. 
-
-There's no need to wait any longer. Speed up your hiring right now with Indeed. Listeners of this show will get a $75 sponsored job credit to get your jobs more visibility at Indeed.com slash plain. That's Indeed.com slash plain right now. Support our show by saying you heard about Indeed on this podcast. Indeed.com slash plain. Terms and conditions apply. Hiring, Indeed, is all you need. 
-
-Powerful analytics used by the world's leading brands. Sign up today for your $1 per month trial period at Shopify.com slash tech, all lowercase. That's Shopify.com slash tech. 
+[Tech Talk: AI Supremacy, TikTok’s Fate, and Crypto Decadence](https://podcasts.apple.com/us/podcast/tech-talk-ai-supremacy-tiktoks-fate-and-crypto-decadence/id1594471023?i=1000685288381)
 
 Hey folks, today's episode was recorded just before the Trump administration announced a new initiative codenamed Stargate to build out hundreds of billions of dollars of artificial intelligence infrastructure. We did not talk about that on this show, but we did talk about what that announcement means. Namely, that artificial intelligence is going to be one of the more important technologies of this decade, that it relies on very expensive infrastructure that both the private and public sectors want to site in the U.S., and that that infrastructure is incredibly energy-intensive and will require us to build out a lot of energy-generating technology. 
 
