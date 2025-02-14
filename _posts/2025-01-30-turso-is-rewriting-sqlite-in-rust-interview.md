@@ -6,6 +6,8 @@ categories: short
 tags: [podcast_script]
 ---
 
+[Turso is rewriting SQLite in Rust (Interview)](https://changelog.com/podcast/626#t=309)
+
 they face is ensuring that the database operates correctly and reliably under all potential scenarios. This is where deterministic simulation testing comes into play. It allows developers to simulate various conditions and inputs to ensure the database behaves as expected across numerous edge cases without the need for actual deployment in a production environment.
 
 By leveraging this approach, we were able to create a robust testing framework for Limbo. Instead of being limited by the proprietary test suite of SQLite, we could design and implement our own test suite from the ground up. This has allowed us to customize our testing methodologies to fit our specific needs. Additionally, deterministic simulation testing enables continuous validation of our changes, ensuring that as we introduce new features or optimize existing functionalities, we can affirm their reliability.
