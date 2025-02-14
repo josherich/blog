@@ -6,9 +6,7 @@ categories: short
 tags: [podcast_script]
 ---
 
-This podcast is supported by NetSuite. 
-
-Okay, business leaders, are you here to play or are you playing to win? If you're in it to win, meet your next MVP: NetSuite by Oracle. NetSuite is your full business management system in one convenient suite. With NetSuite, you're running your accounting, your finance, your HR, your e-commerce, and more, all from your online dashboard. Upgrade your playbook and make the switch to NetSuite, the number one cloud ERP. Get the CFO's Guide to AI and Machine Learning at NetSuite.com slash NYT. NetSuite.com slash NYT. 
+[Let’s Get to the Marrow of What Trump Just Did](https://podcasts.apple.com/us/podcast/lets-get-to-the-marrow-of-what-trump-just-did/id1548604447?i=1000685412826)
 
 From New York Times Opinion, this is The Ezra Klein Show. In 2017, when Trump came into the White House for the first time, on day one, he signed exactly one executive order. It was targeting the Affordable Care Act. In 2025, he signed 26 executive orders on day one, throwing pens into the roaring crowd. Some of these orders were really big, ending birthright citizenship. There were big orders on energy. He signed orders about Doge and governmental efficiency, about the federal workforce. 
 
