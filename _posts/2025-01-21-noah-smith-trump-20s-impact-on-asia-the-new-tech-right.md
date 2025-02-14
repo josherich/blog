@@ -6,6 +6,8 @@ categories: short
 tags: [podcast_script]
 ---
 
+[Noah Smith: Trump 2.0's Impact on Asia + The New Tech Right](https://www.chinatalk.media/p/noah-smith-on-trump-20-and-asia-future)
+
 Does Taiwan need nuclear weapons? Will China's manufacturing overcapacity doom the rest of East Asia to economic stagnation? And what is going on with Silicon Valley's pro-Trump constituency? Our guest today is the legendary economist Noah Smith. Noah was a professor at Stony Brook University and a columnist for Bloomberg. He now publishes his prolific writing on the No Opinions Substack, and he is the author of an upcoming book on the revival of the Japanese economy. Noah, welcome to China Talk.
 
 Howdy, it's great to be here. Let's talk first about presidential powers in the second Trump administration. So you wrote that piece about the restraints on Elon Musk. And I'm interested in the similar question, which is, what do you think are the constraints on Trump within this new coalition that he's put together? 
