@@ -6,6 +6,8 @@ categories: short
 tags: [podcast_script]
 ---
 
+[Inauguration Interviews: Trump's Talent, Democratic Rebrand & more with House Whip Emmer, Reps Swalwell & Khanna](https://podcasts.apple.com/us/podcast/inauguration-interviews-trumps-talent-democratic-rebrand/id1502871393?i=1000684660917)
+
 All right, everybody, welcome to the All In inauguration special. We are here in town to celebrate and or commiserate the second term of Donald Trump, depending on where you sit on the political spectrum. 
 
 And we are extremely lucky to have a partner in Spotify who has given us a box. Yes, we're in a glass box on the street. They really splurged and got a trailer. It's absolutely fantastic. But we thank them for hosting us. It's very cool. 
