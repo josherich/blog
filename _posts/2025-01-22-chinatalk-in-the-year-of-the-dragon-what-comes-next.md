@@ -6,6 +6,8 @@ categories: short
 tags: [podcast_script]
 ---
 
+[ChinaTalk in the Year of the Dragon + What Comes Next](https://podcasts.apple.com/us/podcast/chinatalk-in-the-year-of-the-dragon-what-comes-next/id1289062927?i=1000685038665)
+
 Happy New Year, Chinatalk listeners. My name is Lily Odinger. I'm Chinatalk's Type A correspondent and managing editor. And today I'm here to highlight all of Chinatalk's coolest accomplishments in 2024 by interviewing Jordan Schneider. Jordan, Happy New Year. 
 
 Hi, Lily. Good to chat. 
