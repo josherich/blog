@@ -6,6 +6,8 @@ categories: short
 tags: [podcast_script]
 ---
 
+[398 — Thoughts Without a Thinker](https://samharris.substack.com/p/398-thoughts-without-a-thinker)
+
 you gain the ability to step back and observe the mechanics of your mind. You begin to see the thoughts that arise as mere phenomena, not as directives you must follow. This perspective allows you to create a space around your thoughts, empowering you to choose how to respond. 
 
 We often confuse our thoughts with our identity, creating a false narrative that can lead to suffering. The moment we start identifying ourselves with our thoughts, we risk being at their mercy. However, meditation teaches us that we can detach from these thoughts. It offers a way to notice them without getting entangled, which can be transformative. 
