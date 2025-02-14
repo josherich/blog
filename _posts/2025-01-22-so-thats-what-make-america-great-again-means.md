@@ -6,6 +6,8 @@ categories: short
 tags: [podcast_script]
 ---
 
+[So That's What 'Make America Great Again' Means](https://podcasts.apple.com/za/podcast/so-thats-what-make-america-great-again-means/id1548604447?i=1000684990756)
+
 From New York Times Opinion, this is The Ezra Klein Show. I feel like I've been watching two different presidential transitions take place. There's been the official one, with all of its pomp and its pageantry, the one we call the peaceful transition of power. I watched Vice President Kamala Harris preside over the certification of the election she lost. I watched President Joe Biden welcome his successor, President Donald Trump, back to the White House. I watched every living former president assemble under the Capitol rotunda to honor Trump's second inauguration. 
 
 What a difference to four years ago when a mob stormed the Capitol, when Trump sought to upend the election results and, upon failing, did not attend Joe Biden's inauguration. This transition, the official transition of presidential power, this transition has been orderly. But there has been this other transition happening, too. A transition not of power, but of political system. A transition in the rules and expectations of power. 
