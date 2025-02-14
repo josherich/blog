@@ -6,6 +6,8 @@ categories: short
 tags: [podcast_script]
 ---
 
+[What's the Truth About Alcohol, Cancer, and Your Health?](https://podcasts.apple.com/us/podcast/whats-the-truth-about-alcohol-cancer-and-your-health/id1594471023?i=1000684368212)
+
 there’s a significant need for nuance and care in interpreting these findings. The relationship between alcohol and cancer is complex, and while it may be prudent to raise awareness about potential risks, it's critical to approach this issue with a careful understanding of the data.
 
 Alcohol ambivalence has been with us for almost as long as alcohol itself. In fact, quote, "It is hard to say whether wine does good to more people than it harms. Medical opinion is very divided," end quote. Who do you think said that? It sounds like something Surgeon General Vivek Murthy might say in 2024, but it was actually the Roman author Pliny the Elder writing in the first century AD, according to a very plain language translation.
