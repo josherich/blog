@@ -6,6 +6,8 @@ categories: short
 tags: [podcast_script]
 ---
 
+[Deep Dive into LLMs like ChatGPT](https://www.youtube.com/watch?v=7xTGNNLPyMI)
+
 Hi everyone! So I've wanted to make this video for a while. It is a comprehensive but general audience introduction to large language models like ChatGPT. What I'm hoping to achieve in this video is to give you kind of mental models for thinking through what this tool is. It is obviously magical and amazing in some respects. It's really good at some things and not very good at others, and there's also a lot of sharp edges to be aware of. 
 
 So what is behind this text box? You can put anything in there and press enter, but what should we be putting there? What are these words generated back, how does this work, and what are you talking to exactly? I'm hoping to get at all those topics in this video. We're going to go through the entire pipeline of how this stuff is built, but I'm going to keep everything sort of accessible to a general audience. 
