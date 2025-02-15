@@ -6,6 +6,8 @@ categories: short
 tags: [podcast_script]
 ---
 
+[Ken Liu: Art in the Age of AI — #79](https://www.manifold1.com/episodes/ken-liu-art-in-the-age-of-ai-79/transcript)
+
 There's no question for me that a large number of jobs in those parts of the arts can and will be replaced by machines, and humans will continue to consume them, perhaps even larger numbers. But that does not mean somehow that the kind of art that I'm talking about, where the whole point is to push beyond the cliché, to say something that does not exist before, will somehow die. I just don't see that. And if machines are capable of doing that as well someday, then I would welcome that. I will be very interested in, as I said, learning about what the universe looks like from the perspective of a toaster.
 
 Welcome to Manifold. My guest today is Ken Liu. Ken is a highly acclaimed writer of science fiction and fantasy. He has won the Hugo and the Nebula Award, and in fact, won both for a single short story. This interview is happening for slightly odd reasons. It was brokered or arranged by a high government official in Singapore who knows both Ken and myself and is a Manifold listener. And she sent an email saying, hey, you should really interview Ken Liu. And I said, yeah, I've been a fan of his for some time. And she said, oh, I can look you up. So Ken, welcome to the show.
