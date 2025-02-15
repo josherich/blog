@@ -6,6 +6,8 @@ categories: short
 tags: [podcast_script]
 ---
 
+[Quinn Slack: Sourcegraph, AI Coding, and Cody | Around the Prompt #8](https://www.youtube.com/watch?v=SYaM2aR2pMI)
+
 Welcome back to Around the Prompt. This is Logan Kilpatrick. Today we're joined by Quinn Slack, the CEO of Sourcegraph. We talk about how code search is fundamental to automating coding, why we don't need AGI to build great products, the future of programming, and much more. Quinn has an incredibly unique perspective on the ecosystem, so I hope you enjoy this conversation.
 
 Quinn, do you want to take us back and tell us about starting Sourcegraph? To begin with, what was the initial conviction behind specifically code search? Why was that something that was an interesting problem to solve? 
@@ -301,6 +303,3 @@ Quinn, this has been a wonderful conversation. I appreciate you taking the time.
 While I think the magic of general chat has worn off a bit, coding remains a challenging area. It feels like a true magical moment when everything finally aligns and works seamlessly. I appreciate all the hard work you’re doing to create that magic for developers everywhere. Thank you for taking the time to chat with us.
 
 And the same goes to you—thank you for creating such fantastic models for us to use. Thanks to everyone listening. Happy coding!
-3238.48 - 4.2: phenomenal conversation learned a lot.
-
-3240.2 - 2.48: learned a lot.
