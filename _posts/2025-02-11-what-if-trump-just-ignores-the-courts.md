@@ -6,7 +6,7 @@ categories: short
 tags: [podcast_script]
 ---
 
-This podcast is supported by On Investing, an original podcast from Charles Schwab. Each week, hosts Liz Ann Saunders, Schwab's Chief Investment Strategist, and Kathy Jones, Schwab's Chief Fixed Income Strategist, along with their guests, analyze economic developments and bring context to conversations around stocks, fixed income, the economy, and more. Download the latest episode and subscribe at schwab.com slash oninvesting or wherever you get your podcasts.
+[What if Trump Just Ignores the Courts?](https://www.nytimes.com/2025/02/11/opinion/ezra-klein-podcast-quinta-jurecic.html)
 
 I will say, I feel like it's always a bad sign when I'm reading lawfare a lot. We joked last time around that our motto was we'll tell you when to panic. Sure. Have you told us to panic? Um, I feel like we're getting there, you know? Threat level orange? Yeah, yeah, let's go with that. I think we're beginning to move into the next phase of this Donald Trump term.
 
