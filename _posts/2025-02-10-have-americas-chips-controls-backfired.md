@@ -6,6 +6,8 @@ categories: short
 tags: [podcast_script]
 ---
 
+[Have America's chips controls backfired?](https://www.spectator.co.uk/podcast/have-americas-chips-controls-backfired/)
+
 The Spectator magazine is home to wonderful writing, insightful analysis and unrivaled books and arts reviews. Subscribe today for just £12 and receive a 12-week subscription in print and online, along with a free £20 John Lewis or Waitrose voucher. Go to spectator.co.uk forward slash voucher.
 
 Hello and welcome to Chinese Whispers with me, Cindy Yu. Every episode I'll be talking to journalists, experts and long-time China watchers about the latest in Chinese politics, society and more. There'll be a smattering of history to catch you up on the background knowledge and some context as well. How do the Chinese see these issues?
