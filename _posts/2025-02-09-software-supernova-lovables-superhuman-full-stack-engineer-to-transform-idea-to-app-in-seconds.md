@@ -6,6 +6,8 @@ categories: short
 tags: [podcast_script]
 ---
 
+[Software Supernova: Lovable's "Superhuman Full Stack Engineer" to Transform Idea to App in Seconds](https://www.cognitiverevolution.ai/software-supernova-lovables-superhuman-full-stack-engineer-to-transform-idea-to-app-in-seconds/)
+
 Over time, AIs are going to like read our minds basically, or they're going to be extremely good at predicting what we want in a given situation. Historically, we have switched overnight after a new model comes out because we tried it out and say, okay, this is a better model. We don't use just one LLM. We do smart routing and we use models from Gemini, OpenAI, and Anthropic. Soon, I imagine, potentially from DeepSeq as well. When you're connecting to external APIs, as you said, Nathan, there are often more things that can go wrong. That’s where you need to have a system that’s good at debugging itself between the different components that are interacting.
 
 The most important thing is that you have a product that predictably works and operates in an intuitive way. Making an agent work intuitively and smoothly takes a lot of iteration. If you're currently working without AI, then I think you're really disappointing your employer, your customer, or your clients. 
