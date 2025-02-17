@@ -1,10 +1,12 @@
 ---
 layout: post
-title: "Lecture 32: Unsloth"
+title: "GPU Mode Lecture 32: Unsloth"
 date: 2025-02-17 00:00:01
 categories: short
 tags: [podcast_script]
 ---
+
+[GPU Mode Lecture 32: Unsloth](https://www.youtube.com/watch?v=hfb_AIhDYnA)
 
 uh okay, uh hello everyone, welcome to lecture 32 I believe of GPU mode today. Like I'm really thrilled that we have like Daniel, the Han Brothers Daniel and Mike, here to talk to us about unsoft. I think the first time like I'd heard about you guys was for the nups Alum efficiency competition from last year. Uh, y'all were doing some really cool stuff and some very precise performance work. 
 
@@ -505,10 +507,3 @@ All right well uh I think that that's probably like a good good time to end this
 Um so for next week actually for the next two lectures uh we're gonna have like two two two lectures on like low bit kernels. So we're going to have like Mam and then we're going to have like Lei uh from the Bit Blas team at MSR. 
 
 So like it's going to be a little bit galore for the next like two weeks. Uh so yeah if you care about efficiency and if you enjoy this lecture I’ll bet you'll enjoy the ones coming next. 
-
-And thanks!
-5088.96 - 6.48: again Daniel thank you. 
-
-Michael, yeah. 
-
-5091.48 - 3.96: thanks a lot um yeah.
