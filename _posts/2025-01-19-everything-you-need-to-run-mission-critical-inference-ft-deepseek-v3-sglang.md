@@ -6,6 +6,8 @@ categories: short
 tags: [podcast_script]
 ---
 
+[Everything you need to run Mission Critical Inference (ft. DeepSeek v3 + SGLang)](https://www.latent.space/p/baseten)
+
 Welcome back. Right after Christmas, the Chinese whale bros ended 2024 by dropping the last big model launch of the year, DeepSeek V3. This is a massive 671 billion parameter, fine-grained MOE model with 256 experts trained with native FP8 mixed precision training, multi-head latent attention from DeepSeek V2, a new multi-token prediction objective, and 15 trillion tokens of data, including synthetic reasoning data distilled from DeepSeek R1. 
 
 Right now, on the LM Arena leaderboard, DeepSeek V3 is rated the seventh best model in the world with a score of 1319, right under the full O1 model, Gemini 2, and 4O latest, and above O1 Mini, Grok 2, Gemini 1.5 Pro, and Claude 3.5 Sonnet. This makes it the best open weights model in the world in January 2025. There has been a big recent trend in Chinese labs, releasing very large open weights models, with Tencent releasing Hunyuan large in November and Hilo releasing Minimax text this January, both over 400B in size. 
