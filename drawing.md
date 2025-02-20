@@ -25,7 +25,6 @@ title: Drawing
   <img src="images/drawing/max.jpg" alt="" class="drawings-img">
   <img src="images/drawing/wukong.jpg" alt="" class="drawings-img-mid">
   <img src="images/drawing/kiss.jpg" alt="" class="drawings-img">
-  <img src="images/drawing/whiplash.jpg" alt="" class="drawings-img-mid">
   <img src="images/drawing/dog.png" alt="" class="drawings-img-mid">
   <img src="images/drawing/cat.png" alt="" class="drawings-img-mid">
 </div>
