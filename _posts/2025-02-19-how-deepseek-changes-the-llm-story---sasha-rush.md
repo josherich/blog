@@ -2,9 +2,11 @@
 layout: post
 title: "How DeepSeek changes the LLM story - Sasha Rush"
 date: 2025-02-19 00:00:01
-categories: short
+categories: podast misc
 tags: [podcast_script]
 ---
+
+[How DeepSeek changes the LLM story - Sasha Rush](https://www.youtube.com/watch?v=KtBcIDtS13M)
 
 So very happy to have that Sasha Rush agreed to put together a talk at the last-- 
 
@@ -125,396 +127,115 @@ Other companies have tried this. So Mistral has open-source mixture-of-experts m
 So they're going to build them in this form. They have two sets of parameters. One is shared experts. These are dense and get run on every input. The other are sparse and only get run on some inputs. The dense ones, you just run in a standard way, whereas the shared ones go through a router, which decides sparsely how many of them are actually utilized. 
 
 So that's the architecture. Here's what this looks like in terms of math. They're going to have their final output...
-1550.89 - 4.14: is going to be a weighted mixture of experts. 
+Is going to be a weighted mixture of experts. Many of those weights will be 0. The way we determine which get turned on is based on this top k hard decision that gets made there. The rest are turned off. And the way we decide how to route is roughly by applying something like attention over experts, so basically a softmax that determines the weight for each of these experts that you might use. It's top k, so it's not just one expert. You pick a couple of them per time. So that's their style.
 
-1555.03 - 3.03: Many of those weights will be 0. 
+Explicitly, their entire neural network has 760-671 billion parameters. That's quite a lot. That's larger than the largest Llama model, but only 37 billion of them get used per input. So you have roughly a 20x sparsity for each input.
 
-1558.06 - 4.56: The way we determine which get turned on is based on this top k hard decision that gets made there. 
+Now, it's kind of controversial whether we should think about these experts as actually doing something different. It's OK if you just think of them as a kind of efficiency hack. But they do show graphs that show they are seeing natural emergent specialization, where some of the experts and some of the layers specialize more on things like math or coding, whereas when you pass in Wikipedia entries, they're more diffuse. You get more of a uniform distribution.
 
-1564.85 - 2.19: The rest are turned off. 
+So mixture of experts itself is interesting, but it's particularly interesting when combined with parallelization. So remember, we're training this on a very large cluster. We're going to have to pass around these inputs and weights between many different computers. Anything that complicates that process is going to make it much harder to train and could slow us down. So there's many different ways you can get this parallelization. The simplest one is just straight-up data parallelization. So this is a standard thing you could do for any neural network. The way it works is that you have a big batch. Everything in the batch has to go through a weight matrix W, so let's just copy that weight matrix and put it on a bunch of different computers. You can then ship the inputs to different computers and run them in parallel.
 
-1567.04 - 2.48: And the way we decide how to route is roughly by applying something like attention over experts, so basically a softmax that determines the weight for each of these experts that you might use. 
+When combining this with mixture of experts, it gets a bit more interesting. In mixture of experts, instead of one weight matrix, we have a bunch of experts. So we have four different experts here, and they're all smaller. Since each input is only going to a subset of experts, we can put the experts on different computers and do the routing before we send to a specific computer. So in this setting, the neural network routing is acting in the same way as a network router. It's literally determining where you get sent. In this setting, you end up doing less compute per computer, while still doing the same parallelization before. So this is the way mixture of experts plays very nicely with the parallelization you need for training.
 
-1580.3 - 2.92: It's top k, so it's not just one expert. 
+That being said, there are all sorts of issues that come up in this setting that you don't have in the standard setting. In the old system, you could send it to any computer. They all had the same weights. But here, you have to send them to the computer that got selected by the neural network. So you have to make sure you have some sort of balance. Previous work had relatively complex balancing schemes. Typically, it was done by training into the network itself, a loss that tried to support balancing. They're going to do something much simpler. They're basically going to put a bias term—you can think of this as roughly like a Lagrange multiplier that tries to encourage you to be more balanced as you train. They don't really even say how they do this in practice. They just tweak the bias terms in order to make it more balanced in practice, and they claim this simplifies training significantly for them.
 
-1583.22 - 4.31: You pick a couple of them per time. 
+Another thing that comes up a lot in their work is this issue of traffic. So if you have too many experts that are on—so let's say you have too many experts, and maybe, like, 20 of them are on per token—you end up having a lot of network traffic. As you're running through the forward pass of the model, you're sending around the inputs to all your different computers. And so if you have too much traffic, you overload the network bandwidth. Now, this is particularly interesting on these modern GPU setups. You're going to basically have two different networks. One is like this InfiniBand network, which is between computers, and the other is this thing called NVLink, which is an extremely fast network on a computer. So you get this hierarchy where it's cheaper to send things within a computer than it is to send things globally. So you have all these interesting networking problems that show up in this setting, and they interplay with the actual neural network decisions themselves. So they end up with this kind of hierarchical router for their models.
 
-1587.53 - 2.85: So that's their style. 
+Now, another reason this is interesting is because, if you remember earlier, we noted that some of the expert controls of Chinese computers are such that they have different networking specs than a US setup. So it's plausible that one of the reasons why this was more critical in their setting is because of the nature of their cluster themselves, so working around some of the constraints that were imposed by the hardware setting.
 
-1590.38 - 4.44: Explicitly, their entire neural network has 760--671 billion parameters. 
+So the last technical thing I want to talk about is quantization. For some reason, I think quantization is often thought of as kind of a boring aspect of this setting, but it's actually a quite fascinating aspect of modern neural networks, particularly during large-scale training. So just as a review, remember, in a standard computer, we have two types of floating point numbers. If you're doing science, you want fp64 because you care what your number is. You want to have actual precision. If you want to do something a little faster, you can go to fp32. Remember, the exponent roughly determines the order of magnitude, whereas the fraction here is going to determine the precision of your value.
 
-1597.92 - 1.53: That's quite a lot. 
+For years, people in neural networks have realized that we just don't need as much precision because the system is learned, the numbers don't really mean as much as they would in a scientific application. So when working with large-scale training, you often use something like 16 bits of precision. Here, we only have 2 bits for our fraction and 5 bits for your exponent. One issue that comes up is that when training models, it's been observed that very large weights have an oversized importance in the accuracy of your model, and so things like overflow can be problematic in these systems. One way to get around that is to move some of your bits from the fraction to the exponent. So in bf16, we have a different floating point standard that came from Google that gives more bits to the exponent than to the fraction.
 
-1599.45 - 3.2: That's larger than the largest Llama model. 
+Why does any of this matter? It matters because on modern GPUs, particularly in the recent generation of hopper GPUs, more and more of the computing power has moved from the general-purpose CUDA framework to the specific purpose of tensor cores. So this is one part of the GPU that's specifically targeted to doing matrix multiplies. And if you just use that part of the GPU, you can get way more compute power than you could if you used the general-purpose segment. So we go basically from 34 teraflops for fp64 to 1,900 if we can use fp16. What this looks like is a particular instruction in the system called Warpgroup level Matrix Multiply Accumulate—not that important, but DeepSeek does go into the specific assembly instructions they use. So it computes a matrix multiply of very restricted sizes for very restricted data types. And if you just use that operation, you get really big speedups. Well, it means you've got to do fp8 or below. fp8 is absurd.
 
-1602.65 - 5.71: But only 37 billion of them get used per input. 
+Let me just explain what that looks like. Here are the numbers we have in our number system. It goes from 16 to 18. In fact, they even use one. I think that's just m8. But they all get used in different ways. So we're just trying to get everything down to the lowest precision possible to make it as fast as possible. Here's the problem. So parts of your network that are just the forward pass through the neural network, you want to do at the lowest precision possible. So they have this kind of Rube Goldberg machine of precisions represented in this diagram that shows each part of the neural network and what precisions it can handle.
 
-1608.36 - 6.98: So you have roughly a 20x sparsity for each input. 
+So this is run the neural network. And when you do that, your input comes in in bf16. You do the multiply part of the matrix multiply in fp8, but then you accumulate it into fp32. Each step in this process is hard-coded assembly code to make that work. This also plays into the mixture of experts, because if you can pass around information at lower precision, then you use less network bandwidth. So that gives you a sense of the type of optimizations that are happening in this paper.
 
-1615.34 - 3.75: Now, it's kind of controversial whether we should think about these experts as actually doing something different. 
+The paper gives almost no information about data. Data is thought to be extremely important in training language models. We have very little information about what it is. So technically, we call this an open-weight system because we have access to the weights itself, but not the way of getting them.
 
-1619.09 - 2.37: It's OK if you just think of them as a kind of efficiency hack. 
+Also, there's one other thing. So one thing that was reported in the press afterwards was that OpenAI was alleging that DeepSeek inappropriately used its data. So the idea is that if you have access to OpenAI's API, you can get a lot of instances of GPT-4 generating text. Once you have those, it's actually relatively easy to convert them into a very good language model. This idea has been well explored. It's roughly called distillation, and it basically just means that if you train a model on the outputs of a real system, even very little amounts of data, you get a lot of benefit. I don't think it takes away from any of the scientific aspects of the system, but it is something that was being reported in the press.
 
-1627.2 - 2.33: But they do show graphs that show they are seeing natural emergent specialization, where some of the experts and some of the layers specialize more on things like math or coding, whereas when you pass in Wikipedia entries, they're more diffuse. 
+This is V3. I expect in two months V4 and two months V5. At the end of their paper, they say they're coming for it all. We will try to break through the architectural limitations of Transformer, thereby pushing the boundaries of its modeling capabilities. And DeepSeek wants to try to fix it. So a pause if anyone has any questions about V3. I want to spend the rest of the time talking about R1.
 
-1645.15 - 2.52: You get more of a uniform distribution. 
+AUDIENCE: So no code of V3 is available, right? Any code part of V3, like any implementation of V3 is available?
 
-1650.33 - 3.16: So mixture of experts itself is interesting, but it's particularly interesting when combined with parallelization. 
+SASHA RUSH: I mean, the inference code is available—you're able to run it—and the weights.
 
-1658.08 - 4.02: So remember, we're training this on a very large cluster. 
+AUDIENCE: Right.
 
-1662.1 - 2.48: We're going to have to pass around these inputs and weights between many different computers. 
+SASHA RUSH: Yeah?
 
-1668.79 - 2.72: Anything that complicates that process is going to make it much harder to train and could slow us down. 
+AUDIENCE: What's an estimate of the marginal cost of training V3?
 
-1675.83 - 1.92: So there's many different ways you can get this parallelization. 
+SASHA RUSH: So yeah, I mean, this is the number.
 
-1680.49 - 3.83: The simplest one is just straight-up data parallelization. 
+AUDIENCE: The 5 million is for V3.
 
-1686.15 - 4.64: So this is a standard thing you could do for any neural network. 
+AUDIENCE: Oh, it's not just for R1 post-training.
 
-1690.79 - 3.65: The way it works is that you have a big batch. 
+SASHA RUSH: That's from the V3 paper.
 
-1694.44 - 4.0: Everything in the batch has to go through a weight matrix W, so let's just copy that weight matrix and put it on a bunch of different computers. 
+AUDIENCE: I see. Yeah?
 
-1703.48 - 4.07: You can then ship the inputs to different computers and run them in parallel. 
+AUDIENCE: So the various tricks you mentioned, how much does each contribute?
 
-1712.11 - 2.77: When combining this with mixture of experts, it gets a bit more interesting. 
+SASHA RUSH: Yeah, that's a really good question. I wasn't able to get enough detail from their paper to parse that out.
 
-1716.97 - 3.28: In mixture of experts, instead of one weight matrix, we have a bunch of experts. 
+Yeah?
 
-1721.87 - 2.0: So we have four different experts here, and they're all smaller. 
+AUDIENCE: I just wanted to go back to the slide.
 
-1726.33 - 4.33: Since each input is only going to a subset of experts, we can put the experts on different computers and do the routing before we send to a specific computer. 
+SASHA RUSH: The specific NVIDIA targeted code to make it run efficiently.
 
-1738.58 - 3.26: So in this setting, the neural network routing is acting in the same way as a network router. 
+Yeah?
 
-1744.91 - 3.1: It's literally determining where you get sent. 
+AUDIENCE: Is there anything special about how they're choosing which experts for the input?
 
-1748.01 - 3.03: In this setting, you end up doing less compute per computer, while still doing the same parallelization before. 
+SASHA RUSH: I mean, they give the algorithm here. The idea is that it's learned, and they take a dot product of the input activation by each expert weight, take a softmax, and then pick the top k. So you can think of it as basically very similar to attention over experts.
 
-1755.73 - 1.91: So this is the way mixture of experts plays very nicely with the parallelization you need for training. 
+AUDIENCE: On that operation, they specifically freeze it after 1% to 5% of pre-training. Do you have any idea why do labs do that, fix the router operation after a very small amount of pre-training?
 
-1762.92 - 1.92: That being said, there are all sorts of issues that come up in this setting that you don't have in the standard setting. 
+SASHA RUSH: Yeah, I think it makes sense in some ways, because if you have too many moving parts, it's like an iterative algorithm.
 
-1769.94 - 3.04: In the old system, you could send it to any computer. 
+Yeah?
 
-1772.98 - 1.44: They all had the same weights. 
+AUDIENCE: Why you wouldn't do something that we've seen here in the US, what prevented us from moving to the US?
 
-1774.42 - 2.9: But here, you have to send them to the computer that got selected by the neural network. 
+So it's quite possible that some of these innovations have been discovered independently. I'm going to go on, but I'll have time for questions at the end.
 
-1779.79 - 3.41: So you have to make sure you have some sort of balance. 
+Let's talk about R1. Let's do dessert. The chief research officer at OpenAI said congrats to DeepSeek on producing an o1-level reasoning model. Their research paper demonstrates they've independently found some of the core ideas that we did on our way to o1. Great.
 
-1783.2 - 4.53: Previous work had relatively complex balancing schemes. 
+I gave a talk here at Simons in the fall where I tried to guess what o1 was. I almost never get told what the right answer was. It helps you update your prior. This is the graph on the left—more training, better model in a kind of standardized way. More time for the specific problem, you get better. Here's roughly their description, basically just saying that it learns to do this chain of thought with more training.
 
-1787.73 - 3.03: Typically, it was done by training into the network itself, a loss that tried to support balancing. 
+I'm going to use the term "thinking" kind of loosely. This is the worst workshop in the world to do that, because you guys actually know what thinking is. So this is the model chatting to itself, planning out its next action, trying to decide what it wants to do to solve a puzzle problem.
 
-1794.45 - 2.02: They're going to do something much simpler. 
+In the talk I gave here at Simons, I made a bunch of speculation about what could be going on. They got MIT or, sorry, Berkeley PhDs to sit down, write out chain of thoughts, and get good annotation. They did really fancy RL and built a process reward model to learn how to automatically verify their own answers. They did MCTS like AlphaGo. They were doing A-star and training on that. I really enjoyed making it.
 
-1796.47 - 3.27: They're basically going to put a bias term-- you can think of this as roughly like a Lagrange multiplier that tries to encourage you to be more balanced as you train. 
+The thing that is being done is remarkably dumb in the coolest way. They say, think about this problem. When the answer is done, they run a symbolic checker that tells if you're right. They then run, reinforce, simple update to update the large language model parameters. That's the whole idea of this paper is stating this idea and running experiments on it.
 
-1806.22 - 3.1: They don't really even say how they do this in practice. 
+You might ask what the symbolic checker is. For math, they write a bunch of regular expressions to check if the math answer was the right answer for the problem. They also have a bunch of style rules that tell if you were doing things in the correct style.
 
-1809.32 - 2.45: They just tweak the bias terms in order to make it more balanced in practice. 
+AUDIENCE: I thought you were talking about the OpenAI. Well, OpenAI told us that--
 
-1814.15 - 5.6: And they claim this simplifies training significantly for them. 
+SASHA RUSH: Yeah, confirmed it was the same, yeah.
 
-1819.75 - 2.31: Another thing that comes up a lot in their work is this issue of traffic. 
+AUDIENCE: Can you go back to the scaling laws for test time compute? That logarithmic scaling seems terrible, and is that a fundamental limit of the method, or can we do better than that?
 
-1824.38 - 3.42: So if you have too many experts that are on-- so let's say you have too many experts, and maybe, like, 20 of them are on per token-- you end up having a lot of network traffic. 
+SASHA RUSH: Let's see.
 
-1836.22 - 3.07: As you're running through the forward pass of the model, you're sending around the inputs to all your different computers. 
+Yeah.
 
-1844.45 - 3.38: And so if you have too much traffic, you overload the network bandwidth. 
+AUDIENCE: I just [INAUDIBLE] let's say that the probability of correct answer is epsilon. You independently sample, 1 minus epsilon to [INAUDIBLE].
 
-1847.83 - 5.1: Now, this is particularly interesting on these modern GPU setups. 
+AUDIENCE: So just if one of them is correct, you're done.
 
-1854.02 - 2.55: You're going to basically have two different networks. 
+SASHA RUSH: So, let's see.
 
-1856.57 - 2.3: One is like this InfiniBand network, which is between computers. 
+I think random search would be, like, zero. But I think this is maybe besides the point of this paper.
 
-1860.71 - 1.52: And the other is this thing called NVLink, which is an extremely fast network on a computer. 
-
-1866.96 - 2.33: So you get this hierarchy where it's cheaper to send things within a computer than it is to send things globally. 
-
-1873.232 - 2.208: So you have all these interesting networking problems that show up in this setting, and they interplay with the actual neural network decisions themselves. 
-
-1881.043 - 2.167: So they end up with this kind of hierarchical router for their models. 
-
-1884.92 - 2.55: Now, another reason this is interesting is because, if you remember earlier, we noted that some of the expert controls of Chinese computers are such that they have different networking specs than a US setup. 
-
-1898.79 - 2.54: So it's plausible that one of the reasons why this was more critical in their setting is because of the nature of their cluster themselves, so working around some of the constraints that were imposed by the hardware setting. 
-
-1916.07 - 2.21: So the last technical thing I want to talk about is quantization. 
-
-1920.06 - 2.45: For some reason, I think quantization is often thought of as kind of a boring aspect of this setting. 
-
-1925.92 - 2.6: But it's actually a quite fascinating aspect of modern neural networks, particularly during large-scale training. 
-
-1932.78 - 3.67: So just as a review, remember, in a standard computer, we have two types of floating point numbers. 
-
-1939.93 - 4.13: If you're doing science, you want fp64 because you care what your number is. 
-
-1946.13 - 2.46: You want to have actual precision. 
-
-1954.95 - 2.2: If you want to do something a little faster, you can go to fp32. 
-
-1963.44 - 2.52: Remember, the exponent roughly determines the order of magnitude, whereas the fraction here is going to determine the precision of your value. 
-
-1972.68 - 2.28: For years, people in neural networks have realized that we just don't need as much precision. 
-
-1981.84 - 2.07: Because the system is learned, the numbers don't really mean as much as they would in a scientific application. 
-
-1988.54 - 4.11: So when working with large-scale training, you often use something like 16 bits of precision. 
-
-1995.22 - 2.85: Here, we only have 2 bits for our fraction and 5 bits for your exponent. 
-
-2001.8 - 3.17: One issue that comes up is that when training models, it's been observed that very large weights have an oversized importance in the accuracy of your model. 
-
-2008.4 - 5.15: And so things like overflow can be problematic in these systems. 
-
-2013.55 - 3.06: One way to get around that is to move some of your bits from the fraction to the exponent. 
-
-2019.65 - 4.34: So in bf16, we have a different floating point standard that came from Google that gives more bits to the exponent than to the fraction. 
-
-2035.87 - 2.22: Why does any of this matter? 
-
-2041.69 - 4.31: It matters because on modern GPUs, particularly in the recent generation of hopper GPUs, more and more of the computing power has moved from the general-purpose CUDA framework to the specific purpose of tensor cores. 
-
-2055.489 - 4.131: So this is one part of the GPU that's specifically targeted to doing matrix multiplies. 
-
-2062.08 - 3.34: And if you just use that part of the GPU, you can get way more compute power than you could if you used the general-purpose segment. 
-
-2074.36 - 6.77: So we go basically from 34 teraflops for fp64 to 1,900 if we can use fp16. 
-
-2084.04 - 3.9: What this looks like is a particular instruction in the system called Warpgroup level Matrix Multiply Accumulate-- not that important, but DeepSeek does go into the specific assembly instructions they use. 
-
-2100.06 - 4.89: So it computes a matrix multiply of very restricted sizes for very restricted data types. 
-
-2107.33 - 2.15: And if you just use that operation, you get really big speedups. 
-
-2114.44 - 4.49: Well, it means you've got to do fp8 or below. 
-
-2121.01 - 3.47: fp8 is absurd. 
-
-2127.48 - 4.093: Let me just explain what that looks like. 
-
-2134.75 - 3.21: Here are the numbers we have in our number system. 
-
-2142.6 - 2.79: It goes from 16 to 18. 
-
-2150.86 - 1.23: In fact, they even use one. 
-
-2152.09 - 1.59: I think that's just m8. 
-
-2156.02 - 1.9: But they all get used in different ways. 
-
-2160.85 - 1.597: So we're just trying to get everything down to the lowest precision possible to make it as fast as possible. 
-
-2174.418 - 2.042: Here's the problem. 
-
-2179.12 - 4.11: So parts of your network that are just the forward pass through the neural network, you want to do at the lowest precision possible. 
-
-2195.57 - 2.75: So they have this kind of Rube Goldberg machine of precisions represented in this diagram that shows each part of the neural network and what precisions it can handle. 
-
-2208.65 - 2.19: So this is run the neural network. 
-
-2210.84 - 4.18: And when you do that, your input comes in in bf16. 
-
-2217.54 - 4.06: You do the multiply part of the matrix multiply in fp8, but then you accumulate it into fp32. 
-
-2228.97 - 4.2: Each step in this process is hard-coded assembly code to make that work. 
-
-2242.71 - 3.18: This also plays into the mixture of experts, because if you can pass around information at lower precision, then you use less network bandwidth. 
-
-2254.83 - 4.085: So that gives you a sense of the type of optimizations that are happening in this paper. 
-
-2272.21 - 3.94: The paper gives almost no information about data. 
-
-2279.74 - 1.5: Data is thought to be extremely important in training language models. 
-
-2285.74 - 3.45: We have very little information about what it is. 
-
-2292.47 - 3.81: So technically, we call this an open-weight system because we have access to the weights itself, but not the way of getting them. 
-
-2305.99 - 2.49: Also, there's one other thing. 
-
-2311.01 - 2.04: So one thing that was reported in the press afterwards was that OpenAI was alleging that DeepSeek inappropriately used its data. 
-
-2330.18 - 4.87: So the idea is that if you have access to OpenAI's API, you can get a lot of instances of GPT-4 generating text. 
-
-2344.76 - 3.66: Once you have those, it's actually relatively easy to convert them into a very good language model. 
-
-2351.04 - 2.52: This idea has been well explored. 
-
-2353.56 - 1.85: It's roughly called distillation, and it basically just means that if you train a model on the outputs of a real system, even very little amounts of data, you get a lot of benefit. 
-
-2367.27 - 3.17: I don't think it takes away from any of the scientific aspects of the system. 
-
-2371.74 - 5.15: But it is something that was being reported in the press. 
-
-2381.16 - 1.44: This is V3. 
-
-2382.6 - 4.85: I expect in two months V4 and two months V5. 
-
-2387.45 - 3.17: At the end of their paper, they say they're coming for it all. 
-
-2396.79 - 2.58: We will try to break through the architectural limitations of Transformer, thereby pushing the boundaries of its modeling capabilities. 
-
-2409.58 - 2.52: And DeepSeek wants to try to fix it. 
-
-2418.93 - 2.8: So a pause if anyone has any questions about V3. 
-
-2421.73 - 4.73: I want to spend the rest of the time talking about R1. 
-
-2427.19 - 4.7: AUDIENCE: So no code of V3 is available, right? 
-
-2431.89 - 3.9: Any code part of V3, like any implementation of V3 is available? 
-
-2436.58 - 1.61: SASHA RUSH: I mean, the inference code is available-- you're able to run it-- and the weights. 
-
-2444.463 - 0.667: AUDIENCE: Right. 
-
-2446.2 - 0.49: SASHA RUSH: Yeah? 
-
-2446.69 - 2.542: AUDIENCE: What's an estimate of the marginal cost of training V3? 
-
-2454.472 - 1.828: SASHA RUSH: So yeah, I mean, this is the number. 
-
-2456.3 - 1.13: AUDIENCE: The 5 million is for V3. 
-
-2457.43 - 2.71: AUDIENCE: Oh, it's not just for R1 post-training. 
-
-2461.43 - 1.453: SASHA RUSH: That's from the V3 paper. 
-
-2465.925 - 1.355: AUDIENCE: I see. 
-
-2467.28 - 0.53: Yeah? 
-
-2467.81 - 2.47: AUDIENCE: So the various tricks you mentioned, how much does each contribute? 
-
-2471.54 - 2.0: SASHA RUSH: Yeah, that's a really good question. 
-
-2473.54 - 3.75: I wasn't able to get enough detail from their paper to parse that out. 
-
-2485.84 - 0.75: Yeah? 
-
-2486.59 - 3.4: AUDIENCE: I just wanted to go back to the slide. 
-
-2493.1 - 4.35: SASHA RUSH: The specific NVIDIA targeted code to make it run efficiently. 
-
-2501.74 - 0.75: Yeah? 
-
-2502.49 - 1.458: AUDIENCE: Is there anything special about how they're choosing which experts for the input? 
-
-2510.94 - 0.5: SASHA RUSH: I mean, they give the algorithm here. 
-
-2518.82 - 2.62: So the idea is that it's learned. 
-
-2524.52 - 2.44: And they take a dot product of the input activation by each expert weight, take a softmax, and then pick the top k. 
-
-2537.75 - 2.025: So you can think of it as basically very similar to attention over experts. 
-
-2545.76 - 2.79: AUDIENCE: On that operation, they specifically freeze it after 1% to 5% of pre-training. 
-
-2555.36 - 3.3: Do you have any idea why do labs do that, fix the router operation after a very small amount of pre-training? 
-
-2560.91 - 1.9: SASHA RUSH: Yeah, I think it makes sense in some ways, because if you have too many moving parts, it's like an iterative algorithm. 
-
-2578.47 - 4.32: Yeah? 
-
-2585.07 - 1.86: AUDIENCE: Why you wouldn't do something that we've seen here in the US, what prevented us from moving to the US? 
-
-2601.57 - 1.98: So it's quite possible that some of these innovations have been discovered independently. 
-
-2617.625 - 1.375: I'm going to go on, but I'll have time for questions at the end. 
-
-2622.5 - 1.77: Let's talk about R1. 
-
-2624.27 - 2.63: Let's do dessert. 
-
-2630.99 - 2.39: The chief research officer at OpenAI said congrats to DeepSeek on producing an o1-level reasoning model. 
-
-2639.11 - 3.03: Their research paper demonstrates they've independently found some of the core ideas that we did on our way to o1. 
-
-2644.18 - 0.5: Great. 
-
-2648.11 - 4.5: I gave a talk here at Simons in the fall where I tried to guess what o1 was. 
-
-2658.47 - 3.6: I almost never get told what the right answer was. 
-
-2665.1 - 4.34: It helps you update your prior. 
-
-2674.25 - 2.12: This is the graph on the left-- more training, better model in a kind of standardized way. 
-
-2684.38 - 4.95: More time for the specific problem, you get better. 
-
-2698.11 - 3.19: Here's roughly their description, basically just saying that it learns to do this chain of thought with more training. 
-
-2711.41 - 2.64: I'm going to use the term "thinking" kind of loosely. 
-
-2714.05 - 2.61: This is the worst workshop in the world to do that, because you guys actually know what thinking is. 
-
-2721.22 - 2.85: So this is the model chatting to itself, planning out its next action, trying to decide what it wants to do to solve a puzzle problem. 
-
-2732.82 - 1.78: In the talk I gave here at Simons, I made a bunch of speculation about what could be going on. 
-
-2748.73 - 2.68: They got MIT or, sorry, Berkeley PhDs to sit down, write out chain of thoughts, and get good annotation. 
-
-2751.41 - 4.34: They did really fancy RL and built a process reward model to learn how to automatically verify their own answers. 
-
-2759.81 - 3.09: They did MCTS like AlphaGo. 
-
-2765.03 - 3.74: They were doing A-star and training on that. 
-
-2770.34 - 1.49: I really enjoyed making it. 
-
-2774.57 - 3.02: The thing that is being done is remarkably dumb in the coolest way. 
-
-2782.82 - 2.87: They say, think about this problem. 
-
-2791.12 - 3.07: When the answer is done, they run a symbolic checker that tells if you're right. 
-
-2805.5 - 3.16: They then run, reinforce, simple update to update the large language model parameters. 
-
-2818.92 - 3.71: That's the whole idea of this paper is stating this idea and running experiments on it. 
-
-2825.69 - 3.64: You might ask what the symbolic checker is. 
-
-2832.38 - 3.57: For math, they write a bunch of regular expressions to check if the math answer was the right answer for the problem. 
-
-2847.5 - 3.56: They also have a bunch of style rules that tell if you were doing things in the correct style. 
-
-2857.63 - 2.25: AUDIENCE: I thought you were talking about the OpenAI. 
-
-2861.46 - 0.55: Well, OpenAI told us that-- 
-
-2864.093 - 1.327: SASHA RUSH: Yeah, confirmed it was the same, yeah. 
-
-2872.65 - 1.98: AUDIENCE: Can you go back to the scaling laws for test time compute? 
-
-2879.42 - 4.3: That logarithmic scaling seems terrible. 
-
-2888.31 - 2.31: And is that a fundamental limit of the method, or can we do better than that? 
-
-2894.533 - 0.917: SASHA RUSH: Let's see. 
-
-2905.05 - 1.35: Yeah. 
-
-2907.88 - 2.45: AUDIENCE: I just [INAUDIBLE] let's say that the probability of correct answer is epsilon. 
-
-2913.64 - 5.37: You independently sample, 1 minus epsilon to [INAUDIBLE]. 
-
-2920.21 - 3.84: AUDIENCE: So just if one of them is correct, you're done. 
-
-2931.667 - 1.083: SASHA RUSH: So, let's see. 
-
-2945.18 - 3.5: I think random search would be, like, zero. 
-
-2956.22 - 3.28: But I think this is maybe besides the point of this paper. 
-
-2966.77 - 1.59: So when doing RL, the main thing they observe is the following phenomenon. 
-As they run RL, the time the model spends thinking gets longer in a noticeable way, and the reasoning starts to make more sense. So they describe a moment in the paper where they start to see things in the reasoning chain that are somewhat sensible. So the a-ha moment—and they're using "a-ha" in a kind of double entendre here, both a-ha, like it works, but also it literally says, wait, wait, that's an a-ha moment I can flag, where it then finds the solution to the problem.
+So when doing RL, the main thing they observe is the following phenomenon. As they run RL, the time the model spends thinking gets longer in a noticeable way, and the reasoning starts to make more sense. So they describe a moment in the paper where they start to see things in the reasoning chain that are somewhat sensible. So the a-ha moment—and they're using "a-ha" in a kind of double entendre here, both a-ha, like it works, but also it literally says, wait, wait, that's an a-ha moment I can flag, where it then finds the solution to the problem.
 
 So this is this argument that this thinking ability emerges naturally in the systems itself. They also show that its pass rate goes up over time. So it is actually getting better on these problems with more training. So this is not a test time graph. It's more steps of training, and then the pass rate at 1 and 64 goes up on these very hard math problems. The lines here represent the o1 numbers. And that's roughly the claim that performance gets near o1 level. Great.
 
