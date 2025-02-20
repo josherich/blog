@@ -6,286 +6,196 @@ categories: short
 tags: [podcast_script]
 ---
 
-10.639 - 4.88: All right, I think we're at 50 people. It might be a good time to start. 
+[Lecture 44: NVIDIA Profiling](https://www.youtube.com/watch?v=F_BazucyCMw)
 
-12.559 - 4.8: So welcome everyone, welcome to another episode of GPU mode. This is a talk I've been personally very excited about. 
+All right, I think we're at 50 people. It might be a good time to start.
 
-15.519 - 4.68: One of the sort of recurring complaints on the server has been, you know, what are sort of like important metrics for me to look at in profiling? How do I go about optimizing my kernels? 
+So welcome everyone, welcome to another episode of GPU mode. This is a talk I've been personally very excited about.
 
-34.96 - 3.52: I want to give a big thank you to Vicrum for inviting both Magnus and Jackson from the Nvidia profiling team. Jackson is like the main PM for this project, so basically any feature requests you want, anything you don't like, you know, this is the person to go complain to. 
+One of the sort of recurring complaints on the server has been, you know, what are sort of like important metrics for me to look at in profiling? How do I go about optimizing my kernels?
 
-49.44 - 2.88: We were just chatting before the recording started, and Magnus was saying he's been working on profiling tools for about 15 years. 
+I want to give a big thank you to Vicrum for inviting both Magnus and Jackson from the Nvidia profiling team. Jackson is like the main PM for this project, so basically any feature requests you want, anything you don't like, you know, this is the person to go complain to.
 
-55.92 - 3.639: Throughout this time, not a lot of sort of dark knowledge of profiling has been very well available online, so you basically have the guy here. But before we get started, Magnus basically gave us a heads-up as to what the format of his talk is going to be. 
+We were just chatting before the recording started, and Magnus was saying he's been working on profiling tools for about 15 years. Throughout this time, not a lot of sort of dark knowledge of profiling has been very well available online, so you basically have the guy here. But before we get started, Magnus basically gave us a heads-up as to what the format of his talk is going to be.
 
-66.68 - 3.799: He has maybe about 15 minutes worth of slides, and the rest he's just going to be going over profiling traces. 
+He has maybe about 15 minutes worth of slides, and the rest he's just going to be going over profiling traces. You can very much view this as like you're looking over the shoulder of a senior engineer on the team and kind of like pay attention to what they pay attention to.
 
-79.759 - 3.68: You can very much view this as like you're looking over the shoulder of a senior engineer on the team and kind of like pay attention to what they pay attention to. 
+Please be interactive; ask as many questions as you want in chat. If you'd like to raise your hand, Vicrum and I will be monitoring the chat. But please, yeah, this is your chance to ask all the questions you need.
 
-88 - 3.4: Please be interactive; ask as many questions as you want in chat. If you'd like to raise your hand, Vicam and I will be monitoring the chat. But please, yeah, this is your chance to ask all the questions you need. 
+Without further ado, I'll hand it off to Jackson.
 
-100.56 - 4.68: Without further ado, I'll hand it off to Jackson. 
+Hey, terrific! Thank you. Yeah, so I'm Jackson Marusars, I'm the technical product manager for our CUDA developer tools, and Magnus is here as sort of the lead for Insight Compute.
 
-105.24 - 4.76: Hey, terrific! Thank you. Yeah, so I'm Jackson Marusars, I'm the technical product manager for our CUDA developer tools, and Magnus is here as sort of the lead for Insight Compute. 
+I'm just going to give a really quick overview of the things my team works on to set the stage, and then Magnus is going to do a lot of the deep dive into kernel profiling. Just so that everyone kind of understands what we're talking about, these are all the developer tools coming out of the team I'm on. We have our debuggers for GPU-accelerated codes, CUDA GDB from the command line, and debugging integrated into IDEs as well.
 
-115.92 - 4.159: I'm just going to give a really quick overview of the things my team works on to set the stage, and then Magnus is going to do a lot of the deep dive into kernel profiling. 
+We have profilers; Nsight Systems is the high-level platform profiling tool to look at CPU, GPU, memory, and some networking things as well. I'll give a really quick spiel on that one, but Nsight Compute is the one we're going to spend most of the time on today. This is our low-level kernel profiler to show you exactly how that kernel is executing on the GPU hardware, and how it's stepping through various assembly instructions and how that's interacting with the GPU performance.
 
-127.159 - 4.041: Just so that everyone kind of understands what we're talking about, these are all the developer tools coming out of the team I'm on. We have our debuggers for GPU-accelerated codes, CUDA GDB from the command line, and debugging integrated into IDEs as well. 
+Compute Sanitizer is an automatic correctness checker for GPU applications. This is the type of tool that's going to run automatically on your application, do a bunch of analysis, and then kick back correctness results for issues like memory leaks, threading issues, all that sort of stuff.
 
-142.599 - 5.401: We have profilers; Nsight Systems is the high-level platform profiling tool to look at CPU, GPU, memory, and some networking things as well. I'll give a really quick spiel on that one, but Nsight Compute is the one we're going to spend most of the time on today. 
+Obviously, IDE integrations—we're seeing a lot of people moving to Visual Studio Code. We have integration into Visual Studio Code, Visual Studio obviously as well, and IDE Eclipse Edition, but that one doesn't see as much use these days. If there's an IDE that you're using that you think is not well supported for GPU computing, please let us know because we're always looking to meet developers where they are. Really quickly, what the profiling workflow kind of looks like:
 
-159.36 - 4.599: This is our low-level kernel profiler to show you exactly how that kernel is executing on the GPU hardware, and how it's stepping through various assembly instructions and how that's interacting with the GPU performance. 
+Hey, Jackson, sorry to interrupt you. I don't think you shared the slides yet.
 
-185.04 - 4.119: Compute Sanitizer is an automatic correctness checker for GPU applications. This is the type of tool that's going to run automatically on your application, do a bunch of analysis, and then kick back correctness results for issues like memory leaks, threading issues, all that sort of stuff. 
+Okay, all good. So you guys see the four quadrants here on the screen?
 
-203.4 - 3.6: Obviously, IDE integrations—we're seeing a lot of people moving to Visual Studio Code. We have integration into Visual Studio Code, Visual Studio obviously as well, and IDE Eclipse Edition, but that one doesn't see as much use these days. 
+Awesome, yeah, all right. We'll double-check you, Magnus, when you share just to make sure. Those are kind of the types of tools we're talking about. If you haven't seen any of these, definitely go check them out. They all have their place in the GPU development cycle, and we hope that they all can help you out.
 
-221.159 - 5.72: If there's an IDE that you're using that you think is not well supported for GPU computing, please let us know because we're always looking to meet developers where they are. 
+The profiling workflow we promote at Nvidia is starting with Nsight Systems. This is going to give you that high-level overview of your platform; you know, when data is moving back and forth, is the CPU idle, is the GPU idle, what's going on on the GPU? Once you identify that you want to really dig into the GPU kernels that are running, that's when you'll look at Nsight Compute.
 
-226.879 - 3.801: Really quickly, what the profiling workflow kind of looks like: 
+Today, just a couple of slides on Nsight Systems before we dig into Nsight Compute. This is going to be a timeline-based tool, giving you an overview of all the correlated performance data as your application runs. Many libraries have built-in tracing, so you can see the various APIs as they're called. You can see memory transfers between the CPU and the GPU; it supports multi-GPU profiling as well.
 
-230.68 - 4.24: Hey, Jackson, sorry to interrupt you. I don't think you shared the slides yet. 
+That said, Nsight Systems doesn't dig deep into the specific kernels on the GPU—that's what Nsight Compute is for. I just wanted to let everyone know that Nsight Systems is out there. You should definitely try it out, and it does have some GPU performance metrics.
 
-245.599 - 5.28: Okay, all good. So you guys see the four quadrants here on the screen? 
+Nsight Compute is doing something much more complicated; it's doing something much more detailed to profile the kernels, and Magnus will be telling you more about that. That was just a really quick introduction to the tools we have. I did want to mention Nsight Systems, but now Magnus is going to spend most of the time talking about detailed kernel analysis with Nsight Compute.
 
-250.879 - 4.44: Awesome, yeah, all right. We'll double-check you, Magnus, when you share just to make sure. 
+Go ahead and take it away, Magnus.
 
-255.319 - 2.721: Those are kind of the types of tools we're talking about. If you haven't seen any of these, definitely go check them out. They all have their place in the GPU development cycle, and we hope that they all can help you out. 
+So hello. Yeah, oh awesome! On the previous slide on the trace itself, I was wondering if I could pop that up once more. That would be great.
 
-268.52 - 4.56: The profiling workflow we promote at Nvidia is starting with Nsight Systems. This is going to give you that high-level overview of your platform; you know, when data is moving back and forth, is the CPU idle, is the GPU idle, what's going on on the GPU? 
+So on GPU Active, you show two graphs; one is colored in blue and the other is really shadowed. I was wondering what’s the implication between those two?
 
-284.12 - 4.2: Once you identify that you want to really dig into the GPU kernels that are running, that's when you'll look at Nsight Compute. 
+What you're looking at right there is a summary line of all the activity across the GPUs, and then underneath is sort of the breakdown. You've got the GPU active sections, the sync copy engine active—all the different things are broken out here, and then these are summed.
 
-307.52 - 4.32: Today, just a couple of slides on Nsight Systems before we dig into Nsight Compute. This is going to be a timeline-based tool, giving you an overview of all the correlated performance data as your application runs. 
+I guess if we had the—I’ll be honest, I don’t like the dark mode on these. What it’s actually showing is that there are points within this pixel that, in fact, made it up to the top of that gray line.
 
-332.16 - 4.159: Many libraries have built-in tracing, so you can see the various APIs as they're called. You can see memory transfers between the CPU and the GPU; it supports multi-GPU profiling as well. 
+You know, this is just a screenshot, so you can't zoom in to see that it's a level of detail mechanism because it's sometimes quite difficult to see on a zoomed-out view where your peaks are. With this kind of level of detail that Poly just described, you get the average’s color but you get a hint of the maximum value in the zoomed area per pixel.
 
-348.6 - 4.4: That said, Nsight Systems doesn't dig deep into the specific kernels on the GPU—that's what Nsight Compute is for. 
+That way, you can find outliers quicker, even though you don't see them in the average data of the timeline.
 
-389.039 - 3.201: I just wanted to let everyone know that Nsight Systems is out there. You should definitely try it out, and it does have some GPU performance metrics. 
+Go ahead, yeah, since we're here, I'm just sort of curious about the abbreviations.
 
-402.4 - 5.04: Nsight Compute is doing something much more complicated; it's doing something much more detailed to profile the kernels, and Magnus will be telling you more about that. 
+The transmission and receive is basically RXTX, is the direction in which your traffic kind of flows.
 
-414.24 - 3.639: That was just a really quick introduction to the tools we have. I did want to mention Nsight Systems, but now Magnus is going to spend most of the time talking about detailed kernel analysis with Nsight Compute. 
+The bar mapping, or kind of bar one that you mentioned, is the destination of where you write data—in this case, that’s a shared area where the devices can share data between different PCI devices.
 
-425.12 - 6.639: Go ahead and take it away, Magnus. 
+This is the graphics engine.
 
-448.0 - 5.72: So hello. Yeah, oh awesome! On the previous slide on the trace itself, I was wondering if I could pop that up once more. That would be great. 
+You could see if you have different processes switching between maybe a compute process and a graphic process, for example.
 
-480.72 - 6.28: So on GPU Active, you show two graphs; one is colored in blue and the other is really shadowed. I was wondering what’s the implication between those two? 
+Terrific, all right, thanks a lot, take it away.
 
-501.76 - 4.279: What you're looking at right there is a summary line of all the activity across the GPUs, and then underneath is sort of the breakdown. 
+I hope you can see my slides now.
 
-527.0 - 3.279: You've got the GPU active sections, the sync copy engine active—all the different things are broken out here, and then these are summed. 
+As Jackson mentioned, this is our prime CUDA workload profiling tool, so think of this already as the secondary tool. This gives you system information to see even if the GPU is potentially on your critical path or which kernels take longer, are slower than you expected.
 
-541.68 - 6.88: I guess if we had the—I’ll be honest, I don’t like the dark mode on these. What it’s actually showing is that there are points within this pixel that, in fact, made it up to the top of that gray line. 
+Directly, you can gather as much information as you can for this one kernel, spend some time in Nsight Compute to optimize this kernel, and then after this, you might want to go back to Nsight Systems to see what the improved performance does to your overall performance.
 
-580.04 - 4.32: You know, this is just a screenshot, so you can't zoom in to see that it's a level of detail mechanism because it's sometimes quite difficult to see on a zoomed-out view where your peaks are. 
+We try to get as much information as we can and we will see what information is available. You can change frequency; sometimes you can have higher frequencies in Nsight Compute if you have a kernel or if you make a large capture and in Nsight Systems you might need to reduce the sampling frequencies there.
 
-590.16 - 4.08: With this kind of level of detail that Poly just described, you get the average’s color but you get a hint of the maximum value in the zoomed area per pixel. 
+Since there's so much information and as the introduction mentioned, profiling is kind of a little bit of an art form, you get better at it as you learn. This is similar to other tools you might use on a regular basis.
 
-611.399 - 4.641: That way, you can find outliers quicker, even though you don't see them in the average data of the timeline. 
+You just launch your application through the tool; you just write basically ncu, and then whatever follows is your application. You don't have to modify your application at all for this to work, since we kind of sit in between your application and the driver.
 
-624.8 - 3.24: Go ahead, yeah, since we're here, I'm just sort of curious about the abbreviations. 
+If you want to have metrics on a source line granularity or have the ability to map basically metrics to your own source code, then in nvcc there is a dash line table flag.
 
-641.92 - 5.08: The transmission and receive is basically RXTX, is the direction in which your traffic kind of flows. 
+Will interception slow down the end-to-end latency? I'd like to ask how you thought about trade-offs between sampling-based profilers versus other approaches and why you settled on this design.
 
-663.12 - 6.44: The bar mapping, or kind of bar one that you mentioned, is the destination of where you write data—in this case, that’s a shared area where the devices can share data between different PCI devices. 
+I wouldn't say we still optimize this, and we want to have the least amount of overhead.
 
-675.0 - 5.88: This is the graphics engine. 
+It’s really meant for you to have a kernel and you have a problem optimizing that one.
 
-702.48 - 4.52: You could see if you have different processes switching between maybe a compute process and a graphic process, for example. 
+It does work for other languages. I mentioned Python already.
 
-720.0 - 3.24: Terrific, all right, thanks a lot, take it away. 
+We work with a lot of people building front-end compilers for those languages to ensure there is an option for this.
 
-726.48 - 4.919: I hope you can see my slides now. 
+If you profile multiple runs of a CUDA kernel using Nsight Compute, how does Nsight Compute report the statistics over multiple runs?
 
-740.199 - 5.76: As Jackson mentioned, this is our prime CUDA workload profiling tool, so think of this already as the secondary tool. 
+The reason for that is not necessarily only to make them more stable, we replay them so that we can collect different data every pass. There are also cases where we call that a range replay where you want to have multiple kernels in that window of observation.
 
-757.56 - 4.6: This gives you system information to see even if the GPU is potentially on your critical path or which kernels take longer, are slower than you expected. 
+We save off kind of the current state of the GPU; think of it like accessible device memory is saved off in a background buffer. That guarantees that we can replay this kernel and get consistent data every time we profile.
 
-780.04 - 4.68: Directly, you can gather as much information as you can for this one kernel, spend some time in Nsight Compute to optimize this kernel, and then after this, you might want to go back to Nsight Systems to see what the improved performance does to your overall performance. 
+The output buffers after that kernel replay is exactly the same as if you had executed a kernel only once.
 
-803.24 - 5.36: We try to get as much information as we can and we will see what information is available. 
+The context is being saved on the CPU, right?
 
-835.12 - 4.639: You can change frequency; sometimes you can have higher frequencies in Nsight Compute if you have a kernel or if you make a large capture and in Nsight Systems you might need to reduce the sampling frequencies there. 
+We also skip memory objects that are already read-only.
 
-867.279 - 3.841: Since there's so much information and as the introduction mentioned, profiling is kind of a little bit of an art form, you get better at it as you learn. 
+If you only have one metric, you collect the data, you have it in a second.
 
-898.44 - 3.92: This is similar to other tools you might use on a regular basis. 
+You should be looking at tradeoffs of how much profiling versus how many compute resources you have on the GPU.
 
-911.92 - 5.32: You just launch your application through the tool; you just write basically ncu, and then whatever follows is your application. 
+It's important that if you have this as a two-pass metric for your hit rate, that you actually observe the same thing in every pass. If you want to skip this, there is an option to set this.
 
-946.72 - 4.44: You don't have to modify your application at all for this to work, since we kind of sit in between your application and the driver. 
+That's why we think in the default case we clear the caches.
 
-981.8 - 6.08: If you want to have metrics on a source line granularity or have the ability to map basically metrics to your own source code, then in nvcc there is a dash line table flag. 
+So for us, we would look at are the metrics that we report in the tool, do they make sense, do they fit our understanding of the hardware?
 
-1054.0 - 4.2: Will interception slow down the end-to-end latency? I'd like to ask how you thought about trade-offs between sampling-based profilers versus other approaches and why you settled on this design. 
+For the first one we look at, it’s something super simple where you can get trust into.
 
-1108.24 - 6.679: I wouldn't say we still optimize this, and we want to have the least amount of overhead. 
+The only difference is if you compile and then the selection of metrics that you have, you can list the sets or sections and metrics.
 
-1171.48 - 4.88: It’s really meant for you to have a kernel and you have a problem optimizing that one. 
+There is the challenge of how do you tell the system which kernels to profile.
 
-1194.48 - 5.76: It does work for other languages. I mentioned Python already. 
+The first thing we do is we take something super simple and look at that, and then later I have some more interesting samples to look at.
+Collect or how many passes it takes to collect that. That is also something we optimize over time. The larger chips or newer chips often allow us to collect more metrics in less amount of passes. But the counterbalance for that is like they also have more features. So then if you want to enable everything, we are back to where we started. But that keeps the number of passes basically in balance that we constantly work on improving observability and coverage.
 
-1218.0 - 4.679: We work with a lot of people building front-end compilers for those languages to ensure there is an option for this. 
+Kind of the new features. Otherwise, you know like differences that you see between those frequencies, number of SMS, all the things that are captured in the report that you would see.
 
-1239.28 - 4.8: If you profile multiple runs of a CUDA kernel using Nsight Compute, how does Nsight Compute report the statistics over multiple runs? 
+Yeah, at the bottom of this, I want to highlight this and we look at this in the second example a little bit more. This is what we call our rules output. There the system already makes recommendations of saying like, "Hey, here I found something," and maybe there is something that you want to look at.
 
-1329.7 - 4.8: The reason for that is not necessarily only to make them more stable, we replay them so that we can collect different data every pass. 
+These are links that then jump into the rest of the report to explain how we come to this conclusion and what you can do to kind of fix these. This is the high-level view of kind of saying like what does the system detect with this kernel. What's the issue with this kernel?
 
-1372.48 - 7.28: There are also cases where we call that a range replay where you want to have multiple kernels in that window of observation. 
+Is there something that we can potentially fix? And it guesses a speed up basically that would assume if you can completely solve this problem, how much faster would it be. Which is a good indication of saying like um is it worth for me to spend more time or not. We have later other examples where these numbers get higher and then we show how we solve it and compare the data.
 
-1415.799 - 4.88: We save off kind of the current state of the GPU; think of it like accessible device memory is saved off in a background buffer. 
+The other report pages. So I go up here quickly through um there are multiple report pages quickly showing the session is simply saying like hey what did I launch all the parameters you can rerun it basically with this command.
 
-1469.0 - 6.84: That guarantees that we can replay this kernel and get consistent data every time we profile. 
+Back here and as we said, like if you need any device attributes that Cuda has for your device that you collected or multiple devices that your application is using, you can look at all of them here. The device information is critical input for profiling. Often, it is of interest to know um, you know your grid size in comparison to the number of SMS this machine has.
 
-1550.039 - 4.52: The output buffers after that kernel replay is exactly the same as if you had executed a kernel only once. 
+That can make a difference and therefore it's important to have this captured in here. There is a raw page that's basically just all metrics that we collected in this run. So you can just basically look at all the individual values that we have, um, that can be exported and later processed in a different way.
 
-1582.6 - 6.199: The context is being saved on the CPU, right? 
+We have other ways for post-processing too but that's one way you could get to all the data we collected. There's a context page which basically just says like where was this lounge made. If there would be nbtx instrumentation, you would see the state of nbtx at that time, that could help when you look at that report in a week again.
 
-1650.279 - 5.88: We also skip memory objects that are already read-only. 
+Um, and then uh, you know what you actually profiled or where this was in your code and then the other two are the main pages where we now spend a lot of time on details page and source page.
 
-1734.24 - 3.6: If you only have one metric, you collect the data, you have it in a second. 
+I start with the details page. The idea of the details page is it's one overview of all the data we collected. And it's ordered in what we call section so the uh green lines separate individual sections.
 
-1765.84 - 4.559: You should be looking at tradeoffs of how much profiling versus how many compute resources you have on the GPU. 
+Every section has a name on the top a description and uh a table of the most important metrics in that section and a section covers different portions of your kernel or different portions of the hardware you execute. So for example, the first section would be what we call our speed of light section. This is giving you the high-level overview of utilization of the hardware in comparison to the peak performance this specific hardware offers.
 
-1989.039 - 3.561: It's important that if you have this as a two-pass metric for your hit rate, that you actually observe the same thing in every pass. 
+And if we look at this, we would see like the first metric is like a compute SM throughput which would say for all bottlenecks on the compute side what is the highest bottleneck that we could find and this is at 12% of the peak performance. The same for memory for all memory bandwidth and all links between all the caches. The one that is the highest is at 93%.
 
-2003.08 - 4.88: If you want to skip this, there is an option to set this. 
+DM is at 93. That drives basically this percentage up here and already shows us without looking at anything else to say like as expected this vector doesn't benefit from L1 and L2 caches. This is a typical example of a DM limited kind of case. The sections itself then have an expander where you can get more information about this, um, so in this case this is a visual representation of these two first metrics where you say like okay this is clear that this is memory bound.
 
-2039.519 - 4.561: That's why we think in the default case we clear the caches. 
+But you can toggle between different views up here and you can see is like we could look at this in the same way, um, that we would say like if are more used to looking at this from a roof line perspective. This is the roof line for this kernel. If you are familiar with roof lines, the x-axis is the arithmetic intensity; the y-axis is the flops per second that is achieved.
 
-2158.28 - 4.28: So for us, we would look at are the metrics that we report in the tool, do they make sense, do they fit our understanding of the hardware? 
+The diagonal line that you see in here is basically your limit in terms of memory and the two horizontal lines, um, the lower one is the fp64 performance is ceiling cannot go above this with fp64 instructions. This one is the fp32 ceiling; you cannot go above this and our kernel achieves point is over here. It's right against the memory line which kind of fits to our understanding of like this is the memory bound kernel.
 
-2192.4 - 4.0: For the first one we look at, it’s something super simple where you can get trust into. 
+If you want to get more flops out of this kernel um, you have to increase your arithmetic intensity so that this moves to the right so that you have um a headroom to grow basically upwards. So this is what this kind of part shows and you can kind of see this in a quick way then to say like okay I'm on the left of the Ridge Point therefore I'm memory bound and I'm really completely memory bound because I'm against this kind of ceiling or the roof there.
 
-2227.16 - 3.84: The only difference is if you compile and then the selection of metrics that you have, you can list the sets or sections and metrics. 
+It seems like here we only issue an instruction every 10 cycles instead of every cycle and obviously that's not speed of light. The reason I show this is it's very useful to look at this because um imagine you look at a problem where your highest percentage is at 90% and now it's interesting to know if I solve this what's my second highest bottleneck. Because if your second highest bottleneck is at 91% and you don't fix that in the same case then you go from being bottlenecked at 83% at 93% to 91.
 
-2330.719 - 3.76: There is the challenge of how do you tell the system which kernels to profile. 
+That's not a huge win. But if you see cases like here where you would say like hey we are limited by accessing dram too often and dram is basically busy all the time, that's what the DRM cycles mean; we are active in Dam reading stuff all the time. And this is getting to 93%, and what's the next one and we are the next one would be moving data out of there. We are only at 52-55%.
 
-2355.16 - 5.0: The first thing we do is we take something super simple and look at that, and then later I have some more interesting samples to look at.
-2524.72 - 3.92: collect or how many passes it takes to collect that. That is also something we optimize over time. 
+There are obviously a lot and I cannot list them all but you see if you hover over these, um, the tooltips kind of usually explain every single kind of acronym you have in there, gives you way more details on what these metrics mean.
 
-2526.92 - 6.24: The larger chips or newer chips often allow us to collect more metrics in less amount of passes. 
+And you see every section can have rules output that again from our um expert system that can link to other sections and say like hey we detected something in this section, you seem to be memory bound here you really want to look at the memory analysis. And this way you can flow through this following just the links. Some of these links are external to a profiling guide that I show you in a second too where we have even more background information in form of documentation that doesn't fit all within.
 
-2533.16 - 4.6: But the counterbalance for that is like they also have more features. So then if you want to enable everything, we are back to where we started. But that keeps the number of passes basically in balance that we constantly work on improving observability and coverage. 
+Okay, uh we follow just through here and say like the next section we might want to look at for a memory bound kernel is like the uh memory workload analysis. If I would have clicked the link, it would have just brought me down here. Memory workload analysis, if we look at this, this is kind of a memory chart that shows the hierarchy of this specific hardware.
 
-2551.8 - 6.6: Kind of the new features. Otherwise, you know like differences that you see between those frequencies, number of SMS, all the things that are captured in the report that you would see. 
+You can see that we have actually double the amount of loads and stores that fits for um a vector ad. We we load two vectors; we write one. It goes through the cache; L1 cache doesn't do anything; it is at a 0% hit rate.
 
-2569.76 - 4.04: Yeah, at the bottom of this, I want to highlight this and we look at this in the second example a little bit more. 
+It transfers um in this direction 128 megabytes and in the other direction exactly half, 64. Each of our vectors in this case was scaled to be like 64 megabytes size. The other way direction uh the 64 megabytes is written to device memory. You also see these little ports here that would say like sometimes there is a bottleneck of like you cannot read and write at the same time.
 
-2576.52 - 3.599: This is what we call our rules output. There the system already makes recommendations of saying like, "Hey, here I found something," and maybe there is something that you want to look at. 
+This gives you a really quick way of understanding where in my chart is actually the bottleneck and where do I have to optimize. It's a super simple example I know this is not that simple in a real-world kernel um but back to that initial question of like how do we build trust is good to see that these numbers come out exactly um like we want to have them.
 
-2585.4 - 4.88: These are links that then jump into the rest of the report to explain how we come to this conclusion and what you can do to kind of fix these. 
+It's just like tees more people this way than necessarily just referring to "Hey, why did you not read the whole documentation or why do you not know every single presentation we did." It makes more sense to have this within the um whenever you need sounds good.
 
-2594.92 - 3.919: This is the high-level view of kind of saying like what does the system detect with this kernel. What's the issue with this kernel? 
+There's one long question in chat maybe Magnus I'll let you read it because there's no way I can read this out maybe.
 
-2601.16 - 3.919: Is there something that we can potentially fix? And it guesses a speed up basically that would assume if you can completely solve this problem, how much faster would it be. 
+Average number of warps resident per issue cycles waiting for um yes.
 
-2611.119 - 4.801: Which is a good indication of saying like um is it worth for me to spend more time or not. We have later other examples where these numbers get higher and then we show how we solve it and compare the data. 
+I think I understand the question. This is about um this one, the stall cycles versus the um how the um if we show this basically in do you have a cycle count or do you have a stall count um is ultimately I think think the underlying question.
 
-2623.28 - 4.4: The other report pages. So I go up here quickly through um there are multiple report pages quickly showing the session is simply saying like hey what did I launch all the parameters you can rerun it basically with this command. 
+Is the state of being stalled by long scoreboards.
 
-2637.599 - 4.401: Back here and as we said, like if you need any device attributes that Cuda has for your device that you collected or multiple devices that your application is using, you can look at all of them here. 
+The left side you see like the tensor core pipelines, the FMA pipeline, ALU pipeline, and um the AR metric logic unit.
 
-2645.72 - 5.28: The device information is critical input for profiling. Often, it is of interest to know um, you know your grid size in comparison to the number of SMS this machine has. 
+Most of our math currently happens in 64-bit for an image manipulation kernel. You would say like is that really necessary if our input channels are 8-bit only and it's probably not. The question we can ask is how do we find quickly where are those instructions um and what does it do if we improve this.
 
-2658.28 - 4.16: That can make a difference and therefore it's important to have this captured in here. There is a raw page that's basically just all metrics that we collected in this run. 
+You can see we have source annotations in here. Therefore all these reads have like excessive lines so we would directly come in here and you could point to those and be like oh this is what the system found.
 
-2668.2 - 4.84: So you can just basically look at all the individual values that we have, um, that can be exported and later processed in a different way. 
+You see like okay this is um going in the direction of the change that we wanted to make.
 
-2678.72 - 3.96: We have other ways for post-processing too but that's one way you could get to all the data we collected. 
-
-2681.24 - 3.359: There's a context page which basically just says like where was this lounge made. If there would be nbtx instrumentation, you would see the state of nbtx at that time, that could help when you look at that report in a week again. 
-
-2693.8 - 3.759: Um, and then uh, you know what you actually profiled or where this was in your code and then the other two are the main pages where we now spend a lot of time on details page and source page. 
-
-2701.24 - 4.56: I start with the details page. The idea of the details page is it's one overview of all the data we collected. 
-
-2722.559 - 4.0: And it's ordered in what we call section so the uh green lines separate individual sections. 
-
-2729.359 - 3.841: Every section has a name on the top a description and uh a table of the most important metrics in that section and a section covers different portions of your kernel or different portions of the hardware you execute. 
-
-2731.16 - 4.0: So for example, the first section would be what we call our speed of light section. This is giving you the high-level overview of utilization of the hardware in comparison to the peak performance this specific hardware offers. 
-
-2742.559 - 4.8: And if we look at this, we would see like the first metric is like a compute SM throughput which would say for all bottlenecks on the compute side what is the highest bottleneck that we could find and this is at 12% of the peak performance. 
-
-2758.44 - 4.48: The same for memory for all memory bandwidth and all links between all the caches. The one that is the highest is at 93%. 
-
-2774.68 - 5.0: DM is at 93. That drives basically this percentage up here and already shows us without looking at anything else to say like as expected this vector doesn't benefit from L1 and L2 caches. 
-
-2789.76 - 7.16: This is a typical example of a DM limited kind of case. The sections itself then have an expander where you can get more information about this, um, so in this case this is a visual representation of these two first metrics where you say like okay this is clear that this is memory bound. 
-
-2801.16 - 3.24: But you can toggle between different views up here and you can see is like we could look at this in the same way, um, that we would say like if are more used to looking at this from a roof line perspective. 
-
-2821.04 - 4.519: This is the roof line for this kernel. If you are familiar with roof lines, the x-axis is the arithmetic intensity; the y-axis is the flops per second that is achieved. 
-
-2835.4 - 6.4: The diagonal line that you see in here is basically your limit in terms of memory and the two horizontal lines, um, the lower one is the fp64 performance is ceiling cannot go above this with fp64 instructions. 
-
-2847.4 - 5.0: This one is the fp32 ceiling; you cannot go above this and our kernel achieves point is over here. It's right against the memory line which kind of fits to our understanding of like this is the memory bound kernel. 
-
-2861.68 - 4.84: If you want to get more flops out of this kernel um, you have to increase your arithmetic intensity so that this moves to the right so that you have um a headroom to grow basically upwards. 
-
-2873.599 - 4.0: So this is what this kind of part shows and you can kind of see this in a quick way then to say like okay I'm on the left of the Ridge Point therefore I'm memory bound and I'm really completely memory bound because I'm against this kind of ceiling or the roof there. 
-
-2907.24 - 3.839: It seems like here we only issue an instruction every 10 cycles instead of every cycle and obviously that's not speed of light. 
-
-2919.48 - 4.599: The reason I show this is it's very useful to look at this because um imagine you look at a problem where your highest percentage is at 90% and now it's interesting to know if I solve this what's my second highest bottleneck. 
-
-2924.079 - 5.0: Because if your second highest bottleneck is at 91% and you don't fix that in the same case then you go from being bottlenecked at 83% at 93% to 91. 
-
-2945.48 - 4.72: That's not a huge win. But if you see cases like here where you would say like hey we are limited by accessing dram too often and dram is basically busy all the time, that's what the DRM cycles mean; we are active in Dam reading stuff all the time. 
-
-2956.88 - 5.239: And this is getting to 93%, and what's the next one and we are the next one would be moving data out of there. We are only at 52-55%. 
-
-2971.2 - 3.84: There are obviously a lot and I cannot list them all but you see if you hover over these, um, the tooltips kind of usually explain every single kind of acronym you have in there, gives you way more details on what these metrics mean. 
-
-2993.72 - 6.0: And you see every section can have rules output that again from our um expert system that can link to other sections and say like hey we detected something in this section, you seem to be memory bound here you really want to look at the memory analysis. 
-
-3022.16 - 5.04: And this way you can flow through this following just the links. Some of these links are external to a profiling guide that I show you in a second too where we have even more background information in form of documentation that doesn't fit all within. 
-
-3027.2 - 3.68: Okay, uh we follow just through here and say like the next section we might want to look at for a memory bound kernel is like the uh memory workload analysis. 
-
-3037.16 - 3.159: If I would have clicked the link, it would have just brought me down here. Memory workload analysis, if we look at this, this is kind of a memory chart that shows the hierarchy of this specific hardware. 
-
-3061.2 - 3.76: You can see that we have actually double the amount of loads and stores that fits for um a vector ad. 
-
-3070.0 - 4.48: We we load two vectors; we write one. It goes through the cache; L1 cache doesn't do anything; it is at a 0% hit rate. 
-
-3083.76 - 4.24: It transfers um in this direction 128 megabytes and in the other direction exactly half, 64. Each of our vectors in this case was scaled to be like 64 megabytes size. 
-
-3111.96 - 5.0: The other way direction uh the 64 megabytes is written to device memory. You also see these little ports here that would say like sometimes there is a bottleneck of like you cannot read and write at the same time. 
-
-3141.119 - 4.801: This gives you a really quick way of understanding where in my chart is actually the bottleneck and where do I have to optimize. 
-
-3186.0 - 3.599: It's a super simple example I know this is not that simple in a real world kernel um but back to that initial question of like how do we build trust is good to see that these numbers come out exactly um like we want to have them. 
-
-3197.44 - 4.359: It's just like tees more people this way than necessarily just referring to "Hey, why did you not read the whole documentation or why do you not know every single presentation we did." 
-
-3204.079 - 7.04: It makes more sense to have this within the um whenever you need sounds good. 
-
-3551.72 - 3.76: There's one long question in chat maybe Magnus I'll let you read it because there's no way I can read this out maybe. 
-
-3560.88 - 7.159: Average number of warps resident per issue cycles waiting for um yes. 
-
-3576.96 - 5.599: I think I understand the question. This is about um this one, the stall cycles versus the um how the um if we show this basically in do you have a cycle count or do you have a stall count um is ultimately I think think the underlying question. 
-
-3607.68 - 5.48: Is the state of being stalled by long scoreboards. 
-
-4696.679 - 3.801: The left side you see like the tensor core pipelines, the FMA pipeline, ALU pipeline, and um the AR metric logic unit. 
-
-4725.28 - 4.64: Most of our math currently happens in 64-bit for an image manipulation kernel. You would say like is that really necessary if our input channels are 8-bit only and it's probably not. 
-
-4875.28 - 7.24: The question we can ask is how do we find quickly where are those instructions um and what does it do if we improve this. 
-
-4858.239 - 5.881: You can see we have source annotations in here. 
-
-4900.48 - 3.48: Therefore all these reads have like excessive lines so we would directly come in here and you could point to those and be like oh this is what the system found. 
-
-4946.12 - 4.84: You see like okay this is um going in the direction of the change that we wanted to make. 
-
-5014.639 - 6.681: Duration um was predicted in that first kernel to be uh 83% faster if we would remove the 64-bit instructions and here we have like an 81% speed up for this. 
+Duration um was predicted in that first kernel to be uh 83% faster if we would remove the 64-bit instructions and here we have like an 81% speed up for this.
 
 The final reporting is a crucial aspect of profiling, benefiting developers and researchers by providing an organized analysis of optimization opportunities and bottlenecks that may arise during the execution of kernels.
 uh the color choice you want um in the options um and and the other color is kind of a high positive change and you would see like if we reduce the runtime by 81% our utilization or closer to Peak Performance goes up significantly. 
