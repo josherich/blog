@@ -2,7 +2,7 @@
 layout: post
 title: "Lecture 44: NVIDIA Profiling"
 date: 2025-02-19 00:00:01
-categories: short
+categories: podcast gpu-mode
 tags: [podcast_script]
 ---
 
