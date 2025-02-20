@@ -2,9 +2,11 @@
 layout: post
 title: "CMU Advanced NLP Spring 2025 (11): Reinforcement Learning"
 date: 2025-02-19 00:00:01
-categories: short
+categories: podcast misc
 tags: [podcast_script]
 ---
+
+[CMU Advanced NLP Spring 2025 (11): Reinforcement Learning](https://www.youtube.com/watch?v=disWB7qwcOk)
 
 So today we're going to be talking about reinforcement learning in the context of advanced NLP and language models. We have a lot of content to cover today; some of it is kind of technical to show you some of the key ideas behind reinforcement learning. But hopefully, you can learn a lot from this, and it's increasingly becoming something that is used in a wide variety of areas in advanced NLP.
 
