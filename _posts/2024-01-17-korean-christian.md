@@ -19,6 +19,24 @@ tags: [short,korea]
 
 In 1603, Yi Su-gwang, a Korean politician, returned from Beijing carrying several theological books written by Matteo Ricci, an Italian Jesuit missionary to China.[4] He began disseminating the information in the books, introducing Christianity to Korea.
 
+### from Kagi
+
+> This blog post is ranked 7th in kagi's search result and used as a reference for the quick answer.
+
+---
+
+Christianity was first introduced to Korea in the late 1700s, during the Joseon Dynasty period, by Confucian scholars who encountered it in China 12. The religion was initially brought over in the form of Chinese Catholicism 2. The spread of Christianity also coincided with the decline of Confucianism at the time 34.
+
+Yi Gwang-jeong, a government official, was the first Korean to be baptized as a Christian in Beijing in 1784 5. Upon his return to Korea, he began to evangelize, but faced resistance from the Confucian establishment 5. Protestant Christianity took root in the late 1800s with the first believers being Koreans who met Scottish Presbyterian missionaries in Manchuria 6.
+
+References
+- Christianity in Korea - Wikipedia en.wikipedia.org
+- Unveiling the Mystery: How Korea Became Christian christianeducatorsacademy.com
+- Who Brought the Gospel to Korea? Koreans Did. - Christianity Today www.christianitytoday.com
+- First Christianity in Korea www.josherich.me
+- How South Korea's Christianization Took the World by Surprise christianeducatorsacademy.com
+- HISTORY OF CHRISTIANITY IN KOREA - Facts and Details factsanddetails.com
+
 ### from ChatGPT (Jan 2024)
 
 ---
