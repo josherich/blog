@@ -6,6 +6,8 @@ categories: podcast
 tags: [podcast_script]
 ---
 
+[Tariffs, Trade and the AI Stack (The Derby Mill Series ep 04)](https://insights.intrepidgp.com/p/tariffs-trade-and-the-ai-stack)
+
 Question on that one, it may be off your expertise, Mark, but nothing's off my expertise. I'm actually insulted by the comment.
 
 So welcome to the Derby Mills series: Intrepid Pioneers of the Next Economy, featuring discussions with entrepreneurs at the forefront of deploying machine intelligence and brainstorming sessions about where the technology may go at the limit.
