@@ -2,9 +2,11 @@
 layout: post
 title: "DPDK in Databases: Why Isn’t It More Common? - Owen Hilyard, University of New Hampshire"
 date: 2025-02-20 00:00:01
-categories: short
+categories: podcast
 tags: [podcast_script]
 ---
+
+[DPDK in Databases: Why Isn’t It More Common? - Owen Hilyard, University of New Hampshire](https://www.youtube.com/watch?v=vBarClzQ93o)
 
 So one question that kind of came up in my mind repeatedly while I was learning is why don't we see more DPDK in databases? If you look at industrial databases, there isn't actually a lot that use DPDK, and that you'll see a little later why that is such an odd thing. 
 
@@ -34,91 +36,29 @@ It's also important to note Micah is not a distributed database. A distributed d
 
 So this is an AMD Epic 9684X. We have 6X our core count; our memory has gone up by almost two orders of magnitude, and Micah is still 10 times faster after 10 years of hardware development if you compare M on original hardware to MCD on modern hardware. 
 
-This is something that happens over and over again. DPDK isn't competitive with a normal Ethernet stack; it's competitive with RDMA and FPGAs in a lot of cases. Managing to be similar to an equal core count CPU a decade later is a big performance win. Managing to match the cores without a socket interconnect a decade later is in "Are we sure that benchmark is accurate?" territory—10X the throughput of more cores later without a socket.
-467.56 - 5.479: Interconnect a decade later is frankly unbelievable, and I would be checking the Benchmark. 
+This is something that happens over and over again. DPDK isn't competitive with a normal Ethernet stack; it's competitive with RDMA and FPGAs in a lot of cases. Managing to be similar to an equal core count CPU a decade later is a big performance win. Managing to match the cores without a socket interconnect a decade later is in "Are we sure that benchmark is accurate?" territory—10X the throughput of more cores later without a socket interconnect a decade later is frankly unbelievable, and I would be checking the Benchmark. 
 
-473.039 - 5.481: So even if we drop performance by 10x to account for good design in Mah, that's still a hum performance increase. 
+So even if we drop performance by 10x to account for good design in Mah, that's still a hum performance increase. 
 
-481.68 - 4.28: You can see how someone coming into DPDK or coming into an organization pitching DPDK, and they say, "Yeah, we can probably do 10x 20x what you're doing right now." 
+You can see how someone coming into DPDK or coming into an organization pitching DPDK, and they say, "Yeah, we can probably do 10x 20x what you're doing right now." You have no credibility, and people think, "No, that's snake oil." 
 
-492.72 - 7.879: You have no credibility, and people think, "No, that's snake oil." 
+My solution to this is to provide a highly easy-to-use interface where DPDK developers can make sort of generically good decisions for users. Many modern applications are built around message passing, not just databases, and most developers don't want to write a network stack. Implementing a DPDK easy mode allows someone to kind of take it and plug it into their code base, whereas a production version of DPDK is sort of the thing that we all build where you have full control of the networks.
 
-500.599 - 7.401: My solution to this is to provide a highly easy-to-use interface where DPDK developers can make sort of generically good decisions for users. 
+That's really difficult to integrate into an existing code base that wasn't built with DPDK in mind, and that amount of effort is hard to justify almost no matter how much performance you gain. I think that this will help adoption, and it will help produce more examples of DPDK being fast to help fight against that incredulity problem. As a design sketch, optionally in order message passing with multiplexed logical sequences of messages over a connection, give it the option for "Yes, I would like compression," and "Yes, I would like encryption." We can have a discussion about specific protocols later.
 
-512.64 - 4.759: Many modern applications are built around message passing, not just databases, and most developers don't want to write a network stack. 
+Um, reuse send message and receive message; we can change basically everything else but keep the verbs the same so people have something to latch onto. Then a listen API for new connection handling offers an embedded mode via a library that operates very similar to traditional VPDK. You take control of all the NICs on the system and a service mode, which acts as almost a microkernel component. This means that people don't have to deal with multiprocess, and their application doesn't have to actually include DPDK. It has to include a shim that knows how to talk to the service.
 
-519.719 - 8.841: Implementing a DPDK easy mode allows someone to kind of take it and plug it into their code base, whereas a production version of DPDK is sort of the thing that we all build where you have full control of the networks. 
+Uh, multicast is nice to have, and the goal of this is to build something where someone can take DPDK and build a small toy application in a couple of days, run it on their own hardware, and see, "Yes, this is really, really fast." So for prior art for this, um, there's a lot of TCP stacks out there, but eRPC from data center RPCs can be general and fast; not NXP's similarly named solution. It's embedded in an application, and it's competitive in terms of functionality and latency with Zeper atomic broadcast implemented on FPGAs. So that is another example; DPDK isn't competitive with normal Ethernet; it's competitive with FPGA, and that is 7,000 lines of C++ and has gained a fair amount of popularity inside of academia because it's easy to use and it's fast.
 
-540.56 - 4.2: That's really difficult to integrate into an existing code base that wasn't built with DPDK in mind, and that amount of effort is hard to justify almost no matter how much performance you gain. 
+McKnet is designed as DPDK as a service, so you deploy it as a container alongside all of your other services, and it co-ops the verbs from POSIX sockets, changes the API, and then you can easily have a half dozen microservices all sharing one NIC and being otherwise mostly independent programs—11,000 lines of C++. So they're still smaller than Lient, and both they're easy to use if you are not a DPDK developer. They're close to RDMA and ROC, and latency is close to the ASAN throughput. They are based on older versions of DPDK, so I updated McKnet to 2311; it was 2111.
 
-556.56 - 6.04: I think that this will help adoption, and it will help produce more examples of DPDK being fast to help fight against that incredulity problem. 
+Um, these external solutions, they have difficulties evolving alongside DPDK. There's a big group of people here, and without a fairly substantial investment, it is difficult to keep up with DPDK, which is why there is a veritable graveyard of network stacks for DPDK. They also make the mistake of saying DPDK is the NIC accelerator and not actually picking up any of the other useful things that are exposed by DPDK. For instance, they don't do encryption by calling into OpenSSL normally instead of using crypto.
 
-570.0 - 5.04: As a design sketch, optionally in order message passing with multiplexed logical sequences of messages over a connection, give it the option for "Yes, I would like compression," and "Yes, I would like encryption." 
+So I think that we as the DPDK community can do better than that. We're not the network interface card development kit; we are the data plane development kit. So take advantage of the high-level API; plug in Crypto Dev, plug in Compress Dev, plug in DMA Dev, add software fallbacks where necessary to ensure portability. Um, for instance, rename and document DMA SL skeleton, etc. So this makes it easier to use DPDK, bringing in new users, and for the users who take a look at that easy mode API and say, "Actually, we'd like a little more performance."
 
-583.279 - 5.68: We can have a discussion about specific protocols later. 
+Okay, we're DPDK; we have all the performance that you want, but for most people they're going to look at that and say, "Wow, this is really, really, really fast." Um, also importantly versus other protocols, let's actually start from the hardware and work up instead of something like QUIC, which fairly evidently started from HTTP and worked downwards. This means we go figure out what can hardware reasonably do for us and design around that for partial or full offload. This also helps vendors because it means that use of new devices that exist under this API are just an update to DPDK. There's no need to rewrite your application and replace all of the instances of memcpy with DMA Dev calls. It also makes it easier for vendors to show the value of their hardware once we have a couple applications built on top of this.
 
-588.959 - 4.201: Um, reuse send message and receive message; we can change basically everything else but keep the verbs the same so people have something to latch onto. 
-
-597.16 - 5.64: Then a listen API for new connection handling offers an embedded mode via a library that operates very similar to traditional VPDK. 
-
-608.399 - 5.641: You take control of all the NICs on the system and a service mode, which acts as almost a microkernel component. 
-
-616.839 - 3.641: This means that people don't have to deal with multiprocess, and their application doesn't have to actually include DPDK. 
-
-623.72 - 3.559: It has to include a shim that knows how to talk to the service. 
-
-627.279 - 6.881: Uh, multicast is nice to have, and the goal of this is to build something where someone can take DPDK and build a small toy application in a couple of days, run it on their own hardware, and see, "Yes, this is really, really fast." 
-
-650.68 - 5.04: So for prior art for this, um, there's a lot of TCP stacks out there, but eRPC from data center RPCs can be general and fast; not NXP's similarly named solution. 
-
-661.48 - 5.52: It's embedded in an application, and it's competitive in terms of functionality and latency with Zeper atomic broadcast implemented on FPGAs. 
-
-675.56 - 4.959: So that is another example; DPDK isn't competitive with normal Ethernet; it's competitive with FPGA, and that is 7,000 lines of C++ and has gained a fair amount of popularity inside of academia because it's easy to use and it's fast. 
-
-693.6 - 5.4: McKnet is designed as DPDK as a service, so you deploy it as a container alongside all of your other services, and it co-ops the verbs from POSIX sockets, changes the API, and then you can easily have a half dozen microservices all sharing one NIC and being otherwise mostly independent programs—11,000 lines of C++. 
-
-721.24 - 7.2: So they're still smaller than Lient, and both they're easy to use if you are not a DPDK developer. 
-
-731.56 - 4.279: They're close to RDMA and ROC, and latency is close to the ASAN throughput. 
-
-733.16 - 6.0: They are based on older versions of DPDK, so I updated McKnet to 2311; it was 2111. 
-
-744.519 - 4.241: Um, these external solutions, they have difficulties evolving alongside DPDK. 
-
-748.76 - 4.96: There's a big group of people here, and without a fairly substantial investment, it is difficult to keep up with DPDK, which is why there is a veritable graveyard of network stacks for DPDK. 
-
-763.56 - 5.48: They also make the mistake of saying DPDK is the NIC accelerator and not actually picking up any of the other useful things that are exposed by DPDK. 
-
-770.88 - 4.24: For instance, they don't do encryption by calling into OpenSSL normally instead of using crypto. 
-
-783.24 - 6.039: So I think that we as the DPDK community can do better than that. 
-
-790.959 - 5.081: We're not the network interface card development kit; we are the data plane development kit. 
-
-796.04 - 5.72: So take advantage of the high-level API; plug in Crypto Dev, plug in Compress Dev, plug in DMA Dev, add software fallbacks where necessary to ensure portability. 
-
-813.88 - 5.72: Um, for instance, rename and document DMA SL skeleton, etc. 
-
-817.0 - 5.279: So this makes it easier to use DPDK, bringing in new users, and for the users who take a look at that easy mode API and say, "Actually, we'd like a little more performance." 
-
-824.8 - 6.279: Okay, we're DPDK; we have all the performance that you want, but for most people they're going to look at that and say, "Wow, this is really, really, really fast." 
-
-841.12 - 4.719: Um, also importantly versus other protocols, let's actually start from the hardware and work up instead of something like QUIC, which fairly evidently started from HTTP and worked downwards. 
-
-860.04 - 4.64: This means we go figure out what can hardware reasonably do for us and design around that for partial or full offload. 
-
-864.68 - 5.279: This also helps vendors because it means that use of new devices that exist under this API are just an update to DPDK. 
-
-872.88 - 4.28: There's no need to rewrite your application and replace all of the instances of memcpy with DMA Dev calls. 
-
-879.68 - 4.279: It also makes it easier for vendors to show the value of their hardware once we have a couple applications built on top of this. 
-
-889.959 - 6.841: Because you can toggle on and off your hardware and say, "Okay, let's run Redis with and without this," "Let's run MD within without this," "Let's run an HTTP server or some other proxy or a VPN." 
-
-908.079 - 4.44: So I think that as a community, DPDK is full of networking experts and people looking towards the future of the field. 
-
-914.12 - 4.639: So let's build something that is designed for the hardware of two or five years in the future so that by the time...
-we're done building it the hardware is here instead of continuing to make use of protocols that were designed for the hardware of the 1980s. 
+Because you can toggle on and off your hardware and say, "Okay, let's run Redis with and without this," "Let's run MD within without this," "Let's run an HTTP server or some other proxy or a VPN." So I think that as a community, DPDK is full of networking experts and people looking towards the future of the field. So let's build something that is designed for the hardware of two or five years in the future so that by the time we're done building it the hardware is here instead of continuing to make use of protocols that were designed for the hardware of the 1980s.
 
 so thank you so yes please come come for questions I I am ready for quite a bit of discussion on this. this is working yeah Martin um have you looked at seaa yes I I have looked at sear fairly extensively. so sear Architects their Network St in such a way that if you do if your database or application is not structured like cadb you start having a lot of API mismatches and they have kind of bent the entire networking framework towards what is good for their database in particular. 
 
@@ -144,7 +84,6 @@ yeah yeah it goes all the way back to your slide one the mechanics of complaints
 
 okay even if everything else ends up getting changed and it has a different return value and it takes 20 parameters they'll at least know this is where I start. 
 
-okay so thank you very much um I would love to come and collaborate with people I'm not a hardware person so I would like to have I would like to work with some Hardware people to design something that is actually going to be feasible for vendors to implement as partial or full offloads because I really think building from the hardware on up in a way that the dpdk community is uniquely suited to.
-1395.96 - 6.839: do will produce something that is better than what we currently have. 
+okay so thank you very much um I would love to come and collaborate with people I'm not a hardware person so I would like to have I would like to work with some Hardware people to design something that is actually going to be feasible for vendors to implement as partial or full offloads because I really think building from the hardware on up in a way that the dpdk community is uniquely suited to do will produce something that is better than what we currently have. 
 
 1398.6 - 4.199: than what we currently have.
