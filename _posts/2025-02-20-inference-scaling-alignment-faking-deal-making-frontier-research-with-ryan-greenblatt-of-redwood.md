@@ -2,9 +2,11 @@
 layout: post
 title: "Inference Scaling, Alignment Faking, Deal Making? Frontier Research with Ryan Greenblatt of Redwood"
 date: 2025-02-20 00:00:01
-categories: short
+categories: podcast
 tags: [podcast_script]
 ---
+
+[Inference Scaling, Alignment Faking, Deal Making? Frontier Research with Ryan Greenblatt of Redwood](https://www.youtube.com/watch?v=KlXTH7vuexs)
 
 I don't think we should be super comfortable with the situation where we have these models that have their own goals. They have their own objectives, and they're willing to defend them, including doing subversion to defend their own goals and objectives. 
 
