@@ -2,9 +2,11 @@
 layout: post
 title: "The Inventors of Deep Research"
 date: 2025-02-18 00:00:01
-categories: podcast
+categories: podcast latent-space
 tags: [podcast_script]
 ---
+
+[The Inventors of Deep Research](https://www.latent.space/p/gdr)
 
 everybody's going deep now: deep work, deep learning, deep mind. If 2025 is the year of agents, then the 2020s are the decade of deep. While LLM-powered search is as old as perplexity and search, GPT and open-source projects like GPT Researcher and clones like Open Deep Research exist. The difference with commercial deep research products is they are both agentic and bundle custom-tuned frontier models like OpenAI's O3 or, as today's guests discuss, a fine-tuned version of Gemini.
 
