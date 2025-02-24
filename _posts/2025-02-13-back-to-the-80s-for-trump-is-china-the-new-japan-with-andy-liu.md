@@ -2,25 +2,17 @@
 layout: post
 title: "Back to the 80s: For Trump, is China the New Japan? with Andy Liu"
 date: 2025-02-13 00:00:01
-categories: podcast
+categories: podcast sinica
 tags: [podcast_script]
 ---
 
-Okay, mom and dads, or soon-to-be mom and dads, think of the very best gift you've ever received. Now imagine something that will bring you a thousand times more joy every day. That's the Nanit Baby Monitor. It's like a family sleep coach, self-care unit, and memory collector all in one. Nothing will ease your mind more than knowing you can see and hear your baby anytime, anywhere, all from the convenience of your phone.
+[Back to the 80s: For Trump, is China the New Japan? with Andy Liu](https://www.sinicapodcast.com/p/back-to-the-80s-for-trump-is-china)
 
-The high-def camera captures every precious moment, so not only will you know your baby is safe and sound, but you'll also never miss a milestone. You can track your baby's breathing, sleep patterns, and developmental milestones, receive personalized insights, and get a crystal-clear video view, all on your Nanit app. This adds up to more sleep for your baby and more rest for you. It's not just a dream. It could be your new reality. 
+Welcome to the Sinica Podcast, a weekly discussion of current affairs in China. In this program, we'll look at books, ideas, new research, intellectual currents, and cultural trends that can help us better understand what's happening in China's politics, foreign relations, economics, and society. Join me each week for in-depth conversations that shed more light and bring less heat to how we think and talk about China.
 
-And get this, Nanit parents get an extra 36 nights of sleep a year. And Nanit babies sleep 10% longer than average. The Nanit Baby Monitor is the MVP of baby gear, and the one baby item you can't live without. We have a special offer just for our listeners. Get 20% off your first order with code DREAM20. That's D-R-E-A-M-2-0 at nanit.com now. N-A-N-I-T dot com.
+I'm Kaiser Guo, coming to you this week from Madison, Wisconsin. Sinica is supported this year by the Center for East Asian Studies at the University of Wisconsin-Madison, right here, a national resource center for the study of East Asia. They put on a great talk yesterday by Mark Seidel, who I was privileged enough to go and see. He'll be joining us on the show soon.
 
-Don't stop breathing. On February 28th, Focus Features takes you to the bottom of the ocean for the deadliest job on Earth with Last Breath, based on the extraordinary true story. When a deep-sea diver becomes trapped on the ocean floor, his teammates must devise a daring plan to save him before his oxygen runs out. Starring Woody Harrelson, Simu Liu, and Finn Cole, this pulse-pounding thriller is the ultimate tale of endurance, bravery, and survival.
-
-Hold your breath and don't miss the most intense motion picture of the year, Last Breath, starring Woody Harrelson, Simu Liu, and Finn Cole. Rated PG-13. May be inappropriate for children under 13. Opens February 28th in theaters everywhere.
-
-Welcome to the Cynical Podcast, a weekly discussion of current affairs in China. In this program, we'll look at books, ideas, new research, intellectual currents, and cultural trends that can help us better understand what's happening in China's politics, foreign relations, economics, and society. Join me each week for in-depth conversations that shed more light and bring less heat to how we think and talk about China.
-
-I'm Kaiser Guo, coming to you this week from Madison, Wisconsin. Cynica is supported this year by the Center for East Asian Studies at the University of Wisconsin-Madison, right here, a national resource center for the study of East Asia. They put on a great talk yesterday by Mark Seidel, who I was privileged enough to go and see. He'll be joining us on the show soon.
-
-Anyway, the Cynica Podcast will remain free, but if you work for an organization that believes in what I'm doing with the show, please consider lending your support. You can get me, as always, at cynicapod at gmail.com. And listeners, please support my work at www.cynicapodcast.com. Become a subscriber and enjoy, in addition to the podcast, the complete transcript of the show, essays from me, as well as writings and podcasts from some of your favorite China-focused columnists and commentators.
+Anyway, the Sinica Podcast will remain free, but if you work for an organization that believes in what I'm doing with the show, please consider lending your support. You can get me, as always, at cynicapod at gmail.com. And listeners, please support my work at www.cynicapodcast.com. Become a subscriber and enjoy, in addition to the podcast, the complete transcript of the show, essays from me, as well as writings and podcasts from some of your favorite China-focused columnists and commentators.
 
 We've got offerings like the China Global South podcast from Eric Cobus and Zerode, James Carter's This Week in China's History, Paul French's Ultimate China Bookshelf, Andrew Methvin's Cynica, Chinese Phrase of the Week, and more. Make sure to check out the latest series from our friends at Johns Hopkins' SICE, Studying China in the Absence of Access, which will continue to run on the podcast feed and on the newsletter across the next few months.
 
