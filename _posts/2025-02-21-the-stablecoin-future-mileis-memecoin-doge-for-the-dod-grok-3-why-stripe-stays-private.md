@@ -2,9 +2,11 @@
 layout: post
 title: "The Stablecoin Future, Milei's Memecoin, DOGE for the DoD, Grok 3, Why Stripe Stays Private"
 date: 2025-02-21 00:00:01
-categories: podcast
+categories: podcast all-in
 tags: [podcast_script]
 ---
+
+[The Stablecoin Future, Milei's Memecoin, DOGE for the DoD, Grok 3, Why Stripe Stays Private](https://www.youtube.com/watch?v=OxP55dZjqZs)
 
 all right everybody welcome back to the number one podcast in the world. I am your host Jason Calacanis and with me again a couple of my besties David Friedberg, you know him as our sultan of science. Lots to get into today, sultan, huh? How you doing?
 
