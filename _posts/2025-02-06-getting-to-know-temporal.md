@@ -2,7 +2,7 @@
 layout: post
 title: "Getting to know Temporal"
 date: 2025-02-06 00:00:01
-categories: podcast
+categories: podcast misc
 tags: [podcast_script]
 ---
 
