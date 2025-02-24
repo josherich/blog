@@ -2,9 +2,11 @@
 layout: post
 title: "#401 — Christian Nationalism and the New Right"
 date: 2025-02-18 00:00:01
-categories: podcast
+categories: podcast making-sense
 tags: [podcast_script]
 ---
+
+[#401 — Christian Nationalism and the New Right](https://www.youtube.com/watch?v=gdRJA7qmCJo)
 
 Welcome to the Making Sense Podcast. This is Sam Harris. Just a note to say that if you're hearing this, you're not currently on our subscriber feed, and we'll only be hearing the first part of this conversation. In order to access full episodes of the Making Sense Podcast, you'll need to subscribe at samharris.org. There you'll also find our scholarship program, where we offer free accounts to anyone who can't afford one. We don't run ads on the podcast, and therefore it's made possible entirely through the support of our subscribers. So if you enjoy what we're doing here, please consider becoming one.
 
