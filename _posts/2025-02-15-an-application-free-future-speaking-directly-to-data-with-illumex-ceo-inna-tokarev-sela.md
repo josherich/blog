@@ -6,6 +6,8 @@ categories: podcast
 tags: [podcast_script]
 ---
 
+[An Application-Free Future? Speaking Directly to Data with illumex CEO Inna Tokarev Sela](https://www.youtube.com/watch?v=-h9omYPyM_0)
+
 It's actually about augmentation of jobs. All of us want to make smarter decisions, and this is what allows you to actually, you know, be factual about that. Elumax is definitely a playground for machines, humans, data, and applications. So it's a playground when everyone can collaborate. You absolutely have to have this shared context. If each of your models will have separated context, they're never aligned. We're actually able to allow our users, our customers, to build workflows from different agentic models by different providers and keep them together aligned over the same context.
 
 Hello, and welcome back to the Cognitive Revolution. Today, my guest is Ina Tokarev-Sela, CEO of Elumax, a startup that helps enterprises get their data speaking the way their employees do and aims to create an application-free future for knowledge workers. Elumax's approach is super interesting and, at least to me, quite novel. They began by first creating a foundation of canonical, almost platonic data models that represent how different types of enterprises work, from e-commerce to pharmaceuticals to manufacturing, with idealized implementations of all the little details that are common across such companies.
@@ -459,4 +461,3 @@ Our hosts are subject matter experts. Christina Farr is a leading health tech jo
 Every week, they cut through the hype to get at what actually matters in healthcare's future. Get the inside story on the Second Opinion podcast. Search for it in Apple Podcasts, Spotify, or your favorite podcast app. 
 
 Thank you. Thank you. Thank you. Thank you.
-
