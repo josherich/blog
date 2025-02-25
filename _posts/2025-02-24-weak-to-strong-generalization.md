@@ -2,9 +2,11 @@
 layout: post
 title: "Weak-to-Strong Generalization"
 date: 2025-02-24 00:00:01
-categories: podcast
+categories: podcast misc
 tags: [podcast_script]
 ---
+
+[Weak-to-Strong Generalization](https://www.youtube.com/watch?v=VViyQRGxSKo&)
 
 MODERATOR: [INAUDIBLE] well, [INAUDIBLE] already introduced Pavel. But just to reiterate, Pavel has been at the center of this LLM revolution, having worked at OpenAI, xAI, and Anthropic, and having worked on [INAUDIBLE] in particular. [INAUDIBLE] I also, [INAUDIBLE] some point. Yeah, so a real pleasure to have [INAUDIBLE]. Pavel is going to be at NYU starting from 2025. [INAUDIBLE] Yes. 
 
