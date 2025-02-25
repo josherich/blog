@@ -2,7 +2,7 @@
 layout: post
 title: "Have America's chips controls backfired?"
 date: 2025-02-10 00:00:01
-categories: podcast spectator
+categories: podcast chinese-whispers
 tags: [podcast_script]
 ---
 

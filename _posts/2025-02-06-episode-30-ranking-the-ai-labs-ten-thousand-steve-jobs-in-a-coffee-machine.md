@@ -2,7 +2,7 @@
 layout: post
 title: "Episode 30: Ranking the AI Labs, Ten Thousand Steve Jobs in a Coffee Machine"
 date: 2025-02-06 00:00:01
-categories: short
+categories: podcast misc
 tags: [podcast_script]
 ---
 

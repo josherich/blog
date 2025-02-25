@@ -2,7 +2,7 @@
 layout: post
 title: "Turso is rewriting SQLite in Rust (Interview)"
 date: 2025-01-30 00:00:01
-categories: short
+categories: podcast misc
 tags: [podcast_script]
 ---
 

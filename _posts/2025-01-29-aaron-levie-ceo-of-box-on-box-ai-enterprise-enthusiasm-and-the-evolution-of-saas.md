@@ -2,7 +2,7 @@
 layout: post
 title: "Aaron Levie, CEO of Box, on Box AI, Enterprise Enthusiasm, and the Evolution of SaaS"
 date: 2025-01-29 00:00:01
-categories: short
+categories: podcast cognitive-revolution
 tags: [podcast_script]
 ---
 
@@ -20,15 +20,15 @@ Box is racing to meet the moment by building new AI functionality into all aspec
 
 Aaron shares technical details about how Box is layering foundation model capabilities onto their existing foundational features, such as their Hubs product. This product allows users to curate canonical, authoritative versions of key documents and has proven to be an ideal foundation for generating accurate, reliable retrieval-augmented generation experiences at scale.
 
-We also dig into key questions facing enterprises and the software companies that serve them. These include how IT departments will need to evolve from simply supporting work to actively performing work with AI agents, the transition from per-seat to consumption-based pricing models, and whether startups can compete with incumbents racing to add AI capabilities. 
+We also dig into key questions facing enterprises and the software companies that serve them. These include how IT departments will need to evolve from simply supporting work to actively performing work with AI agents, the transition from per-seat to consumption-based pricing models, and whether startups can compete with incumbents racing to add AI capabilities.
 
-Aaron argues that while incumbents will continue to dominate many established markets, there remains significant opportunity for AI-native startups to create fundamentally new products that can operate across platforms and address unmet needs. 
+Aaron argues that while incumbents will continue to dominate many established markets, there remains significant opportunity for AI-native startups to create fundamentally new products that can operate across platforms and address unmet needs.
 
 As always, if you find value in the show, we'd appreciate it if you could share it with friends, leave us a review on Apple or Spotify, or drop a comment on YouTube. Feel free to share your feedback, either via our website, cognitiverevolution.ai, or by DMing me on your favorite social network. I received a lot of encouraging messages after the recent AMA and R1 episodes, and it was wonderful to hear from so many listeners. Please keep the feedback coming.
 
-For now, I hope you enjoy this conversation about AI adoption in the enterprise and the ongoing transformation of enterprise SaaS with Aaron Levy, CEO of Box. 
+For now, I hope you enjoy this conversation about AI adoption in the enterprise and the ongoing transformation of enterprise SaaS with Aaron Levy, CEO of Box.
 
-Aaron, welcome to the Cognitive Revolution. It's great to have you here. 
+Aaron, welcome to the Cognitive Revolution. It's great to have you here.
 
 Thank you. It's good to be here. There's a lot happening in the AI space right now. How are you doing?
 
@@ -44,9 +44,9 @@ Partly because I'm enamored with new technology, I try everything. Recently, I r
 
 You mentioned recently on LinkedIn that this is the most energized you've seen enterprise companies about a new technology in your career. Considering your background in cloud computing, how would you compare the two?
 
-That's an interesting comparison. In the early days of the cloud, I wouldn't describe the energy as excited or animated. Most conversations with enterprises were filled with skepticism and resistance. Moving infrastructure from owned data centers to the cloud and trusting new vendors was a significant shift for many enterprises. 
+That's an interesting comparison. In the early days of the cloud, I wouldn't describe the energy as excited or animated. Most conversations with enterprises were filled with skepticism and resistance. Moving infrastructure from owned data centers to the cloud and trusting new vendors was a significant shift for many enterprises.
 
-Yesterday I met with several CIOs and customers in New York, and the reactions were vastly different today. Instead of hesitance, enterprises are actively seeking out potential AI use cases—often more than are practical—demonstrating creativity and excitement that was less prevalent in cloud adoption. 
+Yesterday I met with several CIOs and customers in New York, and the reactions were vastly different today. Instead of hesitance, enterprises are actively seeking out potential AI use cases—often more than are practical—demonstrating creativity and excitement that was less prevalent in cloud adoption.
 
 Enterprises are now asking, "What if we could solve problems we couldn't tackle before?" The energy and opportunity presented by AI is distinct from the cloud era, even though we still have much change ahead. Importantly, the actual deployment of technology is still early, but the excitement is palpable. For enterprise software, this signals enormous opportunity. Companies like Microsoft, Oracle, and Google will benefit, but so will smaller software stacks like Box, Salesforce, and ServiceNow along with new AI startups.
 
@@ -68,25 +68,25 @@ We're also introducing automated metadata extraction, allowing users to pull cri
 
 This evolution presents an exciting opportunity for Box to redefine intelligent content management while connecting with other technologies for integrated AI functionalities across various workflows.
 
-We'll continue our interview shortly after a word from our sponsors. 
+We'll continue our interview shortly after a word from our sponsors.
 
-While some may feel that AI is overhyped, it is rapidly infiltrating industries, from self-driving cars to business efficiency. But with the necessary speed and computing power, how do you compete without spiraling costs? Oracle Cloud Infrastructure (OCI) is a blazing fast and secure platform for your infrastructure, database, application development, and AI workloads, providing substantial savings while enhancing performance. 
+While some may feel that AI is overhyped, it is rapidly infiltrating industries, from self-driving cars to business efficiency. But with the necessary speed and computing power, how do you compete without spiraling costs? Oracle Cloud Infrastructure (OCI) is a blazing fast and secure platform for your infrastructure, database, application development, and AI workloads, providing substantial savings while enhancing performance.
 
 Experienced companies like Vodafone and Thomson Reuters have already transitioned to OCI. For new U.S. customers, Oracle offers to cut current cloud bills in half with minimum financial commitment until March 31st. Check if your company qualifies at oracle.com/cognitive.
 
-What does the future hold for businesses? With over 41,000 companies using Oracle's NetSuite, the number one cloud ERP brings together accounting, financial management, inventory, and HR into one cohesive platform, enabling organizations to make quick decisions in real-time. For anyone running a business, I recommend avoiding a patchwork of spreadsheets and point solutions. 
+What does the future hold for businesses? With over 41,000 companies using Oracle's NetSuite, the number one cloud ERP brings together accounting, financial management, inventory, and HR into one cohesive platform, enabling organizations to make quick decisions in real-time. For anyone running a business, I recommend avoiding a patchwork of spreadsheets and point solutions.
 
 NetSuite supports companies of all sizes, response to challenges, and capitalizes on opportunities. You can download the CFO's Guide to AI and Machine Learning for free at netsuite.com/cognitive.
 
 Let’s dive deeper into the retrieval use case. While retrieval-augmented generation (RAG) has gained attention recently, many implementations have struggled. Based on your experiences, what have you observed, particularly regarding retrieving accurate content and the challenges faced?
 
-Absolutely. The common challenge is often that when data sets are too broad or heterogeneous—say, when attempting to search through disparate data types, such as emails, schedules, and documents—the RAG systems fail to retrieve the right content initially. The architecture we were developing before AI took off turned out to be beneficial for our RAG use case. For example, our "Hubs" capability allows users to organize content by topic, creating an authoritative source for retrieval. 
+Absolutely. The common challenge is often that when data sets are too broad or heterogeneous—say, when attempting to search through disparate data types, such as emails, schedules, and documents—the RAG systems fail to retrieve the right content initially. The architecture we were developing before AI took off turned out to be beneficial for our RAG use case. For example, our "Hubs" capability allows users to organize content by topic, creating an authoritative source for retrieval.
 
 Using this structure, users can easily find the most relevant documents rather than sifting through countless variations of a file, improving the reliability of RAG. This framework also helps reduce the common discrepancies found in enterprise data, which tends to be much messier than public data.
 
 In terms of agents, what does this mean for your platform? How do you envision their roles in 2025, and what kind of autonomy do you plan to incorporate?
 
-Our approach defines agents as a combination of AI models, tool usage within the platform, and access to data. In our current design, agents can perform simple functions, such as having conversations with individual documents or answering queries tailored to specific needs. 
+Our approach defines agents as a combination of AI models, tool usage within the platform, and access to data. In our current design, agents can perform simple functions, such as having conversations with individual documents or answering queries tailored to specific needs.
 
 We aim to evolve these capabilities further into agentic workflows where agents engage in sequential tasks with some degree of decision-making autonomy. This would allow an agent to review contracts, identify risky clauses, or route documents to appropriate parties, representing a significant leap in enabling users to automate complex processes.
 
@@ -94,7 +94,7 @@ Ultimately, we believe we're transitioning into a new era of systems of intellig
 
 Regarding the potential bottlenecks enterprises face in realizing AI value, do you share the sentiment that AI capabilities surpass existing deployment levels and that humans are the bottlenecks?
 
-Yes. AI possesses immense capability, often going unrecognized by enterprises, which can hinder its deployment. We must remember that companies will not easily transition processes, especially in regulated industries, which necessitate extremely high reliability. 
+Yes. AI possesses immense capability, often going unrecognized by enterprises, which can hinder its deployment. We must remember that companies will not easily transition processes, especially in regulated industries, which necessitate extremely high reliability.
 
 While AI can significantly improve processes, many organizations will approach its implementation cautiously due to the inherent skepticism and need for rigorous testing that comes with change management. Our industry is transitioning, but it will take considerable time—perhaps a decade—to fully integrate AI into enterprise environments.
 
