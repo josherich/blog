@@ -2,9 +2,11 @@
 layout: post
 title: "HC2024-S7: High-Performance Processors Part 2"
 date: 2025-02-24 00:00:01
-categories: podcast
+categories: podcast misc
 tags: [podcast_script]
 ---
+
+[HC2024-S7: High-Performance Processors Part 2](https://www.youtube.com/watch?v=4_R0S6piLA0)
 
 Welcome to Hot Chips. 
 
