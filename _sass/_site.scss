@@ -75,10 +75,6 @@
   top: 0;
 }
 
-.post-page {
-
-}
-
 a.selected {
   color: #a00;
 }
@@ -103,8 +99,7 @@ a.selected {
 
 @media only screen
   and (min-device-width: 320px)
-  and (max-device-width: 812px)
-  and (-webkit-min-device-pixel-ratio: 3) {
+  and (max-device-width: 812px) {
   .site {
     padding: 10px;
     .header .hlink, .header h1.title {
@@ -133,6 +128,9 @@ a.selected {
     }
     video {
       width: 100% !important;
+    }
+    .post {
+      font-size: 14px;
     }
   }
 
