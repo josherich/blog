@@ -1,12 +1,12 @@
 ---
 layout: post
 title: "LTH Product Briefing - Harvey"
-date: 2025-02-25 00:00:01
-categories: podcast
+date: 2024-12-19 00:00:01
+categories: podcast misc
 tags: [podcast_script]
 ---
 
-[Music]
+[LTH Product Briefing - Harvey](https://www.youtube.com/watch?v=LyIRPOqMWEM)
 
 Hello everyone and welcome to the LTH product briefing. I'm delighted today to be joined by Jake Weiner, who is the head of strategic business development at Harvey. Jake, welcome.
 
