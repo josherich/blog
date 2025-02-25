@@ -11,7 +11,7 @@ title: Podcast
   {% for post in site.posts %}
     {% if post.tags contains "podcast_script" %}
       {% assign podname = post.categories[1] %}
-      <li><div class="date">{{ post.date | date_to_string }}<span><a href="/{{ podname }}" style="margin-left: 2em">{{ podname }}</a></span></div><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
+      <li><div class="date">{{ post.date | date_to_string }}<span><a href="/podcasts/{{ podname }}" style="margin-left: 2em">{{ podname }}</a></span></div><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
     {% endif %}
   {% endfor %}
 </ul>

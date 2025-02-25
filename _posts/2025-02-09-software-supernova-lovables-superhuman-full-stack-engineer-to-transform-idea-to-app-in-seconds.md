@@ -2,7 +2,7 @@
 layout: post
 title: "Software Supernova: Lovable's 'Superhuman Full Stack Engineer' to Transform Idea to App in Seconds"
 date: 2025-02-09 00:00:01
-categories: short
+categories: podcast cognitive-revolution
 tags: [podcast_script]
 ---
 
