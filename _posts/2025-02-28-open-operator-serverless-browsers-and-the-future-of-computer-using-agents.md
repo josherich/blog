@@ -2,7 +2,7 @@
 layout: post
 title: "Open Operator, Serverless Browsers and the Future of Computer-Using Agents"
 date: 2025-02-28 00:00:01
-categories: podcast
+categories: podcast latent-space
 tags: [podcast_script]
 ---
 
