@@ -6,11 +6,7 @@ categories: podcast
 tags: [podcast_script]
 ---
 
-Hey, it's Bill Simmons letting you know that we are covering the White Lotus on the Prestige TV podcast and the Ringer TV YouTube channel every Sunday night this season with Mallory Rubin and Joanna Robinson. Also on Wednesdays, Rob Mahoney and I will be sort of diving deep into theories and listener questions. So you can watch that on the Ringer YouTube channel and also on the Spotify app. Subscribe to the Prestige podcast feed. Subscribe to the Ringer TV YouTube channel. And don't forget, you can also watch these podcasts on Spotify. White Lotus, let's go.
-
-This episode is brought to you by Audi. The all-new fully electric Audi Q6 e-tron is a huge leap forward featuring effortless power, serious acceleration, and the most advanced tech of any Audi ever. Experience technology that puts you center stage with a panoramic digital stage, plus an optional screen for front seat passengers. The Q6 e-tron is not just a new EV. It's a new way to experience driving. Learn more at AudiUSA.com. Always pay careful attention to the road and do not drive while distracted.
-
-This episode was brought to you by Workday. There are two kinds of people in the world, backward thinkers and forward thinkers. Forward thinkers have plans 15 minutes from now and 15 years from now. They're not just one step ahead, they're 1,000 steps ahead. And when you're a forward thinker, you need a platform that thinks like you do. Workday's AI illuminates decision making and reimagines how you manage your people and money for long-term success. Workday. Moving business forever forward. Find out more at Workday.com.
+[The End of Reading](https://podcasts.apple.com/us/podcast/the-end-of-reading/id1594471023?i=1000696773920)
 
 Today, the decline of reading in America. So I recently read a wonderful short story by the science fiction writer Ted Chiang, which is called The Truth of Fact, The Truth of Feeling. It's featured in his collection of short stories entitled Exhalation. And this short story unfolds along two parallel tracks. In the modern narrative, which takes place sometime in the near future, a journalist is assigned to cover a new technology called Remem, which allows people to film their entire lives and playback memories on a retinal projector. In other words, it's a technology that grants every person perfect photographic memory of every event in their life. A little bit like that great Black Mirror episode written by Jesse Armstrong.
 
