@@ -2,7 +2,7 @@
 layout: post
 title: "A Theory of Media That Explains 15 Years of Politics"
 date: 2025-02-25 00:00:01
-categories: podcast
+categories: podcast ezra-klein
 tags: [podcast_script]
 ---
 
