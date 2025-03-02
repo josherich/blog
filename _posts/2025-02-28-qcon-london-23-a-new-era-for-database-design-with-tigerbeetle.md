@@ -1,10 +1,12 @@
 ---
 layout: post
 title: "QCon London '23 — A New Era for Database Design with TigerBeetle"
-date: 2025-02-28 00:00:01
+date: 2024-05-31 00:00:01
 categories: podcast
 tags: [podcast_script]
 ---
+
+[QCon London '23 — A New Era for Database Design with TigerBeetle](https://www.youtube.com/watch?v=_jfOk4L7CiY)
 
 why design a new database
 
