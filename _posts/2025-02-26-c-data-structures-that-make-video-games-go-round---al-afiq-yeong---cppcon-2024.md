@@ -6,6 +6,8 @@ categories: podcast
 tags: [podcast_script]
 ---
 
+[C++ Data Structures That Make Video Games Go Round - Al-Afiq Yeong - CppCon 2024](https://www.youtube.com/watch?v=cGB3wT0U5Ao)
+
 from game development to high frequency trading thanks to qdc the quantitative developer.
 
 Hello, hello! Can everybody hear me? Okay, cool. Uh, yeah, my name is Al. I have a Senior Systems programmer from Criterion Games. We're a subsidiary of EA, working on Battlefield. Just a show of hands, how many in the room are from the games industry? Okay, quite a number but not the entire room, which is good, right? So I can tell you stuff that you don't know about.
