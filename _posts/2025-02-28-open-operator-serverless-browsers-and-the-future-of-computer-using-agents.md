@@ -6,6 +6,8 @@ categories: podcast
 tags: [podcast_script]
 ---
 
+[Open Operator, Serverless Browsers and the Future of Computer-Using Agents](https://www.latent.space/p/browserbase)
+
 Hey, everyone. Welcome to the Latent Space Podcast. This is Alessio, partner and CTO at Decibel Partners, and I'm joined by my co-host, Swix, founder of Small AI. Hey, and today we are very blessed to have a friend, Paul Klein, the fourth CEO of BrowserBase. Welcome.
 
 Thanks, guys. Yeah, I'm happy to be here. I've been lucky to know both of you for like a couple of years now, I think. So it's just like we're hanging out, you know? Just hanging out with mics in front of us.
