@@ -6,6 +6,8 @@ categories: podcast
 tags: [podcast_script]
 ---
 
+[Jacob Steinhardt - Building scalable systems for automatically understanding LLMs](https://www.youtube.com/watch?v=4FtaranfXSE)
+
 PROFESSOR: So it's a great pleasure to introduce my colleague, Jacob Steinhardt, here. And it's also representing his startup, Transluce, beyond black box evaluation. So Jacob, really looking forward to it. 
 
 JACOB STEINHARDT: Thanks a lot. And thanks, everyone, for getting up early today for the last day of the workshop. So I'm going to be talking about how can we understand language model agents and what they're doing, and also what they're doing not just externally, but internally in their activations. 
@@ -164,7 +166,4 @@ JACOB STEINHARDT: I think this is a pretty good idea. So in principle, you could
 
 AUDIENCE: It might be even interesting if you think about a single neuron looking at the vector of activations that are upstream from it and just doing the PCA or sparse coding, find a basis set for those activations because it might help you understand the distribution of the activations that go into this. JACOB STEINHARDT: So let me understand that a bit better because I will say, one of the reasons why we haven't done PCA yet is because we're worried that without a way to target it at some-- you might just get some very generic stuff if you're using a large data set. So it sounds like you're suggesting a way to target PCA at some particular-- AUDIENCE: It turns out in the brain, if you take a lot of concrete nouns and present them to people and then do PCA on all of those brain images, then the top four components you get we would describe as humans as manipulability, [? edibility, ?] size, and animacy. 
 
-JACOB STEINHARDT: Interesting. We could do that. This would be pretty easy. That's pretty interesting. I think I have probably used up my time now. So I'm happy to-- I'll stick around for questions if anyone has them. But thanks very much-- and looking forward to the other talks. [APPLAUSE] PROFESSOR: Any other questions? So maybe we can break and
-[? come ?]
-
-[? back. ?]
+JACOB STEINHARDT: Interesting. We could do that. This would be pretty easy. That's pretty interesting. I think I have probably used up my time now. So I'm happy to-- I'll stick around for questions if anyone has them. But thanks very much-- and looking forward to the other talks. [APPLAUSE]
