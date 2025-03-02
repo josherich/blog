@@ -2,9 +2,11 @@
 layout: post
 title: "Epstein Files Flop, State of the Market, Autonomous Robots, Trump's Gold Card, Friedberg on Jeopardy"
 date: 2025-03-01 00:00:01
-categories: podcast
+categories: podcast all-in
 tags: [podcast_script]
 ---
+
+[Epstein Files Flop, State of the Market, Autonomous Robots, Trump's Gold Card, Friedberg on Jeopardy](https://www.youtube.com/watch?v=Of-qGF1YsgI)
 
 All right, everybody, welcome back to the All In podcast. Our incredible comedian celebrity guest got sick at the last minute today and didn't make it. We won't say who it is, but my lord, when he comes on this show, you are gonna laugh your ass off because he's awesome. I like the comedians; I think that their takes on society and culture are pretty interesting. 
 
