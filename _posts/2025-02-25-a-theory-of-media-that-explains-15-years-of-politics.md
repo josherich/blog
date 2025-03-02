@@ -6,7 +6,7 @@ categories: podcast
 tags: [podcast_script]
 ---
 
-Before we begin today, a quick announcement. My book, Abundance, is coming out on March 18th. It is available for pre-order now. And we are also setting up the tour. So we have a little link today in the show description to the tour page. You can see if we're coming to a city near you; at least as of yet, there will be more stops on this to be added. And grab a ticket before they sell out. So if you want to come join us in person, come check that out.
+[A Theory of Media That Explains 15 Years of Politics](https://www.nytimes.com/2025/02/25/opinion/ezra-klein-podcast-martin-gurri.html)
 
 From New York Times Opinion, this is The Ezra Klein Show. Back in 2016, when Donald Trump won the first time, there was this book. It was self-published by a former CIA media analyst named Martin Gurry that became a kind of phenomenon in Silicon Valley. The book was called The Revolt of the Public. And what it did was describe these informational dynamics. It described the way that politics was changing because media was changing. Because media and information got from scarce to abundant. And that had created constant recurrent crises for whoever was in power. The ability to control a narrative was gone. 
 
