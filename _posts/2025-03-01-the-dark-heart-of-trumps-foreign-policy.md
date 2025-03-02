@@ -2,9 +2,11 @@
 layout: post
 title: "The Dark Heart of Trump's Foreign Policy"
 date: 2025-03-01 00:00:01
-categories: podcast
+categories: podcast ezra-klein
 tags: [podcast_script]
 ---
+
+[The Dark Heart of Trump's Foreign Policy](https://www.nytimes.com/2025/03/01/opinion/ezra-klein-podcast-fareed-zakaria.html)
 
 So before we begin today, we are doing more than a podcast these days. We have expanded into video, and these episodes are being recorded. And it's a different experience, a different experience for me in creating it and recording it and having the conversation, and then genuinely, I think, a different experience in watching it. So you can find our YouTube page by searching Ezra Klein Show on YouTube, or we will have a link to it in the show description.
 
