@@ -1,10 +1,12 @@
 ---
 layout: post
-title: "Livestream The Ultra Scale Playbook"
+title: "The Ultra Scale Playbook"
 date: 2025-03-01 00:00:01
-categories: podcast
+categories: podcast gpu-mode
 tags: [podcast_script]
 ---
+
+[The Ultra Scale Playbook](https://www.youtube.com/watch?v=1E8GDR8QXKw)
 
 Basically, for people who have a lot of GPUs and they don't find the use of it actually useful, the parallelisms start being useful at the scale of two GPUs. So, if you manage just to rent two GPUs, and I think there are a lot of providers now that offer them at decent prices, you're going to find this blog useful.
 
