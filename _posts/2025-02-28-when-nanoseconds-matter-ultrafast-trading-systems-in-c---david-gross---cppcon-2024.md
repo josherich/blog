@@ -6,6 +6,8 @@ categories: podcast
 tags: [podcast_script]
 ---
 
+[When Nanoseconds Matter: Ultrafast Trading Systems in C++ - David Gross - CppCon 2024](https://www.youtube.com/watch?v=sX2nF1fW7kI)
+
 Thank you all for being here. Very excited to be here with all of you in Denver, Colorado. Thank you for you know, so that we're going to watch this video later online today. We're going to talk about low agency trading systems in C++. 
 
 So I'm David. I've been working in trading in the industry for about 10 years. I always adop market maker. Before that, I was working on relatively similar systems in a very different industry in defense. Today, we are going to talk about engineering low latency systems. I like to put the emphasis on engineering because it's not going to be a very theoretical talk and we're going to be looking at actual problems that we want to solve. Throughout this talk, we're going to look at some principles along the way, some of them that I collected through my career that I found are important and I think that could help you, and also some profiling techniques. 
