@@ -2,9 +2,11 @@
 layout: post
 title: "Dramatically improve microscope resolution with an LED array and Fourier Ptychography"
 date: 2025-03-03 00:00:01
-categories: podcast
+categories: podcast applied-science
 tags: [podcast_script]
 ---
+
+[Dramatically improve microscope resolution with an LED array and Fourier Ptychography](https://www.youtube.com/watch?v=9KJLWwbs_cQ)
 
 Today on Applied Science I'd like to show you this technique of improving the resolution of a microscope by adding an LED array where the normal illumination goes and then capturing hundreds of images, one for each LED and combining them computationally to make a result that is dramatically higher resolution than the input images. This is crazy, right? It looks like a completely different image, but this is actually a valid technique even though it does appear to be violating the physical resolution limit of the microscope objective.
 
