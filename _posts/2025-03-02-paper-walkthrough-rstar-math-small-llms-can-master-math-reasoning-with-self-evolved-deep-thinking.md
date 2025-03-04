@@ -6,6 +6,8 @@ categories: podcast
 tags: [podcast_script]
 ---
 
+[Paper walkthrough: rStar-Math: Small LLMs Can Master Math Reasoning with Self-Evolved Deep Thinking](https://www.youtube.com/watch?v=BoC_P1NgGTk)
+
 Hello and welcome back to Data Science Castnet. In this video, I'm going to be doing a paper reading SL walkthrough of Arar Math: Small LLMs Can Master Math Reasoning with Self-Evolved Deep Thinking. 
 
 If you're kind of new to this idea of test time compute and tree search and process rewards model versus Arcom rewards model versus policy models, this is a nice way to dig into that and also to explore this new technique. I'm going to go through the paper, but I'm not going to go linearly reading section by section. Instead, we're going to talk about the problem that's trying to solve, the steps that they present, and then we'll go back and look at some of the prior work, the past ideas, and the problems with those that this is trying to address. 
