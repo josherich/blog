@@ -2,9 +2,11 @@
 layout: post
 title: "Stanford CS224N: NLP with Deep Learning | Spring 2024 | Lecture 15 - After DPO by Nathan Lambert"
 date: 2025-03-05 00:00:01
-categories: podcast
+categories: podcast stanford-cs224n
 tags: [podcast_script]
 ---
+
+[Stanford CS224N: NLP with Deep Learning | Spring 2024 | Lecture 15 - After DPO by Nathan Lambert](https://www.youtube.com/watch?v=dnF463_Ar9I)
 
 okay um well uh welcome back to cs224n. it's welcome back for me too cs224n um too since I was traveling for a couple of weeks. I hope everything went smoothly in the meantime. Um, so today I'm delighted to introduce our first invited speaker Nathan Lambert. Um, so Nathan um did his PhD at UC Berkeley, so you're allowed to Boo and hiss for that. 
 
