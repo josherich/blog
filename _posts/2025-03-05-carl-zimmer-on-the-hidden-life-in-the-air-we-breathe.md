@@ -6,6 +6,8 @@ categories: podcast
 tags: [podcast_script]
 ---
 
+[Carl Zimmer on the Hidden Life in the Air We Breathe](https://www.youtube.com/watch?v=D70KznMs6PI)
+
 Hello, everyone, and welcome back to Conversations with Tyler. Today, I am speaking with Carl Zimmer. Carl, as far as I know, is the only person who has both a tapeworm and an asteroid named after him. The proximate reason for this episode is Carl's excellent new book. It's called Airborne, The Hidden History of the Life We Breathe. Carl is also a longstanding columnist for The New York Times. He teaches writing at Yale, and he has numerous other science books on biology, evolution, heredity, and other topics. Carl, welcome.
 
 Thanks so much for having me. I'm interested in issues surrounding the progress of science. And if we think of the notion of disease being transmitted through the air, it seems that comes to our attention really quite late in time, late 19th century. It's not truly accepted until later in the 20th century. The idea doesn't seem that crazy. Why did it take so long? It's a great question and one that I was thinking about a lot while working on this book. 
