@@ -6,6 +6,8 @@ categories: podcast
 tags: [podcast_script]
 ---
 
+[I Raised $300M To Bring AI To Laywers | Winston Weinberg & Harvey](https://www.youtube.com/watch?v=GTU2TyoSRLk)
+
 You should take AI and basically apply it to X industry. If your company isn't doing that, I don't think you're ambitious enough. The average price of a lawyer in the US is $353 an hour. No one can afford that. This technology is a perfect fit for lawyers and I think it will have a pretty large effect on the average person too. The largest competitor for us is just not moving fast enough. I think that indirectly you want to make sure that you are building a business that is going to survive the next 10 years of model releases. If you are willing to take some pain and to deal with some sacrifice, your impact and what you will learn are just massively compounded more than maybe any generation or any time in tech.
 
 Thanks for doing this. We're sharing a new podcast room. It's still coming together, but I haven't been to this office. I've never been to this office, so I'm thrilled to do this. I'm curious. I was thinking you announced the fundraise last week and I probably got, I'm not kidding you, no less than 5 to 10 people on LinkedIn or texting me being like, "Hey, can you introduce me to Harvey? I want to go work at Harvey." You're kind of the cool kid on the block right now. That's good, we need to hire. But I wonder, maybe is it good? That's the question I have because all of these people are coming out of the woodwork. You see this fancy fundraise, you see these nice acronyms like AI. I wonder if they were to go into the reality of working at Harvey, would they be like, "Oh yeah, this is exactly what I want to do," or are they kind of like clout chasing?
