@@ -6,6 +6,8 @@ categories: podcast
 tags: [podcast_script]
 ---
 
+[Deep Learning Day: Generative Modeling](https://www.youtube.com/watch?v=2yJSoaGU2i4)
+
 Good to see you everyone. In this second talk, I will talk about generative modeling. 
 
 So first question: who has used chatbot or anything like that? Maybe everyone, right? But who has heard the term generative model before you got to know ChatGPT? Well, still quite a lot, yeah. So in this talk, I will give a very high-level overview of what generative modeling is and how it's impacting our life and our future research. 
