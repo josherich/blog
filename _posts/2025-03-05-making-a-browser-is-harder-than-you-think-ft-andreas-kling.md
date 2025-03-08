@@ -6,9 +6,11 @@ categories: podcast
 tags: [podcast_script]
 ---
 
-So today we're having Andreas Clink, who's been working on the Ladybird browser, a fully open-source browser. I'd like to thank our sponsors Grace Swan AI and Infinite Red. More details about them later on and links in the description. I hope you enjoy today's amazing podcast.
+[Making A Browser Is Harder Than You Think (Ft Andreas Kling)](https://www.youtube.com/watch?v=z1Eq0xlVs3g)
 
-All right, well hey, today I'm your host, the Primagen, and today we have another episode of The Top Shelf. With us, we have Andreas Clink and also my co-host TJ, who loves Neovim so much he's never even heard or opened a browser in his lifetime. Andreas Clink, for those that are unfamiliar—sorry TJ, you don't even get a chance to talk right now—has somehow built a successful operating system and even has started to build another web browser, which is very shocking to me. First off, how does it feel to build an impossible project, another OS followed by another impossible project, a browser?
+So today we're having Andreas Kling, who's been working on the Ladybird browser, a fully open-source browser. I'd like to thank our sponsors Grace Swan AI and Infinite Red. More details about them later on and links in the description. I hope you enjoy today's amazing podcast.
+
+All right, well hey, today I'm your host, the Primagen, and today we have another episode of The Top Shelf. With us, we have Andreas Kling and also my co-host TJ, who loves Neovim so much he's never even heard or opened a browser in his lifetime. Andreas Kling, for those that are unfamiliar—sorry TJ, you don't even get a chance to talk right now—has somehow built a successful operating system and even has started to build another web browser, which is very shocking to me. First off, how does it feel to build an impossible project, another OS followed by another impossible project, a browser?
 
 Pretty good, I think. It's been a journey, that's for sure. But there's this endless source of fuel, which is people telling you that it's impossible. It's just satisfying to one by one go through those people and try to convince them. It's a bit like how comedians sort of focus on one person in the audience and try to make them laugh. I feel kind of the same about Hacker News; I try to get that one Hacker News guy to believe. I feel good about it.
 
