@@ -6,6 +6,8 @@ categories: podcast
 tags: [podcast_script]
 ---
 
+[Daniel Spielman “Miracles of Algebraic Graph Theory”](https://www.youtube.com/watch?v=CDMQR422LGM)
+
 Well, welcome to our next plenary lecture. It's my pleasure to introduce Daniel Spielman, who was a famous theoretical computer scientist and applied mathematician at Yale University. 
 
 Professor Spielman received his bachelor’s from Yale and PhD from MIT, and then he taught at MIT for 10 years, first as an assistant professor and later as an associate professor. He moved to Yale in 2006, where he's currently a Sterling Professor of Computer Science and also a professor of Statistics and Data Storage and also Mathematics. He has an amazing amount of major award hardware including the Godel Prize twice, the Nevanlinna Prize for smooth analysis of linear programming, and algorithms for graph-based codes. In 2014, he received the Polya Prize with Marcus and Srivastava for their joint solution to the Kaczynski problem, a famous question in functional analysis which has been open for over 50 years. 
