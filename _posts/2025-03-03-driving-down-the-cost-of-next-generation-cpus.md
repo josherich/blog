@@ -6,6 +6,8 @@ categories: podcast
 tags: [podcast_script]
 ---
 
+[Driving Down The Cost of Next-Generation CPUs](https://www.youtube.com/watch?v=yileWog3zbE)
+
 One of the most important things in modern computing is interposer technology. Advanced packaging is being able to use chiplets in a way that is good for power, efficiency, or redundancy. It's a complex technology; you're putting silicon on top of silicon. You need to make sure it's all aligned. You need to make sure the power comes through in the right way. It requires a lot of effort and it requires a lot of tools. It's something that we're only really seeing the big companies do and the ones that have good budgets, especially if you want to get on the super complex, Leading Edge node.
 
 If you like this content, there are multiple ways to support the channel. You can like and subscribe to this video, and many thanks for doing so. There's also Patreon, which gives you access to our Discord. There's a merchandise store and a newsletter. Links in the description for all of you who do contribute. Thank you; you are keeping me well fed.
@@ -41,4 +43,3 @@ Especially in academia, there's not a lot of money to go around; they can't be s
 The software has to be there as well. EDA software isn't cheap, even though they all have academic programs. So if you multiply that out, it's really expensive for a research group to do this. So I'm really looking forward to this talk to see exactly what's going on. I've already spoken to one of the professors behind this, and here's a picture of me with this chip. 
 
 Yeah, I gave some hints to the student who was going to be giving the talk. I said, "You're the one who knows more about this than anyone else." So if George from Chips and Cheese asks a question, just give him a bunch of crap. But no, it sounds really fun, and I'm really glad to see that we have students now having the ability to use more leading edge process node technologies and packaging technologies. So long may it continue, and we'll see what happens as we go forward.
-[Music]
