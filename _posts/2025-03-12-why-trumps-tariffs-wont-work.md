@@ -2,13 +2,11 @@
 layout: post
 title: "Why Trump’s Tariffs Won’t Work"
 date: 2025-03-12 00:00:01
-categories: podcast
+categories: podcast ezra-klein
 tags: [podcast_script]
 ---
 
-This podcast is supported by On Investing, an original podcast from Charles Schwab. Each week, hosts Liz Ann Saunders, Schwab's Chief Investment Strategist, and Kathy Jones, Schwab's Chief Fixed Income Strategist, along with their guests, analyze economic developments and bring context to conversations around stocks, fixed income, the economy, and more. Download the latest episode and subscribe at schwab.com slash oninvesting or wherever you get your podcasts.
-
-Before we begin today, we're going to do another Ask Me Anything episode for subscribers quite soon. So you can write me at ezraklineshow at nytimes.com with your question. Please use the subject line AMA so we know to pull it into the big spreadsheet we choose from. There'll be a cutoff here so we can actually record. We will consider any questions that are sent by the end of the day on Tuesday, March 18th. 
+[Why Trump’s Tariffs Won’t Work](https://www.nytimes.com/2025/03/12/opinion/ezra-klein-podcast-kimberly-clausing.html)
 
 From New York Times Opinion, this is The Ezra Klein Show. Wall Street was thrilled when Donald Trump won the 2024 election. And it was thrilled in part for a simple reason. It thought he was lying. Business leader after business leader said that President Trump wouldn't actually lay down his tariffs. And they had a reasonable case. Trump in his first term was exquisitely sensitive to the stock market. He loved bragging about how high it was on his watch. And so the belief was that the market would be a check on Trump's behavior. He wasn't going to do anything that would actually harm it. He certainly wasn't going to do anything that would harm the real economy or drive up prices. 
 
@@ -255,7 +253,7 @@ Visit Washington.org to plan your trip.
 
 ---
 
-As the podcast episode continues, the discussion pivots to the intricacies of tariffs and their implications on both the economy and individual consumers. Ezra Klein, the host, introduces Kimberly Klassing, a senior fellow at the Peterson Institute for International Economics, and they delve into the mechanics of tariffs.
+> This is an experimental rewrite
 
 **Ezra Klein**: "So let me just begin at the simplest possible level. What is a tariff?"
 
@@ -289,7 +287,7 @@ Klassing counters with insights about these automakers' true sentiments, marking
 
 The discussion reveals a myriad of unintended consequences linked to Trump's tariff policies, particularly affecting sectors reliant on cross-border supplies. Klein and Klassing illuminate the economic precariousness of relying on tariffs as a lever to return manufacturing to the U.S. without recognizing these deeper supply chain dynamics.
 
-[Placeholder for a visual: "Diagram showing the flow of automobile parts across borders and the tariffs applied at various stages."] 
+![consumer sentiment](https://collisionweek.com/wp-content/uploads/2025/03/2025-0311-Consumer-Sentiment.png)
 
 As their conversation unfolds, it becomes clear that the tariff policy is not merely a financial tool but a multifaceted strategy that could yield damaging repercussions across the American economy. 
 Continuing the discussion on tariffs and their broader implications, the conversation shifts to the foreseeable policy moves from Donald Trump regarding tariffs on automotive imports. Ezra Klein notes that at some point, the inconsistencies of Trump’s tariffs will draw attention. 
@@ -358,8 +356,6 @@ Visualizing this uncertainty, they consider the social implications of eroding t
 
 Once again, they find themselves grappling with the broader ethical and economic ramifications of Trump's policies, recognizing that these decisions could push the economy into a precarious state marked by instability and uncertainty.
 
-[Placeholder for a visual: "Infographic outlining consumer sentiment trends and stock market volatility since the implementation of tariffs."] 
-
 Their exchange compels listeners to reflect on the interplay between political maneuvering and actual economic health, revealing the precarious balance that hangs in the balance within the contemporary economic landscape.
 The conversation delves deeper into the implications of shifting perspectives on government, consumption, and economic structures. Ezra Klein begins by articulating a fundamental concern regarding current attitudes that prioritize individual consumption over the essential role of government in ensuring a well-functioning society.
 
@@ -392,9 +388,3 @@ The discussion shifts to the consequences of such policies, emphasizing the unwe
 The two voices resonate with overarching themes of trust and the impact of disruption on societal structures. 
 
 **Kimberly Klassing**: "Ultimately, businesses need stability provided by government regulations to foster confidence among consumers. A landscape filled with uncertainty could diminish trust in the institutions meant to support us."
-
-At this point, the podcast transitions to a sponsorship message, seamlessly connecting the topics of economic growth and consumer confidence with the market's broader narrative.
-
-[Placeholder for a visual: "Illustration depicting consumer confidence versus regulatory frameworks and their interconnectedness."]
-
-The intellectual exchange between Ezra and Kimberly urges listeners to consider the profound and often unnoticed connections between governmental structures, individual well-being, and economic health—highlighting that the issues at play require a more nuanced understanding rather than oversimplified narratives.
