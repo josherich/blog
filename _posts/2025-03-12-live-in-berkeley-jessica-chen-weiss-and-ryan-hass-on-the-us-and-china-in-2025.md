@@ -6,25 +6,15 @@ categories: podcast
 tags: [podcast_script]
 ---
 
-Okay, mom and dads, or soon-to-be mom and dads, think of the very best gift you've ever received. Now imagine something that will bring you a thousand times more joy every day. That's the Nanit Baby Monitor. It's like a family sleep coach, self-care unit, and memory collector all in one. Nothing will ease your mind more than knowing you can see and hear your baby anytime, anywhere, all from the convenience of your phone. 
-
-The high-def camera captures every precious moment, so not only will you know your baby is safe and sound, but you'll also never miss a milestone. You can track your baby's breathing, sleep patterns, and developmental milestones, receive personalized insights, and get a crystal-clear video view, all on your Nanit app. This adds up to more sleep for your baby and more rest for you. It's not just a dream. It could be your new reality. 
-
-And get this, Nanit parents get an extra 36 nights of sleep a year. And Nanit babies sleep 10% longer than average. The Nanit Baby Monitor is the MVP of baby gear and the one baby item you can't live without. We have a special offer just for our listeners. Get 20% off your first order with code DREAM20. That's D-R-E-A-M-2-0 at nanit.com now. N-A-N-I-T dot com.
-
-So, I just used NerdWallet's card finder tool to find a better card for me. And listeners, this is genius. All you have to do is answer a few questions, and in minutes, you'll get matched with recommendations tailored to you. I'm discovering cards I didn't even know existed, and the matching was on point. The best part? No research needed. The nerds already did that for us. 
-
-So, if you want to easily find the right card for you, go to NerdWallet.com to get matched today. Terms and conditions apply. Credit products subject to lender approval. See NerdWallet.com for details.
-
-Welcome to this special live edition of the Cynica Podcast, coming to you from the University of California, Berkeley. Hello, Berkeley. All right. So, I want to hear. I want to thank Sophie Volpin, Xiaojie Ma, and, of course, Rachel Stern, who just introduced us from the Center for Chinese Studies at the Institute for Asian Studies here at Cal for making this happen. 
+Welcome to this special live edition of the Sinica Podcast, coming to you from the University of California, Berkeley. Hello, Berkeley. All right. So, I want to hear. I want to thank Sophie Volpin, Xiaojie Ma, and, of course, Rachel Stern, who just introduced us from the Center for Chinese Studies at the Institute for Asian Studies here at Cal for making this happen. 
 
 What a delight it is to be back at my alma mater, a place where, even knowing everything I now know about higher education, I would enroll here again if I could, without hesitation. But, of course, now I would never, never get in. It's possible. Anyway, Cal absolutely made me the person that I am today. My four years spent here were just some of the best and most memorable years of my life where I made friendships that have literally just endured to this day.
 
 My best friend, freshman year in the dorm. Spends Black Hall, room 107, unit three. Yeah, all the way to today. Ate way too much blondies and top dog. I'm still definitely going to get up there and eat some top dog while I'm here. So, in this program, of course, as you know, we look at books, ideas, new research, intellectual currents, and cultural trends that can help us better understand what's happening in China's politics, foreign relations, economics, and society. 
 
-Join me each week for in-depth conversations that shed more light and bring less heat to how we think and talk about China. SYNICA, of course, is supported this year by the Center for East Asian Studies at the University of Wisconsin-Madison, a national resource center for the study of East Asia. The podcast is going to remain free. It's been free. It will always be free. 
+Join me each week for in-depth conversations that shed more light and bring less heat to how we think and talk about China. Sinica, of course, is supported this year by the Center for East Asian Studies at the University of Wisconsin-Madison, a national resource center for the study of East Asia. The podcast is going to remain free. It's been free. It will always be free. 
 
-But if you truly value the work that I do and you work for an organization that believes in what I'm doing with this podcast, definitely consider lending your support. Just as Cal Berkeley has and just as the University of Wisconsin-Madison has. You can get me at cynicapod at gmail.com. I love getting email from people. Email me. 
+But if you truly value the work that I do and you work for an organization that believes in what I'm doing with this podcast, definitely consider lending your support. Just as Cal Berkeley has and just as the University of Wisconsin-Madison has. You can get me at Sinicapod at gmail.com. I love getting email from people. Email me. 
 
 If I had to come up with just two people who I would entrust with the stewardship of American policy toward China, people who I believe have the clearest picture of the challenges that China does and, just as importantly, does not pose to the United States, who have both the intellect and, just as importantly, the temperament, the skills, the analytical ability, the whole package, those two people undoubtedly would be Jessica Chen-Weiss and Ryan Haas. 
 
@@ -306,26 +296,17 @@ Thank you, everyone. At the Coca-Cola Company, Keurig, Dr. Pepper, and PepsiCo, 
 Learn how our bottles are made to be remade at madetoberemade.org.
 
 ---
+> This is an experimental rewrite.
 
-Okay, mom and dads, or soon-to-be mom and dads, think of the very best gift you’ve ever received. Now imagine something that will bring you a thousand times more joy every day. That’s the **Nanit Baby Monitor**. It combines a family sleep coach, a self-care unit, and a memory collector, all in one device. Nothing will ease your mind more than knowing you can see and hear your baby anytime, anywhere, all from the convenience of your phone.
-
-The high-definition camera captures every precious moment, ensuring that you’ll never miss a milestone while also knowing your baby is safe and sound. You can track your baby’s breathing, sleep patterns, and developmental milestones. You’ll receive personalized insights and get a crystal-clear video view, all through your Nanit app. This translates into more sleep for your baby and more rest for you. It’s not just a dream; it could be your new reality.
-
-And get this: Nanit parents enjoy an extra **36 nights of sleep a year,** and Nanit babies sleep **10% longer than average**. The Nanit Baby Monitor is the MVP of baby gear and the one item you can’t live without. We have a special offer just for our listeners—get **20% off your first order** with code **DREAM20**. That’s D-R-E-A-M-2-0 at **nanit.com**. 
-
-So, I just used **NerdWallet’s** card finder tool to discover a better card for me, and listeners, this is genius! All you have to do is answer a few questions, and within minutes, you'll receive tailored recommendations. I'm finding cards I didn’t even know existed, and the matching was spot on. The best part? No research needed; the nerds have already done the heavy lifting for us.
-
-If you want to easily find the right card for you, head over to **NerdWallet.com** to get matched today. Terms and conditions apply. Credit products are subject to lender approval. Check **NerdWallet.com** for details.
-
-Welcome to this special live edition of the **Cynica Podcast**, coming to you from the University of California, Berkeley. Hello, Berkeley! I’d like to extend my gratitude to **Sophie Volpin, Xiaojie Ma,** and, of course, **Rachel Stern,** who just introduced us from the Center for Chinese Studies at the Institute for Asian Studies here at Cal for making this happen.
+Welcome to this special live edition of the **Sinica Podcast**, coming to you from the University of California, Berkeley. Hello, Berkeley! I’d like to extend my gratitude to **Sophie Volpin, Xiaojie Ma,** and, of course, **Rachel Stern,** who just introduced us from the Center for Chinese Studies at the Institute for Asian Studies here at Cal for making this happen.
 
 What a delight it is to be back at my alma mater—a place where, even knowing everything I now know about higher education, I would enroll here again without hesitation. However, I realize now that I would never get in. Anyway, Cal absolutely shaped me into the person I am today. My four years here were truly some of the best and most unforgettable years of my life, where I formed friendships that have lasted to this day.
 
 My best friend from freshman year in the dorm lived in Black Hall, room 107, unit three. Yeah, we’re still friends today! I ate way too many blondies and Top Dog while I was here, and I definitely plan to indulge in some Top Dog while I’m back. As you know, this program dives into books, ideas, new research, intellectual currents, and cultural trends that help us better understand what’s happening in China’s politics, foreign relations, economics, and society.
 
-Join me each week for in-depth conversations that bring more clarity and less heat to how we think and talk about China. **SYNICA** is supported this year by the Center for East Asian Studies at the University of Wisconsin-Madison, a national resource center for studying East Asia. The podcast will remain free; it has always been free and will continue to be free.
+Join me each week for in-depth conversations that bring more clarity and less heat to how we think and talk about China. **Sinica** is supported this year by the Center for East Asian Studies at the University of Wisconsin-Madison, a national resource center for studying East Asia. The podcast will remain free; it has always been free and will continue to be free.
 
-However, if you truly value the work I do, and if your organization believes in this podcast, please consider lending your support—just like Cal Berkeley and the University of Wisconsin-Madison have. You can reach me at **cynicapod@gmail.com**. I love hearing from you, so feel free to email me!
+However, if you truly value the work I do, and if your organization believes in this podcast, please consider lending your support—just like Cal Berkeley and the University of Wisconsin-Madison have. You can reach me at **Sinicapod@gmail.com**. I love hearing from you, so feel free to email me!
 
 If I had to choose just two people I would trust with the stewardship of American policy toward China, people who truly understand the challenges China presents—and those it doesn’t—one of whom possesses both intellect and temperament, it would be **Jessica Chen-Weiss** and **Ryan Haas**. 
 
@@ -333,9 +314,9 @@ You can imagine how thrilled I am to have them both here in Berkeley to discuss 
 
 Let me briefly introduce our two guests, and then we will jump right in to discuss the recent past—specifically the Biden administration—which, while it feels like a decade ago, was just a few years back. We’ll also touch on the present and possible scenarios for the future. 
 
-**Jessica Chen-Weiss** is the David M. Lampton Professor of China Studies at Johns Hopkins University’s School of Advanced International Studies. She is the inaugural faculty director of SAIS’s Institute for America, China, and the Future of Global Affairs. You should definitely check out her sessions on the **Cynica** podcast. We have another episode dropping later this week on the fabulous session she led, called "Getting China Right," and it's the first of many more to come. 
+**Jessica Chen-Weiss** is the David M. Lampton Professor of China Studies at Johns Hopkins University’s School of Advanced International Studies. She is the inaugural faculty director of SAIS’s Institute for America, China, and the Future of Global Affairs. You should definitely check out her sessions on the **Sinica** podcast. We have another episode dropping later this week on the fabulous session she led, called "Getting China Right," and it's the first of many more to come. 
 
-You may have heard her on podcasts like **The Ezra Klein Show** and even **Jon Stewart**. She has also published extensively in outlets like **Foreign Affairs**, where she has emerged as a compelling voice in the discourse on U.S.-China relations. So, Jessica, welcome back to Cynica. It's wonderful to have you!
+You may have heard her on podcasts like **The Ezra Klein Show** and even **Jon Stewart**. She has also published extensively in outlets like **Foreign Affairs**, where she has emerged as a compelling voice in the discourse on U.S.-China relations. So, Jessica, welcome back to Sinica. It's wonderful to have you!
 
 **Jessica:** Wonderful to be here! Thanks so much, Kaiser.
 
@@ -607,7 +588,3 @@ What resonates with me is that we should focus our efforts on reducing conflict 
 **Kaiser:** You've raised excellent points, but I’m afraid we’re out of time. So, thank you both for joining us today. It was a pleasure to have Ryan Haas and Jessica Chenwise here at UC Berkeley. Go Bears! 
 
 Thank you, everyone, for being a part of this insightful discussion.
-
----
-
-*Learn how our bottles are made to be remade at [madetoberemade.org](http://madetoberemade.org).*
