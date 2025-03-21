@@ -2,9 +2,11 @@
 layout: post
 title: "a16z on AI Voices: Call Centers, Coaches, and Companions with Olivia Moore & Anish Acharya"
 date: 2025-03-19 00:00:01
-categories: podcast
+categories: podcast cognitive-revolution
 tags: [podcast_script]
 ---
+
+[a16z on AI Voices: Call Centers, Coaches, and Companions with Olivia Moore & Anish Acharya](https://www.cognitiverevolution.ai/a16z-on-ai-voices-call-centers-coaches-and-companions-with-olivia-moore-anish-acharya/)
 
 Hello and welcome back to the Cognitive Revolution. Today I'm speaking with Olivia Moore and Anisha Charya, partners at Andresen Horowitz and fellow AI scouts who are constantly tracking emerging technologies and consumer behaviors. In recent months, they have really distinguished themselves as keen observers and eager early adopters of AI voice platforms and products. In this conversation, we review recent developments in voice AI technology and also explore how voice AI is already starting to transform business operations, user experiences, and human-computer interaction more broadly.
 
