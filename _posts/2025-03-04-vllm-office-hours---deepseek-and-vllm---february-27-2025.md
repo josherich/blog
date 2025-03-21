@@ -6,6 +6,8 @@ categories: podcast
 tags: [podcast_script]
 ---
 
+[vLLM Office Hours - DeepSeek and vLLM](https://docs.google.com/presentation/d/1h2Y7YbnbhuXrCh9rkQ33ZcC5MyB65oGK)
+
 so hi everyone my name is Sasha Zanovich and I'm a product principal product marketing manager here at Red Hat. We're really excited to have you for our VM office hours today. Just 24 hours ago, we decided that we can't miss out on all the deep seek fun that's happening all over the world. So we changed the office hours topic from talking about VM V1 to actually deep seek.
 
 I just really want to give a big round of applause and I'll do it myself here to the team that you see on the screen right here who came together in the last 24 hours and really put this presentation together to drive this amazing discussion. So thank you guys so much and one special shout out also to Lucas Wilkinson right there in the right middle for becoming the most recent VM Commuter. So congrats Lucas and thank you guys one more time.
