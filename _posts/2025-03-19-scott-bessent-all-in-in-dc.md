@@ -2,9 +2,11 @@
 layout: post
 title: "Scott Bessent | All-In in DC!"
 date: 2025-03-19 00:00:01
-categories: podcast
+categories: podcast all-in
 tags: [podcast_script]
 ---
+
+[Scott Bessent | All-In in DC!](https://www.youtube.com/watch?v=lSma9suyp24)
 
 Okay, we are here in Washington DC in front of the White House. Having spent the afternoon with our friend David Sachs, our friend Elon Musk and others, we are here to learn about the debt, the deficit, what's going on in DC and we have an incredible interview lined up with Scott Besant, Treasury Secretary of the United States. It was amazing. And it's been an amazing afternoon and we're really looking forward to it. 
 
