@@ -2,9 +2,11 @@
 layout: post
 title: "How Claude Plays Pokémon was made"
 date: 2025-03-04 00:00:01
-categories: podcast
+categories: podcast latent-space
 tags: [podcast_script]
 ---
+
+[How Claude Plays Pokémon was made](https://www.latent.space/p/how-claude-plays-pokemon-was-made)
 
 Hey everyone, welcome back to another Laden Space Lightning Pod. This is Alessio, partner and CTO at Deel. There's no Swift today; we got a special co-host, Vibu, which if you're a part of the Len Space community on Discord, you've definitely seen. Welcome, Vibu, as a co-host for the first time. What's up, guys?
 
