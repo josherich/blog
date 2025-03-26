@@ -85,7 +85,12 @@ layout: default
   </style>
   <script>
     const index = window.tocIndex;
-
+    function getWords(text) {
+        return (text||'').toLowerCase().replaceAll(/[\.',"’“”…\?\s]/g, '')
+    }
+    function includesWords(text1, text2) {
+        return getWords(text1).includes(getWords(text2));
+    }
     function generateList(sections) {
         const ul = document.createElement("ul");
         sections.forEach(section => {
@@ -96,14 +101,14 @@ layout: default
             titleSpan.setAttribute('title', section['section_title'])
             li.appendChild(titleSpan);
 
-            if (section["first_sentence"]) {
-                titleSpan.setAttribute('data-anchor', section['first_sentence']);
+            if (section["index_sentences"]) {
+                titleSpan.setAttribute('data-anchor', section['index_sentences']);
                 titleSpan.classList.add('level-' + section['section_level'])
 
                 // Scroll to content section on title click
                 titleSpan.addEventListener("click", () => {
                     document.querySelectorAll('.post p').forEach(p => {
-                      if (p.textContent.toLowerCase().includes(section['first_sentence']?.toLowerCase())) {
+                      if (includesWords(p.textContent, section['index_sentences'])) {
                         p.scrollIntoView({ behavior: 'smooth' });
                       }
                     })

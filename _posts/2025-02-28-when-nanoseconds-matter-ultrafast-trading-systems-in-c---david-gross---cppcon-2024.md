@@ -491,262 +491,262 @@ Thank you. Well, I think we have a lot of time. I would still, you know, stick a
   window.tocIndex = {
   "index": [
     {
-      "first_sentence": "Thank you all for being here.",
+      "index_sentences": "Thank you all for being here.",
       "section_level": 1,
       "section_title": "Introduction"
     },
     {
-      "first_sentence": "But before going into the technical details, let’s backtrack a little bit by around two, two and a half thousand years where most things started, at least in the Western world, which is the Antiquity.",
+      "index_sentences": "But before going into the technical details, let’s backtrack a little bit by around two, two and a half thousand years where most things started, at least in the Western world, which is the Antiquity.",
       "section_level": 1,
       "section_title": "The Roman Empire"
     },
     {
-      "first_sentence": "Historians in general do not agree on a lot of things about Romans, for example, the reason for their decline.",
+      "index_sentences": "Historians in general do not agree on a lot of things about Romans, for example, the reason for their decline.",
       "section_level": 2,
       "section_title": "Planning and Infrastructure"
     },
     {
-      "first_sentence": "Now, something a little bit more fun to talk about than military achievements is festivals.",
+      "index_sentences": "Now, something a little bit more fun to talk about than military achievements is festivals.",
       "section_level": 2,
       "section_title": "Festivals and Economy"
     },
     {
-      "first_sentence": "What the Romans figured out is that the world is a certain uncertainty.",
+      "index_sentences": "What the Romans figured out is that the world is a certain uncertainty.",
       "section_level": 2,
       "section_title": "Derivative Trading"
     },
     {
-      "first_sentence": "Now, going into the modern world, I mean that’s why we’ve got market makers.",
+      "index_sentences": "Now, going into the modern world, I mean that’s why we’ve got market makers.",
       "section_level": 1,
       "section_title": "Modern Market Makers"
     },
     {
-      "first_sentence": "Effectively, um, what market makers do, you know how it works, is that you make some small profit, and the small profits are, well, back to the Romans.",
+      "index_sentences": "Effectively, um, what market makers do, you know how it works, is that you make some small profit, and the small profits are, well, back to the Romans.",
       "section_level": 2,
       "section_title": "Market Making Mechanics"
     },
     {
-      "first_sentence": "Now, elaborating a little bit more about why do we need low latency programming here, um, breaking this down into two categories, I think the first one is relatively well known.",
+      "index_sentences": "Now, elaborating a little bit more about why do we need low latency programming here, um, breaking this down into two categories, I think the first one is relatively well known.",
       "section_level": 2,
       "section_title": "Need for Low Latency"
     },
     {
-      "first_sentence": "So on this slide here, um, you can see what I would call a relatively standard modern trading system.",
+      "index_sentences": "So on this slide here, um, you can see what I would call a relatively standard modern trading system.",
       "section_level": 2,
       "section_title": "Modern Trading System"
     },
     {
-      "first_sentence": "Now let’s get into some more technical content.",
+      "index_sentences": "Now let’s get into some more technical content.",
       "section_level": 1,
       "section_title": "Technical Content Introduction"
     },
     {
-      "first_sentence": "Now, going through some properties of this order book, and we have two sequences that are ordered.",
+      "index_sentences": "Now, going through some properties of this order book, and we have two sequences that are ordered.",
       "section_level": 2,
       "section_title": "Properties of the Order Book"
     },
     {
-      "first_sentence": "Looking at our API, it’s relatively straightforward.",
+      "index_sentences": "Looking at our API, it’s relatively straightforward.",
       "section_level": 2,
       "section_title": "Order Book API"
     },
     {
-      "first_sentence": "The most natural data structure that you can use for this order book is a tree map.",
+      "index_sentences": "The most natural data structure that you can use for this order book is a tree map.",
       "section_level": 2,
       "section_title": "Tree Map Implementation"
     },
     {
-      "first_sentence": "Right, you’ve got two tree maps: one for your bids and one for the asks because they’re ordered differently.",
+      "index_sentences": "Right, you’ve got two tree maps: one for your bids and one for the asks because they’re ordered differently.",
       "section_level": 3,
       "section_title": "Tree Map Code Example"
     },
     {
-      "first_sentence": "This is why I meant that this is the most obvious natural data structure for this problem because complexity-wise it’s actually really good.",
+      "index_sentences": "This is why I meant that this is the most obvious natural data structure for this problem because complexity-wise it’s actually really good.",
       "section_level": 3,
       "section_title": "Tree Map Complexity"
     },
     {
-      "first_sentence": "This latency distribution is not a micro-benchmark; it’s also not from production.",
+      "index_sentences": "This latency distribution is not a micro-benchmark; it’s also not from production.",
       "section_level": 3,
       "section_title": "Tree Map Latency Distribution"
     },
     {
-      "first_sentence": "This is the true story, the real distribution for this data structure.",
+      "index_sentences": "This is the true story, the real distribution for this data structure.",
       "section_level": 3,
       "section_title": "Randomized Heap"
     },
     {
-      "first_sentence": "I said that we will go through some principles along the way, so this is our first principle: most of the time, you do not want node containers.",
+      "index_sentences": "I said that we will go through some principles along the way, so this is our first principle: most of the time, you do not want node containers.",
       "section_level": 2,
       "section_title": "Principle 1: Avoid Node Containers"
     },
     {
-      "first_sentence": "So moving on, what are we doing?",
+      "index_sentences": "So moving on, what are we doing?",
       "section_level": 2,
       "section_title": "Vector Implementation"
     },
     {
-      "first_sentence": "This is what we get.",
+      "index_sentences": "This is what we get.",
       "section_level": 3,
       "section_title": "Vector Latency Distribution"
     },
     {
-      "first_sentence": "Where does this tail come from?",
+      "index_sentences": "Where does this tail come from?",
       "section_level": 3,
       "section_title": "Vector Data Analysis"
     },
     {
-      "first_sentence": "We have a much nicer latency distribution here; that tail is just completely gone.",
+      "index_sentences": "We have a much nicer latency distribution here; that tail is just completely gone.",
       "section_level": 3,
       "section_title": "Reversed Vector"
     },
     {
-      "first_sentence": "And a third principle is also really important: this is a very specific problem that we’re going to solve here, and we need to leverage these properties—this very specific properties—in order to get performance.",
+      "index_sentences": "And a third principle is also really important: this is a very specific problem that we’re going to solve here, and we need to leverage these properties—this very specific properties—in order to get performance.",
       "section_level": 2,
       "section_title": "Principle 3: Leverage Specific Properties"
     },
     {
-      "first_sentence": "Now, you know, how do we go faster from there?",
+      "index_sentences": "Now, you know, how do we go faster from there?",
       "section_level": 2,
       "section_title": "Profiling with Perf"
     },
     {
-      "first_sentence": "And so those are the results that we’ve got for the code that we have, you know, the one that we looked at with our St vector.",
+      "index_sentences": "And so those are the results that we’ve got for the code that we have, you know, the one that we looked at with our St vector.",
       "section_level": 3,
       "section_title": "Perf Results"
     },
     {
-      "first_sentence": "So what we see, so what is this assembly code?",
+      "index_sentences": "So what we see, so what is this assembly code?",
       "section_level": 3,
       "section_title": "Assembly Code Analysis"
     },
     {
-      "first_sentence": "We have a much nicer latency distribution here; that tail is just completely gone.",
+      "index_sentences": "We have a much nicer latency distribution here; that tail is just completely gone.",
       "section_level": 3,
       "section_title": "Branchless Binary Search"
     },
     {
-      "first_sentence": "So another question is, again, you know, how do we go faster from there?",
+      "index_sentences": "So another question is, again, you know, how do we go faster from there?",
       "section_level": 3,
       "section_title": "Heat Map Analysis"
     },
     {
-      "first_sentence": "And so at this point you might be actually disappointed and you should not.",
+      "index_sentences": "And so at this point you might be actually disappointed and you should not.",
       "section_level": 3,
       "section_title": "Linear Search Implementation"
     },
     {
-      "first_sentence": "At this point actually you can stop; it’s awesome.",
+      "index_sentences": "At this point actually you can stop; it’s awesome.",
       "section_level": 2,
       "section_title": "Principle 5: Mechanical Sympathy"
     },
     {
-      "first_sentence": "Now there are certain things along the way that I didn’t mention but are also important.",
+      "index_sentences": "Now there are certain things along the way that I didn’t mention but are also important.",
       "section_level": 2,
       "section_title": "Instruction Cache Considerations"
     },
     {
-      "first_sentence": "So now that we optimize this data structure and now that we’ve got this autobook, you know, nice and it’s simple, simple and fast, the next thing we want to do is to send it around.",
+      "index_sentences": "So now that we optimize this data structure and now that we’ve got this autobook, you know, nice and it’s simple, simple and fast, the next thing we want to do is to send it around.",
       "section_level": 1,
       "section_title": "Networking and Concurrency"
     },
     {
-      "first_sentence": "The general pattern is going to be to bypass the kernel for your low latency connections.",
+      "index_sentences": "The general pattern is going to be to bypass the kernel for your low latency connections.",
       "section_level": 2,
       "section_title": "Bypassing the Kernel"
     },
     {
-      "first_sentence": "So this is for UDP bucket and you see that you’re on three mics for like your minimal size of UDP packet.",
+      "index_sentences": "So this is for UDP bucket and you see that you’re on three mics for like your minimal size of UDP packet.",
       "section_level": 3,
       "section_title": "AMD Measurements"
     },
     {
-      "first_sentence": "Connecting the dots, so back to our trading system, we’ve got again, you know, exchange sending prices.",
+      "index_sentences": "Connecting the dots, so back to our trading system, we’ve got again, you know, exchange sending prices.",
       "section_level": 3,
       "section_title": "Trading System Connection"
     },
     {
-      "first_sentence": "So here you see an engineer, you’re looking at this beautiful, you know, big machinery that’s on the left, which is the Linux kernel.",
+      "index_sentences": "So here you see an engineer, you’re looking at this beautiful, you know, big machinery that’s on the left, which is the Linux kernel.",
       "section_level": 2,
       "section_title": "Principle 6: Be Mindful of What You're Using"
     },
     {
-      "first_sentence": "Now let’s talk a little bit about shared memory.",
+      "index_sentences": "Now let’s talk a little bit about shared memory.",
       "section_level": 2,
       "section_title": "Shared Memory"
     },
     {
-      "first_sentence": "The reason is, um, it’s principle six again; if you’re locally on a server, you just don’t need sockets.",
+      "index_sentences": "The reason is, um, it’s principle six again; if you’re locally on a server, you just don’t need sockets.",
       "section_level": 2,
       "section_title": "Benefits of Shared Memory"
     },
     {
-      "first_sentence": "What works well in memory?",
+      "index_sentences": "What works well in memory?",
       "section_level": 2,
       "section_title": "Continuous Arrays"
     },
     {
-      "first_sentence": "That if one strategy goes down, everything goes down.",
+      "index_sentences": "That if one strategy goes down, everything goes down.",
       "section_level": 2,
       "section_title": "Cap API Implementation"
     },
     {
-      "first_sentence": "Now concurrent queues, the one we’re going to look at today is going to be bounded.",
+      "index_sentences": "Now concurrent queues, the one we’re going to look at today is going to be bounded.",
       "section_level": 2,
       "section_title": "Concurrent Queues"
     },
     {
-      "first_sentence": "Earlier this week, there was actually another talk about concurrent queues.",
+      "index_sentences": "Earlier this week, there was actually another talk about concurrent queues.",
       "section_level": 2,
       "section_title": "Principle 7: Use the Right Tool"
     },
     {
-      "first_sentence": "We’ve got two counters, right?",
+      "index_sentences": "We’ve got two counters, right?",
       "section_level": 3,
       "section_title": "Two-Counter Implementation"
     },
     {
-      "first_sentence": "And our API is relatively straightforward.",
+      "index_sentences": "And our API is relatively straightforward.",
       "section_level": 3,
       "section_title": "API Code Example"
     },
     {
-      "first_sentence": "The main problem of this approach is that, you know, you’re not going to like add this little object that we just looked at everywhere in your code because then you know it’s not great.",
+      "index_sentences": "The main problem of this approach is that, you know, you’re not going to like add this little object that we just looked at everywhere in your code because then you know it’s not great.",
       "section_level": 3,
       "section_title": "Performance Measurement of the Algorithm"
     },
     {
-      "first_sentence": "Effectively, the CQ is faster, I think, between four to 10 consumers.",
+      "index_sentences": "Effectively, the CQ is faster, I think, between four to 10 consumers.",
       "section_level": 3,
       "section_title": "Comparison Between the Queues"
     },
     {
-      "first_sentence": "So now we looked at some data structure, looked at some concurrency, we used per, you know, we looked at hardware counters.",
+      "index_sentences": "So now we looked at some data structure, looked at some concurrency, we used per, you know, we looked at hardware counters.",
       "section_level": 1,
       "section_title": "Specific Measurements for Low Latency Systems"
     },
     {
-      "first_sentence": "And so here the idea is, this is going to be, of course, it’s very simplified code.",
+      "index_sentences": "And so here the idea is, this is going to be, of course, it’s very simplified code.",
       "section_level": 2,
       "section_title": "EV-Driven Measurements"
     },
     {
-      "first_sentence": "And the challenge here, um, as an engineer, is that you do not know where the next bottleneck is going to be.",
+      "index_sentences": "And the challenge here, um, as an engineer, is that you do not know where the next bottleneck is going to be.",
       "section_level": 2,
       "section_title": "Intrusive Profiling"
     },
     {
-      "first_sentence": "So you do what we call, you know, intrusive profiling.",
+      "index_sentences": "So you do what we call, you know, intrusive profiling.",
       "section_level": 2,
       "section_title": "X-Ray from Clang"
     },
     {
-      "first_sentence": "And so this is our last principle here, which is, I’d say, you know, less lesson of empathy, which is you shouldn’t just care about the performance of your code.",
+      "index_sentences": "And so this is our last principle here, which is, I’d say, you know, less lesson of empathy, which is you shouldn’t just care about the performance of your code.",
       "section_level": 1,
       "section_title": "Last Principle: Be Kind To Others"
     },
     {
-      "first_sentence": "Final thoughts: so we started, you know, looking at, um, I was saying at the beginning of this talk market making is a loser’s game.",
+      "index_sentences": "Final thoughts: so we started, you know, looking at, um, I was saying at the beginning of this talk market making is a loser’s game.",
       "section_level": 1,
       "section_title": "Final Thoughts"
     }
