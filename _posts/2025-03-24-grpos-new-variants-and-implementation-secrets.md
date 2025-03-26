@@ -197,102 +197,102 @@ I think that’s fascinating. I hope others find this discussion beneficial too.
 <script>window.tocIndex = {
   "index": [
     {
-      "first_sentence": "Okay, everyone knows that reasoning in RL is the big thing right now.",
+      "index_sentences": "Okay, everyone knows that reasoning in RL is the big thing right now.",
       "section_level": 1,
       "section_title": "Introduction to Reasoning in RL and GRPO"
     },
     {
-      "first_sentence": "GRPO is group relative policy optimization.",
+      "index_sentences": "GRPO is group relative policy optimization.",
       "section_level": 1,
       "section_title": "GRPO Definition and Comparison to PO"
     },
     {
-      "first_sentence": "What policy gradient is doing is essentially trying to increase the likelihood of actions that have high rewards.",
+      "index_sentences": "What policy gradient is doing is essentially trying to increase the likelihood of actions that have high rewards.",
       "section_level": 1,
       "section_title": "Policy Gradient and Advantage Functions"
     },
     {
-      "first_sentence": "You see what PO has done is kind of derived this controlled step policy gradient relative to the advantage.",
+      "index_sentences": "You see what PO has done is kind of derived this controlled step policy gradient relative to the advantage.",
       "section_level": 1,
       "section_title": "Policy Optimization (PO) Details"
     },
     {
-      "first_sentence": "If we go back to like what is actually PO versus GRPO, there's an example in this DeepSeek math paper on the right.",
+      "index_sentences": "If we go back to like what is actually PO versus GRPO, there's an example in this DeepSeek math paper on the right.",
       "section_level": 1,
       "section_title": "PO vs GRPO: The Role of the Value Model"
     },
     {
-      "first_sentence": "If we actually look at the implementation of policy gradient, the simplest way to think about a policy gradient loss function is that it's kind of this advantage times this ratio that I was talking about, where it's very simple, and it's really easy to kind of lose track of this when thinking about advantages times ratio, and then kind of changing the step size as we're doing this.",
+      "index_sentences": "If we actually look at the implementation of policy gradient, the simplest way to think about a policy gradient loss function is that it's kind of this advantage times this ratio that I was talking about, where it's very simple, and it's really easy to kind of lose track of this when thinking about advantages times ratio, and then kind of changing the step size as we're doing this.",
       "section_level": 1,
       "section_title": "Implementation of Policy Gradient"
     },
     {
-      "first_sentence": "If we go back to PO as I scroll around, there's this clipping that essentially controls the step size based on different conditions: if the advantage is positive, if the advantage is negative, and then kind of this log ratio, which stays close to one.",
+      "index_sentences": "If we go back to PO as I scroll around, there's this clipping that essentially controls the step size based on different conditions: if the advantage is positive, if the advantage is negative, and then kind of this log ratio, which stays close to one.",
       "section_level": 1,
       "section_title": "Clipping and Log Ratio in PO"
     },
     {
-      "first_sentence": "If you can think of this log ratio as just changing a little bit for different tokens, but there's a gap between the left and the right here where the left doesn't have this per token sum, and the right has this per token.",
+      "index_sentences": "If you can think of this log ratio as just changing a little bit for different tokens, but there's a gap between the left and the right here where the left doesn't have this per token sum, and the right has this per token.",
       "section_level": 1,
       "section_title": "Token-Level Loss Computation in PO/GRPO"
     },
     {
-      "first_sentence": "What is interesting is that these default implementations have kind of got this length normalization term in there.",
+      "index_sentences": "What is interesting is that these default implementations have kind of got this length normalization term in there.",
       "section_level": 1,
       "section_title": "Length Normalization in Default Implementations"
     },
     {
-      "first_sentence": "We have to compute the group-wise advantages here on line 870 for GRPO, where we just have the rewards minus the mean rewards over the standard deviations.",
+      "index_sentences": "We have to compute the group-wise advantages here on line 870 for GRPO, where we just have the rewards minus the mean rewards over the standard deviations.",
       "section_level": 1,
       "section_title": "Group-wise Advantage Computation in GRPO"
     },
     {
-      "first_sentence": "Some of the interesting things that came up for one was this idea of how should we actually apply the loss in a GRPO setting.",
+      "index_sentences": "Some of the interesting things that came up for one was this idea of how should we actually apply the loss in a GRPO setting.",
       "section_level": 1,
       "section_title": "Applying Loss in GRPO: RHF vs. Direct Loss Application"
     },
     {
-      "first_sentence": "What we'll see in this Dr. GRPO paper is that they have kind of an extreme statement where they're like clicking through this one.",
+      "index_sentences": "What we'll see in this Dr. GRPO paper is that they have kind of an extreme statement where they're like clicking through this one.",
       "section_level": 1,
       "section_title": "Dr. GRPO Paper: Bias in Open Source Implementations"
     },
     {
-      "first_sentence": "You could see that there's actually a theoretical analysis in this understanding R10 paper where they go through and do a derivation of what looks like GRPO from the basics of policy gradient.",
+      "index_sentences": "You could see that there's actually a theoretical analysis in this understanding R10 paper where they go through and do a derivation of what looks like GRPO from the basics of policy gradient.",
       "section_level": 1,
       "section_title": "Theoretical Analysis of GRPO and PO Loss"
     },
     {
-      "first_sentence": "The natural thing if you're working in the field is to just normalize by the number to create some sort of nice numerical behavior.",
+      "index_sentences": "The natural thing if you're working in the field is to just normalize by the number to create some sort of nice numerical behavior.",
       "section_level": 1,
       "section_title": "Normalization and Numerical Stability"
     },
     {
-      "first_sentence": "What they show is essentially in this paper that this dividing by O term essentially biases short correct answers and biases for long repetitive answers.",
+      "index_sentences": "What they show is essentially in this paper that this dividing by O term essentially biases short correct answers and biases for long repetitive answers.",
       "section_level": 1,
       "section_title": "Dr. GRPO: Biases and Length Normalization"
     },
     {
-      "first_sentence": "So kind of normalize every possible token in the batch.",
+      "index_sentences": "So kind of normalize every possible token in the batch.",
       "section_level": 1,
       "section_title": "Impact of Dr. GRPO Normalization Approach"
     },
     {
-      "first_sentence": "The second red point with question level difficulty bias is definitely a great one.",
+      "index_sentences": "The second red point with question level difficulty bias is definitely a great one.",
       "section_level": 1,
       "section_title": "Question-Level Difficulty Bias in GRPO"
     },
     {
-      "first_sentence": "So what we can think about is that if we go back to a paper like this that I'm going to publish, we consider what do we actually want to happen when we're doing policy gradient when we have an advantage that is greater than zero, that is positive.",
+      "index_sentences": "So what we can think about is that if we go back to a paper like this that I'm going to publish, we consider what do we actually want to happen when we're doing policy gradient when we have an advantage that is greater than zero, that is positive.",
       "section_level": 1,
       "section_title": "Implications for Sequence Length"
     },
     {
-      "first_sentence": "Here in red, you can see the change from GRPO and their setup.",
+      "index_sentences": "Here in red, you can see the change from GRPO and their setup.",
       "section_level": 1,
       "section_title": "DAPO Paper and Token-Level Policy Gradient"
     },
     {
-      "first_sentence": "In conclusion, RL and RHF really didn't care about response length before, so all these implementations were largely niceties.",
+      "index_sentences": "In conclusion, RL and RHF really didn't care about response length before, so all these implementations were largely niceties.",
       "section_level": 1,
       "section_title": "Conclusion: Response Length and Loss Aggregation"
     }
