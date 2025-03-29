@@ -18,6 +18,9 @@ title: Projects
 
   <div class="repo-to-pdf"><a href="https://github.com/josherich/repo-to-pdf">repo-to-pdf</a> is a cli tool and <a href="https://book.mindynode.com/">website</a> to make pdf from source code folder.</div>
 
+
+  <div class="twitter-reader"><a href="https://x.mindynode.com">Tweetability</a> lets you read articles in tweets.</div>
+
   <div class="gradient-reader"><a href="https://josherich.github.io/gradient-reader/">Gradient Reader</a> is an experiment to assist reading with word frequency.</div>
 
   <div class="animation-code"><a href="https://github.com/josherich/Animation2Code">Animation2Code</a> is a CNN and LSTM approach to recover CSS code from Web animations, with a synthetic animation dataset.</div>
