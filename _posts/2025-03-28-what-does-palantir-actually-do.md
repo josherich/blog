@@ -81,7 +81,8 @@ And now for a dramatic reading of Palantir Reddit posts: through 1.6 million int
 
 ---
 
- > This is an experimental rewrite
+> This is an experimental rewrite
+
 When today's wealthy and illustrious tech companies describe their mission, they often proclaim, "We are connecting the world." In reality, this translates to creating a highly addictive, gamified experience akin to a sexualized version of Farmville, as addictive as opioids.
 
 Upon discovering that last year’s best-performing stock was a Silicon Valley unicorn named Palantir, I thought I had a good sense of their activities. Likely, they had launched a streaming service called Boo Boo, a housing rental app named Housley, or produced earbuds called doinkers, or something along those lines. However, to confirm my assumptions, I decided to investigate further. It quickly became apparent that Palantir stands apart from the typical tech firms I encounter.
