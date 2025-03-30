@@ -2,12 +2,11 @@
 layout: post
 title: "Code Context is King: Augment’s AI Assistant for Professional Software Engineers, with Guy Gur-Ari"
 date: 2025-03-27 00:00:01
-categories: podcast
+categories: podcast cognitive-revolution
 tags: [podcast_script]
 ---
 
-
-[Code Context is King: Augment’s AI Assistant for Professional Software Engineers, with Guy Gur-Ari](https://pdst.fm/e/chrt.fm/track/993DGA/mgln.ai/e/1113/traffic.megaphone.fm/RINTP4796359643.mp3?updated=1743110549)
+[Code Context is King: Augment’s AI Assistant for Professional Software Engineers, with Guy Gur-Ari](https://www.cognitiverevolution.ai/code-context-is-king-augments-ai-assistant-for-professional-software-engineers-with-guy-gur-ari/)
 
 Hello, and welcome back to The Cognitive Revolution. Today, my guest is Guy Garari, co-founder and chief scientist at Augment, a company using the full range of AI strategies, from autocomplete to RAG to chatbots to autonomous coding agents, to transform the practice of software engineering in large enterprise code bases.
 
@@ -399,10 +398,11 @@ It is both energizing and enlightening to hear why people listen and learn what 
 
 ---
 
- > This is an experimental rewrite
+> This is an experimental rewrite
+
 **Host:** Hello, and welcome back to *The Cognitive Revolution*. Today, my guest is Guy Garari, the co-founder and chief scientist at Augment. Augment is working with a wide range of AI strategies—from autocomplete to retrieval-augmented generation (RAG), chatbots, and autonomous coding agents—to revolutionize software engineering in large enterprise codebases.
 
-In the earlier episodes of our Software Supernova series, we explored vibe coding platforms that enable anyone to create a proof of concept or basic app with just a simple prompt. Founded in 2022, Augment emerged during a pivotal time when OpenAI's Codex models and early autocomplete tools were beginning to hint at a new coding paradigm. However, Augment is tackling a more complex and potentially transformative challenge: **How do you increase productivity tenfold for professional engineers who are dealing with extensive, messy legacy codebases containing millions of lines of code across various projects?**
+In the earlier episodes of our Software Supernova series, we explored vibe coding platforms that enable anyone to create a proof of concept or basic app with just a simple prompt. Founded in 2022, Augment emerged during a pivotal time when OpenAI's Codex models and early autocomplete tools were beginning to hint at a new coding paradigm. However, Augment is tackling a more complex and potentially transformative challenge: How do you increase productivity tenfold for professional engineers who are dealing with extensive, messy legacy codebases containing millions of lines of code across various projects?
 
 **Guy Garari:** Unlike personal projects, where you might easily copy a complete codebase into Gemini's context window, enterprise-level challenges require serious technical expertise at every layer of the architecture. Augment has spent the last three years investigating multiple approaches and has ultimately crafted a sophisticated, retrieval-heavy methodology from the ground up. Our RAG stack incorporates a custom-built vector database designed for real-time updates, proprietary retrieval models tailored specifically for large codebases, and a code search feature that activates with every keystroke from every user. We also utilize custom code generation models trained using a technique we refer to as "reinforcement learning from developer behaviors," along with various paradigms to deliver code to users.
 
