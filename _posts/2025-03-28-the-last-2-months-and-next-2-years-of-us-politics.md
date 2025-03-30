@@ -2,14 +2,12 @@
 layout: post
 title: "The Last 2 Months — and Next 2 Years — of U.S. Politics"
 date: 2025-03-28 00:00:01
-categories: podcast
+categories: podcast ezra-klein
 tags: [podcast_script]
 ---
 
 
-[The Last 2 Months — and Next 2 Years — of U.S. Politics](https://dts.podtrac.com/redirect.mp3/pdst.fm/e/pfx.vpixl.com/6qj4J/nyt.simplecastaudio.com/3026b665-46df-4d18-98e9-d1ce16bbb1df/episodes/d7e9fd17-2079-4bcf-bf05-c87648f57e30/audio/128/default.mp3?aid=rss_feed&awCollectionId=3026b665-46df-4d18-98e9-d1ce16bbb1df&awEpisodeId=d7e9fd17-2079-4bcf-bf05-c87648f57e30&feed=82FI35Px)
-
-Can you guess where a large part of your Uber fare goes? Out-of-control insurance costs. Rideshare drivers have significantly higher coverage requirements than taxis, limos, and personal autos, making the industry a prime target for nuisance lawsuits, even when the rideshare driver isn't at fault. Fraudulent claims and inflated settlements drive up insurance costs more and more every year, and riders pay the price. Learn more about how rising insurance premiums impact you at uber.com slash fare-insurance.
+[The Last 2 Months — and Next 2 Years — of U.S. Politics](https://www.nytimes.com/2025/03/28/opinion/ezra-klein-podcast-ama.html)
 
 From New York Times Opinion, this is The Ezra Klein Show. Welcome to the second ever Ask Me Anything for Subscribers. So if you're here, you have subscribed. We are grateful. You've also linked your subscription. We are doubly grateful. And we got a truly astonishing, overwhelming number of amazing questions, which we will not get through even the most minute fraction, but we will do what we can. 
 
@@ -174,10 +172,7 @@ Listen to Choiceology at schwab.com slash podcast or wherever you listen.
 
 ---
 
- > This is an experimental rewrite
-Can you guess where a large portion of your Uber fare goes? To out-of-control insurance costs. Rideshare drivers have much higher coverage requirements than taxis, limousines, and personal vehicles, making the industry a prime target for nuisance lawsuits—even when the rideshare driver is not at fault. Fraudulent claims and inflated settlements continue to drive up insurance costs each year, leaving riders to shoulder the burden. To learn more about how rising insurance premiums affect you, visit [uber.com/fare-insurance](https://uber.com/fare-insurance).
-
----
+> This is an experimental rewrite
 
 **Ezra Klein:** From New York Times Opinion, this is *The Ezra Klein Show*. Welcome to our second Ask Me Anything for subscribers! We’re grateful you're here and that you've linked your subscription. We received a truly overwhelming number of fantastic questions, and while we won’t be able to cover all of them, we’ll do our best.
 
@@ -249,10 +244,6 @@ Can you guess where a large portion of your Uber fare goes? To out-of-control in
 
 **Claire Gordon:** That's true. 
 
-*(Placeholder for a visual showing economic indicators and their correlation with political events)*
-
----
-
 **Ezra Klein:** Speaking of the Democrats, they had a chance to potentially shut down the government, yet chose not to. Gabriel Jay asked whether they had an obligation to reject the continuing budget resolution and resist Trump. Would that have been a better political move? 
 
 **Claire Gordon:** I’ve discussed this with several people on both sides, including Schumer and important figures in Congress. Someone’s unwavering certainty about the right move strikes me as discredited. Every strategic choice is a gamble.
@@ -273,10 +264,6 @@ Can you guess where a large portion of your Uber fare goes? To out-of-control in
 
 **Claire Gordon:** It is indeed challenging. 
 
-*(Placeholder for a relevant graphic showing the impact of government shutdowns on public perception)*
-
----
-
 **Ezra Klein:** Moving on, Preston H. is interested in how Democrats can capture attention effectively over the next couple of years. Do you see any who are succeeding at that? 
 
 **Claire Gordon:** Unfortunately, I don’t see any Democratic figure standing out at this moment. 
@@ -295,12 +282,6 @@ Can you guess where a large portion of your Uber fare goes? To out-of-control in
 
 **Ezra Klein:** They need to establish clear and impactful positions to frame unified demands, to harness public backing.
 
----
-
-**(Placeholder for images of significant Democratic figures or candidate materials related to their messaging)*
-
----
-
 **Ezra Klein:** Speaking of policy, Ron M. asked if there are any ambitious plans emerging in the progressive sphere akin to Project 2025. Are any defining guiding principles taking shape?
 
 **Claire Gordon:** While I won’t plug your book, I did see Representative Richie Torres reference “Abundance” by me and Derek Thompson recently. There is a push for developing guiding principles to inform plans, yet at the moment, I don’t think it’s the right time for a collective Project 2025.
@@ -313,10 +294,6 @@ Can you guess where a large portion of your Uber fare goes? To out-of-control in
 
 **Claire Gordon:** Exactly, Democrats should prioritize universal pre-K, healthcare expansion, and housing solutions that align with what people want. 
 
-*(Placeholder for a visual representation of progressive policy priorities)*
-
---- 
-
 **Ezra Klein:** There’s a notable focus on educational outcomes from Jen G., who expresses concern about declining literacy rates among students. Education is an area both parties seem hesitant to tackle fully. Why is that? 
 
 **Claire Gordon:** Great point! Rahm Emanuel, who is potentially running for president, has noted this as a critical issue. However, it appears Democrats are fatigued from in-party conflicts instigated by past educational reforms.
@@ -328,22 +305,6 @@ Can you guess where a large portion of your Uber fare goes? To out-of-control in
 **Ezra Klein:** They must crystallize their vision for education, especially since many are frustrated by stagnating performance metrics. 
 
 **Claire Gordon:** Yes, being called to action here could help define a strong narrative moving forward—for Democrats to rediscover their footing on this contentious yet pivotal issue. 
-
----
-
-*(Placeholder for educational performance statistics or data visualizations)*
-
----
-
-**Ezra Klein:** Can you guess where a large part of your Uber fare goes? A significant chunk is consumed by out-of-control insurance costs, driven by higher requirements for rideshare drivers compared to taxis and personal vehicles. Learn more about how rising insurance premiums impact you at [uber.com/fare-insurance](https://uber.com/fare-insurance).
-
----
-
-**Claire Gordon:** Before we wrap up, we have a message from our sponsor, Intuit TurboTax. Taxes felt overwhelming, but now there's a TurboTax expert available to assist with the entire process, providing real-time updates. Anyone can receive expert guidance now at TurboTax.com. 
-
-*(Placeholder for a related promotional image or graphic)*
-
----
 
 **Ezra Klein:** This is an intriguing question about how the MAGA project appears to be establishing a new elite class. Sarah C. asked if the existence of elites inherently contradicts democracy or if effective governance requires an elitist class.
 
@@ -358,12 +319,6 @@ Can you guess where a large portion of your Uber fare goes? To out-of-control in
 **Claire Gordon:** It’s vital that universities maintain their independence, especially in the face of political pressures coming from the current administration. 
 
 **Ezra Klein:** Yes! If you’re leading an educational institution with substantial endowments, standing firm against external impositions is in the best interest of the university’s mission. 
-
----
-
-**(Placeholder for an infographic of the influence of educational funding on university independence)*
-
----
 
 **Ezra Klein:** As the Trump administration continues to challenge various systems, what do you see as holding up best under this tension? 
 
@@ -389,21 +344,11 @@ Can you guess where a large portion of your Uber fare goes? To out-of-control in
 
 **Claire Gordon:** But mass protests have shown tremendous effectiveness in shaping political discourse.
 
----
-
-*(Placeholder for visuals of past protests and demonstrations that garnered media attention)*
-
----
-
 **Ezra Klein:** Thank you for this engaging discussion, Claire. 
 
 **Claire Gordon:** Thank you, Ezra! 
 
 **Ezra Klein:** This episode of *The Ezra Klein Show* was produced by Kristen Lynn, with fact-checking by Michelle Harris and mixing by Isaac Jones, Afim Shapiro, and Amin Sauta. Our executive producer is Claire Gordon, with contributions from Roland Hu, Elias Isquith, and Jack McCordick. 
-
----
-
-*(Placeholder for the episode's promotional graphic)*
 
 <script>window.tocIndex = {
   "index": [
