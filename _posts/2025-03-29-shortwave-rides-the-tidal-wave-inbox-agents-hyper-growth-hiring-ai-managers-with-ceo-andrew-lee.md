@@ -632,7 +632,8 @@ Please, don't hesitate to reach out via email at tcr@turpentine.co or DM me on t
 
 ---
 
- > This is an experimental rewrite
+> This is an experimental rewrite
+
 **Host:** Hello, and welcome back to The Cognitive Revolution. Today, I'm excited to welcome back Andrew Lee, founder and CEO of Shortwave, for a conversation about the incredible speed of AI progress, how Shortwave is maximizing agent performance with today's frontier models, and fundamentally reimagining digital communications. We'll also discuss the ongoing transformation of the software industry at large and company building for the AI era.
 
 The impetus for this episode was a beautifully exponential revenue growth curve that Andrew recently posted on Twitter — the kind that you can only achieve with genuinely word-of-mouth-worthy practical value. Over the next two hours, Andrew takes us on a tour of everything that he and the Shortwave team have accomplished over the past year, transforming what was a useful email assistant into a robust email agent that now routinely surprises and delights users, including Andrew himself, with its ability to tackle increasingly complex projects.
