@@ -6,8 +6,7 @@ categories: podcast
 tags: [podcast_script]
 ---
 
-
-[EMERGENCY POD: Liberation Day with Tanner Greer of Scholarstage](https://traffic.megaphone.fm/CHTAL9469732195.mp3?updated=1743812801)
+[EMERGENCY POD: Liberation Day with Tanner Greer of Scholarstage](https://open.spotify.com/episode/2DImTpeC9GGHolPHGxk2OV)
 
 Today is April 4th. Two days ago, we had Liberation Day, a tariff salvo that doubled as a bid to completely reshape the global economic order. Simultaneously, we had Laura Loomer walking into the White House and firing completely competent NSC staff who were MAGA enough to serve in Trump 1.0, but apparently not MAGA enough for her and the president. What is going on in the Trump administration and what does it mean for America's relationship to China and its future place in the world? Thankfully, we have the great Tanner Greer of the blog Scholar Stage, who has written a guide for the perplexed. His new report entitled "Obscurity by Design, Competing Priorities for America's China Policy" is the product of dozens of interviews and hundreds of hours reading the thinking of key Trump policymakers that will define America's geopolitical and economic posture for years to come. We'll explore the different strains of thought informing this administration and the longer-term implications of Trump's policy management style. Nicholas Wells, longtime China Talk editor, will be co-hosting. 
 
@@ -781,25 +780,6 @@ The second axis distinguishes whether you analyze American foreign policy primar
 **Co-host:** Appreciate your insights today, Tanner! 
 
 **Tanner:** My pleasure! 
-
-**Co-host:** Looking forward to our next discussion! 
-
-**Tanner:** Me too!
-**Speaker:** I'm doing my good thing with no one but you, baby. 
-
-**Speaker:** Nobody but you, baby. 
-
-**Speaker:** Nobody but you, baby. 
-
-**Speaker:** Nobody but you, baby. 
-
-**Speaker:** I'm doing my good thing, baby. 
-
-**Speaker:** I'm doing my good thing, baby. 
-
-**Speaker:** I'm doing my good thing, baby. 
-
-**Speaker:** I'm doing my good thing, baby.
 
 <script>window.tocIndex = {
   "index": [
