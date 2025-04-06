@@ -347,9 +347,6 @@ To visualize this, let’s imagine sitting down to design an operating system. W
 
 This mirrored structure is precisely what occurred with Windows during its development. Over time, as product evolution occurs and team structures change, you can observe how the original organization shapes its outcomes. While certain parts of the organizational structure may disappear as projects evolve, their foundational influence remains.
 
-[**Placeholder: Screenshot of DirectX API structure in Windows**]  
-*Example of how organizational structure mirrors product architecture in software development.* 
-
 By understanding Conway’s Law, we can grasp how corporate structure inevitably seeps into the products we produce, shaping their design and limiting our potential for innovation.
 **Speaker: Lecturer**  
 Alright, we've got XAudio now instead of Direct Sound. My apologies for the mix-up; I meant Direct Sound, and that's exactly what's shown on the slide. XAudio has taken its place, and while DirectDraw is still around, we also have Direct2D, which is a completely different API. So, to clarify, Direct3D remains unchanged throughout this whole evolution. 
@@ -548,8 +545,6 @@ Why? Because you know these established solutions work, and therefore, you’re 
 So, to conclude, I feel I must credit Mr. Melvin Conway for what is arguably the finest paper on software architecture I’ve ever encountered. It expresses truths that apply to architecture broadly, whether in software or any other field.
 
 On behalf of all of us working today, I apologize that, despite your warnings and the insights you provided to help us navigate our shortcomings, we have still descended into your nightmare scenario. The challenges you identified seem just as daunting now as they did then—and, in fact, they’ve exacerbated significantly because we have not made considerable efforts to amend our course. 
-
-![Placeholder for relevant image or screenshot related to Conway's observations on delegation in software development.]
 
 <script>window.tocIndex = {
   "index": [
