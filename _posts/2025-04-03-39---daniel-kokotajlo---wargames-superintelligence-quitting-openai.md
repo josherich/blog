@@ -2,12 +2,12 @@
 layout: post
 title: "#39 - Daniel Kokotajlo - Wargames, Superintelligence & Quitting OpenAI"
 date: 2025-04-03 00:00:01
-categories: podcast
+categories: podcast win-win
 tags: [podcast_script]
 ---
 
 
-[#39 - Daniel Kokotajlo - Wargames, Superintelligence & Quitting OpenAI](https://anchor.fm/s/eefcd0ac/podcast/play/100769797/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2025-3-3%2F397738082-44100-2-ce215936fb3e3.mp3)
+[#39 - Daniel Kokotajlo - Wargames, Superintelligence & Quitting OpenAI](https://livboeree.substack.com/p/39-daniel-kokotajlo-on-wargames-superintelligenc)
 
 And what's so nuts is that in order for you to speak freely, you would have to give up your already vested equity that you had essentially accumulated from working at OpenAI. Basically, there was an explicit threat of don't criticize or we'll take your money away. 
 
@@ -362,171 +362,171 @@ Yeah, thank you.
 
 > This is an experimental rewrite
 
-> **Daniel**: And what's so crazy is that to speak freely, you would have to give up your already vested equity that you’ve built up from working at OpenAI. Essentially, there was an explicit threat saying, "Don't criticize us, or we'll take your money away." 
+**Daniel**: And what's so crazy is that to speak freely, you would have to give up your already vested equity that you’ve built up from working at OpenAI. Essentially, there was an explicit threat saying, "Don't criticize us, or we'll take your money away." 
 
 **Interviewer**: How much money are we talking about here?  
 
-> **Daniel**: It was 85% of my family's net worth.  
+**Daniel**: It was 85% of my family's net worth.  
 
 **Interviewer**: Hello, friends. Today we're speaking with Daniel Cocotelo, an AI researcher and former OpenAI employee best known for raising concerns about the company. We dive into several of those issues today. What’s remarkable about Daniel is his uncanny ability to predict the trajectory of AI. Back in 2021, he made a series of predictions about how he thought AI would develop, and they turned out to be surprisingly accurate.  
 
 **Interviewer**: I wanted to talk to him today because he recently released a new set of predictions on how he believes AI will evolve over the next three years. Once you're done with this episode, I highly recommend checking those out. So, here’s our conversation with Daniel Cocotelo.  
 
-> **Interviewer**: Daniel, welcome to WinWin.  
+**Interviewer**: Daniel, welcome to WinWin.  
 
-> **Daniel**: Thanks for having me.  
+**Daniel**: Thanks for having me.  
 
-> **Interviewer**: We actually spent yesterday playing this AI tabletop game. To me, it felt kind of like a war game. Can you explain what it is and why you’re doing it?  
+**Interviewer**: We actually spent yesterday playing this AI tabletop game. To me, it felt kind of like a war game. Can you explain what it is and why you’re doing it?  
 
-> **Daniel**: Sure! It's a war game, but it doesn’t always end in conflict—in fact, most of the time it doesn’t. A more accurate term might be "tabletop exercise."  
+**Daniel**: Sure! It's a war game, but it doesn’t always end in conflict—in fact, most of the time it doesn’t. A more accurate term might be "tabletop exercise."  
 
-> **Daniel**: It’s a matrix game, which means it's light on rules. Everyone around the table takes turns saying what their character does for that month, like, "Here’s what the President does," or "Here’s what the CEO of OpenAI does." We collectively build the story this way. Then there’s a moderator who resolves disputes and makes final decisions about the narrative.  
+**Daniel**: It’s a matrix game, which means it's light on rules. Everyone around the table takes turns saying what their character does for that month, like, "Here’s what the President does," or "Here’s what the CEO of OpenAI does." We collectively build the story this way. Then there’s a moderator who resolves disputes and makes final decisions about the narrative.  
 
-> **Interviewer**: That sounds fascinating! Through this method, you gain different insights, right?  
+**Interviewer**: That sounds fascinating! Through this method, you gain different insights, right?  
 
-> **Daniel**: Absolutely. The sequential format allows for a richer storytelling experience than simply making blanket predictions about the years to come, like 2026 or 2027. That’s why military organizations often conduct war games or tabletop exercises—to simulate scenarios like a Chinese invasion of Taiwan or, notably, the pandemic simulations conducted by Johns Hopkins, the Gates Foundation, and the UN, which they posted on YouTube in 2019.  
+**Daniel**: Absolutely. The sequential format allows for a richer storytelling experience than simply making blanket predictions about the years to come, like 2026 or 2027. That’s why military organizations often conduct war games or tabletop exercises—to simulate scenarios like a Chinese invasion of Taiwan or, notably, the pandemic simulations conducted by Johns Hopkins, the Gates Foundation, and the UN, which they posted on YouTube in 2019.  
 
-> **Daniel**: This led to Bill Gates being assumed to have planned vaccine distribution during the pandemic because they accurately modeled many situations. For example, they simulated a coronavirus outbreak starting in South America due to infected pig farms, which then led to global flight cancellations and economic disruptions. 
+**Daniel**: This led to Bill Gates being assumed to have planned vaccine distribution during the pandemic because they accurately modeled many situations. For example, they simulated a coronavirus outbreak starting in South America due to infected pig farms, which then led to global flight cancellations and economic disruptions. 
 
-> **Daniel**: A key takeaway from that simulation was the UN's assertion that if a pandemic occurred, they would manage vaccine distribution, assuming all countries would comply. They seemed unaware of how little authority they would have in such an emergency.  
+**Daniel**: A key takeaway from that simulation was the UN's assertion that if a pandemic occurred, they would manage vaccine distribution, assuming all countries would comply. They seemed unaware of how little authority they would have in such an emergency.  
 
-> **Interviewer**: Interesting! So, what’s your goal in running these simulations? Some people might think AI isn’t a big deal.  
+**Interviewer**: Interesting! So, what’s your goal in running these simulations? Some people might think AI isn’t a big deal.  
 
-> **Daniel**: To me, it absolutely is the biggest deal. Executives at companies like Anthropic and OpenAI, such as Dario Amadei and Sam Altman, are explicitly aiming to build superintelligence, and they believe they will achieve this soon.  
+**Daniel**: To me, it absolutely is the biggest deal. Executives at companies like Anthropic and OpenAI, such as Dario Amadei and Sam Altman, are explicitly aiming to build superintelligence, and they believe they will achieve this soon.  
 
-> **Daniel**: I mostly agree—with my job centered on forecasting AI trends, I think there’s a chance superintelligence could emerge before this decade is over. What is superintelligence? It’s an AI that outperforms the best humans at everything, significantly outpacing them while also being cheaper and faster.  
+**Daniel**: I mostly agree—with my job centered on forecasting AI trends, I think there’s a chance superintelligence could emerge before this decade is over. What is superintelligence? It’s an AI that outperforms the best humans at everything, significantly outpacing them while also being cheaper and faster.  
 
-> **Daniel**: Just consider what that means. If you reflect on the fact that one or more corporations are likely to develop such an AI within this decade, you won’t leave that thought thinking it’s not a big deal.  
+**Daniel**: Just consider what that means. If you reflect on the fact that one or more corporations are likely to develop such an AI within this decade, you won’t leave that thought thinking it’s not a big deal.  
 
-> **Interviewer**: On that note, you’re well-known for being a former OpenAI employee. Can you walk us through why you left and whether that was due to the company’s changing priorities?  
+**Interviewer**: On that note, you’re well-known for being a former OpenAI employee. Can you walk us through why you left and whether that was due to the company’s changing priorities?  
 
-> **Daniel**: That played a role, but it wasn’t the only factor. I felt humanity wasn’t ready—neither technologically nor in terms of governance—for AGI.  
+**Daniel**: That played a role, but it wasn’t the only factor. I felt humanity wasn’t ready—neither technologically nor in terms of governance—for AGI.  
 
-> **Daniel**: You played through the game, right? I've participated in 25 games, and they’re all about as wild as the one we played yesterday. Some are crazier, some less so, but it’s going to be intense. We're nowhere near ready for that level of intensity to hit.  
+**Daniel**: You played through the game, right? I've participated in 25 games, and they’re all about as wild as the one we played yesterday. Some are crazier, some less so, but it’s going to be intense. We're nowhere near ready for that level of intensity to hit.  
 
-> **Daniel**: I believe it’s just a few years away. When I joined OpenAI, I thought they had been founded by people who expected such craziness with AI and wanted to steer it positively. Good governance entails transparency, commitment to human welfare, and power sharing rather than consolidation.  
+**Daniel**: I believe it’s just a few years away. When I joined OpenAI, I thought they had been founded by people who expected such craziness with AI and wanted to steer it positively. Good governance entails transparency, commitment to human welfare, and power sharing rather than consolidation.  
 
-> **Daniel**: On a technical level, we should invest in understanding how these AIs function, ensuring we can steer them productively. When I joined, I thought they would eventually shift focus towards these crucial issues as they became more imminent. But I began to feel that a true pivot might never happen.  
+**Daniel**: On a technical level, we should invest in understanding how these AIs function, ensuring we can steer them productively. When I joined, I thought they would eventually shift focus towards these crucial issues as they became more imminent. But I began to feel that a true pivot might never happen.  
 
-> **Daniel**: The plan seemed to be to keep forging ahead while rationalizing that everything was fine and not that problematic. I was disappointed by the way OpenAI committed to moving fast and being the best, believing that they could justify their actions.  
+**Daniel**: The plan seemed to be to keep forging ahead while rationalizing that everything was fine and not that problematic. I was disappointed by the way OpenAI committed to moving fast and being the best, believing that they could justify their actions.  
 
-> **Daniel**: I considered staying to do what I could under those circumstances, aiming to advance alignment research, for example. I admired the super alignment team and their work—but ultimately, I decided to leave to speak freely about these concerns.  
+**Daniel**: I considered staying to do what I could under those circumstances, aiming to advance alignment research, for example. I admired the super alignment team and their work—but ultimately, I decided to leave to speak freely about these concerns.  
 
-> **Daniel**: I was frustrated by the inability to publish while I was there. It’s wild that to speak freely, you would have to give up your vested equity from working at OpenAI, an unwelcome clause that caught me by surprise.  
+**Daniel**: I was frustrated by the inability to publish while I was there. It’s wild that to speak freely, you would have to give up your vested equity from working at OpenAI, an unwelcome clause that caught me by surprise.  
 
-> **Interviewer**: That’s eye-opening!  
+**Interviewer**: That’s eye-opening!  
 
-> **Daniel**: Yes, specifically, there was a non-disparagement clause that warned against saying anything critical about the company, with several legal avenues to revoke your equity if you did. It felt like a direct threat—“Don’t criticize us, or we’ll take your money.”  
+**Daniel**: Yes, specifically, there was a non-disparagement clause that warned against saying anything critical about the company, with several legal avenues to revoke your equity if you did. It felt like a direct threat—“Don’t criticize us, or we’ll take your money.”  
 
-> **Interviewer**: How much money are we talking about, relative to your situation?  
+**Interviewer**: How much money are we talking about, relative to your situation?  
 
-> **Daniel**: For me, it was 85% of my family's net worth, which prompted my comments that made headlines.  
+**Daniel**: For me, it was 85% of my family's net worth, which prompted my comments that made headlines.  
 
-> **Daniel**: You might wonder why we were willing to risk that. The short answer is that we're financially okay. I’d been working at OpenAI for two years, and they offer generous salaries akin to tech companies. I earned more in those two years than in my entire life prior.  
+**Daniel**: You might wonder why we were willing to risk that. The short answer is that we're financially okay. I’d been working at OpenAI for two years, and they offer generous salaries akin to tech companies. I earned more in those two years than in my entire life prior.  
 
-> **Daniel**: It felt unjust to go along with this setup, like, how could they keep getting away with it?  
+**Daniel**: It felt unjust to go along with this setup, like, how could they keep getting away with it?  
 
-> **Interviewer**: Did you recognize immediately when reviewing the paperwork that this wasn’t something you could agree to?  
+**Interviewer**: Did you recognize immediately when reviewing the paperwork that this wasn’t something you could agree to?  
 
-> **Daniel**: There was a strong feeling about that. Some advised me to sign it anyway, suggesting that if I ever criticized them, they likely wouldn't retaliate. It would make them look bad to yank my equity.  
+**Daniel**: There was a strong feeling about that. Some advised me to sign it anyway, suggesting that if I ever criticized them, they likely wouldn't retaliate. It would make them look bad to yank my equity.  
 
-> **Daniel**: But I’m glad I didn’t sign it. Signing would have put me in that space where I’d rationalize things after the fact. Initially thinking I’d speak freely, but later worrying about possible repercussions.  
+**Daniel**: But I’m glad I didn’t sign it. Signing would have put me in that space where I’d rationalize things after the fact. Initially thinking I’d speak freely, but later worrying about possible repercussions.  
 
-> **Interviewer**: Exactly. I think that fear is common among former employees.  
+**Interviewer**: Exactly. I think that fear is common among former employees.  
 
-> **Daniel**: Yes, I’ve talked to various ex-employees who signed similar agreements and feel reluctant to speak publicly, even apart from the clause. Many are still scared to criticize OpenAI, even though the legal threat has faded.  
+**Daniel**: Yes, I’ve talked to various ex-employees who signed similar agreements and feel reluctant to speak publicly, even apart from the clause. Many are still scared to criticize OpenAI, even though the legal threat has faded.  
 
-> **Interviewer**: I have one of your emails here that became public as you were leaving. You eloquently stated, “I understand you believe this is a standard business practice, but it really doesn't sound right. A company building something as powerful as AGI should hold itself to a higher standard, one truly worthy of public trust.”  
+**Interviewer**: I have one of your emails here that became public as you were leaving. You eloquently stated, “I understand you believe this is a standard business practice, but it really doesn't sound right. A company building something as powerful as AGI should hold itself to a higher standard, one truly worthy of public trust.”  
 
-> **Daniel**: Exactly! They’re positioning themselves to become the most powerful company on Earth, claiming to be founded on openness and transparency, while simultaneously potentially taking away money from employees trying to criticize them. I can't endorse that honesty.  
+**Daniel**: Exactly! They’re positioning themselves to become the most powerful company on Earth, claiming to be founded on openness and transparency, while simultaneously potentially taking away money from employees trying to criticize them. I can't endorse that honesty.  
 
-> **Interviewer**: That seems wild. Given their perspective, could this be part of a utilitarian reasoning where they feel pressed to win at all costs?  
+**Interviewer**: That seems wild. Given their perspective, could this be part of a utilitarian reasoning where they feel pressed to win at all costs?  
 
-> **Daniel**: Absolutely. Sam has his reasons for these actions. It raises interesting ethical questions about whether the ends justify the means. History shows people often act cutthroat to gain power, believing they can then do good with it.  
+**Daniel**: Absolutely. Sam has his reasons for these actions. It raises interesting ethical questions about whether the ends justify the means. History shows people often act cutthroat to gain power, believing they can then do good with it.  
 
-> **Daniel**: It’s not wrong in the sense that accumulating power can lead to beneficial outcomes. However, the dangers are evident; those who follow this strategy often fail to fulfill their good intentions. The tyrants of history never consider themselves evil; they just have warped philosophies.  
+**Daniel**: It’s not wrong in the sense that accumulating power can lead to beneficial outcomes. However, the dangers are evident; those who follow this strategy often fail to fulfill their good intentions. The tyrants of history never consider themselves evil; they just have warped philosophies.  
 
-> **Daniel**: One memorable line from the show *Silicon Valley* is by Gavin Belson, who says, “I don't want to live in a world where someone else makes the world a better place than we do.” This highlights that these leaders likely believe they are the best fit to wield this power.  
+**Daniel**: One memorable line from the show *Silicon Valley* is by Gavin Belson, who says, “I don't want to live in a world where someone else makes the world a better place than we do.” This highlights that these leaders likely believe they are the best fit to wield this power.  
 
-> **Daniel**: It's like the classic theme of *Lord of the Rings*. It's a rationalization for their behavior.  
+**Daniel**: It's like the classic theme of *Lord of the Rings*. It's a rationalization for their behavior.  
 
-> **Interviewer**: Yes, and this rationalization can be troubling because it feeds into the belief that one should do whatever it takes to gain power, justifying their future plans for doing good.  
+**Interviewer**: Yes, and this rationalization can be troubling because it feeds into the belief that one should do whatever it takes to gain power, justifying their future plans for doing good.  
 
-> **Daniel**: Exactly. It's complicated since, in the context of AI companies, if you're racing ahead, you should have a strong narrative explaining why your victory is beneficial.  
+**Daniel**: Exactly. It's complicated since, in the context of AI companies, if you're racing ahead, you should have a strong narrative explaining why your victory is beneficial.  
 
-> **Daniel**: That narrative should clearly compare other companies’ efforts while holding up to scrutiny from uninterested third parties. You should be able to converse with them, presenting your reasons why you are better equipped for this responsibility.  
+**Daniel**: That narrative should clearly compare other companies’ efforts while holding up to scrutiny from uninterested third parties. You should be able to converse with them, presenting your reasons why you are better equipped for this responsibility.  
 
-> **Daniel**: If you can meet that standard, then great! Although this could also become gamified, it still represents a better direction than the current reality.  
+**Daniel**: If you can meet that standard, then great! Although this could also become gamified, it still represents a better direction than the current reality.  
 
-> **Daniel**: I wish to see leadership in AI that genuinely considers broader societal impacts. We need leaders willing to sacrifice their own chances for the greater good.  
+**Daniel**: I wish to see leadership in AI that genuinely considers broader societal impacts. We need leaders willing to sacrifice their own chances for the greater good.  
 
-> **Interviewer**: Is there a way to objectively measure that?  
+**Interviewer**: Is there a way to objectively measure that?  
 
-> **Daniel**: Have you heard about OpenAI's Merge Assist class?  
+**Daniel**: Have you heard about OpenAI's Merge Assist class?  
 
-> **Interviewer**: No, but tell me about it!  
+**Interviewer**: No, but tell me about it!  
 
-> **Daniel**: In their charter, they state that if they believe there's another aligned AI company with a 50% chance of achieving AGI faster than they can, they would close shop and help that company instead of competing.  
+**Daniel**: In their charter, they state that if they believe there's another aligned AI company with a 50% chance of achieving AGI faster than they can, they would close shop and help that company instead of competing.  
 
-> **Interviewer**: That sounds great!  
+**Interviewer**: That sounds great!  
 
-> **Daniel**: It is a commendable commitment, but I doubt anyone genuinely believes they would follow through with it.  
+**Daniel**: It is a commendable commitment, but I doubt anyone genuinely believes they would follow through with it.  
 
-> **Interviewer**: So OpenAI claimed they would do this?  
+**Interviewer**: So OpenAI claimed they would do this?  
 
-> **Daniel**: Yes, it’s one of their core commitments. They include a caveat about needing specifics in case-by-case agreements, but a typical condition might be based on the other company having better-than-even chances of success within a certain timeframe.  
+**Daniel**: Yes, it’s one of their core commitments. They include a caveat about needing specifics in case-by-case agreements, but a typical condition might be based on the other company having better-than-even chances of success within a certain timeframe.  
 
-> **Interviewer**: And they’re specifically referring to a time when another company is nearing AGI?  
+**Interviewer**: And they’re specifically referring to a time when another company is nearing AGI?  
 
-> **Daniel**: Exactly. We might be approaching that time now.  
+**Daniel**: Exactly. We might be approaching that time now.  
 
-> **Interviewer**: Reflecting on why you left, you initially saw components of OpenAI as being concerned with future impact and forming altruistic commitments.  
+**Interviewer**: Reflecting on why you left, you initially saw components of OpenAI as being concerned with future impact and forming altruistic commitments.  
 
-> **Daniel**: Yes! I thought they were genuinely considering the implications of AGI. But over time, it felt like they were shifting towards being a standard tech company, losing that forward-thinking ethos.  
+**Daniel**: Yes! I thought they were genuinely considering the implications of AGI. But over time, it felt like they were shifting towards being a standard tech company, losing that forward-thinking ethos.  
 
-> **Interviewer**: Do you think this shift is a result of the pressures from the tech industry?  
+**Interviewer**: Do you think this shift is a result of the pressures from the tech industry?  
 
-> **Daniel**: It’s hard to say. I don’t know the leadership personally, but if we had discussions on why they’d be the ethical company among a sea of bad actors, they would ideally have to maintain a narrative robust enough to justify their position.  
+**Daniel**: It’s hard to say. I don’t know the leadership personally, but if we had discussions on why they’d be the ethical company among a sea of bad actors, they would ideally have to maintain a narrative robust enough to justify their position.  
 
-> **Daniel**: That said, they should know they can differentiate themselves without resorting to aggression. It shouldn't have to be a split-second, 51-49 choice between competing companies.  
+**Daniel**: That said, they should know they can differentiate themselves without resorting to aggression. It shouldn't have to be a split-second, 51-49 choice between competing companies.  
 
-> **Interviewer**: Right!  
+**Interviewer**: Right!  
 
-> **Daniel**: You should never fully adopt an ends-justifies-the-means mindset. It might be clearer in starkly moral situations, but when you're competing against another AI company, it’s much murkier.   
+**Daniel**: You should never fully adopt an ends-justifies-the-means mindset. It might be clearer in starkly moral situations, but when you're competing against another AI company, it’s much murkier.   
 
-> **Interviewer**: Absolutely.  
+**Interviewer**: Absolutely.  
 
-> **Daniel**: Additionally, the first company to develop superintelligent AGI may assume a role akin to a global government, albeit in an extreme sense. If you have superintelligent AIs, each significantly surpassing human capability, aligned to follow company leadership, this would concentrate immense power.  
+**Daniel**: Additionally, the first company to develop superintelligent AGI may assume a role akin to a global government, albeit in an extreme sense. If you have superintelligent AIs, each significantly surpassing human capability, aligned to follow company leadership, this would concentrate immense power.  
 
-> **Daniel**: Governments often lag behind, out of touch with ground realities. You could easily envision a world where companies essentially dictate to the government, thereby establishing the governance structure of the world.  
+**Daniel**: Governments often lag behind, out of touch with ground realities. You could easily envision a world where companies essentially dictate to the government, thereby establishing the governance structure of the world.  
 
-> **Daniel**: You see this scenario often in our war games, where the governance of the company could effectively become the governance of the global community.  
+**Daniel**: You see this scenario often in our war games, where the governance of the company could effectively become the governance of the global community.  
 
-> **Interviewer**: That’s an unsettling thought.  
+**Interviewer**: That’s an unsettling thought.  
 
-> **Daniel**: Right? The governance structure within such companies could end up being what controls everything, making one company’s leadership synonymous with world governance.  
+**Daniel**: Right? The governance structure within such companies could end up being what controls everything, making one company’s leadership synonymous with world governance.  
 
-> **Daniel**: With all that in mind, when I reviewed OpenAI's paperwork, I thought about whether this is how I want our world to be governed.  
+**Daniel**: With all that in mind, when I reviewed OpenAI's paperwork, I thought about whether this is how I want our world to be governed.  
 
-> **Interviewer**: It raises the question of whether society is prepared for this potential outcome.  
+**Interviewer**: It raises the question of whether society is prepared for this potential outcome.  
 
-> **Daniel**: Definitely! One insightful observation contributing to the current power of LLMs was OpenAI’s commitment to the understanding that predictive competence relates closely to world comprehension.  
+**Daniel**: Definitely! One insightful observation contributing to the current power of LLMs was OpenAI’s commitment to the understanding that predictive competence relates closely to world comprehension.  
 
-> **Interviewer**: In 2021, you wrote about what 2026 might look like. Looking back at 2022, 2023, and 2024, you certainly got several things right.   
+**Interviewer**: In 2021, you wrote about what 2026 might look like. Looking back at 2022, 2023, and 2024, you certainly got several things right.   
 
-> **Interviewer**: Some predictions were easier, like chatbots and multimodality trends. Others, including the USA-China chip battle with export controls, were somewhat more complex and surprising.  
+**Interviewer**: Some predictions were easier, like chatbots and multimodality trends. Others, including the USA-China chip battle with export controls, were somewhat more complex and surprising.  
 
-> **Interviewer:** Did you accurately predict those developments?  
+**Interviewer:** Did you accurately predict those developments?  
 
-> **Daniel**: Not specifically, but I indicated that tensions around these issues would escalate, which they did.  
+**Daniel**: Not specifically, but I indicated that tensions around these issues would escalate, which they did.  
 
-> **Daniel**: The transition from vast training datasets to bureaucracies is another facet I discussed, although the training size does seem to be growing as well.  
+**Daniel**: The transition from vast training datasets to bureaucracies is another facet I discussed, although the training size does seem to be growing as well.  
 
-> **Interviewer**: What about your prediction regarding AI propaganda playing a significant role in elections?  
+**Interviewer**: What about your prediction regarding AI propaganda playing a significant role in elections?  
 
-> **Daniel**: Well, that turned out to be less accurate, as I thought its impact would be larger than it has been. The timing related to diplomacy was curious too—while I expected it to ramp up in 2025, it actually started in 2022.  
+**Daniel**: Well, that turned out to be less accurate, as I thought its impact would be larger than it has been. The timing related to diplomacy was curious too—while I expected it to ramp up in 2025, it actually started in 2022.  
 
-> **Interviewer**: So, overall, some of your predictions were spot on, while others missed the mark. That’s interesting! 
+**Interviewer**: So, overall, some of your predictions were spot on, while others missed the mark. That’s interesting! 
 **Daniel**: Although I want to clarify that the current AI used for diplomacy—constructed by the same person who also overcame poker using AI—doesn't exactly meet the standards I previously described. 
 
 **Interviewer**: Oh, okay.
