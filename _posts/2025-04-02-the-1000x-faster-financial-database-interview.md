@@ -7,69 +7,36 @@ tags: [podcast_script]
 ---
 
 
-[The 1000x faster financial database (Interview)](https://op3.dev/e/https://cdn.changelog.com/uploads/podcast/635/the-changelog-635.mp3)
+[The 1000x faster financial database (Interview)](https://www.youtube.com/watch?v=Yr8Y2EYnxJs)
 
-Tiger Beetle will never replace, like, DuckDB, Snowflake, or the analytics databases,
-and you need multiple architectures. That's the ecosystem that I think is going to happen. You know, 
-you'll have special purpose, general purpose, OLAP, OLTP databases, and that's more efficient. So this is all
-great. And ultimately, you know, it's just a pull request away, I think, to contribute back to those systems as well.
-So that's, that's a really interesting angle of how you think of databases. But, but yeah, at the end of the day,
+Tiger Beetle will never replace, like, DuckDB, Snowflake, or the analytics databases, and you need multiple architectures. That's the ecosystem that I think is going to happen. You know, you'll have special purpose, general purpose, OLAP, OLTP databases, and that's more efficient. So this is all great. And ultimately, you know, it's just a pull request away, I think, to contribute back to those systems as well. So that's, that's a really interesting angle of how you think of databases. But, but yeah, at the end of the day,
 we thought, okay, let's handle the many-to-many, and then you could actually build your entire world with it, and the common knowledge. 
 
-And that's sort of where it went. But I think, and so Don and I, that's what we started. We went through many months of building the product.
-And then ultimately, it was actually funny because I realized we didn't have to build up much. It turns out they can still read.
-That was our ultimate goal with Tiger Beetle was to make it faster. But then we realized, you could just ship the first
-iteration and solve the problem at scale.
+And that's sort of where it went. But I think, and so Don and I, that's what we started. We went through many months of building the product. And then ultimately, it was actually funny because I realized we didn't have to build up much. It turns out they can still read. That was our ultimate goal with Tiger Beetle was to make it faster. But then we realized, you could just ship the first iteration and solve the problem at scale.
 
-Well, I want to take a moment to pause and reflect on something you just said, because there's a richness here.
-And I hope people are hearing how you've approached this process as a journey of learning, but also observation.
-Sometimes you can come into a challenge with a lot of preconceived notions or think you need to solve something in a very specific way.
-But often when you're observing and being flexible with how you think about the problem can lead you to discover more elegant solutions.
+Well, I want to take a moment to pause and reflect on something you just said, because there's a richness here. And I hope people are hearing how you've approached this process as a journey of learning, but also observation. Sometimes you can come into a challenge with a lot of preconceived notions or think you need to solve something in a very specific way. But often when you're observing and being flexible with how you think about the problem can lead you to discover more elegant solutions.
 
-And I'd love to talk about Tiger Beetle in a more practical sense now. I mean, it's clear, you have a technical background,
-a clear vision, and a good understanding of the market need. But let's get into the product for a second. How does Tiger Beetle behave?
-How does the interaction with developers look like when they integrate this database into their applications?
-What kind of tooling, library support, connection methods do you ensure it's easy for developers to utilize?
+And I'd love to talk about Tiger Beetle in a more practical sense now. I mean, it's clear, you have a technical background, a clear vision, and a good understanding of the market need. But let's get into the product for a second. How does Tiger Beetle behave? How does the interaction with developers look like when they integrate this database into their applications? What kind of tooling, library support, connection methods do you ensure it's easy for developers to utilize?
 
-Great question, Jared. We wanted to keep it simple because simplicity is key. The interaction with Tiger Beetle is built around a clean,
-minimalistic API. Developers will find it intuitive. We designed it as a straightforward HTTP API, so you can interact with it using standard HTTP requests.
-That way, they can integrate it with any programming language or framework that can send HTTP requests. We also provide client libraries
-for common programming languages, which makes it easier to get started.
+Great question, Jared. We wanted to keep it simple because simplicity is key. The interaction with Tiger Beetle is built around a clean, minimalistic API. Developers will find it intuitive. We designed it as a straightforward HTTP API, so you can interact with it using standard HTTP requests. That way, they can integrate it with any programming language or framework that can send HTTP requests. We also provide client libraries for common programming languages, which makes it easier to get started.
 
-In terms of tooling, we've invested effort into creating a robust set of monitoring and logging capabilities. This allows developers
-to quickly diagnose issues, understand performance characteristics, and maintain their systems efficiently. The whole idea is to provide
-clear insights and empower developers to fine-tune their implementations without having to dig deep into the internals of the database.
+In terms of tooling, we've invested effort into creating a robust set of monitoring and logging capabilities. This allows developers to quickly diagnose issues, understand performance characteristics, and maintain their systems efficiently. The whole idea is to provide clear insights and empower developers to fine-tune their implementations without having to dig deep into the internals of the database.
 
-Additionally, security is a top priority for us. We've implemented strong authentication and encryption mechanisms to ensure sensitive
-financial data is handled securely. We want our users to have peace of mind knowing that their transactions are safe.
+Additionally, security is a top priority for us. We've implemented strong authentication and encryption mechanisms to ensure sensitive financial data is handled securely. We want our users to have peace of mind knowing that their transactions are safe.
 
-Beyond that, we've kept scalability in mind. Tiger Beetle is designed to efficiently handle high volumes of concurrent transactions.
-As you mentioned earlier, the performance aims were ambitious, and I think we’ve made significant progress on that front. 
+Beyond that, we've kept scalability in mind. Tiger Beetle is designed to efficiently handle high volumes of concurrent transactions. As you mentioned earlier, the performance aims were ambitious, and I think we’ve made significant progress on that front. 
 
-So, performance, ease of use, security, and scalability are fundamental principles around which we've built Tiger Beetle.
-I've been saying it’s a database, specifically for transactional workloads. It has a niche of its own that we’re excited to grow and expand. 
+So, performance, ease of use, security, and scalability are fundamental principles around which we've built Tiger Beetle. I've been saying it’s a database, specifically for transactional workloads. It has a niche of its own that we’re excited to grow and expand. 
 
-That sounds fantastic. It's clear that you thought through many elements, from the interaction mechanics to the security and scalability,
-all while focusing on developer experience. Now, as we talk about the future, do you have any particular features or improvements in mind 
-for Tiger Beetle that you're excited about or that you think you'd like to explore in future developments?
+That sounds fantastic. It's clear that you thought through many elements, from the interaction mechanics to the security and scalability, all while focusing on developer experience. Now, as we talk about the future, do you have any particular features or improvements in mind for Tiger Beetle that you're excited about or that you think you'd like to explore in future developments?
 
-Absolutely, and this is where things get really exciting. We're continuously gathering feedback from our early users and advocates, 
-and that informs our roadmap. One area we want to focus on is enhancing the query capabilities. Right now, we are centered on managing 
-debit and credit transactions, but as we gather more user input, we'd love to expand the APIs to allow for more complex querying 
-and reporting functionalities, which would cater to more diverse business needs.
+Absolutely, and this is where things get really exciting. We're continuously gathering feedback from our early users and advocates, and that informs our roadmap. One area we want to focus on is enhancing the query capabilities. Right now, we are centered on managing debit and credit transactions, but as we gather more user input, we'd love to expand the APIs to allow for more complex querying and reporting functionalities, which would cater to more diverse business needs.
 
-We're also looking at implementing additional features that are essential for financial applications such as auditing and compliance configurations.
-These are crucial for organizations operating in regulated environments, and by providing built-in support for these requirements,
-we'll help our users save time and effort, allowing them to focus on building their applications rather than constantly worrying
-about regulatory issues.
+We're also looking at implementing additional features that are essential for financial applications such as auditing and compliance configurations. These are crucial for organizations operating in regulated environments, and by providing built-in support for these requirements, we'll help our users save time and effort, allowing them to focus on building their applications rather than constantly worrying about regulatory issues.
 
-Furthermore, we’re keen on expanding the community around Tiger Beetle. By creating more open channels for collaboration and engagement, 
-we can tap into the collective intelligence of developers and foster innovation from the ground up. This is a journey, and although we’ve made 
-a lot of progress, we're just getting started.
+Furthermore, we’re keen on expanding the community around Tiger Beetle. By creating more open channels for collaboration and engagement, we can tap into the collective intelligence of developers and foster innovation from the ground up. This is a journey, and although we’ve made a lot of progress, we're just getting started.
 
-I love that you are considering not just the product but also how to cultivate a community around it.
-Community engagement is so crucial for the long-term health and growth of any open-source project, and it creates a feedback loop of improvement.
-It sounds like you and the team at Tiger Beetle have an exciting roadmap ahead. Thank you for sharing your time and insights with us today.
+I love that you are considering not just the product but also how to cultivate a community around it. Community engagement is so crucial for the long-term health and growth of any open-source project, and it creates a feedback loop of improvement. It sounds like you and the team at Tiger Beetle have an exciting roadmap ahead. Thank you for sharing your time and insights with us today.
 
 Thank you, Jared! I really appreciate the opportunity to share our journey with Tiger Beetle and what we hope to accomplish. It’s been a pleasure.
 If using OLAP, you don't. But what you would do is OLGP is like your control plane in your stack. So you put all your entity information. People call it master data or reference data. So it's the information, you know, your users table, your usernames and addresses. If you're building earth's biggest bookstore, usernames and addresses, names of your catalog, your book titles, those are not really OLTP problems. Cause that's just, you update your top 10 every now and then.
