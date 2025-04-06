@@ -7,7 +7,7 @@ tags: [podcast_script]
 ---
 
 
-[Liberation Day, Tariffs, US v China Open Source, OpenAI Fundraise, $CRWV, TikTok   BG2 w/ Bill Gurley & Brad Gerstner](https://anchor.fm/s/f06c2370/podcast/play/100815952/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2025-3-4%2F397793428-44100-2-3f1a236ae82f7.mp3)
+[Liberation Day, Tariffs, US v China Open Source, OpenAI Fundraise, $CRWV, TikTok   BG2 w/ Bill Gurley & Brad Gerstner](https://www.youtube.com/watch?v=b0DO0tP06eQ)
 
 A riddle for you before we move on. Yes. We'll do Salesforce, Netflix, Square, Amazon, Palo Alto Networks, Facebook, Snap, Proofpoint, NetSuite, and CoreWeave have in common. No idea. They all broke issue. Oh, wow. And we're back. Bill, great to see you. Good to be seen. I mean, you have to be pretty stoked coming off those wins last weekend in San Francisco. Yeah, I'm repping the Gator hat still. I'd say we kind of eked by for those that did watch. That was an incredible final few minutes. Explain it. Take us through the final few minutes.
 
