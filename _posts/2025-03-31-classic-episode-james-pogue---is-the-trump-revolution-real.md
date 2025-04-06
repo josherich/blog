@@ -2,12 +2,12 @@
 layout: post
 title: "Classic Episode: James Pogue - Is the Trump Revolution Real?"
 date: 2025-03-31 00:00:01
-categories: podcast
+categories: podcast from-the-new-world
 tags: [podcast_script]
 ---
 
 
-[Classic Episode: James Pogue - Is the Trump Revolution Real?](https://api.substack.com/feed/podcast/160128816/fab3d098dceb21a968a8fd36779e025b.mp3)
+[Classic Episode: James Pogue - Is the Trump Revolution Real?](https://www.fromthenew.world/p/classic-episode-james-pogue-is-the)
 
 Welcome to the show, James Pogue, expert on the far right and the rise of fascism in America. 
 
