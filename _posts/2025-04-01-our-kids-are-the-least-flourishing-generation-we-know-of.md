@@ -1,13 +1,11 @@
----
+
 layout: post
 title: "‘Our Kids Are the Least Flourishing Generation We Know Of’"
 date: 2025-04-01 00:00:01
-categories: podcast
+categories: podcast ezra-klein
 tags: [podcast_script]
----
 
-
-[‘Our Kids Are the Least Flourishing Generation We Know Of’](https://dts.podtrac.com/redirect.mp3/pdst.fm/e/pfx.vpixl.com/6qj4J/nyt.simplecastaudio.com/3026b665-46df-4d18-98e9-d1ce16bbb1df/episodes/b2988a68-d246-4039-8de0-9df7905f0d92/audio/128/default.mp3?aid=rss_feed&awCollectionId=3026b665-46df-4d18-98e9-d1ce16bbb1df&awEpisodeId=b2988a68-d246-4039-8de0-9df7905f0d92&feed=82FI35Px)
+[‘Our Kids Are the Least Flourishing Generation We Know Of’](https://www.nytimes.com/2025/04/01/opinion/ezra-klein-podcast-jonathan-haidt.html)
 
 It's time to turn your daydream into your dream job. Wix gives you the power to turn your passion into a moneymaker with a website that fits your unique vision and drives you towards your goals. Let your ideas flow with AI tools that guide you, but give you full control and flexibility. Manage your business from one dashboard and keep it growing with built-in marketing features. Get everything you need to turn your part-time passion into a full-time business. Go to Wix.com. 
 
@@ -347,418 +345,418 @@ We have original music by Pat McCusker. Audience strategy by Christina Samulewsk
 
 It's time to turn your daydream into your dream job. Wix gives you the power to transform your passion into a moneymaker through a website that fits your vision and propels you towards your goals. You can let your ideas flow with AI tools that guide you while still giving you full control and flexibility. Manage your business from a single dashboard and foster its growth with built-in marketing features. Get everything you need to turn your part-time passion into a full-time business. Visit Wix.com.
 
----
+
 
 **Ezra Klein:** From New York Times Opinion, this is The Ezra Klein Show. Last March, social psychologist Jonathan Haidt released a book titled *The Anxious Generation*, which sparked considerable debate. The subtitle reveals much: *How the great rewiring of childhood is causing an epidemic of mental illness.* It's hard to argue against that. However, Haidt's conclusions are controversial. He's pushing back against the panic surrounding children's use of smartphones, facing significant criticism from fellow researchers who argue that cause and effect can't simply be disentangled. Jonathan Haidt presents a frightening narrative that resonates with many concerned parents.
 
----
+
 
 I always found the discussions surrounding this book a bit frustrating because they highlight one of the challenges we encounter as parents and as a society: the tendency to reduce everything to social science. Unless I can provide data proving something is harmful, we often struggle to articulate that it might be bad. To me, this signals a decline in our understanding of what constitutes a good life and what it means to thrive as a human being. So, I largely avoided that debate; on one hand, I couldn't definitively address the issue, and on the other, I didn't want to dismiss its significance.
 
----
+
 
 A year later, though, two noteworthy developments have emerged. First, Haidt's book has maintained its place on the bestseller list, which is quite rare. Clearly, it has struck a chord. Second, policy changes are aligning with Haidt’s views. The governor of Utah has enacted a sweeping bill to restrict children's access to social media, while Florida Governor Ron DeSantis has signed one of the most stringent social media regulations in the country. This controversial move by DeSantis might have actually resonated with me. Additionally, the movement to ban cell phones in schools is gaining momentum nationwide, with states like Florida, Michigan, South Carolina, and Virginia adopting similar measures. We're seeing it extend to all schools in Arizona, with nine other states considering similar bans.
 
----
+
 
 So, how are your phones being owned? We're witnessing a genuine shift in policies regarding how we approach children in this social media era, under both Republican and Democratic leadership. As a parent, I'm increasingly confident that we will navigate this complexity by the time my children are old enough for it to impact them. Yet, the looming presence of AI threatens to disrupt any consensus we reach, which honestly terrifies me. That's why I wanted to invite Haidt onto the show. He is a professor at New York University’s Stern School of Business and also the author of *The Righteous Mind*, a standout work on political psychology, along with several other publications. He continues to explore and analyze the research surrounding social media.
 
----
+
 
 As always, feel free to reach out to me at Ezra Klein Show at NYTimes.com. John Haidt, welcome to the show.
 
----
+
 
 **John Haidt:** Ezra, it's great to be back with you.
 
----
+
 
 **Ezra Klein:** Let's start with the big question: What is childhood for?
 
----
+
 
 **John Haidt:** Childhood is evolution's way of forming a big-brained cultural creature. It requires extensive play and practice of various skills, both social and physical, to prepare the brain for adulthood.
 
----
+
 
 Childhood features a developmental period where experiences shape who you become. Once you reach a certain point, you’re ready to transition to adulthood, become reproductive, and eventually have children. However, if play is absent from childhood, you won't develop properly into adulthood. There was a statistic in your book that startled me every time I read it, especially now that I have a five-year-old who just turned six. It states that by age five, the human brain is already 90% of its adult size and possesses more neurons than it will have as an adult.
 
----
+
 
 **John Haidt:** That's correct. We often think of physical growth as a simple function of time correlating to size. Yet, the brain is a remarkable organ, filled with neurons capable of connecting in countless ways. As neuroscientists say, "neurons that fire together, wire together." For example, if you repeatedly engage in climbing trees or practicing archery, specific systems will form in your brain, honing those skills. Conversely, if you spend your time swiping, tapping, and responding to emotional stimuli, your brain will adapt to that experience.
 
----
+
 
 **Ezra Klein:** Almost everyone over 35 has this shared experience. How did you grow up?
 
----
+
 
 **John Haidt:** I am one of the older millennials. I don't remember the exact age I was allowed to ride my bike around the neighborhood, but I recall spending a lot of time as part of a pack of kids living on my street. We played kickball using someone's garage door as a backboard.
 
----
+
 
 **Ezra Klein:** That’s interesting. I also noticed that those experiences seemed to have a significant age diversity. 
 
----
+
 
 **John Haidt:** Exactly. That's how childhood traditionally was. There were periods, like during the Industrial Revolution, when children didn't have a proper childhood. Developmental psychologist Peter Gray discusses how hunter-gatherers raised their children with minimal supervision. In those communities, children played and learned from one another without strict parental oversight. Older kids took care of younger ones, and the younger ones learned what it meant to be a capable member of society by observing slightly older peers.
 
----
+
 
 In America and elsewhere in the West, we've implemented school systems that group children strictly by age. This organized approach not only disrupts natural childhood experiences but may also hinder development. Everyone who came before the millennials experienced a different childhood; millennials represent a transitional generation. Yes, even though the rates of crime during the 90s were microscopic and declining, that era marked a significant shift in how we managed our children. We began to fear abductions or dangers, leading us to restrict their freedom.
 
----
+
 
 One statistic you brought up in the book really struck me: Despite parents today often working multiple jobs and being more involved, they spend far more time with their children than in previous decades. I hadn’t realized that this increase wasn’t gradual but rather sharp in the 90s.
 
----
+
 
 **John Haidt:** Indeed, there's a surprising graph in the book showcasing how parenting time shifted dramatically. In the 50s, 60s, and 70s, women did not spend five hours a day actively parenting because kids were, as we've discussed, socialized in a different way. It wasn't solely the responsibility of parents to socialize their children. Instead, parents established a conducive environment and moral framework, allowing children to learn and grow independently. 
 
----
+
 
 The real brain development occurs when children explore beyond their immediate home environment, often referred to as the “home base.” As mammals, the process involves gradually venturing further from this base. This is where significant learning happens—through activities like playing kickball and negotiating rules within their peer group. 
 
----
+
 
 **Ezra Klein:** I’m noticing a connection there with the modern culture of parenting, where many parents equate good parenting with the quantity of time spent with their kids.
 
----
+
 
 **John Haidt:** Exactly—that’s what many refer to as "quality time." But simply spending a lot of focused time together doesn't guarantee that children are having a rich childhood. Instead of measuring time spent, it's vital to foster a warm, trusting relationship and provide structure, order, and discipline.
 
----
+
 
 The change initiated in the 90s can be partly attributed to a growing distrust in our communities. If we consider Robert Putnam’s concept of “bowling alone” and the decline of social capital, we’ve shifted from relying on our neighbors to help oversee our children. Parents once had faith that if kids played outside unsupervised, other adults in the vicinity would look out for them. The atmosphere has changed, leading to diminished growth opportunities for children when their primary attachment figure is always present, which negatively impacts both the kids and the parents.
 
----
+
 
 In this setting, mothers often shoulder an overwhelming responsibility, even while balancing jobs outside the home. It leads us to the realization that modern parenting dynamics tend to be detrimental to both children and adults.
 
----
+
 
 **Ezra Klein:** So, we see this cultural shift beginning in the 90s—growing fears around personal safety, decreasing community trust, and simultaneous increases in threats posed by screen time.
 
----
+
 
 **John Haidt:** Absolutely, that’s when we saw the emergence of dedicated children's programming like Nickelodeon. Prior to that, programming for kids was sporadic, with cartoons or children’s shows airing primarily on Saturday mornings.
 
----
+
 
 From there, we encountered an explosion of cable channels, followed by the dawn of the internet, iPads, iPhones, and video game consoles. How does this transition to a smartphone and tablet-centric childhood affect mental health?
 
----
+
 
 Around 2012 and 2013, we began noticing a rise in mental illness indicators, particularly during this new phase of technology adoption. While I initially focused on the 2010 to 2015 period, your question highlights a broader context that includes cable television's impact.
 
----
+
 
 I was born in 1963 and spent my childhood in the late 60s and early 70s watching shows like *I Dream of Jeannie* and *Gilligan’s Island*. I showed these to my kids, and they seemed so simplistic. But that was all we had. 
 
----
+
 
 **Ezra Klein:** Your experience contrasts sharply with what children have now.
 
----
+
 
 **John Haidt:** Right. With cable, programming became more engaging. I remember getting my first Nintendo Entertainment System (NES), which revolutionized gaming with its availability and mass adoption.
 
----
+
 
 **Ezra Klein:** What year was that? 
 
----
+
 
 **John Haidt:** I can't recall the exact year, but it was during the late 80s. The NES changed the game, allowing access to entertainment at any time.
 
----
+
 
 **Ezra Klein:** It could hold a child's attention intensely.
 
----
+
 
 **John Haidt:** For sure. While I've focused more on the arrival of the internet, it’s important to remember how gaming didn't even require it before high-speed internet became ubiquitous around 2008 or 2009. With that shift, a new era began in social gaming.
 
----
+
 
 As multiplayer games grew in popularity, it changed the dynamics. Suddenly, social interactions became possible without being physically together, creating a different kind of experience. However, it also meant that boys engaged significantly with multiplayer games. My son, for instance, played *Fortnite*—I didn’t let him start until he turned 13—but he and his friends shared laughter in their online engagement, even though they weren't in the same room.
 
----
+
 
 Meanwhile, girls often found themselves isolated, each managing their own Instagram accounts. They might find humor in something, but there wasn’t that shared laughter. Reflecting on the debate surrounding your book, I’ve noticed a tendency to endlessly dissect whether social media is a cause or correlate of anxiety. It leaves a feeling that we’ve lost a coherent vision for what we want to cultivate in young people.
 
----
+
 
 We’ve defaulted to metrics to assess child development, with measures like grades becoming the primary gauge of wellness. Despite kids achieving high grades—often through inflation—they may still struggle internally. 
 
----
+
 
 On the other side, there seems to be an acceptance of consumer choices, wherein experiences that kids enjoy become permissible, provided they aren't overtly harmful. However, this raises questions about how children are learning to navigate the moral complexities of life. 
 
----
+
 
 **John Haidt:** I believe attention is one of the vital virtues we neglect. We often hear about concerns that kids today struggle to focus—having trouble reading books or engaging with films. This isn’t just about academic success; it’s about cultivating kindness and nurturing other virtues that are becoming increasingly difficult to articulate.
 
----
+
 
 **Ezra Klein:** There appears to be a hesitation among parents to assert that certain behaviors are simply "bad." 
 
----
+
 
 **John Haidt:** Exactly! What you've identified is a loss of moral grounding. When raising kids without guiding principles, it’s bound to go awry. You’ve mentioned that you explore this theme in your book, touching on spirituality and moral frameworks.
 
----
+
 
 **Ezra Klein:** Yes, it's as though parenting has lost touch with a clear vision of what we want youth to become. 
 
----
+
 
 **John Haidt:** You’ve brought up a central divide I discuss in *The Righteous Mind*, where conservatism tends to preserve existing structures and wisdom passed down through generations. The right generally adheres to a constrained view of human nature, believing that without structures and rules, children may not thrive. Meanwhile, the left often resists imposing a moral order.
 
----
+
 
 In the modern era, I believe parents could benefit from adopting more conservative principles regarding moral inputs. Children develop within a moral framework, and without that, they lack a sense of meaning and purpose in life. 
 
----
+
 
 While I am a secular Jew and was once staunchly on the left, my perspective has evolved. When I wrote *The Righteous Mind*, I discovered that every society historically had rich moral frameworks that provide individuals with a sense of belonging. Removing that framework leaves kids feeling adrift—a condition noted by sociologist Émile Durkheim as "anomie" or normlessness.
 
----
+
 
 Surveying high school seniors since the 70s, we found that the percentage of those agreeing with the statement "my life feels useless" remained around 9% until 2010 when it suddenly surged, doubling over the next five to ten years. 
 
----
+
 
 I believe that immersion in morally structured narratives can significantly impact children's development. The stories we grew up with often had clear moral lessons. Even simplistic shows like *I Dream of Jeannie* contained underlying moral messages. In contrast, the content kids consume on TikTok and Instagram lacks depth and can even be immoral, often centered around negative topics like violence.
 
----
+
 
 Kids require moral formation and a shared framework to develop a sense of right and wrong. Morality operates like language—it must be a collective system to function effectively. Social media fragments those narratives into disjointed bits, devoid of cohesive moral guidance. 
 
----
+
 
 **Ezra Klein:** I recall you made an emphatic statement about how it is fundamentally harmful for teenage girls to constantly share images of themselves online awaiting approval. 
 
----
+
 
 **John Haidt:** I still stand by that assertion. It may seem self-evident, but our discussions often miss the mark by framing it in terms of empirical evidence rather than moral judgment.
 
----
+
 
 **Ezra Klein:** Absolutely. It seems there's pressure to justify every opinion with studies. But even if it were proven that spending time on TikTok doesn't lead to greater anxiety or poorer future outcomes, my instinct would remain firm against it. 
 
----
+
 
 My view on living fully as a human being suggests that such behaviors shouldn't dominate one's life. The consequences of excessive screen time extend beyond immediate concerns; they cultivate self-obsession and an obsession with personal brand management—that's not conducive to a flourishing existence.
 
----
+
 
 This underlying uncertainty within parenting culture today is distressing. Parents, unless they are part of a religious community, often seem hesitant to express their beliefs on what constitutes good or bad behavior. 
 
----
+
 
 The moral clarity that previous generations had appears to be lacking now. 
 
----
+
 
 **John Haidt:** There’s been a noticeable erosion of that moral confidence. This impedes individuals from articulating meaningful judgments without relying on extensive research, leaving us in a thin moral framework. 
 
----
+
 
 As society becomes increasingly ambivalent about forming moral judgments, our collective ability to guide children falters, creating a culture defined by insecurity and an undefined moral landscape. 
 
----
+
 
 **Ezra Klein:** There’s been a shift towards commercial values—I notice that in both parties and how they approach major societal issues, such as how the Republican Party under Trump seems less concerned about traditional moral values. 
 
----
+
 
 **John Haidt:** Yes, under Trump, the party's stance on many issues, including deregulation in areas like sports gambling and crypto, reflects a shift away from long-held moral positions. 
 
----
+
 
 The growing acceptance of potent products in the market, including marijuana, raises similar concerns. The allure of profitability appears to push aside thoughtful consideration of moral implications, be it in terms of children's welfare or societal health. 
 
----
+
 
 So, in this vacuum of substantial moral guidance, we observe a troubling trend across society. The detachment from moral reasoning leaves us vulnerable to unchecked impulses. 
 
----
+
 
 As capitalism drives us forward, its logic now predominates, promoting individualism without the necessary counterbalancing forces that once existed.
 
----
+
 
 **John Haidt:** I think you’re right. The evidence of this shift is everywhere. You might find it interesting to dive into *The Age of Addiction* by David Courtright, which explores these dynamics in depth.
 **John Haidt:** He chronicles how people have always craved sugar and foraged for fruit. However, as we refined sugar, it led to the creation of sugar-based products and eventually candy. With a market-based economy established during the Industrial Revolution, we discovered more and more ways to produce products that our brains evolved to crave, but now those products are limitless and can be accessed effortlessly. The same can be said for opiates; think of the progression from opium to heroin and now to fentanyl.
 
 The best definition I’ve heard of a free market society comes from a philosopher who said, "a good free market society is one in which you can only get rich by making other people better off." For the most part, that remains true in our economy.
 
----
+
 
 But let's examine the products we're discussing. If you're a sports betting company, a crypto firm, a video game developer, or a social media enterprise, are you genuinely making your customers better off? Or are you exploiting addiction and manipulating social forces while contributing enormous negative externalities to society? I would argue that’s what's happening, and part of this stems from the deregulatory impulse that has emerged—we seem to have lost the ability to regulate things effectively.
 
----
+
 
 One crucial principle that needs clarification is the distinction between children and adults. Generally, we are a more libertarian country compared to Europe, where restrictions might be imposed more willingly. When it comes to adults, I believe we’re generally right to give them the freedom to do what they want unless there’s compelling evidence to suggest otherwise. But with kids, the situation is entirely different.
 
----
+
 
 Consider these trillion-dollar industries. Where does their revenue come from? It’s not from you or me; our children aren’t paying for it either. The whole value is generated by breaking the day into tiny, digestible bits to capture attention, which is then sold to advertisers, alongside the personal data collected.
 
----
+
 
 This is an especially challenging time to be a refugee. After fleeing war, violence, and persecution, it seems the world’s capacity for compassion is waning. With global refugee numbers reaching catastrophic levels, the UN Refugee Agency (UNHCR) needs your support. In just 72 hours, your donation can provide shelter, protection, and food to refugees in dire need. Please consider making a life-saving difference by visiting unrefugees.org/donation.
 
----
+
 
 Running a business is hard work, but building your website shouldn't be. With Wix, you can express your ideas and leave the heavy lifting to AI—everything from site creation to branded content and images. Have fun customizing to your liking, managing your entire business from a centralized dashboard with expert AI tools. Build, scale, and enjoy incredible results all on your own with Wix.
 
----
+
 
 **Ezra Klein:** I want to delve into this a bit more. I'm going to make a provocative point; I'm not entirely sure I believe it. I understand the argument for allowing adults to do basically whatever they want. But when it comes to kids, we have to do something different. Fine. Here’s the issue: In practice, it might not work.
 
----
+
 
 If we allow something to be both morally and legally permissible for those who are 18, or in some frameworks, even 16, it’s not impossible that we can implement an age verification system that’s airtight, but it’s probably going to be quite challenging. There are instances where it works, but ideally, we want friction—both moral and structural—throughout society.
 
----
+
 
 What we’ve lost in many areas is that friction. There are certain things we want to monitor access to, yet we’ve taken away all the barriers, making products available everywhere and online. This has become extremely dangerous because there will always be a percentage of people who develop a gambling problem. The ingenuity of capitalism seeks to make things more interesting, more potent, and more seductive.
 
----
+
 
 **Ezra Klein:** Absolutely, that’s right. Once that friction is lowered, it becomes incredibly difficult for individuals, especially those with limited regulatory capacities in their minds, to manage desires—some people struggle more than others. The loss of friction is significant. And I suspect that as a society, if we're going to accept certain things at 19, it’s going to be nearly impossible to keep them away from 17-year-olds.
 
----
+
 
 **John Haidt:** I agree. Generally, I believe technology simplifies things, which can be beneficial for adults—in many cases—but it's disastrous for kids. Children need to learn to tackle tough challenges, whereas technology makes it easier for them to avoid doing so.
 
----
+
 
 But adding to what you've said, I want to address something you mentioned earlier about skepticism regarding the real possibility of an age verification system. Once I published my book, I received significant support from parents and educators, but the main objection I encountered was resignation: people saying, "Well, technology is here to stay. Kids will have to use it as adults, so they might as well learn to use it while they’re still young. You can’t put the genie back in the bottle." 
 
 But actually, we can, and we are doing it. 
 
----
+
 
 **Ezra Klein:** Could you elaborate on that?
 
----
+
 
 **John Haidt:** Sure! I want to emphasize that while we don’t currently have effective age verification, if we establish the right incentives, we could have a system in place in less than a year. My colleague at NYU, Scott Galloway, points out that social media companies have invested immense resources into advertising. They figured out a way to conduct auctions among thousands of companies for the right to display ads every time a user clicks a link. 
 
 This is a marvel of technical innovation driven by profit. So, the question is: Could they also develop a way to determine if someone is under or over 16? It might be worthwhile to invest in the research. They already know so much about us; the argument that kids will just lie about their age doesn’t hold much water. 
 
----
+
 
 **Ezra Klein:** Interesting point.
 
----
+
 
 **John Haidt:** Australia is currently making strides in this area, and if they succeed, similar regulations will likely spread rapidly across the globe. 
 
----
+
 
 **Ezra Klein:** Just to clarify: is Australia looking at implementing no smartphones or no social media until 16?
 
----
+
 
 **John Haidt:** The focus is on establishing an age for internet adulthood—a contract age with major corporations where users can sign away their data rights without parental consent. Currently, American law allows ten-year-olds to lie and say they’re thirteen to access these platforms. What Australia is trying to change is the need for companies to provide some sort of age assurance.
 
----
+
 
 **Ezra Klein:** How important is this for the United States?
 
----
+
 
 **John Haidt:** It’s crucial because, right now, ten-year-olds are getting access to platforms like Instagram and TikTok—this has to stop. By establishing a law, Australia aims to regulate the internet space better.
 
----
+
 
 Then there are the other three norms we must adopt to successfully roll back the phone-centric childhood. The first is no smartphones before high school. Do not give your child a touchscreen until they're at least 14—that's a norm we need to promote.
 
----
+
 
 The second norm is to delay access to social media until age 16. We need to establish laws in that regard, similar to Australia’s approach. 
 
----
+
 
 And the third norm is implementing phone-free schools, which I believe will be the majority of schools in America within two years. 
 
----
+
 
 **Ezra Klein:** What about the fourth norm?
 
----
+
 
 **John Haidt:** The fourth is fostering independence, free play, and responsibility in the real world. It’s important to focus not just on restricting screens but also on restoring a fun, human childhood—a time spent outside, playing with friends in mixed-age groups, rather than always under parental supervision doing homework or glued to screens. 
 
----
+
 
 It’s important to recognize how hard this can be for parents to navigate on their own. It often puts them in a position where they have to restrict their child's access to things that other kids are enjoying, which can be isolating.
 
----
+
 
 **Ezra Klein:** That seems crucial. If we would push for legislation, it could be a collective action that frees parents from that burden. 
 
----
+
 
 **John Haidt:** Exactly. What you’re describing illustrates a collective action trap. Parents want to set boundaries for their children, but since all the other kids have smartphones, they feel pressured to comply to prevent their kid from being left out. The solution lies in collective action—parents discussing with each other and agreeing to uphold these norms, creating an environment where it’s easier to stick to those principles.
 
----
+
 
 There are two statistics that continue to haunt me: First, 50% of American teens report being online almost constantly. They may not be looking at their phones for 16 hours a day, but they frequently think about the social dramas they are missing out on. Half of our children essentially have their consciousness dominated by a few large social media companies.
 
----
+
 
 The second statistic is staggering—40% of two-year-olds in America own an iPad. Parents often find it convenient to hand over a device to keep their child occupied. It’s become normalized to provide these tech babysitters, akin to handing them a substance that alters their state of mind.
 
----
+
 
 I recall when I first gave my kids an iPad; one of them was sick at around three or four years old. I quickly realized that even innocent platforms like YouTube could be unsettling. Not only was there the risk of encountering bizarre and creepy content, but the endless stream of short clips meant they rarely engaged with a full story.
 
----
+
 
 **Ezra Klein:** Yes, that difference is profound. 
 
----
+
 
 **John Haidt:** Right! When it comes to tech usage, the distinction must be made. Long-format media like a 90-minute movie is generally a pretty good use of screens; it's social, and gives moral context to the characters. Watching it with someone else enhances its value. In contrast, solitary iPad use is extremely detrimental.
 
----
+
 
 A touchscreen can turn into a conditioning tool—stimuli create responses which then lead to rewards; it’s designed to build habits through dopamine triggers. This is vastly different from traditional TV consumption, which offers a story without engaging users in a behaviorist loop.
 
----
+
 
 **Ezra Klein:** And the concern isn’t just about children—adults are affected too.
 
----
+
 
 **John Haidt:** Absolutely. Adults also struggle to maintain their attention, and many people are becoming detached from reality as they navigate adult life after growing up with these technologies. It's a collective issue impacting everyone.
 
----
+
 
 The societal idea of healthy attention has undeniably shifted. We're finding it increasingly difficult to articulate what “healthy attention” means now as technology has reshaped our ability to concentrate. There’s a broader context to address regarding both children and adults: what are the implications of this technological influence on our attentional capacities?
 
----
+
 
 **Ezra Klein:** And this impacts everything, from personal wellbeing to democratic engagement.
 
----
+
 
 **John Haidt:** Right. Children growing up immersed in these products could potentially undergo permanent changes to their capacity for attention and focus.
 
----
+
 
 Engaging in debates about technology's societal effects brings us to broader implications—is it acceptable that so many people routinely train themselves to engage with fleeting, attention-altering content? 
 
----
+
 
 **Ezra Klein:** That highlights the fundamental changes in our shared social fabric. 
 
----
+
 
 **John Haidt:** Yes, and it’s unsettling to see this pattern emerge. The ways we consume content today—particularly platforms designed for maximum engagement—force us to question our relationship with attention and focus, and what that means for future generations.
 **John Haidt:** I teach a course at NYU Stern called "Flourishing." My students are mostly business majors, around 19 years old, and when I ask them if they want to be successful, they all say yes. I respond with a caution: if you give away all of your attention, I can almost promise that you won’t be successful. You won’t accomplish much at all. So, the first step in this course is regaining control of your attention.
