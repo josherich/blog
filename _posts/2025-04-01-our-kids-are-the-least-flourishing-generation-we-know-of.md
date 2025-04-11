@@ -4,6 +4,7 @@ title: "‘Our Kids Are the Least Flourishing Generation We Know Of’"
 date: 2025-04-01 00:00:01
 categories: podcast ezra-klein
 tags: [podcast_script]
+---
 
 [‘Our Kids Are the Least Flourishing Generation We Know Of’](https://www.nytimes.com/2025/04/01/opinion/ezra-klein-podcast-jonathan-haidt.html)
 
