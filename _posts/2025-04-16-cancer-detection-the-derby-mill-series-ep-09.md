@@ -328,203 +328,203 @@ The views, opinions, and information expressed in this podcast are those of the 
 
 Neil: I mean, people really care. I think people care about their skin a lot. It's not a coincidence that dermatology comes up in popular culture, like the episode of *Seinfeld* where George is trying to show a mole on his back at a party. That's amazing! Dermatology is the one area in medicine where consumer demand is so high that people, especially when it involves kids, are willing to pay for services.
 
----
+
 
 Jay: Welcome to the Derby Mill series, intrepid pioneers of the next economy! We feature discussions with entrepreneurs at the forefront of machine intelligence and brainstorm ideas about where this technology may go in the future. I'm Jay Agrawal, co-founder of Intrepid Growth Partners, and I'm joined by my collaborators: Neve, Gavin, Rich Sutton, and Sendhil Mullinathan, all senior advisors at Intrepid. In this episode, we focus on cancer detection. We're here with the leadership team of Skin Analytics, a UK-based firm utilizing AI to automate the diagnosis of serious skin conditions, beginning with skin cancer. Neil is the founder and CEO, and Jack serves as the AI director. All right, let’s start the show.
 
----
+
 
 Jay: Neil, let's kick things off with you. Could you provide a brief summary of your business for our listeners? While everyone has read the overview, please highlight what is at the core of your business and the key predictions that your system makes.
 
----
+
 
 Neil: Thank you! Skin Analytics has developed a series of artificial intelligence algorithms that we regulate as medical devices. These algorithms can autonomously make decisions regarding potential skin cancers. By capturing an image of a skin lesion, we can predict whether the patient has skin cancer, a pre-malignant lesion that requires treatment, or a benign lesion that shouldn't drain healthcare resources.
 
----
+
 
 Neil: The main idea behind our business is to utilize artificial intelligence to replicate many decisions that a dermatologist would make. This approach aims to address the significant shortage of specialist dermatologists worldwide, particularly for patients with potential skin cancers.
 
----
+
 
 Jay: Thanks, Neil. Your product is the first of its kind to clear the regulatory process in the UK through the NHS (National Health Service). Can you explain what it takes to navigate the regulatory landscape? Is it solely about prediction accuracy, or are there other key factors?
 
----
+
 
 Neil: We're very proud to be the first company to launch an autonomous skin cancer pathway globally, and we started this journey in the UK. The road to deploying our device autonomously began with a supervised version of the algorithm. We implemented necessary safeguards and initiated second reads to ensure the technology was performing well and could adapt to the messy reality of medical practice, which often involves many gray areas. This journey took us several years from our commercial launch to proving that our system could work independently.
 
----
+
 
 Neil: To navigate the regulatory process, we identify three foundational elements. First, the technology must be effective; you need to figure out how to make it work reliably. I know you all have spent considerable time discussing how to translate new technological potential into something that benefits patients. This is a non-trivial aspect of our business that requires significant effort, and Jack can elaborate further on that.
 
----
+
 
 Neil: The second critical component is providing clinical evidence that supports our technology’s capabilities. This begins with observational clinical studies and moves into prospective studies, where you increasingly challenge the AI and evaluate its performance.
 
----
+
 
 Neil: Finally, it's essential to have the right systems in place to run a company making decisions that impact patients' lives. For us, making decisions related to cancer is particularly sensitive—delayed diagnosis can be fatal. This high-risk aspect compels us to ensure robust quality management systems throughout our business, from product development to post-market surveillance and patient interactions.
 
----
+
 
 Neil: We have integrated these systems into the very fabric of our business and have been audited by about three separate bodies, totaling around 15 audits to date. These efforts ensure we meet regulatory standards and continue to uphold them. Together, the technological effectiveness, clinical evidence, and quality assurance are what allowed us to hurdle the regulatory requirements and enter the market.
 
----
+
 
 Jay: Thanks for that insight, Neil. I have one more question for you before I switch to Neve, Sendhil, and Rich for any clarifying inquiries. Then we can discuss the future implications of this technology. My question is this: I believe you began this project a decade ago or maybe even longer. I recall a conference in 2015, where people were discussing valuable applications of image recognition, particularly in reading medical images. What took so long for you to bring this to fruition?
 
----
+
 
 Neil: What took so long? I've been working on this since 2012, so it has indeed been a lengthy journey. To address why it has been challenging from a technological standpoint: when we initiated the business, we focused on classical machine learning approaches. We engaged with dermatologists and clinicians to understand how they identify skin cancer. It was frustrating as someone with a math background to hear responses like, "It just looks wrong." How do I translate that into measurable criteria?
 
----
+
 
 Neil: We spent a significant amount of time collecting metrics. Dermatologists provided data on features like color and symmetry, leading us to quantify about a hundred different measurements, which we then attempted to optimize. Unfortunately, this approach didn't yield effective outcomes; the technology wasn’t advanced enough to support decision-making. We subsequently transitioned to deep learning, which significantly transformed our system's capabilities. 
 
----
+
 
 Neil: However, we realized we had a steep learning curve ahead of us. Initially, the belief was that we only needed vast amounts of data for everything to work seamlessly. We discovered that was far from the truth. We thought we had a solid algorithm, but after testing, we found it inaccurately classified all test samples as having cancer. We recognized the substantial overfitting issue and encountered many common pitfalls in AI that are well-documented today.
 
----
+
 
 Neil: It took time for us to devise a system that could function effectively within those constraints. As a business, we have approached our development cautiously because we understand that failing in a safety-critical system can impact patients' lives. We aimed to ensure we navigated this process correctly. Another challenge we've faced is that, while healthcare is one of the best places to apply this technology, much of it isn't yet digitized.
 
----
+
 
 Neil: For instance, while radiology images might be digitized, dermatology historically hasn’t been. Consequently, the data collected was often not representative of the patient population. Early datasets were gathered by dermatologists from unusual cases that piqued their interest—which is not ideal for training algorithms. We had to take the initiative to digitize much of the data ourselves, a process that took time. Alongside that, we had to establish clinical evidence and find a way to operate with over 200 standard operating procedures governing our processes to ensure patient safety. This is all time-consuming.
 
----
+
 
 Neil: However, in the grand scheme of things, I believe we've made significant progress relatively quickly—especially considering the gap from the vision in 2015 to our reality in 2025. 
 
----
+
 
 Jay: Excellent, Neil. Thank you! Niamh, do you have any clarifying questions? 
 
----
+
 
 Niamh: Yes, thanks, Jay. Kudos to the team! I have a quick question regarding patient drop-off rates after a referral. Let me broaden this by asking about the importance of an end-to-end platform compared with just the image. As you hinted earlier, you’ve been astute in creating a digital pathway for patients, allowing them to choose quicker access via AI or wait for a doctor's appointment. 
 
----
+
 
 Niamh: After you've made a binary decision of benign or malignant, it seems essential to follow the end-to-end process: reviewing prescribed treatments, evaluating effectiveness, and ensuring any discoveries are looped back into the system. How do you currently collect that longitudinal data, and at what point does the process tend to drop off? Is it simply at the dermatologist referral, or do you track it further? 
 
----
+
 
 Neil: You've pinpointed a critical aspect of our business. One early decision we made, which seemed risky at the time but ultimately proved wise, was that as everyone else focused on "appifying" everything, we opted against deploying our technology in ways that didn’t integrate with existing healthcare systems.
 
----
+
 
 Neil: We understood that informing a patient about a diagnosis is only part of the process; the real utility for patients arises after they receive treatment. While we don't provide treatment ourselves, we want to embed into systems that can solve that problem, creating genuine value at scale. Therefore, we focused on collaborations within the UK’s National Health Service (NHS) or with partners who could utilize our AI's outputs effectively, whether it be for a biopsy, treatment, or discharge. 
 
----
+
 
 Neil: It was crucial for us to deploy within these established healthcare frameworks. You're correct to observe that, for now, our system primarily focuses on the referral or non-referral process—a preliminary function. However, that doesn’t truly capture the full depth of the algorithm's capabilities. The algorithm can identify pre-malignant lesions suitable for various treatment options or flag cases that should proceed directly to biopsy, something we’re seeing an increasing appetite for. This approach enables better optimization of healthcare resources from the moment the AI makes a decision.
 
----
+
 
 Neil: We're pushing hard to build enough confidence in the AI to optimize existing healthcare pathways. Our current goal is to enhance these systems to ensure patients receive timely treatment.
 
----
+
 
 Niamh: Great insights! It seems like your company's focus is about getting the classification right. While other steps are crucial, the primary immediate utility appears to be the yes/no—referring patients or not. 
 
----
+
 
 Niamh: How significant is proper classification to your overall operations? Is refining classification relatively straightforward, or is it more critical than that? Do small percentage improvements make a considerable difference for your business?
 
----
+
 
 Neil: Understanding the classification process is indeed vital. We invest substantial time striving for even the slightest improvements in diagnostic accuracy, sensitivity, and the ability to route patients to appropriate care pathways. 
 
----
+
 
 Neil: Each incremental gain in classification translates into considerable downstream benefits for the healthcare system. For instance, if we can suggest that a UK patient on an urgent skin cancer pathway could instead be directed towards a less resource-intensive treatment, like topical cream, it would save valuable time for dermatologists. 
 
----
+
 
 Neil: This efficiency is not just a cost-saving measure for the UK's healthcare system but applies universally across healthcare systems. Interestingly, while we emphasize that the initial classification has limited direct utility for patients, real utility comes from the relevant treatment options.
 
----
+
 
 Neil: The bottleneck isn’t in providing treatments—many practitioners can be trained for that. The constraints exist in the classification step that necessitates the expertise of specially trained clinicians, who invest many years in training and command higher salaries in the global context. This scarcity forms the backbone of our healthcare system, which primary and secondary care tries to address. 
 
----
+
 
 Jay: Are you able to gather data in the clinic, or can patients do this from home? 
 
----
+
 
 Neil: We can operate in various settings. Some of our pathways allow patients to collect data at home, while others necessitate a clinic visit. There's a lot of flexibility in how we acquire data. Currently, we utilize a dermoscopic image—a simple lens that employs cross-polarized light and filters to magnify the image slightly. It can attach to a smartphone, allowing for a variety of solutions.
 
----
+
 
 Neil: Moving forward, our product roadmap indicates impressive results on the research front. We're working towards eliminating the dermoscopic attachment as a requirement while maintaining diagnostic accuracy. What we might lose initially is some capacity for discharging patients, leading to a higher over-referral rate. Still, this can be rectified later with dereoscopy or other approaches. Ultimately, we aim to leverage everyday sensors that are widely available at home to streamline our processes.
 
----
+
 
 Jay: Sendhil, do you have any additional clarifying questions? 
 
----
+
 
 Sendhil: Yes, Neil, I'd like to revisit your integration of systems within healthcare rather than pursuing direct-to-consumer approaches. What unexpected challenges or benefits have you encountered while working to incorporate into existing decision-making frameworks? 
 
----
+
 
 Neil: One surprising realization was that, while I believed we needed to gain the trust of clinicians for patients to subsequently trust the technology, patients seemed far more open than I anticipated. At the outset, I thought if clinicians didn’t believe in the technology’s efficacy, patients wouldn't either. 
 
----
+
 
 Neil: However, my experience suggests that patients are more amenable to AI solutions than clinicians. If we'd leveraged this belief in trusting clinicians as our core motivation for engaging with healthcare systems, we may have made a misstep in our approach. Ultimately, our true focus is not merely to classify but to ensure patients receive effective outcomes. 
 
----
+
 
 Neil: The classification step is crucial, but the patient's ultimate need is for a diagnostic decision and the following outcomes—that realization emerged through early conversations with healthcare professionals and patients. 
 
----
+
 
 Jay: All the listeners can visualize the process you’ve described, Neil, where patients, whether at home or in a clinic, have a photo taken of a skin lesion or mole for AI classification as malignant, benign, or pre-malignant. 
 
----
+
 
 Jay: This directly leads into subsequent actions within the healthcare system. In a prior episode, we compared this to the geological exploration industry, where drilling a hole for a core sample represents a kind of biopsy. As we discuss the trajectory of this domain, I know both Niamh and Sendhil have contemplated the future of the healthcare industry.  
 
----
+
 
 Jay: Niamh, do you have any perspectives on where you envision this technology leading in the future, particularly regarding high-fidelity classification capabilities? 
 
----
+
 
 Niamh: That's an intriguing question, and it raises issues about the gold standard itself. If I understand correctly, Skin Analytics now outperforms dermatologists. In the same vein as Rich referenced mining, the algorithm can process thousands or even hundreds of thousands of data points that an individual expert may never encounter in their lifetime. This potentially raises questions about the benchmarks we're using to evaluate performance and consider other data sources.
 
----
+
 
 Niamh: This also ties back to my earlier inquiry about patient history collection. Could Skin Analytics serve as a biomarker or predictor for broader health issues? For instance, if a patient who has smoked their whole life exhibits a higher mole count, are there patterns indicative of future health risks, such as lung cancer? 
 
----
+
 
 Niamh: I'm curious if there's a way to leverage the insights gained through your platform to broaden its utility for additional patient benefits. 
 
----
+
 
 Sendhil: Before Neil responds, I'd like to share my perspectives. 
 
----
+
 
 Sendhil: With regard to dermatology, I have two initial thoughts. Firstly, I understand your choice to integrate within the healthcare system, but deploying your solution via an app could engage a broader audience. It might allow earlier photo captures from individuals who may never seek medical assistance, thus helping to mitigate selection bias. 
 
----
+
 
 Sendhil: I recognize that this isn't an immediate issue for your current operations, but expanding the pool of individuals taking photos could significantly enhance early detection efforts. I’m aware there are valid concerns regarding overuse, leading to false positives, but those are statistical challenges that can be addressed over time. 
 
----
+
 
 Sendhil: Given the vast potential for population-informed data, I think the opportunity lies in early intervention. 
 
----
+
 
 Sendhil: Additionally, as you've developed the device, if I understand correctly, it functions as a camera capturing images, which are processed through a deep learning algorithm. This device's versatility allows for adding additional sensors beyond traditional optical capabilities. 
 
----
+
 Neil: It's important to note that, up until now, most of what we've achieved in dermatology has been limited by the capabilities of the human eye. There's no reason we must rely solely on this sensor. 
 
 There are numerous sensors available that surpass anything interpretative by the human eye. One aspect I appreciate about our current development is that, by utilizing a device, we can easily enhance it to support new sensors. 
@@ -533,13 +533,13 @@ Setting aside the regulatory approvals, we've effectively simplified one aspect:
 
 It seems we've positioned ourselves well to explore both avenues. 
 
----
+
 
 Sendhil: Just to clarify, the device you're referring to is essentially the smartphone that users already carry, right? The lens serves as an add-on.
 
 Neil: Correct! People currently connect this specialized lens to their phones. As Neil mentioned regarding our product roadmap, the future version might not even require that lens, making it truly just their smartphone. However, there could still be reasons to keep the add-on for various advantages.
 
----
+
 
 Jay: Sendhil, I know you've been contemplating the transformation of the entire healthcare system, pushing for a stronger focus on prevention. With the concept of those two pathways you've outlined, do you think introducing this technology for home use would alter the data collection process? Looking at practices in prenatal care and ultrasound procedures, typically, the limiting factor is how infrequently an expectant mother visits for screenings.
 
@@ -547,57 +547,57 @@ If at-home ultrasounds become commonplace, then frequency won’t be a restricti
 
 While these conditions may not be life-threatening, they substantially impact quality of life. With some conditions, continual monitoring is vital, and it's impractical to visit the dermatologist frequently. I believe that harnessing the ability to measure skin conditions frequently and affordably would greatly enhance our understanding and treatment of many dermatological issues.
 
---- 
+ 
 
 Jay: Exactly! Moreover, some conditions, like wrinkles, also lack significant data on their formation processes. The potential for expanding dermatology's scope is immense, especially for understanding conditions previously overlooked.
 
 As you mentioned, improving preventative care gives us opportunities to deepen our knowledge of a wide range of skin conditions that haven't been thoroughly studied. 
 
----
+
 
 Neil: When discussing the economic models for our company, it's essential to recognize that our service is currently marketed primarily to health systems. However, if we shift towards an at-home service accessible through smartphones or handheld devices, have you thought about how that could work economically?
 
----
+
 
 Sendhil: Absolutely, and I think the economic framework will vary by condition. For skin cancer, the prevailing interest lies in the financial implications of early detection. For example, several reimbursement models currently incentivize healthcare providers to catch skin cancer early.
 
 Consider capitation systems where insurers pay a fixed amount per individual. In such scenarios, health systems might encourage everyone coming in for regular checkups to use our app, recommending that they take photos whenever they wish. 
 
----
+
 
 Jay: That's an excellent perspective, Sendhil. Dermatology has a robust direct-to-consumer market. People genuinely care about their skin. 
 
 Neil: Exactly! It's no accident that dermatology is a significant topic in pop culture—like that *Seinfeld* episode where George is trying to show off a mole. The demand is so high that plenty of people would happily pay for an assessment and guidance.
 
----
+
 
 Sendhil: Before I pose my next question, I'd like to touch upon the need for transitioning the industry toward supervised learning to more dynamic systems that can learn from experience. 
 
 Considering the dermatology context, have you thought about how to enable this system to evolve autonomously? For instance, collaborations with drug manufacturers could help develop a reinforcement learning (RL) model where patients are guided through treatment plans based on ongoing data about their skin conditions.
 
---- 
+ 
 
 Neil: Working alongside companies that produce topical treatments might indeed lead to an innovative system. Monitoring conditions such as psoriasis could involve regularly capturing photos and providing real-time recommendations to patients on how to manage their treatments effectively.
 
----
+
 
 Rich: That’s a compelling proposal. As a dermatology patient who had a serious experience with melanoma, I think about patient flow. Many people may be worried about their skin health or want aesthetic treatments. 
 
 What if we established a program encouraging individuals to sign up for a pilot where they could voluntarily contribute data about their skin health? 
 
----
+
 
 Rich: Imagine having people who aren't necessarily concerned about their moles submit images of their skin for assessment. This approach could significantly diversify our dataset, as machine learning is sensitive to the distribution of inputs.
 
 The larger and more varied the dataset, the more accurate our models could become, allowing us to shift focus toward preventative care. While this might increase referrals, engaging people broadly could fundamentally alter how we approach dermatological health.
 
----
+
 
 Neil: Indeed, that's a great point! If we rethink the system design, we have the opportunity to gather copious data. Patients are often willing to share their information if they believe they will receive useful insights in return. 
 
 With this technology, we can break down resource constraints and drastically improve how we deliver care while reducing costs. Our founding mission is twofold: to reduce skin cancer care costs and increase access while drawing attention to the importance of early detection.
 
---- 
+ 
 
 Neil: We know that a significant delay exists between when a patient first notices a concerning issue and when they seek treatment. This delay can significantly affect survival rates, especially for skin cancer. Hence, tackling these delays is our next frontier.
 Neil: We've had to do this because, as humans and dermatologists, we're limited by what we know. However, that's changing. We now have the ability to utilize low-cost additional sensors, which is critical since we want this technology to be used outside of hospitals. By adding various sensors, we can improve the information we gather to make better decisions.
@@ -606,7 +606,7 @@ We shouldn't confine ourselves to traditional dermatology categories like psoria
 
 I’d argue that it would be surprising if the only relevant information from our largest organ was limited to inflammatory skin diseases or skin cancer. It just doesn't seem plausible. Our opportunity lies in redefining the dermatological system and incorporating additional sensors to gather downstream data, which we can analyze to uncover various health relationships. This approach could pave the way for what we might call zero-care, an advanced form of care driven by technology.
 
----
+
 
 Neil: Before I continue, AJ, I want to dive deeper because I realize we haven’t fully addressed your question about what ancillary data could be used. When it comes to additional sensors beyond visual ones, you've mentioned infrared and audio for detection. Can you elaborate on other data types that could serve as proxies for diagnosis?
 
@@ -616,7 +616,7 @@ Going beyond the visible light spectrum is promising. We have options like polar
 
 The real value lies in the high-dimensional, high-bandwidth sources of information. While patient questionnaires or surveys yield limited data, images are far more informative. At our core, we engage in pattern recognition, industrializing the process to identify complex patterns within our datasets. This knowledge enables us to diagnose skin conditions, cancer, or even broader categories.
 
----
+
 
 Neil: Let me share a quick story to illustrate Jack's point. Early on, we realized that algorithms predicting cancer risk based on patients' medical records and questionnaires had high sensitivity and reasonable specificity. We thought merging this data with images would enhance accuracy, but instead, it worsened our outcomes. 
 
@@ -624,13 +624,13 @@ The issue is that many people struggle to accurately answer critical questions. 
 
 We want to focus on objective data rather than introducing unnecessary subjectivity. We already navigate subjectivity with histopathology, where pathologist discordance is high. Minimizing noise in our data is vital for reliable outcomes.
 
----
+
 
 Jack: It's interesting that the area we work in intersects medicine and computer science. We're navigating the gray areas between the two worlds. Also, considering skin as an early indicator of various diseases, it’s worth recalling that traditional medical observations focused on skin, teeth, and urine. This is likely because these are easy to observe and may genuinely hold diagnostic potential.
 
 We’ve all had that moment of noticing something about a friend’s appearance and realizing they might not be well. This points to the diagnostic capacity within those observations, even just through images.
 
----
+
 
 Neil: We’re almost out of time, so let’s do a quick round for final thoughts. Niamh, then Rich, then Sandal. Any closing comments for our listeners that might broaden their perspective on what healthcare could achieve with machine intelligence? 
 
@@ -638,19 +638,19 @@ Niamh: Absolutely! The challenge lies in the balance between possibility and rea
 
 Now, with the reimbursement mechanisms evolving, we have a chance to expand beyond just skin cancer to a broader scope of dermatology. Capturing longitudinal data over time will be key to this business model.
 
----
+
 
 Rich: I think enhancing patient interaction frequency could yield significant advantages. If we increase the cadence of interactions, patients could receive results immediately, potentially leading to better outcomes. 
 
 Many times, patients hesitate to visit a doctor due to long wait times for follow-ups. A system that allows for more rapid interactions could be much more appealing.
 
----
+
 
 Sandal: To wrap up, I'll echo your earlier thoughts. We’re in a phase of accelerating opportunities. If I were managing your company, my focus would be on seeking these lateral growth opportunities aggressively.
 
 You've laid a strong foundation, but now it’s time to explore various avenues for growth. 
 
----
+
 
 Neil: Absolutely, and it’s essential for us to leverage the power we've built in the last decade to deliver on our business's potential. We don’t want to become just another option in the healthcare system; we aim to do much more.
 
