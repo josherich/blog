@@ -9,7 +9,7 @@ tags: [podcast_script]
 
 [SF Compute: Commoditizing Compute](https://assets.flightcast.com/track/q99m3u4e7wvygbcs7rdcj6p6.mp3)
 
-Hey, everyone. Welcome to the Lylian Space Podcast. This is Alessio, partner and CTO at Decibel, and I'm joined by my host, Swix, founder of Small.ai. 
+Hey, everyone. Welcome to the Latent Space Podcast. This is Alessio, partner and CTO at Decibel, and I'm joined by my host, Swix, founder of Small.ai. 
 
 Hey, and today we're so excited to be finally in the studio with Evan Conrad from SF Compute. Welcome. 
 
@@ -1128,7 +1128,7 @@ Yes. Systems that don't lose money, there are lots of other things you have to d
 
 > This is an experimental rewrite
 
-Alessio: Hey, everyone. Welcome to the Lylian Space Podcast. This is Alessio, partner and CTO at Decibel, and I'm joined by my host, Swix, founder of Small.ai.
+Alessio: Hey, everyone. Welcome to the Latent Space Podcast. This is Alessio, partner and CTO at Decibel, and I'm joined by my host, Swix, founder of Small.ai.
 
 Swix: Hey, and today we're so excited to be finally in the studio with Evan Conrad from SF Compute. Welcome!
 
@@ -1492,7 +1492,7 @@ Evan: Certainly! By maintaining flexibility, you can secure an optimal deal whil
 <script>window.tocIndex = {
   "index": [
     {
-      "index_sentences": "Hey, everyone. Welcome to the Lylian Space Podcast. This is Alessio, partner and CTO at Decibel, and",
+      "index_sentences": "Hey, everyone. Welcome to the Latent Space Podcast. This is Alessio, partner and CTO at Decibel, and",
       "section_level": 1,
       "section_title": "Introduction"
     },
