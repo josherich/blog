@@ -9,13 +9,9 @@ tags: [podcast_script]
 
 [How our time online is changing (ft. CEO of Microsoft AI, Mustafa Suleyman)](https://www.youtube.com/watch?v=D3rtIZV6wB0)
 
-[Music] 
-
-Hello everyone, I'm here with Mustafa Sullean. You're young, but when you were even younger, you became deeply intertwined with the start of AI's modern era. You were one of the three co-founders of DeepMind, acquired by Google in 2014. In 2022, you co-founded Inflection AI, which recently in March of 2024 hit a unique deal with Microsoft, where they are able to use Inflection's models. They hired most of the startup staff, including you, and you're now appointed CEO of Microsoft AI. 
+Hello everyone, I'm here with Mustafa Suleyman. You're young, but when you were even younger, you became deeply intertwined with the start of AI's modern era. You were one of the three co-founders of DeepMind, acquired by Google in 2014. In 2022, you co-founded Inflection AI, which recently in March of 2024 hit a unique deal with Microsoft, where they are able to use Inflection's models. They hired most of the startup staff, including you, and you're now appointed CEO of Microsoft AI. 
 
 You know this, but this is for my audience. I'm like, I'm telling your life story. It sounds so much more dramatic than it feels. I was going to say, well, my question with that is, was any variation of this path clear to you 15 years ago? 
-
-[Music] 
 
 Interesting. Yes, many variations were possible. I definitely think I set an intention very early on in 2009 to be deeply involved in technology. I kind of saw the rise of Facebook in sort of 2007, 2008, 2009, and I could see that it was just mind-blowing how quickly it was growing and really changing the way people communicate, connect, and stay in touch. The subtlety of how the platform shaped what we shared, not just how we shared it, but the type of content was changing. 
 
@@ -308,7 +304,7 @@ Thank you; this has been really fun. Thanks a lot; I appreciate it.
 
 [Music]  
 
-**Interviewer:** Hello everyone, I'm here with Mustafa Sullean. You're young, but when you were even younger, you became deeply intertwined with the start of AI's modern era. You were one of the three co-founders of DeepMind, acquired by Google in 2014. In 2022, you co-founded Inflection AI, which recently in March of 2024 hit a unique deal with Microsoft. They are now able to use Inflection's models, having hired most of the startup staff, including you, and you’re now appointed CEO of Microsoft AI.  
+**Interviewer:** Hello everyone, I'm here with Mustafa Suleyman. You're young, but when you were even younger, you became deeply intertwined with the start of AI's modern era. You were one of the three co-founders of DeepMind, acquired by Google in 2014. In 2022, you co-founded Inflection AI, which recently in March of 2024 hit a unique deal with Microsoft. They are now able to use Inflection's models, having hired most of the startup staff, including you, and you’re now appointed CEO of Microsoft AI.  
 
 You know this, but this is for my audience. I'm essentially telling your life story. It sounds far more dramatic than it feels. My question is, was any variation of this path clear to you 15 years ago?  
 
@@ -634,7 +630,7 @@ I would prefer to have specific options. I don't think AI needs to interfere wit
 <script>window.tocIndex = {
   "index": [
     {
-      "index_sentences": "Hello everyone, I'm here with Mustafa Sullean. You're young, but when you were even younger, you became deeply intertwined with the start of AI's modern era.",
+      "index_sentences": "Hello everyone, I'm here with Mustafa Suleyman. You're young, but when you were even younger, you became deeply intertwined with the start of AI's modern era.",
       "section_level": 1,
       "section_title": "Introduction"
     },
