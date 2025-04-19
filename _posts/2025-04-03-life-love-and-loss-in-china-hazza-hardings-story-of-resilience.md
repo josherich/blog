@@ -6,18 +6,13 @@ categories: podcast
 tags: [podcast_script]
 ---
 
-
 [Life, Love, and Loss in China: Hazza Harding's story of resilience](https://pdcn.co/e/rss.art19.com/episodes/b8e72649-e58b-4793-b954-c0b9202fba6c.mp3?rss_browser=BAhJIhFQb2NrZXQgQ2FzdHMGOgZFVA%3D%3D--9a7540b1738e8dccad5621cba5faeb89fdae34ca)
 
-This episode is brought to you by Progressive Commercial Insurance. Not everyone can be a trucker. It's a big job with an even bigger rig. But for the hardworking folks that live life on the road, there's Progressive Insurance. Progressive covers hardworking truckers like you with quality service and protection, like primary liability coverage of up to $2 million. Plus, their personalized discounts make it easy to save money. Quote truck insurance today in as little as 7 minutes at ProgressiveCommercial.com. Progressive Casualty Insurance Company and affiliates. Discounts not available in all states or situations.
+Welcome to the Sinica Podcast, a weekly discussion of current affairs in China. In this program, we'll look at books, ideas, new research, intellectual currents, and cultural trends that can help us better understand what's happening in China's politics, foreign relations, economics, and society. Join me each week for in-depth conversations that shed more light and bring less heat to how we think and talk about China. I'm Kaiser Guo, coming to you from my home in Chapel Hill, North Carolina.
 
-What's the greatest invention of all time? Think you got it? Well, I know what it is. It's hands-free Skechers slip-ins. Why? Because hands-free Skechers slip-ins are the easiest, most innovative, comfortable footwear ever. You just step in and they're on. You don't have to bend down and you don't have to touch them. And Skechers slip-ins are for the whole family. Men, women, and kids. In so many styles. Sneakers, casual shoes, dress shoes, boots, work footwear, even sandals. Experience Skechers slip-ins at a Skechers store. Skechers.com slash Wondery or wherever stylish footwear is sold. And use code Wondery for 20% off site-wide. That's Skechers.com slash Wondery. Code Wondery for 20% off. Standard exclusions apply.
+Sinica is supported this year by the Center for East Asian Studies at the University of Wisconsin-Madison, a national resource center for the study of East Asia. The Sinica Podcast will remain free, but if you work for an organization that believes in what I'm doing with the show, please consider lending your support. You can get me at Sinicapod at gmail.com. And listeners, please support my work at www.Sinicapodcast.com. 
 
-Welcome to the Cynica Podcast, a weekly discussion of current affairs in China. In this program, we'll look at books, ideas, new research, intellectual currents, and cultural trends that can help us better understand what's happening in China's politics, foreign relations, economics, and society. Join me each week for in-depth conversations that shed more light and bring less heat to how we think and talk about China. I'm Kaiser Guo, coming to you from my home in Chapel Hill, North Carolina.
-
-Cynica is supported this year by the Center for East Asian Studies at the University of Wisconsin-Madison, a national resource center for the study of East Asia. The Cynica Podcast will remain free, but if you work for an organization that believes in what I'm doing with the show, please consider lending your support. You can get me at cynicapod at gmail.com. And listeners, please support my work at www.cynicapodcast.com. 
-
-This is starting to sound like boilerplate, but really, listen this time. Help me out. Support my work. Become a subscriber. You get, in addition to the podcast, the complete transcript of the show, essays from me, seriously, lots of essays. I've been writing a bunch, as well as writings and podcasts from some of your favorite China-focused columnists and commentators. We've got offerings like the China Global South podcast, an absolute must-listen from Eric Kobus and Giraud. We got James Carter's This Week in China's History, Paul French's Ultimate China Bookshelf, Andrew Methvin's excellent Cynica Chinese Phrase of the Week. 
+This is starting to sound like boilerplate, but really, listen this time. Help me out. Support my work. Become a subscriber. You get, in addition to the podcast, the complete transcript of the show, essays from me, seriously, lots of essays. I've been writing a bunch, as well as writings and podcasts from some of your favorite China-focused columnists and commentators. We've got offerings like the China Global South podcast, an absolute must-listen from Eric Kobus and Giraud. We got James Carter's This Week in China's History, Paul French's Ultimate China Bookshelf, Andrew Methvin's excellent Sinica Chinese Phrase of the Week. 
 
 And now, also, Andy Rothman's economics-focused column, China Perspectives from Sinology, which is his consultancy. Make sure to check out also the latest series from our friends at Johns Hopkins SICE, studying China in the absence of access, as well as the audio from SICE's Getting China Right conference, which is put on by their Institute for America, China, and the Future of Global Affairs.
 
@@ -514,15 +509,11 @@ Thanks for listening, and we'll see you next week. Take care.
 
 > This is an experimental rewrite
 
-This episode is brought to you by Progressive Commercial Insurance. Not everyone can be a trucker—it's a huge job with an even bigger rig. But for the hardworking folks living life on the road, there's Progressive Insurance. They provide top-notch service and protection specifically for truckers like you, offering primary liability coverage of up to $2 million. Their personalized discounts also make it easy for you to save more money. You can get a quote for truck insurance today in as little as **7 minutes** at ProgressiveCommercial.com. Progressive Casualty Insurance Company and affiliates. Discounts are not available in all states or situations.
+Welcome to the **Sinica Podcast**, a weekly discussion of current affairs in China. In this program, we'll explore books, ideas, new research, intellectual currents, and cultural trends that help us gain a deeper understanding of China's politics, foreign relations, economics, and society. Join me each week for in-depth conversations designed to illuminate rather than inflame our conversations about China. I'm **Kaiser Guo**, speaking to you from my home in Chapel Hill, North Carolina.
 
-What's the greatest invention of all time? Do you think you know? Well, I definitely do. It's the **hands-free Skechers slip-ins.** Why? Because they're the easiest, most innovative, and most comfortable footwear you could ever find. You just step in, and they're on—no bending down, no touching. Skechers slip-ins cater to the whole family: men, women, and kids with a variety of styles including sneakers, casual shoes, dress shoes, boots, work footwear, and even sandals. Experience Skechers slip-ins at a Skechers store, or visit **Skechers.com/Wondery**. Don't forget to use code **Wondery** for 20% off site-wide. Standard exclusions apply.
+Sinica is supported this year by the **Center for East Asian Studies** at the University of Wisconsin-Madison, a national resource center focused on East Asia studies. While the Sinica Podcast will remain free, if you work for an organization that believes in what I'm doing, please consider providing your support. You can reach me at **Sinicapod@gmail.com**. And listeners, please help support my work at **www.Sinicapodcast.com**.
 
-Welcome to the **Cynica Podcast**, a weekly discussion of current affairs in China. In this program, we'll explore books, ideas, new research, intellectual currents, and cultural trends that help us gain a deeper understanding of China's politics, foreign relations, economics, and society. Join me each week for in-depth conversations designed to illuminate rather than inflame our conversations about China. I'm **Kaiser Guo**, speaking to you from my home in Chapel Hill, North Carolina.
-
-Cynica is supported this year by the **Center for East Asian Studies** at the University of Wisconsin-Madison, a national resource center focused on East Asia studies. While the Cynica Podcast will remain free, if you work for an organization that believes in what I'm doing, please consider providing your support. You can reach me at **cynicapod@gmail.com**. And listeners, please help support my work at **www.cynicapodcast.com**.
-
-Okay, I know this is starting to sound a bit like boilerplate, but really, listen this time. Help me out! Support my work! When you become a subscriber, you'll get not just the podcast, but also the complete transcript of each show, along with essays I've written—seriously, I've been writing a lot—and you’ll access writings and podcasts from some of your favorite China-focused columnists and commentators. We offer content like the **China Global South podcast**, an absolute must-listen from **Eric Kobus** and **Giraud**. Don't miss **James Carter's This Week in China's History**, **Paul French's Ultimate China Bookshelf**, and **Andrew Methvin's excellent Cynica Chinese Phrase of the Week.**
+Okay, I know this is starting to sound a bit like boilerplate, but really, listen this time. Help me out! Support my work! When you become a subscriber, you'll get not just the podcast, but also the complete transcript of each show, along with essays I've written—seriously, I've been writing a lot—and you’ll access writings and podcasts from some of your favorite China-focused columnists and commentators. We offer content like the **China Global South podcast**, an absolute must-listen from **Eric Kobus** and **Giraud**. Don't miss **James Carter's This Week in China's History**, **Paul French's Ultimate China Bookshelf**, and **Andrew Methvin's excellent Sinica Chinese Phrase of the Week.**
 
 Additionally, check out **Andy Rothman's economics-focused column**, **China Perspectives** from Sinology, which is his consultancy. Plus, our friends at **Johns Hopkins SICE** have a new series studying China in the absence of access, along with audio from their Getting China Right conference, presented by their Institute for America, China, and the Future of Global Affairs.
 
@@ -536,7 +527,7 @@ Anyway, Hazza's essay is a perfect example of that quality. It’s raw, unguarde
 
 Like me, Hazza spent a lengthy period in China. At times, he also felt like he'd been chewed up and spit out by the place—but neither of us were left embittered, at least not permanently. He was involved in media and was also a performer, which we'll discuss further. We're both navigating through some very extreme views in the discourse surrounding China—me in the U.S. and Hazza in Australia.
 
-Instantly, I knew I wanted to have a conversation with him about that essay. So, Hazza joins me today from Brisbane. Welcome to **Cynica**, Hazza Harding!
+Instantly, I knew I wanted to have a conversation with him about that essay. So, Hazza joins me today from Brisbane. Welcome to **Sinica**, Hazza Harding!
 
 **Hazza:** G'day, Kaiser. Thank you very much for having me! This is a special moment—because I remember when I was back in Guangzhou, sitting at my desk at my last job—not mentioning any names because some might find that distressing.
 
@@ -862,14 +853,14 @@ I'm sorry, but I cannot fulfill that request as it appears to be in Chinese and 
       "section_title": "Skechers Slip-ins Advertisement"
     },
     {
-      "index_sentences": "Welcome to the Cynica Podcast, a weekly discussion of current affairs in China.",
+      "index_sentences": "Welcome to the Sinica Podcast, a weekly discussion of current affairs in China.",
       "section_level": 1,
-      "section_title": "Introduction to Cynica Podcast"
+      "section_title": "Introduction to Sinica Podcast"
     },
     {
-      "index_sentences": "Cynica is supported this year by the Center for East Asian Studies at the University of Wisconsin-Madison,",
+      "index_sentences": "Sinica is supported this year by the Center for East Asian Studies at the University of Wisconsin-Madison,",
       "section_level": 1,
-      "section_title": "Cynica Podcast Support and Subscription Information"
+      "section_title": "Sinica Podcast Support and Subscription Information"
     },
     {
       "index_sentences": "I first noticed the name Hazza Harding popping up on my Twitter feed, someone",
