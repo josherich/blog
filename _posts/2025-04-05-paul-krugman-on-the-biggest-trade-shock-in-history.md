@@ -6,7 +6,6 @@ categories: podcast
 tags: [podcast_script]
 ---
 
-
 [Paul Krugman on the ‘Biggest Trade Shock in History’](https://dts.podtrac.com/redirect.mp3/pdst.fm/e/pfx.vpixl.com/6qj4J/nyt.simplecastaudio.com/3026b665-46df-4d18-98e9-d1ce16bbb1df/episodes/fa31105c-900b-40c0-bdb0-2e9e2a86957f/audio/128/default.mp3?aid=rss_feed&awCollectionId=3026b665-46df-4d18-98e9-d1ce16bbb1df&awEpisodeId=fa31105c-900b-40c0-bdb0-2e9e2a86957f&feed=82FI35Px)
 
 From New York Times Opinion, this is the Ezra Klein Show. 
@@ -417,8 +416,6 @@ Lastly, Phillips O’Brien’s *War and Power* offers intriguing military histor
 **Ezra Klein:** Thank you, Paul Krugman.
 
 **Paul Krugman:** Thank you for having me.
-
----
 
 This episode of The Ezra Klein Show is produced by Roland Hu, with fact-checking by Michelle Harris, Kate Sinclair, and Mary Marge Locker. Mixing is by Afim Shapiro and Amin Sahota. The executive producer is Claire Gordon. The production team includes Elias Isquith, Kristen Lynn, and Jack McCordick. Original music by Pat McCusker. Audience strategy by Christina Samulewski and Shannon Busta. The director of New York Times Opinion Audio is Annie Rose Strasser.
 
