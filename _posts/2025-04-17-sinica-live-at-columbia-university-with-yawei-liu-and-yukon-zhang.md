@@ -2,16 +2,12 @@
 layout: post
 title: "Sinica Live at Columbia University, with Yawei Liu and Yukon Zhang"
 date: 2025-04-17 00:00:01
-categories: podcast
+categories: podcast sinica
 tags: [podcast_script]
 ---
 
 
-[Sinica Live at Columbia University, with Yawei Liu and Yukon Zhang](https://pdcn.co/e/rss.art19.com/episodes/91efb69a-ecf5-41cf-983a-9eeee1c5dbb4.mp3?rss_browser=BAhJIhFQb2NrZXQgQ2FzdHMGOgZFVA%3D%3D--9a7540b1738e8dccad5621cba5faeb89fdae34ca)
-
-This episode is brought to you by Progressive Commercial Insurance. Not everyone can be a trucker. It's a big job with an even bigger rig. But for the hardworking folks that live life on the road, there's Progressive Insurance. Progressive covers hardworking truckers like you with quality service and protection, like primary liability coverage of up to $2 million. Plus, their personalized discounts make it easy to save money. Quote truck insurance today in as little as 7 minutes at ProgressiveCommercial.com. Progressive Casualty Insurance Company and affiliates. Discounts not available in all states or situations.
-
-Canva presents your work horoscope for this week. Deadlines are in retrograde, which we all know can bring some intense energy. Our advice, fend off this forecast with Canva. Canva whiteboards can counter creative blocks, and Canva Docs provide clarity and communication. If you have any sales deals coming through, results will be in your favor with Canva presentations. Manifesting many wins for you. It's a great week to love your work. At Canva.com.
+[Sinica Live at Columbia University, with Yawei Liu and Yukon Zhang](https://www.sinicapodcast.com/p/sinica-live-at-columbia-university)
 
 Welcome to this special live edition of the Cynical Podcast. Coming to you from the 2025 Columbia China Summit at Columbia University. Hello, New York. Let's hear you make a little noise. Thank you so much to Aidan, to Zhang Yu, to Annie Cui for taking such good care of us. All of the good folks here at the Columbia Greater China Society for having me and my two esteemed guests here.
 
@@ -244,10 +240,6 @@ And best of luck to you for the rest of the event. Thank you. Take care. Take ca
 
 > This is an experimental rewrite
 
-This episode is brought to you by Progressive Commercial Insurance. Not everyone can be a trucker; it's a big job with an even bigger rig. But for the hardworking folks who live life on the road, there's Progressive Insurance. They cover diligent truckers like you with quality service and protection, such as primary liability coverage of up to $2 million. Plus, their personalized discounts make it easy to save money. Quote truck insurance today in as little as 7 minutes at ProgressiveCommercial.com. Remember, Progressive Casualty Insurance Company and affiliates offer discounts that are not available in all states or situations.
-
-Canva presents your work horoscope for this week. Deadlines are in retrograde, which we all know can bring intense energy. Our advice? Fend off this forecast with Canva. Canva whiteboards are perfect for countering creative blocks, while Canva Docs provide clarity and communication. If you have any sales deals coming through, results will be in your favor with Canva presentations. Manifesting many wins for you, it’s a great week to love your work! Visit Canva.com.
-
 Welcome to this special live edition of the Cynical Podcast, coming to you from the 2025 Columbia China Summit at Columbia University. Hello, New York! Let’s hear a little noise from the crowd. Thank you to Aidan, Zhang Yu, and Annie Cui for taking such good care of us, as well as to everyone here at the Columbia Greater China Society for hosting me and my two esteemed guests.
 
 This summit takes place at a pivotal moment, not only for Columbia University but also for U.S.-China relations. Both the university and the bilateral relationship, the most significant in the world, are influenced by the unpredictable actions of a particular U.S. president. I have strong concerns about the future of both the university and students like Mahmoud Khalil. When Annie Cui and her colleagues at the business school approached me to moderate this conversation, we were all living in what felt like a very different world not so long ago.
@@ -453,16 +445,6 @@ Causation in this scenario can be complicated, as indices evaluate global innova
 
 <script>window.tocIndex = {
   "index": [
-    {
-      "index_sentences": "This episode is brought to you by Progressive Commercial Insurance. Not everyone can be a trucker.",
-      "section_level": 1,
-      "section_title": "Progressive Commercial Insurance Advertisement"
-    },
-    {
-      "index_sentences": "Canva presents your work horoscope for this week. Deadlines are in retrograde, which we all know can bring some intense energy.",
-      "section_level": 1,
-      "section_title": "Canva Advertisement"
-    },
     {
       "index_sentences": "Welcome to this special live edition of the Cynical Podcast. Coming to you from the 2025 Columbia China Summit at Columbia University.",
       "section_level": 1,
