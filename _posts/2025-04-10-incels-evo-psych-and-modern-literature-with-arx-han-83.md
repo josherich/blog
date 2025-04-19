@@ -2,7 +2,7 @@
 layout: post
 title: "Incels, Evo Psych, and Modern Literature with ARX-Han — #83"
 date: 2025-04-10 00:00:01
-categories: podcast
+categories: podcast manifold
 tags: [podcast_script]
 ---
 
