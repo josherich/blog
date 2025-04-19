@@ -203,339 +203,339 @@ Follow the China Global South project on Blue Sky and X at ChinaGS Project or on
 
 The China Global South podcast is supported in part by our subscribers and Patreon supporters. If you'd like to join a global community of readers who receive daily news and exclusive analysis about Chinese engagement in Asia, Africa, and the developing world, visit [ChinaGlobalSouth.com/subscribe](http://ChinaGlobalSouth.com/subscribe).
 
----
+
 
 Hello, and welcome to a second edition this week of the China Global South podcast, which is a proud member of the Sinica podcast network. I'm Eric Olander. Unfortunately, Giraud and Kobus are unable to join us today as they're attending a conference in Nairobi. However, we'll have them back on Friday for our Africa show, and there’s been quite a bit happening in the China-Africa space, so be sure to catch that.
 
----
+
 
 Today, we're dropping a second episode of the China Global South podcast due to the significant events unfolding globally, especially in the markets here in Asia. Watching Wall Street's tumultuous overnight performance was indeed concerning—up one moment, down the next, filled with rumors and uncertainty. Today, we'll be discussing tariffs and supply chains.
 
----
+
 
 Donald Trump has recently threatened China with an additional 50% tariff on goods imported into the U.S. unless China retracts its 34% counter-tariff. Undoubtedly, we are entrenched in a world trade war, a topic we discussed yesterday with Kyle Chan from Princeton University. These recent counter-tariffs and tariff actions represent the latest developments in this ongoing conflict.
 
----
+
 
 This means that U.S. companies could potentially face a total tariff rate of 104% on Chinese imports. The new 50% threat from Trump combines with the 20% tariffs imposed in March and last week’s 34% tariffs. Such a staggering 104% could effectively halt U.S.-China trade, which exceeded $525 billion last year, underscoring the enormity of the situation.
 
----
+
 
 Unlike some other countries that have accommodated the United States, Beijing has made it clear that it will not back down. On Tuesday, they stated that they would "fight until the end." They argued that U.S. tariff abuses seriously infringe upon the legitimate rights and interests of nations, violate WTO rules, undermine the rules-based multilateral trading system, and destabilize the global economic order. This reflects a typical case of unilateralism, protectionism, and economic coercion, which has drawn condemnation from the international community. China is resolute in its opposition to these actions.
 
----
+
 
 Let me reiterate: trade wars and tariff wars lead to no winners, and protectionism is a dead end. The Chinese people neither cause trouble nor fear it, and attempting to pressure or extort China is not an effective strategy. China will take necessary measures to protect its legitimate rights and interests. If the U.S. chooses to persist in this tariff and trade war, regardless of the consequences for both countries and the international community, China is prepared to respond resolutely.
 
----
+
 
 The reference to fighting until the end has certainly made headlines across Asia and sent shivers through the markets. Investors were further unsettled this week when White House trade advisor Peter Navarro told CNBC that Vietnam's proposal to eliminate tariffs on U.S. imports would not suffice. This is notable since Vietnam currently boasts the third-largest trade surplus with the U.S., totaling $123 billion, positioning it as a target for the Trump administration.
 
----
+
 
 However, optimism was briefly sparked last week when Vietnamese Communist Party General Secretary Toh Lam spoke with Donald Trump, suggesting potential agreements. There was speculation that if Vietnam were to purchase more Boeing planes, build Trump golf courses, increase natural gas purchases, and permit Elon Musk’s Starlink internet service, it could lead to a resolution. 
 
----
+
 
 Yet, all this optimism was shaken on Monday when Navarro clarified on CNBC that Vietnam's offer wouldn't be enough. The White House administration is angered by the phenomenon known as transshipments, wherein Chinese goods made in China are sent to Vietnam, repackaged, and exported to the U.S., thereby avoiding tariffs. 
 
----
+
 
 Now, let’s hear from Peter Navarro on the thinking at the White House: "What we have here is a national emergency driven by massive, chronic trade deficits resulting from systematically higher tariffs and non-tariff barriers. When you ask if we’re open to negotiation, the president is always willing to listen. However, we must recognize the core issue. 
 
----
+
 
 Looking at Vietnam, for every dollar we sell them, they sell us $15. Of that $15, about $5 is transshipped from China to Vietnam to sidestep tariffs. This results in a detrimental dumping into U.S. markets, harming various sectors including our shrimpers and manufacturers of metal brackets, kitchen cabinets, and agricultural products. Moreover, they are involved in intellectual property theft, with the Department of Commerce citing many cases of dumping.
 
----
+
 
 The message is clear: any country wanting to engage with us must focus on lowering non-tariff barriers. Vietnam currently imposes a 10% VAT, while Europe has a 19% VAT. Competing against such rates is challenging, and the VAT issue can be confusing since it's primarily a domestic tax incurred by consumers within those countries rather than a trade issue.
 
----
+
 
 Trade policy experts in Cambodia, Mexico, Brazil, and throughout the global south likely experienced unease listening to Navarro, especially given the 10 to 15-year trend of China relocating significant portions of its supply chains offshore. If the U.S. perceives these as transshipments that prevent achieving tariff goals, coming to agreements to eliminate these tariffs will become increasingly difficult.
 
----
+
 
 That's why I'm thrilled to welcome three experts to the show today to help us dissect these developments and their effects on Chinese supply chains. The team at the Rhodium Group, a leading China consultancy based in Washington, along with offices in New York and Paris, produced a report earlier this year titled "China and the Future of Global Supply Chains." 
 
----
+
 
 This report, penned by Agatha Kratz, a partner at Rhodium leading corporate advisory work, delves into crucial trends within this sector. She is joined by Juliana Bouchot, a senior analyst, and Lauren Piper, currently working on graduate studies at Princeton University but previously part of the Rhodium team. Thank you all for joining us today; your timing coincides perfectly with our discussion of your report.
 
---- 
+ 
 
 Agatha, let’s begin with you. As the team lead, how do you react to Peter Navarro's comments and the unfolding events since your report was published in February? 
 
----
+
 
 One of the motivations behind our report was the continuous reference to Vietnam as a transshipment hub. We aimed to investigate whether data supports these claims, whether what’s occurring in Vietnam amounts to legitimate transshipping or just final assembly. If the assembly heavily relies on inexpensive, subsidized Chinese inputs—merely assembling them in Vietnam before exporting to the U.S.—that's also problematic. 
 
----
+
 
 Alternatively, we wanted to see if genuine supply chains are developing in Vietnam, Malaysia, Thailand, and other ASEAN nations, which is one of the key findings of the report. We uncovered two parallel truths. First, China remains a dominant global manufacturing power and has, in fact, increased its share of manufacturing exports across various sectors. We examined four sectors: textiles, electronics, cars, and solar PV, and found that China's share is still rising.
 
---- 
+ 
 
 Simultaneously, emerging manufacturing hubs are gaining ground in Southeast Asia, particularly in Vietnam. There's undeniable transshipment activity taking place, where goods are shipped to Vietnam, relabeled, and exported to the U.S. Yet, a significant number of final assembly operations are also occurring in Vietnam with various suppliers relocating there. 
 
----
+
 
 After several years since the first trade war, it's clear that deep supply chains are taking root in ASEAN. This should alleviate concerns among people like Peter Navarro regarding Vietnam's activities. However, the recent disruptions have been severe and could jeopardize this progress if they persist.
 
----
+
 
 Juliana, if you had the opportunity to speak with Peter Navarro about Agatha's insights regarding Chinese supply chains in Vietnam, what would you say? 
 
----
+
 
 I would emphasize that our report underscores two critical dimensions to consider when analyzing how quickly diversification is likely to occur. First, there are national policies and the intensity of de-risking, and second, there’s China’s comparative manufacturing advantage in terms of efficiency and cost.
 
----
+
 
 The extent to which alternative production hubs can reliably assume some of China’s share is pivotal. The policies currently in place—across-the-board tariffs on countries, including potential partners for diversifying away from China—may actually contribute to greater supply chain stagnation and inflation, rather than meaningful restructuring in the short term.
 
----
+
 
 Yes, Agatha point’s out that the aggressive approach could lead to rising costs and stoke inflation, not just in the United States but globally. Lauren, one intriguing aspect of your report is its dual focus: backward-looking and forward-looking. You analyze trends over the last decade while also projecting until 2030.
 
----
+
 
 Could you share your thoughts on both perspectives? Specifically, you’ve made it clear that diversification of Chinese supply chains has been underway since before this year's upheavals. As you look to 2030, how might your assumptions have been disrupted by the aggressive policies we’ve witnessed?
 
---- 
+ 
 
 In reviewing the report, I’d reiterate Agatha's observation: China remains highly dominant in various supply chains. For instance, in apparel, where other production hubs like Vietnam, Bangladesh, and Cambodia have gained traction, China still accounted for over 30% of global exports in 2023, remaining a primary supporter of key inputs such as buttons and fabrics.
 
----
+
 
 The crucial determining factor moving forward will be resultant tariff levels. Trump's calls for tariffs on other production hubs—like Vietnam, Bangladesh, and Cambodia—significantly inflates the cost of doing business. While we’ve witnessed diversification, if tariff disparities between China and its alternatives remain minimal, many supply chains might persist in China due to its efficiencies.
 
----
+
 
 Even as labor costs rise in China, the advantages of optimized supply chains can mitigate these costs. For example, a jeans manufacturer with 20 years of operation in Cambodia is contemplating whether to relocate back to China due to the latter's superior production capabilities.
 
----
+
 
 Focusing on the apparel sector—where shifts have been occurring for the past 15 years—it may not be as financially feasible if tariffs reach 46% on Vietnamese goods or 50% on those from Cambodia. Recently, the U.S. also reverted its previous policy to exempt products under $800 direct from China, impacting platforms like Xi’an and Timu. 
 
----
+
 
 As a result, Americans who have grown accustomed to purchasing multiple items online may find such options curtailed. Are we truly prepared for a scenario in which the United States experiences the effects of losing affordable Chinese products?
 
----
+
 
 Absolutely. It will be fascinating to see how companies like Xi’an and Timu respond, considering they currently face no tariffs. If those rates leap to 100% or even higher, it will leave them vulnerable. Although some of these companies have begun to explore diversifying their supply chains to countries like Brazil, Turkey, and Mexico, they still predominantly manufacture in China to benefit from the extensive network of local suppliers capable of producing trendy items quickly. 
 
----
+
 
 Moreover, they are reportedly under pressure from the Ministry of Commerce to maintain manufacturing within China. Consequently, the final cost of these products for U.S. consumers will largely depend on how tariffs are structured. If tariffs are broadly imposed not only on China but also on Vietnam, Bangladesh, and Cambodia, it substantially complicates efforts to reduce costs.
 
----
+
 
 Agatha, when we consider Lauren's insights into the apparel sector, it's clear that similar dynamics apply across several other sectors you've examined. Let's shift to consumer electronics. How are we adapting to a reality where future visibility is limited? 
 
----
+
 
 Before diving into consumer electronics, could you share some insights into your client conversations regarding current concerns and their responses to such dramatic changes? 
 
----
+
 
 Certainly! It's essential to break this down into short-term, medium-term, and long-term perspectives for clarity. In the short term, we will likely see a lot of wait-and-see behaviors from investors and businesses gauging the progress of U.S.-China negotiations and broader economic indicators.
 
----
+
 
 If I were a company today, I'd hold off for one or two months to see how discussions with India evolve, as we view it as an emerging market having potential for a trade agreement with the Trump administration.
 
----
+
 
 It's critical to monitor upcoming inflation figures, trade statistics, employment numbers, and market trends resulting from announcements. At this juncture, the shocking effects of the Trump administration's recent actions have triggered significant disruptions, which cannot be sustained indefinitely.
 
----
+
 
 The pressing question is how will this tumult stabilize? Could it transform on a sector basis, with some industries allowed to bring in goods duty-free, or will it orchestrate on a country-specific basis? For example, should India secure a deal, will more countries follow suit?
 
----
+
 
 For the medium-term, we must look for insights regarding influential figures in the Trump administration and their overarching economic goals. This period may offer a clearer perspective on policy drivers, although certainty will always be elusive in the next four years.
 
----
+
 
 Looking long-term, identifying countries offering competitive tax rates is crucial. For instance, nations like Egypt, Turkey, and Morocco with lower tax rates may present attractive opportunities compared to higher rates faced by countries like Vietnam.
 
----
+
 
 However, transshipment is an ongoing concern, as excessive reliance on Chinese inputs isn't favored by the U.S. administration. So, a responsive action-reaction cycle will persist. The Trump administration will be vigilant about enforcing regulations against illegal behaviors and transshipments from Chinese value additions.
 
----
+
 
 As we navigate this current environment, it’s an extended game. Monitoring trends and developments will be crucial for companies planning their next steps. 
 
----
+
 
 Interestingly, we observe that countries such as Brazil, Argentina, and Chile might emerge as significant beneficiaries as China pivots away from U.S. agriculture in favor of other suppliers, a shift that could also advantage Europe.
 
----
+
 
 Interestingly, a video gaining traction on Chinese social media portrayed overweight Americans sewing T-shirts—a stark contrast to the reality of labor dynamics in the U.S. Given American consumers' demand for low-cost products, it's impractical to expect that competitive wages would support such job creation.
 
----
+
 
 Juliana, now let’s discuss consumer electronics. You mentioned that this sector is notably distinct due to China's dominance. What makes consumer electronics, like phones and computers, a different case? 
 
---- 
+ 
 
 Eric, may I interject? 
 
----
+
 
 Absolutely! 
 
----
+
 
 Thanks! Lauren conducted the research on electronics, so let’s pivot to her expertise now. 
 
----
+
 
 Lauren, the spotlight is now on you regarding consumer electronics. Please share your insights.
 
----
+
 
 The fundamental takeaway regarding consumer electronics is that China remains exceedingly dominant in this sector.
 
----
+
 
 Historically, electronics has featured intricately woven global supply chains. Take the smartphone or laptop, for instance; it typically contains components from various countries, with chips often designed in the U.S., produced in Taiwan, and assembled in China, Vietnam, or India alongside components from South Korea and Germany.
 
----
+
 
 This sector's complex, globally integrated supply chains have traditionally shifted due to variations in production costs and skills. However, as we've seen in other industries, China's prominent role challenges this dynamic.
 
----
+
 
 Over the past 15 years, China has exported more electronics than every other country combined, claiming 65% of laptop and tablet exports and half of smartphone exports by value. Moreover, it is essential to note that the reliance on costs applies not only to finished products but also to components.
 
----
+
 
 Even as certain final assembly operations shift to countries like Vietnam and India—especially for firms like Apple and Samsung—these supply chains still heavily depend on machinery, components, and expertise sourced from China.
 
----
+
 
 Regarding U.S. tariffs, a glimmer of hope exists for electronics: there is existing manufacturing capacity outside China. For instance, Apple has built substantial capabilities in India and Vietnam that they can leverage to redirect some production toward the U.S. market. 
 
----
+
 
 There have been reports indicating that Apple plans to shift all its production in India to cater to U.S. demand. However, due to China's central role in the electronic supply chain, offshore manufacturing sites cannot fully fulfill U.S. demand. Reports suggest that even if Apple transfers all production from India, it can only cover around 50% of current U.S. demand.
 
----
+
 
 For the U.S., this signifies an unavoidable reality: there’s no hiding from tariffs, and American consumers will inevitably feel the impact. Apple, as a flagship brand, has particularly drawn focus from the Trump administration. Analysts conclude that transitioning the entire Apple supply chain to the U.S. is virtually unachievable.
 
----
+
 
 Even Tim Cook, a supply chain expert by background, acknowledges that there’s an abundance of seasoned supply chain engineers in China, making it difficult to find a comparable workforce in the U.S. 
 
----
+
 
 Moreover, it’s not solely about the iPhone; hundreds of suppliers contribute to Apple’s supply chain. Notably, anyone who’s been in southern China, including Dongguan or Guangdong province, recognizes the unparalleled infrastructure built for efficient product transport compared to U.S. ports like Long Beach and Oakland, which cannot handle similar volumes.
 
----
+
 
 Considering the need to manufacture 50 to 60 million iPhones when launching a new product, Apple has an immense logistical undertaking to manage in a tightly constrained time frame. 
 
----
+
 
 Lauren, is it feasible to enact Trump's vision of relocating the Apple supply chain to the U.S. based on your findings? 
 
----
+
 
 Achieving that would be extraordinarily challenging. Following the initial tariffs from Trump’s first term, Apple began seeking alternatives, investing heavily in relocation efforts in Vietnam and India.
 
----
+
 
 Despite this push, the company remains significantly reliant on China, and navigating the costs involved with relocating operations presents its own set of hurdles. No other country replicates the scale and production efficiencies China offers.
 
----
+
 
 In short, the likelihood of reshoring significant portions of electronics production to the U.S. in the near term is extremely low.
 
----
+
 
 Additionally, even if Rational, a structured approach exists to transition electronics manufacturing back to the U.S., it would necessitate a gradual implementation of tariffs over ten years. Permitting temporary imports from Vietnam while progressively amending tariff policies could provide companies the stability needed to adapt.
 
----
+
 
 Yet the current tumultuous environment complicates investments, as uncertainty regarding forthcoming tariff policies hinder firms from committing resources. 
 
----
+
 
 The CHIPS Act was a prime example of a successful initiative aimed at localizing chip production in the U.S., but such initiatives have faced turmoil under the Trump administration—making meaningful progress unlikely. 
 
----
+
 
 Agatha and Lauren, as we wind down our discussion, let's turn our attention to the solar and automotive sectors. Both are vital to China's strategic vision for new technologies. How is the landscape of these sectors modified, and what challenges lie ahead? 
 
----
+
 
 Lauren, let’s begin with solar panels. Chinese dominance in this sector largely stems from significant cost advantages, which have solidified its central position within global supply chains. Over the last decade, China’s share of global solar panel exports rose to over 54% in 2023. 
 
----
+
 
 This raises pertinent questions regarding the potential ramifications of tariffs on this sector, particularly if differences between China’s rates and those imposed on other countries remain stark. Rewinding to the U.S. anti-dumping duties on Chinese solar cell imports from 2012, China then dominated U.S. solar panel supply, yet these tariffs incentivized a shift to Southeast Asian countries like Thailand, Malaysia, Cambodia, and Vietnam.
 
----
+
 
 Now, in 2023, China barely registers in U.S. solar supplies, with 70% coming from these other countries. This illustrates how tariffs can foster the establishment of supply chains outside China if there’s sufficient disparity in imposed rates.
 
----
+
 
 What about the global landscape? Beyond the U.S., there’s a considerable demand for Chinese solar panels in other markets, such as the EU and the global south. You're right! There’s an ongoing fragmentation of the supply chain, with Chinese solar panels predominantly serving European and global south markets, while the emerging supply chains from Southeast Asia—now also including India and Turkey—target the U.S. market.
 
----
+
 
 Agatha, let’s discuss the automotive sector. BYD is rapidly setting up factories and expanding production in Turkey, Indonesia, Vietnam, and Brazil. What stood out in your analysis of this sector? 
 
----
+
 
 Several trends emerged regarding the automotive landscape. We notice a pronounced distinction between internal combustion engines (ICEs) and electric vehicles (EVs). For ICEs, market shares from nations like Japan, Germany, and Mexico persist. 
 
----
+
 
 However, in the EV sector, which relies heavily on China's supply dominance, a different narrative unfolds. China's ongoing competitiveness is working against other countries attempting to catch up, blurring established business models in the auto sector.
 
----
+
 
 China’s capacity enables it to manufacture a wide array of components, making it viable to ship certain goods that previously wouldn’t have made economic sense. 
 
----
+
 
 Moreover, as we observe developments in solar panels and EVs, China’s growing competitive edge complicates the landscape for both advanced and emerging economies striving to achieve parity.
 
----
+
 
 The urgency lies in the speed of shifts—what we discover now will differ significantly in just a year due to China's consistent advancements and efficiencies in production. 
 
----
+
 
 Lastly, Juliana, as we summarize our conversation, what key takeaways do you wish to illuminate regarding the long-term understanding of Chinese supply chains amid the current tariff climate? 
 
----
+
 
 I want to emphasize the complexity involved in this process. Years of time and effort are necessary for these supply chains to reorganize, with multiple countries involved. 
 
----
+
 
 It's crucial to acknowledge the effects from previous U.S. trade conflicts while recognizing that China retains its position of strength. As the U.S. escalates its actions against not just China but also a wider array of countries, the future landscape of supply chains remains uncertain and intricately intertwined.
 
----
+
 
 The report titled "China and the Future of Global Supply Chains," written by Agatha Kratz and her team at Rhodium Group—Juliana Bouchot and Lauren Piper—offers invaluable insights. Although it was published in February, it remains highly relevant to understanding the past trajectories influencing the current landscape. 
 
----
+
 
 Thank you to Agatha, Juliana, and Lauren for joining us today and contributing to our understanding of these complex dynamics. 
 
----
+
 
 We'll be back next week with another episode of the China Global South podcast, featuring Kobus and Giraud returning from Nairobi. Until then, I'm Eric Olander. Thank you for tuning in and participating in this discussion. Connect with us online and explore more at [ChinaGlobalSouth.com](http://ChinaGlobalSouth.com).
 
