@@ -2,7 +2,7 @@
 layout: post
 title: "Scaling "Thinking": Gemini 2.5 Tech Lead Jack Rae on Reasoning, Long Context, & the Path to AGI"
 date: 2025-04-05 00:00:01
-categories: podcast
+categories: podcast cognitive-revolution
 tags: [podcast_script]
 ---
 
