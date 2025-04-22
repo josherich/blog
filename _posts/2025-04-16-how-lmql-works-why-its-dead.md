@@ -39,8 +39,11 @@ Here's how it works:
 
 I suspect there are two reasons: The real world use cases are largely satisfied by structured/json output; instruction following has improved a lot. Combining these two gives us a nice alternative to LMQL using simply string interpolation using context from json output.
 
-## Other Options
+## A Different Perspective
 
+Another way to think about tool use in this manner is factual knowledge retrieval. [Kilian Weinberger](https://www.youtube.com/watch?v=klW65MWJ1PY&t=1772s) recently showed a related technique that steers model's generation to pause and fetch factual knowledge from a database. The behavior is trained into the model without hurting its generalization ability.
+
+## Other Options
 
 - [pyctrl in aici](https://github.com/microsoft/aici/tree/main/controllers/pyctrl)
 - [BAML](https://docs.boundaryml.com/home)
@@ -49,3 +52,7 @@ I suspect there are two reasons: The real world use cases are largely satisfied 
 - [Marvin](https://askmarvin.ai/functions/generate#structured-data)
 - [lm-format-enforcer](https://github.com/noamgat/lm-format-enforcer)
 - [outlines](https://github.com/dottxt-ai/outlines#structured-generation)
+
+## Wait, unnecessary abstraction is bad!
+
+https://hamel.dev/blog/posts/prompt/#my-personal-experience
