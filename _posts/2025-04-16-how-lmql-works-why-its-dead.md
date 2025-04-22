@@ -52,7 +52,3 @@ Another way to think about tool use in this manner is factual knowledge retrieva
 - [Marvin](https://askmarvin.ai/functions/generate#structured-data)
 - [lm-format-enforcer](https://github.com/noamgat/lm-format-enforcer)
 - [outlines](https://github.com/dottxt-ai/outlines#structured-generation)
-
-## Wait, unnecessary abstraction is bad!
-
-https://hamel.dev/blog/posts/prompt/#my-personal-experience
