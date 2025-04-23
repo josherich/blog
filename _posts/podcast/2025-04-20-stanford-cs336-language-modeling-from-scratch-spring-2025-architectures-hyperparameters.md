@@ -19,11 +19,17 @@ So the question that we're going to ask is: people have trained lots of LLMs at 
 
 Today's theme is that the best way to learn is hands-on experience, but the theme of this lecture, because we can't train all these transformers, is to learn from the experience of others. So the starting point is the original transformer. 
 
+![2025 Lecture 3 - architecture_page-0004](https://github.com/user-attachments/assets/09f30b35-ceda-4f5f-8af3-752911e4de56)
+
 Just as a review, hopefully, you all remember this from 224N or your other NLP classes. You've got some simple position embeddings at the bottom. You've got multi-head attention, you've got layer norms afterwards, you've got a residual stream going upwards, you've got an MLP, and then a softmax at the very end. We're going to see variance in all these different pieces until we get to basically the most modern variants of the transformer, and the latest one I'll talk about will be just a few months before. 
+
+![2025 Lecture 3 - architecture_page-0005](https://github.com/user-attachments/assets/5ab819ed-5409-4b22-87c3-b1047469771e)
 
 What you implemented is not the vanilla transformer variant from the original paper. We've modified a few things; we've put the layer norm in front of the block. So you can see on this slide over here that there is the norm right before each of these blocks in the residual stream. We've asked you to implement rotary position embeddings. The feed-forward layers use something called a swiggloo, and then linear layers now emit these bias terms. You might ask why have you forced us to implement this weird variant of a transformer instead of the original transformer? 
 
 Then yesterday, I was thinking, okay, I should catch up on all the developments that have happened in architectures over the last year, and Percy warned me about this because he said you're going to have to redo the lecture every year. So I started looking, and I was like, all right, there's a couple of good papers recently. There's Command A, there's two-mode furious, there's small LM, and then you go looking and you're like, wow, there's Gemma 3 and Quent 2.5 and intern LM, and then there's more. I can't even sort of cover the screen with these guys; there's a lot of models. 
+
+![2025 Lecture 3 - architecture_page-0007](https://github.com/user-attachments/assets/cf71ef0a-5f16-4384-8458-d3ceb2a4382c)
 
 There were about 19 new dense model releases in the last year, many of them with minor architecture tweaks. On the one hand, it's kind of annoying to go through all these papers and say what is happening in all of these, but also it's like actually a wealth of information because not all of them do the same thing, and you can kind of see, not all of you can especially in the back, can see the details of this slide, but I put together a little spreadsheet of what all these models are doing, starting from all the way from 2017 with the original transformer all the way to 2025, what the newest models are doing. 
 
@@ -37,6 +43,8 @@ So we're going to start with architecture variations. The two things that I'll m
 
 There's one choice that basically everyone does since the very first GPT, and I'll talk about that in a bit. But there's a lot of different variations that we can learn from here. The big one I've already talked about in 224N, so if you remember that lecture, this will be review for you rather than being totally new. 
 
+![2025 Lecture 3 - architecture_page-0010](https://github.com/user-attachments/assets/aac6ce92-09f4-4a1a-9f73-8592d6945f79)
+
 I think the one thing basically everyone agrees on and agreed on almost from the very start is the use of pre-norm versus post-norm. That terminology will get a little bit more confusing, but the original transformer paper did this thing on the left over here, where you had your residual stream in the gray. In addition to the residual stream, you had these layer norms after sort of every subcomponent. You would do your multi-head attention, you would add back to the residual stream, and then you would layer norm that. Then you would do the same thing with your fully connected layer, and then you would layer norm it.
 
 Very, very early on, people realized that moving this layer norm to the front of this non-residual part, so this block on the right, did much better in many different ways. Basically, almost all modern LLMs that I know of use this kind of norm. There have been some sort of new innovations recently that I'll touch on in two slides, but a lot of models have moved to this. 
@@ -45,15 +53,19 @@ The one exception is opt 350M, which I'm guessing they kind of messed that one u
 
 The pre-norm versus post-norm thing, if you look into why it was originally developed, the arguments were that if you wanted to use this post-norm stuff, it was much less stable. You would have to do some careful learning rate warm-up style things to make it train in a stable way. If you look at some of the earlier papers arguing for this pre-norm approach, you almost always see sort of this comparison of, hey, if we use pre-norm and we do some other stability-inducing tricks, then we can remove warm-up, and these systems work just as well, if not better, than the post-norm layer norm with careful warm-up type approaches. 
 
+![2025 Lecture 3 - architecture_page-0012](https://github.com/user-attachments/assets/754afa16-4de8-4f7b-8261-c429fe40c18e)
+
 You see this in sort of a machine translation setting here. You see this as well on the right in various other tasks, especially using BERT, which was trained with post-norm. There were many arguments about why this was helpful. There were arguments about gradient attenuation across layers. If you do pre-norm, then the gradient sizes would remain constant, whereas if you did post-norm without warm-up, it would sort of blow up in this orange way. 
 
 It's a reasonable argument, but I think maybe a closer to modern intuition would be this argument that pre-norm is just a more stable architecture to train. Some of the earlier work by Solazar identified all these loss spikes. If you were training with pre-norm, kind of in blue here, you would see a lot more loss spikes and the training would be kind of unstable as you were training. 
 
+![2025 Lecture 3 - architecture_page-0013](https://github.com/user-attachments/assets/7f385e4e-822c-46a9-ab53-fd68eaeac41d)
+
 So you see the gradient norm here is spiking and generally higher than the one with pre-norm. Today, you see pre-norm and other layer norm tricks being used essentially as stability-inducing aids for training large neural networks. This brings us to one new, fairly recent innovation. I think this didn't exist when I gave this lecture last year, which is this variant that I don't think really has a great name, but I'm just going to call it the double norm for the moment.
 
-This is the original figure that I showed you at the very beginning, and we know that putting layer norms in the residual stream is bad. But actually, someone in 224n this year asked, why do you have to put the layer norm in the front? Why can't you put it after the feed-forward network? Of course, you can, and not only that, sort of recently people have gone around and just added the layer norm after the blocks as well. Grock and GMA 2 both take this approach of layer norms both in front and after. 
+This is the original figure that I showed you at the very beginning, and we know that putting layer norms in the residual stream is bad. But actually, someone in 224n this year asked, why do you have to put the layer norm in the front? Why can't you put it after the feed-forward network? Of course, you can, and not only that, sort of recently people have gone around and just added the layer norm after the blocks as well. Grok and Gemma 2 both take this approach of layer norms both in front and after. 
 
-GMA 2 does only the layer norm after the feed-forward and the multi-head attention, and this is actually kind of an interesting change. Pre-norm has just been kind of dominant, and the only thing for a while, but things have been changed up a little bit. Now there’s a new variant, and there have been some evaluations of this kind of approach. People have argued it's a little bit more stable and nicer to train on these larger models. 
+Gemma 2 does only the layer norm after the feed-forward and the multi-head attention, and this is actually kind of an interesting change. Pre-norm has just been kind of dominant, and the only thing for a while, but things have been changed up a little bit. Now there’s a new variant, and there have been some evaluations of this kind of approach. People have argued it's a little bit more stable and nicer to train on these larger models. 
 
 By the way, feel free to stop me and ask me questions as well. I have a tendency to keep going if no one stops me. So yes, why is the layer in the residual bad? That's a good question. I don't think I can give you proof of why it's bad. I think one intuitive argument for why this might be bad is that the residual gives you this identity connection all the way from almost the top of the network all the way to the bottom. If you're trying to train really deep networks, this makes gradient propagation very easy. 
 
