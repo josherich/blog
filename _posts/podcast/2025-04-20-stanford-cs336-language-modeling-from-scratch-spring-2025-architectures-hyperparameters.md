@@ -164,11 +164,17 @@ How do I do that? "We" is in position zero, so I'm not going to rotate that guy 
 
 If you look at these two arrows, they have the same relative angle, so their inner products are preserved. This is kind of the nice fun idea about rope. You just rotate the vectors, and the rotation angle is determined by the position of each word. Rotations—the inner products don't care about relative rotations, and so these inner products are only going to look at the difference in distance. 
 
+![2025 Lecture 3 - architecture_page-0033](https://github.com/user-attachments/assets/8df3a448-9768-4bd9-b6f5-e2eb274787ac)
+
 Now it's easy to think about in 2D because rotations are kind of obvious. In 2D, there's only one way to rotate a vector. But in high-dimensional spaces where we operate, it's not obvious how we are going to do this rotation. The rope folks came up with, in some ways, the simplest but also effective way of doing this. You take your high-dimensional vector in this case D, and I'm just going to cut it up into blocks of two dimensions, and every two dimensions are going to be rotated by some theta. There's going to be a rotation speed, and I'm going to rotate the pairs of dimensions. 
 
 Now every pair of dimensions is encoding all these relative positions, and much like in sine and cosine embeddings, I'm going to pick some set of thetas such that some embeddings are rotated quickly, and others are rotated much more slowly. They can capture both high-frequency information or like close by information and very far away sort of lower frequency positioning information. The actual rope math here is that if you're going to think about rotations, it's just going to be multiplying with various sign and cosine rotation matrices. 
 
+![2025 Lecture 3 - architecture_page-0034](https://github.com/user-attachments/assets/2eb373f1-4dc2-478f-b185-46e19da2b2bc)
+
 You can think about this as an operation where you multiply your embedding vectors with these block 2x2 matrices. There are no additive or cross terms that sort of appear here; this is all purely relative. One thing that is different if you're used to absolute position embeddings or sign and cosine embeddings is that rope is going to operate at the actual attention layer. You're not going to add position embeddings at the bottom; whenever these attention computations are going to be done, you're going to intervene on that layer. 
+
+![2025 Lecture 3 - architecture_page-0035](https://github.com/user-attachments/assets/c2eddc59-9a61-46b1-9e91-4c90c57bad26)
 
 That's going to give you your position information. I pulled this from the Llama implementation of rope. You've got the initial normal attention stuff at the very top, like query keys and values—these are your normal linear projections. Then you're going to come up with cosine and sine angles. These are rotation angles telling you how much to rotate different blocks of the query and key. 
 
@@ -192,13 +198,19 @@ I will show you some empirical evidence for why this is a sane number later, but
 
 You can do a little bit of math, and if you scale the GLU variance down by a factor of two-thirds, you'll conclude that the way to do that is to set dff equal to 8 over 3 d model. That’s the number you end up at, and you can convince yourself that will give you the same number of parameters, and that’s the ratio you would get if you started with a ratio of four. If you look at many of the models, they actually do follow this rule of thumb.
 
+![2025 Lecture 3 - architecture_page-0038](https://github.com/user-attachments/assets/4eaf2a9e-a708-46c0-a21a-61b0adbea099)
+
 Palm, for example, palm mistro and llama are slightly larger. These are GLU models, but they don't follow this 2.6 rule. If you look at llama, for example, one quen deepseek and t5, they all roughly follow this kind of 2.6ish rule. I can put up the big table of LMs I made later with hyperparameters; many, many, many of them fall into this roughly 2.6 range, and that’s the standard parameterization of a GLU unit. 
+
+![2025 Lecture 3 - architecture_page-0039](https://github.com/user-attachments/assets/fdfe2a5b-51a7-4866-978b-6e313e2571de)
 
 I'll go through one other exception. I really like this exception because, in many ways, big large language model training is a game of copying hyperparameters from other people, so we don't learn very much; it's very conservative. But T5 I really like because in some sense it's really bold, and I think Google people actually do some pretty bold stuff. If you look at the 11 billion parameter T5 model, they have a pretty incredible setting. Their hidden dim is 1024, but their dff, their up-projected dimension, is 65,000. 
 
 That's going to give you a 64 times multiplier on the ratio of dff to d model. Of course, you compare this where Palm is like a factor of four, and everyone else is much smaller. This is a very large difference. There are some other recent examples of using much bigger multipliers, like gamma 2, which follows in these footsteps and does a factor of eight. I'll talk a little bit about this exception later. T5 was a totally fine model, so this should tell you it is possible to train a model with such a much larger ratio.
 
 One of the things that I think is quantitative evidence—I saw that 4x multiplier and I thought, is that really the right thing to do or is there some more quantitative experiment someone's done to convince me that that is a good idea? One of the figures from Jared Kaplan's scaling law paper—most people know this paper for the scaling law component—but actually, there are also some really useful hyperparameter components in this paper. You’ll see that they do exactly this thing I’m talking about, the dff to d model ratio. 
+
+![2025 Lecture 3 - architecture_page-0040](https://github.com/user-attachments/assets/fb3b40f5-6ea4-4175-b140-b29a886d6652)
 
 They plot essentially how much the loss increases as you vary this, and you kind of see that there's kind of a sweet spot. This is a ratio of 1, 2, 3, 4, and then up to like 10 or so here. There’s a pretty wide basin here anywhere between 1 to maybe up to 10 where you can pick whatever feed forward ratio you want, and it'll be roughly optimal. Four is not too far off from your optimal choices; it's like one, two, three, four. It’s like right here or maybe right here, so that's a pretty reasonable choice. 
 
@@ -210,13 +222,19 @@ So, I think that's a good question. The question was what's the ratio or what's 
 
 While that is a kind of true statement, the wider it is, you're getting more parallel computation rather than serial computation. So you're spending your flops and your parameters in a slightly different way than if you made your hidden units bigger, which would let you pass more information. Using more units would give you more serial computation. You're spending your parameters and your flops in a slightly sub-optimal way from expressive power, but you might get systems gains if your matrices are wide enough.
 
-Okay, excellent. Another thing that is a surprising or maybe not surprising consensus hyperparameter is the ratio between the model dimension and the head dimension times the number of heads. I clipped this from 224N, but really the basically canonical choice is to pick things so that the dimension D is the hidden dimension. If you have multiple heads, you're just going to split up the number of dimensions each head gets, right? You're going to keep the dimensions fixed as you add more heads. 
+![2025 Lecture 3 - architecture_page-0042](https://github.com/user-attachments/assets/324519e6-26c9-4eb0-b061-73a1f4f70172)
+
+Okay, excellent. Another thing that is a surprising or maybe not surprising consensus hyperparameter is the ratio between the model dimension and the head dimension times the number of heads. I clipped this from 224N, but really the basically canonical choice is to pick things so that the dimension D is the hidden dimension. If you have multiple heads, you're just going to split up the number of dimensions each head gets, right? You're going to keep the dimensions fixed as you add more heads.
+
+![2025 Lecture 3 - architecture_page-0043](https://github.com/user-attachments/assets/3bc84901-d5a0-4378-8aca-61784cafa1b1)
 
 You don't have to do that; as you add more heads, you could just keep the same number of dimensions per head, and you could let the attention part take more and more parameters. You could do that—that's an option you have. Most models, once again, do follow this guideline. We see GPT3, T5, Lambda, POM, and Llama 2. They all have a ratio of one or almost exactly one. T5 is the one exception that breaks this rule; they tried the big ratio of 16. 
 
 Otherwise, it’s all fairly following this consensus. There have been a couple of papers that have argued against this 1:1 ratio. There’s a notable one by Boja Panelli et al. 2020, who have argued that if you have more heads, they’re going to have lower rank. If you have very few dimensions per head, that starts affecting the expressiveness of the attention operation. 
 
 In practice, it doesn't seem like we see too many significant low rank bottlenecks. Most of the models with this ratio of one seem to do just fine. This is really a parameter that's generally been held constant by most of the models that we've seen. If I have time, I'll talk a little bit about different optimizations that people have made on this multi-head component. But hyperparameter-wise, things have stayed fairly similar.
+
+![2025 Lecture 3 - architecture_page-0046](https://github.com/user-attachments/assets/70ed440a-838d-4972-b675-003e5cd5716c)
 
 I think one of the big ones in terms of hyperparameters is the aspect ratio. We can think about deep networks. We can have more and more layers, or we can have wide networks. Generally, if you want one knob to control the width, that would be the hidden dimension of the residual street. It would control essentially the width of almost all the operations at once. This seems like a pretty critical thing to tune. You might think that deeper networks are smarter and more expressive or that wider networks are more efficient. 
 
@@ -226,6 +244,8 @@ I'll talk a little bit about evidence for that in a second. There are considerat
 
 Also, if you have really wide models, then you can do something called tensor parallel, where you slice up the matrices and distribute those on GPUs. Different parallelism paradigms are going to have different constraints; you need really fast networking for tensor parallel, and you might get away with slower networking or higher latency networking for pipeline parallel. Your networking constraints might, in turn, drive some of these width-depth considerations.
 
+![2025 Lecture 3 - architecture_page-0047](https://github.com/user-attachments/assets/e53e5258-98a7-40e6-9eb2-24509fc438c8)
+
 Setting that aside, you might ask abstractly what the impact of aspect ratio on model performance is. Kaplan et al. have a really nice visual aid showing how aspect ratio impacts performance. This is three different scales: 50 million, 274 million, and 1.5 billion parameters. The x-axis is aspect ratio; the y-axis is sort of loss difference in percentage change. 
 
 You see that around 100—which I told you was the consensus choice of hyperparameters—is the minimum across different scales, so this is kind of backed by some large-scale hyperparameter data published by Kaplan et al. It roughly matches that intuition, and a really nice thing here is it seems to be the case that aspect ratio optima does not shift too much across several orders of magnitude here. If this holds up even more, that's good news; you can keep training on one fixed aspect ratio.
@@ -233,6 +253,8 @@ You see that around 100—which I told you was the consensus choice of hyperpara
 One thing I will note that is quite an interesting result is that EK and others at Google had a very interesting paper studying the impact of depth versus width, both upstream and downstream. One of the things they found was that if you're looking at losses, then it doesn't matter. Parameter is the only thing that matters; deeper models don't help you. But the story is less clear if you're looking at downstream accuracy; at the time, they were looking at fine-tuned superlue accuracy. They were arguing that for the same amount of flops, deeper models might be better.
 
 I'll leave it at that. There’s not quite as much follow-up to this work, at least that I've seen, but downstream performance may actually be slightly different in terms of the aspect ratio considerations here.
+
+![2025 Lecture 3 - architecture_page-0048](https://github.com/user-attachments/assets/72b7a32c-79b9-41a1-93b7-11a6d6d1d5df)
 
 Okay, cool. The final thing I want to talk about in this very low-level hyperparameter world is what the vocabulary sizes are that you might want to pick. In general, vocabulary sizes have been trending upwards. I think a big part of why is that LLMs are being deployed out in the wild. They're becoming more useful services. When that happens, you're going to interact with people speaking different languages and using emojis—all sorts of other kinds of modalities or languages than what you might expect. 
 
@@ -249,6 +271,8 @@ Out to be but early days people did a lot of dropout. Then there's a lot of weig
 
 Dropout has sort of gone out of fashion, but weight decay has really been something that a lot of people continue to do. Why is that? That's a really odd thing to be doing. I'll give you a moment to just think about this state of affairs. If you're training a really large neural network for one pass on SGD on vast amounts of data, why would you use weight decay when you're doing that? Maybe some of you know the answer, but I think that's an interesting thing to think about. It's very intuition-violating, at least for me.
 
+![2025 Lecture 3 - architecture_page-0051](https://github.com/user-attachments/assets/2417c877-ba38-408b-90e5-fb5aa7244595)
+
 So, okay, the reason is because it's not to control overfitting in the sense that if you look at weight decay, different amounts of weight decay don't really seem to change the ratio of training loss to validation loss. You can train with different amounts of weight decay, and if you train long enough where you control your hyperparameters appropriately, you'll end up with the same train to validation loss gap. So overfitting—nothing's happening here, even with zero weight decay. But what is interesting is that weight decay seems to be interacting somewhat in a strange way with the learning rate schedules of the optimizers. 
 
 What's happening is that if you look at a constant learning rate, this is a model trained on constant learning rate, then you suddenly decrease the learning rate in ten years. So you see this drop-off as you decrease the learning rate. Then let's look at different kinds of weight decay that you could do. With weight decay, the model's not training very well at this high learning rate, and then when you decrease the learning rate, it'll very rapidly drop off. When you look at cosine learning rate decay, what happens is that the models with high weight decay start out very slow, but then as they cool down—that is, their learning rate decreases—they very rapidly optimize. 
@@ -258,6 +282,8 @@ So there's some very complex interaction happening here between the optimizer an
 But now you sort of see why if you look at a lot of the reports, you'll see we use weight decay. This is kind of why that ends up happening. 
 
 Putting all that together, there are certain things that I think are just kind of no-brainers. If you're picking various hyperparameters for your model, you don't really need to think too deeply about them in the sense that they’ve been validated and basically everyone else does them. This includes things like the hidden size of a multi-layer perceptron, the head dimensions of your multi-head attention, your aspect ratio, and your choice of regularization through weight decay. All of those have fairly good consensus evidence of how to pick most of these hyperparameters, and those defaults roughly give you the kinds of things that we suggest in the assignment so you can kind of follow along, and they'll roughly give you something similar to this.
+
+![2025 Lecture 3 - architecture_page-0052](https://github.com/user-attachments/assets/f5247c18-bec2-4487-980a-363475496338)
 
 Any questions about the hyperparameter piece? Yes? Is there a reason why dropout has gone out of fashion? That's a good question. I don't think I've seen a deep analysis of why dropout is or isn't helpful. I haven't seen any result that shows, for example, that it helps for training loss. What this paper argues, and logic would dictate, is there's not really a training overfitting issue with these models that can't even do one epoch over their training data. 
 
@@ -273,6 +299,8 @@ Are there differences in the architecture hyperparameter choices people make as 
 
 One thing I will note, and I will talk about this in just a few slides, is that the multimodal models pioneered some intriguing techniques in stabilizing language model training, which has been a really big theme. So what is different is that often when you bolt on this new kind of vision piece, you need to think carefully about how to stabilize that training process. Those innovations have actually seeped back into pure text language model training.
 
+![2025 Lecture 3 - architecture_page-0053](https://github.com/user-attachments/assets/2324c066-31ab-4ed5-b75c-63017cdeca22)
+
 So, I went back through and looked through all these new papers as I was trying to think about what's been new in the last year and sort of what new architecture-related things have happened. Actually, the core architecture hasn't changed much, but I think the one thing that stood out as being emphasized in many of the releases has been what I would call stability tricks. 
 
 These are things where you would like to train your model in much more stable ways, and as you make bigger and bigger models or train for longer periods, these kinds of issues start to appear more and more. I've taken this from the mode 2 paper, and actually that paper is a great set of academic results on LLM training stability. One thing they start with is this figure. You look at this blue curve, and this is a terrifying graph to look at. Your loss curve seems to behave okay, but you've got some bad spikes every now and then, and you open up your gradient norm, and it's this horrible plot where you've got spikes everywhere where your norms are completely blowing up. 
@@ -283,6 +311,9 @@ The orange curve has nice low gradient norms throughout, and that's really the k
 
 It can be a problem because you're taking exponentials, and those can be numerically badly behaved. You're also dividing two numbers, and you might have a division by zero. For many different reasons, this softmax piece is a part that you might have lots of issues with. So, where are the softmaxes in a transformer? Well, there's one at the very end, so you've got to be careful about that output softmax. And also, there's softmaxes in your self-attention. 
 
+![2025 Lecture 3 - architecture_page-0054](https://github.com/user-attachments/assets/e1ba438f-ca46-461f-a1ef-60454b011347)
+![2025 Lecture 3 - architecture_page-0055](https://github.com/user-attachments/assets/fd3927f1-b463-47b9-8cc1-41e9a7b269fb)
+
 There are two softmaxes that we're going to think a little bit about, and for each one, I'm going to mention a stability intervention that has generally seemed to be effective. The first one is called the Z-loss. In my desire to cite a paper that's older, I've gone back to Devlin in 2014, where in a machine translation paper, their goal was to ensure that this normalizer was near one. If you look at P of X, that's the output softmax. 
 
 The output softmax consists of two terms: you exponentiate your logits, and then you divide by the normalizer Z. If you want this Z of X, you want to train the network to have a Z of X close to one. Well, then you can rewrite your loss and add a little second term here to try to force log of Z of XI to be close to zero. You're going to end up with an auxiliary loss term that's alpha log of Z of XI. You can see that derivation on the right here. 
@@ -291,13 +322,17 @@ This is, in some sense, what people often call the Z-loss. Jacob Devlin and othe
 
 All of these problematic operations kind of go away. You can think of the softmax as being well-behaved when Z of X is close to one or log of Z is close to zero. Palm, in some sense, is very much a pioneer because they did this Z-loss trick. Many others didn't really do it for a long time, or at least the ones that had open papers. 
 
-There was a sequence of papers that have done this; Byron 2 is actually the earliest follow-up that I know of, and then DCLM and Almo, and now several others have basically picked up on Z-loss as a very nice convenient intervention for improving stability. The other trick we see is how to stabilize the output softmax, but we've got another softmax we've got to deal with in the attention operation. This is from an Nvidia paper. I forgot to put the citation marker here, but this is a block diagram of how attention works. You've got your layer norm at the beginning. 
+There was a sequence of papers that have done this; Baichuan 2 is actually the earliest follow-up that I know of, and then DCLM and Almo, and now several others have basically picked up on Z-loss as a very nice convenient intervention for improving stability. The other trick we see is how to stabilize the output softmax, but we've got another softmax we've got to deal with in the attention operation. This is from an Nvidia paper. I forgot to put the citation marker here, but this is a block diagram of how attention works. You've got your layer norm at the beginning. 
 
 You multiply your queries and your keys, softmax it, multiply the values, and then project it. This looks just like your normal multi-head attention operation. So what's the difference? Several folks came up with this idea or approach called the QK norm, where you take the queries and the keys and pass them through a layer norm before you take their inner product for the softmax operation. This is a very different approach to controlling the behavior of the softmax. Here, you're not controlling the normalizer Z; instead, you're controlling the inputs to the softmax to be kind of bounded in size, and that's going to naturally control the bad behaviors of the softmax. 
 
-As I said before, this is originally an innovation from the vision and multimodal model community. Deani in 2023 had a paper on training very large vision transformers. Chameleon and Edith Feix from Hugging Face used these tricks for their multimodal training components. Several others like GMAT 2, DCLM, and OMO2 basically use these kinds of techniques to stabilize their training. 
+![2025 Lecture 3 - architecture_page-0056](https://github.com/user-attachments/assets/7ae55176-1ae0-4c08-95bc-9e1c310cf5d8)
+
+As I said before, this is originally an innovation from the vision and multimodal model community. Deani in 2023 had a paper on training very large vision transformers. Chameleon and Edith Feix from Hugging Face used these tricks for their multimodal training components. Several others like Gemma 2, DCLM, and OMO2 basically use these kinds of techniques to stabilize their training. 
 
 I think I'm allowed to add one joke per lecture, and this is the one I'm going to go with here. One of the things that has stood out in terms of stability interventions has been just how strikingly effective layer norms are. We've seen going from layer norms just in the pre-part of the block to the beginning and the end of the non-residual component, and now we've also thrown it into the Q and K component. At least in terms of improving stability, layer norms have been shockingly effective without affecting performance too much.
+
+![2025 Lecture 3 - architecture_page-0057](https://github.com/user-attachments/assets/4bc7d4fe-fa38-401a-82ed-6e1aceafa535)
 
 The last trick I'll note, which I think has not been quite as frequently used, is to soft cap the logits that go into the softmax. The QK norm is a very heavy-handed intervention because we're operating over the entire vector. After taking the inner products for self-attention, you could pass them through a kind of soft maximum operation. You could pass them through this equation where you take your logits as your input divided by the soft cap multiplied by the soft cap. 
 
@@ -311,6 +346,8 @@ If you take that out, that's a huge change to the model. It will have no idea wh
 
 I have this last bit—last few slides that I want to end with. If we go over, then we can always push this into the next lecture, but I think we also have a lot of content next time because I have to cover Datasets v3. The last thing I want to cover is variations on the attention heads. 
 
+![2025 Lecture 3 - architecture_page-0059](https://github.com/user-attachments/assets/2015808a-2ebb-4c1d-9f5f-3c2849e7a80b)
+
 Attention heads, I think, haven't had as much work done to them, but there have been a few important changes that you need to know about in order to understand the models being trained. The first thing I'll talk about is GQA and MQA. These aren't critical to the training-time behavior of the models, but they're very important in understanding the inference cost and inference behavior of the models. Because this is an important architecture change, I'll mention them here in addition to probably being mentioned by Percy in some of the inference lectures. 
 
 The other new development I'll mention is how the most recent models, like Llama 4, supports supposedly 10 million tokens of context. How does it do that? Well, it does so by messing with the attention pattern in very structured ways. 
@@ -323,7 +360,11 @@ That's N^2 of them, and you've got a projection and you've got D^2 projection op
 
 Memory accesses are expensive on a GPU relatively speaking, and compute is relatively cheap. In this batch computation I'm showing you here, the arithmetic intensity—if you take the ratio of those two things—is going to be 1 over K plus 1 over B * N inverse. This idea means we can keep our GPUs running because if we have a large number of heads, a large batch size, and large sequence length, those are all going to be good large numbers. 
 
+![2025 Lecture 3 - architecture_page-0060](https://github.com/user-attachments/assets/f2c324e6-43ad-4e78-83e1-58cbb4f38ddc)
+
 Of course, this is what happens at training time. The issue is that at inference time, we do not have these big chunky matrices to multiply together. That's going to really change the nature of our algorithm behaviors. When we're generating text, remember we have to generate a token, and the transformer has to read that token and process it. Then we can get the next token distribution, and we do things autoregressively one token at a time. 
+
+![kv-cache](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*uyuyOW1VBqmF5Gtv225XHQ.gif)
 
 By doing this, we can't parallelize the generation process. We need to go step-by-step for every single new token. When we do this, we're going to need to incrementally compute attention—an idea that people call the KV cache. This is a lovely animation of a KV cache explained. If you look at this figure, you're doing is generating a new token and conditioning on it. You want to ask what sort of information you should look up in the past that query token. 
 
@@ -333,17 +374,29 @@ I'm computing one row at a time, and that row is exactly what's necessary to gen
 
 I'm not wasting any sort of matrix or vector multiply. The total number of arithmetic operations remains the same—B and D. But the memory access patterns are different. When I do the KV caching thing, I have to move various kinds of parameters in and out of memory repeatedly. Whenever I multiply with a key matrix, I'm going to have to put that into memory and then multiply it by K. 
 
+![2025 Lecture 3 - architecture_page-0061](https://github.com/user-attachments/assets/ceaf8fb9-660f-4157-8980-0871227e3b22)
+
 Then I need to compute some activations, and I'm repeatedly loading different matrices. That's going to give me a much higher total memory access of B^2 D plus N D^2. When you take this ratio, the arithmetic intensity is not so good. You're going to get N / D plus 1 over B inverse. 
 
 If I want the arithmetic intensity to be high, I want this thing inside to be very small, so I need really large batches, and I need N / D to be small. What does that mean? I need really short sequence lengths or really big model dimensions, and this N / D is really unfavorable because I don't want a bigger model, and I don't want a shorter sequence length. This is the core inference cost trade-off that people face. 
+
+![2025 Lecture 3 - architecture_page-0062](https://github.com/user-attachments/assets/03d0c6e4-c34f-4f89-8e64-d8585c2df463)
 
 You have this very bad memory access pattern where you have this one term N / D, which is really killing you in terms of the throughput of your system. This motivates something called MQA. The key idea here is you can have multiple heads for the queries, but only one dimension or one head for the keys and values. This immensely simplifies things. Once you do this, you're moving much less information for the K's and the V's. 
 
 KMV is shared, but the query has many heads. You still have multi-head attention or multiple queries but only single K's and V's. That's why it's called multi-query attention. Now when you do the same kind of arithmetic, we have fewer memory accesses because we've shared the K's and the V's. The arithmetic intensity is much better behaved. 
 
+![2025 Lecture 3 - architecture_page-0063](https://github.com/user-attachments/assets/1948832c-f565-4f48-b981-472168ef13ce)
+
 We can increase things like longer sequence lengths, which are now viable, and the second term is now divided by the number of heads, so this term is also not so terrible. All the different terms are controlled now, and MQA can give you much better behaviors. GQA or group query attention changes this slightly. Instead of having a single query or multiple queries and single key, you can reduce the number of keys by some multiple, which lets you trade off between the inference time behaviors and the expressiveness of the model. 
 
+![2025 Lecture 3 - architecture_page-0064](https://github.com/user-attachments/assets/52c858c2-4f43-467b-9115-6af2d21ec1e7)
+
 Some works show that GQA doesn't hurt, but multi-head attention hurts. I'm not going to get into that; I'm just going to close off with this last thing, which I think is a really interesting development in the last few months. Back in 2019, OpenAI had a cool paper arguing how to build longer attention models. They essentially argued that one way to do that is to create sparse attention patterns. 
+
+![2025 Lecture 3 - architecture_page-0065](https://github.com/user-attachments/assets/2256a445-3b00-4dd9-a1fd-0a0a37dff2bf)
+![2025 Lecture 3 - architecture_page-0066](https://github.com/user-attachments/assets/b6b7a19a-6d12-40c7-91bb-77a8000171ed)
+![2025 Lecture 3 - architecture_page-0067](https://github.com/user-attachments/assets/443bcf39-dcca-434f-8fb5-e9c0bfddd73a)
 
 Instead of paying attention to all of the sequence, I'm going to pay attention to a local window at each chunk. Then I can have other attention patterns that are diagonals to help propagate information across. You can build sparse or structured attention that trades off various kinds of expressiveness versus runtime. GPT-3 uses these kinds of tricks when they originally released it to get larger attention windows. Sliding window attention is another variant where you only pay attention to a small region around your current position, controlling the total amount of resources you need to do longer context. 
 
