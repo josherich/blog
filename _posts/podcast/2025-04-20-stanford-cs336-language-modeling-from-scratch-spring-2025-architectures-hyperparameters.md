@@ -71,6 +71,8 @@ By the way, feel free to stop me and ask me questions as well. I have a tendency
 
 There are lots of arguments about how LSTMs and these other kinds of state-space models have difficulty propagating gradients backwards. An identity connection does not have any such problems. Putting layer norms in the middle might mess with that kind of gradient behavior. You see this back here; this is exactly the kind of plot you expect to see if that's happening. 
 
+![2025 Lecture 3 - architecture_page-0014](https://github.com/user-attachments/assets/e117e04d-93ff-455a-9271-c688da9e0c5b)
+
 Cool! The other thing that people now do in the original transformer people did layer norm. Layer norm is this equation over here. What you do is you have the activations x coming in, you subtract the empirical mean, which is the average of the x's up top, and then you divide by the standard deviation or the variance plus a little fudge factor epsilon. You then square root that so you can roughly think of it as a standard deviation. That's going to standardize your activations x. 
 
 You're going to scale it up by a gamma, which is a learnable parameter, and then shift it by a beta. This makes sense; you're going to normalize your activations and then shift them around to whatever point you want. Many models use this layer norm thing, and it worked quite well, but many models have moved on to RMS norm. This is one of the consensus changes; basically, all the models have switched to using RMS norm. 
@@ -83,13 +85,19 @@ So I don't have to retrieve these states. Some of you might be thinking, but wai
 
 This table has a nice paper by Even all in 2023. The title is something like "Memory Movement is All You Need" or something that does profiling of all the different components of a transformer. You see that tensor contractions, which are like matrix multiplies, make up about 99.8% of the flops that happen in a transformer. Saving 0.17% of your flops doesn't seem like a huge win, but one important thing for architecture design is not just to think about flops. 
 
+![2025 Lecture 3 - architecture_page-0016](https://github.com/user-attachments/assets/1c18f107-a6bf-4f51-a4ce-7bc60dc96c1b)
+
 Flops are important, but that's not the only resource that you have to think about. You also have to think carefully about memory movement. Even though tensor contractions are 99.8% of the flops, if you have things like the softmax operation or layer norms, all these normalization operations that happen in a transformer, they're 0.17% of the flops, but actually, they're 25% of the runtime. 
 
 A big reason for that is that these normalization operations still incur a lot of memory movement overhead, right? It actually does matter to try to optimize some of these lower-level things because it’s not just about flops; it’s also about memory movement. I'm going to emphasize this quite a bit more as I get into the systems lecture. When we talk about GPU architectures, it's going to become very important to think about memory not just about flops. 
 
+![2025 Lecture 3 - architecture_page-0017](https://github.com/user-attachments/assets/7e292707-7e1f-4f33-9c54-60a5b63d5f62)
+
 This is one of the reasons why RMS norm has become much more popular. I went back and looked at some of the earlier RMS norm papers. The sad thing is that there aren't quite as many papers published by industry labs with big nice ablations. So many of the ablations that I'll show you are from a couple of years back. But Nang et al. in 2020 had this very nice ablation showing the vanilla transformer versus the RMS norm version. You see the exact thing I told you: the number of steps per second you can do in a vanilla transformer is 3.5 per second, with RMS norm you get 3.68. Not a huge gain, but it's for free. 
 
 You get a final loss that's lower than the vanilla transformer, so that's great. In some sense, we've gotten runtime improvements and we've also gotten, in fact, at least in this case, loss improvements. That's a win-win for us. 
+
+![2025 Lecture 3 - architecture_page-0018](https://github.com/user-attachments/assets/ac2ee150-cc05-4850-8a7a-f228756e0113)
 
 The final thing that I'll say, which is very much in line with this RMS norm thing in terms of theme, is that most modern transformers do not have bias terms. If you look at the original transformer at the FFN, it will look something like this: you have your inputs x, you do a linear layer with a bias term, and then you relu it, and then you have a second linear layer wrapping around it. 
 
@@ -99,6 +107,8 @@ Now, many implementations emit bias terms entirely, and train only on these pure
 
 It just doesn't make sense to do it the other way. Almost everybody does RMS norm in practice. It works almost as well and has fewer parameters to move around. This idea of dropping bias terms just broadly applies. A lot of these models don’t have bias terms in most places. I think the one exception to this RMS norm one, as I was reading yesterday, is that I think Cohere, both Command and R plus use layer norm. 
 
+![2025 Lecture 3 - architecture_page-0019](https://github.com/user-attachments/assets/79781bd5-c89c-4057-a370-de078d94a663)
+
 Okay, any questions on the layer norm, RMS norm, and bias term stuff before I move on? Yes, questions? Do you think there are some long-term lessons you can take away from these details that are more future-proof, potentially? 
 
 So the question was if there's something more future-proof. I think it's hard to have the biggest picture. In many ways, deep learning has been very empirical and bottom-up rather than top-down, but I do think there are some generalizable lessons that you could draw from here. I think the lesson of having very direct identity map residual connections is sort of a story and a lesson that has played out in many different kinds of architectures, not just in these kinds of architectures. 
@@ -107,17 +117,23 @@ The effectiveness of layer norm, as we will see later in this lecture, has been 
 
 This is another generalizable lesson of thinking carefully about the impact of your architecture on the systems components of your design. Okay, so now there’s this other component, which is the activations. There is a whole big zoo of activations: relu, swish, lu, glu, and then there’s different kinds of MLPs: galu, regul, swiggloo, and lilu. I think this is exactly the kind of thing that I didn't originally want to learn when I got into deep learning. I thought I don't care about activations; it's going to train anyway. 
 
+![2025 Lecture 3 - architecture_page-0021](https://github.com/user-attachments/assets/a7cb9fbe-d2f8-4fa4-858c-9ddf1a4759b7)
+
 But it really does matter, unfortunately, for both you and me, that swiggloo and other glu variants just consistently work well. I will explain those to you, and you should think about them carefully because they do work and internalize that. I think the relu and maybe the galu you should already know; relu, you learn in some of the most basic deep learning classes. 
 
 You take the max of zero, and in the case of an MLP, I've dropped the bias terms here. You know xw1, you take the relu, and then you do w2. Fairly easy, right? A gel is a Gaussian error linear unit. This one multiplies the linear with a CDF of a Gaussian, so it's basically going to be like the relu but with a little bit of a bump here. 
 
-Hopefully, you can see that this is not just flat at the very bottom. This makes things a little bit more differentiable, which may or may not help. The GPT family of models, 123, and GPDJ and so on, all use the GLU. The original transformer and some of the older models used the relu. Really, almost all the modern models have switched to the gated linear units like swiggloo and the galu and others. 
+Hopefully, you can see that this is not just flat at the very bottom. This makes things a little bit more differentiable, which may or may not help. The GPT family of models, 123, and GPTJ and so on, all use the GLU. The original transformer and some of the older models used the relu. Really, almost all the modern models have switched to the gated linear units like swiggloo and the galu and others. 
+
+![2025 Lecture 3 - architecture_page-0022](https://github.com/user-attachments/assets/5b1ed275-d746-473c-9d81-671eeb86e439)
 
 I think the Google folks really pushed for this like Palm and P5 and others. Since it’s been tried and true, almost all the models post-2023 use a gated linear unit. Going back to that earlier question of what generalizable architecture things we can learn, there are some things that have been consistently useful: residual connections, layer norms, and gating is yet another one. 
 
 Originally, this is our fully connected layer with a relu. Now, instead of doing just linear and a relu, I’m going to gate the output with an entry-wise linear term. So x.v gives me a vector, and I'm going to multiply that entry-wise with my original inside term of the MLP. Then I'm going to multiply the whole thing with W2. The way to think about this is that I've gated the hidden part of the MLP. I have my original activation that takes my inputs and puts it into the hidden space, and then I'm going to gate that with x.v, and then I’m going to project that back into the hidden dimensionality using W2. 
 
 There’s this gating operation that happens entry-wise, and this is the basic thing that's happening here. This is the GLU plus the relu. We have an extra parameter that we've added here for the gating; this is V. When someone says something like it’s a giggloo, there’s nothing to laugh about. The gigl  fully connected layer has the gel for the nonlinearity and the exact same gating of x.v. 
+
+![2025 Lecture 3 - architecture_page-0023](https://github.com/user-attachments/assets/0d3ccc18-8349-482b-b6d3-9867539b22ea)
 
 This is the architecture that was used by many of the Google models like T5V1.1, Gamma 2, Gamma 3, and another variant, there’s swigloo, which has been very popular. Swish is x times the sigmoid. This is the nonlinearity, and you can kind of see a sigmoid, and x looks like this. It will look just like the Gaussian error unit, and you do the same thing here: you have a gating over the switch, and then you get a fully connected layer here. 
 
@@ -127,12 +143,17 @@ So the question was, this isn’t monotonically decreasing. There's a bit on the
 
 These activations are going to be all over the place, so in practice, I don’t think this tiny negative piece is really an effect that’s going to be huge for the model, if that makes sense. Okay, and then going back to the swiggloo, most models today, like the llama family, Palm, Elmo. I'll show you the big table later, but you’ll see that the swiggloo is very popular. One thing to note, I’ll talk about this again in the hyperparameters part, is now remember I've added this V term, this extra parameter. 
 
+![2025 Lecture 3 - architecture_page-0024](https://github.com/user-attachments/assets/fb3aa8e2-0104-478e-95f2-c320e603e48f)
+![2025 Lecture 3 - architecture_page-0025](https://github.com/user-attachments/assets/e5d89fb5-ce15-4ff8-b098-d4cb8d21882e)
+
 I want to think about how to size this extra parameter. What people do is gated models usually make this hidden size, basically the output dimensionality of W, slightly smaller by a factor of 2/3 in order to make sure the total number of parameters of the whole thing remains the same as the non-gated counterparts. That’s a convention that most people do. If you don’t quite understand what that is, I’ll go back over that again later, but you can keep in mind that for the gated linear units, you just make everything a little bit smaller to make sure things remain parameter matched.
 
 One final question: this may be obvious in the past. One of the benefits of relu is that it's very easily differentiable by the input. But if you have the derivative of the CDF of the Gaussian, you have a squared with x. Does that not really slow things down? That's a very good question. I'm not 100% sure what the internal CUDA implementation of the swiggloo or the galu or gluu is. 
 
 It’s possible that internally they might be implemented with lookup tables. What really matters is the memory pressure here. It will be the same because you're reading the same amount of elements for performance. The extra computation is negligible in that context. That's probably a better argument: basically, flops-wise, this is negligible anyway, and the memory calculus is the same.
 seen before and Falcon 211B uses a RELU. Both of those are relatively high performance models. So you can kind of see that it's not really necessary and evidence does point towards consistent gains from swiggloo and gaggloo, and that's why we ask you to implement exactly that variant. 
+
+![2025 Lecture 3 - architecture_page-0028](https://github.com/user-attachments/assets/58135714-b2f4-42d8-a1f8-93db8a34596c)
 
 Cool. Okay. The final thing that I want to talk about for architectures is one kind of final major variation that we've seen. Normally, the transformer block is serial, right, in the sense that for each block, the outputs come in from the bottom, and then you do your attention, and then you pass the result of that computation forward. Then you do your MLP, and then you pass that computation forward. This is inherently serial. You do attention and then MLP. But of course, this might have certain parallelism constraints. So if you want to paralyze this over gigantic sets of GPUs, it might be harder to do so if you have this serial connection.
 
@@ -148,6 +169,8 @@ Any questions about any of this architecture stuff before I move on? Hopefully t
 
 Yes, is serial layer computation more efficient than parallel? The question was whether serial is more efficient than parallel. It should actually be the reverse; parallel is more efficient than serial, and that's why you're kind of willing to do this. In some sense, you might expect serial to be more expressive because you're composing two computations rather than just adding them together. But the benefit of parallel in theory is that if you write the right kinds of fused kernels, a lot of these operations can be done in parallel, or the computation is shared across the different parallel parts.
 
+![2025 Lecture 3 - architecture_page-0030](https://github.com/user-attachments/assets/6506a147-f980-476c-9ca0-379dcbc1cd55)
+
 So cool. The last thing I want to talk about in architecture land, I think this is the last thing, is variations in position embeddings. I think this one's interesting because in the first few years of sort of LM land, there were a lot of different things that people were trying. Sign embeddings were from the original transformer. You should have learned this in 224n. There's sign and cosine positions. Many others did absolute embeddings like the GPTs and OPT; all basically just added a position learned position vector to the embedding. 
 
 Some others like T5 and Gopher did various kinds of relative embeddings that add vectors to the attention computation, and then I think most models have converged to rope, which is relative position embeddings. I think this actually started in GPTJ, once again another open-source contribution, and has really rapidly been picked up by most of the models. 
@@ -157,6 +180,8 @@ The high-level thought process behind rope is that the thing that matters is rel
 This definition enforces position invariance or absolute position invariance. You only pay attention to how far apart these two words are. You can do a brief check and see what happens with signs; you get these cross terms that are not relative. So you do still leak absolute position information. Absolute positions, like it’s in the name, it’s not a relative position embedding. 
 
 Relative embeddings—well, it is relative, but it's not an inner product. It sort of violates this constraint. Rope is this kind of clever observation; we do know one thing that is invariant to absolute things, which is rotations. We're going to exploit that structure to come up with our position embeddings. We know that inner products are invariant to arbitrary rotation, so we're going to leverage that. 
+
+![2025 Lecture 3 - architecture_page-0032](https://github.com/user-attachments/assets/6c0e7924-0c5c-4b09-af0b-e968a37ce98d)
 
 On the left, this is the starting point. Let's say my embedding for the word "we" is this arrow over here, and my embedding for the word "no" is this other arrow over here. Now I want to embed this sequence. We know that and I only look at the words "we" and "no." 
 
