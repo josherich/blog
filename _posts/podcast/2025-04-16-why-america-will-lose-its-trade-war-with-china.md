@@ -6,7 +6,6 @@ categories: podcast
 tags: [podcast_script]
 ---
 
-
 [Why America Will Lose Its Trade War With China](https://traffic.megaphone.fm/GLT1864911615.mp3?updated=1744825441)
 
 U.S. market at a scale and efficiency that is hard to replicate elsewhere. 
@@ -100,121 +99,6 @@ I want to end with a surprising loser here, or an ironic loser. I've spoken to s
 Oh, absolutely. This tariff war will put tens of thousands of small retailers that specialize in sourcing goods from China and selling them in the U.S. out of business if this stays in place for six months. Again, this is the challenge we all have because we don't make many toys anymore in the United States, and we don't make much apparel in the United States. That's what a lot of us are struggling with: understanding the logic for how this is good for the whole economy. 
 
 Jason Miller, thank you very much. Thanks for having me.
-
-
----
-
-> This is an experimental rewrite
-
-**Speaker 1:** The U.S. market operates at a scale and efficiency that is difficult to replicate elsewhere. 
-
-Now, when we discuss tariffs and the possibility of a trade war, we must consider how high tariffs might impact the American consumer. If tariffs are imposed on essential items that we rely on, like electronic devices and appliances, the costs will ultimately fall on consumers, leading to higher prices. This increase could reduce consumer spending, which plays a significant role in driving the U.S. economy.
-
-**Speaker 2:** Moreover, as companies evaluate whether to relocate their supply chains, they encounter numerous challenges, such as finding alternatives to Chinese manufacturing. It's not solely about cost; it also includes aspects like quality, reliability, and the necessary infrastructure for production. For many companies, moving operations to countries like Vietnam or Mexico is not as straightforward as it may seem due to the complex nature of existing supply chains.
-
-**Speaker 1:** The ongoing trade tensions and uncertainty surrounding tariffs place U.S. companies in a compromising position. The heavy reliance on China for a wide array of goods complicates the situation significantly. As we proceed, it will be essential for businesses, policymakers, and consumers to navigate this landscape carefully to prevent the long-term pitfalls of a trade war which could have severe repercussions for the economy.
-
-**Speaker 2:** The entire ecosystem for producing these products is anchored in China; it’s not as simple as just shifting production elsewhere. No other country in the world possesses even a fraction of that capacity.
-
-**Speaker 1:** Regarding your comment about uncertainty, I'd be hesitant to launch an electric toaster factory in the U.S. if the only viable way to keep costs competitive would require imposing tariffs of 100% or more on Chinese goods. If a trade deal were finalized, I could potentially lose millions, and I'm not sure how many banks would be willing to give me a loan for that.
-
-**Speaker 2:** Even worse, if I did establish my toaster factory, many of the components would still need to come from China because that’s where the ecosystem is located. Purchasing those parts from the U.S. wouldn’t be an option, meaning I’d still face tariffs on components, making my investment meaningless.
-
-**Speaker 1:** Let’s discuss both categories you highlighted so clearly. The first category includes big ticket manufacturing: automakers, aerospace manufacturers, military contractors, and electric vehicle makers. But I’m grateful you mentioned the second category, which involves everyday necessities for families. In fact, after reviewing your data, I learned that we depend on China for 99% of child safety seats with detachable hard shells, 93% of children’s coloring books, 95% of cooking appliances, 96% of pet toys, 88% of Christmas ornaments and trees, and 74% of toy parts intended for children aged three and under.
-
-**Speaker 2:** Looking at these statistics, Jim, it's clear that a trade war with China could be a harsh wake-up call for American consumers, particularly parents, regarding our dependence on China for everyday products. Practically, what would happen if those imports ceased due to tariffs and restrictions?
-
-**Speaker 1:** Exactly, the key issue is what importers will do in response. First, we would see a dramatic reduction in product variety. Importers won’t bring in as many products as they would without the tariffs. This loss of variety is detrimental to consumers, as more options typically lead to better choices. We still need essential items like child seats and electric toasters, but prices will rise significantly.
-
-**Speaker 2:** At a 145% tariff, I can confidently say the cost of these items could increase by 75% to 100% from current levels. The profit margin simply isn't sufficient for companies to spread the cost across their offerings. Even our import data through March indicated that while some suppliers of cell phones have lowered prices to slightly help importers cope with tariffs, that isn't the case for household appliances. It suggests U.S. importers are absorbing the entire tariff burden.
-
-**Speaker 1:** To clarify, importers pay the tariffs; exporters do not. This reality means consumers will experience both less variety in product offerings and higher prices for the goods that remain available. There is no way around that. That's why I suspect the administration has been reconsidering its approach to tariffs on smartphones and laptops, making changes late on Friday so that by Saturday morning, we were already aware of the modifications.
-
-**Speaker 2:** Furthermore, there’s currently no feasible way to produce the quantities of these goods that the U.S. needs domestically in any reasonable timeframe, nor at the cost that we see from overseas production in China. Let’s get into that last point a bit more because a listener might think, "We're America! We should be able to manufacture our own products, like child safety seats or pet toys." How do you respond to that perspective?
-
-**Speaker 1:** Sure, we can produce those items here. We build F-35 stealth aircraft, assemble Boeing airplanes, and manufacture incredible motor vehicles. However, the critical question is whether we want to allocate our limited resources to manufacturing those goods. The answer is no.
-
-**Speaker 2:** For any manufactured product, we can categorize value addition into three main areas. The first is design and innovation; think about Apple developing a new iPhone or their upcoming iPhone 17, coding, ensuring components fit together, and creating proprietary chips for their computers. 
-
-**Speaker 1:** The second bucket is the physical transformation process, which involves traditional manufacturing—assembling all components to produce a finished product, such as a motor vehicle at a Ford plant. 
-
-**Speaker 2:** The last area is marketing and distribution, where value is added as well. Consider how Nike sells sneakers at much higher prices than their actual production cost. In the case of many items like child safety seats, pet toys, and similar products, our offshored value lies primarily in either the design and innovation stage or in marketing and distribution.
-
-**Speaker 1:** Precisely. As mentioned earlier, there’s little value in simply putting together the pieces of a doll or assembling an iPhone. Thus, it doesn’t make economic sense to have that manufacturing take place in the U.S. Where we thrive as manufacturers is in industries like aerospace or agricultural equipment, where there's a significant connection between design and production.
-
-**Speaker 2:** For instance, John Deere cannot predict exactly how their designs for tractors will translate into manufacturing and how components will function together. The same goes for automotive manufacturers, which is why they design and build their vehicles in-house. In contrast, when Apple tried to apply its approach for laptops and smartphones to cars, it failed due to the complexity involved in vehicle manufacturing and the unpredictability of component interactions.
-
-**Speaker 1:** Additionally, we currently have an unemployment rate above 4%. We don’t have a labor supply in the U.S. for the large-scale production of many of these goods. The jobs that would be available often wouldn’t pay well either. Many of the tasks—like assembling a Barbie doll—aren’t skilled labor, and I mean no disrespect to anyone involved in those jobs.
-
-**Speaker 2:** This raises significant questions about the rationale behind many proposed tariffs. It’s not just about restricting imports of finished vehicles manufactured outside North America. While there may be an argument to be made there, I remain skeptical. The focus should be on fostering an environment for goods where we are truly competitive and where substantial value can be added.
-
-**Speaker 1:** Jason, I’d like to ask one more question regarding the first category you mentioned, lithium-ion batteries, electronics, and smartphone parts. You suggested that in a worst-case trade war scenario, American families could see prices double for items like children’s toys, pet toys, and new toasters. What would happen to our automakers, military contractors, or smartphone companies if their crucial components were suddenly hit with tariffs of 100% or 200%, or if China completely ceased selling us critical supplies? Just how catastrophic could that be?
-
-**Speaker 2:** One area we are monitoring closely is China’s recent cessation of exports of heavy rare earth elements. These elements may not be well-known, but they are vital for producing powerful magnets, which are key components for electric vehicles, drones, and missiles. A halt in access to these materials would pose severe challenges for industries like aerospace and automotive.
-
-**Speaker 1:** Right now, we don’t fully understand the current inventories of these heavy rare earth elements. China is a key player in this market, with Japan and Germany also involved to a lesser extent. The absence of access to these materials would create significant hurdles for certain industries. However, it’s too soon for anyone to panic and assume, for instance, that the automotive sector will shut down.
-
-**Speaker 2:** Additionally, this illustrates the asymmetrical responses China is adopting. Presently, China faces challenges of its own, notably because its tariffs on American propane have raised costs, making propane very expensive there. Since propane is a feedstock for plastic manufacturing, Chinese plastic manufacturers face substantial increases in their operational costs. We are witnessing these complex repercussions take shape.
-
-It's why we are all hopeful for some form of de-escalation, ideally quickly.
-
----
-
-*Placeholder: An image showing the range of products impacted by tariffs could help illustrate this point effectively.*
-
----
-
-**Ad Voiceover:** Still getting around to that fix on your car? You’ve got this! On eBay, you'll find millions of parts guaranteed to fit your vehicle, whether it's for a major engine repair or just swapping out your windshield wipers. eBay has that part you need to click perfectly into place for all your big and small changes. Loud or quiet, find all the parts you need at prices you’ll love, guaranteed to fit every time. But you already know that—it's eBay. 
-
-**Ad Voiceover:** Don't miss your chance to spring into deals at Lowe's! Right now, get a free 60-volt Toro battery with the purchase of a select 60-volt Toro electric mower. Plus, buy three 19.3-ounce vegetable and herb Bonnie plants for only $10! It's time to let your yard grow up. Lowe's—We help you save. Valid through 4/23. Selection varies by location while supplies last.
-
-**Ad Voiceover:** The wild is closer than you think. If you want to do more than gaze at it from a safe distance, consider the new 2025 Ford Bronco Sport with a Sasquatch package. It’s the most capable Bronco Sport ever! Built for rock crawling, off-road excursions, and conquering trails near you. Always consult your owner’s manual before off-road driving, and be aware of terrain and trail difficulty.
-
-**Speaker 1:** Let's shift our focus to the other side of the equation: not just what we purchase from China, but what we sell to them. After reviewing your data and writing for The Atlantic, I found that China accounts for a massive share of our exports, including 89% of our grain sorghum, 52% of our soybeans, 30% of our cotton, 27% of our pistachios, 73% of our frozen pig organ exports, and 51% of the optical instruments used for inspecting and manufacturing computer chips. This is critical, especially when layered atop tariffs on smartphone components we buy from China.
-
-What do people need to understand about our exports to China?
-
-**Speaker 2:** It’s essential for people to realize that China is a significant export destination for us. We exported about $125 billion worth of products to them. Interestingly, China recently announced they will no longer accept deliveries of Boeing aircraft, which represents our second-largest export to China, amounting to over $10 billion in 2024. The concern here is the negative effects on U.S. exporters, leading to less economic activity within the U.S.
-
-**Speaker 1:** Another notable example involves companies like Intel, which manufacture CPUs in the U.S. for computers and then export them to China for assembly into finished products, which are later re-exported back to the U.S. If China imposes a 125% tariff on an Intel CPU, even if a computer is assembled in China, it will return to the U.S. with a 20% tariff plus the increased cost from the initial tariff on the CPU, raising its overall price.
-
-**Speaker 2:** One challenge with these tariffs is the lack of clarity regarding what we call drawbacks. For instance, if I import steel from Canada to make a finished product and then export it to Germany, I would normally recover the tariffs paid on that steel. However, we've not allowed drawbacks for steel and aluminum tariffs. The clarity on whether China would permit drawbacks in the scenarios I described is unclear.
-
-**Speaker 1:** Exactly, and these nuances significantly affect the overall costs consumers face due to tariffs. Two critical points need to be highlighted, and I want to ensure listeners grasp them fully. Firstly, both the U.S. and China risk imposing tariffs on each other's intermediate products. If China tariffs our instruments for making computer chips, and we tariff their computer chips, those tariffs can compound, making the entire electronics industry much more expensive.
-
-**Speaker 2:** Every time these products cross borders, they face additional tariffs, which can make producing complex machines and computers significantly more expensive. From the perspective of U.S. consumers, this is certainly detrimental. While there may be some production and assembly that shifts to other countries outside of China, no one truly wins in a trade war. 
-
-**Speaker 1:** It's vital to recognize these complexities and unforeseen challenges. For instance, if a global tariff is placed on laptops, it makes laptops assembled in Vietnam more expensive for U.S. consumers, although Intel may still be exporting CPUs for those laptops to Vietnam. The end result could harm domestic CPU production since fewer laptops are being sold.
-
-**Speaker 2:** The second point is the asymmetry in reliance between the U.S. and China. While China imports significant amounts of cotton, pistachios, frozen meats, and processors, they have options to source these from other countries. Conversely, the U.S. relies heavily on China—the leading manufacturer—for many goods, making it difficult to simply pivot our economy to another country. Can we agree that there’s a dangerous imbalance in how much China depends on our imports compared to our dependence on their exports?
-
-**Speaker 1:** Yes, there is indeed asymmetry in some product categories. For example, semiconductor manufacturing equipment is a top export to China, and U.S. exporters rely heavily on that market. Chinese importers have more alternative options, as they could source from Europe or Japan, even if those substitutes aren’t perfect. But for something like toaster ovens, we don’t have a backup plan like we do for soybeans, our primary export to China.
-
-**Speaker 2:** China can pivot easily, sourcing soybeans from Brazil, for instance. However, for certain items, like laptops with Intel CPUs, dependence sometimes falls back on the U.S. Apple may fulfill demand in China from a production facility in Ireland instead, indicating that there’s potential for Chinese importers to maneuver like American importers have been trying to do. It seems that, in select product categories, China has the advantage of flexibility.
-
-**Speaker 1:** We also see this with propane, which is among our top exports to China. China is not effectively sourcing from the U.S. anymore, causing their prices to rise. We, on the other hand, are selling our propane to other markets, making out better while they face the brunt of dependencies. However, it’s crucial to understand that the dynamics vary significantly based on specific items; it’s not merely a matter of making blanket statements about advantages or disadvantages.
-
-**Speaker 2:** Let’s end by discussing surprising winners and losers in this trade war. No one wins a trade war, but could there be unexpected beneficiaries? You mentioned earlier that, if tariffs target China heavily while others like Vietnam enjoy lower rates, there might be an incentive for Chinese producers to route their products through Vietnam. They could simply send their products there, make rapid changes, and then export them to the U.S. as Vietnamese goods, potentially creating a shadow economy for rebranded Chinese products.
-
-**Speaker 1:** Are there other countries that could narrow their benefits from the chaos in U.S.-China trade relations?
-
-**Speaker 2:** Yes, a couple of angles come to mind. Just to clarify, the practices you described are illegal, and nobody should attempt those routes. Right now, if the U.S.-Mexico-Canada Agreement (USMCA) remains intact, Mexico could emerge as a significant winner. The outcome regarding Vietnam’s tariffs and the auto side will also be crucial. Currently, USMCA-compliant vehicles from Mexico are not facing tariffs, mainly because Customs struggles to determine the U.S. value in those imports from Mexico. No one knows when this issue will be resolved.
-
-**Speaker 1:** In the grand scheme, I believe China might actually come out on top here. Prior to this situation, the international community was growing suspicious of its trade practices, accusing them of overproduction and product dumping. Many countries were enacting tariffs against China, creating a united front. The recent developments, however, have reversed that momentum.
-
-**Speaker 2:** Now we’ve become the outliers regarding our behavior. Observe how President Xi of China is currently engaging with South Asian nations, discussing tariffs, and exploring potential trade agreements with Japan and South Korea. It's a striking turn of events that has undermined the previous suspicions surrounding China’s trade practices.
-
-**Speaker 1:** Historically, one of America’s significant advantages is attracting the world’s brightest minds to our educational institutions, with many choosing to remain in the U.S. for work after graduation. However, current trends in American science policy and higher education are making the U.S. a riskier choice for those pursuing careers in science. This shift could threaten our long-standing advantage built over the last 80 years.
-
-**Speaker 2:** Let’s conclude by discussing a surprising loser, or an ironic one at that. I’ve spoken to several manufacturers recently, both large and small, and a common sentiment is that the fluctuating tariff rates create tremendous procedural headaches. While larger companies may have the resources to navigate this environment, smaller companies reliant on sourcing goods from China face a real risk of being driven out of business if this situation persists for even six months. 
-
-**Speaker 1:** Do you agree that a plan purportedly aimed at helping smaller businesses is generating enough confusion that, ironically, it might harm them the most?
-
-**Speaker 2:** Absolutely. This tariff war could force tens of thousands of small retailers, who depend on sourcing goods from China and selling them in the U.S., out of business if these conditions continue for six months. We face a real challenge given that many toys and apparel are no longer manufactured in the U.S. This further complicates understanding how this is beneficial for the economy at large. 
-
-**Speaker 1:** Thank you very much, Jason Miller, for the insights you’ve shared.
-
-**Speaker 2:** Thank you for having me!
 
 <script>window.tocIndex = {
   "index": [
