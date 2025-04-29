@@ -2,8 +2,8 @@
 layout: post
 title: "A Fortune Foundation Solver"
 date: 2025-04-27 00:00:01
-categories: short
-tags: [short]
+categories:
+tags: [games]
 ---
 
 I enjoy playing Fortune's Foundation and using it as a benchmark for language model's [instruct following](https://www.josherich.me/short/fortune-foundation-test). Naturally I want to try solving it with code. Solving a solitaire style game is new to me. The first thing I did was BFS searching the game state. There are ony a few valid moves you can make so that decks change to a new unvisited state. I soon realized this is not the case as the game progresses. For a relative empty queue state, there are so many valid moves that the number of states explode quickly. The next thing I tried was sorting the states in the queue by game state scores using heuristics: straight cards like 3-4-5 is a positive; a blocking card in minor arcana is a negative; more empty queues is a positive.
