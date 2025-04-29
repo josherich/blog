@@ -1,0 +1,233 @@
+/* Basic Reset & Body Style */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #3a2d2d; /* Dark brown background */
+    background-image: radial-gradient(#5c4a4a 1px, transparent 1px);
+    background-size: 15px 15px;
+    color: #f0e0c0; /* Light text */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align board to top */
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Game Board Container */
+#game-board {
+    width: 100%;
+    max-width: 1400px; /* Adjust as needed */
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between top row and tableau */
+    background-color: #6b4c38; /* Lighter brown for board area */
+    border: 5px solid #4a3628;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Top Row Layout */
+.top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 3px solid #4a3628;
+    margin-bottom: 20px;
+}
+
+/* Wins Counter */
+.wins-counter {
+    border: 3px solid #c8a060;
+    background-color: #4a3628;
+    padding: 5px 10px;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 0.9em;
+}
+.wins-value {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+/* Foundation Area */
+.major-foundations,
+.minor-foundations {
+    display: flex;
+    gap: 10px;
+    position: relative;
+}
+.step-button {
+    border: 2px solid #c8a060;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    text-align: center;
+}
+.step-text {
+    font-size: 0.8em;
+    display: inline-block;
+    width: 10em;
+    white-space: nowrap;
+}
+.spacer { /* Invisible spacer to help alignment */
+    width: 100px; /* Approx width of wins counter */
+    visibility: hidden;
+}
+
+
+/* Foundation Slots */
+.foundation-slot {
+    width: 60px;
+    height: 110px;
+    border: 2px dashed #c8a060;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.2);
+    position: relative; /* For positioning cards */
+    font-size: 1.5em;
+    color: #c8a060;
+}
+
+.foundation-block {
+    width: 110px;
+    height: 60px;
+    border: 2px dashed #c8a060;
+    border-radius: 5px;
+    position: absolute;
+    top: 1em;
+    left: 5em;
+    cursor: pointer;
+    /* display: none; */
+}
+
+.foundation-block .card {
+    transform: rotate(90deg);
+    top: -0.8em;
+    left: 1em
+}
+
+.foundation-slot .placeholder {
+    opacity: 0.5;
+}
+
+/* Make slots clickable targets */
+.foundation-slot.clickable {
+    cursor: pointer;
+    border-style: solid; /* Indicate it's a valid target */
+     box-shadow: 0 0 10px yellow;
+}
+
+/* Tableau Area */
+#tableau {
+    display: flex;
+    justify-content: space-around; /* Distribute queues */
+    align-items: flex-start; /* Align tops of queues */
+    gap: 5px; /* Small gap between queues */
+    min-height: 500px; /* Ensure space for cards */
+}
+
+/* Queues */
+.queue {
+    width: 84px; /* Slightly wider than cards for margin */
+    min-height: 110px; /* Minimum height of one card */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative; /* Needed for absolute positioning if used */
+}
+
+.queue.empty {
+     border: 2px dashed #887050;
+     border-radius: 5px;
+     background-color: rgba(0,0,0,0.1);
+     cursor: pointer; /* Indicate clickability */
+}
+.queue.empty.clickable, .card.clickable, .foundation-block.clickable {
+    border-style: solid;
+    box-shadow: 0 0 10px yellow;
+}
+
+
+/* Card Styling */
+.card {
+    width: 60px;
+    height: 110px;
+    border: 2px solid #4a3628;
+    border-radius: 5px;
+    background-color: #f0e0c0; /* Card face */
+    color: #3a2d2d; /* Dark text */
+    display: flex;
+    flex-direction: column; /* Stack value and suit */
+    justify-content: space-between; /* Push value/suit to corners */
+    align-items: flex-start;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 5px;
+    padding-top: 2px;
+    margin-bottom: -90px; /* Overlap cards vertically */
+    position: relative; /* For z-index and potential effects */
+    cursor: default; /* Default cursor */
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    user-select: none; /* Prevent text selection */
+}
+
+/* Style tail cards to be obviously clickable */
+.card.tail-card {
+    cursor: pointer;
+}
+.card.tail-card:hover {
+   border-color: yellow;
+}
+
+/* Selected Card Style */
+.card.selected {
+    border-color: limegreen;
+    box-shadow: 0 0 15px limegreen;
+    transform: translate(2px, -2px); /* Slight lift effect */
+    z-index: 100; /* Ensure selected card is on top */
+}
+
+/* Style for cards placed in foundations */
+.foundation-slot .card {
+    position: absolute; /* Position card over the slot */
+    top: 0;
+    left: 0;
+    margin-bottom: 0; /* Remove tableau overlap */
+    cursor: default; /* Not movable from foundation */
+}
+.foundation-slot .card.tail-card { /* Override cursor for foundation cards */
+    cursor: default;
+}
+
+
+/* Suit Styles */
+.card .suit {
+    font-size: 1.8em;
+    align-self: flex-end; /* Position suit symbol bottom right */
+}
+
+.suit-l { color: #34a853 !important; } /* Green */
+.suit-b { color: #4285f4 !important; } /* Blue */
+.suit-r { color: #ea4335 !important; } /* Red */
+.suit-g { color: #fbbc05 !important; } /* Gold */
+
+/* Foundation slot suit indicators */
+.foundation-slot.suit-l { border-color: #34a853; }
+.foundation-slot.suit-b { border-color: #4285f4; }
+.foundation-slot.suit-r { border-color: #ea4335; }
+.foundation-slot.suit-g { border-color: #fbbc05; }
+
+/* Major Arcana Card distinct style (optional) */
+.card.major {
+    /* background-color: #e8d8b8; */ /* Slightly different background */
+    /* border-color: #6a5648; */
+}

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zachtronics Solitaire</title>
+    <link rel="stylesheet" href="./code.css">
+</head>
+<body>
+    <div id="game-board">
+        <!-- Top Row: Wins, Foundations -->
+        <div class="top-row">
+            <div class="wins-counter">
+                WINS
+                <div class="wins-value">0</div>
+            </div>
+            <div class="major-foundations">
+                <div class="foundation-slot major" id="major-0" data-next="0">
+                    <span class="placeholder">*</span>
+                </div>
+                 <div class="foundation-slot major" id="major-21" data-next="21">
+                     <span class="placeholder">*</span>
+                 </div>
+            </div>
+            <div class="step-control">
+                <div class="step-button">Next</div>
+                <span class="step-text"></span>
+            </div>
+            <div class="minor-foundations">
+                <div class="foundation-slot minor suit-l" id="minor-l" data-suit="l" data-next="2">
+                    <span class="placeholder">A</span>
+                    <span class="suit">♣</span>
+                </div>
+                <div class="foundation-slot minor suit-b" id="minor-b" data-suit="b" data-next="2">
+                     <span class="placeholder">A</span>
+                     <span class="suit">♠</span>
+                </div>
+                <div class="foundation-slot minor suit-r" id="minor-r" data-suit="r" data-next="2">
+                     <span class="placeholder">A</span>
+                     <span class="suit">♦</span>
+                </div>
+                <div class="foundation-slot minor suit-g" id="minor-g" data-suit="g" data-next="2">
+                    <span class="placeholder">A</span>
+                    <span class="suit">✶</span>
+                </div>
+                <div class="foundation-block empty minor" id="foundation-block"></div>
+            </div>
+            <div class="spacer"></div> <!-- Spacer to balance layout -->
+        </div>
+
+        <!-- Tableau Queues -->
+        <div id="tableau">
+            <div class="queue" id="queue-1">
+                <div class="card minor suit-r" data-value="5" data-suit="r">5<span class="suit">♦</span></div>
+                <div class="card major" data-value="15">15</div>
+                <div class="card minor suit-r" data-value="Q" data-suit="r">Q<span class="suit">♦</span></div>
+                <div class="card major" data-value="21">21</div>
+                <div class="card minor suit-g" data-value="2" data-suit="g">2<span class="suit">✶</span></div>
+                <div class="card major" data-value="19">19</div>
+                <div class="card major" data-value="8">8</div>
+            </div>
+            <div class="queue" id="queue-2">
+                <div class="card major" data-value="0">0</div>
+                <div class="card minor suit-l" data-value="6" data-suit="l">6<span class="suit">♣</span></div>
+                <div class="card minor suit-l" data-value="9" data-suit="l">9<span class="suit">♣</span></div>
+                <div class="card minor suit-b" data-value="J" data-suit="b">J<span class="suit">♠</span></div>
+                <div class="card minor suit-l" data-value="8" data-suit="l">8<span class="suit">♣</span></div>
+                <div class="card minor suit-l" data-value="K" data-suit="l">K<span class="suit">♣</span></div>
+                <div class="card major" data-value="4">4</div>
+            </div>
+            <div class="queue" id="queue-3">
+                 <div class="card minor suit-r" data-value="8" data-suit="r">8<span class="suit">♦</span></div>
+                 <div class="card minor suit-r" data-value="10" data-suit="r">10<span class="suit">♦</span></div>
+                 <div class="card major" data-value="3">3</div>
+                 <div class="card major" data-value="5">5</div>
+                 <div class="card minor suit-r" data-value="4" data-suit="r">4<span class="suit">♦</span></div>
+                 <div class="card major" data-value="16">16</div>
+                 <div class="card major" data-value="12">12</div>
+            </div>
+            <div class="queue" id="queue-4">
+                 <div class="card minor suit-r" data-value="3" data-suit="r">3<span class="suit">♦</span></div>
+                 <div class="card minor suit-g" data-value="3" data-suit="g">3<span class="suit">✶</span></div>
+                 <div class="card minor suit-l" data-value="2" data-suit="l">2<span class="suit">♣</span></div>
+                 <div class="card minor suit-g" data-value="5" data-suit="g">5<span class="suit">✶</span></div>
+                 <div class="card minor suit-g" data-value="J" data-suit="g">J<span class="suit">✶</span></div>
+                 <div class="card minor suit-l" data-value="7" data-suit="l">7<span class="suit">♣</span></div>
+                 <div class="card major" data-value="14">14</div>
+            </div>
+             <div class="queue" id="queue-5">
+                 <div class="card minor suit-l" data-value="3" data-suit="l">3<span class="suit">♣</span></div>
+                 <div class="card minor suit-b" data-value="10" data-suit="b">10<span class="suit">♠</span></div>
+                 <div class="card minor suit-g" data-value="10" data-suit="g">10<span class="suit">✶</span></div>
+                 <div class="card minor suit-r" data-value="K" data-suit="r">K<span class="suit">♦</span></div>
+                 <div class="card minor suit-b" data-value="4" data-suit="b">4<span class="suit">♠</span></div>
+                 <div class="card major" data-value="17">17</div>
+                 <div class="card minor suit-l" data-value="5" data-suit="l">5<span class="suit">♣</span></div>
+             </div>
+            <div class="queue empty" id="queue-6">
+                <!-- Initially empty -->
+            </div>
+             <div class="queue" id="queue-7">
+                 <div class="card minor suit-b" data-value="8" data-suit="b">8<span class="suit">♠</span></div>
+                 <div class="card minor suit-g" data-value="4" data-suit="g">4<span class="suit">✶</span></div>
+                 <div class="card minor suit-b" data-value="5" data-suit="b">5<span class="suit">♠</span></div>
+                 <div class="card minor suit-g" data-value="7" data-suit="g">7<span class="suit">✶</span></div> <!-- Note: Image shows G, rules text says L, using G -->
+                 <div class="card minor suit-g" data-value="6" data-suit="g">6<span class="suit">✶</span></div>
+                 <div class="card minor suit-g" data-value="Q" data-suit="g">Q<span class="suit">✶</span></div>
+                 <div class="card major" data-value="11">11</div>
+             </div>
+             <div class="queue" id="queue-8">
+                 <div class="card minor suit-l" data-value="J" data-suit="l">J<span class="suit">♣</span></div>
+                 <div class="card major" data-value="1">1</div>
+                 <div class="card minor suit-l" data-value="4" data-suit="l">4<span class="suit">♣</span></div>
+                 <div class="card minor suit-r" data-value="7" data-suit="r">7<span class="suit">♦</span></div>
+                 <div class="card minor suit-l" data-value="Q" data-suit="l">Q<span class="suit">♣</span></div>
+                 <div class="card minor suit-b" data-value="3" data-suit="b">3<span class="suit">♠</span></div>
+                 <div class="card major" data-value="18">18</div>
+             </div>
+             <div class="queue" id="queue-9">
+                 <div class="card minor suit-g" data-value="8" data-suit="g">8<span class="suit">✶</span></div>
+                 <div class="card minor suit-b" data-value="Q" data-suit="b">Q<span class="suit">♠</span></div>
+                 <div class="card major" data-value="6">6</div>
+                 <div class="card minor suit-b" data-value="9" data-suit="b">9<span class="suit">♠</span></div>
+                 <div class="card minor suit-r" data-value="6" data-suit="r">6<span class="suit">♦</span></div>
+                 <div class="card minor suit-g" data-value="9" data-suit="g">9<span class="suit">✶</span></div>
+                 <div class="card minor suit-b" data-value="7" data-suit="b">7<span class="suit">♠</span></div> <!-- Note: Image shows 7B, rules text says 9R, using 7B -->
+             </div>
+             <div class="queue" id="queue-10">
+                  <div class="card minor suit-b" data-value="6" data-suit="b">6<span class="suit">♠</span></div>
+                  <div class="card minor suit-r" data-value="2" data-suit="r">2<span class="suit">♦</span></div>
+                  <div class="card major" data-value="2">2</div>
+                  <div class="card minor suit-g" data-value="K" data-suit="g">K<span class="suit">✶</span></div>
+                  <div class="card minor suit-b" data-value="K" data-suit="b">K<span class="suit">♠</span></div>
+                  <div class="card minor suit-l" data-value="10" data-suit="l">10<span class="suit">♣</span></div>
+                  <div class="card minor suit-r" data-value="9" data-suit="r">9<span class="suit">♦</span></div> <!-- Note: Image shows 9R, rules text says 10, using 9R -->
+             </div>
+              <div class="queue" id="queue-11">
+                  <div class="card major" data-value="9">9</div>
+                  <div class="card major" data-value="20">20</div>
+                  <div class="card major" data-value="7">7</div>
+                  <div class="card minor suit-r" data-value="J" data-suit="r">J<span class="suit">♦</span></div>
+                  <div class="card major" data-value="13">13</div>
+                  <div class="card minor suit-b" data-value="2" data-suit="b">2<span class="suit">♠</span></div>
+                  <div class="card major" data-value="10">10</div>
+              </div>
+        </div>
+    </div>
+
+    <script src="./code.js"></script>
+</body>
+</html>
