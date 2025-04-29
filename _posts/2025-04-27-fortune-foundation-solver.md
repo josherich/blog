@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "A Fortune Foundation Solver"
+title: "A Fortune's Foundation Solver"
 date: 2025-04-27 00:00:01
 categories:
 tags: [games]
