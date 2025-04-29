@@ -10,36 +10,6 @@ I enjoy playing Fortune's Foundation and using it as a benchmark for language mo
 
 ![fortunes's foundation](/images/fortunes-foundation.png)
 
-Here's the main loop:
-
-```js
-let queue = [];
-queue.push([getStateScore(initialState), initialState, []])
-const visited = new Set();
-while (queue.length > 0) {
-    let [score, currentState, currentPath] = queue.pop();
-    if (visited.has(hashState(currentState))) {
-        continue;
-    }
-    visited.add(hashState(currentState));
-    if (isGoalState(currentState)) {
-        return currentPath;
-    }
-    const validMoves = getValidMoves(currentState);
-
-    for (const move of validMoves) {
-        const nextState = applyMove(currentState, move);
-        const nextStateHash = hashState(nextState);
-
-        if (!visited.has(nextStateHash)) {
-            const nextg = g + 1;
-            const newPath = [...currentPath, `${move.fromType},${move.fromIndex}:${move.toType},${move.toIndex}`];
-            queue.push([getStateScore(nextState), nextState, newPath]);
-        }
-    }
-}
-```
-
 The naive BFS search with sorting still can't reach the solution before it runs out of Node's default 4G memory. I tried a few optimizations:
 - Use a priority queue to speed up fetching the best state.
 - Use dense string representation for the solution path.
@@ -48,7 +18,15 @@ The naive BFS search with sorting still can't reach the solution before it runs 
 - For every 10k game states explored, limit the queue size to 100. (35s)
 - For every 10k game states explored, limit the queue size to 50. (31s)
 
-Here's one solution:
+Here's one interactive solution that I made with 60% vibe coding, I had to fix a few quite significant bugs about moving cards around.
+
+You can click the `Next` button and step through the solution shown below.
+
+You can also play for yourself by clicking a card, and click a target slot to move the card there.
+
+<iframe width="100%" height="800px" src="/js/fortune-foundation/index.html" frameborder="0" allowfullscreen></iframe>
+
+
 ```
 Step 1: queue,0:queue,5
 Step 2: queue,10:queue,6
@@ -110,4 +88,34 @@ Step 57: queue,1:queue,2
 Step 58: queue,7:queue,0
 Step 59: queue,6:queue,0
 Step 60: queue,1:queue,0
+```
+
+Here's the main loop:
+
+```js
+let queue = [];
+queue.push([getStateScore(initialState), initialState, []])
+const visited = new Set();
+while (queue.length > 0) {
+    let [score, currentState, currentPath] = queue.pop();
+    if (visited.has(hashState(currentState))) {
+        continue;
+    }
+    visited.add(hashState(currentState));
+    if (isGoalState(currentState)) {
+        return currentPath;
+    }
+    const validMoves = getValidMoves(currentState);
+
+    for (const move of validMoves) {
+        const nextState = applyMove(currentState, move);
+        const nextStateHash = hashState(nextState);
+
+        if (!visited.has(nextStateHash)) {
+            const nextg = g + 1;
+            const newPath = [...currentPath, `${move.fromType},${move.fromIndex}:${move.toType},${move.toIndex}`];
+            queue.push([getStateScore(nextState), nextState, newPath]);
+        }
+    }
+}
 ```

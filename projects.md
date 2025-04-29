@@ -14,19 +14,12 @@ title: Projects
 
   <div class="visual-javascript"><a href="https://zyl11.csb.app/">Visual</a> <a href="https://github.com/josherich/visual-javascript">JavaScript</a> is a visualization tool for JavaScript.</div>
 
-  <div class="promtool-wasm"><a href="https://github.com/josherich/prometheus-wasm">Promtool in WASM</a></div>
+  <div class="promtool-wasm"><a href="https://github.com/josherich/prometheus-wasm">Promtool in WASM</a> lets you use promtool in <a href="http://localhost:4004/short/prometheus-promtool-wasm">browsers</a>.</div>
 
   <div class="repo-to-pdf"><a href="https://github.com/josherich/repo-to-pdf">repo-to-pdf</a> is a cli tool and <a href="https://book.mindynode.com/">website</a> to make pdf from source code folder.</div>
 
-
-  <div class="twitter-reader"><a href="https://x.mindynode.com">Tweetability</a> lets you read articles in tweets.</div>
-
-  <div class="gradient-reader"><a href="https://josherich.github.io/gradient-reader/">Gradient Reader</a> is an experiment to assist reading with word frequency.</div>
-
-  <div class="animation-code"><a href="https://github.com/josherich/Animation2Code">Animation2Code</a> is a CNN and LSTM approach to recover CSS code from Web animations, with a synthetic animation dataset.</div>
-  <div class="nlu-mix"><a href="https://github.com/josherich/Temporal-NLU">Temporal NLU</a> is a mixed training approach to embed linguistic and semantic knowledge to natural language understanding model, it also shows a naive synthetic test set is hard enough for sota models.</div>
-
-  <div class="rss-hub-cn-gov"><a href="http://rss.mindynode.com/">RSS Orgs</a> is a collection of RSS feeds for government and organizations.</div>
+  <div class="animation-code"><a href="https://github.com/josherich/Animation2Code/blob/master/generating-code-from-animation.pdf">Animation2Code</a> is a CNN and LSTM approach to recover CSS code from Web animations, with a synthetic animation dataset.</div>
+  <div class="nlu-mix"><a href="https://github.com/josherich/Temporal-NLU/blob/master/improving-temporal-reasoning-nlu.pdf">Temporal NLU</a> is a mixed training approach to embed linguistic and semantic knowledge to natural language understanding model, it also shows a naive synthetic test set is hard enough for sota models.</div>
 
   <div class="mindynode"><a href="http://news.mindynode.com/en">Context News | 上下闻</a> is what I have been working on in 2017, I put the news in timelines, and make the timelines able to be subscribed.</div>
   <video width="650" height="" controls>
@@ -36,6 +29,19 @@ title: Projects
 
   <div class="nlp-dataset-explorer"><a href="https://josherich.github.io/nlp-dataset-explorer/">NLP Datasets Explorer</a></div>
 
+</div>
+
+### More
+---
+
+<div class="project-list">
+  <div class="twitter-reader"><a href="https://x.mindynode.com">Tweetability</a> lets you read articles in tweets.</div>
+
+  <div class="tweet-to-markdown"><a href="https://chromewebstore.google.com/detail/tweet-to-markdown/mlbccmnmfkihpopadkljaigikojkcjjo">Tweet to Markdown</a> is a Chrome extension to convert tweets and threads to markdown, you can also gist it in one click.</div>
+
+  <div class="gradient-reader"><a href="https://josherich.github.io/gradient-reader/">Gradient Reader</a> is an experiment to assist reading with word frequency.</div>
+
+  <div class="rss-hub-cn-gov"><a href="http://rss.mindynode.com/">RSS Orgs</a> is a collection of RSS feeds for government and organizations.</div>
   <div class="logic-turing-machine"><a href="https://josherich.github.io/logic-turing-machine/">Doing propositional logic with Turing machine</a></div>
 
   <div class="censor-obfus"><a href="https://josherich.github.io/censor-obfus/">Chrome Ext for text obfus</a></div>
