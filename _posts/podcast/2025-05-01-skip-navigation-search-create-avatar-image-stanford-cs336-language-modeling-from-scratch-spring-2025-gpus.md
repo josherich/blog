@@ -1,13 +1,13 @@
 ---
 layout: post
-title: "   Skip navigation Search    Create   Avatar image Stanford CS336 Language Modeling from Scratch | Spring 2025 | GPUs"
+title: "Stanford CS336 Language Modeling from Scratch | Spring 2025 | GPUs"
 date: 2025-05-01 00:00:01
 categories: podcast
 tags: [podcast_script]
 ---
 
 
-[   Skip navigation Search    Create   Avatar image Stanford CS336 Language Modeling from Scratch   Spring 2025   GPUs](https://www.youtube.com/watch?v=6OBtO9niT00)
+[Stanford CS336 Language Modeling from Scratch   Spring 2025   GPUs](https://www.youtube.com/watch?v=6OBtO9niT00)
 
 So hopefully everyone's having a good time with assignment one. It's due tonight. Let us know if you need an extension. Assignment two is coming out soon. We're putting on the finishing touches onto some of the Triton stuff. Hopefully you'll enjoy it. You'll get to implement Flash Attention 2 or parts of Flash Attention 2, which I think will be nice.
 
@@ -394,127 +394,128 @@ Our objective is to avoid that left side region, where performance is constraine
 This effort, however, is complex. While we want to minimize unnecessary memory accesses, we must employ a variety of techniques to ensure optimal performance. The first point to touch upon is conditionals. As mentioned earlier, the execution model for GPUs is SIMT—Single Instruction Multiple Thread. If you write a code block that includes an if statement with different instructions for different thread indices, it will create execution delays in the warp. 
 
 The threads executing opposite instructions will pause until their turn arrives. This means GPUs struggle with conditional statements because of how the simultaneous execution model operates—it can severely hinder performance. 
-**Speaker:** So let's give a simple example and think about the arithmetic intensity of a basic element-wise operation. For instance, let's consider the equation \(X = \max(0, X)\) applied to a vector of size \(n\). If we do this naively with 32-bit floating-point values, how many memory accesses do we encounter? First, I need to read my \(X\); then, I need to write the result when \(X\) is less than zero. Altogether, that amounts to eight bytes, right?
 
-**Speaker:** Now, how many operations do I perform? I have one comparison operation for checking if \(X\) is less than zero, which counts as a single floating-point operation (FLOP). Thus, my ratio is eight bytes per single floating-point operation. If I were to change this to 16-bit floating-point values, my FLOP intensity remains constant, but my memory access is effectively halved. So now I’m at four bytes per FLOP. In a sense, I've gained double the memory bandwidth for free, presuming that I can effectively work with 16-bit floating points.
+So let's give a simple example and think about the arithmetic intensity of a basic element-wise operation. For instance, let's consider the equation \(X = \max(0, X)\) applied to a vector of size \(n\). If we do this naively with 32-bit floating-point values, how many memory accesses do we encounter? First, I need to read my \(X\); then, I need to write the result when \(X\) is less than zero. Altogether, that amounts to eight bytes, right?
 
-**Speaker:** This principle is central to the design of many components. For your assignment, you will experiment with mixed precision or low precision training among other variations. It's a crucial point to understand that not all parts of your network and training algorithm should be converted to low precision. For example, when dealing with matrix multiplies in mixed precision, you would typically use 16-bit inputs. Your multiplication would be conducted in full 32-bit precision; this is beneficial because, during the accumulation of partial sums, you will want to utilize high precision. 
+Now, how many operations do I perform? I have one comparison operation for checking if \(X\) is less than zero, which counts as a single floating-point operation (FLOP). Thus, my ratio is eight bytes per single floating-point operation. If I were to change this to 16-bit floating-point values, my FLOP intensity remains constant, but my memory access is effectively halved. So now I’m at four bytes per FLOP. In a sense, I've gained double the memory bandwidth for free, presuming that I can effectively work with 16-bit floating points.
 
-**Speaker:** Therefore, your calculations are maintained in 32-bit formats, allowing the tensor core to return a 32-bit result, which you can choose to downcast back to 16-bit if desired. While inputs may be in 16-bit format, operations involving accumulation might need to remain in 32-bit. Some operations may require more precision, like certain functions where the range is essential to avoid automatic blow-ups or zeroing out. In such cases, you might prefer to utilize BF16. Careful engineering is vital for ensuring that your models are stable when trained at lower precision levels. Successfully achieving this can effectively double the throughput of your bottleneck by transitioning from 32-bit to 16-bit under memory constraints.
+This principle is central to the design of many components. For your assignment, you will experiment with mixed precision or low precision training among other variations. It's a crucial point to understand that not all parts of your network and training algorithm should be converted to low precision. For example, when dealing with matrix multiplies in mixed precision, you would typically use 16-bit inputs. Your multiplication would be conducted in full 32-bit precision; this is beneficial because, during the accumulation of partial sums, you will want to utilize high precision. 
 
-**Speaker:** Another concept people often associate with writing CUDA kernels is operator fusion—a straightforward yet intuitive approach. Visualize a factory as a mental model, representing your compute section. The factory takes in small box widgets and outputs small triangle widgets. If you increase your computation capacity but your conveyor belt, which represents memory bandwidth, remains finite, you won't be able to fully utilize your additional compute units. 
+Therefore, your calculations are maintained in 32-bit formats, allowing the tensor core to return a 32-bit result, which you can choose to downcast back to 16-bit if desired. While inputs may be in 16-bit format, operations involving accumulation might need to remain in 32-bit. Some operations may require more precision, like certain functions where the range is essential to avoid automatic blow-ups or zeroing out. In such cases, you might prefer to utilize BF16. Careful engineering is vital for ensuring that your models are stable when trained at lower precision levels. Successfully achieving this can effectively double the throughput of your bottleneck by transitioning from 32-bit to 16-bit under memory constraints.
 
-**Speaker:** You already recognize the memory bottleneck, but what’s less apparent is how easy it can be to incur substantial overhead with the naive left-hand computation pattern. For instance, if I start with squares in memory, I would move them to the compute unit for processing, convert them to triangles, and then send them back to memory. If I then realize I need triangles again, I’d have to bring them back to the compute unit, where they transform into circles, and so on. This back-and-forth approach can lead to significant inefficiencies.
+Another concept people often associate with writing CUDA kernels is operator fusion—a straightforward yet intuitive approach. Visualize a factory as a mental model, representing your compute section. The factory takes in small box widgets and outputs small triangle widgets. If you increase your computation capacity but your conveyor belt, which represents memory bandwidth, remains finite, you won't be able to fully utilize your additional compute units. 
 
-**Speaker:** This naive method results in an excessive number of memory accesses. In contrast, the right-hand diagram illustrates a more efficient computation model, where data remains in the compute unit throughout successive operations, like transitioning from squares to triangles to circles and then to rectangles before returning the final result to memory. This strategy embodies the concept of kernel fusion, where multiple operations occur sequentially on a single piece of data, minimizing unnecessary memory writes.
+You already recognize the memory bottleneck, but what’s less apparent is how easy it can be to incur substantial overhead with the naive left-hand computation pattern. For instance, if I start with squares in memory, I would move them to the compute unit for processing, convert them to triangles, and then send them back to memory. If I then realize I need triangles again, I’d have to bring them back to the compute unit, where they transform into circles, and so on. This back-and-forth approach can lead to significant inefficiencies.
 
-**Speaker:** Here’s a practical example. Imagine I create a neural network module that takes input \(X\) and produces \(\sin^2(X)\) and \(\cos^2(X)\). In PyTorch, the computation graph is likely to spawn several CUDA kernels: one kernel for \(\sin(X)\), another for \(\cos(X)\), followed by kernels for \(\sin^2(X)\), \(\cos^2(X)\), and finally for computing \(\sin^2(X) + \cos^2(X)\). This generates multiple trips back and forth in memory, mirroring the inefficiencies described in the left-hand diagram.
+This naive method results in an excessive number of memory accesses. In contrast, the right-hand diagram illustrates a more efficient computation model, where data remains in the compute unit throughout successive operations, like transitioning from squares to triangles to circles and then to rectangles before returning the final result to memory. This strategy embodies the concept of kernel fusion, where multiple operations occur sequentially on a single piece of data, minimizing unnecessary memory writes.
 
-**Speaker:** However, with a bit of foresight, either by crafting your own CUDA kernel or utilizing frameworks like Torch Compile, you can realize that these five operations have little dependency and only occupy a small amount of memory. Thus, you can unify them into a single operation that executes all computations on the GPU within a single thread, avoiding unnecessary global memory transfers. Simple fusion operations like this can be automatically handled by compilers. Keep in mind that using Torch Compile could significantly streamline your processes—it’s quite beneficial, and we'll demonstrate its use in the assignment.
+Here’s a practical example. Imagine I create a neural network module that takes input \(X\) and produces \(\sin^2(X)\) and \(\cos^2(X)\). In PyTorch, the computation graph is likely to spawn several CUDA kernels: one kernel for \(\sin(X)\), another for \(\cos(X)\), followed by kernels for \(\sin^2(X)\), \(\cos^2(X)\), and finally for computing \(\sin^2(X) + \cos^2(X)\). This generates multiple trips back and forth in memory, mirroring the inefficiencies described in the left-hand diagram.
 
-**Speaker:** Now that we've discussed precision and fusion, are there any questions before I continue onto recomputation and other GPU optimization techniques? 
+However, with a bit of foresight, either by crafting your own CUDA kernel or utilizing frameworks like Torch Compile, you can realize that these five operations have little dependency and only occupy a small amount of memory. Thus, you can unify them into a single operation that executes all computations on the GPU within a single thread, avoiding unnecessary global memory transfers. Simple fusion operations like this can be automatically handled by compilers. Keep in mind that using Torch Compile could significantly streamline your processes—it’s quite beneficial, and we'll demonstrate its use in the assignment.
 
-**Speaker:** Another effective strategy is recomputation, which involves investing more compute resources to reduce memory access. Reflecting back on your backpropagation lecture, we begin by propagating inputs at the base, progressing activations upwards, followed by computing Jacobians backwards. To compute gradients, you would multiply the Jacobian values with the activations, then propagate the gradients back up.
+Now that we've discussed precision and fusion, are there any questions before I continue onto recomputation and other GPU optimization techniques? 
 
-**Speaker:** After the forward pass, those activation values must be stored in memory, creating frequent demands for data retrieval from global memory. Instead, you might skip storing these activations altogether, opting to recompute them on the fly during the back pass. 
+Another effective strategy is recomputation, which involves investing more compute resources to reduce memory access. Reflecting back on your backpropagation lecture, we begin by propagating inputs at the base, progressing activations upwards, followed by computing Jacobians backwards. To compute gradients, you would multiply the Jacobian values with the activations, then propagate the gradients back up.
 
-**Speaker:** Here’s an illustration using a function with stacked three sigmoids. For the forward graph, let’s assume my operations yield activations \(S1\) and \(S2\) along with my outputs. During the backward graph, I would conventionally store \(S1\) and \(S2\), leading to multiple memory accesses. However, if I don't store them and simply compute these values on the fly as needed, I significantly reduce the overall memory accesses from eight to just one read for input \(X\) and one memory write for the output. 
+After the forward pass, those activation values must be stored in memory, creating frequent demands for data retrieval from global memory. Instead, you might skip storing these activations altogether, opting to recompute them on the fly during the back pass. 
 
-**Speaker:** So, by sacrificing the storage of activations and instead creating them in real-time during the backward pass, we optimize memory bandwidth utilization without compromising performance. This swapping of compute resources for memory access is extremely valuable, leveraging a system that may already be idling due to memory constraints, a trade-off that can lead to optimal execution speeds. 
+Here’s an illustration using a function with stacked three sigmoids. For the forward graph, let’s assume my operations yield activations \(S1\) and \(S2\) along with my outputs. During the backward graph, I would conventionally store \(S1\) and \(S2\), leading to multiple memory accesses. However, if I don't store them and simply compute these values on the fly as needed, I significantly reduce the overall memory accesses from eight to just one read for input \(X\) and one memory write for the output. 
 
-**Speaker:** This technique shares similarities with gradient checkpointing but specifically aims to speed up execution rather than simply managing memory usage. There’s something particularly intriguing about how slow global memory—or DRAM—functions in GPUs. To enhance speed, a hardware optimization known as burst mode is often employed.
+So, by sacrificing the storage of activations and instead creating them in real-time during the backward pass, we optimize memory bandwidth utilization without compromising performance. This swapping of compute resources for memory access is extremely valuable, leveraging a system that may already be idling due to memory constraints, a trade-off that can lead to optimal execution speeds. 
 
-**Speaker:** When you request a single value from a large memory block, instead of receiving just that value, you gain an entire chunk in burst mode. If you inquire about the first value in a memory block, for instance, you might get back \(0, 1, 2, 3\)—essentially, you receive a block's worth of data. 
+This technique shares similarities with gradient checkpointing but specifically aims to speed up execution rather than simply managing memory usage. There’s something particularly intriguing about how slow global memory—or DRAM—functions in GPUs. To enhance speed, a hardware optimization known as burst mode is often employed.
 
-**Speaker:** This can seem counterintuitive, but the reasoning lies in the physical requirements of addressing memory, which necessitates moving the requested data to an amplifier—this process incurs latency. Subsequent requests operate more efficiently as you gain access to multiple bytes without additional delays. Essentially, if your memory access patterns are optimal, burst mode allows significant acceleration for your memory interactions.
+When you request a single value from a large memory block, instead of receiving just that value, you gain an entire chunk in burst mode. If you inquire about the first value in a memory block, for instance, you might get back \(0, 1, 2, 3\)—essentially, you receive a block's worth of data. 
 
-**Speaker:** If your access patterns are poor, reading memory randomly can hinder performance, making burst sections the smarter option for memory retrieval. If multiple threads in a warp exist within the same burst, the hardware can combine these queries into one efficient call.
+This can seem counterintuitive, but the reasoning lies in the physical requirements of addressing memory, which necessitates moving the requested data to an amplifier—this process incurs latency. Subsequent requests operate more efficiently as you gain access to multiple bytes without additional delays. Essentially, if your memory access patterns are optimal, burst mode allows significant acceleration for your memory interactions.
 
-**Speaker:** For example, during matrix multiplications, how you read matrices affects speed—if you traverse rows individually, you generate non-coalesced memory reads, leading to slower performance. In contrast, if you read in column order, you're set to achieve coalesced reads since all threads will pull from within the same burst section, resulting in better memory throughput.
+If your access patterns are poor, reading memory randomly can hinder performance, making burst sections the smarter option for memory retrieval. If multiple threads in a warp exist within the same burst, the hardware can combine these queries into one efficient call.
 
-**Speaker:** Therefore, memory traversal order is crucial; improper patterns can lead to significant inefficiencies. This brings us to a significant concept: tiling. Tiling involves clustering memory accesses to minimize global memory operations during calculations. 
+For example, during matrix multiplications, how you read matrices affects speed—if you traverse rows individually, you generate non-coalesced memory reads, leading to slower performance. In contrast, if you read in column order, you're set to achieve coalesced reads since all threads will pull from within the same burst section, resulting in better memory throughput.
 
-**Speaker:** Let's consider a naive matrix multiplication algorithm. When trying to compute the product of two matrices, you necessarily traverse the rows of \(M\) and columns of \(N\), accumulating results in \(P\). However, this method generates repeated global memory accesses for certain values, creating performance issues. 
+Therefore, memory traversal order is crucial; improper patterns can lead to significant inefficiencies. This brings us to a significant concept: tiling. Tiling involves clustering memory accesses to minimize global memory operations during calculations. 
 
-**Speaker:** My ideal solution involves offloading pieces of data from global memory to shared memory, where they can be accessed more efficiently. In practice, I’d divide both matrices \(M\) and \(N\) into tiles—submatrices small enough to fit in shared memory. 
+Let's consider a naive matrix multiplication algorithm. When trying to compute the product of two matrices, you necessarily traverse the rows of \(M\) and columns of \(N\), accumulating results in \(P\). However, this method generates repeated global memory accesses for certain values, creating performance issues. 
 
-**Speaker:** Upon loading, I compute partial sums from those tiles entirely in shared memory and only return results back to global memory when finished processing. This rules out excessive global memory overhead, as it allows for a streamlined operation where tiles can be accessed in any order, benefiting from efficient memory coalescing.
+My ideal solution involves offloading pieces of data from global memory to shared memory, where they can be accessed more efficiently. In practice, I’d divide both matrices \(M\) and \(N\) into tiles—submatrices small enough to fit in shared memory. 
 
-**Speaker:** This optimizes memory interactions significantly. For a general \(N \times N\) matrix multiplication, a non-tiled approach requires \(N\) reads and writes from global memory, while a tiled approach can drastically reduce the total number of reads based on tile size.
+Upon loading, I compute partial sums from those tiles entirely in shared memory and only return results back to global memory when finished processing. This rules out excessive global memory overhead, as it allows for a streamlined operation where tiles can be accessed in any order, benefiting from efficient memory coalescing.
 
-**Speaker:** Tiling development, while potent, comes with its own complexities. For instance, a poor selection of tile sizes can lead to inefficient SM utilization. If your matrix dimensions don’t align with your tiling strategy, you may end up with sparse tiles that underutilize processing resources in your SMs.
+This optimizes memory interactions significantly. For a general \(N \times N\) matrix multiplication, a non-tiled approach requires \(N\) reads and writes from global memory, while a tiled approach can drastically reduce the total number of reads based on tile size.
 
-**Speaker:** Adapting your tile sizes and avoiding these situations without overstepping shared memory limits involves careful consideration of your overall matrix dimensions and memory accesses. 
+Tiling development, while potent, comes with its own complexities. For instance, a poor selection of tile sizes can lead to inefficient SM utilization. If your matrix dimensions don’t align with your tiling strategy, you may end up with sparse tiles that underutilize processing resources in your SMs.
 
-**Speaker:** To clarify your question about overlapping memory reads and compute, yes, it's a built-in aspect of GPU architecture. GPUs constantly strive to maximize available bandwidth by utilizing shared memory effectively, but when fully utilizing your compute units, achieving further pre-fetching can become limited.
+Adapting your tile sizes and avoiding these situations without overstepping shared memory limits involves careful consideration of your overall matrix dimensions and memory accesses. 
 
-**Speaker:** Finally, it’s important to understand how memory coalescing interacts with tiling. If a tile size aligns well with your burst sections, you can process multiple requests simultaneously. However, if your tiles spill over into different burst sections, accessing them becomes less efficient, necessitating additional reads—compromising the speed benefit of tiling.
+To clarify your question about overlapping memory reads and compute, yes, it's a built-in aspect of GPU architecture. GPUs constantly strive to maximize available bandwidth by utilizing shared memory effectively, but when fully utilizing your compute units, achieving further pre-fetching can become limited.
+
+Finally, it’s important to understand how memory coalescing interacts with tiling. If a tile size aligns well with your burst sections, you can process multiple requests simultaneously. However, if your tiles spill over into different burst sections, accessing them becomes less efficient, necessitating additional reads—compromising the speed benefit of tiling.
 
 
-**Speaker:** Essentially, I've doubled the number of memory accesses because I've added an extra element at the end, which altered the alignment of my burst section and layout. If your tiles or matrix sizes aren't multiples of your burst section, you can easily end up in situations where the rows don't align with the burst section, resulting in an increase in the amount of memory access required.
+Essentially, I've doubled the number of memory accesses because I've added an extra element at the end, which altered the alignment of my burst section and layout. If your tiles or matrix sizes aren't multiples of your burst section, you can easily end up in situations where the rows don't align with the burst section, resulting in an increase in the amount of memory access required.
 
-**Speaker:** To solve this problem, you need to implement padding to achieve nice round matrix sizes that align with your burst sections, right? I know this gets deep into the technical details, but if you want to maximize the performance of your matrix multiplications, these are critical considerations. You’ll encounter issues if you overlook them.
+To solve this problem, you need to implement padding to achieve nice round matrix sizes that align with your burst sections, right? I know this gets deep into the technical details, but if you want to maximize the performance of your matrix multiplications, these are critical considerations. You’ll encounter issues if you overlook them.
 
-**Speaker:** Of course, tools like Torch Compile and the various CUDA optimizations for matrix multiplications are designed to handle these specific challenges, right? That’s the key to achieving better performance.
+Of course, tools like Torch Compile and the various CUDA optimizations for matrix multiplications are designed to handle these specific challenges, right? That’s the key to achieving better performance.
 
-**Speaker:** This complexity surrounding matrices often leads to scenarios like the one in Andre’s tweet. The most significant optimization for Nano GPT was simply increasing the vocab size from 5257 to 5304, which is the nearest multiple of 64. This adjustment enhanced the occupancy, showcasing how just a small tweak—like adding 47 dimensions to your vocabulary—can lead to a remarkable 25% speed-up. 
+This complexity surrounding matrices often leads to scenarios like the one in Andre’s tweet. The most significant optimization for Nano GPT was simply increasing the vocab size from 5257 to 5304, which is the nearest multiple of 64. This adjustment enhanced the occupancy, showcasing how just a small tweak—like adding 47 dimensions to your vocabulary—can lead to a remarkable 25% speed-up. 
 
-**Speaker:** This brings us back to the mystery I aimed to clarify by dragging you through all the GPU intricacies. By the end, you’ll have a far better understanding of performance factors and will find matrix multiplication performance much less daunting. 
+This brings us back to the mystery I aimed to clarify by dragging you through all the GPU intricacies. By the end, you’ll have a far better understanding of performance factors and will find matrix multiplication performance much less daunting. 
 
-**Speaker:** The first part of this explanation is simple: compute intensity. This directly corresponds to the roofline I mentioned earlier. Up until about 1536, there's insufficient matrix multiplication work to be done; just loading the matrices and performing basic I/O becomes a bottleneck below this threshold. Consequently, throughput suffers significantly.
+The first part of this explanation is simple: compute intensity. This directly corresponds to the roofline I mentioned earlier. Up until about 1536, there's insufficient matrix multiplication work to be done; just loading the matrices and performing basic I/O becomes a bottleneck below this threshold. Consequently, throughput suffers significantly.
 
-**Speaker:** Beyond this point, the memory bandwidth fails to support your compute units adequately. On the right side, in theory, if I draw the maximum achievable performance envelope, it’s possible to fully saturate all computing units and achieve impressive performance. However, if you misalign your matrix sizes, you may end up in some perplexing spots where performance dips occur.
+Beyond this point, the memory bandwidth fails to support your compute units adequately. On the right side, in theory, if I draw the maximum achievable performance envelope, it’s possible to fully saturate all computing units and achieve impressive performance. However, if you misalign your matrix sizes, you may end up in some perplexing spots where performance dips occur.
 
-**Speaker:** Let’s think a bit about why there are so many different performance levels. The first line here illustrates a tiling alignment issue. I've colored each line according to the divisibility of the matrix size. If it’s divisible by 32, you're in good shape, as represented by the purple dots. If it’s divisible by 16, you still remain in a good zone.
+Let’s think a bit about why there are so many different performance levels. The first line here illustrates a tiling alignment issue. I've colored each line according to the divisibility of the matrix size. If it’s divisible by 32, you're in good shape, as represented by the purple dots. If it’s divisible by 16, you still remain in a good zone.
 
-**Speaker:** There are two colors to observe: the green for \(k = 8\) and orange for \(k = 2\). If \(k = 1\), then your performance drops down significantly. Avoid prime dimensions at all costs, as these won’t yield good matrix multiplication throughput.
+There are two colors to observe: the green for \(k = 8\) and orange for \(k = 2\). If \(k = 1\), then your performance drops down significantly. Avoid prime dimensions at all costs, as these won’t yield good matrix multiplication throughput.
 
-**Speaker:** A big issue comes when you reach \(k = 2\) or \(k = 1\)—you’ll find that reading tiles no longer aligns nicely with your burst reads, leading to serious performance problems.
+A big issue comes when you reach \(k = 2\) or \(k = 1\)—you’ll find that reading tiles no longer aligns nicely with your burst reads, leading to serious performance problems.
 
-**Speaker:** Another layer of this mystery involves the significant drop represented by the orange line. If you look here, you see a giant dip in performance, raising the question: how could there be such a loss after only increasing the dimension by two?
+Another layer of this mystery involves the significant drop represented by the orange line. If you look here, you see a giant dip in performance, raising the question: how could there be such a loss after only increasing the dimension by two?
 
-**Speaker:** Let's dissect this puzzle: this performance issue arises when transitioning from size 1792 to 1794. To illustrate, let’s assume a tile size of 256x128, which is a natural choice given that matrix multiply units in GPUs are designed for around 128. So, at 256 x 128, there are seven times 14 tiles, totaling 98 different tiles.
+Let's dissect this puzzle: this performance issue arises when transitioning from size 1792 to 1794. To illustrate, let’s assume a tile size of 256x128, which is a natural choice given that matrix multiply units in GPUs are designed for around 128. So, at 256 x 128, there are seven times 14 tiles, totaling 98 different tiles.
 
-**Speaker:** By increasing the size by just one, you would need to round up each coordinate. This results in a total of 120 tiles, which significantly increases the number of tiles. Here's the catch: if you're running on an A100 GPU with 108 SMs, it can execute these tiles in parallel. 
+By increasing the size by just one, you would need to round up each coordinate. This results in a total of 120 tiles, which significantly increases the number of tiles. Here's the catch: if you're running on an A100 GPU with 108 SMs, it can execute these tiles in parallel. 
 
-**Speaker:** When there are 98 tiles, all SMs can run efficiently, maximizing utilization. However, once the number of tiles exceeds the SMs, the situation changes. Now only 108 SMs execute at full capacity, leading to some SMs being underutilized.
+When there are 98 tiles, all SMs can run efficiently, maximizing utilization. However, once the number of tiles exceeds the SMs, the situation changes. Now only 108 SMs execute at full capacity, leading to some SMs being underutilized.
 
-**Speaker:** This situation is known as wave quantization. Ideally, your tile sizes should be larger than the number of SMs, or they should not be close to the SM count to avoid creating this kind of quantization error.
+This situation is known as wave quantization. Ideally, your tile sizes should be larger than the number of SMs, or they should not be close to the SM count to avoid creating this kind of quantization error.
 
-**Speaker:** I know these are low-level details, but staying attuned to such specifics is crucial. Many aspects of deep learning, particularly in scaling language models, hinge on attention to detail.
+I know these are low-level details, but staying attuned to such specifics is crucial. Many aspects of deep learning, particularly in scaling language models, hinge on attention to detail.
 
-**Speaker:** To summarize some key strategies: first, reduce memory accesses. There are several techniques—you can implement coalescing to reuse reads, or fusion to combine multiple operations and avoid unnecessary memory operations. 
+To summarize some key strategies: first, reduce memory accesses. There are several techniques—you can implement coalescing to reuse reads, or fusion to combine multiple operations and avoid unnecessary memory operations. 
 
-**Speaker:** Additionally, transferring memory to shared memory streamlines access since it’s much faster. Consider utilizing tiling tricks and trading memory for computational resources, like through recomputation to save on memory usage or enhancing numerical precision through quantization.
+Additionally, transferring memory to shared memory streamlines access since it’s much faster. Consider utilizing tiling tricks and trading memory for computational resources, like through recomputation to save on memory usage or enhancing numerical precision through quantization.
 
-**Speaker:** There are multiple strategies at your disposal to maximize performance. Remember to keep a sharp focus on the critical role memory plays in GPU performance.
+There are multiple strategies at your disposal to maximize performance. Remember to keep a sharp focus on the critical role memory plays in GPU performance.
 
-**Speaker:** Are there any questions about this before I move on to the final section regarding Flash Attention?
+Are there any questions about this before I move on to the final section regarding Flash Attention?
 
-**Speaker:** Alright, let's synthesize everything we've discussed. I aim to show you how the various strategies I've taught aren't random facts; they're integral to the standard optimization toolkit for performance, particularly in Flash Attention and its iterations.
+Alright, let's synthesize everything we've discussed. I aim to show you how the various strategies I've taught aren't random facts; they're integral to the standard optimization toolkit for performance, particularly in Flash Attention and its iterations.
 
-**Speaker:** Flash Attention significantly speeds up the attention mechanism, and while many recognize it results from CUDA kernel optimizations, the specifics may not be clear to everyone. The paper explains that they utilize established techniques, such as tiling and recomputation, to tackle the challenge of computing exact attention with sub-quadratic high-bandwidth memory accesses.
+Flash Attention significantly speeds up the attention mechanism, and while many recognize it results from CUDA kernel optimizations, the specifics may not be clear to everyone. The paper explains that they utilize established techniques, such as tiling and recomputation, to tackle the challenge of computing exact attention with sub-quadratic high-bandwidth memory accesses.
 
-**Speaker:** The key takeaway is that if memory acts as the bottleneck, minimizing memory access helps manage computational costs. 
+The key takeaway is that if memory acts as the bottleneck, minimizing memory access helps manage computational costs. 
 
-**Speaker:** To recap, you’ve implemented attention numerous times—typically involving three matrix multiplications for the keys, queries, and values, with a softmax in between. The matrix multiplication itself is straightforward and can effectively be handled using tiling. 
+To recap, you’ve implemented attention numerous times—typically involving three matrix multiplications for the keys, queries, and values, with a softmax in between. The matrix multiplication itself is straightforward and can effectively be handled using tiling. 
 
-**Speaker:** The tricky component will be dealing with the softmax, as it’s a global operation needing row-wise summation. Ideally, all operations should occur within the tiles to avoid writing back data to the larger matrix. This is where online softmax computation comes in.
+The tricky component will be dealing with the softmax, as it’s a global operation needing row-wise summation. Ideally, all operations should occur within the tiles to avoid writing back data to the larger matrix. This is where online softmax computation comes in.
 
-**Speaker:** Online softmax allows calculations to be executed tile by tile without needing the entire dataset upfront. It utilizes a running total for normalization, which means computations can be managed effectively in each tile.
+Online softmax allows calculations to be executed tile by tile without needing the entire dataset upfront. It utilizes a running total for normalization, which means computations can be managed effectively in each tile.
 
-**Speaker:** Thus, this system allows you to calculate the partial softmax for that tile without the necessity of processing the full n squared matrix. 
+Thus, this system allows you to calculate the partial softmax for that tile without the necessity of processing the full n squared matrix. 
 
-**Speaker:** Finally, in the backward pass, it's necessary to use recomputation tile by tile, ensuring we refrain from storing any n squared data until needed.
+Finally, in the backward pass, it's necessary to use recomputation tile by tile, ensuring we refrain from storing any n squared data until needed.
 
-**Speaker:** This method is crucial for maintaining performance efficiencies, making it feasible to compute gradients without compromising computational resources. 
+This method is crucial for maintaining performance efficiencies, making it feasible to compute gradients without compromising computational resources. 
 
-**Speaker:** And with that, we've covered how all these elements, from tiling to coalescing to recomputation, converge to optimize Flash Attention, enhancing transformer performance considerably.
+And with that, we've covered how all these elements, from tiling to coalescing to recomputation, converge to optimize Flash Attention, enhancing transformer performance considerably.
 
-**Speaker:** To wrap up, hardware advancements are the underpinning of modern language models. Understanding low-level details is essential for leveraging these advancements, and the GPU scaling plot we discussed earlier reflects the importance of optimizing memory movement. 
+To wrap up, hardware advancements are the underpinning of modern language models. Understanding low-level details is essential for leveraging these advancements, and the GPU scaling plot we discussed earlier reflects the importance of optimizing memory movement. 
 
-**Speaker:** It's pivotal to consider how to make memory interactions more efficient, which ultimately leads to improved performance, especially in systems like Flash Attention.
-**Speaker:** Thanks, everyone.
+It's pivotal to consider how to make memory interactions more efficient, which ultimately leads to improved performance, especially in systems like Flash Attention.
+Thanks, everyone.
 
 <script>window.tocIndex = {
   "index": [
