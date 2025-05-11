@@ -125,11 +125,6 @@ Yeah. I mean, it's where the AI community is. Although I've been, I'm always try
 
 So yeah. Awesome. Well, thank you. Thank you so much for having me, Svex. This has been awesome. We'll see you next time.
 
----
-
-> This is an experimental rewrite
-
-
 
 <script>window.tocIndex = {
   "index": [
