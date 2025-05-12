@@ -9,7 +9,6 @@ tags: [podcast_script]
 
 [How to Build Your Own AI Data Center in 2025 Paul Gilbert, Arista Networks](https://www.youtube.com/watch?v=3j1dHivahFQ)
 
-[Music]
 
 My name is Paul Gil. I'm a tech lead for Arista Networks. I have an accent, but I'm actually based here in New York City. I build, design, or help build and design enterprise networks. What we do is plumbing, so I'm not going to talk about agents, but more kind of how you train models, what the infrastructure looks like, and how you do inferencing on the infrastructure.
 
@@ -100,101 +99,6 @@ So we can do what we're good at, which is forwarding packets. In summary, for us
 If we get the call that my job completion time was 1 hour yesterday, it's 4 days today, it's probably our problem. Models can checkpoint, but they're really expensive.
 That and I'm done.  
 
-[Music]
-
----
-
-> This is an experimental rewrite
-
-**Paul:** My name is Paul Gil, and I'm a tech lead for Arista Networks. I have an accent, but I’m based here in New York City. My work focuses on building, designing, and assisting in the creation of enterprise networks. We essentially handle the plumbing of networks, so I won’t delve into topics like agents but rather discuss how to train models, what the infrastructure looks like, and how you perform inferencing on that infrastructure.
-
-**Paul:** Typically, I start by teaching the basics, so you might be familiar with some of this information. When we built computer networks, we often had clients come to us mentioning terms like "job completion time barrier." I'm sure you’re all aware of the term "inference." The frequent question I receive is about building a network for training models. There are algorithms that can help identify your needs, but inference has evolved significantly due to advancements in chain of thought and reasoning models. It has changed from what it used to be; it was once represented by X, but now it’s represented by Y. I’m sure many of you have seen the slide I use to illustrate GPU size considerations for enterprises.
-
-**Paul:** Dr. Wed Sosa developed this visual aid. On the left side, you have training, while the right side represents inference. The relationship between the two varies—one is often multiplied by 18 while the other by 2. This relationship is still shifting, especially with emerging chain of thought and reasoning paradigms. A particularly captivating piece of data I share with customers involves model training that utilized 248 GPUs over one to two months. After fine-tuning and alignment, the inference phase requires just four H100s.
-
-**Paul:** We engage with clients about building different types of networks, which I’ll discuss, but I always begin with foundational principles. I find this slide particularly interesting—the role of Large Language Models (LLMs) has significantly expanded from being a minor component of inference to now playing a major role with next-generation models. This is the new environment I am working to establish, along with the novel terminologies we’ve embraced from the networking realm. 
-
-**Paul:** The backend network essentially serves as the connection for GPUs when we construct these networks. They must remain entirely isolated since GPUs are both costly and power-intensive, and securing them is challenging. Consequently, in enterprise AI network construction, we refrain from connecting anything unrelated to these networks. Each pool in the backend network features eight GPUs on those servers, be they Nvidia, Supermicro, or of another variety. These connect to high-speed switches featuring a leaf switch at the bottom and a spine switch—no additional attachments link to that network.
-
-**Paul:** The frontend network is responsible for storing model training data. The GPUs synchronize their actions, process calculations, and produce algorithms while continuously requesting more data; that's the rhythm of operation. The frontend network’s intensity pales in comparison to the backend’s. The GPUs can operate at 400 GB depending on the model being trained, and I’ve created some large data centers, but I’ve never encountered anything like this before. 
-
-**Paul:** In the networking realm, this represents a new frontier for us, and we strive to make these networks as efficient as possible, given the significant financial investment involved. Clients expect these systems to run 24/7. We utilize simple protocols like IB, IBGP, or E-BGP. 
-
-**Paul:** I’m sure many of you are familiar with this infrastructure overview, but in case you’re not, what you’re looking at is the back of an H100 server, which is arguably the most popular AI server currently. In the center, there are four ports that break down into eight GPU ports. On the left, you’ll find Ethernet ports for connections. We’ve rarely encountered setups like this before. 
-
-**Paul:** Many clients often inquire about scaling. I gleaned this from an Nvidia presentation that discussed concepts of scaling up and out. Personally, I’m uncertain about the scaling up concept. When clients purchase servers, they typically possess eight GPUs, with no option for additional units in an Nvidia server. In an outsourced model, such as HGX or a third party, the same limitations apply. 
-
-**Paul:** What's distinct in our domain is that we deal primarily with hardware and software. GPUs are foreign to us; when I first attempted to configure one, I spent hours figuring it out because I lacked experience. Other technologies have been easier to adapt to. In terms of software, CUDA and Nickel are significant protocols that, while many of you may already know, we primarily focus on Nickel to comprehend how collectives operate, as it impacts network traffic in specific ways.
-
-**Paul:** The applications used in data centers, such as web app databases, are relatively straightforward—they communicate across different network parts and typically employ load balancers to handle failures. AI networks differ from this structure; GPUs communicate with one another, sharing information and requesting resources. If one GPU fails, it can halt the job, complicating recovery efforts. 
-
-**Paul:** This burstiness poses an additional challenge. For instance, if you have 1,000 GPUs, each capable of 400 GB, many will burst simultaneously, creating substantial network traffic—something I’ve never witnessed before. In network construction, we avoid oversubscription, opting instead for a one-to-one setup. Historically, in the data center industry, we’ve practiced oversubscription levels like 1 to10 or even down to 1 to 3, but a one-to-one ratio is an expensive endeavor.
-
-**Paul:** To further illustrate, just one H100 server boasts the capability to transmit 8 GPUs at 400 GB, totaling 4.8 terabytes. In contrast, at the frontend, the storage size does not compare, while the backend consistently operates at wire rate. As we look ahead, I believe services relying on 800 GB are just around the corner, with expected releases in March. Presently, our networks can support 800 GB, with each server capable of reaching up to 9.6 terabytes.
-
-**Paul:** In the enterprise field, most come from servers configured for 1, 2, 3, or 400 Git Ethernet, but nothing has prepared us for servers capable of 9.6 terabytes. Another challenge we face involves traffic patterns. For load balancing between the leaf and spine, we use a method called entropy, based on a five-tuple: IP address, port, MAC address. This method generally performs decently, but with GPUs, we often have a single IP address that can lead to congestion, which results in dropped packets—a significant concern.
-
-**Paul:** Managing AI networks requires careful consideration of load balancing techniques, particularly in the backend and frontend configurations. Utilizing innovative tools, we now balance based on the percentage of bandwidth in use, allowing for approximately 93% utilization across all links to ensure efficiency.
-
-**Paul:** A novel concept for us is dealing with GPU failures. When a GPU or a group fails, the entire model may suffer. Although we’re aware of checkpoints, a single GPU failure can be problematic. Historically, we've contended with issues related to optics, transceivers, and loss rates—building networks with thousands of GPUs can reveal many cable problems.
-
-**Paul:** Regarding power consumption, the industry is abuzz with news about nuclear plants being sought to meet rising demands. Presently, average data center racks utilize between 7 to 15 kW of power, accommodating about ten one-U racks. Clients often come to me excited about acquiring GPUs, and when I ask about rack specifications, many quickly realize they can only fit one GPU server per rack due to the 10.2 kW consumption of an eight-GPU setup.
-
-**Paul:** Enterprises are starting to take notice and are increasingly designing racks capable of handling between 100 to 200 kW, opting for water-cooling solutions, as air cooling is no longer viable. This transformation presents a significant paradigm shift for many. In the AI world, traffic flows in both directions. Unlike traditional setups where data flows north-south as users connect to databases and applications, GPU communications result in east-west traffic within the network.
-
-**Paul:** This east-west traffic presents challenges, particularly since it often operates at wire rate. Comparatively, the traffic from the frontend to storage remains subdued, as most storage vendors are currently not capable of supporting the full velocity realized in AI networks—generally between 100 and 200 gigabit speeds at this stage. 
-
-**Paul:** Networking switches include a level of buffering, which can hinder data transfer; poor buffering leads to packet loss during congestion. For now, we use RoCE V2 for congestion management, which comprises two elements: PFC and ECN. Any network engineer tasked with building an AI network will need to understand these protocols.
-
-**Paul:** ECN provides end-to-end flow control, marking packets during congestion to alert the sender to reduce speeds. This process involves algorithms that regulate transmission rates. PFC acts more like a panic stop mechanism that halts traffic altogether if buffer thresholds are breached.
-
-**Paul:** Our networks are intentionally kept simple. Unlike typical data center environments that include DMZ setups, firewalls, load balancers, and internet connections, our GPU backend operates in complete isolation. Although the frontend may connect with external systems, the extensive costs associated with construction discourage unnecessary risks.
-
-**Paul:** We are all accustomed to on-demand applications where failures merely prompt temporary disruptions. In the AI realm, failures can lead to complete model breakdowns, creating distinct operational challenges. 
-
-**Paul:** Another important aspect is collectives. The Nickel protocol gauges GPU locations and operational dynamics, thus influencing network configurations. I strongly advise my clients to communicate with their data scientists and developers about their modeling processes, as these choices directly affect network design.
-
-**Paul:** As a side note, the network’s isolation is critical. Our capabilities have evolved rapidly; we’re currently at 800 gig but predict we’ll achieve 1.6 terabytes by late this year or early 2027. The trajectory of model development continues to expand exponentially.
-
-**Paul:** I can assure you that visibility and telemetry are essential. Whenever a model fails due to a network issue, the repercussions differ from what my clients are accustomed to. Consequently, we incorporate various telemetry systems to ensure that they stay informed about network issues proactively—before those troublesome calls arrive.
-
-**Paul:** I'm part of the team at Arista, where our operating system is EOS, accompanying a host of features. When contemplating the assembly of an AI network, I encourage discussions with engineers on elements such as lossless Ethernet. Many believe that packet loss is unavoidable during model training, but I can assure you it is indeed a possibility. 
-
-**Paul:** While minimal packet drops might be acceptable, excessive losses clearly present issues. Thus, flow control mechanisms like EET are vital. As previously mentioned, ECN and PFC facilitate this process. Since GPUs operate in synchronization, if one GPU’s speed halts, it can stall the entire system.
-
-**Paul:** If you’re sourcing equipment, we have impressive buffer capabilities and switch types tailored for various network sections. Understanding how models send and receive specific packet sizes enables us to optimize buffer allocations efficiently—a substantial win in networking.
-
-**Paul:** Monitoring remains fundamental. I often tell my clients there are five primary objectives to pursue. One such goal pertains to RDMA networks, which utilize memory-to-memory writes rather than transitioning from CPU to memory. This complex protocol incorporates numerous error codes. Therefore, if network issues arise leading to packet drops, instead of discarding those packets, we're able to either buffer them temporarily or preserve critical headers to analyze the failure causes.
-
-**Paul:** This innovation exemplifies how instead of merely discarding packets in cases of congestion, we can save snapshots of those packets alongside relevant header information. Additionally, we’ve developed an AI Agent from the networking perspective, enhancing insights into the GPU landscape.
-
-**Paul:** This agent connects through an API and is installed on Nvidia GPUs, communicating essential configurations to our switches. For instance, it will ask the switch for current settings, and if they align correctly, both systems maintain operational harmony.
-
-**Paul:** Moreover, the agent provides valuable statistics, tracking packets sent and received, as well as any RDMA errors. This newfound correlation helps identify whether issues stem from GPUs or network complications, marking significant progress for us in understanding system dynamics.
-
-**Paul:** Another exciting feature we now offer is Smart System Upgrade. In traditional router and switch environments, software upgrades necessitate taking systems offline, a known inconvenience. With our latest advancements, upgrades can be executed while allowing GPUs to continue functioning—an impressive stride forward.
-
-**Paul:** To emphasize again, there cannot be oversubscription at the backend because GPUs will utilize all available resources. Accurate addressing is crucial; we maintain point-to-point connections and are accommodating IPv6 solutions should IPv4 addresses present challenges. I consistently advocate for BGP as a straightforward, efficient protocol.
-
-**Paul:** If you maintain multiple tenants or business units within the network, you may require advanced load balancing methods. We now base load balancing on the collective models in use—what we call cluster load balancing. I advise my clients to implement this measure since neglecting it can lead to significant outages with unclear causes.
-
-**Paul:** These strategies afford early warnings on network status and mitigate issues before they escalate into crises, making visibility and telemetry paramount for network operations. 
-
-**Paul:** As I near the end of my presentation, I want to illustrate what a 1,400 gig cluster looks like. It consists of spine and leaf architectures, once again adhering to the no oversubscription approach, with 800 gig links connecting the leaf to the spine and subsequently 400 gig leading to the GPUs. 
-
-**Paul:** If you’re constructing substantial clusters, you’ll find a configuration like the 7800 series box invaluable—it can accommodate up to 576 800 gig GPUs or 1150 of the 400 gig GPUs to support extensive workloads.
-
-**Paul:** To put it all together, the arrangement encompasses three networks: the backend housing your GPUs, the frontend allocated to storage, and the inference network for deploying finalized models.
-
-**Paul:** Lastly, I want to mention the Ultra Ethernet Consortium. Ethernet standards have remained unchanged for nearly three decades. However, improvements surrounding congestion control and inter-NIC communications are forthcoming.
-
-**Paul:** The Ultra ET Consortium is in line for ratification in Q1 2025, offering innovative approaches to network construction. You may not see immediate impacts until Q3 or Q4, but the cloud scale sector is enthusiastic about these developments, as they continue to evolve networking capabilities.
-
-**Paul:** In conclusion, we approach the front-end for storage and focus on the backend, which is vital for maintaining functionality. The unpredictable, bursty nature of GPUs requires seamless synchronization, meaning that any slowdown—whether from job completion times increasing from one hour to four days—likely indicates a network-related issue. 
-
-**Paul:** That wraps up my presentation! Thank you for your time.
-
-[Music]
 
 <script>window.tocIndex = {
   "index": [
