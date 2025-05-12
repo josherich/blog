@@ -56,9 +56,6 @@ And it opens things up in the world of streaming that are really exciting. And s
 And why have this before and after thing where I've got this streaming world over here, and I'm gonna do some minimal stream processing, dump it into the data lake, and then Iceberg is happening over here? Why not just, with an option, enable Iceberg semantics on top of that data? And that is what Confluent calls table flow, which is a way of making the data in a topic accessible as an Iceberg table. So changes to that topic, changes to the schema through the schema registry and the governance features of Confluent Cloud keep all of the appropriate manifest files, lists and metadata files updated. 
 
 So however it is you are accessing Iceberg, you point it at your Kafka topic, and that works without the old copy from there to here kind of thing, which is kind of cool. A lot of neat things are happening. Obviously, there's so much more to say about Iceberg, how it deals with updates and upserts and deletes and how it pulls off transactions in terms of the steps it goes through. So much to say, so much more to learn. I hope this gives you a good overview of the reasons, the logical architecture and the modern implications of an important technology.
-818.76: Iceberg. 
-
-819.76: Thanks.
 
 ---
 
@@ -107,10 +104,6 @@ Moreover, Iceberg opens exciting possibilities in the streaming landscape. At Co
 This brings us to a significant question: why maintain a distinction between the streaming environment and Iceberg? Why not enable Iceberg semantics directly on top of the streamed data? Confluent’s solution for this is known as **Table Flow**. This integrates the changes within a Kafka topic, including schema changes through the schema registry and governance features of Confluent Cloud, ensuring that all relevant manifest files, lists, and metadata files are kept up-to-date.
 
 Thus, when you access Iceberg, you can direct it at your Kafka topic. This approach eliminates the traditional copying from one environment to another, which is quite innovative. Clearly, there’s much more to explore regarding Iceberg—its mechanisms for handling updates, upserts, deletes, and transaction management involve many intricate steps. There’s so much to discuss and learn, and I hope this overview has provided a solid foundation regarding the rationale, logical architecture, and modern implications of this vital technology.
-
----
-
-**Tim Berglund**: Thanks!
 
 <script>window.tocIndex = {
   "index": [
