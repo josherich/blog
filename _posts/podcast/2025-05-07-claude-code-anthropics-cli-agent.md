@@ -721,10 +721,6 @@ Thank you.
 
 Thanks for having us. This was fun.
 
----
-
-> This is an experimental rewrite
-
 
 
 <script>window.tocIndex = {
