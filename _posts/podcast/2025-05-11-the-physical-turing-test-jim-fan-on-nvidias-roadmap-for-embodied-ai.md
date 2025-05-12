@@ -84,11 +84,6 @@ And this is the future: to push that blue bar all over the place, all over there
 You can have a physical app store and skill economy. So let's say Michelle the chef doesn't need to just go to the kitchen every day. He can teach a robot and then basically deliver Michelin dinner as a service. And I should quote Jensen here again: that future, everything that moves will be autonomous. And one day you'll come home, right, to a clean sofa and a candlelit dinner, and your partner's smiling at you instead of yelling at you for not doing the dirty laundry. 
 
 That still motivates me every day, right? And you bought two humanoid robots last month. It's running group N7, and those robots just fade into the background, right? Kind of like ambient intelligence. It fades into the background, and you wouldn't even notice the moment that we pass the physical touring test, and that day will simply be remembered as another Tuesday. Thanks.
-[Applause]
-
----
-
-> This is an experimental rewrite
 
 
 
