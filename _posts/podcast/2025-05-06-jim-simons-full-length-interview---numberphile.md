@@ -331,10 +331,6 @@ Do you have a favorite number? Seven. Next question. Do you have a favorite math
 
 Thank you so much for your time. Alright, well, this was kind of fun.
 
----
-
-> This is an experimental rewrite
-
 
 
 <script>window.tocIndex = {
