@@ -754,13 +754,6 @@ Yes, it should be another research paper. Yeah, any other questions? So there's 
 Sorry, I was wondering if you could take a look at them. I didn’t actually check the slider questions. Whoopsies. Um, it didn’t actually load, so—oh, there are lots of questions. Okay, I will—okay, oh, okay, I need to answer each of them afterwards. 
 
 I think I’m already out of time, though. So yes, thanks a lot.
-[Music]
-
----
-
-> This is an experimental rewrite
-
-
 
 <script>window.tocIndex = {
   "index": [
