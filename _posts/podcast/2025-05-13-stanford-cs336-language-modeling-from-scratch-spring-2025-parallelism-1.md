@@ -387,10 +387,6 @@ The last example is for GMA 2, and I wanted to end on this because this is a TPU
 
 You want to combine all three approaches to leverage their strengths, and there are simple and interpretable rules of thumb for how you might execute this parallelism in practice. Thank you.
 
----
-
-> This is an experimental rewrite
-
 
 
 <script>window.tocIndex = {
