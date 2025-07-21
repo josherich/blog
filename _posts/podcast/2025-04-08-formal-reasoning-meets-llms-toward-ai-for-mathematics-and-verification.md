@@ -27,366 +27,196 @@ If you think of writing a **crime fiction**, it definitely requires complex reas
 
 We're going to briefly go over how current large language models are trained to solve math problems. We focus on math, but our discussion also, more or less, applies to coding. We will see later that math and coding are deeply connected.
 
-At a very high level, math language models are trained using two main techniques: supervised learning and reinforcement learning. We will see that they come with different requirements. 
+At a very high level, math language models are trained using two main techniques: supervised learning and reinforcement learning. We will see that they come with different requirements.
 
-First, **supervised learning**. This is how it works. You start with a generic large language model. That's a massive neural network trained on the entire internet, not specific to mathematics. Then you want it to learn more mathematics, so you expose the model to a large amount.
-**269.04**: of mathematical content by further pretraining it on math-related websites, so web documents, for example, from **MathOverflow** or from **arXiv**. 
+First, **supervised learning**. This is how it works: you start with a generic large language model—a massive neural network trained on the entire internet, not specific to mathematics. To make it learn more mathematics, you expose the model to a large amount of mathematical content by further pretraining it on math-related websites, such as web documents from **MathOverflow** or **arXiv**. Now the model has seen more mathematics, but it still doesn't know how to generate well-structured solutions to problems.
 
-**278.92**: So now the model has seen more mathematics, but it still doesn't know how to generate well-structured solutions to problems. 
+The next step is to finetune the model on a smaller, much cleaner data set. These data are problems paired with very detailed step-by-step solutions. Optionally, you can further finetune the model to generate not only solutions in natural language, but also solutions using external tools like **SymPy** or **Mathematica**.
 
-**288.4**: So the next step, you finetune the model on a smaller data set, but the data in this data set are much cleaner. 
+Here is an example of what the data should look like: the data has a problem statement and a solution. The solution includes a final answer and also intermediate steps that lead to the final answer. We're essentially training the model to mimic this kind of behavior using supervised learning.
 
-**297.13**: So they are problems paired with very detailed step-by-step solutions. And optionally, you can even further finetune the model to generate, not only solutions in natural language, but also the model can use external tools like **SymPy** or **Mathematica**. 
+As you can imagine, the most important thing here is the data set. We need a large and diverse set of problems with detailed step-by-step solutions. Collecting this data set cannot be fully automated; you need humans somewhere, and it requires significant human effort. This is what makes the data set really expensive. The largest publicly available data sets for this purpose have around **900k examples**, which is decent, but not a lot for large language models. It’s definitely not enough to cover all possible mathematics we want the model to learn.
 
-**315.67**: So here is one example of what the data should look like. The data has a problem statement and it has a solution. 
+The most expensive part in collecting this data is getting the intermediate steps in the solution, whereas the final answers may be cheaper. Another possibility is: if we have only the final answer, without the intermediate steps, can we still train a model?
 
-**326.38**: The solution has a final answer but also has intermediate steps that lead to the final answer. And we're essentially training the model to mimic this kind of behavior using supervised learning. 
+This leads to the second technique: **reinforcement learning**. We have the problem statement and give it to the model, which generates the solution with steps and final answer. Since you have the ground-truth solution, you can check if the answer is right or wrong. Verification is simple since you are just comparing the numbers. The result of this verification can be used as a reward for reinforcement learning. When it's correct, you can think of the reward as **1**; when it's incorrect, the reward might be **0**. A reinforcement learning algorithm can then optimize the model to achieve high rewards, so the model predicts correct answers more frequently after training.
 
-**340.83**: As you can imagine, the most important thing here is the data set. We need a large and diverse set of problems with detailed step-by-step solutions. 
+This idea is very simple and powerful, and actually not new—it's decades old. Recently, it's gaining a lot of momentum because of **DeepSeek-R1**, which was the first to make this work for training very large, reasoning-focused language models. Since then, this idea has taken the language model world by storm. To see how much momentum it has, one month ago, the **Turing Award** was given to two pioneers in reinforcement learning: **Dr. Richard Sutton** and **Andrew Barto**.
 
-**351.86**: Collecting this data set cannot be fully automated. You need humans somewhere, and it needs a significant amount of human effort. This is what makes the data set really expensive. 
+When using reinforcement learning to do mathematics, the key is verifiability. To calculate the reward, you need to verify if the model-generated solution is correct. This is easy if the problem has a numeric answer; you can just check the answer. But what about proofs? We will come back to this point later.
 
-**362.42**: The largest publicly available data sets for this particular purpose have around **900k examples**, which is decent, but it's not a lot for large language models. 
+In summary, there are two main techniques for training math language models: **supervised finetuning** and **reinforcement learning**. Supervised finetuning is constrained by **data**.
 
-**374.96**: It’s definitely not enough to cover all possible mathematics we want the model to learn. 
+Reinforcement learning really needs the **solutions** to be **verifiable**. Data and verifiability, they will appear repeatedly throughout this talk.
 
-**382.15**: As we see, the most expensive part in collecting this data is how do you get the intermediate steps in the solution? Whereas the final answers may be cheaper. 
-
-**392.24**: Another possibility is, can we—if we have only the final answer, without the intermediate steps, can we still learn a model? 
-
-**400.36**: This is the second technique, **reinforcement learning**. 
-
-**403.37**: We have the problem statement, and we give it to the model. The model can generate the solution with steps and final answer. Since you have the ground-truth solution, you can check if the answer is right or wrong. 
-
-**418.17**: Here, it's right. But maybe the model can also generate an incorrect solution, and then you know it's wrong. 
-
-**424.26**: Verification is simple since you are just comparing the numbers. The result of this verification can be used as a reward for reinforcement learning. 
-
-**436.82**: When it's correct, you can think of the reward as **1**, and when it's incorrect, the reward might be **0**. 
-
-**442.86**: We have a reinforcement learning algorithm that can optimize the model to achieve high rewards. That is, the model will predict correct answers more frequently after training. 
-
-**454.94**: This idea is very simple and very powerful. Actually, it's not new—it's decades old. 
-
-**461.18**: Recently, it's gaining a lot of momentum because of **Deep-Seek-R1**. It’s the first to make this work for training very large, reasoning, large language models. 
-
-**473.54**: Since then, this idea has taken the language model world by storm. To see how much momentum it has, one month ago, the **Turing Award** was given to two pioneers in reinforcement learning: **Dr. Richard Sutton** and **Andrew Barto**. 
-
-**492.2**: When using reinforcement learning to do mathematics, the key is verifiability. To calculate the reward, you need to verify if the model-generated solution is correct. 
-
-**504.39**: This is easy if the problem has a numeric answer; you can just check the answer. But what about proofs? We will come back to this point later. 
-
-**514.19**: In summary, we have introduced two techniques for training math language models: **supervised finetuning** and **reinforcement learning**. 
-
-**520.71**: Supervised finetuning.
-is constrained by **data**.
-
-Reinforcement learning really needs the **solutions** to be **verifiable**. Data and verifiability, they will appear repeatedly throughout this talk. 
-
-I would say most, or even all, **state-of-the-art math language models** are really, well, conceptually, not complex. It's just a very good **pretrained model** plus these two techniques and, more importantly, plus a marvelous amount of **engineering**. 
+I would say most, or even all, **state-of-the-art math language models** are really, well, conceptually, not complex. It's just a very good **pretrained model** plus these two techniques and, more importantly, plus a marvelous amount of **engineering**.
 
 So, it's all about who has the better **data set** and who has the better **infrastructure**. Everyone is using more or less the same method. Given these techniques, are we ready to solve **mathematics** by AI? Obviously, the answer is no. I was being intentionally very rosy when introducing how much progress **AI** has made on math, but there are many important gaps.
 
 First, existing success focuses almost exclusively on **precollege maths**, such as **high school math competitions**, and it's widely observed that language models still have a very long way to go for more advanced problems. For example, in a post, he tried **ChatGPT** with **o1**, and he thinks the model still struggles with the most advanced **research math tasks**.
 
-So you may wonder, isn't **o3** already very good at the **FrontierMath benchmark**? Yes, but it comes with a few **caveats**. The most important caveat, I would say, is that the problems in FrontierMath are designed to have **numerical answers**. Although there are advanced math, they are designed in a way that all problems have a numerical answer. This is just to make the **evaluation easier**. However, it deviates from how mathematics is typically done. 
+So you may wonder, isn't **o3** already very good at the **FrontierMath benchmark**? Yes, but it comes with a few **caveats**. The most important caveat, I would say, is that the problems in FrontierMath are designed to have **numerical answers**. Although there are advanced math, they are designed in a way that all problems have a numerical answer. This is just to make the **evaluation easier**. However, it deviates from how mathematics is typically done.
 
-This leads to the second gap. Language models are really good at guessing the final answer but often struggle to show, rigorously, that the answer is correct. According to **Kevin Buzzard** and also a recent study from **ETH Zurich**, state-of-the-art language models still fail miserably on the **Putnam** and on the **USAMO competition** if you have humans to manually check if the solution, if the proofs are rigorous. 
+This leads to the second gap. Language models are really good at guessing the final answer but often struggle to show, rigorously, that the answer is correct. According to **Kevin Buzzard** and also a recent study from **ETH Zurich**, state-of-the-art language models still fail miserably on the **Putnam** and on the **USAMO competition** if you have humans to manually check if the solution, if the proofs are rigorous.
 
-I think in **USAMO**, it says it's about **5%**. I think the more recent **Gemini model** is better than that but still very far from perfect. Kevin thinks the model can get, at most, **2 out of 10 points**. 
+I think in **USAMO**, it says it's about **5%**. I think the more recent **Gemini model** is better than that but still very far from perfect. Kevin thinks the model can get, at most, **2 out of 10 points**.
 
-Here's an example of the kind of error the language model can make. We ask the model to prove a very simple **inequality**. It used **AM-GM** to derive the equation, which is correct. But then it tries to multiply the inequality on both sides by a **positive constant**, which shouldn't change the direction of the inequality. Somehow the model flipped the direction. 
+Here's an example of the kind of error the language model can make. We ask the model to prove a very simple **inequality**. It used **AM-GM** to derive the equation, which is correct. But then it tries to multiply the inequality on both sides by a **positive constant**, which shouldn't change the direction of the inequality. Somehow the model flipped the direction.
 
-This kind of error is trivial if you point them out. But if you have a very, very long proof, you want to check them step by step by humans—that's not going to be feasible. We argue that language models alone, at least in their current form, are not sufficient to solve these gaps like advanced mathematics and proofs. 
+This kind of error is trivial if you point them out. But if you have a very, very long proof, you want to check them step by step by humans—that's not going to be feasible. We argue that language models alone, at least in their current form, are not sufficient to solve these gaps like advanced mathematics and proofs.
 
 By **language models**, I mean **neural networks** trained to predict the next token using **supervised finetuning** and **reinforcement learning**. They rely a lot on data and verifiability, as we explained. Unfortunately, or fortunately, in advanced mathematics, the data set is very **scarce**. If your mathematics is novel, it's very unlikely that you can find similar mathematics on the **internet**.
 
-Also, if you want to generate proofs using the model, the output is no longer a **number**, so there's no easy way to check it. If language models are not enough, then what else do we need? 
+Also, if you want to generate proofs using the model, the output is no longer a **number**, so there's no easy way to check it. If language models are not enough, then what else do we need?
+The research direction I've been working on for a few years, which is also summarized in this recent position paper, is that we should combine informal, data-driven reasoning in neural networks with formal and rigorous reasoning in formal systems. Here, formal systems include different kinds of logics and computer programs, and specifically Lean. The role of a formal system is to verify proofs and provide automatic feedback. Once you have automatic feedback, your model can potentially learn from the feedback without relying solely on human-created proofs, which mitigates the data scarcity problem. Since you can verify if the proof is correct, you can rigorously check the problem and evaluate the performance of the model.
 
-The research direction I've been working on for a few years, which is also summarized in this recent **position paper**, is that we should combine informal, **data-driven reasoning** in neural networks with...
-**Formal and rigorous reasoning**
+Since this is the third day of the workshop, people are probably familiar with Lean, so I will skip the introduction. AI can be used in Lean in a few ways. One task we care about is theorem proving: given a theorem statement, you want the model to produce a proof, and you use Lean to check if the proof is correct or not. The second task is autoformalization, where you have informal math written by humans, for example, in textbooks and papers, and you want the model to help you formalize it into Lean.
 
-**792.21 - 1.83:** In **formal systems**.
+In the rest of this talk, I will dive into a few projects on those two tasks, starting with theorem proving. A widely used, maybe slightly old-fashioned recipe for neural theorem proving is to search for proofs using tactics generated by neural networks, including language models. You start with an initial state you want to prove, and the model generates multiple candidates for the next step. You run these tactics in Lean to get the next state, and you do that repeatedly, exploring a large number of states and potential proof paths until, at some point, you find a proof. The search can be done using any search algorithms, such as depth-first search, breadth-first search, or Monte Carlo tree search. You don't need machine learning here; it can be purely symbolic. But the core is how you generate tactic candidates.
 
-**794.04 - 3.75:** Well, here, **formal system** includes different kinds.
+Here, the input is the local context and the goal—the thing you want the model to prove. Optionally, the model can take a library of lemmas, for example, Mathlib or other libraries, and you want the model to output a bunch of suggestions for the next tactic. So how do we train the model to do this? A very obvious way is we already have Mathlib and other data sets that have a lot of human-written proofs. Why not just extract data from those repos and train the model? This is actually not a new idea. People have been doing similar things for many years, extracting data from human-written proofs and training a machine-learning model to predict tactics. This was happening way before language models or Lean were invented.
 
-**797.79 - 5.13:** of **logics** and **computer programs**, and specifically **Lean**.
+After we have large language models, this approach has become particularly promising because language models can really go beyond the formal proofs you give as training data. When the language model was pretrained, it has already seen a lot of mathematics, and presumably, the mathematical knowledge it gained during pretraining can be used to guide the proof-search process, which wasn't possible with older machine-learning techniques like KNN. There is a lot of work in this direction. We will talk about one representative work using language models for theorem proving in LeanDojo. It is very special because it was the first language model-based theorem prover that's fully open source. Anyone can access its code, models, training data, and tools for extracting data and for interacting with Lean.
 
-**802.92 - 3.0:** The role of **formal system** here is to verify the **proofs** and provide **automatic feedback**.
+At a high level, it's very simple. You have Lean and you have Mathlib and other Lean repos, and you use LeanDojo to extract a data set. The data set consists of theorems, proofs, tactics, and also lemmas and premises you can use in the tactics.
 
-**808.21 - 1.92:** And once you have automatic feedback, your model can potentially learn from the feedback without learning from human-created proofs.
+And once you have the data set, you train a **machine learning model**. After it's trained, the model interacts with **Lean** to search for proofs. In this particular work, we introduced a model called **ReProver**, or **Retrieval-Augmented Prover**.
 
-**815.5 - 3.13:** So, which mitigates the **data scarcity problem**.
+So the idea is we want the model to use, not only the current state but also the **lemmas** that are available in the library. Given the current state and given a bunch of lemmas, first, we want to know what lemmas are more likely to be useful.
 
-**818.63 - 3.39:** And since you can verify if the proof is correct, you can rigorously check the problem and evaluate the performance of the model.
+So we encode everything as a vector. The state is a vector and every lemma is a vector. We calculate the **cosine similarity** between the state and each lemma so that we can pick the **top ones** from the library.
 
-**828.22 - 3.57:** So since this is the **third day** of the workshop, people have probably been familiar with **Lean**, so I will skip the introduction to **Lean**.
+After you pick the top ones, you combine the **retrieved lemmas** with the state, and you give it to the model to generate the next tactic.
 
-**837.73 - 3.7:** And **AI** can be used in **Lean** in a few ways.
+**AUDIENCE:** "It's a very lossy encoding of lemmas as a vector with cosine similarity."
 
-**841.43 - 2.64:** One task we care about is **theorem proving**. 
+That seems like a-- yes.
 
-**844.07 - 1.73:** So given the **theorem statement**, you want the model to produce a proof, and you use **Lean** to check if the proof is correct or not.
+**KAIYU YANG:** "The question is, is this retrieval process very lossy because you are encoding everything as a vector?" The answer is yes. The vector probably cannot capture the semantics of the theorem very well.
 
-**852.16 - 2.95:** And the second task is **autoformalization**, where on the left, you have informal math written by humans, for example, in textbooks and papers. 
+I think here, the decision is more **technical** because this architecture is very efficient. Even if you have a very, very big **math library**, to calculate the similarity, you only do one **matrix-vector multiplication**, so it's very cheap.
 
-**860.99 - 5.06:** And you want the model to help you formalize it into **Lean**.
+So after **LeanDojo**, we see many recent papers on **neural theorem proving**. Some of them also built on top of LeanDojo. For example, **DeepSeek Prover** from **DeepSeek**, **InternLM Prover** from **AL Lab** in China, and **BFS Prover** from **ByteDance**. That's the company behind **TikTok**.
 
-**866.05 - 2.1:** So in the rest of this talk, I will dive into a few projects on those two tasks, and we will start with **theorem proving**.
+Recently, the **Goedel-Prover** from a team in **Princeton**. I'm also playing a small role in that team. They improved upon LeanDojo in several ways. I think a recipe that has been verified to work well is we want **more data**.
 
-**874.75 - 4.57:** And here's a widely used, maybe slightly old-fashioned recipe for **neural theorem proving**: to search for proofs using tactics generated by **neural networks**, including **language models**.
+Instead of just having data from **Mathlib**, we have the model synthesize more theorem statements by **autoformalizing** informal mathematics. Once we have a large collection of formal statements, we can train the prover by what they call **expert iteration**.
 
-**887.58 - 3.63:** So you start with an **initial state** you want to prove, and the model generates multiple candidates for the next step.
+So here's how it works. Imagine I have a lot of statements, but I don't have the proof. Then I have a prover. Initially, the prover may not be very good. I use the prover to try to prove things. But maybe I'm lucky. Finally, I will get something proved, some theorems proved.
 
-**896.81 - 4.27:** And you run these tactics in **Lean** to get the next state. 
+Once we have some theorems proved, I add the proofs back to the training set. Now I have a bigger training set, and using the bigger training set, I train a better prover, and then you iterate. Iteratively, you find more proofs.
 
-**901.08 - 2.69:** And you do that repeatedly, so it explores a large number of states and the potential **proof paths** until finally, at some point, you find a proof.
+Here, the results show the **x-axis** is the number of iterations you do. As long as you do more iterations, you have more data, and the performance generally goes up.
 
-**911.79 - 2.88:** Here, the search can be done using any search algorithms.
+However, can we do this infinitely so that we can prove every theorem? Well, the fact is, if you do that after a few iterations, it will saturate because there are limitations with this approach.
 
-- You can use classic ones like:
-  - A **depth-first search**
-  - A **breadth-first search**
-  - A **Monte Carlo tree search**
-
-**920.07 - 2.78:** And you don't need machine learning here. It can be purely symbolic.
-
-**925.31 - 5.91:** But the core is, how do you generate **tactic candidates**?
-
-**931.22 - 4.63:** Here, the input is the **local context** and the goal. That's the kind of thing you want the model to prove.
-
-**938.31 - 4.32:** And optionally, the model can take a **library of lemmas**, for example, **Mathlib** or other libraries.
-
-**945.81 - 4.28:** And you want the model to output a bunch of suggestions for the next tactic.
-
-**952.76 - 2.17:** So how do we train the model to do this?
-
-**954.93 - 3.56:** A very obvious way is we already have **Mathlib** and other data sets that have a lot of human-written proofs.
-
-**962.85 - 4.1:** Why don't we just extract data from those repos and train the model?
-
-**968.69 - 3.37:** This is actually not a **new idea**. People have been doing similar things many years ago and extracting data from human-written proofs and training a machine-learning model to predict tactics.
-
-**980.15 - 3.01:** It's actually way before **language models** or **Lean** were invented.
-
-**990.14 - 4.4:** But after we have large **language models**, this approach has become particularly promising because **language models** can really go beyond the formal proofs you give it as training data.
-
-**1006.38 - 2.14:** When the **language model** was pretrained, it has already seen a lot of **mathematics**, and presumably, the mathematical knowledge it gained during pretraining can be used to guide the proof-search process, which wasn't possible with older **machine-learning techniques** like **KNN**.
-
-**1025.91 - 2.77:** So there are a lot of work in this direction. We will talk about one representative work using **language models** for **theorem proving** in **LeanDojo**.
-
-**1034.73 - 4.17:** It is very special because it was the first **language model-based theorem prover** that's fully open source.
-
-**1042.21 - 3.889:** Anyone can access its code, models, **training data**, and tools for extracting data and for interacting with **Lean**.
-
-**1050.43 - 3.27:** So at a high level, it's very simple. You have **Lean** and you have **Mathlib** and other **Lean** repos, and you use **LeanDojo** to extract a data set.
-So the **data set** consists of **theorems** and **proofs** and **tactics** and also **lemmas**, **premises** you can use in the tactics. 
-
-And once you have the data set, you train a **machine learning model**. After it's trained, the model interacts with **Lean** to search for proofs. In this particular work, we introduced a model called **ReProver**, or **Retrieval-Augmented Prover**. 
-
-So the idea is we want the model to use, not only the current state but also the **lemmas** that are available in the library. Given the current state and given a bunch of lemmas, first, we want to know what lemmas are more likely to be useful. 
-
-So we encode everything as a vector. The state is a vector and every lemma is a vector. We calculate the **cosine similarity** between the state and each lemma so that we can pick the **top ones** from the library. 
-
-After you pick the top ones, you combine the **retrieved lemmas** with the state, and you give it to the model to generate the next tactic. 
-
-**AUDIENCE:** "It's a very lossy encoding of lemmas as a vector with cosine similarity." 
-
-That seems like a-- yes. 
-
-**KAIYU YANG:** "The question is, is this retrieval process very lossy because you are encoding everything as a vector?" The answer is yes. The vector probably cannot capture the semantics of the theorem very well. 
-
-I think here, the decision is more **technical** because this architecture is very efficient. Even if you have a very, very big **math library**, to calculate the similarity, you only do one **matrix-vector multiplication**, so it's very cheap. 
-
-So after **LeanDojo**, we see many recent papers on **neural theorem proving**. Some of them also built on top of LeanDojo. For example, **DeepSeek Prover** from **DeepSeek**, **InternLM Prover** from **AL Lab** in China, and **BFS Prover** from **ByteDance**. That's the company behind **TikTok**. 
-
-Recently, the **Goedel-Prover** from a team in **Princeton**. I'm also playing a small role in that team. They improved upon LeanDojo in several ways. I think a recipe that has been verified to work well is we want **more data**. 
-
-Instead of just having data from **Mathlib**, we have the model synthesize more theorem statements by **autoformalizing** informal mathematics. Once we have a large collection of formal statements, we can train the prover by what they call **expert iteration**. 
-
-So here's how it works. Imagine I have a lot of statements, but I don't have the proof. Then I have a prover. Initially, the prover may not be very good. I use the prover to try to prove things. But maybe I'm lucky. Finally, I will get something proved, some theorems proved. 
-
-Once we have some theorems proved, I add the proofs back to the training set. Now I have a bigger training set, and using the bigger training set, I train a better prover, and then you iterate. Iteratively, you find more proofs. 
-
-Here, the results show the **x-axis** is the number of iterations you do. As long as you do more iterations, you have more data, and the performance generally goes up. 
-
-However, can we do this infinitely so that we can prove every theorem? Well, the fact is, if you do that after a few iterations, it will saturate because there are limitations with this approach. 
-
-First, **language models** really need a lot of data. But still, back to the original point, if you want the model to do some novel mathematics, you are unlikely to have data. 
+First, **language models** really need a lot of data. But still, back to the original point, if you want the model to do some novel mathematics, you are unlikely to have data.
 
 That's why if you create a new repo in **Lean**, you want to formalize your mathematics, the mathematics you are interested in. If you use these models off the shelf directly, very likely it's not going to work that well. Because your models might be very different from **Mathlib**, which was used to train the model.
-And the second issue is the **action space** in proving a **theorem** is very big. 
+And the second issue is the **action space** in proving a **theorem** is very big.
 
-So if you compare theorem proving with playing **Go**, why is theorem proving different? Why can AI do well on Go, but not yet on theorem proving? One fundamental difference is the action space of Go is smaller than the size of the board, which is **19 by 19**. Whereas the action space of **mathematics**—that's the potential things you can do when proving a theorem—is **infinite**. 
+So if you compare theorem proving with playing **Go**, why is theorem proving different? Why can AI do well on Go, but not yet on theorem proving? One fundamental difference is the action space of Go is smaller than the size of the board, which is **19 by 19**. Whereas the action space of **mathematics**—that's the potential things you can do when proving a theorem—is **infinite**.
 
-And since you have an infinite space, it's very difficult to try to cover the space by using **human-created data**. Or even if you are doing **reinforcement learning**, it's very difficult to explore the space very effectively. 
+And since you have an infinite space, it's very difficult to try to cover the space by using **human-created data**. Or even if you are doing **reinforcement learning**, it's very difficult to explore the space very effectively.
 
-So how do we solve the problem of how do we deal with an infinite action space? We did some very preliminary exploration in that direction and in a very constrained domain, that's **elementary algebraic inequalities**. 
+So how do we solve the problem of how do we deal with an infinite action space? We did some very preliminary exploration in that direction and in a very constrained domain, that's **elementary algebraic inequalities**.
 
-The problem we consider is this kind of theorem. So you have a finite number of real numbers, like **A**, **B**, **C**, and they satisfy maybe some **precondition**. And then you want to prove an **inequality**. 
+The problem we consider is this kind of theorem. So you have a finite number of real numbers, like **A**, **B**, **C**, and they satisfy maybe some **precondition**. And then you want to prove an **inequality**.
 
-If you think of how humans do these kinds of problems, they typically apply existing **lemmas** like **Cauchy-Schwarz** or **AM-GM**. Sometimes they rewrite their formula in some clever way so that an existing lemma becomes applicable. That's the main technique. 
+If you think of how humans do these kinds of problems, they typically apply existing **lemmas** like **Cauchy-Schwarz** or **AM-GM**. Sometimes they rewrite their formula in some clever way so that an existing lemma becomes applicable. That's the main technique.
 
-Even though the number of techniques is relatively constrained, the search space is still very big. For example, for this inequality, you could apply **AM-GM** in multiple ways, and you can apply other inequalities like the **T2 inequality**. 
+Even though the number of techniques is relatively constrained, the search space is still very big. For example, for this inequality, you could apply **AM-GM** in multiple ways, and you can apply other inequalities like the **T2 inequality**.
 
-You can rewrite this inequality into another form, and there are many possible ways to rewrite it. So if you want to solve and search for proofs in this space manually, then it's infeasible. 
+You can rewrite this inequality into another form, and there are many possible ways to rewrite it. So if you want to solve and search for proofs in this space manually, then it's infeasible.
 
-We actually also tried, OK, can we give the problem to large language models like **o1** and **o3**? And they are actually doing pretty badly. Here, we give it to **o1** and **o3**, and we manually have humans check the solution. We checked about **20 problems**. 
+We actually also tried, OK, can we give the problem to large language models like **o1** and **o3**? And they are actually doing pretty badly. Here, we give it to **o1** and **o3**, and we manually have humans check the solution. We checked about **20 problems**.
 
-We cannot check more because checking the solution is very difficult. It needs a lot of human effort. The result is that **o1** solved none of the 20 problems. **o3** and **R1** solved three or four problems. Whereas a human trained for this domain can solve at least **15 problems**. 
+We cannot check more because checking the solution is very difficult. It needs a lot of human effort. The result is that **o1** solved none of the 20 problems. **o3** and **R1** solved three or four problems. Whereas a human trained for this domain can solve at least **15 problems**.
 
-So then, how do we get a **machine learning model** to do this? We want to learn from how mathematics or humans do to prove this kind of inequalities. We categorize the techniques they use into two categories. 
+So then, how do we get a **machine learning model** to do this? We want to learn from how mathematics or humans do to prove this kind of inequalities. We categorize the techniques they use into two categories.
 
-One is called **scaling**. Scaling is you apply an existing lemma, like **Cauchy-Schwarz**. Here is an example. On the left, you have **AB + BC + CA**. Humans can realize that this matches with **Cauchy-Schwarz**. If you apply **Cauchy-Schwarz**, you have reduced the problem to the inequality on the right. 
+One is called **scaling**. Scaling is you apply an existing lemma, like **Cauchy-Schwarz**. Here is an example. On the left, you have **AB + BC + CA**. Humans can realize that this matches with **Cauchy-Schwarz**. If you apply **Cauchy-Schwarz**, you have reduced the problem to the inequality on the right.
 
-So that's scaling. You're essentially using **Cauchy-Schwarz** to scale the left-hand side of this inequality. You can apply different lemmas, and each lemma can be applied in different ways, giving rise to a lot of potential reductions of this proof goal. 
+So that's scaling. You're essentially using **Cauchy-Schwarz** to scale the left-hand side of this inequality. You can apply different lemmas, and each lemma can be applied in different ways, giving rise to a lot of potential reductions of this proof goal.
 
-But what's good about it is you realize the number of scaling you can do is not infinite. It's finite because there is a finite number of lemmas, and each lemma can be applied in a finite number of ways. So it's possible to enumerate all **scaling tactics**. 
+But what's good about it is you realize the number of scaling you can do is not infinite. It's finite because there is a finite number of lemmas, and each lemma can be applied in a finite number of ways. So it's possible to enumerate all **scaling tactics**.
 
 After you enumerate everything, some of them will lead to results that are obviously wrong because sometimes you scale things too much, so the inequality becomes wrong. You can try to remove those wrong ones, and you end up with a relatively small set of next states after applying the scaling tactics.
 
-Besides scaling, another class of tactics you can do...
-**1581.77:** is called rewriting. 
+Besides scaling, another class of tactics you can do is called rewriting. This means you transform the formula into something different, into an equivalent form. Here, it's tricky because the number of potential rewritings is infinite. Given any formula, you can rewrite it in an infinite number of ways. We have to use large language models to propose rewritings that the model thinks may be effective.
 
-**1583.15:** That you transform the formula into something different, into an equivalent form. 
+For example, we have an inequality and a prompt. We give the language model the prompt and the inequality, and it rewrites the inequality to the one on the right-hand side. In practice, our system is slightly more complex. We don't have only one prompt; we have different prompts for different kinds of rewriting.
 
-**1589.43:** So here, it's tricky because the number of potential rewritings is infinite. 
+To put it together, we propose a method called LIPS, which stands for LM-based Inequality Prover with Symbolic reasoning. At a high level, given the current inequality you want to prove, we use symbolic algorithms to enumerate all possible scalings, and we use language models to generate a set of rewritings. These tactics lead to the next goal, and we use an SMT Solver to filter the goals and remove the ones that are incorrect. We then iterate and try to predict the tactic for the next step until we have solved the problem.
 
-**1596.3:** Given any formula, you can rewrite it in an infinite number of ways. 
+For evaluation, on the 20 problems we checked manually, LIPS can solve 16 problems, which is similar to what human gold medalists can do. We also evaluated the method on three benchmarks from prior work. In the last column is LIPS, and we compare it with existing neural provers and symbolic provers. Neural provers are pretty bad on this task, while symbolic provers like Mathematica or SMT Solver can solve non-trivial inequalities, but still are not as good as LIPS.
 
-**1603.47:** And we have to use **large language models** to propose rewriting so that the model thinks may be effective. 
+We found a very interesting proof from the book of Ivan Chen, who was an ML coach for the United States. He mentioned that AM-GM alone is hopeless here, but our algorithm found a proof using only AM-GM combined with some clever rewriting. This is a simple domain, but it shows that a key challenge in theorem proving is how to effectively explore an infinite action space.
 
-**1612.41:** So for example, here, we have an **inequality**, and we have a prompt. 
+It suggests that if you have a particular area of mathematics you care about and know a lot about, you can structure human actions in a well-structured way so that it becomes more feasible for the machine learning model. Although it's an open question whether this can be generalized to many different domains.
 
-**1617.51:** We give the language model the prompt and the inequality. 
+OK, that's theorem proving. Next, I will talk about autoformalization. If you have any questions, just feel free to interrupt.
 
-**1621.71:** And it rewrites the inequality to the one on the right-hand side. 
+AUDIENCE: For the inequalities, what kind of mistakes did o1 make when human evaluated?
 
-**1627.64:** Well, in practice, our system is slightly more complex. 
+KAIYU YANG: The mistakes are usually not super subtle. One is the example we have already shown: when you multiply a positive constant to the inequality, you shouldn't change the sign, but it changed the sign. Another error I've seen is it tries to invent reasoning patterns that are obviously wrong. For example, if you have to prove the summation of three terms, A plus B plus C is greater than zero, it might say that as long as two terms are positive, very likely the result will be positive. So, things like that.
 
-**1630.86:** We don't have only one prompt. 
+AUDIENCE: They're fundamental reasoning mistakes?
 
-**1632.27:** We have different prompts for different kinds of rewriting. 
-
-**1639.06:** So just to put it together, we propose a method called **LIPS**, which is **LM-based Inequality Prover with Symbolic reasoning**. 
-
-**1648.27:** And at a high level, given the current inequality you want to prove on the left, we use **symbolic algorithms** to enumerate all possible scalings. 
-
-**1658.66:** And we use language models to generate a set of rewriting. 
-
-**1663.48:** And those tactics lead to the next goal. 
-
-**1667.03:** And we use **SMT Solver** to filter the goals to remove the ones that are incorrect. 
-
-**1676.93:** And then we iterate and try to predict the tactic for the next step, until we have solved the problem. 
-
-**1683.64:** And here is a very simple evaluation. 
-
-**1685.95:** On the 20 problems that we have checked manually, **LIPS** can do 16 problems, which is similar to what **human gold medalists** can do. 
-
-**1698.38:** And we also evaluated the method on three benchmarks from prior work, and on the last column is **LIPS**, and we compare it with existing **neural provers** and **symbolic provers**. 
-
-**1712.47:** It ended up that neural provers are pretty bad on this task. 
-
-**1719.83:** And symbolic provers are much better. 
-
-**1722.29:** You use **Mathematica** or **SMT Solver**. 
-
-**1725.02:** They can solve pretty non-trivial inequalities. 
-
-**1728.31:** But still, they are not as good as **LIPS**. 
-
-**1730.98:** And we find a very interesting proof that's from the book of **Ivan Chen**, who was a **ML coach** for the **United States**. 
-
-**1737.85:** So he mentioned that **AM-GM** alone is hopeless here. 
-
-**1743.29:** But we find that the proof found by our algorithm uses only **AM-GM** combined with some clever rewriting. 
-
-**1756.46:** So it's a very simple domain, but I think it shows that the challenge in **theorem proving**, or one challenge in theorem proving, is how do you effectively explore an infinite action space? 
-
-**1773.062:** And it tells us, if you have a particular area of mathematics that you care about, you know a lot about this particular mathematical domain, to structure the human actions into some well-structured way so that it becomes more feasible for the machine learning model. 
-
-**1787.51:** Although it's an open question whether this can really be generalized to many different domains. 
-
-**1795.82:** OK, that's theorem proving. 
-
-**1797.42:** And I will talk about **autoformalization** next. 
-
-**1800.65:** If you have any questions, just feel free to interrupt. 
-
-**1806.65:** AUDIENCE: For the inequalities, what kind of mistakes did o1 make when human evaluated? 
-
-**1817.64:** KAIYU YANG: The mistakes are usually not super subtle. 
-
-**1820.72:** One is the example we have already shown. 
-
-**1826.88:** When you multiply a positive constant to the inequality, you shouldn't change the sign, but it changed the sign. 
-
-**1831.43:** And another error I've seen is it tries to invent reasoning patterns that are obviously wrong. 
-
-**1840.7:** So one example is, now I have to prove the summation of three terms, **A plus B plus C** is greater than zero. 
-
-**1852.34:** But as long as two...
-**Terms** are **positive**, very.
-
-**Likely the result** will be positive. So, things like that.
-
-> **AUDIENCE:** *They're fundamental reasoning mistakes?*
-
-**KAIYU YANG:** Yeah.
+KAIYU YANG: Yeah.
 
 **AUDIENCE:** *So does your system learn correlations between different tactics?*
 
 Or so applications of either the scaling, which lemmas, if you apply lemma A and lemma B, is it likely then a certain lemma, C, will be useful in a **context?** Does it learn sequences of--
 
-**KAIYU YANG:** Currently, it's not. Currently, we are predicting each step independently. You are not informed by previous steps. 
+**KAIYU YANG:** Currently, it's not. Currently, we are predicting each step independently. You are not informed by previous steps.
 
 Yeah, we probably have to go on because there is other content. So, we've covered theorem proving, and we are going to talk about **autoformalization**.
 
-In **autoformalization**, you have informal math on the left, and you want to generate formal math on the right. And there are different things you want to generate. One is the theorem statement. 
+In **autoformalization**, you have informal math on the left, and you want to generate formal math on the right. And there are different things you want to generate. One is the theorem statement.
 
-For example, you want to translate "there exists an infinite number of primes" to this formal theorem statement on the right. And there are proofs. So, you want the model to take the informal proof and give you the formal proof. 
+For example, you want to translate "there exists an infinite number of primes" to this formal theorem statement on the right. And there are proofs. So, you want the model to take the informal proof and give you the formal proof.
 
 Actually, these are two subtasks, and they have very different challenges. So, let's talk about the theorem statement first.
 
-For the theorem statement, a major challenge is how do you even evaluate the results? Here, you say, OK, we have an infinite number of primes. 
+For the theorem statement, a major challenge is how do you even evaluate the results? Here, you say, OK, we have an infinite number of primes.
 
-And the formal statement says, for any natural number **n**, there exists a prime number **p** that's greater than or equal to **n**, which is correct. But it's not the only correct solution. 
+And the formal statement says, for any natural number **n**, there exists a prime number **p** that's greater than or equal to **n**, which is correct. But it's not the only correct solution.
 
-For example, you can make it slightly different. You can change "greater than or equal to" to "strictly greater than." Or you can say, OK, for any prime number **n**, there exists a prime number **p**, blah, blah. 
+For example, you can make it slightly different. You can change "greater than or equal to" to "strictly greater than." Or you can say, OK, for any prime number **n**, there exists a prime number **p**, blah, blah.
 
-So, as humans, we can easily see they look slightly different, but they're essentially the same thing. And all of them are correct. But if the model produces one of them, how do you know if it's correct or not? 
+So, as humans, we can easily see they look slightly different, but they're essentially the same thing. And all of them are correct. But if the model produces one of them, how do you know if it's correct or not?
 
-You may say, OK, can we have a ground truth? And we check if the model-generated statement is logically equivalent to the ground truth. 
+You may say, OK, can we have a ground truth? And we check if the model-generated statement is logically equivalent to the ground truth.
 
-Well, this is good, but unfortunately, we know from theoretical **computer science** that this kind of **equivalence checking** can be infeasible in general. So, that's why in practice, people resorted to human evaluation. 
+Well, this is good, but unfortunately, we know from theoretical **computer science** that this kind of **equivalence checking** can be infeasible in general. So, that's why in practice, people resorted to human evaluation.
 
 You ask humans to see if it's correct and all proxy metrics, like the **blue metrics**. Human evaluation is very expensive and not scalable. Whereas, these proxy metrics, they are not very accurate. So that's the challenge with autoformalizing the statement.
 
-So how about proofs? Proofs, the problem is even the most rigorous human-written proofs are not rigorous enough to the standard of **Lean**. 
+So how about proofs? Proofs, the problem is even the most rigorous human-written proofs are not rigorous enough to the standard of **Lean**.
 
-So there are all kinds of gaps. Mathematicians often say, OK, this case is left to the reader. 
+So there are all kinds of gaps. Mathematicians often say, OK, this case is left to the reader.
 
 > **[LAUGHTER]**
 
-And so this is explicitly stated gaps. And there are even implicit gaps which we will be talking about later. 
+And so this is explicitly stated gaps. And there are even implicit gaps which we will be talking about later.
 
-But as long as there are gaps, your model has to fill in the gap, and this can be very challenging for the model. 
+But as long as there are gaps, your model has to fill in the gap, and this can be very challenging for the model.
 
-So, we have two challenges for the theorem statement: we don't know how to evaluate. For proofs, we need to fill in the gaps. And in this project, we want to address those challenges together. 
+So, we have two challenges for the theorem statement: we don't know how to evaluate. For proofs, we need to fill in the gaps. And in this project, we want to address those challenges together.
 
-And this sounds very ambitious. But what we find is things that are intractable in general can be made tractable if you restrict to a very specific domain. 
+And this sounds very ambitious. But what we find is things that are intractable in general can be made tractable if you restrict to a very specific domain.
 
 And here, the domain we choose is **Euclidean geometry** because it's just a very old branch of mathematics that's used to test humans.
-for **thousands of years**. 
+for **thousands of years**.
 
-And recently, you have **AlphaGeometry**, which makes it a pretty promising benchmark for **theorem proving**. In this work, we show that **Euclidean geometry** is not only a good benchmark for theorem proving but also that we can use it for **autoformalization**. 
+And recently, you have **AlphaGeometry**, which makes it a pretty promising benchmark for **theorem proving**. In this work, we show that **Euclidean geometry** is not only a good benchmark for theorem proving but also that we can use it for **autoformalization**.
 
-Concurrently, we introduced a benchmark called **LeanEuclid** that's for autoformalizing Euclidean geometry. It includes **48 theorems** from **Euclid's Elements** and also more than **100 theorems** from another data set. It also comes with the proofs. 
+Concurrently, we introduced a benchmark called **LeanEuclid** that's for autoformalizing Euclidean geometry. It includes **48 theorems** from **Euclid's Elements** and also more than **100 theorems** from another data set. It also comes with the proofs.
 
-So let's see one example in our benchmark. That's **proposition one** from **Euclid's Elements Book One**. You have the diagram. You have the statement. You have the proof in natural language. When constructing the benchmark, we manually formalized this statement and the proof in **Lean**. The result looks very similar to the informal proof, in the sense that there's a **one-to-one correspondence** between the tactics and what's being done in the informal proof. 
+So let's see one example in our benchmark. That's **proposition one** from **Euclid's Elements Book One**. You have the diagram. You have the statement. You have the proof in natural language. When constructing the benchmark, we manually formalized this statement and the proof in **Lean**. The result looks very similar to the informal proof, in the sense that there's a **one-to-one correspondence** between the tactics and what's being done in the informal proof.
 
-I think this is very beautiful to me because we believe we are one of the first to faithfully formalize the proofs in **Elements** in a proof assistant like **Lean**. By faithfully, I mean there is a direct correspondence between what **Euclid** has written and the tactics in Lean. 
+I think this is very beautiful to me because we believe we are one of the first to faithfully formalize the proofs in **Elements** in a proof assistant like **Lean**. By faithfully, I mean there is a direct correspondence between what **Euclid** has written and the tactics in Lean.
 
 Some people have formalized **Euclidean geometry** using other foundations like **Hilbert's** or **Tarski**, but they cannot maintain this one-to-one correspondence.
 
@@ -394,13 +224,13 @@ Some people have formalized **Euclidean geometry** using other foundations like 
 
 AUDIENCE: Did your system formalize 48 of the statements or the benchmark itself only?
 
-KAIYU YANG: Just the benchmark, so we are not talking about the model yet. 
+KAIYU YANG: Just the benchmark, so we are not talking about the model yet.
 
 AUDIENCE: **Euclid** contains like 400 statements, right?
 
 KAIYU YANG: But book one has only **48**.
 
-AUDIENCE: Oh, I see. 
+AUDIENCE: Oh, I see.
 
 AUDIENCE: Excuse me. That's not true. I and my two colleagues have published complete formalizations of **Euclid Book One**.
 
@@ -418,96 +248,96 @@ OK, and here—
 
 AUDIENCE: Can you expand more on the **one-to-one correspondence**?
 
-KAIYU YANG: What I meant was—well, maybe not even technically one to one. What I meant was there's the correspondence between the tactics in the formal proof and the text **Euclid** has written. 
+KAIYU YANG: What I meant was—well, maybe not even technically one to one. What I meant was there's the correspondence between the tactics in the formal proof and the text **Euclid** has written.
 
-So you're not trying to come up with another proof of the theorem using other axioms. You are exactly following what **Euclid** was doing. During this process, we did find a few errors made by **Euclid**. I will show one example here. 
+So you're not trying to come up with another proof of the theorem using other axioms. You are exactly following what **Euclid** was doing. During this process, we did find a few errors made by **Euclid**. I will show one example here.
 
-So this is **proposition 24** from **Book One**. The theorem says, OK, you have two triangles. And they have two edges equal to each other. 
+So this is **proposition 24** from **Book One**. The theorem says, OK, you have two triangles. And they have two edges equal to each other.
 
-- AC equals to DF. 
-- AB equals to DE. 
+- AC equals to DF.
+- AB equals to DE.
 - The angle A is bigger than angle D.
 
-So you want to prove BC is bigger than EF. So let's try to replay **Euclid's proof**. First, you move the triangle on the left to overlap with the triangle on the right. So C becomes G. Then you connect G and F. 
+So you want to prove BC is bigger than EF. So let's try to replay **Euclid's proof**. First, you move the triangle on the left to overlap with the triangle on the right. So C becomes G. Then you connect G and F.
 
-Now you only have to prove EF is smaller than EG. It's easier because now they're in the same triangle. A previous theorem in the book says, OK, in the same triangle, a bigger angle corresponds to a bigger edge. 
+Now you only have to prove EF is smaller than EG. It's easier because now they're in the same triangle. A previous theorem in the book says, OK, in the same triangle, a bigger angle corresponds to a bigger edge.
 
-Now you only have to prove the bigger edge here, EFG, is bigger than the smaller edge here, EGF. That can be proved by realizing that the triangle DGF is **isosceles**. 
+Now you only have to prove the bigger edge here, EFG, is bigger than the smaller edge here, EGF. That can be proved by realizing that the triangle DGF is **isosceles**.
 
 You have the two base angles of the **isosceles triangle**, which are equal to each other. Now you see the big angle is bigger than the **DFG**.
 because it's a **superset** of it.
 
-And the **DFG** is equal to **DGF**. 
+And the **DFG** is equal to **DGF**.
 
-And **DGF** is bigger than the smaller angle. So you are using this as the angle in the middle. And now it's done. 
+And **DGF** is bigger than the smaller angle. So you are using this as the angle in the middle. And now it's done.
 
-So anyone disagree with this proof? No? 
+So anyone disagree with this proof? No?
 
-AUDIENCE: "Why is it isosceles?" 
+AUDIENCE: "Why is it isosceles?"
 
-KAIYU YANG: "Huh?" 
+KAIYU YANG: "Huh?"
 
-Oh, it's isosceles; the **DG** equals **AC** and **AC** equals **DF**. 
+Oh, it's isosceles; the **DG** equals **AC** and **AC** equals **DF**.
 
-AUDIENCE: "OK, but why is **D** longer than **DF**?" 
+AUDIENCE: "OK, but why is **D** longer than **DF**?"
 
-KAIYU YANG: "I'm sorry." 
+KAIYU YANG: "I'm sorry."
 
-AUDIENCE: "**DE** is not congruent in **DF**." 
+AUDIENCE: "**DE** is not congruent in **DF**."
 
-KAIYU YANG: "No, **DFG** is isosceles." 
+KAIYU YANG: "No, **DFG** is isosceles."
 
-**DFG**, so **DF** equals **DG** not **DFE**. 
+**DFG**, so **DF** equals **DG** not **DFE**.
 
-OK, so the proof is correct for this particular diagram. But what if it looks like this? 
+OK, so the proof is correct for this particular diagram. But what if it looks like this?
 
-So let's replay the proof. First, move the triangle on the left to the right. Second, connect **G** and **F**. Now you still have an isosceles triangle. 
+So let's replay the proof. First, move the triangle on the left to the right. Second, connect **G** and **F**. Now you still have an isosceles triangle.
 
-So you know **DFG** is isosceles. You have two angles **alpha**. They are equal to each other. But now you have to prove **x** is greater than **y**. 
+So you know **DFG** is isosceles. You have two angles **alpha**. They are equal to each other. But now you have to prove **x** is greater than **y**.
 
-So now it's tricky because **alpha** is no longer inside **x** and **y**. It cannot be used as the angle in the middle anymore. 
+So now it's tricky because **alpha** is no longer inside **x** and **y**. It cannot be used as the angle in the middle anymore.
 
-So we have to fix this proof manually. Luckily, it can be fixed without much trouble. 
+So we have to fix this proof manually. Luckily, it can be fixed without much trouble.
 
-So first, you realize **DGE** is **alpha** plus **y**. And it's an inner angle, so it's smaller than **pi**. 
+So first, you realize **DGE** is **alpha** plus **y**. And it's an inner angle, so it's smaller than **pi**.
 
-And then you realize **DFE**, that's **2 pi** minus **alpha** minus **x**. It's also an inner angle of a triangle, so it's smaller than **pi** if you add them together. 
+And then you realize **DFE**, that's **2 pi** minus **alpha** minus **x**. It's also an inner angle of a triangle, so it's smaller than **pi** if you add them together.
 
-And things cancel out, and you know **x** is greater than **y**. So it's not difficult, but it's different from what **Euclid** was doing. 
+And things cancel out, and you know **x** is greater than **y**. So it's not difficult, but it's different from what **Euclid** was doing.
 
-So that's why we say, "OK, so here are two cases in this proof." And **Euclid** seems to focus on the easy case and ignore the more difficult case. 
+So that's why we say, "OK, so here are two cases in this proof." And **Euclid** seems to focus on the easy case and ignore the more difficult case.
 
-AUDIENCE: "Is this the first time anybody found an error in this proof?" 
+AUDIENCE: "Is this the first time anybody found an error in this proof?"
 
-KAIYU YANG: "I don't know; I believe if this proof has been formalized before, people may have found it before." 
+KAIYU YANG: "I don't know; I believe if this proof has been formalized before, people may have found it before."
 
-AUDIENCE: "So even without formalization, I would imagine [INAUDIBLE]." 
+AUDIENCE: "So even without formalization, I would imagine [INAUDIBLE]."
 
-KAIYU YANG: "Oh, I don't know. But actually, not about this particular one, but if you read—I don't remember the name, but someone from **ancient Rome**, they wrote a book, like a follow-up on **Elements**. 
+KAIYU YANG: "Oh, I don't know. But actually, not about this particular one, but if you read—I don't remember the name, but someone from **ancient Rome**, they wrote a book, like a follow-up on **Elements**.
 
-And in their book, they have already found a few errors whose nature is similar to this one. So I imagine maybe among these 2000 years, there are also other people like— 
+And in their book, they have already found a few errors whose nature is similar to this one. So I imagine maybe among these 2000 years, there are also other people like—
 
-AUDIENCE: "**Proclus**." 
+AUDIENCE: "**Proclus**."
 
-KAIYU YANG: "**Proclus**, yeah, **Proclus**." 
+KAIYU YANG: "**Proclus**, yeah, **Proclus**."
 
-Yeah, OK, so that's a digression. But it shows how formalization can potentially help you find holes. 
+Yeah, OK, so that's a digression. But it shows how formalization can potentially help you find holes.
 
-And so now back to our benchmark. So in our benchmark, we want to evaluate whether the model-generated statement is equivalent to the ground truth. 
+And so now back to our benchmark. So in our benchmark, we want to evaluate whether the model-generated statement is equivalent to the ground truth.
 
-And we find that using **SMT** solvers to prove these two theorems imply each other can give you a reasonably good metric of whether they are equivalent. 
+And we find that using **SMT** solvers to prove these two theorems imply each other can give you a reasonably good metric of whether they are equivalent.
 
-Maybe the reality is more subtle than it shows because—as long as both theorems are correct, both of them are true, then they imply each other by definition. 
+Maybe the reality is more subtle than it shows because—as long as both theorems are correct, both of them are true, then they imply each other by definition.
 
-But I don't want to say, "OK, any two theorems are equivalent." And the secret is here: we don't want **SMT** solvers to be infinitely powerful. 
+But I don't want to say, "OK, any two theorems are equivalent." And the secret is here: we don't want **SMT** solvers to be infinitely powerful.
 
-We don't want it to be able to prove any equivalence. We want it to be able to prove only equivalents that are trivial or easy to prove. 
+We don't want it to be able to prove any equivalence. We want it to be able to prove only equivalents that are trivial or easy to prove.
 
-So I think this is fundamentally not a mathematical problem. It's more empirically whether **SMT** solvers work good enough but not too good. 
+So I think this is fundamentally not a mathematical problem. It's more empirically whether **SMT** solvers work good enough but not too good.
 
-OK, so that's the theorem statement. And then let's talk about the proofs. 
+OK, so that's the theorem statement. And then let's talk about the proofs.
 
-AUDIENCE: "I don't understand why is it that a **SMT** solver should not be too good?" 
+AUDIENCE: "I don't understand why is it that a **SMT** solver should not be too good?"
 
 KAIYU YANG: "Because if it's too good, it can prove the equivalence between any two true theorems, even those two theorems that have no relationship at all."
 **AUDIENCE:** It's also equivalent to **two plus two equals four**.
@@ -526,166 +356,120 @@ So that's the—
 
 **AUDIENCE:** Yes.
 
-**KAIYU YANG:** OK, that's the theorem statement. And then let's talk about the proofs. 
+**KAIYU YANG:** OK, that's the theorem statement. And then let's talk about the proofs.
 
 For the proofs, the reason we choose **Euclidean geometry** as a domain is there is a well-defined, or relatively well-understood, type of gaps in **Euclidean geometry**. That's diagrammatical reasoning gaps.
 
-So one example, **Euclid's Proposition One**: you have two different points **A** and **B**; it's possible to construct an **equilateral triangle**. And this is **Euclid's proof**. First, you draw a circle centered at **A** and **B** should be on the circle. 
+So one example, **Euclid's Proposition One**: you have two different points **A** and **B**; it's possible to construct an **equilateral triangle**. And this is **Euclid's proof**. First, you draw a circle centered at **A** and **B** should be on the circle.
 
-And then you draw a circle centered at **B**, **A** should be on the circle. And then you pick the intersection and you connect everything. That's an **equilateral triangle**. 
+And then you draw a circle centered at **B**, **A** should be on the circle. And then you pick the intersection and you connect everything. That's an **equilateral triangle**.
 
 Anyone disagree with this proof?
 
 **AUDIENCE:** Well, that proof has been criticized for—
 
-**KAIYU YANG:** Over a lot, yeah. So the reason is you didn't prove **C** actually exists. You didn't prove these two circles have intersection. And this is **Proposition One**. 
+**KAIYU YANG:** Over a lot, yeah. So the reason is you didn't prove **C** actually exists. You didn't prove these two circles have intersection. And this is **Proposition One**.
 
-So if you want to prove **Proposition One**, you can only use the axioms. If you try to use **Euclid's Axiom** to prove **C** exists, well, I believe it's not even provable. But no one bothers to prove it because it's just obvious in the diagram. 
+So if you want to prove **Proposition One**, you can only use the axioms. If you try to use **Euclid's Axiom** to prove **C** exists, well, I believe it's not even provable. But no one bothers to prove it because it's just obvious in the diagram.
 
-But that's problematic if you want to formalize this proof in **Lean** because **Lean** does not know what is a diagram or what is obvious in the diagram. So you have to formalize the notion of what is obvious in the diagram. That leads to, I believe, **Jeremy's work**. 
+But that's problematic if you want to formalize this proof in **Lean** because **Lean** does not know what is a diagram or what is obvious in the diagram. So you have to formalize the notion of what is obvious in the diagram. That leads to, I believe, **Jeremy's work**.
 
-So that's how I got to know **Jeremy** many years ago. And thanks a lot to **Jeremy** for providing a lot of feedback on this project. 
+So that's how I got to know **Jeremy** many years ago. And thanks a lot to **Jeremy** for providing a lot of feedback on this project.
 
 **Jeremy**, in 2008, proposed this formal system **E**. I understand it adds—maybe **Jeremy** can correct me. It's kind of a set of unspoken axioms. Being obvious in the diagram is modeled as—so if a fact is obvious in the diagram, then it's a logical consequence of this set of unspoken axioms.
 
-These axioms include trivial facts like—I believe the first one is—OK, if **C** is the center of **alpha**, and **B** is the center of **alpha**, then **A** and **B** should be the same point. 
+These axioms include trivial facts like—I believe the first one is—OK, if **C** is the center of **alpha**, and **B** is the center of **alpha**, then **A** and **B** should be the same point.
 
-So a circle cannot have two distinct centers. This is not in **Euclid's axiom**, but it's just so obvious. 
+So a circle cannot have two distinct centers. This is not in **Euclid's axiom**, but it's just so obvious.
 
 In this work, we try to implement this set of axioms like the diagrammatic axioms. And we used **SMT solvers** to do automated reasoning to derive the consequences of these axioms. That's the facts that are so-called obvious in the diagram.
 
-So let's put it together. We have a benchmark that's manually annotated. In the benchmark, we have a ground-truth theorem statement. And we want to use machine learning to generate a formalized statement. 
+So let's put it together. We have a benchmark that's manually annotated. In the benchmark, we have a ground-truth theorem statement. And we want to use machine learning to generate a formalized statement.
 
 Once it's generated, we evaluate it by using **SMT solver** to check the equivalence between the ground truth and that statement formalization. For proofs, the model can generate a proof, and we give the proof to **Lean**. It will tell us a list of reasoning gaps that cannot be checked.
-And then we will give those **gaps** to the **SMT solver** to see if the SMT solver can fix all the gaps. 
+And then we will give those **gaps** to the **SMT solver** to see if the SMT solver can fix all the gaps.
 
-And if yes, then we see, "OK, this is a valid proof." I believe there were a few prior works trying to formalize **Euclidean geometry**. One I'm aware of is called **GeoCork**. It's formalizing **Euclid's proofs** in **Cork**. 
+And if yes, then we see, "OK, this is a valid proof." I believe there were a few prior works trying to formalize **Euclidean geometry**. One I'm aware of is called **GeoCork**. It's formalizing **Euclid's proofs** in **Cork**.
 
-But what they are doing is different from here, in the sense that they have humans manually fix all the gaps. They don't use **SMT solvers** to fix gaps. So as a result, the proofs are much, much longer than the original proofs in **Euclid's book**. 
+But what they are doing is different from here, in the sense that they have humans manually fix all the gaps. They don't use **SMT solvers** to fix gaps. So as a result, the proofs are much, much longer than the original proofs in **Euclid's book**.
 
-And so that's the **benchmark**. We also did some very simple experiments. But that's probably not the focus of this paper; just some very nice benchmark results. 
+And so that's the **benchmark**. We also did some very simple experiments. But that's probably not the focus of this paper; just some very nice benchmark results.
 
-So here, we tried **GPT-4** and **GPT-4 Vision**. GPT-4 Vision also takes a diagram as input, while GPT-4 only takes the text. We see that green is better than blue, which shows taking the diagram helps, at least a bit, for this model. 
+So here, we tried **GPT-4** and **GPT-4 Vision**. GPT-4 Vision also takes a diagram as input, while GPT-4 only takes the text. We see that green is better than blue, which shows taking the diagram helps, at least a bit, for this model.
 
-But still, even the best model is around **20%** for the success rate of formalizing the statement, which shows the statement formalization is still a very challenging problem. 
+But still, even the best model is around **20%** for the success rate of formalizing the statement, which shows the statement formalization is still a very challenging problem.
 
-And here's the takeaway for this project: we have two challenges in **autoformalization**. 
+And here's the takeaway for this project: we have two challenges in **autoformalization**.
 
 - For the theorem statement, we don't know how to evaluate.
 - For the proofs, it asks the model to fill in too many gaps.
 
-In this particular domain, **Euclidean geometry**, we find that we can leverage **SMT solvers** and also **System E** to try to address both problems, using the SMT solver to check the equivalence and also to fill in the diagrammatical reasoning gaps. 
+In this particular domain, **Euclidean geometry**, we find that we can leverage **SMT solvers** and also **System E** to try to address both problems, using the SMT solver to check the equivalence and also to fill in the diagrammatical reasoning gaps.
 
-But still, I think, related to theorem proving, the open problem is, how do we really generalize this to different domains? In another domain of mathematics, maybe there are different kinds of gaps or different reasoning patterns that are not covered here. 
+But still, I think, related to theorem proving, the open problem is, how do we really generalize this to different domains? In another domain of mathematics, maybe there are different kinds of gaps or different reasoning patterns that are not covered here.
 
-Can we devise a **general algorithm** that can work well? That we don't know. And great, so that's the end of this talk. I'm happy to take questions. 
+Can we devise a **general algorithm** that can work well? That we don't know. And great, so that's the end of this talk. I'm happy to take questions.
 
 [APPLAUSE]
 
-**AUDIENCE:** Thank you for the great talk. I'm just wondering, what do you think the future work should do in **auto theorem proving**? Because there are two options. 
+**AUDIENCE:** Thank you for the great talk. I'm just wondering, what do you think the future work should do in **auto theorem proving**? Because there are two options.
 
 - The first one is to synthesize more data, just like what you have done in your **Goedel-Prover**.
 - The second one is to design a more efficient and high-quality scaling time tactic, like what you've just done in your **LIPS**.
 
-So what do you think is better in the future? 
+So what do you think is better in the future?
 
-**AUDIENCE:** Can you repeat the question? 
+**AUDIENCE:** Can you repeat the question?
 
-**KAIYU YANG:** The question is, in **neural theorem proving**, which way should we go? Should we synthesize more data like we did in the **Goedel-Prover**, or should we devise a better algorithm to search for proof during test time? 
+**KAIYU YANG:** The question is, in **neural theorem proving**, which way should we go? Should we synthesize more data like we did in the **Goedel-Prover**, or should we devise a better algorithm to search for proof during test time?
 
-Well, both of them will work, but I particularly think synthesizing the data is the way to go. But I think the caveat is, the current way of synthesizing data, as done in **DeepSeek** or in **Goedel-Prover**, is kind of—well, it's nice to have. 
+Well, both of them will work, but I particularly think synthesizing the data is the way to go. But I think the caveat is, the current way of synthesizing data, as done in **DeepSeek** or in **Goedel-Prover**, is kind of—well, it's nice to have.
 
-But it's a low-hanging fruit. What I really want to do is, how can we synthesize the theorem statement by generating conjectures that maybe humans haven't proposed yet, instead of only trying to translate from human-written informal math to formal math? 
+But it's a low-hanging fruit. What I really want to do is, how can we synthesize the theorem statement by generating conjectures that maybe humans haven't proposed yet, instead of only trying to translate from human-written informal math to formal math?
 
-Because even the amount of human informal math is much bigger than formal math, but it's still limited. It's still finite. Whereas, the space of potential theorems you can write is **infinite**. 
+Because even the amount of human informal math is much bigger than formal math, but it's still limited. It's still finite. Whereas, the space of potential theorems you can write is **infinite**.
 
 [INTERPOSING VOICES]
 
-**AUDIENCE:** So am I understanding correctly that you have proven **Euclid's theorems** from **Euclid's axioms** and [INAUDIBLE] axioms? 
+**AUDIENCE:** So am I understanding correctly that you have proven **Euclid's theorems** from **Euclid's axioms** and [INAUDIBLE] axioms?
 
-**KAIYU YANG:** Yes. 
+**KAIYU YANG:** Yes.
 
-**AUDIENCE:** So what Euclid wanted to be—like **Lean**.
-**3167.87**: with efficient with the **axioms**.
+**AUDIENCE:** So what Euclid wanted to be—like Lean. With efficient axioms. Have you considered what the minimal set of axioms is?
 
-**3171.03**: Have you considered what the **minimal set of axioms** that [INAUDIBLE]?
-
-**3177.32**: **KAIYU YANG**: The question is, have we considered what is the **minimum set of axioms** to formalize **Euclid's geometry proofs**?
-
-**3185.90**: So the answer is, we didn't. 
-
-**3188.07**: And also in particular, I believe in **Jeremy's paper**, **Jeremy** also mentioned the axioms in **system E** was not designed to be minimal, so there might be a **redundancy** between the axioms.
+**KAIYU YANG:** The question is, have we considered what is the minimum set of axioms to formalize Euclid's geometry proofs? So the answer is, we didn't. And also in particular, I believe in Jeremy's paper, Jeremy also mentioned the axioms in system E were not designed to be minimal, so there might be a redundancy between the axioms.
 
 ---
 
-**3205.97**: **AUDIENCE**: Have you thought about taking **autoinformalization**, basically going from either formalized propositions or goals or different kinds of things that [INAUDIBLE] come back to **natural language**? 
+**AUDIENCE:** Have you thought about taking autoinformalization, basically going from either formalized propositions or goals or different kinds of things that come back to natural language?
 
-**3222.19**: And often many problems outside mathematics are not so formal. They're kind of more fuzzy in their requirements.
+And often many problems outside mathematics are not so formal. They're kind of more fuzzy in their requirements.
 
-**3229.32**: **KAIYU YANG**: The question is, have we considered **autoinformalization**? So that's the reverse of formalization. You go from formal to informal. 
+**KAIYU YANG:** The question is, have we considered autoinformalization? So that's the reverse of formalization. You go from formal to informal. Yes, I think that's a very promising direction. There are at least two ways this can be useful.
 
-**3238.53**: Yes, I think that's a very promising direction. 
+- One is, you can generate natural language explanations of formal theorems. That's for mathematics for students trying to understand what this formal theorem is doing, or this proof is doing. And so that's useful for us.
 
-**3242.11**: There are at least two ways this can be useful.
+Although, there's no easy way to evaluate if the explanation is useful.
 
-- One is, you can generate **natural language explanations** of formal theorems.
-
-- That's for mathematics for students trying to understand what this formal theorem is doing, or this proof is doing. And so that's useful for us.
-
-**3259.47**: Although, there's no easy way to evaluate if the explanation is useful.
-
-**3265.02**: And the other aspect is, we can treat this as a way of **generating data**. 
-
-**3271.54**: We can generate more paired informal-formal data by doing the reverse autoinformalization.
-
-**3279.79**: And when it comes to generating the data, we can always evaluate, OK. 
-
-**3284.14**: Is this data set useful for some **downstream task**?
+- And the other aspect is, we can treat this as a way of generating data. We can generate more paired informal-formal data by doing the reverse autoinformalization. And when it comes to generating the data, we can always evaluate, OK, is this data set useful for some downstream task?
 
 ---
 
-**3287.052**: **AUDIENCE**: Yeah, I was just thinking beyond that from a **commercialization** standpoint [INAUDIBLE]. Many problem solvers, they don't care exactly what you saw as good enough. 
+**AUDIENCE:** Yeah, I was just thinking beyond that from a commercialization standpoint. Many problem solvers, they don't care exactly what you saw as good enough. So you can create products which are closer. So that's the angle there.
 
-**3296.67**: So you can create products which are closer. So that's the angle there.
-
-**3301.50**: **KAIYU YANG**: I see. So, yeah, I believe that will be also useful for that angle, especially.
-
-**3306.36**: Well, given that a lot of the **mathematical reasoning** and the planning applications, you don't need it to be 100% formalized. 
+**KAIYU YANG:** I see. So, yeah, I believe that will be also useful for that angle, especially. Well, given that a lot of the mathematical reasoning and the planning applications, you don't need it to be 100% formalized.
 
 ---
 
-**3320.52**: **AUDIENCE**: Thanks, **Kaiyu**. Thank you for a lovely talk. 
+**AUDIENCE:** Thanks, Kaiyu. Thank you for a lovely talk. And I'm delighted that the work on geometry is, again, come to fruition. I would just feel guilty if I didn't mention my co-authors, who are [INAUDIBLE] and [INAUDIBLE] were also [INAUDIBLE].
 
-**3322.81**: And I'm delighted that the work on **geometry** is, again, come to fruition. 
+**KAIYU YANG:** On the system E papers?
 
-**3326.677**: I would just feel guilty if I didn't mention my co-authors, who are [INAUDIBLE] and [INAUDIBLE] were also [INAUDIBLE].
-
-**3332.50**: **KAIYU YANG**: On the **system E** papers?
-
-**3338.44**: **AUDIENCE**: So I was curious. So my students use **ChatGPT** to do proofs very often. And these proofs are not always correct. 
-
-**3346.52**: So what is the nature of these errors? I was thinking before your talk, that it was pure **hallucination** of **LLMs**. 
-
-**3356.54**: But now, after listening to your talk, which was [INAUDIBLE]. 
-
-**3361.63**: I'm now wondering, was the current version trained, specifically, for math problems, and is maybe the nature of these errors somewhat different? 
-
-**3371.69**: It's not just hallucination, but the way how we can do math so far automatically. Can you comment on this?
+**AUDIENCE:** So I was curious. So my students use ChatGPT to do proofs very often. And these proofs are not always correct. So what is the nature of these errors? I was thinking before your talk, that it was pure hallucination of LLMs. But now, after listening to your talk, which was [INAUDIBLE], I'm now wondering, was the current version trained, specifically, for math problems, and is maybe the nature of these errors somewhat different? It's not just hallucination, but the way how we can do math so far automatically. Can you comment on this?
 
 ---
 
-**3380.65**: **KAIYU YANG**: I think the question is, what's the nature of the proof errors language models are making when generating proofs? And why are they making these kinds of errors?
-
-**3392.36**: So this is only speculation because **language models** are really largely a black box. 
-
-**3399.02**: I believe the error comes down to how the **language model** is trained. 
-
-**3406.85**: So when the model is doing **pretraining**, it has seen, OK, maybe some internet data sets have some proofs, have some mathematical proofs in the data set, so the model can try to mimic.
-
-**3418.61**: There is a process called **alignment** or **reinforcement learning** from feedback. 
-
-**3423.03**: So that's you ask the model to...
-And then you ask the humans to **rate**, OK, which response I find is better? It's more useful, it's more helpful to me? And then you optimize the model to satisfy the human to produce a very nice response that human will give you high rate.
+**KAIYU YANG:** I think the question is, what's the nature of the proof errors language models are making when generating proofs? And why are they making these kinds of errors? So this is only speculation because language models are really largely a black box. I believe the error comes down to how the language model is trained. So when the model is doing pretraining, it has seen, OK, maybe some internet data sets have some proofs, have some mathematical proofs in the data set, so the model can try to mimic. There is a process called alignment or reinforcement learning from feedback. So that's you ask the model to... And then you ask the humans to rate, OK, which response I find is better? It's more useful, it's more helpful to me? And then you optimize the model to satisfy the human to produce a very nice response that human will give you high rate.
 
 And when it comes to generating **mathematical proofs**, I find the model will try very hard to find a nicely looking proof, like a plausible proof, that, well, maybe a non-mathematical human will say, "OK, this looks really good." But it really has no signal to learn like what is valid or versus invalid reasoning in the proof.
 
@@ -699,7 +483,7 @@ We will use the informal math language model that has learned during training as
 
 And well, if you look at the existing progress, yeah, most of them are on informal math, but they are also on high-school problems and the problems that don't require you to give a proof. And we really believe, in order to go beyond that, you need to incorporate formal math. But it's not like you have to switch to formal math.
 
-**AUDIENCE**: Thank you.  
+**AUDIENCE**: Thank you.
 **AUDIENCE**: Thanks for the talk. I guess you seemed to specialize on-- you work on specialized automated theorem proving systems, ones that work specifically within domain and inequalities and geometry.
 
 I was wondering, if you want to move forward on this, if you want to create a system that's general, would this look like you train for each domain you have an expert, and then they're all superhuman within that domain and then you use perhaps a mixture of experts to combine it all together? Or do you think it's better to just have one model that does everything?
@@ -710,11 +494,11 @@ Whereas, in the long term, yeah, well, at least the taste of AI people is to-- O
 
 But I would acknowledge in the short term, if you want to do well on a specific task you have in mind, your best shot would be to add a lot of **domain-specific insights**.
 
-**CREW**: So let's take a couple more questions [INAUDIBLE].  
+**CREW**: So let's take a couple more questions [INAUDIBLE].
 **AUDIENCE**: So you mentioned **AlphaGeometry**. Do you know what AlphaGeometry is able to do with **Euclidean geometry**, like with **Euclid's Elements** propositions?
 
 **KAIYU YANG**: AlphaGeometry focuses on proving the statement. And while the statement it can prove is like, MO problems, so which is much, much more difficult than Euclidean geometry problem. And here, our focus is on how can you build a foundation to try to formalize everything in **Lean**? Whereas, in AlphaGeometry,
-It doesn't use **Lean**. 
+It doesn't use **Lean**.
 
 It's kind of invented its own **domain-specific reasoning system** which does not have to be grounded in a sound way and back to the axioms.
 
@@ -730,25 +514,25 @@ It's kind of invented its own **domain-specific reasoning system** which does no
 
 **KAIYU YANG**: Yeah, presumably, if all the rules and axioms in **AlphaGeometry** are sound, and if you have enough engineering effort, it should be possible to rewrite everything in **Lean** or compile the solution into **Lean**.
 
-**CREW**: [INAUDIBLE]. 
+**CREW**: [INAUDIBLE].
 
-**AUDIENCE**: So there's been some— you've been working here on **autoformalization** to try to improve on the kind of problem that we have, which is lack of data. But then, of course, there's also generation of **synthetic data** that has been showing some promise, as well. 
+**AUDIENCE**: So there's been some— you've been working here on **autoformalization** to try to improve on the kind of problem that we have, which is lack of data. But then, of course, there's also generation of **synthetic data** that has been showing some promise, as well.
 
-Which aspect do you think would be more useful going forward? 
+Which aspect do you think would be more useful going forward?
 
-I guess it's not necessarily comparison, but which one do you see showing more promise in the long term? 
+I guess it's not necessarily comparison, but which one do you see showing more promise in the long term?
 
-**KAIYU YANG**: The question is, is **autoformalization** more promising, or is **synthetic data generation** more promising, in terms of producing more data? I think it depends on what **synthetic data generation** you mean here. 
+**KAIYU YANG**: The question is, is **autoformalization** more promising, or is **synthetic data generation** more promising, in terms of producing more data? I think it depends on what **synthetic data generation** you mean here.
 
-Well, autoformalization can also be a form of synthetic data generation. But I would assume synthetic data formalization could mean, OK, we generate theorem statement, like what they do in **AlphaGeometry**. 
+Well, autoformalization can also be a form of synthetic data generation. But I would assume synthetic data formalization could mean, OK, we generate theorem statement, like what they do in **AlphaGeometry**.
 
-Yeah, I think by synthetic data generation in this way, you can generate, potentially, a bigger set of data. In **AlphaGeometry**, they generate, I believe, it's around **100 million theorems and proofs**. 
+Yeah, I think by synthetic data generation in this way, you can generate, potentially, a bigger set of data. In **AlphaGeometry**, they generate, I believe, it's around **100 million theorems and proofs**.
 
-Whereas, if you collect all the **Euclidian proofs** humans have written, it's not nearly as much. But the problem is, for generating synthetic data, you seem to need a **domain-specific algorithm**. 
+Whereas, if you collect all the **Euclidian proofs** humans have written, it's not nearly as much. But the problem is, for generating synthetic data, you seem to need a **domain-specific algorithm**.
 
-In **AlphaGeometry**, I believe what they do is, OK, I sample a few points, I sample a few circles, sample some lines, so that I have a diagram, and then I do some symbolic reasoning on the diagram, and then I do some filtering. And this becomes an example in the data. 
+In **AlphaGeometry**, I believe what they do is, OK, I sample a few points, I sample a few circles, sample some lines, so that I have a diagram, and then I do some symbolic reasoning on the diagram, and then I do some filtering. And this becomes an example in the data.
 
-Obviously, this only applies to **Euclidean geometry**. You don't apply exactly the same algorithm to another domain. So how do you build a domain general synthetic data-generation algorithm? That we don't know yet. 
+Obviously, this only applies to **Euclidean geometry**. You don't apply exactly the same algorithm to another domain. So how do you build a domain general synthetic data-generation algorithm? That we don't know yet.
 
 **CREW**: Yeah, so let's continue the discussion over the coffee break. We restart at **11:30**.
 
