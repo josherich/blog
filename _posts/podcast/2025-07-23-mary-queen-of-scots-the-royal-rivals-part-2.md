@@ -6,20 +6,7 @@ categories: podcast the-rest-is-history
 tags: [podcast_script]
 ---
 
-
 [Mary, Queen of Scots: The Royal Rivals (Part 2)](https://pdst.fm/e/chrt.fm/track/A27C8C/traffic.megaphone.fm/GLT5612344391.mp3?updated=1753281236)
-
-Thank you for listening to **The Rest Is History**. For weekly bonus episodes, ad-free listening, early access to series, and membership of our much-loved chat community, go to **therestishistory.com** and join the club. That is **therestishistory.com**.
-
-This episode is brought to you by **US Bank**. They don't just cheer you on, they help every move count. With US Bank's smartly checking and savings account to help you track your spending and grow your savings, your finances can go further. Because when you have the right partner on your side, there's no limit to what you can achieve. That's **the power of us**. Visit **usbank.com** today to learn more. Member FDIC, Copyright 2025, US Bank.
-
-This podcast is brought to you by **Carvana**. Buying a car shouldn't eat up your week. That's why Carvana made it convenient. Car buying that fits around your life, not the other way around.
-
-You can get pre-qualified for an auto loan in just a couple of minutes and browse thousands of quality car options. All within your terms. All online. All on your schedule. Turn car buying into a few clicks and not a full week's endeavor. Finance and buy your car **at your convenience**. On Carvana.
-
-**Financing subject to credit approval. Additional terms and conditions may apply.**
-
-**Trip Planner by Expedia.** You were made to outdo your holiday, your hammocking, and your pooling. We were made to help organize the competition. **Expedia. Made to travel.**
 
 In marked contrast to her childhood treatment in **Scotland**, where she was considered at first a sickly child, unlikely to live, and later a pawn in a dynastic game, even at five years old, **Mary** was hailed as a figure of romance in **France**.
 
