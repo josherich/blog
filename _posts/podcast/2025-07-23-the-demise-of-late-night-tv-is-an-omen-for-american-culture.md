@@ -9,23 +9,6 @@ tags: [podcast_script]
 
 [The Demise of Late-Night TV Is an Omen for American Culture](https://traffic.megaphone.fm/GLT2798752428.mp3?updated=1753308477)
 
-Hey, it's **Craig Horlbeck** here to tell you that the **NFL is back**, whether you like it or not. And we are covering all the latest **news, trades, rankings, and more** on the **Ringer Fantasy Football Show** with my two co-hosts, who are both named **Danny**. Check the Ringer Fantasy Football Show out on **Spotify** or on our new **YouTube channel**.
-
-This episode is brought to you by **Contentful**. Marketers, you know that feeling when your **content just works?** When you crush a viral trend before 10 a.m., when one tiny tweak to a landing page sends **click-through rates** through the roof, that's Contentful. **Dynamic content made blissfully simple.** Contentful makes it easy for you to create and share custom content quickly on websites, apps, or any digital platform. No stress, no limits, only possibilities. Come get the feels at **contentful.com**.
-
-This episode is brought to you by **Indeed**. Hiring someone new for your business can be a big move, and I understand you probably want to take your time to make sure you found the right person. But playing the waiting game could do more harm than good. Because that's extra work and extra stress you're putting on you and your team. It's not a healthy work environment.
-
-When it comes to hiring the right people fast, **Indeed is all you need.** Their sponsored jobs move your job posts to the top of the page, letting you stand out first to relevant candidates. It makes a massive difference.
-
-According to Indeed data:
-- Sponsored jobs have **45% more applications** than non-sponsored jobs.
-- You're **only paying for results** with sponsored jobs.
-- No monthly subscriptions or long-term contracts.
-
-There's no need to wait any longer. Speed up your hiring right now with Indeed.
-
-**Listeners of this show will get a $75 sponsored job credit** to get your jobs more visibility at **indeed.com/plane**. That's **indeed.com/plane** right now. Support our show by saying you heard about Indeed on this podcast. Terms and conditions apply. Hiring? **Indeed is all you need.**
-
 So I was on vacation in **Maine** last week with some of my best friends. And as often happens among us **geriatric millennials**, the conversation turned to why everything is worse now than when it was in our teens and twenties, which I know is something that no middle-aged person has ever said about their youth. This was, I recognize, a totally original insight on our part.
 
 One of the things that we lamented as we engaged in this cliché was the **decline of adult comedies**. We grew up on funny movies that became a part of our vocabulary:
