@@ -133,16 +133,37 @@ layout: default
       faqContainer.style.marginTop = '2em';
       faqContainer.innerHTML = `<hr/><h3>Q&amp;A</h3>`;
 
+      const ul = document.createElement('ul');
       window.faq.qas.forEach((qa, i) => {
-        const qDiv = document.createElement('div');
-        qDiv.style.marginBottom = '1.2em';
-        qDiv.innerHTML = `
-          <p><strong>Q${i+1}: ${qa.question}</strong></p>
-          <p>${qa.answer}</p>
-        `;
-        faqContainer.appendChild(qDiv);
-      });
+        const li = document.createElement('li');
 
+        const qSpan = document.createElement('span');
+        qSpan.classList.add('section-title');
+        qSpan.textContent = `Q${i+1}: ${qa.question}`;
+        qSpan.setAttribute('title', qa.question);
+
+        if (qa.index_of_source) {
+          qSpan.setAttribute('data-anchor', qa.index_of_source);
+          qSpan.addEventListener("click", () => {
+            document.querySelectorAll('.post p').forEach(p => {
+              if (includesWords(p.textContent, qa.index_of_source)) {
+                p.scrollIntoView({ behavior: 'smooth' });
+              }
+            });
+          });
+        }
+
+        // Add answer below question
+        const ansP = document.createElement('p');
+        ansP.style.fontSize = '0.9em';
+        ansP.style.color = '#666';
+        ansP.textContent = qa.answer;
+
+        li.appendChild(qSpan);
+        li.appendChild(ansP);
+        ul.appendChild(li);
+      });
+      faqContainer.appendChild(ul);
       drawer.appendChild(faqContainer);
     }
 
