@@ -126,6 +126,27 @@ layout: default
       drawer.appendChild(generateList(index.index));
     }
 
+
+    // Render the Q&A
+    if (window.faq && Array.isArray(window.faq.qas) && window.faq.qas.length > 0) {
+      const faqContainer = document.createElement('div');
+      faqContainer.style.marginTop = '2em';
+      faqContainer.innerHTML = `<hr/><h3>Q&amp;A</h3>`;
+
+      window.faq.qas.forEach((qa, i) => {
+        const qDiv = document.createElement('div');
+        qDiv.style.marginBottom = '1.2em';
+        qDiv.innerHTML = `
+          <p><strong>Q${i+1}: ${qa.question}</strong></p>
+          <p>${qa.answer}</p>
+        `;
+        faqContainer.appendChild(qDiv);
+      });
+
+      drawer.appendChild(faqContainer);
+    }
+
+
     // Toggle button functionality
     const toggleButton = document.querySelector(".toggle-btn");
     toggleButton.addEventListener("click", () => {
