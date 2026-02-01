@@ -15,7 +15,9 @@ Ladies and gentlemen, please welcome **Tulsi Gabbard**.
 
 Hello, nice to see you, Tulsi. Thanks for coming.
 
-Thank you. **Aloha everybody, aloha.** We were all clamoring to kind of frame this, and then Sack said, _"I really just need to do the kickoff because he really wanted to tee this up."_ So I'm going to cede my responsibility in introducing you because everybody knows who you are. But **David**—there's just too much red meat. David's been frothing. Tulsi doesn't need a big introduction, but everyone knows she's a **director of national intelligence** and, in the words of **President Trump**, is the 
+Thank you. **Aloha everybody, aloha.**
+
+We were all clamoring to kind of frame this, and then Sacks said, _"I really just need to do the kickoff because he really wanted to tee this up."_ So I'm going to cede my responsibility in introducing you because everybody knows who you are. But **David**—there's just too much red meat. David's been frothing. Tulsi doesn't need a big introduction, but everyone knows she's a **director of national intelligence** and, in the words of **President Trump**, is the 
 
 > "the hottest member of the administration."
 
@@ -135,7 +137,7 @@ The lack of accountability, I think, is what drives them—believing that they c
 - You control intelligence,
 - Then you can control an outcome.
 
-What was the incentive or the objective to **Chamoff**'s question about doing this after the election, because it seems so destabilizing?
+What was the incentive or the objective to **Chamath**'s question about doing this after the election, because it seems so destabilizing?
 
 I think that was—I don't have paper evidence of it—but one could surmise that the intention was:
 
@@ -332,7 +334,7 @@ My job is to provide the president with intelligence so that he can make the bes
 
 Seems to have turned out okay, but…  
 
-**Tussie Early** don't worry because **Sacks also…**
+**Tulsi, don't** worry because **Sacks also…**
 
 By the way, **Sacks also was against bombing Iran**. He absolutely did not want Nikki Haley to become president because his fear was, and he talked about it on the podcast, that he didn't want to start up with Iran. To speak just using his precise words:
 
@@ -377,8 +379,7 @@ It's a serious adversary that is highly adaptable and ultimately will do what th
 
 If we lost 3,000 people on 9/11 tragically from Al-Qaeda, we're losing 100,000 Americans to fentanyl. 
 
-> If they're not a terrorist organization, please tell me what one is. I am 100% in favor of you crossing the border and...
-**Fucking killing them immediately with prejudice. I applaud the administration for doing that.** It's far too many. When we talked about this issue with **Rick Caruso**, of the people who are on the street over here, they're on the street because of **fentanyl**, not because they can't get a home.
+> If they're not a terrorist organization, please tell me what one is. I am 100% in favor of you crossing the border and... **fucking killing them immediately with prejudice. I applaud the administration for doing that.** It's far too many. When we talked about this issue with **Rick Caruso**, of the people who are on the street over here, they're on the street because of **fentanyl**, not because they can't get a home.
 
 I applaud you guys for doing that; it takes true courage to do it.  
 
@@ -394,7 +395,7 @@ The precursor issue coming out of China with regards to fentanyl continues to ob
 
 So when you look at that, **President Trump going after the precursor issue as well as securing our borders**, the significance and impact of that really cannot be overstated in how it's positively affecting the ability for people to live here in our own country more safely.  
 
-Folks, on that, I just want to thank **Tulsey Gabbert, amazing Director of National Intelligence**.  
+Folks, on that, I just want to thank **Tulsi Gabbard, amazing Director of National Intelligence**.  
 Thank you, thank you, thank you. Got a lot of Tulsey fans out there. You got to thank you. Thank you, thank you. You got to stand alone. Thank you, well done. Thank you, appreciate you. Good to see you—that was awesome. Thank you, thanks everybody.  
 
 Absolutely incredible.
