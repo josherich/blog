@@ -83,13 +83,13 @@ So in terms of the **number of projects**, that increased quite a bit. And that'
 
 Tell us about the numbers of projects and why that's important.
 
-As you mentioned, we saw a record of **39 projects confirmed**, some of them brand new projects starting last year, and others continuing from previous years, just like the investments from **BYD**, **Great Paul Motors** that started their investments some years ago. 
+As you mentioned, we saw a record of **39 projects confirmed**, some of them brand new projects starting last year, and others continuing from previous years, just like the investments from **BYD**, **Great Wall Motors** that started their investments some years ago. 
 
-So these projects cover a range of sectors, actually. But **manufacturing really stood out**, especially in the automotive industry, which has been key to attracting new investments. It's not just BYD or Great Paul Motors. There are other companies, especially car makers, that are very interested in the **Brazilian market**.
+So these projects cover a range of sectors, actually. But **manufacturing really stood out**, especially in the automotive industry, which has been key to attracting new investments. It's not just BYD or Great Wall Motors. There are other companies, especially car makers, that are very interested in the **Brazilian market**.
 
 We also had projects in the **production of electrical equipment**, most of them linked to energy transition. It's a very clear trend. In fact, last year, we reached a record number of **manufacturing projects in Brazil** — it was **eight projects in total**.
 
-But electricity remains the leading sector for Chinese projects. Many companies here have been diversifying and expanding their activities. For example, we have **China Free Gorgeous**, **State Grid**, **CPFL**, which is originally a Brazilian company that was acquired by State Grid a few years ago. Now they're a Sino-Brazilian company, let's say, and they no longer focus only on hydropower, which is their core business. Instead, they are investing more and more in other renewable sources, especially **solar and wind**.
+But electricity remains the leading sector for Chinese projects. Many companies here have been diversifying and expanding their activities. For example, we have **China Three Gorges**, **State Grid**, **CPFL**, which is originally a Brazilian company that was acquired by State Grid a few years ago. Now they're a Sino-Brazilian company, let's say, and they no longer focus only on hydropower, which is their core business. Instead, they are investing more and more in other renewable sources, especially **solar and wind**.
 
 So once again, the sector breakdown, according to your report:
 
@@ -291,9 +291,9 @@ What role do you think China will play in an election in Brazil? That's a very i
 
 In general, even though we change the government, as you mentioned, Bolsonaro was more anti-China, while Lula is more pro-China. We still see investments coming. We see the trade flourishing. Especially in the Bolsonaro government, we actually saw the highest records of bilateral trade ever, right? Even though the negative rhetoric concerning the Chinese here during Bolsonaro's government.
 
-But now China poses as a very clear opportunity for Brazil, while the **U.S.**, because of the government trunk, is in a very bad situation here when we talk about the general view of the Americans. The U.S. is actually a key partner, a historical key partner of Brazil. It was the first country to recognize the Brazilian independency. It's a country that has been investing here for a long time, as I mentioned, that we have some companies investing here for a century already. 
+But now China poses as a very clear opportunity for Brazil, while the **U.S.**, because of the **Trump government**, is in a very bad situation here when we talk about the general view of the Americans. The U.S. is actually a key partner, a historical key partner of Brazil. It was the first country to recognize the Brazilian independency. It's a country that has been investing here for a long time, as I mentioned, that we have some companies investing here for a century already. 
 
-Probably we are in the worst moment of U.S.-Brazil relationship ever. I believe in general, China doesn't interfere in Brazilian national politics. And it's not sure in the case of Trump government right now, because he's trying to make pressure, especially considering Bolsonaro trial now that he's rolling in the Brazilian, not Congress. Sorry, I don't remember the name.
+Probably we are in the worst moment of U.S.-Brazil relationship ever. I believe in general, China doesn't interfere in Brazilian national politics. And it's not sure in the case of Trump government right now, because he's trying to make pressure, especially considering Bolsonaro's trial now that it's **in the Brazilian Supreme Court**.
 
 You know, that's OK. Yeah, I mean, but so the continuity is the most important thing that we've seen across administrations and across political parties. Whoever is leading the Brazilian government doesn't seem to have too much impact on its relationship with China beyond the rhetoric that we hear. And I think that's very interesting.
 
