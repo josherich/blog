@@ -9,10 +9,10 @@ tags: [podcast_script]
 
 [#702 – Test Point Accupuncture](https://traffic.libsyn.com/theamphour/TheAmpHour-702-TestPointAccupuncture.mp3)
 
-**This is the Empire Podcast**, released September 14th, 2025.  
+**This is the Amp Hour**, released September 14th, 2025.  
 **Episode 702, Test Point Acupuncture.**
 
-Welcome to the Amp Hour. I'm **Dave Jones** from the **AEV blog**.  
+Welcome to the Amp Hour. I'm **Dave Jones** from the **EEVblog**.  
 And I'm **Chris Gamble** of **Contextual Electronics**.
 
 I hate laptops. And batteries. And weird shit.
@@ -313,7 +313,7 @@ Yeah, exactly. Per plant.
 
 Okay. Yeah.
 
-**Okinaea** is the, is my, is the, one of the local plants here, or, like, one of the bigger ones, and that's a **2.5 gigawatt plant**, which is, you know, big, really big.
+**Shearon Harris** is the, is my, is the, one of the local plants here, or, like, one of the bigger ones, and that's a **2.5 gigawatt plant**, which is, you know, big, really big.
 
 Yeah, yeah.
 
@@ -523,7 +523,7 @@ Well, **Peter actually recommended that I do that**. He recommended that I power
 
 But then it's like, nah, the inverter's only **eight kilowatts maximum**.
 
-I'm going to have to get a new inverter, so I'm going to ditch that **DI thing I've had so many problems with.**
+I'm going to have to get a new inverter, so I'm going to ditch that **Deye thing I've had so many problems with.**
 
 Don't know which inverter, but, you know, eight kilowatts. If we turn on all of our stuff because our entire house is fully electric. Everything. Right?
 
@@ -1089,7 +1089,7 @@ And they were using these, like, sponge, like, foam sponges for, like, sopping u
 
 Yeah, they use little wipes, yeah, yep. And they have everything on hand.
 
-I saw, like, I subscribed to a, I don't know, **Fix**, I think it's, yeah, YouTube channel. And, like, he's really good. I'm not sure if he's new. But, like, he's doing entire reviews of:
+I saw, like, I subscribed to a, I don't know, **NorthridgeFix**, I think it's, yeah, YouTube channel. And, like, he's really good. I'm not sure if he's new. But, like, he's doing entire reviews of:
 
 - 10 different types of **solder flux**
 - 10 different types of **solder wick**
@@ -1098,9 +1098,9 @@ And, you know, really fantastic **in-depth comparisons** of all this, because th
 
 > Yeah, exactly.
 
-So, **Nanofix**, we'll see if I can pull up the chat. Yeah, I just found Nanofix, it's great. I don't know if this is the same one.
+So, **NorthridgeFix**, we'll see if I can pull up the chat. Yeah, I just found NorthridgeFix, it's great. I don't know if this is the same one.
 
-No, this is Canadian guy. I think it's Nanofix.
+No, this is Canadian guy. I think it's NorthridgeFix.
 
 > Yeah, I'm not sure where he's from, but, yeah, he's just, like, comparing all these boxes.
 
@@ -1205,7 +1205,7 @@ That is one of my favorite channels I spend time watching.
 Nice, nice.
 
 > Oh, can we talk about, yeah, like, right at the start of the show, we were talking...
-No, no. Anyway, I did this review of this **multimeter**. Have you seen it? The **A&M 626**.
+No, no. Anyway, I did this review of this **multimeter**. Have you seen it? The **ANENG 626**.
 
 I did see this, yes.
 
@@ -1253,7 +1253,7 @@ Oh, my God. It's even worse than this thing.
 
 And I would like to know, because this was talked about extensively on the forum, I'd love to know: **what is the minimum viable build number** for something like this?
 
-Like, someone at **A&N** comes up and says, *"Look, I've got this great new design. Look, it looks like some space,"* yeah, the company, right? You know, right?
+Like, someone at **ANENG** comes up and says, *"Look, I've got this great new design. Look, it looks like some space,"* yeah, the company, right? You know, right?
 
 They come up with this concept — how many of these do we have to sell to make it viable? Because they're churning out so many, infinite number of these multimeter designs.
 
@@ -1564,7 +1564,7 @@ But if you're publishing, you know, so, like, I think, here's the platforms I th
 - MicroPython, rather
 - Rust (if you're nuts and you want to bring in that crowd)
 - Zephyr
-- ESPAAF
+- ESP-IDF
 - Bare metal
 ```
 
