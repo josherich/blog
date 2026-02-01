@@ -9,66 +9,66 @@ tags: [podcast_script]
 
 [Yascha Mounk on China and Western Liberalism](https://pdcn.co/e/rss.art19.com/episodes/06027d2b-d0f7-4ff5-bd82-c13a8308e130.mp3?rss_browser=BAhJIhFQb2NrZXQgQ2FzdHMGOgZFVA%3D%3D--9a7540b1738e8dccad5621cba5faeb89fdae34ca)
 
-**Klaviyo** is the only **CRM built for B2C**, and the key to making **Black Friday and Cyber Monday your biggest wins yet**.  
+**Klaviyo** is the only **CRM built for B2C**, and the key to making **Black Friday and Cyber Monday your biggest wins yet**.
 
-With marketing, service, analytics, and all your customer data in one **AI-powered platform**, Klaviyo helps you build relationships that drive more revenue and deliver **truly personalized experiences at scale**.  
+With marketing, service, analytics, and all your customer data in one **AI-powered platform**, Klaviyo helps you build relationships that drive more revenue and deliver **truly personalized experiences at scale**.
 
-Join the more than **176,000 brands** like **Away, Patrick Ta, and Dollar Shave Club** that already grow with Klaviyo at **klaviyo.com**.  
+Join the more than **176,000 brands** like **Away, Patrick Ta, and Dollar Shave Club** that already grow with Klaviyo at **klaviyo.com**.
 
-Taking on a DIY job around the house is the ultimate summer project. But if your DIY home security system is a **Beware of Dogs sign,** when your real pet is **Princess the Cat,** that's safe-ish.  
+Taking on a DIY job around the house is the ultimate summer project. But if your DIY home security system is a **Beware of Dogs sign,** when your real pet is **Princess the Cat,** that's safe-ish.
 
-To be actually safe, help protect your home with a **DIY system from ADT**. It's easy to install and gives you virtual assistance from ADT's technical support team.  
+To be actually safe, help protect your home with a **DIY system from ADT**. It's easy to install and gives you virtual assistance from ADT's technical support team.
 
-Best of all, you can tell everyone in the neighborhood you've set it up yourself. Don't settle for safe-ish this summer.  
+Best of all, you can tell everyone in the neighborhood you've set it up yourself. Don't settle for safe-ish this summer.
 
-**DIY with ADT instead.** Visit **ADT.com** to learn more.  
-
----
-
-Welcome to the **Cineca Podcast**, the weekly discussion of current affairs in **China**. In this program, we'll look at books, ideas, new research, intellectual currents, and cultural trends that can help us better understand what's happening in **China's politics, foreign relations, economics, and society**.  
-
-Join me each week for in-depth conversations that shed more light and bring less heat to how we think and talk about China.  
-
-I'm **Kaiser Guo** coming to you this week from **Beijing**, where I will be throughout September. If you are around, drop me a note and say hi.  
-
-**Cineca** is supported this year by the **Cetra for East Asian Studies at the University of Wisconsin-Madison**, a national resource center for the study of East Asia.  
-
-The Cineca Podcast will remain free as always, but if you work for an organization that believes in what I am doing with the show and with the newsletter, please consider lending your support. I need you more than ever.  
-
-You can get me at **CinecaPod@gmail.com**.  
-
-And listeners, do your part by becoming a paying subscriber at **CinecaPodcast.com**. You will enjoy, in addition to the podcast itself:  
-- The transcript of the show  
-- Essays from me  
-- Writings and podcasts from some of your favorite China-focused columnists and commentators  
-
-And, of course, you will rest easy in the knowledge you are helping me do what I honestly believe is **pretty important work**.  
-
-So help out, check out the page, see you all, it's all on offer, and see you there.  
+**DIY with ADT instead.** Visit **ADT.com** to learn more.
 
 ---
 
-I've developed a really keen interest in trying to understand the perspectives of smart people, especially **public intellectuals**, who have reach and influence and who are only recently starting to really grapple with understanding China and all that it means.  
+Welcome to the **Sinica Podcast**, the weekly discussion of current affairs in **China**. In this program, we'll look at books, ideas, new research, intellectual currents, and cultural trends that can help us better understand what's happening in **China's politics, foreign relations, economics, and society**.
 
-I know that this show often features academics, diplomats, analysts, or journalists who are all people deeply steeped in China and who have areas of real China expertise. But I find it just as valuable sometimes to talk with people from **non-China backgrounds**, observant, analytical people who've been focused on other things and are just now kind of turning their attention to China.  
+Join me each week for in-depth conversations that shed more light and bring less heat to how we think and talk about China.
 
-It serves as a kind of reality check and often a very good way to get a sense of the state of the discourse viewed from the outside, outside of the fractious world of China specialists. That's why I invite people like Anne-Marie Slaughter or Adam Tooze onto the show. I find that people like this can often point things out to me that I'd simply not otherwise have noticed.  
+I'm **Kaiser Kuo** coming to you this week from **Beijing**, where I will be throughout September. If you are around, drop me a note and say hi.
+
+**Sinica** is supported this year by the **Center for East Asian Studies at the University of Wisconsin-Madison**, a national resource center for the study of East Asia.
+
+The Sinica Podcast will remain free as always, but if you work for an organization that believes in what I am doing with the show and with the newsletter, please consider lending your support. I need you more than ever.
+
+You can get me at **SinicaPod@gmail.com**.
+
+And listeners, do your part by becoming a paying subscriber at **SinicaPodcast.com**. You will enjoy, in addition to the podcast itself:
+- The transcript of the show
+- Essays from me
+- Writings and podcasts from some of your favorite China-focused columnists and commentators
+
+And, of course, you will rest easy in the knowledge you are helping me do what I honestly believe is **pretty important work**.
+
+So help out, check out the page, see you all, it's all on offer, and see you there.
 
 ---
 
-So today I am really delighted to welcome **Yasha Munk** to the show.  
+I've developed a really keen interest in trying to understand the perspectives of smart people, especially **public intellectuals**, who have reach and influence and who are only recently starting to really grapple with understanding China and all that it means.
 
-Yasha is a **political scientist, writer, and yes, public intellectual** who has written really extensively about democracy, pluralism, and the challenges facing liberal societies in the 21st century.  
+I know that this show often features academics, diplomats, analysts, or journalists who are all people deeply steeped in China and who have areas of real China expertise. But I find it just as valuable sometimes to talk with people from **non-China backgrounds**, observant, analytical people who've been focused on other things and are just now kind of turning their attention to China.
 
-He's the founder of **Persuasion**, a contributing writer at **The Atlantic,** where I've read a lot of him, and of course the host of the **Good Fight podcast**, which I've listened to a lot.  
+It serves as a kind of reality check and often a very good way to get a sense of the state of the discourse viewed from the outside, outside of the fractious world of China specialists. That's why I invite people like Anne-Marie Slaughter or Adam Tooze onto the show. I find that people like this can often point things out to me that I'd simply not otherwise have noticed.
 
-With as much avidity as I have read his writing, I had the pleasure of meeting him very briefly in **Shanghai earlier this year** when he did me the tremendous honor of attending a little talk I gave. It feels especially fitting to reconnect here because Yasha has just published a two-part essay, a little series on China, one cataloging what he sees as its remarkable strengths, the other what he fears may be its deep weaknesses.  
+---
 
-For liberals in the West, and cards on the table, neither I nor I think it's safe to say my guest today really shies away from that label as a Western liberal, **China poses a dilemma** that is as psychological, really, as it is political.  
+So today I am really delighted to welcome **Yascha Mounk** to the show.
 
-Some, I think, have tried earnestly to learn from what they see China as having done right. Others have looked on with envy, chiefly at its, 
+Yascha is a **political scientist, writer, and yes, public intellectual** who has written really extensively about democracy, pluralism, and the challenges facing liberal societies in the 21st century.
 
-> apparent abundance.  
+He's the founder of **Persuasion**, a contributing writer at **The Atlantic,** where I've read a lot of him, and of course the host of the **Good Fight podcast**, which I've listened to a lot.
+
+With as much avidity as I have read his writing, I had the pleasure of meeting him very briefly in **Shanghai earlier this year** when he did me the tremendous honor of attending a little talk I gave. It feels especially fitting to reconnect here because Yascha has just published a two-part essay, a little series on China, one cataloging what he sees as its remarkable strengths, the other what he fears may be its deep weaknesses.
+
+For liberals in the West, and cards on the table, neither I nor I think it's safe to say my guest today really shies away from that label as a Western liberal, **China poses a dilemma** that is as psychological, really, as it is political.
+
+Some, I think, have tried earnestly to learn from what they see China as having done right. Others have looked on with envy, chiefly at its,
+
+> apparent abundance.
 
 I say that with deliberate word choice.
 And some are frustrated by the **well-intentioned regulatory safeguards** that can prevent us from building in our own societies. And so they look at **China** with a certain sort of starry-eyed aspect. Still, others have really responded with very deep skepticism.
@@ -77,9 +77,11 @@ Sometimes it's healthy. It's usually healthy. Sometimes it's merely reflexive. M
 
 So, in short, **China's rise forces liberals to reckon with questions about values, governance, and pluralism**. It's not always pretty, but it does strike at the core of our own political identity.
 
-And **Yasha**, in his inimitable way, has jumped into that thicket. **Yasha Monk, welcome to Seneca.**
+And **Yascha**, in his inimitable way, has jumped into that thicket. **Yascha Mounk, welcome to Sinica.**
 
 > "Thank you so much, Kaiser. It's a real pleasure to be on."
+
+**Yascha:**
 
 Great, great, great. So, let me first give you just the tiniest bit of a ribbing for indulging in that conversations-with-cab-drivers cliché.
 
@@ -99,13 +101,13 @@ Right, right.
 
 Whereas if you're taking cabs, then you're going to get the accent of whichever part of the country they're from. And that's actually going to improve your comprehension skills a lot more than sitting in a classroom.
 
-So when I'm in **Shanghai**, I try to take as many cabs as possible. I have to talk to the cab drivers about something. And so sometimes I end up learning something that I put in the very few essays I've written about China in my life.
+**Yascha:** So when I'm in **Shanghai**, I try to take as many cabs as possible. I have to talk to the cab drivers about something. And so sometimes I end up learning something that I put in the very few essays I've written about China in my life.
 
 But I'm aware of it. I'm aware of a pitfall. I'm aware of a cliché.
 
 > "You know, I have to also say, I mean, I find it's actually useful. I talk to them all the time as well."
 
-I mean, what else are you going to do? You're stuck in a closed space with somebody for at least half an hour when you're going pretty much anywhere in any of the big cities in China. So no reason not to talk to them.
+**Yascha:** I mean, what else are you going to do? You're stuck in a closed space with somebody for at least half an hour when you're going pretty much anywhere in any of the big cities in China. So no reason not to talk to them.
 
 And by the way, the same is true in the **United States**.
 
@@ -125,7 +127,7 @@ And then he was saying,
 
 I don't personally agree with that cab driver, but that gave me an interesting point of information about how some people are thinking about this.
 
-Sure, sure. Absolutely.
+**Kaiser:** Sure, sure. Absolutely.
 
 No, no. I mean, I was really just kidding, but I didn't expect I want to get into it quite so deep.
 
@@ -133,10 +135,10 @@ But no, I think you've raised some very, very good points. And, yeah, I definite
 
 So your essays, including what I read about your **21 observations on China** from your brief earlier visit, are quite textured. I think they're really quite nuanced and very personal. I really enjoyed reading them.
 
-So tell me about the process for you—sort of coming to the decision to come and spend months actually living in China. Was there some point of epiphany or a sudden realization that you really, really needed to try and get your head around China? Or was there maybe an article you read, a conversation you had, whether in Germany or in the States, that led you to this pretty radical decision?
+So tell me about the process for you-sort of coming to the decision to come and spend months actually living in China. Was there some point of epiphany or a sudden realization that you really, really needed to try and get your head around China? Or was there maybe an article you read, a conversation you had, whether in Germany or in the States, that led you to this pretty radical decision?
 
-> "That's a good question. I don't think there was a moment of epiphany, but, you know, I'm somebody who writes relatively broadly about the world."
-One of my key interests is the **future of political systems** and whether **democracy** or some other regime form is going to dominate the 21st century. But I'm also somebody who tries to stay abreast of the news and to understand what's going on in the world more broadly.
+**Yascha:** "That's a good question. I don't think there was a moment of epiphany, but, you know, I'm somebody who writes relatively broadly about the world."
+**Yascha:** One of my key interests is the **future of political systems** and whether **democracy** or some other regime form is going to dominate the 21st century. But I'm also somebody who tries to stay abreast of the news and to understand what's going on in the world more broadly.
 
 And I realized that perhaps the most important subject that I don't know that much about, along with **artificial intelligence**, which I'm also trying to learn more about, is **China**. My aspiration is not to become a China specialist. There are many excellent China specialists, and that's not the path I've chosen in my life. And I think it's probably too late to compete with anybody in that line of work.
 
@@ -154,7 +156,7 @@ But yeah, good luck to you. How's that going so far? How's the language learning
 
 It's going gradually. I think the beginning is easier than you think because the grammar turns out to be so easy and so pleasingly modular and logical, right? I mean, to put something in the plural, you just add **men**. And to put something in the future, you just add **way**. And, you know, you feel like you're really progressing.
 
-And then I think you get to the beginning of this long plateau when you say, _"All right, I've learned a bunch of grammar and some words, but I'm having trouble speaking. And I'm really having trouble understanding and comprehending whether it's real life people you encounter or media."_ And then it sort of—that's the stage where I think you're tempted to give up. And I think I'm sort of trying to move along that plateau.
+And then I think you get to the beginning of this long plateau when you say, _"All right, I've learned a bunch of grammar and some words, but I'm having trouble speaking. And I'm really having trouble understanding and comprehending whether it's real life people you encounter or media."_ And then it sort of-that's the stage where I think you're tempted to give up. And I think I'm sort of trying to move along that plateau.
 
 And it certainly helps to spend time in the country. And so by the end of my last day in **Shanghai**, you know, I was able to talk to people in cafes or cab drivers or friends of friends that I encountered. Certainly not with any great degree of fluency, but I'm probably at the level of HSK for **B2** or something, something along those lines.
 
@@ -249,50 +251,50 @@ But many of them who are in their early 20s now, you know, they have parents who
 > *"My God, you know, buying an apartment in Beijing and Shanghai is so expensive. I'm not sure I'm ever going to be able to make that. You know, the expectations on me if I want to get married for the kind of material security I can provide for my spouse is so high. I'm not sure that even there's an aspiration that I have."*
 
 And, you know, whereas our parents probably had it much tougher in terms of how they grew up and the limitations of opportunities when they were young, there's also all of the space because everything was developing so rapidly. And so you could go and have these crazy careers.
-And, you know, now I look at the **jobs I'm offered** and, you know, it's **working incredibly hard for slow progression** in some **big company** and not really having a life.  
+And, you know, now I look at the **jobs I'm offered** and, you know, it's **working incredibly hard for slow progression** in some **big company** and not really having a life.
 
-And is that really worth it?  
-Right, right, right.  
-Is the deal actually one that I should take?  
+And is that really worth it?
+Right, right, right.
+Is the deal actually one that I should take?
 
-And that doesn't sound so similar to somebody who's complaining that, you know, yeah, they can get a pretty decent job out of college if they're lucky and they work hard. But it's going to be a very slow climb up for **corporate hierarchy or ladder in New York or Boston or L.A.**  
+And that doesn't sound so similar to somebody who's complaining that, you know, yeah, they can get a pretty decent job out of college if they're lucky and they work hard. But it's going to be a very slow climb up for **corporate hierarchy or ladder in New York or Boston or L.A.**
 
-And the **cost of housing there is incredibly expensive.** And, you know, the **boomers mess it up for us**. I mean, it's not quite the same story, but it has more resonance than you might think.  
+And the **cost of housing there is incredibly expensive.** And, you know, the **boomers mess it up for us**. I mean, it's not quite the same story, but it has more resonance than you might think.
 
-Yeah, yeah. And I'm really glad you bring that up because it's something that a lot of people overlook just when they do point to these problems. I mean, often they are mirrored exactly.  
+Yeah, yeah. And I'm really glad you bring that up because it's something that a lot of people overlook just when they do point to these problems. I mean, often they are mirrored exactly.
 
-I mean, that brings me to a question that I have about one of the **common criticisms**. And it's one that it's not a criticism. It's one of the sort of features of life that's empirical, which is, of course, the **demographic decline, the collapse, you could even say**. I mean, it's probably going to be more severe than even U.N. projections.  
+I mean, that brings me to a question that I have about one of the **common criticisms**. And it's one that it's not a criticism. It's one of the sort of features of life that's empirical, which is, of course, the **demographic decline, the collapse, you could even say**. I mean, it's probably going to be more severe than even U.N. projections.
 
-But, you know, I mean, there's some people who would say that this alone is going to constrain **China's long-term ambitions**. But I'm really curious about this.  
+But, you know, I mean, there's some people who would say that this alone is going to constrain **China's long-term ambitions**. But I'm really curious about this.
 
-So do you see, for example, **China's demographic future** as comparable in some way to the falling birth rates in **liberal democracies**? I mean, is it a symmetrical kind of challenge? Is that one like the sort of rat race or the not having a better life than your parents had? Is it comparable in that sense?  
+So do you see, for example, **China's demographic future** as comparable in some way to the falling birth rates in **liberal democracies**? I mean, is it a symmetrical kind of challenge? Is that one like the sort of rat race or the not having a better life than your parents had? Is it comparable in that sense?
 
-So I think the problem of **depopulation is global at this point**. It doesn't exist in all parts of the world. There's still countries in **sub-Saharan Africa** that are very poor, that have very high birth rates. But it is present in virtually all parts of the world.  
+So I think the problem of **depopulation is global at this point**. It doesn't exist in all parts of the world. There's still countries in **sub-Saharan Africa** that are very poor, that have very high birth rates. But it is present in virtually all parts of the world.
 
-I mean, strikingly, countries like **India and Mexico**, which many people often still think of as high fertility countries, have now fallen below replacement rate.  
+I mean, strikingly, countries like **India and Mexico**, which many people often still think of as high fertility countries, have now fallen below replacement rate.
 
-- The **Islamic Republic of Iran**, despite its theology, is at, I believe, 1.6 children per woman.  
-- So way below the replacement rate, the 2.2.  
+- The **Islamic Republic of Iran**, despite its theology, is at, I believe, 1.6 children per woman.
+- So way below the replacement rate, the 2.2.
 
-And of course, I had breakfast this morning with a senior **French politician** who was very worried about the low birth rate in France. France actually used to be one of the European countries that did comparatively well.  
+And of course, I had breakfast this morning with a senior **French politician** who was very worried about the low birth rate in France. France actually used to be one of the European countries that did comparatively well.
 
-And then there's places like **Italy and Spain** and other countries in **southern Europe**, which have a particularly low birth rate for the West. So this is a global problem with the exception of very, very poor parts of the world.  
+And then there's places like **Italy and Spain** and other countries in **southern Europe**, which have a particularly low birth rate for the West. So this is a global problem with the exception of very, very poor parts of the world.
 
-Having said that, I do think that the problem in **East Asia in general,** and perhaps in **China specifically,** is more profound. One reason for that is the **one-child policy**, which has set up a cultural norm of having very few children to an extent that doesn't quite exist in other areas of East Asia.  
+Having said that, I do think that the problem in **East Asia in general,** and perhaps in **China specifically,** is more profound. One reason for that is the **one-child policy**, which has set up a cultural norm of having very few children to an extent that doesn't quite exist in other areas of East Asia.
 
-And one part seems to be **cultural**. I mean, I have to say that I was quite struck talking to people, both to individuals who were reflecting on their own lives and to sociologists and researchers who had access to very interesting studies, how low a priority **love** is for people in China and how low a priority **marriage** is at the same time.  
+And one part seems to be **cultural**. I mean, I have to say that I was quite struck talking to people, both to individuals who were reflecting on their own lives and to sociologists and researchers who had access to very interesting studies, how low a priority **love** is for people in China and how low a priority **marriage** is at the same time.
 
-You go to a place like **India**, the priority of love is very low, you know, less than one in 10 marriages in India are so-called love marriages, most of them continue to be arranged. But nearly every young Indian person wants to get married. It's just they have a different idea of what marriage entails. It might not be the Western idea of romantic love.  
+You go to a place like **India**, the priority of love is very low, you know, less than one in 10 marriages in India are so-called love marriages, most of them continue to be arranged. But nearly every young Indian person wants to get married. It's just they have a different idea of what marriage entails. It might not be the Western idea of romantic love.
 
-I'm quite struck in China by the fact that for many young people, they think that just as the idea of a **corporate career is a kind of false promise** that is being pushed on them, that they mistrust, the idea of falling in love is one that is **overhyped in hugely romantic TV shows** that still are quite popular.  
+I'm quite struck in China by the fact that for many young people, they think that just as the idea of a **corporate career is a kind of false promise** that is being pushed on them, that they mistrust, the idea of falling in love is one that is **overhyped in hugely romantic TV shows** that still are quite popular.
 
-Their abortive attempts at finding some love like that in their life often go badly wrong for any number of reasons. And then many of them seem to have come to the conclusion that **"this is just a lie that society is pushing on us as well."**  
+Their abortive attempts at finding some love like that in their life often go badly wrong for any number of reasons. And then many of them seem to have come to the conclusion that **"this is just a lie that society is pushing on us as well."**
 
-And then when you ask them, well, but don't you hope to have a life partner and get married? They say, no, you know, the expectations to get married are too high and the demands of life are already so many.  
+And then when you ask them, well, but don't you hope to have a life partner and get married? They say, no, you know, the expectations to get married are too high and the demands of life are already so many.
 
-That's just another set of obligations and another set of risk that I would be inviting into my life.  
+That's just another set of obligations and another set of risk that I would be inviting into my life.
 
-And I remember asking a couple of people in some amount of surprise, well, isn't that a part of the point of a life partner that they lose their job, you can help them out. And if you lose your job, they help you out.  
+And I remember asking a couple of people in some amount of surprise, well, isn't that a part of the point of a life partner that they lose their job, you can help them out. And if you lose your job, they help you out.
 
 And so even in a pretty kind of instrumental point of view, that could actually be something useful.
 And the answer to that is, **oh, but how do I know that if I lost my job, they would ever look after me?** You know, they might just be straight out the door. And I was struck by that as a response, I have to say.
@@ -369,9 +371,9 @@ So if you go to:
 the same sort of escapist fantasy, costume dramas, things like that, are actually quite popular in much of Southeast Asia. They are growing in popularity in parts of **South Asia**, especially **Pakistan**, of course.
 And, and even in some places with sort of **traditional political hostilities to the People's Republic**. So that's one thing.
 
-The other is this: I often wonder when we're talking about **soft power**, how much of the lack of an effort to export cultural products could have something to do with the huge domestic market itself. There is an **aesthetic divergence**. So what are you going to do? 
+The other is this: I often wonder when we're talking about **soft power**, how much of the lack of an effort to export cultural products could have something to do with the huge domestic market itself. There is an **aesthetic divergence**. So what are you going to do?
 
-- Are you going to design something that's going to have universal and thus limited domestic appeal?  
+- Are you going to design something that's going to have universal and thus limited domestic appeal?
 - Or are you going to try to design something that you can sell in the **language that you speak in the aesthetic that you're familiar with for an enormous market**? The one that maybe has somewhat softened consumption lately but still exists?
 
 Those are a couple of theories of mine to throw in there.
@@ -390,7 +392,7 @@ From the beginning, Hollywood had to appeal to people who had just arrived in th
 
 Perhaps when you produce a movie for the Chinese market, because it doesn't have this thing that's quite specific about the United States and a few other countries shaped by an immigrant society, it just makes it harder.
 
-The trade-off you're describing—between serving the specific cultural taste of the Chinese market or a broader set of viewers—you're not faced with that in America.
+The trade-off you're describing-between serving the specific cultural taste of the Chinese market or a broader set of viewers-you're not faced with that in America.
 
 Given the nature of **Chinese culture**, I think it's the difference between American and British culture. Humor plays a huge role in Britain because it's an island whose inhabitants have been there for centuries. You can rely on the assumption that you're going to get the same cultural references and that a small inflection in your voice will successfully communicate that you're being ironic rather than serious.
 
@@ -408,7 +410,7 @@ Anyway, we can go on about that for a long time.
 
 But related to this, because it is about the ability to attract, you can trust America's pretty substantial, although fading, network of friends compared to China's thin circle of allies.
 
-I wonder whether China will be able to overcome this through: 
+I wonder whether China will be able to overcome this through:
 
 ```markdown
 - economic statecraft
@@ -426,7 +428,7 @@ Yeah, look, I think one of **America's biggest strengths is its deep system of a
 
 In the case of **Mexico and Canada**, it is allied with virtually all of the countries across one of its major oceans, the **Atlantic**. It has allies in far-off places like **India**, for example.
 
-And of course—**all these things that you're describing are very questionable right now**. I mean, you've just talked about Mexico, Canada, and Europe.
+And of course-**all these things that you're describing are very questionable right now**. I mean, you've just talked about Mexico, Canada, and Europe.
 
 And I think, no, of course, and one of the tragedies of the **Trump administration** is that they don't understand the strength that has given the country. And it comes from a fundamentally **zero-sum worldview**.
 
@@ -454,7 +456,7 @@ Now, one way to do that is through the **Belt and Road Initiative** and other wa
 
 But the temptation then is both to use those initiatives to:
 
-- Serve short-term profits for China  
+- Serve short-term profits for China
 - Use the leverage of those projects to impose some forms of political control on those countries
 
 And I think in that respect, both **China's inflexibility in terms of repayment and other things** have led to some amount of rebellion in those countries.
@@ -463,7 +465,7 @@ The attempt at using **wolf warrior diplomacy** to actually assert China's inter
 
 And I will say one more thing, which is that some **anti-Americanism may be reasonable** and some anti-Americanism is irrational, rooted in the fact that people are always going to hate the top dog and always going to be resentful about the top dog because:
 
-- The top dog makes it feel small  
+- The top dog makes it feel small
 - The top dog makes it feel dependent
 
 And you think that China is replicating this now?
@@ -474,7 +476,7 @@ And the more China tries to use its influence over countries, thanks to things l
 
 Again, there's a sort of implicit psychology in national relations that I think we all intuitively recognize.
 
-And then that's one of the features of it—**ganging up on the big guy**. That's a feature of all factional politics.
+And then that's one of the features of it-**ganging up on the big guy**. That's a feature of all factional politics.
 
 I want to pause here for a second before moving on to our next topic and ask you just a pretty simple question, which is, you know, **how have your views on English or German language media coverage of China changed?**
 
@@ -485,12 +487,12 @@ Well, you know, there's this great line about the **media** that you trust the m
 
 But of course, the temptation is to go back and assume that the moment you read about something you know less about, it must be pretty accurate and pretty right. And I guess I would say that before I started to learn more about **China**, I assumed that the coverage would have all kinds of **biases** and all kinds of simplifications.
 
-But I wouldn't have been able to tell you which, I could have instincts about that or say,  
-> "Oh, this smells like a cliché or it smells like a sort of thing that an editor at home would ask a foreign correspondent to write up,"  
+But I wouldn't have been able to tell you which, I could have instincts about that or say,
+> "Oh, this smells like a cliché or it smells like a sort of thing that an editor at home would ask a foreign correspondent to write up,"
 
 even if a foreign correspondent perhaps is a little bit skeptical of a story. But I didn't really know. And now I feel like my assessment of how accurate the coverage is hasn't really changed that much. But I have some more confidence in saying:
 
-- This feels like a **cliché** that just is good for clicks back home.  
+- This feels like a **cliché** that just is good for clicks back home.
 - This is the thing that actually seems **on track** or seems **insightful**.
 
 But I'm also aware that I still have serious uncertainty about how much I understand the country myself, of course.
@@ -501,29 +503,29 @@ Yeah, I mean, and I want to ask you about how you sort of sit with your own sort
 
 I mean, for example, you talked about the importance of **factionalism** and how that lurks beneath the surface in the party, despite its facade of unanimity. The factionalism I raised is just because this is one of the things, one of the framings for our understanding of **elite politics** that I'm actually not sure on. I honestly don't know.
 
-I mean, I've heard the arguments on both sides:  
-- Should we understand elite politics in terms of **factions**?  
-- Is that useful?  
+I mean, I've heard the arguments on both sides:
+- Should we understand elite politics in terms of **factions**?
+- Is that useful?
 
-Or I've heard arguments, pretty persuasive ones, against as well. So I honestly, this is one of those many issues on which I just don't know where to come down. And so, you know, I've gotten very used to just being able to just look someone straight in the face and say,  
+Or I've heard arguments, pretty persuasive ones, against as well. So I honestly, this is one of those many issues on which I just don't know where to come down. And so, you know, I've gotten very used to just being able to just look someone straight in the face and say,
 > "I simply don't know."
 
 ---
 
-I think you're very aware of your role as a **relative newcomer** to this and to the complexity of it. I mean, in a very admirable way, I like that you don't **overclaim** as many people in the field do. So how do you— I think you have a good instinct to avoid that temptation. That's maybe something that I feel like everyone should try to cultivate, a kind of **epistemic humility**.
+I think you're very aware of your role as a **relative newcomer** to this and to the complexity of it. I mean, in a very admirable way, I like that you don't **overclaim** as many people in the field do. So how do you- I think you have a good instinct to avoid that temptation. That's maybe something that I feel like everyone should try to cultivate, a kind of **epistemic humility**.
 
 ---
 
-Well, I think, you know, by the way, one of the things I love about writing a lot on **Substack** is that it gives you the freedom of form to play with that. I mean, the reason why my first essay about the topic is called  
-**"23 Observations About China"**  
+Well, I think, you know, by the way, one of the things I love about writing a lot on **Substack** is that it gives you the freedom of form to play with that. I mean, the reason why my first essay about the topic is called
+**"23 Observations About China"**
 is that I didn't feel like I had, you know, I went to China for five days and here's my definitive take on it, right? But I did feel like I'd learned a lot of things.
 
-And, you know, when people asked me over a drink,  
-> "Hey, what did you see in China?"  
+And, you know, when people asked me over a drink,
+> "Hey, what did you see in China?"
 
 I thought I had interesting things to say and I wanted to be able to share them with my readers. And I think having this kind of form where you can just have 23 **disjointed observations** that don't claim to aspire to an internal coherence is one way of doing that.
 
-So I think you can sort of be relatively certain about specific things while being quite explicit about the fact that it's really hard to know how that adds up into an overall picture. And that's probably the way to do that without being really boring, just answering every question of,  
+So I think you can sort of be relatively certain about specific things while being quite explicit about the fact that it's really hard to know how that adds up into an overall picture. And that's probably the way to do that without being really boring, just answering every question of,
 > "Well, I don't know."
 
 ---
@@ -549,15 +551,15 @@ I feel like in **China**, well, obviously, there's a huge amount of regional lin
 
 I would say it's the other way around, right? I mean, I certainly don't feel like I have a good model of what makes a **top official tick**, in part because it's much harder to have extended conversations with them.
 
-But I think it is relatively easier to get a feel for the pulse of **Chinese popular culture** or even for the lives of a lot of ordinary Chinese people. And so when I'm thinking about what I know—that I have limited knowledge about all of these things—but I think I have a little bit more confidence when I'm able to say something interesting, perhaps surprising to Western audiences about the life and the outlook of a lot of ordinary Chinese people than I do about the inside baseball of what really is happening behind those boards.
+But I think it is relatively easier to get a feel for the pulse of **Chinese popular culture** or even for the lives of a lot of ordinary Chinese people. And so when I'm thinking about what I know-that I have limited knowledge about all of these things-but I think I have a little bit more confidence when I'm able to say something interesting, perhaps surprising to Western audiences about the life and the outlook of a lot of ordinary Chinese people than I do about the inside baseball of what really is happening behind those boards.
 
-I would even go further than that and suggest that, you know, in China, there is a certain kind of **a more evenly distributed, more uniform political culture**—a culture that transcends regional differences and linguistic differences.
+I would even go further than that and suggest that, you know, in China, there is a certain kind of **a more evenly distributed, more uniform political culture**-a culture that transcends regional differences and linguistic differences.
 
 I mean, you can sort of know something about Chinese elites, or at least that is, I mean, you're not going to have to abandon your assumptions when you go across a provincial border.
 
 Yeah, no, the regional differences in politics are, of course, limited in part because people are moved around a lot by the party at a top level and so on, right?
 
-Well, Yasha, I think it's really interesting that, you know, there's sort of a **second order effect here when it comes to patron-client relations in China**. Because, you know, the **Chinese bureaucracy** is ages old, and they've had a lot of experience in trying to bust that up.
+Well, Yascha, I think it's really interesting that, you know, there's sort of a **second order effect here when it comes to patron-client relations in China**. Because, you know, the **Chinese bureaucracy** is ages old, and they've had a lot of experience in trying to bust that up.
 
 There have been, you know, long-held practices about not allowing officials in provinces to build those networks by moving them around quickly, you know, three years. And then the **organization department** does the same thing in China. It sort of takes proactive measures to prevent the creation of these sort of patron-client networks.
 
@@ -572,62 +574,62 @@ I mean, of late, I've been thinking a lot about the way liberals are struggling 
 Do you see what we're in right now as any kind of a **crisis of liberal faith**? I suppose you probably do, but the real question is, does China play a role in that? And if so, how much of what?
 
 So, I do think that the example of China disproves some comfortable assumptions that liberals have had, and that I, as a philosophical liberal, would like to hold on to if it went for the fact that empirics seems to prove otherwise.
-For example, though, there was a belief that **it's not going to be possible to make significant scientific progress on important areas of frontier research outside of a democracy**, because you need the **culture of free inquiry**, the **culture of free speech** in order to be able to accomplish that.  
+For example, though, there was a belief that **it's not going to be possible to make significant scientific progress on important areas of frontier research outside of a democracy**, because you need the **culture of free inquiry**, the **culture of free speech** in order to be able to accomplish that.
 
-And I think **China shows that you can create a system that certainly doesn't have free speech about politics**, that certainly is very constrained in the political rights that people have, but that seems to allow for enough robust discussion, certainly of scientific matters, to create a kind of **scientific public sphere** that does allow significant advances, whether it's in **solar technology and battery technology and EVs** and a whole set of other areas we could go on to list.  
+And I think **China shows that you can create a system that certainly doesn't have free speech about politics**, that certainly is very constrained in the political rights that people have, but that seems to allow for enough robust discussion, certainly of scientific matters, to create a kind of **scientific public sphere** that does allow significant advances, whether it's in **solar technology and battery technology and EVs** and a whole set of other areas we could go on to list.
 
-So, I think some of that has clearly turned out to be overstated, and perhaps that helps to undermine the faith in liberalism.  
+So, I think some of that has clearly turned out to be overstated, and perhaps that helps to undermine the faith in liberalism.
 
-Nevertheless, **I'm not sure that China is at the heart of the crisis of Western liberalism today**, for two reasons.  
+Nevertheless, **I'm not sure that China is at the heart of the crisis of Western liberalism today**, for two reasons.
 
-The first is that most of that crisis comes from the **internal contradictions of liberalism itself**. You know, it's not like the United States is working fantastically at the moment, but people are looking at China and saying,  
-> "Oh my God, China is such an incredible place, that even though things are going swimmingly here, perhaps we have the wrong system."  
+The first is that most of that crisis comes from the **internal contradictions of liberalism itself**. You know, it's not like the United States is working fantastically at the moment, but people are looking at China and saying,
+> "Oh my God, China is such an incredible place, that even though things are going swimmingly here, perhaps we have the wrong system."
 
-The problem is that the citizens within liberal countries like the United States and France and Germany, etc., are increasingly unhappy with their governments and perhaps unhappy with their system of government, that they feel like they're not really being listened to, that they feel like their countries are not delivering for them.  
+The problem is that the citizens within liberal countries like the United States and France and Germany, etc., are increasingly unhappy with their governments and perhaps unhappy with their system of government, that they feel like they're not really being listened to, that they feel like their countries are not delivering for them.
 
-And that is leading to, I think, a primarily domestic crisis of those liberal institutions. The fact that China is doing pretty well might sort of be like an added factor in this, but I don't think that primarily is what drives it.  
+And that is leading to, I think, a primarily domestic crisis of those liberal institutions. The fact that China is doing pretty well might sort of be like an added factor in this, but I don't think that primarily is what drives it.
 
-The last thing I will say, which I think is a limit of a **Chinese model**, is that to have a true competitor to liberalism, you have to have a system which can be **replicated in other places**.  
+The last thing I will say, which I think is a limit of a **Chinese model**, is that to have a true competitor to liberalism, you have to have a system which can be **replicated in other places**.
 
-And the problem with a Chinese model is that it works pretty well in practice in a number of ways — some advantages, some disadvantages we can debate — but clearly very impressive performance over the last 30 or 40 years.  
+And the problem with a Chinese model is that it works pretty well in practice in a number of ways - some advantages, some disadvantages we can debate - but clearly very impressive performance over the last 30 or 40 years.
 
-It's a mess in theory.  
+It's a mess in theory.
 
-And what I mean by the fact that it's a mess in theory is that it would be extremely hard to implement the Chinese model anywhere else, particularly in any place that doesn't have a longstanding **communist political party** and a very longstanding tradition of **meritocratic bureaucracy** and **high state capacity**.  
+And what I mean by the fact that it's a mess in theory is that it would be extremely hard to implement the Chinese model anywhere else, particularly in any place that doesn't have a longstanding **communist political party** and a very longstanding tradition of **meritocratic bureaucracy** and **high state capacity**.
 
-So, you know, if you ask people in **Zimbabwe or in Nigeria**,  
-would you rather live in a place that's run like China? They might say yes, because it obviously has significant advantages over the much poorer, much more corrupt, much more troubled forms of public administration that you currently have in Nigeria and Zimbabwe.  
+So, you know, if you ask people in **Zimbabwe or in Nigeria**,
+would you rather live in a place that's run like China? They might say yes, because it obviously has significant advantages over the much poorer, much more corrupt, much more troubled forms of public administration that you currently have in Nigeria and Zimbabwe.
 
-If you ask people there,  
-> "We from a political elite in Zimbabwe are offering you a deal where we're going to start to behave like the Chinese Communist Party. Do you want to go along with us? Do you trust that deal?"  
+If you ask people there,
+> "We from a political elite in Zimbabwe are offering you a deal where we're going to start to behave like the Chinese Communist Party. Do you want to go along with us? Do you trust that deal?"
 
-They're going to say **hell no**. Because they'll say,  
-> "You might import all of the bad things of that model, but how on earth can we trust that you're going to import the good things of that model? Are you going to be as competent as a Chinese bureaucrat? Are you going to be as meritocratic as that? Are you actually going to lead to this rapid development?"  
+They're going to say **hell no**. Because they'll say,
+> "You might import all of the bad things of that model, but how on earth can we trust that you're going to import the good things of that model? Are you going to be as competent as a Chinese bureaucrat? Are you going to be as meritocratic as that? Are you actually going to lead to this rapid development?"
 
-Probably not. So we don't want that.  
+Probably not. So we don't want that.
 
-To be fair, China is very aware of its particularism, right? I mean, that's why **with Chinese characteristics** gets appended to everything, right? Yeah, and I think that's, you know, I hope that that remains the case. But it's one of the somewhat reassuring things.  
+To be fair, China is very aware of its particularism, right? I mean, that's why **with Chinese characteristics** gets appended to everything, right? Yeah, and I think that's, you know, I hope that that remains the case. But it's one of the somewhat reassuring things.
 
-But I don't think the Chinese political leadership wants to impose its model on every other country that they're allied with. But it does limit the extent to which China's success poses a threat to the liberal paradigm because **it's not in competition with it the way that the Soviet Union was**.  
+But I don't think the Chinese political leadership wants to impose its model on every other country that they're allied with. But it does limit the extent to which China's success poses a threat to the liberal paradigm because **it's not in competition with it the way that the Soviet Union was**.
 
-Implicit in what you say here is that **liberalism itself is kind of a proselytizing religion**, right? It has this need. I mean, it believes very strongly in its own universality, right? It's, you know, fairly rigid in that way.  
+Implicit in what you say here is that **liberalism itself is kind of a proselytizing religion**, right? It has this need. I mean, it believes very strongly in its own universality, right? It's, you know, fairly rigid in that way.
 
-But I've always, I've long believed that **Western liberalism has had a changing relationship to particularism and especially to sort of relativism**.  
+But I've always, I've long believed that **Western liberalism has had a changing relationship to particularism and especially to sort of relativism**.
 
 I think that in the 60s and 70s, especially sort of watching countries come out of a colonial experience that they were, you know, that liberals were deeply philosophically opposed to, they were ready to accept that values in those places were very much shaped by historical circumstances, by culture. And they might be valid, even if they diverged from our own liberal values.
-But today, **liberalism** just seems more, well, frankly, **dogmatic**, more **universalistic**.  
+But today, **liberalism** just seems more, well, frankly, **dogmatic**, more **universalistic**.
 Do you agree with that? And if so, do you think that this shift has happened? Why? I mean, why has this happened? And how does **China's successor or challenge** fit into that story?
 
 Yeah, I think the story may be a little bit more complicated than that, because I would say there's **two dimensions** here.
 
-One dimension is the extent to which **Western liberals** believe that there are certain **values which are universally valid**. And on that, I actually think that a lot of people, certainly a lot of the students I teach, have come to be less confident about that. 
+One dimension is the extent to which **Western liberals** believe that there are certain **values which are universally valid**. And on that, I actually think that a lot of people, certainly a lot of the students I teach, have come to be less confident about that.
 
-In the 1950s and 1960s, people would have said:  
+In the 1950s and 1960s, people would have said:
 > "Of course, it's very important for individuals to be self-determining. Of course, it's very important for individuals to be able to have basic political liberties. Of course, it's very important for women to be free to make choices about themselves."
 
-Whereas now, I think a lot of the students I have would say:  
-- "We are just Eurocentric."  
-- "This is just Western values."  
+Whereas now, I think a lot of the students I have would say:
+- "We are just Eurocentric."
+- "This is just Western values."
 - "If in **Afghanistan**, they want to allow the **Taliban** to tell women that they're not allowed to go out of the house unless they're fully veiled, then who are we to judge?"
 
 So I think there's a kind of form of **moral relativism** that has entered the discourse, perhaps from the 1960s, and that's grown stronger. But actually, I think it's much more present in the minds of the average American today than it would have been 50 years ago.
@@ -636,20 +638,20 @@ So I think there's a kind of form of **moral relativism** that has entered the d
 
 Now, on the other hand, I think that there is a set of questions in **high politics** about the extent to which we're willing to live with **compromise**. The extent to which we need to recognize the limitations of our own ability to impose our values in other countries.
 
-There, the **unipolar moment after the fall of the Soviet Union** certainly created the huge temptation to be overly sanguine—to think:  
+There, the **unipolar moment after the fall of the Soviet Union** certainly created the huge temptation to be overly sanguine-to think:
 > "We can go into Iraq and we're going to turn it into a blooming democracy and that will be a model for the Middle East, and everything suddenly will become much better. We can do that in all these different countries in the world. And obviously, in 50 years, most countries in the world will be democracies and that'll be wonderful."
 
-And there, I would say that in the **Cold War**, people had the recognition that there's a big geopolitical, strategic adversary, which made that hard. After the fall of the **Soviet Union**, there was a moment of **hubris** where a lot of politicians in the **United States and beyond** were much too sanguine about the ability to do that. And then the failures of the wars in Iraq and Afghanistan and other military interventions have somewhat revitalized relativism.  
+And there, I would say that in the **Cold War**, people had the recognition that there's a big geopolitical, strategic adversary, which made that hard. After the fall of the **Soviet Union**, there was a moment of **hubris** where a lot of politicians in the **United States and beyond** were much too sanguine about the ability to do that. And then the failures of the wars in Iraq and Afghanistan and other military interventions have somewhat revitalized relativism.
 
 ---
 
 Yes. Now, I actually think we should have a **mix of those two**.
 
-> "Well, so do I."  
-> "So do I."  
+> "Well, so do I."
+> "So do I."
 > "Right."
 
-So I think that we should—I’m a **philosophical liberal**—and I do think that every individual in the world should have some rights of **self-determination**, and that when those rights are curtailed, that is something that is sad to me, something I care about. And in so far as I have agency to improve that, I would.
+So I think that we should-I'm a **philosophical liberal**-and I do think that every individual in the world should have some rights of **self-determination**, and that when those rights are curtailed, that is something that is sad to me, something I care about. And in so far as I have agency to improve that, I would.
 
 I mean, if I could flip a button to make sure that women in **Afghanistan** are able to leave the house while wearing a **burqa**, and able to access a **primary education**, and able to do all of those things, I absolutely would.
 
@@ -674,11 +676,11 @@ I mean, like you, I'm sort of looking for a **third way**. We don't have that **
 
 I guess part of what I would do is I would sort of classify the **Afghanistan to the world**, you know, **Taliban regimes**, as **outliers**, and look at instead at sort of the larger community of nations where there are actually quite a number of **shared values**, but that simply get prioritized quite differently.
 
-You know, where, for example, certain states will prioritize the **civil and political rights** that you say, you know, the **self-determination**, the individual self-determination, but others will prioritize **economic rights**.  
+You know, where, for example, certain states will prioritize the **civil and political rights** that you say, you know, the **self-determination**, the individual self-determination, but others will prioritize **economic rights**.
 
 That isn't to say that they completely devalue the other. I mean, **Americans care very much about economic rights**. Maybe they don't enshrine them to the extent that they do civil and political rights.
 
-So I've actually, you know, I'm very uncomfortable with **universalism**, but also recognize a lot of the dangers in, you know, this sort of thinking that your students just described where, you know, they are okay with women in **Purdah** and in Afghanistan and not allowed to seek even primary education.  
+So I've actually, you know, I'm very uncomfortable with **universalism**, but also recognize a lot of the dangers in, you know, this sort of thinking that your students just described where, you know, they are okay with women in **Purdah** and in Afghanistan and not allowed to seek even primary education.
 
 So I've been developing this idea that I call **priority pluralism**. And I guess I'll send you this essay that I wrote on this before, you know, other people may have heard me riff on this before.
 
@@ -710,7 +712,7 @@ I do think that, you know, with some Chinese interlocutors and with some expats 
 
 You know, there can also be a bristling at any criticism. There can be a kind of like:
 
-> "Look at the amazing things that this country has achieved in a very short period of time,"  
+> "Look at the amazing things that this country has achieved in a very short period of time,"
 
 which is certainly true. You know, everything else will sort itself out and any problem is just temporary and it's going to resolve itself.
 
@@ -727,13 +729,13 @@ I think perhaps in **China**, the risk is, for understandable reasons of histori
 
 I certainly hope I don't fall into the category of those **self-loathing foreigners who hate** now.
 
-I don't think so. No, no. I know that I don't. But what I do worry about right now is that the frame that even some of my smartest friends tend to take to China is one that looks more for the reasons why China will fail rather than looking, you know, starting a new one and then looking for the reasons why it has enjoyed the success that it has. 
+I don't think so. No, no. I know that I don't. But what I do worry about right now is that the frame that even some of my smartest friends tend to take to China is one that looks more for the reasons why China will fail rather than looking, you know, starting a new one and then looking for the reasons why it has enjoyed the success that it has.
 
 I think that there's a certain amount of what I, you know, described as sort of **self-soothing and copium** in that. And I do worry about that. And I think that there's a reckoning coming with it.
 
 Let me, let me, I mean, this is, I could go on for hours and I hope we do have the chance to talk about this over a drink at some point, but over, over the past decade, let me change gears here and ask you about this because, you know, your focus is on the problems of our own liberal societies.
 
-But over the past decade, we've seen efforts, especially in the **U.S.** — I think it's less common elsewhere — but to try to reduce domestic polarization by building **China up as some sort of common enemy**.
+But over the past decade, we've seen efforts, especially in the **U.S.** - I think it's less common elsewhere - but to try to reduce domestic polarization by building **China up as some sort of common enemy**.
 
 I mean, this was done in a kind of just crazily on the nose way by **Rahm Emanuel**, you know, the former Congressman, Chicago mayor, Obama chief of staff. He was recently, of course, Biden's ambassador to Japan. And he wrote this recent op-ed in the Times where he basically says:
 
@@ -775,16 +777,16 @@ But thank you.
 
 We're quite far away from that.
 
-**Yasha**, maybe I'm projecting a little, reading, you know, in me into you a little too much, but I wonder, you know, because you talk about those sort of the moral costs or such a thing, but there are some moral costs of learning from illiberal regimes, from illiberal societies too.
+**Yascha**, maybe I'm projecting a little, reading, you know, in me into you a little too much, but I wonder, you know, because you talk about those sort of the moral costs or such a thing, but there are some moral costs of learning from illiberal regimes, from illiberal societies too.
 
 I mean, but at the same time, I think that where you are wrestling with us, many of us are, we kind of see that there must be certain institutional innovations that we liberal democracies could borrow from China, technocratic, **without compromising our values** in some way.
 
 Is it possible?
-I, I think that **this is a project you're engaged in** if I'm, if I'm not wrong.  
+I, I think that **this is a project you're engaged in** if I'm, if I'm not wrong.
 **Yeah.**
 
-I mean, I think, there's certainly many things we can learn from **China**, you know, from  
-- good cuisine to,  
+I mean, I think, there's certainly many things we can learn from **China**, you know, from
+- good cuisine to,
 - you know, I mean, I'm in **Paris** at the moment. And I have to say that the Paris cuisine, which I've always personally found to be quite disappointing, has been greatly enriched by the arrival of a few decent **Chinese restaurants**.
 
 You know, I mean, to obviously things in **technology** and, frankly, the investment in research and the university system, you know, it's much easier to get funding for ambitious forms of basic research in **China** nowadays than it is in the **United States**. That's something that the United States has to fix.
@@ -793,42 +795,42 @@ I personally don't think that there's many elements of the, strictly speaking, *
 
 So I know we have something more specific in mind, but I have to say that **that's not sort of the heart of what I've been thinking about**.
 
-**Yasha, it's been such an amazing pleasure to speak with you.** I really wish we had had more time to talk when we were in **Shanghai**, and I do look forward to maybe seeing you somewhere else in the world and sitting down and having a good meal with you because you clearly do enjoy Chinese cuisine, and I'm a very good restaurant orderer, so I think I will dazzle and amaze you.
+**Yascha, it's been such an amazing pleasure to speak with you.** I really wish we had had more time to talk when we were in **Shanghai**, and I do look forward to maybe seeing you somewhere else in the world and sitting down and having a good meal with you because you clearly do enjoy Chinese cuisine, and I'm a very good restaurant orderer, so I think I will dazzle and amaze you.
 
 But first of all, I mean, thanks for taking so much time to talk with me about this, and I think there will be future conversations to be had. I look forward to them, and, you know, I have to come to **Beijing**, so I look forward to you dazzling me with your order when I get there. And then other things, you know, the **music scene**, everything about this.
 
 So let's move on to the section of the podcast that I call **Recommendations**, where I'd like to ask you just to talk about a book you've read, about a movie or a film, or anything else that you think my listeners might be interested in hearing about from you?
 
-You know, perhaps in context, this is a little bit of a cop-out, but one of my favorite political novels is **The Leopard**, which is... Ah, De Lampedusa.  
-**Yeah, De Lampedusa. I love it. Yeah, I love that novel.** I recently reread it. Beautiful movie.  
+You know, perhaps in context, this is a little bit of a cop-out, but one of my favorite political novels is **The Leopard**, which is... Ah, De Lampedusa.
+**Yeah, De Lampedusa. I love it. Yeah, I love that novel.** I recently reread it. Beautiful movie.
 
-Yeah, it's a beautiful movie as well, by the way. There's a horrible **Netflix series** they made a couple of months ago, which is really awful. It's beautifully shot. I got to say, I mean, it's such a terrible departure from the actual book, but the cinematography in it is stunning.  
+Yeah, it's a beautiful movie as well, by the way. There's a horrible **Netflix series** they made a couple of months ago, which is really awful. It's beautifully shot. I got to say, I mean, it's such a terrible departure from the actual book, but the cinematography in it is stunning.
 
 That you have to hear. I mean, you know, **Sicily is a beautiful place**.
 
-Anyway, the point is that it is a beautiful personal story.  
-It's a romance. There's many things going on in it, but fundamentally, it is asking the question of:  
-> *how you deal with historical change,*  
-> *how you accommodate yourself to historical change,*  
+Anyway, the point is that it is a beautiful personal story.
+It's a romance. There's many things going on in it, but fundamentally, it is asking the question of:
+> *how you deal with historical change,*
+> *how you accommodate yourself to historical change,*
 > *how you shape historical change.*
 
-And even though that is a set of questions posed in this book at a very different historical junction, a very different culture, it resonates with the rapid development of **China** and the disorientation that that has brought into people's lives. 
+And even though that is a set of questions posed in this book at a very different historical junction, a very different culture, it resonates with the rapid development of **China** and the disorientation that that has brought into people's lives.
 
 And so I think that it's a novel that will provide a nice dose of **escapism** for people who are thinking about China every day. And then perhaps in unexpected ways, might rhyme with questions they themselves have about the way that country is changing.
 
 **Absolutely.** I mean, it is, it is, well, it's a foundational text in **American undergraduate political science**. I don't know if you're aware of that, but everyone I know who studied political science like I did in the 1980s is assigned that book at some point by somebody. And that's sort of why we are all so familiar with it.
 
-And it's also just a rollicking good story. I mean, it's got:  
-- love and marriage plots  
-- infidelities  
-- and, it's still a wonderful...  
+And it's also just a rollicking good story. I mean, it's got:
+- love and marriage plots
+- infidelities
+- and, it's still a wonderful...
 
-And a smart, trusty dog.  
+And a smart, trusty dog.
 
-**Yeah.**  
-It's got everything. Smart, trusty dog. Yeah, yeah, yeah. It's got it all.  
+**Yeah.**
+It's got everything. Smart, trusty dog. Yeah, yeah, yeah. It's got it all.
 
-That's a fantastic recommendation. And, you know, if for no other reason, do look at the Netflix show if you, after you've read the book. I mean, because it's candy, it's **eye candy**, especially because, you know, Monica Bellucci's daughter is in it. She's quite something.  
+That's a fantastic recommendation. And, you know, if for no other reason, do look at the Netflix show if you, after you've read the book. I mean, because it's candy, it's **eye candy**, especially because, you know, Monica Bellucci's daughter is in it. She's quite something.
 
 If you're speaking about eye candy and **The Leopard**, go watch the original movie by **Visconti** with **Claudia Cardinale**, you know, it has all the eye candy you need.
 Okay. Okay. I will do that. I have not actually seen it, but I did, I reread it just over the, I guess it was, yeah, this winter I reread **The Leopard** and it holds up well.
@@ -842,11 +844,11 @@ So in the spirit of our discussion today, talking about **liberalism**, I'm goin
 
 which I thought was just a really, really good way to think about that. It's a really good book. Yeah. It's a super readable, very sensible book. And, you know, it sort of reconnects me with a tradition that I still proudly hew to in spite of the fact that it's becoming like a religious faith and less of sort of an empirically viable, provable thing that I can see in the world around me.
 
-But hey, what a pleasure again. Thank you so much, **Yasha**. Thank you, **Kaiser**. This is wonderful.
+But hey, what a pleasure again. Thank you so much, **Yascha**. Thank you, **Kaiser**. This is wonderful.
 
-You've been listening to the **Seneca Podcast**. The show is produced, recorded, engineered, edited, and mastered by me, **Kaiser Guo**. Support the show through Substack at **SenecaPodcast.com**, where there is a growing offering of terrific original China-related writing and audio, or email me at **Senecapod@gmail.com**.
+You've been listening to the **Sinica Podcast**. The show is produced, recorded, engineered, edited, and mastered by me, **Kaiser Kuo**. Support the show through Substack at **SinicaPodcast.com**, where there is a growing offering of terrific original China-related writing and audio, or email me at **SinicaPod@gmail.com**.
 
-If you've got ideas on how you can help out with the show, don't forget to leave a review on **Apple Podcasts**. Enormous gratitude to the **University of Wisconsin–Madison** et cetera for **East Asian Studies** for supporting the show so generously this year. Huge thanks to my guest, **Yasha Monk**.
+If you've got ideas on how you can help out with the show, don't forget to leave a review on **Apple Podcasts**. Enormous gratitude to the **University of Wisconsin-Madison** et cetera for **East Asian Studies** for supporting the show so generously this year. Huge thanks to my guest, **Yascha Mounk**.
 
 Thanks for listening. See you next week. Take care. Bye.
 
@@ -863,12 +865,12 @@ Thanks for listening. See you next week. Take care. Bye.
       "section_level": 1
     },
     {
-      "index_sentences": "Welcome to the Cineca Podcast, the weekly discussion of current affairs in China.",
-      "section_title": "Welcome to the Cineca Podcast",
+      "index_sentences": "Welcome to the Sinica Podcast, the weekly discussion of current affairs in China.",
+      "section_title": "Welcome to the Sinica Podcast",
       "section_level": 1
     },
     {
-      "index_sentences": "Cineca is supported this year by the Cetra for East Asian Studies at the University of Wisconsin-Madison, a national resource center for the study of East Asia.",
+      "index_sentences": "Sinica is supported this year by the Center for East Asian Studies at the University of Wisconsin-Madison, a national resource center for the study of East Asia.",
       "section_title": "Podcast Support and Subscriber Benefits",
       "section_level": 2
     },
@@ -878,8 +880,8 @@ Thanks for listening. See you next week. Take care. Bye.
       "section_level": 1
     },
     {
-      "index_sentences": "So today I am really delighted to welcome Yasha Munk to the show.",
-      "section_title": "Introducing Yasha Munk",
+      "index_sentences": "So today I am really delighted to welcome Yascha Mounk to the show.",
+      "section_title": "Introducing Yascha Mounk",
       "section_level": 1
     },
     {
@@ -894,7 +896,7 @@ Thanks for listening. See you next week. Take care. Bye.
     },
     {
       "index_sentences": "So your essays, including what I read about your 21 observations on China from your brief earlier visit, are quite textured.",
-      "section_title": "Yasha's Engagement with China",
+      "section_title": "Yascha's Engagement with China",
       "section_level": 1
     },
     {
@@ -909,7 +911,7 @@ Thanks for listening. See you next week. Take care. Bye.
     },
     {
       "index_sentences": "Oh, so I really haven't spent very long in the country yet. This is my third trip in about as many years.",
-      "section_title": "Yasha's Visits to China",
+      "section_title": "Yascha's Visits to China",
       "section_level": 2
     },
     {
@@ -978,7 +980,7 @@ Thanks for listening. See you next week. Take care. Bye.
       "section_level": 2
     },
     {
-      "index_sentences": "Well, Yasha, I think it's really interesting that, you know, there's sort of a second order effect here when it comes to patron-client relations in China.",
+      "index_sentences": "Well, Yascha, I think it's really interesting that, you know, there's sort of a second order effect here when it comes to patron-client relations in China.",
       "section_title": "Evaluating Media Coverage of China",
       "section_level": 1
     },
@@ -1043,7 +1045,7 @@ Thanks for listening. See you next week. Take care. Bye.
       "section_level": 2
     },
     {
-      "index_sentences": "But over the past decade, we've seen efforts, especially in the U.S. — I think it's less common elsewhere — but to try to reduce domestic polarization by building China up as some sort of common enemy.",
+      "index_sentences": "But over the past decade, we've seen efforts, especially in the U.S. - I think it's less common elsewhere - but to try to reduce domestic polarization by building China up as some sort of common enemy.",
       "section_title": "China as a Tool Against Polarization",
       "section_level": 1
     },
@@ -1053,18 +1055,18 @@ Thanks for listening. See you next week. Take care. Bye.
       "section_level": 2
     },
     {
-      "index_sentences": "Yasha, maybe I'm projecting a little, reading, you know, in me into you a little too much, but I wonder, you know, because you talk about those sort of the moral costs or such a thing, but there are some moral costs of learning from illiberal regimes, from illiberal societies too.",
+      "index_sentences": "Yascha, maybe I'm projecting a little, reading, you know, in me into you a little too much, but I wonder, you know, because you talk about those sort of the moral costs or such a thing, but there are some moral costs of learning from illiberal regimes, from illiberal societies too.",
       "section_title": "Borrowing Innovations from Illiberal Regimes",
       "section_level": 1
     },
     {
-      "index_sentences": "Yasha, it's been such an amazing pleasure to speak with you. I really wish we had had more time to talk when we were in Shanghai, and I do look forward to maybe seeing you somewhere else in the world and sitting down and having a good meal with you because you clearly do enjoy Chinese cuisine, and I'm a very good restaurant orderer, so I think I will dazzle and amaze you.",
+      "index_sentences": "Yascha, it's been such an amazing pleasure to speak with you. I really wish we had had more time to talk when we were in Shanghai, and I do look forward to maybe seeing you somewhere else in the world and sitting down and having a good meal with you because you clearly do enjoy Chinese cuisine, and I'm a very good restaurant orderer, so I think I will dazzle and amaze you.",
       "section_title": "Podcast Recommendations",
       "section_level": 1
     },
     {
       "index_sentences": "You know, perhaps in context, this is a little bit of a cop-out, but one of my favorite political novels is The Leopard, which is...",
-      "section_title": "Yasha's Recommendation: The Leopard",
+      "section_title": "Yascha's Recommendation: The Leopard",
       "section_level": 2
     },
     {
@@ -1073,11 +1075,11 @@ Thanks for listening. See you next week. Take care. Bye.
       "section_level": 2
     },
     {
-      "index_sentences": "You've been listening to the Seneca Podcast. The show is produced, recorded, engineered, edited, and mastered by me, Kaiser Guo.",
+      "index_sentences": "You've been listening to the Sinica Podcast. The show is produced, recorded, engineered, edited, and mastered by me, Kaiser Kuo.",
       "section_title": "Podcast Outro",
       "section_level": 1
     }
   ]
 };
-window.faq = {"qas": [{"question": "What is Klaviyo's unique selling proposition as a CRM?", "answer": "Klaviyo is positioned as the only CRM built specifically for B2C, designed to help businesses achieve significant wins during events like Black Friday and Cyber Monday.", "index_of_source": "Klaviyo is the only CRM built for B2C, and the key to making Black Friday and Cyber Monday your biggest wins yet."}, {"question": "How does ADT reconcile \"DIY\" with its established brand, and what benefits does it offer for this system?", "answer": "ADT offers a DIY system that is easy to install and provides virtual assistance from ADT's technical support team, allowing users to protect their homes themselves.", "index_of_source": "To be actually safe, help protect your home with a DIY system from ADT."}, {"question": "What is the main focus of the Cineca Podcast and who is its host?", "answer": "The Cineca Podcast is a weekly discussion of current affairs in China, covering books, ideas, new research, intellectual currents, and cultural trends, hosted by Kaiser Guo.", "index_of_source": "Welcome to the Cineca Podcast, the weekly discussion of current affairs in China."}, {"question": "What exclusive content is available to paying subscribers of the Cineca Podcast?", "answer": "Paying subscribers to the Cineca Podcast gain access to the show's transcript, essays from Kaiser Guo, and writings and podcasts from other China-focused columnists and commentators.", "index_of_source": "You will enjoy, in addition to the podcast itself: The transcript of the show"}, {"question": "Why does Kaiser Guo find it valuable to interview people from \"non-China backgrounds\" on his show?", "answer": "Kaiser finds it valuable to talk with people from non-China backgrounds because it serves as a reality check and provides a good sense of the state of discourse viewed from outside the fractious world of China specialists.", "index_of_source": "But I find it just as valuable sometimes to talk with people from non-China backgrounds, observant, analytical people who've been focused on other things and are just now kind of turning their attention to China."}, {"question": "What is Yasha Munk's aspiration regarding his understanding of China, and what level of fluency does he aim for?", "answer": "Yasha Munk aims to achieve a level of cultural, linguistic, and political fluency with China similar to his understanding of Spain, without becoming a China specialist.", "index_of_source": "But my purpose is to know as much about China as a well-educated Western, quote-unquote, public intellectual, as you put it, or political commentator, would about, say, Spain."}, {"question": "What does Yasha Munk find surprising about the political openness of ordinary Chinese people compared to a common Western perception?", "answer": "Yasha Munk finds that contrary to a Western imaginary of China where people are extremely scared to talk about politics, ordinary people are quite open about their pride in the country's development and also about criticisms of corruption or difficult life circumstances.", "index_of_source": "But I do think that there's a kind of Western imaginary of China, which resembles, you know, Moscow in 1953, or perhaps in 1980, in which people are extremely scared to talk about politics, in which ordinary people would be very worried about voicing any kind of criticism of a government."}, {"question": "Why does Yasha Munk believe China's depopulation problem is more profound than in other countries experiencing low birth rates?", "answer": "Yasha Munk attributes China's more profound depopulation problem to the one-child policy establishing a cultural norm of few children, coupled with a strikingly low priority for love and marriage among young people and a lack of social trust.", "index_of_source": "Having said that, I do think that the problem in East Asia in general, and perhaps in China specifically, is more profound."}]};
+window.faq = {"qas": [{"question": "What is Klaviyo's unique selling proposition as a CRM?", "answer": "Klaviyo is positioned as the only CRM built specifically for B2C, designed to help businesses achieve significant wins during events like Black Friday and Cyber Monday.", "index_of_source": "Klaviyo is the only CRM built for B2C, and the key to making Black Friday and Cyber Monday your biggest wins yet."}, {"question": "How does ADT reconcile \"DIY\" with its established brand, and what benefits does it offer for this system?", "answer": "ADT offers a DIY system that is easy to install and provides virtual assistance from ADT's technical support team, allowing users to protect their homes themselves.", "index_of_source": "To be actually safe, help protect your home with a DIY system from ADT."}, {"question": "What is the main focus of the Sinica Podcast and who is its host?", "answer": "The Sinica Podcast is a weekly discussion of current affairs in China, covering books, ideas, new research, intellectual currents, and cultural trends, hosted by Kaiser Kuo.", "index_of_source": "Welcome to the Sinica Podcast, the weekly discussion of current affairs in China."}, {"question": "What exclusive content is available to paying subscribers of the Sinica Podcast?", "answer": "Paying subscribers to the Sinica Podcast gain access to the show's transcript, essays from Kaiser Kuo, and writings and podcasts from other China-focused columnists and commentators.", "index_of_source": "You will enjoy, in addition to the podcast itself: The transcript of the show"}, {"question": "Why does Kaiser Kuo find it valuable to interview people from \"non-China backgrounds\" on his show?", "answer": "Kaiser finds it valuable to talk with people from non-China backgrounds because it serves as a reality check and provides a good sense of the state of discourse viewed from outside the fractious world of China specialists.", "index_of_source": "But I find it just as valuable sometimes to talk with people from non-China backgrounds, observant, analytical people who've been focused on other things and are just now kind of turning their attention to China."}, {"question": "What is Yascha Mounk's aspiration regarding his understanding of China, and what level of fluency does he aim for?", "answer": "Yascha Mounk aims to achieve a level of cultural, linguistic, and political fluency with China similar to his understanding of Spain, without becoming a China specialist.", "index_of_source": "But my purpose is to know as much about China as a well-educated Western, quote-unquote, public intellectual, as you put it, or political commentator, would about, say, Spain."}, {"question": "What does Yascha Mounk find surprising about the political openness of ordinary Chinese people compared to a common Western perception?", "answer": "Yascha Mounk finds that contrary to a Western imaginary of China where people are extremely scared to talk about politics, ordinary people are quite open about their pride in the country's development and also about criticisms of corruption or difficult life circumstances.", "index_of_source": "But I do think that there's a kind of Western imaginary of China, which resembles, you know, Moscow in 1953, or perhaps in 1980, in which people are extremely scared to talk about politics, in which ordinary people would be very worried about voicing any kind of criticism of a government."}, {"question": "Why does Yascha Mounk believe China's depopulation problem is more profound than in other countries experiencing low birth rates?", "answer": "Yascha Mounk attributes China's more profound depopulation problem to the one-child policy establishing a cultural norm of few children, coupled with a strikingly low priority for love and marriage among young people and a lack of social trust.", "index_of_source": "Having said that, I do think that the problem in East Asia in general, and perhaps in China specifically, is more profound."}]};
 </script>
