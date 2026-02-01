@@ -9,10 +9,10 @@ tags: [podcast_script]
 
 [Greg Brockman on OpenAI's Road to AGI](https://assets.flightcast.com/track-v2/01K2PSYEQQYGWZGAE7CDRKBE0G.mp3)
 
-Hey everyone, welcome to the **Linen Space podcast**. This is **Alasio**, founder of **Kernel Labs**, and I'm joined by **Swix**, founder of **Small AI**. Hello, hello. And we are so excited to have **Greg Brockman** join us.
+Hey everyone, welcome to the **Latent Space podcast**. This is **Alessio**, founder of **Generalist**, and I'm joined by **Swyx**, founder of **Smol AI**. Hello, hello. And we are so excited to have **Greg Brockman** join us.
 
 **Welcome.**  
-Thank you for having us. Excited to be here. You need no introduction, so I was like mentally going to introduce you, but I’ll just get right to it. Congrats on **GPT-5**, **GPT-OSS**, like all the stuff that's going on in **Open Island**. Where are you going to get to all that? It's really good to have you here. How does it feel? Last week was like a whole **maelstrom of releases**.
+Thank you for having us. Excited to be here. You need no introduction, so I was like mentally going to introduce you, but I’ll just get right to it. Congrats on **GPT-5**, **GPT-OSS**, like all the stuff that's going on in **OpenAI**. Where are you going to get to all that? It's really good to have you here. How does it feel? Last week was like a whole **maelstrom of releases**.
 
 **Wild.**  
 It was absolutely wild to get so many things out in one week. But yeah, so we've released our **open source models**, which are models that we've been working on for some time. I think really pack in a bunch of the advances that we've been making at **OpenAI** into a very small form factor, very accessible, now being used by, you know, there's been millions of downloads of that just over the past couple days.
@@ -30,7 +30,7 @@ And I remember that we were like,
 
 And it actually was able to then have a response that took into context the whole previous chain of question and answer. And you realize this thing can **do chat**, right? It can actually talk to you. It can actually use, leverage all of this information, even though it wasn't trained to do it.
 
-I remember we had this question, we had a research meeting with a bunch of people, you know, **Yakup, Ilya, Wojciech**, others. And the question was,  
+I remember we had this question, we had a research meeting with a bunch of people, you know, **Jakob, Ilya, Wojciech**, others. And the question was,  
 > "Why is this not AGI?"  
 
 This model clearly is not AGI, but it's really hard to describe why, right? It's like able to answer any question you put in front of it. And okay, it's not quite reliable. It makes mistakes. It falls off the rails. Okay, that's a real gap.
@@ -268,7 +268,7 @@ How would you characterize the beginning of the **GPT-5 era**?
 
 Yeah, if I think about 3, 4, 5 as the major versions, I think:  
 - 3 is very text-based, kind of like **RLHF** really getting started.  
-- 4 is multimodality and all these different low latency, long thinking, Widow 3.  
+- 4 is multimodality and all these different low latency, long thinking, o3.  
 
 What's going to be the 5 flagship thing? Obviously, the year of **agents**, right? That's the meme. But is there something else that comes to mind that people should think about?  
 
@@ -355,7 +355,7 @@ Because you don't want to just have one instance of the model operating. You wan
 
 And so that you need to, first of all, think about how your **code base** is structured, but then actually go and try to push the model to say, "Can you actually operate it on these multiple different pieces of your code base?"  
 
-I think that people love doing **front-end vibe testing**. **GP5** is very good at front-end, it turns out. But, of course, that's not what most developers spend their time doing. And so it's important not to overfit to that.  
+I think that people love doing **front-end vibe testing**. **GPT-5** is very good at front-end, it turns out. But, of course, that's not what most developers spend their time doing. And so it's important not to overfit to that.  
 
 But I think that maybe just getting a feel for the model and kind of starting to become in tune with its strengths and weaknesses and viewing it almost as an extension of yourself.  
 
@@ -407,7 +407,7 @@ And I think that having the **human be in control of this observability** and to
 
 It's really the agent should be this like model that's executing and then requesting to run things in a remote **sandbox** or locally or maybe multiple sandboxes. Or maybe it's running on your computer and my computer. Like there's no reason that it has to be local to any of these things. Software agents, you can just sort of seamlessly and fluidly move around.
 
-You mentioning approvals gives me a chance to spotlight my friend **Fuad**, who is helping to start the **agent robustness team** that was also launched at **AIA Engineer**.
+You mentioning approvals gives me a chance to spotlight my friend **Fuad**, who is helping to start the **agent robustness team** that was also launched at **AI Engineer**.
 
 **What's that? What's opening us interest in that?**
 
@@ -449,7 +449,7 @@ But if you read the spec, you can actually really see the thoughtfulness that ha
 
 I know we want to talk about **open source** next, but I had a more esoteric question.
 
-I was listening to your old **Lex Friedman interview** and you kind of mentioned **Foundation by Asimov**. It made me think about, we have **Brett Taylor** on the podcast, and we talked about how certain languages have inner end capabilities, like **Rust** is memory safe. And so that just happens.
+I was listening to your old **Lex Friedman interview** and you kind of mentioned **Foundation by Asimov**. It made me think about, we have **Bret Taylor** on the podcast, and we talked about how certain languages have inherent capabilities, like **Rust** is memory safe. And so that just happens.
 
 Do you see almost like a **psychohistory of LLMs and software engineering** where it's like,
 
@@ -528,7 +528,7 @@ No, no, we'll just make the whole world your distribution. You know, that's how 
 
 One thing I wanted to touch on for, I think, the last couple of topics on **GPT-5** before we move to OSS, you've acknowledged that there's a **router**, which is really cool.
 
-I was also listening to your podcast with **John Collison** on Cheeky Pints, which is a really fun format that they say. You told a story of the **Dota side** that I don't think I've heard before about the beta model versus the main model and stitching it together. Is that like a similar insight for GPT-5's router where you have like reasoning model, non-reasoning, and then you just stitch it together?
+I was also listening to your podcast with **John Collison** on Chequered Pints, which is a really fun format that they say. You told a story of the **Dota side** that I don't think I've heard before about the beta model versus the main model and stitching it together. Is that like a similar insight for GPT-5's router where you have like reasoning model, non-reasoning, and then you just stitch it together?
 
 To some extent, yes. Right? In the multiple models and you put some sort of router on top of them. That specific one was for a very specific reason, which is that we had a deficiency on the first, you know, half of the game. Because it kept losing, right?
 
@@ -636,7 +636,7 @@ I think that's part of the step for sure. Right. And I think it's not like we're
 
 But the idea of producing your own tools to make you more efficient and build up a library of those over time in a persistent way, like that's an incredible primitive to have in your toolbox. And I think that if your goal is to be able to go and solve these incredibly hard challenges, unsolved problems, then I think you're going to need that kind of thing as a dependency.
 
-Any architectural decisions or innovations that you want to talk about? **Sliding window attention**, the very fine-grained **mixture of experts**, which I think **DeepSea** popularized, **rope**, **yarn**, **attention sinks**, anything that stood out to you and the choices made for **GPT-OSS**?
+Any architectural decisions or innovations that you want to talk about? **Sliding window attention**, the very fine-grained **mixture of experts**, which I think **DeepSeek** popularized, **rope**, **yarn**, **attention sinks**, anything that stood out to you and the choices made for **GPT-OSS**?
 
 I would say that these choices are all, you know, look, we have a team that's been working on different architectures. We explore different things. Something like **mixture of experts** is something that, it's funny, I would say that I would credit our team for the choices there. But I say that the picture in my mind is we wanted something that would be easy to run in these environments.
 
@@ -913,7 +913,7 @@ Thank you.
 <script>window.tocIndex = {
   "index": [
     {
-      "index_sentences": "Hey everyone, welcome to the Linen Space podcast. This is Alasio, founder of Kernel Labs, and I'm joined by Swix, founder of Small AI.",
+      "index_sentences": "Hey everyone, welcome to the Latent Space podcast. This is Alessio, founder of Generalist, and I'm joined by Swyx, founder of Smol AI.",
       "section_title": "Introduction",
       "section_level": 1
     },
@@ -1033,7 +1033,7 @@ Thank you.
       "section_level": 2
     },
     {
-      "index_sentences": "You mentioning approvals gives me a chance to spotlight my friend Fuad, who is helping to start the agent robustness team that was also launched at AIA Engineer.",
+      "index_sentences": "You mentioning approvals gives me a chance to spotlight my friend Fuad, who is helping to start the agent robustness team that was also launched at AI Engineer.",
       "section_title": "Agent Robustness and Model Spec",
       "section_level": 2
     },
@@ -1053,7 +1053,7 @@ Thank you.
       "section_level": 2
     },
     {
-      "index_sentences": "I was also listening to your podcast with John Collison on Cheeky Pints, which is a really fun format that they say.",
+      "index_sentences": "I was also listening to your podcast with John Collison on Chequered Pints, which is a really fun format that they say.",
       "section_title": "The Router and Menagerie of Models",
       "section_level": 2
     },
@@ -1073,7 +1073,7 @@ Thank you.
       "section_level": 2
     },
     {
-      "index_sentences": "Any architectural decisions or innovations that you want to talk about? Sliding window attention, the very fine-grained mixture of experts, which I think DeepSea popularized, rope, yarn, attention sinks, anything that stood out to you and the choices made for GPT-OSS?",
+      "index_sentences": "Any architectural decisions or innovations that you want to talk about? Sliding window attention, the very fine-grained mixture of experts, which I think DeepSeek popularized, rope, yarn, attention sinks, anything that stood out to you and the choices made for GPT-OSS?",
       "section_title": "Architectural Decisions for GPT-OSS",
       "section_level": 2
     },
