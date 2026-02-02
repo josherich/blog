@@ -202,7 +202,7 @@ I mean, I think there's probably both. Certainly, consumer protection is the sta
 I mean, there's powerful **financial services companies** in the state of Massachusetts. So I don't know what's happening behind the scenes. But, you know, I do think the consumer protection angle is what they're kind of pulling up.
 How do you look at this type of **innovation** in your role at the **White House** to support it and to foster it while still, you know, having some rules on the field?
 
-Well, I think **Vlad's vision around tokenization is very exciting**. You wrote an op-ed, I think it was in the **Washington Post**, that I thought was very good on this topic. We now have a regulatory framework in place, the **Genius Act**, which the president signed in July, that creates the set of rules for **stable coins**, which are just tokenized dollars.
+Well, I think **Vlad's vision around tokenization is very exciting**. You wrote an op-ed, I think it was in the **Washington Post**, that I thought was very good on this topic. We now have a regulatory framework in place, the **GENIUS Act**, which the president signed in July, that creates the set of rules for **stable coins**, which are just tokenized dollars.
 
 And like Vlad's saying, *"if you can tokenize a dollar, you can tokenize anything."* You just basically create a reserve of that asset in a secure account at a bank somewhere or a broker. And then you mint tokens on a one-to-one basis. So I think it's very exciting. There's no reason why we can't tokenize.
 
@@ -236,7 +236,7 @@ So you want to create broad-based ownership as a way to let more people particip
 
 Yeah, because I worry about the status quo. I mean, these AI companies in particular are getting into valuations of hundreds and hundreds of billions with zero retail ownership. And that technology could completely disrupt, you know, how normal people live their lives. And we actually expect it to drive that sort of disruption.
 
-Because if you look at **Cathy's presentation**, you know, you're talking about
+Because if you look at **Cathie Wood's presentation**, you know, you're talking about
 
 - negative inflation,  
 - high GDP growth rates,  
@@ -269,7 +269,7 @@ So we could also ease into it by extending it to **individual retirement account
 
 Let me ask a different question about...
 
-Do you even need a **secure interest**? Why can't you just create a **synthetic or a fast contract** saying if and when **OpenAI goes public**?
+Do you even need a **secure interest**? Why can't you just create a **synthetic or a futures contract** saying if and when **OpenAI goes public**?
 
 Because you can see how many shares there are. You know what the legal registration of the corporation is. Can't you create like a synthetic contract that just creates the value of the stock and ultimately needs to settle at some point after the company goes public?
 
@@ -445,7 +445,7 @@ And this is actually not just a **consumer problem**, but also an **enterprise p
 
 So in a world where you've got **LLMs producing thousands and thousands of pages of code**, human verification just doesn't scale, particularly for **back-end**. So we want to solve that problem.
 
-Okay, give it up for **David Sachs' second favorite Vlad**.
+Okay, give it up for **David Sacks' second favorite Vlad**.
 
 > "Good to see you guys."
 
@@ -536,7 +536,7 @@ Okay, give it up for **David Sachs' second favorite Vlad**.
       "section_level": 2
     },
     {
-      "index_sentences": "Do you even need a secure interest? Why can't you just create a synthetic or a fast contract saying if and when OpenAI goes public?",
+      "index_sentences": "Do you even need a secure interest? Why can't you just create a synthetic or a futures contract saying if and when OpenAI goes public?",
       "section_title": "Exploring Synthetic Contracts and Prediction Markets",
       "section_level": 2
     },
