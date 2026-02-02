@@ -21,7 +21,7 @@ Kyle, welcome to the show.
 
 Yeah, it's great to have you. So, as I was just saying before we started recording, I've read a lot of your stuff. Two things I'd like to go over in some depth are the opinion piece you had in the **New York Times** recently, and also something on your **Substack** about **industrial maximalism**.
 
-> Oh, yeah. You're a theorist at **Beijing University** named, I think his name is **Liu Feng**.
+> Oh, yeah. You're a theorist at **Peking University** named, I think his name is **Lu Feng**.
 
 That's right. Those are two things I'd like to get into further on in the podcast. But the way I like to start my podcast is to learn a little bit more about you as a person.
 
