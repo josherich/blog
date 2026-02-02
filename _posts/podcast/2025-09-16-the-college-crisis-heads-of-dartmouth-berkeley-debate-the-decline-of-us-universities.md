@@ -13,7 +13,7 @@ I was just sitting here contemplating **how I'm gonna pay back all my student lo
 
 We exist to **educate, to teach you how to think not what to think**. We'd better be thinking about **big transitions or transformations**, if I can use the word, because there's a lot of new competition coming into our market.
 
-Ladies and gentlemen, please welcome **Berkeley Chancellor Rich Lyons** and **Dartmouth President Sion Bylock**.
+Ladies and gentlemen, please welcome **Berkeley Chancellor Rich Lyons** and **Dartmouth President Sian Beilock**.
 
 > Hello, sir. Thank you for joining us.
 
@@ -27,7 +27,7 @@ At the same time, **government research funding seems to be getting cut back**, 
 
 What is the **business model of the university today**? The revenue and the expenses? What does it look like going forward from your point of view? How are you planning for that? Let's just start with that broad picture about the **business model and how it's changing**.
 
-> There's a lot to that question. I'll start, and Sion will certainly have lots to contribute.
+> There's a lot to that question. I'll start, and Sian will certainly have lots to contribute.
 
 You know, at the top level, if we think about how we sustainably provide the **fundamental and translational research** that we're so good at, that we're built for, the education, really **transformative educational experiences** that many of you have had in these great universities.
 
@@ -544,7 +544,7 @@ Thank you.
       "section_level": 1
     },
     {
-      "index_sentences": "Ladies and gentlemen, please welcome Berkeley Chancellor Rich Lyons and Dartmouth President Sion Bylock.",
+      "index_sentences": "Ladies and gentlemen, please welcome Berkeley Chancellor Rich Lyons and Dartmouth President Sian Beilock.",
       "section_title": "Welcome and Introduction of University Leaders",
       "section_level": 1
     },
