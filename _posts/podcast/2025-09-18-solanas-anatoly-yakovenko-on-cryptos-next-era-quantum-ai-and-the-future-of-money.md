@@ -113,7 +113,7 @@ Outside of finance, what do you think is the vertical that has the most promise 
 - Yeah, in crypto.
 Whether it's for **Solana** or any crypto project, where do you think people aren't putting enough attention?
 
-I think all the stuff that people have tried, it's kind of like early 90 days, experimentation, **Frontster**, all of those things failed until there was a critical mass of people that understood how the web works and then **Facebook** took off.
+I think all the stuff that people have tried, it's kind of like early 90 days, experimentation, **Friendster**, all of those things failed until there was a critical mass of people that understood how the web works and then **Facebook** took off.
 
 So I think even the weird experiments with **NFTs** being a way to create a community of artists to build a movie or story and create true new **IP**, all that will happen just five years from now or 10 years once we hit critical mass.
 
@@ -129,7 +129,7 @@ Just like what happened.
 
 And then the social network concept always seemed to me to be such a winner.
 
-Whether it would be like a **dig** or a **Reddit** format where you could vote things up with a cryptocurrency, your comments were somehow related to that.
+Whether it would be like a **Digg** or a **Reddit** format where you could vote things up with a cryptocurrency, your comments were somehow related to that.
 
 And there were a couple of little experiments I remember looking at for investment, but candidly, I didn't think the founders would pull it off. And I was right in that case.
 
@@ -153,7 +153,7 @@ Once it actually looks like an investment thing that **Jason** would be like,
 
 This is related to the financing question I was asking **Neil** and **Ari** about, which is can creators raise funding this way and then can they deploy that funding, but then the coin holders can actually have equity in that project and in the performance of that project over time rather than it just be disconnected.
 
-If the regulatory environment changes, people have been dancing around this, but there's this project that I love, **Klanosaurus**.
+If the regulatory environment changes, people have been dancing around this, but there's this project that I love, **Claynosaurz**.
 
 It's these cute little dinosaurs that kids love. It looks like a **Pixar** dinosaur. They've won awards for their animations and they raised funding because they created this collective set of dinos.
 
