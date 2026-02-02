@@ -399,7 +399,7 @@ Yeah, absolutely.
 Yeah.
 
 Maybe we can move your Times piece to, um, it wasn't just you, I guess there were multiple authors, right? On that.
-And so we maybe should give credit to your **coauthors**, but I was interested in the philosophy of this gentleman, **Lu Feng**, who's at, I think, **Beijing University**. Maybe just tell us a little bit about the article and this individual.
+And so we maybe should give credit to your **coauthors**, but I was interested in the philosophy of this gentleman, **Lu Feng**, who's at, I think, **Peking University**. Maybe just tell us a little bit about the article and this individual.
 
 Yeah. So **Lu Feng**, he is a very prominent, I don't know how to categorize him now, a **political economist**, **economist**. He has done a lot of work on industrial development in **China** in particular, in particular, this piece.
 
