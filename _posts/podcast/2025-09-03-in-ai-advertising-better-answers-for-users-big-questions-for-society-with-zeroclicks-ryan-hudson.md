@@ -508,7 +508,7 @@ How does that compare to your high-level segmentation of the market? It sounds l
 Our system is, I'd say, highly optimized to do.
 A **good job** at the **Google style and high intent** sort of searches is inherently doing like **vectorization of context** and doing matching that way. So, it's not in its current form designed to be like throw out the wild card or push something out of context to a user. It's like because it's an inference time ad system, it has to be matching to that.
 
-The **relevancy filter** is the AI saying, _"hey this is not relevant to what I'm doing."_ Can I imagine building a variation on it that is more of that **discovery** and potentially leans into **user profiles**? To make that work, you would have to have **user context**, and we're building a version of this in the **Pi ad block experience** where we have user context and can do matching that takes that into consideration.
+The **relevancy filter** is the AI saying, _"hey this is not relevant to what I'm doing."_ Can I imagine building a variation on it that is more of that **discovery** and potentially leans into **user profiles**? To make that work, you would have to have **user context**, and we're building a version of this in the **Pi Adblock experience** where we have user context and can do matching that takes that into consideration.
 
 The initial versions of **ZeroClick** are all just super context driven. But the **Facebook style one** works because they have that robust profile of you as a person. I think the way to do that in a **privacy secure** sort of way is sort of what they're doing, and why I think it works.
 
@@ -1285,7 +1285,7 @@ Check out **Notion's AI Meeting Notes** if you want perfect notes that write the
       "section_level": 2
     },
     {
-      "index_sentences": "Going back to that, the Pi ad block ethos of the company. It's like, 'we can make ads good, actually.'",
+      "index_sentences": "Going back to that, the Pi Adblock ethos of the company. It's like, 'we can make ads good, actually.'",
       "section_title": "ZeroClick's Philosophy on Advertising and Publishers",
       "section_level": 2
     },
