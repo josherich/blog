@@ -4097,8 +4097,8 @@ Huh.
       "section_level": 2
     },
     {
-      "index_sentences": "So then in 2010, Erz Holza, very senior Google, at this point probably distinguished engineer, senior vice president.",
-      "section_title": "The 'Erzquake' Memo & Larry Page's Re-centralization",
+      "index_sentences": "So then in 2010, Urs Hölzle, very senior Google, at this point probably distinguished engineer, senior vice president.",
+      "section_title": "The 'Ursquake' Memo & Larry Page's Re-centralization",
       "section_level": 2
     },
     {
