@@ -48,19 +48,19 @@ Want more? Then head to **Shell** where members get more.
 
 ---
 
-Welcome to the **Seneca Podcast**, a weekly discussion of current affairs in **China**. In this program, we'll look at books, ideas, new research, intellectual currents, and cultural trends that can help us better understand what's happening in China's politics, foreign relations, economics, and society.
+Welcome to the **Sinica Podcast**, a weekly discussion of current affairs in **China**. In this program, we'll look at books, ideas, new research, intellectual currents, and cultural trends that can help us better understand what's happening in China's politics, foreign relations, economics, and society.
 
 Join me each week for **in-depth conversations** that shed more light and bring less heat to how we think and talk about China.
 
-I'm **Kaiser Guo** coming to you this week from **Chapel Hill, North Carolina**.
+I'm **Kaiser Kuo** coming to you this week from **Chapel Hill, North Carolina**.
 
-Seneca is supported this year by the **Center for East Asian Studies at the University of Wisconsin-Madison**, a national resource center for the study of East Asia. The Seneca Podcast will remain free as always, but if you work for an organization that believes in what I'm doing with the show and with the newsletter, please do consider lending your support.
+Sinica is supported this year by the **Center for East Asian Studies at the University of Wisconsin-Madison**, a national resource center for the study of East Asia. The Sinica Podcast will remain free as always, but if you work for an organization that believes in what I'm doing with the show and with the newsletter, please do consider lending your support.
 
-You can get me at **sinecapod@gmail.com**.
+You can get me at **sinicapod@gmail.com**.
 
 I am in the market for new institutional support. Please help out.
 
-Listeners, you can do your part by becoming a paying subscriber at **sinecapodcast.com**. You will enjoy there, in addition to the podcast:
+Listeners, you can do your part by becoming a paying subscriber at **sinicapodcast.com**. You will enjoy there, in addition to the podcast:
 
 - the complete transcript of the show  
 - essays from me  
@@ -75,24 +75,24 @@ It's been a remarkable few weeks in **South Asian diplomacy**. On August 6th, **
 
 This was ostensibly done to punish **New Delhi** for continued purchases of Russian oil.
 
-Just a couple of weeks later, **China's top diplomat, Wang Yi**, was in New Delhi for meetings with External Affairs Minister **S. Jai Shankar** and with **Prime Minister Narendra Modi** before heading on to Islamabad for the China-Pakistan Foreign Minister Strategic Dialogue, and then to Afghanistan.
+Just a couple of weeks later, **China's top diplomat, Wang Yi**, was in New Delhi for meetings with External Affairs Minister **S. Jaishankar** and with **Prime Minister Narendra Modi** before heading on to Islamabad for the China-Pakistan Foreign Minister Strategic Dialogue, and then to Afghanistan.
 
 And now, of course, all eyes are on **Tianjin**, where probably by the time you hear this, India's Prime Minister will have attended his first summit in China in seven years, a **Shanghai Cooperation Organization gathering** at which a meeting with **Xi Jinping** is widely expected.
 
 ---
 
-So today on Seneca, I'm joined once again by one of my very, very favorite guests, **Evan Feigenbaum**.
+So today on Sinica, I'm joined once again by one of my very, very favorite guests, **Evan Feigenbaum**.
 
 Evan, as you know, is **Vice President for Studies at the Carnegie Endowment for International Peace**, where he leads their work on Asia. Before that, he had a long career in government, serving as **Deputy Assistant Secretary of State for South Asia and for Central Asia**, and as an advisor on China at the State Department.
 
-Evan has been coming on Seneca since our earliest days, and longtime listeners will remember how central he was to the bipartisan effort over the past 25 years to build trust and deepen ties between the **United States and India**.
+Evan has been coming on Sinica since our earliest days, and longtime listeners will remember how central he was to the bipartisan effort over the past 25 years to build trust and deepen ties between the **United States and India**.
 
 These days, though, Evan has been watching in disbelief and horror as President Trump, in his second go-around, seems intent on dismantling much of that hard-won progress.
 He's been especially sharp on **social media** about the ways **tariffs**, **sanctioned talk**, and **inflammatory rhetoric** are undoing the work that he and others labored so hard to achieve. 
 
 Frankly, the main purpose of today's program may just be to let **Evan vent his understandable frustration**, and my questions are probably going to be a little superfluous. So with that, let me toss out a ball, then get out of the way. 
 
-**Evan Feigenbaum**, welcome back to **Seneca**.  
+**Evan Feigenbaum**, welcome back to **Sinica**.  
 Thanks, man.  
 Thanks for having me.
 
@@ -197,7 +197,7 @@ And so it's very difficult if you're sitting in **Narendra Modi's shoes** to neg
 
 And as the **Europeans** and the **Koreans** and others have discovered, even when you reach a deal with President Trump, he's liable to walk away from the deal and start negotiating again. And so that's **not a good recipe for success in New Delhi**.  
 
-Just on the **Russian oil purchases thing**, when he's been pushed on this, **Scott Besant** has been talking about how it's not so much the oil purchases themselves, but the fact that before the Russian invasion of Ukraine, **India, and I checked this, India did buy very little oil from Russia**.  
+Just on the **Russian oil purchases thing**, when he's been pushed on this, **Scott Bessent** has been talking about how it's not so much the oil purchases themselves, but the fact that before the Russian invasion of Ukraine, **India, and I checked this, India did buy very little oil from Russia**.  
 
 And the accusation is that he's just basically, you know, that India has taken advantage of Russia's desperation, bought a lot of oil from Russia, and is basically flipping that oil now for a profit on global markets.  
 
@@ -215,7 +215,7 @@ And if that's true, it just fuels and feeds the notion of **American hypocrisy i
 
 And that notion of hypocrisy has basically become highly politicized, as I said, in ways that are unproductive.  
 
-I don't think Mr. Besson understands the political context in Delhi very well.  
+I don't think Mr. Bessent understands the political context in Delhi very well.  
 
 Yeah.  
 
@@ -396,7 +396,7 @@ that Washington maybe really ought to worry about more?
 Well, first, I think we need to separate Russia and China in **India's strategic thinking and foreign...**
 **Policy.** They have a very longstanding, and for some people in **India**, actually quite emotionally resonant relationship with **Russia** that the Ukraine invasion has really not shaken at all.  
 
-So, **Mr. Dovol**, the **National Security Advisor**, went to **Moscow**. **Mr. Jashankar**, the **External Affairs Minister**, has been to Moscow recently. The timing of that might or might not have been pre-planned, but in any case, the signaling to **Washington**, particularly of the fact that **India's invited President Putin to visit India this year is unmistakable**, given the fact that the **United States has layered additional penalties on India that are directly related to purchasing oil from Russia**.  
+So, **Mr. Doval**, the **National Security Advisor**, went to **Moscow**. **Mr. Jaishankar**, the **External Affairs Minister**, has been to Moscow recently. The timing of that might or might not have been pre-planned, but in any case, the signaling to **Washington**, particularly of the fact that **India's invited President Putin to visit India this year is unmistakable**, given the fact that the **United States has layered additional penalties on India that are directly related to purchasing oil from Russia**.  
 
 So that part is **strategic signaling**, but it's within the context of a relationship that the Indians were never going to junk. It's not just emotional for India with Russia. The Indians have had a broad geopolitical interest in trying to preserve the ability to poke some wedges between Russia and China, particularly as the **Russia-China relationship has become closer and ever closer**.  
 
@@ -489,7 +489,7 @@ Look, first of all, the **U.S.-India relationship** is apples and oranges to the
 
 I do think there's going to be a tariff agreement because both sides want it.
 
-**Besant** was on TV this morning basically saying that he thinks they'll get to an agreement, which is interesting because if Besant believes that, then that really raises a lot of questions about the strategy that the administration has been pursuing. A lot of this was entirely unnecessary.
+**Bessent** was on TV this morning basically saying that he thinks they'll get to an agreement, which is interesting because if Besant believes that, then that really raises a lot of questions about the strategy that the administration has been pursuing. A lot of this was entirely unnecessary.
 
 I think what I worry about is the longer-term effects of the politicization we were talking about before. So I think the first thing that's needed is a tariff deal because without a tariff deal, the free fall that we have right now is not arrestable. And you need at least, as we've discovered in other relationships—for instance, the U.S. and China—to put a floor under it when you're in free fall. And that's where the U.S. and India are now.
 
@@ -560,7 +560,7 @@ It really flips the script on a lot of the ways that we think about Japan, parti
 
 ---
 
-**Marc Thiessen:** So since we talked about China in the region and because the audience is focused on China, that's usually what we talk about when I come on the podcast, I want to recommend some work by two of my Carnegie colleagues, **Sheena Greitens** and **Isaac Carton**.
+**Marc Thiessen:** So since we talked about China in the region and because the audience is focused on China, that's usually what we talk about when I come on the podcast, I want to recommend some work by two of my Carnegie colleagues, **Sheena Greitens** and **Isaac Kardon**.
 
 There's this view that countries like **Vietnam** that are deeply skeptical of China or have had a lot of conflicts with China—as we were just talking about with India, for example—somehow that historic mistrust makes the improvement in relations impossible. But actually, they've done some work on Vietnam lately that showcases two things that really fly in the face of conventional wisdom:
 
@@ -580,7 +580,7 @@ Yeah, they've been writing on it for a while. There's a big **Carnegie paper**. 
 - There's been some smaller pieces. But it really stands a lot of conventional wisdom on its head.
 - And that's what we're trying to do at Carnegie these days.
 
-Fantastic. Great recommendation. I've got one also in China related. It's a translation in **Wang Zichun's Pekingology Substack** of an essay. It was written, you know what, 2008. So that's like 17 years ago by **Tang Shipping** and **Xi Da Peng**. It's called:
+Fantastic. Great recommendation. I've got one also in China related. It's a translation in **Wang Xi's Pekingnology Substack** of an essay. It was written, you know what, 2008. So that's like 17 years ago by **Tang Shiping** and **Xie Daofeng**. It's called:
 
 > "How Sinocentrism and U.S. Centrism Warped or Warped Beijing's Foreign Policy Thinking."
 
@@ -604,17 +604,17 @@ Hey, Evan, thanks so much, man. That was a lot of fun. Thanks.
 
 Thanks for having me. It's always great to have you on.
 
-You've been listening to the **Seneca Podcast**. The show is produced, recorded, engineered, edited, and mastered by me, **Kaiser Guo**.
+You've been listening to the **Sinica Podcast**. The show is produced, recorded, engineered, edited, and mastered by me, **Kaiser Guo**.
 
-Support the show through **Substack** at [www.sinecapodcast.com](http://www.sinecapodcast.com), where there is a growing offering of terrific original China-related writing and audio.
+Support the show through **Substack** at [www.sinicapodcast.com](http://www.sinicapodcast.com), where there is a growing offering of terrific original China-related writing and audio.
 
-Email me at **sinecapod@gmail.com** if you've got ideas on how you can help out with the show or just to say hi.
+Email me at **sinicapod@gmail.com** if you've got ideas on how you can help out with the show or just to say hi.
 
 Don't forget to leave a review on **Apple Podcasts**.
 
 Enormous gratitude to the **University of Wisconsin-Madison's Center for East Asian Studies** for supporting the show this year.
 
-Huge thanks to my guest and good friend, **Evan Weigenbaum**.
+Huge thanks to my guest and good friend, **Evan Feigenbaum**.
 
 Thank you for listening. We will see you next week. Take care.
 
