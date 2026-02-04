@@ -17,9 +17,9 @@ No, I'm Cape Town.
 
 Back in **Cape Town**. Beautiful, lovely **Cape Town**. And we're coming to you today at the end of what's been a very busy and eventful past couple of days here at the **China Global South project**, covering the **Shanghai Cooperation Organization Summit** that just wrapped up in the northeastern Chinese port city of **Tianjin**.
 
-Kobus, I have to be honest with you. I didn't really expect very much from the **SCO Summit** because this is a group that's been around since 2001, really has very little to show for what it's done. 
+Kobus, I have to be honest with you. I didn't really expect very much from the **SCO Summit** because this is a group that's been around since 2001, really has very little to show for what it's done.
 
-In terms of branding, you've got the **BRICS**, you've got any number of organizations, you've got all these other Chinese initiatives that are going on, and the SCO just kind of languished out there. But this summit was actually quite eventful. 
+In terms of branding, you've got the **BRICS**, you've got any number of organizations, you've got all these other Chinese initiatives that are going on, and the SCO just kind of languished out there. But this summit was actually quite eventful.
 
 More than **20 heads of state and government** were there. Also, **10 international organizations**, including:
 - the **United Nations**
@@ -48,47 +48,47 @@ And when they issued that statement, **India was not in the room**. And that was
 
 > "Hey, guys, we weren't in the room."
 
-Now, that was back in the day when **India's relationship with the United States** was very different than it is today. **Israel and India** have had a close relationship. Things have changed now. India went along with these statements on Iran. 
+Now, that was back in the day when **India's relationship with the United States** was very different than it is today. **Israel and India** have had a close relationship. Things have changed now. India went along with these statements on Iran.
 
 And there was also, just very quickly, an update to that statement on the **U.S.-Israel attacks on Iran**. India joined other SCO members to strongly condemn those attacks. Again, maybe a reflection of the deterioration in **U.S.-India relations** that is having an impact on Israel.
 
 Before we get into the details of what was done, let's just start with your impressions of what you thought from the summit, your takeaways from it. And we, you know, again, and we're talking also about the bilaterals between **Putin, Xi, and Modi and Xi**. Give us your big overview take.
 
-You know, as you say, I think it's a more significant gathering than a lot of people assumed. In the first place, the optics of it was very striking. 
+You know, as you say, I think it's a more significant gathering than a lot of people assumed. In the first place, the optics of it was very striking.
 
 You know, it's not only that all of this hugs and smiles and walking hand in hand and being in the same limo together and so on between **Modi and Putin** and kind of very warm receptions with **Xi** as well. All of this was happening as Western Twitter was melting down around a whole bunch of rumors around **Donald Trump's health**. So it was an interesting moment for that.
 
 But I think more substantially, it also really kind of moved forward, I think, **China as the center of a vision of what a different form of global governance could look like**. You know, and of course, that was just bolstered, of course, by the situation in **Gaza**, where, you know, kind of it's not only a full genocide.
-It's now also circulated by the **White House**, another kind of crazy **AI prospectus** of flying cars in futuristic cities on essentially **ethnically cleansed land**.  
+It's now also circulated by the **White House**, another kind of crazy **AI prospectus** of flying cars in futuristic cities on essentially **ethnically cleansed land**.
 
 So it's this kind of vision, very much a broken and limited kind of **Western-centric order**.
 
 There was this laying out of an alternative **non-Western vision**, which was very striking timing for that.
 
-That was one of the comments I made in some of the media interviews:  
+That was one of the comments I made in some of the media interviews:
 
 > "We got a peek now at what a post-American-led international order is."
 
-When I posted that comment on LinkedIn, people asked, "What does that actually mean?"  
+When I posted that comment on LinkedIn, people asked, "What does that actually mean?"
 
 It means that for the first time since the late 1950s, the **United States** is not setting the rules, standards, and frameworks for international economic security and global governance.
 
 This is a very new and fascinating stage of history.
 
-It's not to say that **Xi**, **Modi**, **Putin** will completely take over, or that the West is dead and everything is going to hell. It’s just starting to change, and we’re seeing that right now.
+It's not to say that **Xi**, **Modi**, **Putin** will completely take over, or that the West is dead and everything is going to hell. It's just starting to change, and we're seeing that right now.
 
-One of the other big takeaways, Kobus, is the presence of more than 20 countries, particularly **Southeast Asian countries**, showing up for the first time.  
+One of the other big takeaways, Kobus, is the presence of more than 20 countries, particularly **Southeast Asian countries**, showing up for the first time.
 
-- **Prabowo Subianto** canceled last minute due to massive unrest in **Indonesia**.  
-- We had **Vietnamese Prime Minister Chin**.  
+- **Prabowo Subianto** canceled last minute due to massive unrest in **Indonesia**.
+- We had **Vietnamese Prime Minister Chin**.
 - **Malaysian Prime Minister Anwar** was there.
 
 This is significant because when you look at the map of member states of the **Shanghai Cooperation Organization (SCO)**, they basically ring all around China.
 
-The member states cover:  
+The member states cover:
 
-- Southeast Asia  
-- South Asia, including India and Pakistan  
+- Southeast Asia
+- South Asia, including India and Pakistan
 - The Afghan-Iran corridor leading into Central Asia and Russia
 
 It's interesting to compare that against a map distributed last year showing the latticework of **U.S. security partnerships** also surrounding China.
@@ -103,23 +103,23 @@ It seems to me that, in the first place, it's a form of **insurance policy**.
 
 A lot of these countries can't afford not to have a friendly relationship with China.
 
-Countries positioned as part of a U.S. alliance network, acting as a frontline bulwark against China—such as the **Philippines**—are increasingly feeling isolated.
+Countries positioned as part of a U.S. alliance network, acting as a frontline bulwark against China-such as the **Philippines**-are increasingly feeling isolated.
 
-The Philippines’ positioning hasn’t even bought it an exemption from tariffs, which is notable.
+The Philippines' positioning hasn't even bought it an exemption from tariffs, which is notable.
 
-We’re seeing possible shifts in **India** too. India is a very complicated actor, so who can say what’s happening internally?
+We're seeing possible shifts in **India** too. India is a very complicated actor, so who can say what's happening internally?
 
 From the outside, a similar shift seems to be on the Indian side.
 
 While strengthening relationships at the SCO in Tianjin, India was also potentially shoring up anti-China relationships with **Japan** in the same week.
 
-That’s always India’s MO, playing all sides simultaneously.
+That's always India's MO, playing all sides simultaneously.
 
-At the same time, what’s clear is that China cannot be neglected; relations with China must come first as an insurance policy.
+At the same time, what's clear is that China cannot be neglected; relations with China must come first as an insurance policy.
 
 I like that framing of an **insurance policy**, because many analysts from India, Vietnam, and the United States have told me:
 
-> "Don’t read too much into the optics of what we’re seeing."
+> "Don't read too much into the optics of what we're seeing."
 
 These are still intensely complex relationships.
 
@@ -132,134 +132,130 @@ Certainly, this applies to **India**, **Vietnam**, and **Russia**.
 We want to be careful not to overinterpret these developments.
 
 Nonetheless, several themes emerged against the backdrop of the changing relationship the **United States** has with the world.
-Particularly, a lot of the **member states of the SEO** have very contentious relationships with the **United States**, **Iran** being one of them, **India** now, **China** certainly, **Russia**.  
+Particularly, a lot of the **member states of the SCO** have very contentious relationships with the **United States**, **Iran** being one of them, **India** now, **China** certainly, **Russia**.
 
-**Pakistan**, interestingly, Kobus, is not one that has a rather contentious relationship for a change. While the U.S.-Pakistan relationship for a lot of the past 10 years has been very rocky, to say the least, **Trump seems to like Pakistan right now**. So, again, these are strange times that we live in.  
+**Pakistan**, interestingly, Kobus, is not one that has a rather contentious relationship for a change. While the U.S.-Pakistan relationship for a lot of the past 10 years has been very rocky, to say the least, **Trump seems to like Pakistan right now**. So, again, these are strange times that we live in.
 
-Let's talk a little bit about the big speeches that took place, and we're going to play some soundbites from **Xi Jinping's keynote address** that he gave. He, of course, focused on the United States, but as is typical with **Xi**, he never says the U.S. by name.  
+Let's talk a little bit about the big speeches that took place, and we're going to play some soundbites from **Xi Jinping's keynote address** that he gave. He, of course, focused on the United States, but as is typical with **Xi**, he never says the U.S. by name.
 
-Let's take a listen to his remarks about **global governance**, and that was a major theme.  
+Let's take a listen to his remarks about **global governance**, and that was a major theme.
 
-> "We were the first to put forth the vision of global governance, featuring extensive consultation and joint contribution for shared benefit, as an effort to practice true multilateralism.  
-> We deepened cooperation with the United Nations and other international organizations, and played a constructive role in international and regional affairs.  
-> We always stand on the side of international fairness and justice, champion inclusiveness and mutual learning between civilizations, and oppose hegemonism and power politics.  
-> We should uphold fairness and justice; we should uphold fairness and justice; we must promote a correct historical perspective on World War II, and oppose the Cold War mentality, block confrontation, and bullying practices.  
-> We should safeguard the UN-centered international system, and support the multilateral trading system, with the WTO at its core; we should advocate an equal and orderly multipolar world, and a universally beneficial and inclusive economic globalization, and make the global governance system more just and equitable."
+> "We were the first to put forth the vision of global governance, featuring extensive consultation and joint contribution for shared benefit, as an effort to practice true multilateralism. We deepened cooperation with the United Nations and other international organizations, and played a constructive role in international and regional affairs. We always stand on the side of international fairness and justice, champion inclusiveness and mutual learning between civilizations, and oppose hegemonism and power politics. We should uphold fairness and justice; we must promote a correct historical perspective on World War II, and oppose the Cold War mentality, block confrontation, and bullying practices. We should safeguard the UN-centered international system, and support the multilateral trading system, with the WTO at its core; we should advocate an equal and orderly multipolar world, and a universally beneficial and inclusive economic globalization, and make the global governance system more just and equitable."
 
-So that sounded pretty bland and boring, but there is a lot of **coded language** in there that is specifically directed at the **United States**; so the references to the **multipolar system**, that is in opposition to what the Chinese feel is **unipolarity** from the United States; the reference to, you know, **hegemony** that the Chinese long accused the United States of doing and engaging, and also the reference to supporting the **United Nations** and multilateral systems like the **WTO**.  
+So that sounded pretty bland and boring, but there is a lot of **coded language** in there that is specifically directed at the **United States**; so the references to the **multipolar system**, that is in opposition to what the Chinese feel is **unipolarity** from the United States; the reference to, you know, **hegemony** that the Chinese long accused the United States of doing and engaging, and also the reference to supporting the **United Nations** and multilateral systems like the **WTO**.
 
-That's a little bit of a stretch, frankly, when they call out supporting the WTO, given that China has been in violation of any number of WTO rules; but we'll shelve that for another discussion.  
+That's a little bit of a stretch, frankly, when they call out supporting the WTO, given that China has been in violation of any number of WTO rules; but we'll shelve that for another discussion.
 
-Nonetheless, Kobus, what did you hear in that address, where he's kind of coded his criticism of the United States?  
+Nonetheless, Kobus, what did you hear in that address, where he's kind of coded his criticism of the United States?
 
-It was interesting for me that **China is now the strongest defender of this kind of rules-based multilateral order**, you know, after years of the U.S. positioning itself as a defender of that order.  
+It was interesting for me that **China is now the strongest defender of this kind of rules-based multilateral order**, you know, after years of the U.S. positioning itself as a defender of that order.
 
-So, you know, I think it was interesting, both this speech and then the larger comments about the global governance initiative we will get to, I think was an acknowledgment that the **UN system both is fully dysfunctional, and yet it still remains the only real kind of global democratic institution**.  
+So, you know, I think it was interesting, both this speech and then the larger comments about the global governance initiative we will get to, I think was an acknowledgment that the **UN system both is fully dysfunctional, and yet it still remains the only real kind of global democratic institution**.
 
-There is no other space in which the opinions of **global South countries** actually get a vote or where their opinions are actually even heard. No, there is no other such space.  
+There is no other space in which the opinions of **global South countries** actually get a vote or where their opinions are actually even heard. No, there is no other such space.
 
-So, in that sense, I think what I read from this is a kind of an illustration of a point that I've been making more, like more often recently, that I don't think the future of geopolitics is a **U.S.-China split**. I don't think it's an East-West split.  
+So, in that sense, I think what I read from this is a kind of an illustration of a point that I've been making more, like more often recently, that I don't think the future of geopolitics is a **U.S.-China split**. I don't think it's an East-West split.
 
-I think that the East-West split is embedded within a much more fundamental, much larger **North-South split**, you know, and there I think that China is, to a certain extent, simply articulating a wave of anger and resentment, I think, coming from the **global South**, about the mismanagement of global governance under **Western leadership**.  
+I think that the East-West split is embedded within a much more fundamental, much larger **North-South split**, you know, and there I think that China is, to a certain extent, simply articulating a wave of anger and resentment, I think, coming from the **global South**, about the mismanagement of global governance under **Western leadership**.
 
-And so, China, I think, is to a certain extent a lucky bystander, kind of like riding that wave and positioning itself as the articulator of, but I think the position is much more widespread.  
+And so, China, I think, is to a certain extent a lucky bystander, kind of like riding that wave and positioning itself as the articulator of, but I think the position is much more widespread.
 
-And I think there is growing disgust, I think, with kind of where the West has ended up, you know, on:  
+And I think there is growing disgust, I think, with kind of where the West has ended up, you know, on:
 
-- climate  
-- human rights  
-- global governance  
-- corruption  
+- climate
+- human rights
+- global governance
+- corruption
 
-on every single metric, the West has failed.  
+on every single metric, the West has failed.
 
-But the combination of leadership, "quote-unquote," and or **hegemony**, you know, as it's kind of lived out in this kind of global system, I think, is reaching a kind of a crisis point.  
+But the combination of leadership, "quote-unquote," and or **hegemony**, you know, as it's kind of lived out in this kind of global system, I think, is reaching a kind of a crisis point.
 
-And, you know, so I think there's going to be, this is an early example, I think, of what is going to become a much broader kind of pushback, I think, right across the world.  
+And, you know, so I think there's going to be, this is an early example, I think, of what is going to become a much broader kind of pushback, I think, right across the world.
 
 Yeah, it's interesting what you say, because last year at this time, **U.S. Secretary of State Antony Blinken** was traipsing around the world, talking about how the **U.S. is the guardian of the rules-based international order**, and it's **China that wants to mess everything up**.
-Remember that? And that was his selling point. And then **Ursula von der Leyen** saying the same thing, that it's **Europe and the U.S. and the West that want to preserve the rules-based international order**.  
+Remember that? And that was his selling point. And then **Ursula von der Leyen** saying the same thing, that it's **Europe and the U.S. and the West that want to preserve the rules-based international order**.
 
-So we've had a flip here. **U.S. Secretary of State Marco Rubio** today saying that the rules-based international order has **not served the United States well**. And so that's why the U.S. is abandoning it outright.  
+So we've had a flip here. **U.S. Secretary of State Marco Rubio** today saying that the rules-based international order has **not served the United States well**. And so that's why the U.S. is abandoning it outright.
 
-There were some notable developments there that, again, **these SEO gatherings up until now have been rather just filled with lots of happy talk and rhetoric and lots of maybe discussions about how they don't like the U.S. and there's unfairness in the system, blah, blah**. We've heard all this.  
+There were some notable developments there that, again, **these SCO gatherings up until now have been rather just filled with lots of happy talk and rhetoric and lots of maybe discussions about how they don't like the U.S. and there's unfairness in the system, blah, blah**. We've heard all this.
 
-This speech, though, from **Xi did change something this time** because this is the first time that I can recall that he's actually put **cash on the table for the SEO, lots of cash**.  
+This speech, though, from **Xi did change something this time** because this is the first time that I can recall that he's actually put **cash on the table for the SCO, lots of cash**.
 
 **Xi Jinping proposed:**
-- The creation of a new **SEO development bank**
+- The creation of a new **SCO development bank**
 - A new **energy cooperation forum**
 - $1.4 billion in loans over the next three years
-- $280 million in aid that will be given between now and the end of the year  
+- $280 million in aid that will be given between now and the end of the year
 
-Let's take a listen to the proposal that Xi is addressing in terms of development finance:  
+Let's take a listen to the proposal that Xi is addressing in terms of development finance:
 
-> "China has always focused on taking real actions to ensure better development of the SEO. Going forward, China plans to implement 100 small and beautiful livelihood projects in member states with such need. It will provide $2 billion in grant to SEO member states within this year and will issue an additional $10 billion in loan to the member banks of the SEO interbank consortium over the next three years. Starting from next year, China will double the current number of SEO-specific scholarships."
+> "China has always focused on taking real actions to ensure better development of the SCO. Going forward, China plans to implement 100 small and beautiful livelihood projects in member states with such need. It will provide $2 billion in grant to SCO member states within this year and will issue an additional $10 billion in loan to the member banks of the SCO interbank consortium over the next three years. Starting from next year, China will double the current number of SCO-specific scholarships."
 
-Interesting contrast, again, with the United States, that as the U.S. is closing itself off to international students, is cutting foreign aid, is cutting development assistance, here are the Chinese kind of **stepping up**.  
+Interesting contrast, again, with the United States, that as the U.S. is closing itself off to international students, is cutting foreign aid, is cutting development assistance, here are the Chinese kind of **stepping up**.
 
-Interesting, though, Kobus, that the numbers that the Chinese are putting out are **vastly smaller than what they used to put out**. Remember, $50 billion is what they used to put out for the forum on **China-Africa cooperation packages**. And here we have $1 billion for a group that covers significantly more people. Nonetheless, this is the first time that I can recall that the SEO **has cash on the table from the Chinese and is putting some proverbial meat on the bones to bring some substance to the group**.  
+Interesting, though, Kobus, that the numbers that the Chinese are putting out are **vastly smaller than what they used to put out**. Remember, $50 billion is what they used to put out for the forum on **China-Africa cooperation packages**. And here we have $1 billion for a group that covers significantly more people. Nonetheless, this is the first time that I can recall that the SCO **has cash on the table from the Chinese and is putting some proverbial meat on the bones to bring some substance to the group**.
 
-Yeah, it's interesting. There hasn't been, as you were saying, major funding proposals or funding initiatives from China in this group yet. So, yeah, it'll be interesting to see what this translates to, what the funding will actually be used for.  
+Yeah, it's interesting. There hasn't been, as you were saying, major funding proposals or funding initiatives from China in this group yet. So, yeah, it'll be interesting to see what this translates to, what the funding will actually be used for.
 
-As you say, there's a certain amount of grants and then a certain amount of loans. The number of loans is much larger. So, yeah, it'll be interesting to see how this then fits into **Belt and Road projects**, for example, and so on. What specifically they'll end up using for you.  
+As you say, there's a certain amount of grants and then a certain amount of loans. The number of loans is much larger. So, yeah, it'll be interesting to see how this then fits into **Belt and Road projects**, for example, and so on. What specifically they'll end up using for you.
 
-And something just to be a little bit cautious about is oftentimes these grants and these loans, as we've seen in some of the **FOCAC** and other initiatives, tend to benefit **Chinese entities**.  
+And something just to be a little bit cautious about is oftentimes these grants and these loans, as we've seen in some of the **FOCAC** and other initiatives, tend to benefit **Chinese entities**.
 
-- There are loans for **Huawei** to go out and install telecom networks in other countries.  
-- And while that's important for other countries, at the end of the day, like a lot of aid, it's a jobs program or a development finance program or corporate welfare for domestic interest.  
+- There are loans for **Huawei** to go out and install telecom networks in other countries.
+- And while that's important for other countries, at the end of the day, like a lot of aid, it's a jobs program or a development finance program or corporate welfare for domestic interest.
 
-So, we will not be able to figure out what actually happens. The Chinese are notoriously opaque about the performance of these commitments. So, we don't know how much of the lending will occur. They don't issue reports. There's no visibility or transparency into this. We just have to kind of take their word that this is going to happen.  
+So, we will not be able to figure out what actually happens. The Chinese are notoriously opaque about the performance of these commitments. So, we don't know how much of the lending will occur. They don't issue reports. There's no visibility or transparency into this. We just have to kind of take their word that this is going to happen.
 
-But nonetheless, interesting contrast given the times that we're in.  
+But nonetheless, interesting contrast given the times that we're in.
 
-Kobus, let's talk about something else that he addressed during the gathering. And he did this to the **SEO Plus group**.  
+Kobus, let's talk about something else that he addressed during the gathering. And he did this to the **SEO Plus group**.
 
-Okay, and this is interesting because just like the **BRICS** is expanding, so is the SEO. Let me just walk you through these concentric circles so you can kind of see where they are:  
+Okay, and this is interesting because just like the **BRICS** is expanding, so is the SCO. Let me just walk you through these concentric circles so you can kind of see where they are:
 
-- At the core are the founding members:  
-  - **China**  
-  - **Russia**  
-  - **Kazakhstan**  
-  - **Kyrgyzstan**  
-  - **Tajikistan**  
-  - **Uzbekistan**  
+- At the core are the founding members:
+  - **China**
+  - **Russia**
+  - **Kazakhstan**
+  - **Kyrgyzstan**
+  - **Tajikistan**
+  - **Uzbekistan**
 
-For the bulk of the history, those were the main members. And this was a **Central Asian organization**. They then added:  
-- **Belarus**  
-- **Iran**  
-- **Pakistan**  
-- **India** as member states.  
+For the bulk of the history, those were the main members. And this was a **Central Asian organization**. They then added:
+- **Belarus**
+- **Iran**
+- **Pakistan**
+- **India** as member states.
 
-Now, they're going to expand this circle, and it's a large group, and I won't go through all of it. But it includes:  
+Now, they're going to expand this circle, and it's a large group, and I won't go through all of it. But it includes:
 
-- **Azerbaijan**  
-- **Laos**  
-- **Cambodia**  
-- **Turkey**  
-- **Saudi Arabia**  
-- **Egypt**  
-- **Qatar**  
-- **Bahrain**  
-- **The Maldives**  
-- **Myanmar**  
+- **Azerbaijan**
+- **Laos**
+- **Cambodia**
+- **Turkey**
+- **Saudi Arabia**
+- **Egypt**
+- **Qatar**
+- **Bahrain**
+- **The Maldives**
+- **Myanmar**
 
-These are all dialogue partners, and a lot of these countries were there.  
+These are all dialogue partners, and a lot of these countries were there.
 
-The **Egyptian prime minister** was there.  
-**Huan Manet of Cambodia**, the prime minister, was there.  
+The **Egyptian prime minister** was there.
+**Hun Manet of Cambodia**, the prime minister, was there.
 **Erdogan, the Turkish president**, was there for the first time in five years.
-Now, in this dialogue of what they're calling the **SCO Plus**, she talked about something called the **Global Governance Initiative, GGI**. If you're keeping score at home, this is the latest **G**, okay? So work with me here, Kovus.
+Now, in this dialogue of what they're calling the **SCO Plus**, Xi talked about something called the **Global Governance Initiative, GGI**. If you're keeping score at home, this is the latest **G**, okay? So work with me here, Kobus.
 
-Now we have the **Global Governance Initiative**. We have **Global Security Initiative, Development Initiative, Civilization Initiative**, and the **AI Initiative**, okay? So this is all part of the infrastructure of policy under the framework or the Rubicon of the **Community for Common Destiny**. This is the **CCD**. That's she's overarching domestic and foreign policy. These Gs, these five Gs, are all part of that.
+Now we have the **Global Governance Initiative**. We have **Global Security Initiative, Development Initiative, Civilization Initiative**, and the **AI Initiative**, okay? So this is all part of the infrastructure of policy under the framework or the Rubicon of the **Community for Common Destiny**. This is the **CCD**. That's Xi's overarching domestic and foreign policy. These Gs, these five Gs, are all part of that.
 
 The **Global Governance Initiative** has five elements to it:
 
-- Sovereign equality  
-- International rule of law  
-- Multilateralism  
-- People-centered approach  
-- Real results  
+- Sovereign equality
+- International rule of law
+- Multilateralism
+- People-centered approach
+- Real results
 
 What are we to make of this? I think this is quite significant. It is one of these kind of **global initiatives**, but I think it provides an underlying structure into which some of the other global initiatives fit.
 
@@ -283,32 +279,32 @@ Again, this whole structure that was not necessarily meant to rival or replace t
 
 And I think that they sense the opportunity that there is such a **deficit of trust** in the United States and in many respects in Europe as well. As you pointed out, there just are **zero ideas coming from the U.S. and Europe today about the future of governance**. There's nothing forward-looking.
 
-When U.S. and European diplomats sit down with their counterparts in **Namibia** and in **Laos** and in other parts of the world, and they say,  
-> "Well, what's your vision? What do you want to do?"  
+When U.S. and European diplomats sit down with their counterparts in **Namibia** and in **Laos** and in other parts of the world, and they say,
+> "Well, what's your vision? What do you want to do?"
 
 There's really nothing on the table coming out of these countries. As you talked about, they want to preserve the way that things were.
 
 I don't know, and I'd be interested to get your take about how many, say, African countries look to these governance initiatives and say:
 
-- "We want to be a part of that."  
-- "We want to model part of our systems on what the Chinese are putting forward."  
+- "We want to be a part of that."
+- "We want to model part of our systems on what the Chinese are putting forward."
 
 But at least it's a **forward-looking vision**. It's something. It's **optimistic**. And maybe they don't sign up for the whole thing, but at least they buy on with the idea that there's an idea on the table. What's your take on that?
 
-I think on the African side, the repeated language of **sovereignty** and **state sovereignty** brings some comfort, because that is always, on the African side, always a kind of an obsession. I think because they've been—
+I think on the African side, the repeated language of **sovereignty** and **state sovereignty** brings some comfort, because that is always, on the African side, always a kind of an obsession. I think because they've been-
 
 Why is it an obsession, just out of curiosity?
-I mean, it's an obsession with everybody. I mean, all countries value their **sovereignty**, but why specifically, you're saying, in **Africa**? Because African countries have endured many more risks to their sovereignty, I think, over time. So it was a very hard one in the post-colonial liberalization—I mean, the **liberation era**, I mean. And since then, the states have been badly treated by the international system. So there's been lots of loss of sovereignty as well. So that, I think, would be important for them.
+I mean, it's an obsession with everybody. I mean, all countries value their **sovereignty**, but why specifically, you're saying, in **Africa**? Because African countries have endured many more risks to their sovereignty, I think, over time. So it was a very hard one in the post-colonial liberalization-I mean, the **liberation era**, I mean. And since then, the states have been badly treated by the international system. So there's been lots of loss of sovereignty as well. So that, I think, would be important for them.
 
-I think the kind of specific reforms are still at such a vague level that I think, like, people—countries who sign up will mostly sign up around the kind of spirit of international reform, rather than—and the very specific kind of specific reforms are relatively down, still down the line, I think. You know, the way it's been framed also emphasizes that they would have a voice in the reforms, so—you know, which is another thing that they would want. So, you know, so I think, I think, in general, I think at the moment it's, you know, it's a relatively low-cost thing to sign up to, I think, for global South countries.
+I think the kind of specific reforms are still at such a vague level that I think, like, people-countries who sign up will mostly sign up around the kind of spirit of international reform, rather than-and the very specific kind of specific reforms are relatively down, still down the line, I think. You know, the way it's been framed also emphasizes that they would have a voice in the reforms, so-you know, which is another thing that they would want. So, you know, so I think, I think, in general, I think at the moment it's, you know, it's a relatively low-cost thing to sign up to, I think, for global South countries.
 
-I think, you know, it also comes against the—I think the larger messaging—like, I think the kind of Western support of **Israel in Gaza** is sending a larger message, I think, to the global South.
+I think, you know, it also comes against the-I think the larger messaging-like, I think the kind of Western support of **Israel in Gaza** is sending a larger message, I think, to the global South.
 
 And I think that has been, you know, kind of a lot of set of messages around the limits of Western human rights thinking, about the limits of their opposition to genocide. So I think beyond the specifics of the Gaza crisis, I think the larger impact has been:
 
 - A very rapid erosion of any kind of, you know, bona fides on the Western side.
 
-You know, so I think de-risking from Western power, you know, kind of is an increasingly, you know, kind of, like, urgent kind of, like, issue in the rest of the global South, far outside of the Middle East. And, you know, and so this kind of talk about **global governance reform**, **global systemic reform**, and so on, you know, fits, like, lands in, you know, kind of in that kind of space where the idea that the West has any kind of, like, universal kind of, like, human rights agenda at all, 
+You know, so I think de-risking from Western power, you know, kind of is an increasingly, you know, kind of, like, urgent kind of, like, issue in the rest of the global South, far outside of the Middle East. And, you know, and so this kind of talk about **global governance reform**, **global systemic reform**, and so on, you know, fits, like, lands in, you know, kind of in that kind of space where the idea that the West has any kind of, like, universal kind of, like, human rights agenda at all,
 
 I think it's largely kind of, like, falling off the table, you know, because of the larger implications of Gaza.
 
@@ -351,8 +347,8 @@ This was very big.
 
 They agreed to very vague promises to **de-escalate and demilitarize parts of the border**. They didn't give any specific details on that. **Modi did announce that direct flights are going to resume**, something that we also had expected. And it looks like, and the way the Indian media was framing it, this is a **reset of the India-China relationship**.
 
-What was your takeaway from the **Modi-Xi meeting**?  
-I would agree. I think it's oversimplifying to say that the U.S. pushed India into China's embrace. Obviously, India and China have been moving towards **normalizing their relationships for more than a year**. It's part of that evolution.  
+What was your takeaway from the **Modi-Xi meeting**?
+I would agree. I think it's oversimplifying to say that the U.S. pushed India into China's embrace. Obviously, India and China have been moving towards **normalizing their relationships for more than a year**. It's part of that evolution.
 
 Did Donald Trump smooth the way? Certainly, I think. I think, you know, kind of like we may have seen more ambiguity from India around this. We may not have seen a person-to-person meeting. We may have seen a whole different set of optics. And that's true, not only around **India-China**, but also **India-Russia**.
 
@@ -362,7 +358,7 @@ Kind of like in the larger sense is that **cooperation and the closer coordinati
 
 Yeah, so she also held a bilateral meeting with **Vladimir Putin**, and I didn't think that was very interesting. They kind of stuck to their prepared scripts.
 
-- The U.S. is bad.  
+- The U.S. is bad.
 - We are the best partners we've ever been.
 
 It was many of the same talking points that we've heard from Putin and Xi in the past. Nothing near the, again, the importance of what we saw from the **Modi-Xi relationship**.
@@ -396,7 +392,7 @@ India: 50%
 
 And **Modi seemed to say, "F you," complete F you**. And if you wanted me to back away from Russian oil, **I'm holding this guy's hand**. That's what, I mean, the optics were just stunning.
 
-That video, and just last interesting points here — that video must have been shot by **Chinese state media** because nobody else would have been in the room in that circumstance.
+That video, and just last interesting points here - that video must have been shot by **Chinese state media** because nobody else would have been in the room in that circumstance.
 **Chinese state media did not broadcast that video anywhere.** I looked up and down Chinese media. I looked on broadcasts. I looked on Weibo, on WeChat. Nowhere did I see it.
 
 However, **the Kremlin put their watermark on it**, and **Narendra Modi put it on his official YouTube channel**. So, clearly, it was distributed to those two administrations to disseminate. Interesting media messaging that's going on here.
@@ -417,9 +413,9 @@ One other of the major optics was **Modi, separate from this video, so hugged**.
 
 which I thought was a great kind of caption for that. And that's where we are. So the optics, very powerful.
 
-I think for me, when we reflect on the takeaways from the SEO, the substance, who knows? I think, you know, a **billion dollars of loans across 20 countries from the Chinese, not so much**.
+I think for me, when we reflect on the takeaways from the SCO, the substance, who knows? I think, you know, a **billion dollars of loans across 20 countries from the Chinese, not so much**.
 
-The optics, the narratives that you talk about, we are in this age of **memes now, very powerful. Very, very powerful**. And this was, to me, a much more substantive SEO because of the optics than the substance, even though the substance was more important this time than it has been in the past.
+The optics, the narratives that you talk about, we are in this age of **memes now, very powerful. Very, very powerful**. And this was, to me, a much more substantive SCO because of the optics than the substance, even though the substance was more important this time than it has been in the past.
 
 What's your final thoughts?
 
@@ -440,26 +436,26 @@ Well, we're going to bring you a lot of expert analysis on this. Let me just giv
 - **Dylan Lowe** from Nanyang Technological University in Singapore, who's an expert on Chinese foreign policy.
 - **Brian Wong** from Hong Kong University, also an expert on Chinese foreign policy and international relations.
 
-So we're going to be bringing you this analysis from a lot of different perspectives here in Asia about the SEO and all these different things that Kobus and I talked about today.
+So we're going to be bringing you this analysis from a lot of different perspectives here in Asia about the SCO and all these different things that Kobus and I talked about today.
 **Kobus, thank you again for your time today.**
 
 If you'd like to follow all the great work that **Kobus** is doing, go to **ChinaGlobalSouth.com** and then you can see all of the articles and the coverage.
 
-And if you are a subscriber, you'll get **Kobus' daily email** that he writes. Both of us write it.  
-- I do it on Mondays.  
-- Kobus does it for the rest of the week.  
+And if you are a subscriber, you'll get **Kobus' daily email** that he writes. Both of us write it.
+- I do it on Mondays.
+- Kobus does it for the rest of the week.
 
 And it is just, I'm just so proud of it. And I just want more people to actually check it out. Go to **ChinaGlobalSouth.com/subscribe**. It's the place where you get the deep dives on this kind of stuff.
 
 And if you've lasted all the way to the podcast now, that means you are interested in this. You will find the work that **Kobus** and the rest of the **China Global South team** are doing to be so useful.
 
-Once again, **ChinaGlobalSouth.com/subscribe**. And don't forget, if you are a student or a teacher, you get half off. Send me an email,  
-```  
-eric@ChinaGlobalSouth.com  
-```  
+Once again, **ChinaGlobalSouth.com/subscribe**. And don't forget, if you are a student or a teacher, you get half off. Send me an email,
+```
+eric@ChinaGlobalSouth.com
+```
 and I will send you a coupon code for half off.
 
-So that'll do it for this edition of the **China Global South podcast** for **Kobus-Fenstad** in **Cape Town**. I'm **Eric O'Lander**. We'll be back again next week with another episode.
+So that'll do it for this edition of the **China Global South podcast** with **Kobus Venstaden** in **Cape Town**. I'm **Eric Olander**. We'll be back again next week with another episode.
 
 Until then, thank you for listening and for watching.
 
@@ -467,7 +463,7 @@ The discussion continues online. Follow the **China Global South project** on **
 
 Once again, that's **ChinaGlobalSouth.com**. We'll see you next week.
 
-<script>window.tocIndex = {"index": [{"index_sentences": "The China Global South podcast is supported in part by our subscribers and Patreon supporters.", "section_title": "Podcast Introduction", "section_level": 1}, {"index_sentences": "Hello, and welcome to another edition of the China Global South podcast, a proud member of the Sinica Podcast Network.", "section_title": "Welcome and SCO Summit Context", "section_level": 1}, {"index_sentences": "Kobus, I have to be honest with you. I didn't really expect very much from the SCO Summit because this is a group that's been around since 2001, really has very little to show for what it's done.", "section_title": "Shanghai Cooperation Organization (SCO) Summit Overview", "section_level": 1}, {"index_sentences": "The main one, of course, is the Tianjin Declaration. And there were three main points that were in that one.", "section_title": "Tianjin Declaration and Its Key Points", "section_level": 2}, {"index_sentences": "Also, some very interesting side points in this massive declaration, focusing specifically on Israel. There was denunciation of what Israel is doing to Gaza.", "section_title": "SCO's Stance on Israel-Palestine Conflict", "section_level": 2}, {"index_sentences": "Before we get into the details of what was done, let's just start with your impressions of what you thought from the summit, your takeaways from it.", "section_title": "Initial Impressions and Shifting Global Order", "section_level": 1}, {"index_sentences": "When I posted that comment on LinkedIn, people asked, \"What does that actually mean?\"", "section_title": "Defining a Post-American-Led International Order", "section_level": 2}, {"index_sentences": "One of the other big takeaways, Kobus, is the presence of more than 20 countries, particularly Southeast Asian countries, showing up for the first time.", "section_title": "Expanding SCO Membership and Southeast Asian Engagement", "section_level": 1}, {"index_sentences": "What's your sense about this expanded presence of Southeast Asia and the observer states that came along?", "section_title": "Motivations for Expanded SCO Presence", "section_level": 2}, {"index_sentences": "I like that framing of an insurance policy, because many analysts from India, Vietnam, and the United States have told me: \"Don’t read too much into the optics of what we’re seeing.\"", "section_title": "Nuance of International Relationships", "section_level": 2}, {"index_sentences": "Let's talk a little bit about the big speeches that took place, and we're going to play some soundbites from Xi Jinping's keynote address that he gave.", "section_title": "Xi Jinping's Keynote Address at the SCO Summit", "section_level": 1}, {"index_sentences": "So that sounded pretty bland and boring, but there is a lot of coded language in there that is specifically directed at the United States; so the references to the multipolar system, that is in opposition to what the Chinese feel is unipolarity from the United States.", "section_title": "Decoding Xi's Remarks on Global Governance", "section_level": 2}, {"index_sentences": "It was interesting for me that China is now the strongest defender of this kind of rules-based multilateral order, you know, after years of the U.S. positioning itself as a defender of that order.", "section_title": "China's Role in a Multilateral Order and the North-South Divide", "section_level": 2}, {"index_sentences": "This speech, though, from Xi did change something this time because this is the first time that I can recall that he's actually put cash on the table for the SEO, lots of cash.", "section_title": "China's Financial Pledges to the SCO", "section_level": 1}, {"index_sentences": "Let's take a listen to the proposal that Xi is addressing in terms of development finance: \"China has always focused on taking real actions to ensure better development of the SEO.\"", "section_title": "Specifics of Development Finance Proposals", "section_level": 2}, {"index_sentences": "And something just to be a little bit cautious about is oftentimes these grants and these loans, as we've seen in some of the FOCAC and other initiatives, tend to benefit Chinese entities.", "section_title": "Concerns Regarding Aid Transparency and Beneficiaries", "section_level": 2}, {"index_sentences": "Kobus, let's talk about something else that he addressed during the gathering. And he did this to the SEO Plus group.", "section_title": "The Expanding SCO Plus Group and the Global Governance Initiative (GGI)", "section_level": 1}, {"index_sentences": "The Global Governance Initiative has five elements to it: Sovereign equality, International rule of law, Multilateralism, People-centered approach, Real results.", "section_title": "Core Principles of the Global Governance Initiative", "section_level": 2}, {"index_sentences": "So it's all very vague, it's all very kind of broad strokes, but at the same time, it becomes essentially the only, you know, kind of other, you know, competing vision of what a post-reform global governance system would look like.", "section_title": "GGI as an Alternative Global Governance Framework", "section_level": 2}, {"index_sentences": "I think on the African side, the repeated language of sovereignty and state sovereignty brings some comfort, because that is always, on the African side, always a kind of an obsession.", "section_title": "African Views on Governance Initiatives and Sovereignty", "section_level": 2}, {"index_sentences": "But how do you reconcile, and I'm not asking you to defend the SCO here, but you're obviously a very big critic of Israel for what it's doing in Gaza, understandably.", "section_title": "Ethical Dilemmas and Systemic Rethink in Global Governance", "section_level": 2}, {"index_sentences": "So, in addition to everything that was going on with the SCO as a multilateral group, which was the Monday sessions on Sunday, was really a day reserved for bilateral meetings.", "section_title": "Bilateral Meetings at the SCO Summit", "section_level": 1}, {"index_sentences": "And, of course, the big one on Sunday, the one that everybody was anticipating and expecting, was the meeting between Chinese President Xi Jinping and Indian Prime Minister Narendra Modi.", "section_title": "The Xi-Modi Bilateral Meeting", "section_level": 2}, {"index_sentences": "Apparently, whatever happened in Tianjin did get under the skin, predictably, of U.S. President Donald Trump.", "section_title": "Donald Trump's Reaction to India's Relations", "section_level": 2}, {"index_sentences": "We have to talk about the video. Okay? You know what I'm talking about. I posted this thing up. Okay.", "section_title": "The Symbolic Modi-Putin Hand-Holding Video", "section_level": 2}, {"index_sentences": "I think for me, when we reflect on the takeaways from the SEO, the substance, who knows?", "section_title": "The Power of Optics and Narratives", "section_level": 2}, {"index_sentences": "Well, we're going to bring you a lot of expert analysis on this. Let me just give you a preview of some of the guests that we've booked just over the next three to four weeks.", "section_title": "Concluding Remarks and Future Podcast Previews", "section_level": 1}, {"index_sentences": "If you'd like to follow all the great work that Kobus is doing, go to ChinaGlobalSouth.com and then you can see all of the articles and the coverage.", "section_title": "Podcast Information and Call to Action", "section_level": 1}]};
+<script>window.tocIndex = {"index": [{"index_sentences": "The China Global South podcast is supported in part by our subscribers and Patreon supporters.", "section_title": "Podcast Introduction", "section_level": 1}, {"index_sentences": "Hello, and welcome to another edition of the China Global South podcast, a proud member of the Sinica Podcast Network.", "section_title": "Welcome and SCO Summit Context", "section_level": 1}, {"index_sentences": "Kobus, I have to be honest with you. I didn't really expect very much from the SCO Summit because this is a group that's been around since 2001, really has very little to show for what it's done.", "section_title": "Shanghai Cooperation Organization (SCO) Summit Overview", "section_level": 1}, {"index_sentences": "The main one, of course, is the Tianjin Declaration. And there were three main points that were in that one.", "section_title": "Tianjin Declaration and Its Key Points", "section_level": 2}, {"index_sentences": "Also, some very interesting side points in this massive declaration, focusing specifically on Israel. There was denunciation of what Israel is doing to Gaza.", "section_title": "SCO's Stance on Israel-Palestine Conflict", "section_level": 2}, {"index_sentences": "Before we get into the details of what was done, let's just start with your impressions of what you thought from the summit, your takeaways from it.", "section_title": "Initial Impressions and Shifting Global Order", "section_level": 1}, {"index_sentences": "When I posted that comment on LinkedIn, people asked, \"What does that actually mean?\"", "section_title": "Defining a Post-American-Led International Order", "section_level": 2}, {"index_sentences": "One of the other big takeaways, Kobus, is the presence of more than 20 countries, particularly Southeast Asian countries, showing up for the first time.", "section_title": "Expanding SCO Membership and Southeast Asian Engagement", "section_level": 1}, {"index_sentences": "What's your sense about this expanded presence of Southeast Asia and the observer states that came along?", "section_title": "Motivations for Expanded SCO Presence", "section_level": 2}, {"index_sentences": "I like that framing of an insurance policy, because many analysts from India, Vietnam, and the United States have told me: \"Don't read too much into the optics of what we're seeing.\"", "section_title": "Nuance of International Relationships", "section_level": 2}, {"index_sentences": "Let's talk a little bit about the big speeches that took place, and we're going to play some soundbites from Xi Jinping's keynote address that he gave.", "section_title": "Xi Jinping's Keynote Address at the SCO Summit", "section_level": 1}, {"index_sentences": "So that sounded pretty bland and boring, but there is a lot of coded language in there that is specifically directed at the United States; so the references to the multipolar system, that is in opposition to what the Chinese feel is unipolarity from the United States.", "section_title": "Decoding Xi's Remarks on Global Governance", "section_level": 2}, {"index_sentences": "It was interesting for me that China is now the strongest defender of this kind of rules-based multilateral order, you know, after years of the U.S. positioning itself as a defender of that order.", "section_title": "China's Role in a Multilateral Order and the North-South Divide", "section_level": 2}, {"index_sentences": "This speech, though, from Xi did change something this time because this is the first time that I can recall that he's actually put cash on the table for the SEO, lots of cash.", "section_title": "China's Financial Pledges to the SCO", "section_level": 1}, {"index_sentences": "Let's take a listen to the proposal that Xi is addressing in terms of development finance: \"China has always focused on taking real actions to ensure better development of the SEO.\"", "section_title": "Specifics of Development Finance Proposals", "section_level": 2}, {"index_sentences": "And something just to be a little bit cautious about is oftentimes these grants and these loans, as we've seen in some of the FOCAC and other initiatives, tend to benefit Chinese entities.", "section_title": "Concerns Regarding Aid Transparency and Beneficiaries", "section_level": 2}, {"index_sentences": "Kobus, let's talk about something else that he addressed during the gathering. And he did this to the SEO Plus group.", "section_title": "The Expanding SCO Plus Group and the Global Governance Initiative (GGI)", "section_level": 1}, {"index_sentences": "The Global Governance Initiative has five elements to it: Sovereign equality, International rule of law, Multilateralism, People-centered approach, Real results.", "section_title": "Core Principles of the Global Governance Initiative", "section_level": 2}, {"index_sentences": "So it's all very vague, it's all very kind of broad strokes, but at the same time, it becomes essentially the only, you know, kind of other, you know, competing vision of what a post-reform global governance system would look like.", "section_title": "GGI as an Alternative Global Governance Framework", "section_level": 2}, {"index_sentences": "I think on the African side, the repeated language of sovereignty and state sovereignty brings some comfort, because that is always, on the African side, always a kind of an obsession.", "section_title": "African Views on Governance Initiatives and Sovereignty", "section_level": 2}, {"index_sentences": "But how do you reconcile, and I'm not asking you to defend the SCO here, but you're obviously a very big critic of Israel for what it's doing in Gaza, understandably.", "section_title": "Ethical Dilemmas and Systemic Rethink in Global Governance", "section_level": 2}, {"index_sentences": "So, in addition to everything that was going on with the SCO as a multilateral group, which was the Monday sessions on Sunday, was really a day reserved for bilateral meetings.", "section_title": "Bilateral Meetings at the SCO Summit", "section_level": 1}, {"index_sentences": "And, of course, the big one on Sunday, the one that everybody was anticipating and expecting, was the meeting between Chinese President Xi Jinping and Indian Prime Minister Narendra Modi.", "section_title": "The Xi-Modi Bilateral Meeting", "section_level": 2}, {"index_sentences": "Apparently, whatever happened in Tianjin did get under the skin, predictably, of U.S. President Donald Trump.", "section_title": "Donald Trump's Reaction to India's Relations", "section_level": 2}, {"index_sentences": "We have to talk about the video. Okay? You know what I'm talking about. I posted this thing up. Okay.", "section_title": "The Symbolic Modi-Putin Hand-Holding Video", "section_level": 2}, {"index_sentences": "I think for me, when we reflect on the takeaways from the SEO, the substance, who knows?", "section_title": "The Power of Optics and Narratives", "section_level": 2}, {"index_sentences": "Well, we're going to bring you a lot of expert analysis on this. Let me just give you a preview of some of the guests that we've booked just over the next three to four weeks.", "section_title": "Concluding Remarks and Future Podcast Previews", "section_level": 1}, {"index_sentences": "If you'd like to follow all the great work that Kobus is doing, go to ChinaGlobalSouth.com and then you can see all of the articles and the coverage.", "section_title": "Podcast Information and Call to Action", "section_level": 1}]};
 window.faq = {
   "qas": [
     {
