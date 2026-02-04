@@ -9,64 +9,64 @@ tags: [podcast_script]
 
 [Drug Discovery (The Derby Mill Series ep 16)](https://api.substack.com/feed/podcast/171275762/563c383d966b9e7b6df7eccd5cb6a480.mp3)
 
-Welcome to the **Derby Mill series**, **intrepid pioneers of the next economy**, featuring discussions with entrepreneurs at the forefront of deploying **machine intelligence** and brainstorming sessions about where the technology may go at the limit.  
+Welcome to the **Derby Mill series**, **intrepid pioneers of the next economy**, featuring discussions with entrepreneurs at the forefront of deploying **machine intelligence** and brainstorming sessions about where the technology may go at the limit.
 
-Welcome to the Derby Mill series, intrepid pioneers of the next economy. In this show, we meet with entrepreneurs who are at the frontier of their industries in terms of deploying machine intelligence. We springboard from their current use of **AI** to brainstorm on where this will go at the limit, and how we might get there.  
+Welcome to the Derby Mill series, intrepid pioneers of the next economy. In this show, we meet with entrepreneurs who are at the frontier of their industries in terms of deploying machine intelligence. We springboard from their current use of **AI** to brainstorm on where this will go at the limit, and how we might get there.
 
-I'm **Ajay Agrawal**, co-founder of **Intrepid Growth Partners**, and my three collaborators are:  
+I'm **Ajay Agrawal**, co-founder of **Intrepid Growth Partners**, and my three collaborators are:
 
-- **Rich Sutton** of the **University of Alberta**, who pioneered reinforcement learning  
-- **Sendhil Molinthainen** of **MIT**, who uses machine learning to better understand human decision making  
-- **Niamh Gavin**, an applied AI scientist working on optimizing foundation models, pen modalities for novel semiconductors  
+- **Rich Sutton** of the **University of Alberta**, who pioneered reinforcement learning
+- **Sendhil Mullainathan** of **MIT**, who uses machine learning to better understand human decision making
+- **Niamh Gavin**, an applied AI scientist working on optimizing foundation models, pen modalities for novel semiconductors
 
-Rich, Sendhil, and Niamh are all senior advisors at Intrepid Growth Partners.  
+Rich, Sendhil, and Niamh are all senior advisors at Intrepid Growth Partners.
 
-The domain we're exploring in this episode is **R&D for drug discovery**. **BenchSci's mission** is to increase the speed and quality of life-saving R&D to improve the health of patients. BenchSci is based in **Toronto**, they have approximately **400 employees**, and they work with **12 of the 20 largest pharmaceutical companies** in the world.  
+The domain we're exploring in this episode is **R&D for drug discovery**. **BenchSci's mission** is to increase the speed and quality of life-saving R&D to improve the health of patients. BenchSci is based in **Toronto**, they have approximately **400 employees**, and they work with **12 of the 20 largest pharmaceutical companies** in the world.
 
-BenchSci uses machine intelligence to semi-automate hypothesis generation and experiment design in the drug discovery process. With us today is **Liran Balanzone**, BenchSci's CEO and co-founder.  
+BenchSci uses machine intelligence to semi-automate hypothesis generation and experiment design in the drug discovery process. With us today is **Liran Belenzon**, BenchSci's CEO and co-founder.
 
-And with that, let's start the show.  
+And with that, let's start the show.
 
-I, first of all, Liran, this is just super fantastic work, and I think I just want to contextualize it for everyone else. You already know this, but in some sense, I want to contextualize why I think this is so important.  
+I, first of all, Liran, this is just super fantastic work, and I think I just want to contextualize it for everyone else. You already know this, but in some sense, I want to contextualize why I think this is so important.
 
-If I just take a zoom back, the thing we know is that **drug discovery is pretty important to all humans**. We’re going to benefit from it. For some weird reason, every year I seem to care more about it. I'm unclear why, but anyway.  
+If I just take a zoom back, the thing we know is that **drug discovery is pretty important to all humans**. We're going to benefit from it. For some weird reason, every year I seem to care more about it. I'm unclear why, but anyway.
 
-The second fact I'll just observe is that **a lot of drug trials fail**, a shocking number given their prices. And that it's totally plausible that, Liran, I'm not telling you that you don't know, probably just contextualize for listeners.  
+The second fact I'll just observe is that **a lot of drug trials fail**, a shocking number given their prices. And that it's totally plausible that, Liran, I'm not telling you that you don't know, probably just contextualize for listeners.
 
-I think that as a result, even modest gains in our ability to do bench science and create better shots on goal will have **huge, huge benefits**.  
+I think that as a result, even modest gains in our ability to do bench science and create better shots on goal will have **huge, huge benefits**.
 
-A drug trial can be in the **seven to eight digits**, which is an insane amount of money to spend. So the amount of dollars, even small gains in bench science that can influence even by one or two percentage points, probabilities of success are just worth a ton of money.  
+A drug trial can be in the **seven to eight digits**, which is an insane amount of money to spend. So the amount of dollars, even small gains in bench science that can influence even by one or two percentage points, probabilities of success are just worth a ton of money.
 
-So you're doing fantastic work and I just want to emphasize that this is work that is putting aside all the money.  
+So you're doing fantastic work and I just want to emphasize that this is work that is putting aside all the money.
 
-And so the questions I wanted to kind of just ask to help bring out a little bit more of what you're doing is I think the vision and how things are working right now makes total sense of:  
+And so the questions I wanted to kind of just ask to help bring out a little bit more of what you're doing is I think the vision and how things are working right now makes total sense of:
 
-- Helping with experimental design  
-- Figuring out how to do the protocol  
-- Figuring out even which things to target, which genes, which molecules  
+- Helping with experimental design
+- Figuring out how to do the protocol
+- Figuring out even which things to target, which genes, which molecules
 
-I think it would be helpful for me if I had a sense, and for others, we just had a little bit more tangible sense of:  
+I think it would be helpful for me if I had a sense, and for others, we just had a little bit more tangible sense of:
 
-> “What is the, for lack of a better word, what is the scope of existing knowledge that you feel you've already ingested at high fidelity? And what do you feel is the next layer or the layer after that, that you feel you're sort of going to, in some sense?”  
+> "What is the, for lack of a better word, what is the scope of existing knowledge that you feel you've already ingested at high fidelity? And what do you feel is the next layer or the layer after that, that you feel you're sort of going to, in some sense?"
 
-Just to make it concrete, you could say,  
+Just to make it concrete, you could say,
 
-- "Look, we've gotten all the verbal information in **PubMed**."  
-- "Or we've gotten stuff put into, you know, gene networks and we've gotten stuff, but we don't yet have proteins."  
-- Or "If I have, if we have some sense of like, if you're an amoeba and you're absorbing information, knowledge that's out there, what have you already eaten? And what do you plan to eat next?"  
+- "Look, we've gotten all the verbal information in **PubMed**."
+- "Or we've gotten stuff put into, you know, gene networks and we've gotten stuff, but we don't yet have proteins."
+- Or "If I have, if we have some sense of like, if you're an amoeba and you're absorbing information, knowledge that's out there, what have you already eaten? And what do you plan to eat next?"
 
-For sure.  
+For sure.
 
-And maybe if I'll answer that question, I'll say what we don't do, because drug discovery is a very complex and vast space.  
+And maybe if I'll answer that question, I'll say what we don't do, because drug discovery is a very complex and vast space.
 
-- We don't do anything around designing clinical trials, patient engagement, recruiting, and so on.  
-- We don't do anything around drug design.  
+- We don't do anything around designing clinical trials, patient engagement, recruiting, and so on.
+- We don't do anything around drug design.
 
-Where we do apply our technology and the problem that we do tackle is **unraveling disease biology**.  
+Where we do apply our technology and the problem that we do tackle is **unraveling disease biology**.
 
-The biology of the diseases we are trying to cure today is **significantly more complex** than ever before. And while we are very good at generating a lot of data in drug discovery, we are **not good at generating knowledge** about how disease biology actually works.  
+The biology of the diseases we are trying to cure today is **significantly more complex** than ever before. And while we are very good at generating a lot of data in drug discovery, we are **not good at generating knowledge** about how disease biology actually works.
 
-That is exactly what we do at BenchSci and why we build **Ascend**.  
+That is exactly what we do at BenchSci and why we build **Ascend**.
 
 **Ascend** is a **science-first, tech-deep, disease biology AI platform** that acts as an AI system for the preclinical scientists and key decision makers, empowering them to unravel the complexity of biology at scale.
 We believe a successful **AI solution in R&D** must achieve **scientific veracity** of the data while maintaining a deep understanding of **preclinical R&D workflows**.
@@ -101,109 +101,109 @@ So really what we help scientists is basically three big things around this biol
 - Helping them come up with the **best idea**, the best hypothesis through building specific AI systems around:
   - Target assessment
   - Drug assessment
-  - Risk assessments  
+  - Risk assessments
 - Helping them **test as fast as possible**:
   - Which protocols should they follow
   - Which experiments should be done or skipped because they've been done before
-  - Which materials they should use  
+  - Which materials they should use
 - Helping them **translate that into the clinic** or making sure that's more successful:
   - Focus on biomarkers, though more work remains to be done here
 
 Our approach was, and this I think is what's maybe complex in science, that it's one thing getting access to data, the data that you need. The problem with the data is that it has a lot of **garbage in it**, a lot of inconsistency, inaccuracy, and has probably the **worst dictionary in the world**.
 
-So for us, step one was:  
+So for us, step one was:
 
-> **"What we really are trying to do is understand everything that has ever been discovered in the most unbiased evidence-based way,"**  
+> **"What we really are trying to do is understand everything that has ever been discovered in the most unbiased evidence-based way,"**
 
 which basically means experiments that have been done. So let's focus our technology to understand and predict or classify the results of those experiments, less so around the conclusions of the paper and what scientists came up with, because that can be wrong.
 
-And so it's kind of similar—not focusing on that is why IBM Watson failed, because that was kind of the conclusion of the doctor versus what was actually in the test results. So imagine the experiments to be those test results. We focus our entire technology to understand that.
+And so it's kind of similar-not focusing on that is why IBM Watson failed, because that was kind of the conclusion of the doctor versus what was actually in the test results. So imagine the experiments to be those test results. We focus our entire technology to understand that.
 
-And that's from **multimodal AI**, focusing on vision—basically looking at the scientific figures and what happened there—combining that with the NLP sometimes to increase the accuracy. As you can see, something happened in both or even increases the data scope.
+And that's from **multimodal AI**, focusing on vision-basically looking at the scientific figures and what happened there-combining that with the NLP sometimes to increase the accuracy. As you can see, something happened in both or even increases the data scope.
 
 So that's one. And the second thing.
-So to do that, we got access to **scientific publications, preprint patents, internal data from pharma**, basically a vast net around what are all the documents that contain primary research.  
+So to do that, we got access to **scientific publications, preprint patents, internal data from pharma**, basically a vast net around what are all the documents that contain primary research.
 
-So that was the first thing with it.  
+So that was the first thing with it.
 
-And the second thing we did was everything around the **ontological knowledge base**.  
+And the second thing we did was everything around the **ontological knowledge base**.
 
-So what are all the known **genes, proteins, diseases**? What are all their 20 or 30 different names? What are their properties, the relationship among them, and so on and so on.  
+So what are all the known **genes, proteins, diseases**? What are all their 20 or 30 different names? What are their properties, the relationship among them, and so on and so on.
 
-So imagine that to be kind of like the **compass and a knowledge graph**. We should understand the experiments to be the map. And those are the two data assets that solve pretty much your power, every single thing that we do.  
+So imagine that to be kind of like the **compass and a knowledge graph**. We should understand the experiments to be the map. And those are the two data assets that solve pretty much your power, every single thing that we do.
 
-> Sorry to interrupt you.  
+> Sorry to interrupt you.
 
-So just make sure I get the scope of the last one. It's protein, genes, diseases. That's the network that you're sort of building.  
+So just make sure I get the scope of the last one. It's protein, genes, diseases. That's the network that you're sort of building.
 
-> And beyond.  
+> And beyond.
 
-And beyond.  
+And beyond.
 
-Known biomarkers, known risk, drugs, materials, pretty much every single thing that's needed for the use cases that we mentioned before. Now, it's ever growing.  
+Known biomarkers, known risk, drugs, materials, pretty much every single thing that's needed for the use cases that we mentioned before. Now, it's ever growing.
 
-So for us, we got the core. And from that core, we understood a few things or many things.  
+So for us, we got the core. And from that core, we understood a few things or many things.
 
-And the other part of innovation that we do that I don't think other people maybe appreciate as much is actually mapping and understand how **drug discovery is done in pharma**. And that's actually nothing that's ever happened.  
+And the other part of innovation that we do that I don't think other people maybe appreciate as much is actually mapping and understand how **drug discovery is done in pharma**. And that's actually nothing that's ever happened.
 
-And when you understand that, then it kind of goes back full circle to what more I need to understand from the data that I have and which additional data sets do I need?  
+And when you understand that, then it kind of goes back full circle to what more I need to understand from the data that I have and which additional data sets do I need?
 
-Because pharma X might be looking, “oh, I'm also looking at this data set and this is what I'm trying to understand from it.” That goes back to product roadmap.  
+Because pharma X might be looking, "oh, I'm also looking at this data set and this is what I'm trying to understand from it." That goes back to product roadmap.
 
-Okay. Now we need to look at **OMIN data set** because company X takes that into account when they do risk assessments.  
+Okay. Now we need to look at **OMIM data set** because company X takes that into account when they do risk assessments.
 
-And from that, here's what they're trying to understand. So let's build a model to do that. Let's get in the data pipeline and put it on the platform and add it to the assistant.  
+And from that, here's what they're trying to understand. So let's build a model to do that. Let's get in the data pipeline and put it on the platform and add it to the assistant.
 
-So when they ask questions, it takes into that data sets into account as well.  
+So when they ask questions, it takes into that data sets into account as well.
 
-So in a way, it's ever growing. And maybe that's what's hard for a software company or a SaaS company where you reach an economy of scale, but at the same time, you stop building and you're just maintenance because science just doesn't work like that.  
+So in a way, it's ever growing. And maybe that's what's hard for a software company or a SaaS company where you reach an economy of scale, but at the same time, you stop building and you're just maintenance because science just doesn't work like that.
 
-> Hopefully, that answers your question.  
+> Hopefully, that answers your question.
 
-No, that's great. And I think part of it is that's helpful. And then let me ask a follow-up question.  
+No, that's great. And I think part of it is that's helpful. And then let me ask a follow-up question.
 
-So let's start with that first layer that you sort of talked about. I'm a scientist. I'm going to try and come up with a hypothesized target. Eventually, you'll help me design the experiment and execute it, but I'm just trying to hypothesize the target.  
+So let's start with that first layer that you sort of talked about. I'm a scientist. I'm going to try and come up with a hypothesized target. Eventually, you'll help me design the experiment and execute it, but I'm just trying to hypothesize the target.
 
-What kind of feedback is happening at that point?  
+What kind of feedback is happening at that point?
 
-So for example, I can imagine two kinds of feedback:  
+So for example, I can imagine two kinds of feedback:
 
-- I could imagine you hypothesize the target and I'm like, "that's not interesting to me. Here's why." That could be one form of feedback.  
-- Another form of feedback is you hypothesize the target. I run it. I run it. Does what happens there feedback into your system?  
+- I could imagine you hypothesize the target and I'm like, "that's not interesting to me. Here's why." That could be one form of feedback.
+- Another form of feedback is you hypothesize the target. I run it. I run it. Does what happens there feedback into your system?
 
-What is the feedback at that moment that's happening?  
+What is the feedback at that moment that's happening?
 
-That's a great question. So maybe I'll focus for a second on what we do today and what we'll be doing in the future.  
+That's a great question. So maybe I'll focus for a second on what we do today and what we'll be doing in the future.
 
-So today, and you asked me this question before, what are you predicting? So really what we're predicting is, and probably it's more of a **classification problem,** which is understanding what has been researched and what's the semantic relationship around every single bioentity.  
+So today, and you asked me this question before, what are you predicting? So really what we're predicting is, and probably it's more of a **classification problem,** which is understanding what has been researched and what's the semantic relationship around every single bioentity.
 
-So what's the bioentity? Is it a protein? Is it a disease? Is it a cell or whatever it is? How it's related to another entity and what it did to it.  
+So what's the bioentity? Is it a protein? Is it a disease? Is it a cell or whatever it is? How it's related to another entity and what it did to it.
 
-And really understanding that at scale and connecting everything is pretty much 70% of what we do.  
+And really understanding that at scale and connecting everything is pretty much 70% of what we do.
 
-And then when you're a scientist and when you ask something, there's kind of the question, **what is novel?**  
+And then when you're a scientist and when you ask something, there's kind of the question, **what is novel?**
 
-So with my definition, novel is “I taught you something new.” It doesn't mean it's new in the world, but it means you don't know it.  
+So with my definition, novel is "I taught you something new." It doesn't mean it's new in the world, but it means you don't know it.
 
-And to expect everybody to read everything and connect everything at the same time, it's just impossible. So we always teach something new and add a lot of value.  
+And to expect everybody to read everything and connect everything at the same time, it's just impossible. So we always teach something new and add a lot of value.
 
-Now, so that basically helps scientists. Maybe it's a semi-automated way of forming the hypothesis. But basically they can ask the question:  
+Now, so that basically helps scientists. Maybe it's a semi-automated way of forming the hypothesis. But basically they can ask the question:
 
-> What are all the proteins or the genes that are associated with this disease and how?  
+> What are all the proteins or the genes that are associated with this disease and how?
 
-And imagine you had an AI system that read everything and connected everything. So that's what we do now.  
+And imagine you had an AI system that read everything and connected everything. So that's what we do now.
 
-In terms of what is the feedback loop around that, there's two ways.  
+In terms of what is the feedback loop around that, there's two ways.
 
-One, we have over **100 scientists that work at our company** that basically act as that feedback loop, whether it's  
+One, we have over **100 scientists that work at our company** that basically act as that feedback loop, whether it's
 
-```  
-- QA,  
-- golden data sets,  
-- training sets,  
-- actually looking at the data,  
-- supporting the prompting and coding,  
-- and so on.  
+```
+- QA,
+- golden data sets,
+- training sets,
+- actually looking at the data,
+- supporting the prompting and coding,
+- and so on.
 ```
 And then there's on the **user side** where they can basically say, **was this valuable or not? Was this correct and incorrect and so on and so on.**
 
@@ -213,33 +213,33 @@ And why? Right? Because that's very, very important. Not just, *"hey, this is re
 
 And what we do there or the plan there is to incorporate also **internal data from pharma**. So then when they actually run those experiments, we can bring that feedback loop into the system to see if it's correct or not.
 
-Now, you can also argue even if it's incorrect to discover something valuable. So that goes back to the **knowledge graph** in the system. So as long as you discover something, even, *“oh, this is wrong or this is not correct,”* that's still valuable.
+Now, you can also argue even if it's incorrect to discover something valuable. So that goes back to the **knowledge graph** in the system. So as long as you discover something, even, *"oh, this is wrong or this is not correct,"* that's still valuable.
 
 ---
 
 So last question, I'm going to turn it over to everybody else. I'll make one comment before.
 
-For those of you who don't know, **Liron,** if you don't know, there's this guy named **Don Swanson,** who is fantastic. It's worth looking him up. He's your intellectual great-grandfather. He was the first person to do this sort of **literature-based discovery.** And he did it twice. And he did it basically almost by hand. It was amazing. He's a physicist at the **University of Chicago**.
+For those of you who don't know, **Liran,** if you don't know, there's this guy named **Don Swanson,** who is fantastic. It's worth looking him up. He's your intellectual great-grandfather. He was the first person to do this sort of **literature-based discovery.** And he did it twice. And he did it basically almost by hand. It was amazing. He's a physicist at the **University of Chicago**.
 
 One was for **magnesium's effect on migraines** and the other effect was **fish oil effect on patients.** He's an amazing, amazing character to read about anyway.
 
-But can I just get the last bit that you said, which is great. It seems like you actually have for the **scientist-facing product at the first stage**—if I've understood you, you actually have **two fascinating products**. The first is actually the second one most easily:
+But can I just get the last bit that you said, which is great. It seems like you actually have for the **scientist-facing product at the first stage**-if I've understood you, you actually have **two fascinating products**. The first is actually the second one most easily:
 
 - The **hypothesis generation** that the second is almost a:
-  
-  ``` 
+
+  ```
   Could an algorithm that's read the literature make a probabilistic guess of what would be a good next thing to try?
   ```
-  
+
   It has almost an **RL like flavor**.
 
-So that's that. But the first that you have is also fascinating, which as you say, right now, every search engine on **PubMed is somewhat broken**. Because what I really want to do is to ask some sort of question, as you said, *“tell me everything that's known around this thing”* and have it come back to me in some picky way. And that's not how any search engine or knowledge works.
+So that's that. But the first that you have is also fascinating, which as you say, right now, every search engine on **PubMed is somewhat broken**. Because what I really want to do is to ask some sort of question, as you said, *"tell me everything that's known around this thing"* and have it come back to me in some picky way. And that's not how any search engine or knowledge works.
 
 So in some sense, you have as much a **knowledge interface** as you do a **hypothesis generator**. And both seem fascinating.
 
-I'll just make that comment and then I'll hand it over to **Rich and Neve.**
+I'll just make that comment and then I'll hand it over to **Rich and Niamh.**
 
-Great. So let's go to Rich and then to Neve.
+Great. So let's go to Rich and then to Niamh.
 
 ---
 
@@ -268,9 +268,9 @@ No, we build different **AI models** that do this. So for one, for **entity reco
 And then the semantic relationship between them and other entities and different classifications and different use cases.
 Some can be for **understanding causality** while these two and others, some can be around helping you understand how to design a protocol. Some helping you understand how to select the material for your experiment. And it should, when you're a scientist and if you go and you read the paper, there are many use cases while you do that.
 
-So understanding that and then teaching a machine how to **read it for you within a paper and across everything, and then structure everything on a knowledge graph**. That's one piece. Then the second piece is really bringing it to—
+So understanding that and then teaching a machine how to **read it for you within a paper and across everything, and then structure everything on a knowledge graph**. That's one piece. Then the second piece is really bringing it to-
 
-Sorry, sorry, Lorraine, but let me just stop on the first piece. Just so that, Rich, I suspect you may have some clarifications. And I'd rather even just pick one piece and focus on one piece. Like, you know, we don't need to be comprehensive in this discussion. I'd rather go deeper if necessary.
+Sorry, sorry, Liran, but let me just stop on the first piece. Just so that, Rich, I suspect you may have some clarifications. And I'd rather even just pick one piece and focus on one piece. Like, you know, we don't need to be comprehensive in this discussion. I'd rather go deeper if necessary.
 
 So, Rich, did that answer your question on that piece or did you want to?
 
@@ -297,12 +297,12 @@ There are other areas where you need to apply AI, like **drug design, and then d
 
 > So you're not saying that your scientists understand that whole area. You're saying that somehow your system understands that whole area.
 
-Yeah. Yeah. Yeah. That's—**we had scientists working side by side of our engineers over the past eight years, basically teaching the engineers what they know**. So the engineers can write machine learning models to understand what they know. And then they tell the engineers if they got it right or wrong. And then we do it at scale. And then the market tells us if we got it right or wrong.
+Yeah. Yeah. Yeah. That's-**we had scientists working side by side of our engineers over the past eight years, basically teaching the engineers what they know**. So the engineers can write machine learning models to understand what they know. And then they tell the engineers if they got it right or wrong. And then we do it at scale. And then the market tells us if we got it right or wrong.
 
-I'm just thinking of, you know, in Texas, they have this big system called **psych**, which is supposed to have understood, you know, lots of world knowledge. And then they always find there—there was never finished because it was just ordinary world knowledge. It went on forever.
+I'm just thinking of, you know, in Texas, they have this big system called **Cyc**, which is supposed to have understood, you know, lots of world knowledge. And then they always find there—there was never finished because it was just ordinary world knowledge. It went on forever.
 And I think for the scientific knowledge of **biology**, it would also go on forever. A hundred percent. That's why it's really expensive to do it.
 
-So for us, we always update the system with new scientific papers, new discoveries, new modalities, new techniques, and new applications. And that's why we have roughly **a hundred scientists** working here in every therapeutic area that we do — exploring what's unique for that area and how the models need to change between oncology, immunotherapy, and so on.
+So for us, we always update the system with new scientific papers, new discoveries, new modalities, new techniques, and new applications. And that's why we have roughly **a hundred scientists** working here in every therapeutic area that we do - exploring what's unique for that area and how the models need to change between oncology, immunotherapy, and so on.
 
 So that's why it was really important for us at the **DNA of our company** to be **science and engineering**, because at the end of the day, **scientists are the gatekeepers** to make sure that every single thing we build actually adds value.
 
@@ -338,9 +338,9 @@ Yeah, no, it's a great question. So all those questions are very valid and very 
 
 What we're focusing on right now is the **mechanistic aspects** of how the disease actually works based on everything that's ever been discovered. Both internally from pharma and we develop pipelines to actually do the same thing on pharma data as we did on the public domain data. So that's really where we're focused right now.
 
-And it's not all machine learning. So it’s:
+And it's not all machine learning. So it's:
 
-``` 
+```
 Machine learning to understand the evidence,
 Logic to combine different data sources,
 Stitching these data sources together,
@@ -367,14 +367,14 @@ Now, the more clinical data that we can bring into day one, that will obviously 
 - Actually in clinical trials over patients,
 - But how, if at all, this actually relates to that disease,
 - And how it's connected on the entity level.
-Go back and first to **Rich** and then to **Sendel** and then to **Neve**. And just if you can comment on any thoughts that you have.
+Go back and first to **Rich** and then to **Sendhil** and then to **Niamh**. And just if you can comment on any thoughts that you have.
 
 Let's focus on two categories:
 
-- **Machine intelligence for hypothesis generation**  
+- **Machine intelligence for hypothesis generation**
 - **Machine intelligence for experimental design**, for experiment design.
 
-You've heard about this company that's one of the leaders, perhaps **the leader in its category**. 
+You've heard about this company that's one of the leaders, perhaps **the leader in its category**.
 
 So just how you think about using machine intelligence for **hypothesis generation**, and then secondly, how you think about machine intelligence for **experiment design**.
 
@@ -392,13 +392,13 @@ So **reward design** is, of course, an area that I appreciate and enjoy very muc
 
 I mean, in some sense, we would like to get reward for **discovering knowledge**, for proposing experiments that would be new and for the outcome of the experiment being informative. And then we'd like to use that to train the decisions if any of that were possible.
 
-**Sendhil**, let me turn to you and then to Neve.
+**Sendhil**, let me turn to you and then to Niamh.
 
 Yeah, let me reframe what I think you guys are doing in a way that might be productive and instructive as we look forward.
 
 I think, **Ajay**, when you said hypothesis generation, it's a space that I find very interesting.
 
-What I really like about what you've done is it actually starts somewhere much more basic. You alluded to it a little bit where you said,  
+What I really like about what you've done is it actually starts somewhere much more basic. You alluded to it a little bit where you said,
 
 > "We really looked at what pharma does. It's actually, yes, it ends up with hypothesis generation, but it starts with what is the decision that has to be made? What are the decisions that have to be made that are really pivotal, that have real consequences?"
 
@@ -443,9 +443,9 @@ Yeah. Thank you much.
 
 Okay.
 
-**Loren**, and last 60 seconds are for you.
+**Liran**, and last 60 seconds are for you.
 
-Thank you. I really want to echo what **Neve** said. Drug discovery projects get stuck because either you have the wrong hypothesis or you're running the wrong experiment or both. Cause basically you're stuck either working on the wrong thing or you're stuck in a maybe.
+Thank you. I really want to echo what **Niamh** said. Drug discovery projects get stuck because either you have the wrong hypothesis or you're running the wrong experiment or both. Cause basically you're stuck either working on the wrong thing or you're stuck in a maybe.
 
 And really the idea is, is how do we help in both now? That's also broad. The hypothesis can be a tiny thing, can be a big thing and same thing around experiments as well.
 
@@ -465,7 +465,7 @@ And, you know, given just a couple of things that Neve said, I'm just going to d
 
 And this is for you, since you've done your own research on hypothesis generation using machine intelligence.
 
-When you see this in the Iran setting and given your own research on hypothesis generation, anything that you would, you know, that you've updated any priors or thinking, having heard what Leran's been building?
+When you see this in the drug discovery setting and given your own research on hypothesis generation, anything that you would, you know, that you've updated any priors or thinking, having heard what Leran's been building?
 
 I think first something Leran mentioned I really, really liked, which is that just the sheer amount of time and energy that goes into getting the first data set in and to recognize that actually turning it into something that's **semantically meaningful** is just a huge amount of effort.
 
@@ -477,7 +477,7 @@ That is a **big public good lift**, and it is super valuable.
 
 I'm super glad that the private sector is paying for this to happen in the drug discovery cases, but there are many other cases where that's not going to happen spontaneously.
 
-It's just worth noting how little was spent now that I've thought about this, even on the core data sets behind the **protein folding problem**. Like, just look at how little was spent on this—crazy.
+It's just worth noting how little was spent now that I've thought about this, even on the core data sets behind the **protein folding problem**. Like, just look at how little was spent on this-crazy.
 
 And so there is an asymmetry here, and I would hope foundations, et cetera, take notice.
 
@@ -501,7 +501,7 @@ And that's our show for today.
 
 Thanks to **Rich Sutton**, **Sendhil Malanthainen**, and **Neve Gavin**.
 
-And a special thanks to **BenchSci CEO and co-founder, Leran Balanzant**.
+And a special thanks to **BenchSci CEO and co-founder, Liran Belenzon**.
 
 Follow us on the Intrepid sub stack at **insights.intrepidgp.com**.
 
@@ -512,6 +512,6 @@ Thanks, everyone, for listening.
 The views, opinions, and information expressed in this podcast are those of the hosts and guests and do not necessarily reflect the official policy or position of **Intrepid Growth Partners**.
 This content is for **informational purposes only** and should not be considered as **financial, investment, or legal advice**.
 
-<script>window.tocIndex = {"index": [{"index_sentences": "Welcome to the Derby Mill series, intrepid pioneers of the next economy, featuring discussions with entrepreneurs at the forefront of deploying machine intelligence and brainstorming sessions about where the technology may go at the limit.", "section_level": 1, "section_title": "Introduction to Derby Mill Series"}, {"index_sentences": "I'm Ajay Agrawal, co-founder of Intrepid Growth Partners, and my three collaborators are: Rich Sutton of the University of Alberta, who pioneered reinforcement learning; Sendhil Molinthainen of MIT, who uses machine learning to better understand human decision making; Niamh Gavin, an applied AI scientist working on optimizing foundation models, pen modalities for novel semiconductors.", "section_level": 2, "section_title": "Meet the Collaborators"}, {"index_sentences": "The domain we're exploring in this episode is R&D for drug discovery.", "section_level": 1, "section_title": "Introducing BenchSci and its Mission"}, {"index_sentences": "I, first of all, Liran, this is just super fantastic work, and I think I just want to contextualize it for everyone else.", "section_level": 1, "section_title": "Contextualizing the Importance of Drug Discovery (Ajay Agrawal)"}, {"index_sentences": "For sure.", "section_level": 1, "section_title": "BenchSci's Core Approach and Technology"}, {"index_sentences": "And maybe if I'll answer that question, I'll say what we don't do, because drug discovery is a very complex and vast space.", "section_level": 2, "section_title": "What BenchSci Doesn't Do"}, {"index_sentences": "Where we do apply our technology and the problem that we do tackle is unraveling disease biology.", "section_level": 2, "section_title": "Unraveling Disease Biology with Ascend"}, {"index_sentences": "We also understood the value of providing a holistic view of disease biology, which not only included the world's scientific findings from a public domain, but also internal findings from our customers.", "section_level": 2, "section_title": "Data Foundation and Multimodal AI"}, {"index_sentences": "To ensure the integrity of the data and to give our models scientific judgment, we have a team of more than 100 scientists working directly with our engineers and AI experts.", "section_level": 2, "section_title": "Ensuring Data Integrity and Workflow Support"}, {"index_sentences": "In there, I would say it's two dimensional: What's the data source, What are you trying to get out of it?", "section_level": 1, "section_title": "The Scope of Existing Knowledge and Future Plans"}, {"index_sentences": "So really what we help scientists is basically three big things around this biology: Helping them come up with the best idea, the best hypothesis through building specific AI systems around Target assessment, Drug assessment, Risk assessments.", "section_level": 2, "section_title": "Three Pillars of Scientist Support"}, {"index_sentences": "Our approach was, and this I think is what's maybe complex in science, that it's one thing getting access to data, the data that you need.", "section_level": 2, "section_title": "Understanding Experiments and Avoiding Garbage Data"}, {"index_sentences": "So that's one. And the second thing. So to do that, we got access to scientific publications, preprint patents, internal data from pharma, basically a vast net around what are all the documents that contain primary research.", "section_level": 2, "section_title": "Data Assets and Ontological Knowledge Base"}, {"index_sentences": "And the other part of innovation that we do that I don't think other people maybe appreciate as much is actually mapping and understand how drug discovery is done in pharma.", "section_level": 2, "section_title": "Mapping Pharma Workflows and Continuous Growth"}, {"index_sentences": "So let's start with that first layer that you sort of talked about.", "section_level": 1, "section_title": "Feedback Loops and Suggesting Novel Discoveries"}, {"index_sentences": "That's a great question. So maybe I'll focus for a second on what we do today and what we'll be doing in the future.", "section_level": 2, "section_title": "Current Prediction Capabilities and Scientist Feedback"}, {"index_sentences": "Now, the next thing we're working on with one of our design partners, which is a customer, is the next stage of that.", "section_level": 2, "section_title": "Future: Novel Suggestions with Scientific Evidence"}, {"index_sentences": "So last question, I'm going to turn it over to everybody else.", "section_level": 1, "section_title": "Historical Context and Product Facets (Ajay Agrawal)"}, {"index_sentences": "Okay. I'm still trying to really understand this.", "section_level": 1, "section_title": "Discussion: BenchSci's Position on the AI Spectrum (Rich Sutton)"}, {"index_sentences": "So we're not a search engine.", "section_level": 2, "section_title": "Liran's Clarification: Beyond a Search Engine"}, {"index_sentences": "So just for context, how big the company is and how long I've been doing this, because, of course, it's ambitious.", "section_level": 2, "section_title": "Scale of Ambition and Focus Areas"}, {"index_sentences": "Yeah. Yeah. Yeah. That's—we had scientists working side by side of our engineers over the past eight years, basically teaching the engineers what they know.", "section_level": 2, "section_title": "The Role of Scientists in AI Development"}, {"index_sentences": "So maybe kind of picking up on your theme of where you are and where you're going, I can recap the value add you already delivered today because as a scientist, I do viscerally appreciate it.", "section_level": 1, "section_title": "Discussion: Challenges and Future Directions (Niamh Gavin)"}, {"index_sentences": "Yeah, no, it's a great question.", "section_level": 2, "section_title": "Liran's Response: Mechanistic Aspects and Underlying Biology"}, {"index_sentences": "Go back and first to Rich and then to Sendel and then to Neve.", "section_level": 1, "section_title": "Focused Discussion: Hypothesis Generation & Experimental Design"}, {"index_sentences": "First, I want to say maybe I don't have really great ideas here.", "section_level": 2, "section_title": "Rich Sutton's Perspective"}, {"index_sentences": "Yeah, let me reframe what I think you guys are doing in a way that might be productive and instructive as we look forward.", "section_level": 2, "section_title": "Sendhil Molinathan's Perspective"}, {"index_sentences": "No, I love this.", "section_level": 2, "section_title": "Niamh Gavin's Perspective"}, {"index_sentences": "Excellent.", "section_level": 1, "section_title": "Concluding Thoughts"}, {"index_sentences": "Just, it's a, it's a, it's a grand ambition.", "section_level": 2, "section_title": "Rich Sutton's Final Comment"}, {"index_sentences": "Thank you.", "section_level": 2, "section_title": "Liran Balanzone's Final Remarks"}, {"index_sentences": "I think first something Leran mentioned I really, really liked, which is that just the sheer amount of time and energy that goes into getting the first data set in and to recognize that actually turning it into something that's semantically meaningful is just a huge amount of effort.", "section_level": 2, "section_title": "Sendhil Molinathan's Final Update"}, {"index_sentences": "Excellent.", "section_level": 1, "section_title": "Podcast Outro"}]};
+<script>window.tocIndex = {"index": [{"index_sentences": "Welcome to the Derby Mill series, intrepid pioneers of the next economy, featuring discussions with entrepreneurs at the forefront of deploying machine intelligence and brainstorming sessions about where the technology may go at the limit.", "section_level": 1, "section_title": "Introduction to Derby Mill Series"}, {"index_sentences": "I'm Ajay Agrawal, co-founder of Intrepid Growth Partners, and my three collaborators are: Rich Sutton of the University of Alberta, who pioneered reinforcement learning; Sendhil Molinthainen of MIT, who uses machine learning to better understand human decision making; Niamh Gavin, an applied AI scientist working on optimizing foundation models, pen modalities for novel semiconductors.", "section_level": 2, "section_title": "Meet the Collaborators"}, {"index_sentences": "The domain we're exploring in this episode is R&D for drug discovery.", "section_level": 1, "section_title": "Introducing BenchSci and its Mission"}, {"index_sentences": "I, first of all, Liran, this is just super fantastic work, and I think I just want to contextualize it for everyone else.", "section_level": 1, "section_title": "Contextualizing the Importance of Drug Discovery (Ajay Agrawal)"}, {"index_sentences": "For sure.", "section_level": 1, "section_title": "BenchSci's Core Approach and Technology"}, {"index_sentences": "And maybe if I'll answer that question, I'll say what we don't do, because drug discovery is a very complex and vast space.", "section_level": 2, "section_title": "What BenchSci Doesn't Do"}, {"index_sentences": "Where we do apply our technology and the problem that we do tackle is unraveling disease biology.", "section_level": 2, "section_title": "Unraveling Disease Biology with Ascend"}, {"index_sentences": "We also understood the value of providing a holistic view of disease biology, which not only included the world's scientific findings from a public domain, but also internal findings from our customers.", "section_level": 2, "section_title": "Data Foundation and Multimodal AI"}, {"index_sentences": "To ensure the integrity of the data and to give our models scientific judgment, we have a team of more than 100 scientists working directly with our engineers and AI experts.", "section_level": 2, "section_title": "Ensuring Data Integrity and Workflow Support"}, {"index_sentences": "In there, I would say it's two dimensional: What's the data source, What are you trying to get out of it?", "section_level": 1, "section_title": "The Scope of Existing Knowledge and Future Plans"}, {"index_sentences": "So really what we help scientists is basically three big things around this biology: Helping them come up with the best idea, the best hypothesis through building specific AI systems around Target assessment, Drug assessment, Risk assessments.", "section_level": 2, "section_title": "Three Pillars of Scientist Support"}, {"index_sentences": "Our approach was, and this I think is what's maybe complex in science, that it's one thing getting access to data, the data that you need.", "section_level": 2, "section_title": "Understanding Experiments and Avoiding Garbage Data"}, {"index_sentences": "So that's one. And the second thing. So to do that, we got access to scientific publications, preprint patents, internal data from pharma, basically a vast net around what are all the documents that contain primary research.", "section_level": 2, "section_title": "Data Assets and Ontological Knowledge Base"}, {"index_sentences": "And the other part of innovation that we do that I don't think other people maybe appreciate as much is actually mapping and understand how drug discovery is done in pharma.", "section_level": 2, "section_title": "Mapping Pharma Workflows and Continuous Growth"}, {"index_sentences": "So let's start with that first layer that you sort of talked about.", "section_level": 1, "section_title": "Feedback Loops and Suggesting Novel Discoveries"}, {"index_sentences": "That's a great question. So maybe I'll focus for a second on what we do today and what we'll be doing in the future.", "section_level": 2, "section_title": "Current Prediction Capabilities and Scientist Feedback"}, {"index_sentences": "Now, the next thing we're working on with one of our design partners, which is a customer, is the next stage of that.", "section_level": 2, "section_title": "Future: Novel Suggestions with Scientific Evidence"}, {"index_sentences": "So last question, I'm going to turn it over to everybody else.", "section_level": 1, "section_title": "Historical Context and Product Facets (Ajay Agrawal)"}, {"index_sentences": "Okay. I'm still trying to really understand this.", "section_level": 1, "section_title": "Discussion: BenchSci's Position on the AI Spectrum (Rich Sutton)"}, {"index_sentences": "So we're not a search engine.", "section_level": 2, "section_title": "Liran's Clarification: Beyond a Search Engine"}, {"index_sentences": "So just for context, how big the company is and how long I've been doing this, because, of course, it's ambitious.", "section_level": 2, "section_title": "Scale of Ambition and Focus Areas"}, {"index_sentences": "Yeah. Yeah. Yeah. That's-we had scientists working side by side of our engineers over the past eight years, basically teaching the engineers what they know.", "section_level": 2, "section_title": "The Role of Scientists in AI Development"}, {"index_sentences": "So maybe kind of picking up on your theme of where you are and where you're going, I can recap the value add you already delivered today because as a scientist, I do viscerally appreciate it.", "section_level": 1, "section_title": "Discussion: Challenges and Future Directions (Niamh Gavin)"}, {"index_sentences": "Yeah, no, it's a great question.", "section_level": 2, "section_title": "Liran's Response: Mechanistic Aspects and Underlying Biology"}, {"index_sentences": "Go back and first to Rich and then to Sendel and then to Neve.", "section_level": 1, "section_title": "Focused Discussion: Hypothesis Generation & Experimental Design"}, {"index_sentences": "First, I want to say maybe I don't have really great ideas here.", "section_level": 2, "section_title": "Rich Sutton's Perspective"}, {"index_sentences": "Yeah, let me reframe what I think you guys are doing in a way that might be productive and instructive as we look forward.", "section_level": 2, "section_title": "Sendhil Molinathan's Perspective"}, {"index_sentences": "No, I love this.", "section_level": 2, "section_title": "Niamh Gavin's Perspective"}, {"index_sentences": "Excellent.", "section_level": 1, "section_title": "Concluding Thoughts"}, {"index_sentences": "Just, it's a, it's a, it's a grand ambition.", "section_level": 2, "section_title": "Rich Sutton's Final Comment"}, {"index_sentences": "Thank you.", "section_level": 2, "section_title": "Liran Balanzone's Final Remarks"}, {"index_sentences": "I think first something Leran mentioned I really, really liked, which is that just the sheer amount of time and energy that goes into getting the first data set in and to recognize that actually turning it into something that's semantically meaningful is just a huge amount of effort.", "section_level": 2, "section_title": "Sendhil Molinathan's Final Update"}, {"index_sentences": "Excellent.", "section_level": 1, "section_title": "Podcast Outro"}]};
 window.faq = {"qas": [{"answer": "BenchSci's mission is to increase the speed and quality of life-saving R&D to improve patient health. They achieve this by using machine intelligence to semi-automate hypothesis generation and experiment design in the drug discovery process.", "index_of_source": "BenchSci's mission is to increase the speed and quality of life-saving R&D to improve the health of patients.", "question": "What is the core mission of BenchSci and how do they achieve it?"}, {"answer": "BenchSci focuses on understanding experiments because scientific papers can contain \"garbage in it, a lot of inconsistency, inaccuracy, and has probably the worst dictionary in the world.\" They prioritize the raw experimental results, which they view as more reliable \"test results\" compared to authors' conclusions, similar to why IBM Watson failed by focusing on doctor's conclusions rather than actual test results.", "index_of_source": "What we really are trying to do is understand everything that has ever been discovered in the most unbiased evidence-based way, which basically means experiments that have been done.", "question": "Why does BenchSci focus on understanding experiments rather than paper conclusions, and what analogy is used to explain this approach?"}, {"answer": "To ensure the integrity of the data and give their models scientific judgment, BenchSci employs a team of more than 100 scientists. These scientists work directly with engineers and AI experts, teaching them what they know, validating machine learning models, and providing feedback through QA, golden data sets, training sets, and supporting prompting and coding.", "index_of_source": "To ensure the integrity of the data and to give our models scientific judgment, we have a team of more than 100 scientists working directly with our engineers and AI experts.", "question": "How does BenchSci ensure scientific integrity and judgment in its AI models, and what role do their scientists play?"}, {"answer": "Liran clarified that BenchSci is \"not a search engine.\" Instead, they build AI models to understand all existing scientific literature in depth, extracting bio-entities and their semantic relationships, and forming new knowledge by connecting information that no one has ever connected before. While not a \"full scientist,\" their system leverages AI to mimic the scientist's mind at scale by structuring data into a knowledge graph and solving specific problems in drug discovery, like target due diligence.", "index_of_source": "So we're not a search engine.", "question": "Rich Sutton questioned whether BenchSci was an information retrieval system or a full scientist. How did Liran Balanzone clarify BenchSci's position on this spectrum?"}, {"answer": "Sendhil argues that AI tends to succeed easily in situations where humans are already struggling with a \"cloud of uncertainty.\" In such cases, even modest gains or algorithms that provide \"pretty good suggestions\" can be incredibly valuable. The knowledge provided by AI doesn't need to be perfect, but rather insightful enough to help scientists move past existing uncertainties.", "index_of_source": "It's in those situations where we're already struggling that if it can help us do better.", "question": "According to Sendhil Molinthainen, what is a key reason why AI, like BenchSci's system, tends to succeed easily in complex scientific domains despite not needing to be perfect?"}, {"answer": "BenchSci's platform is powered by two main data assets. First, they access primary research documents like scientific publications, preprint patents, and internal pharma data, focusing on understanding experiments. Second, they have an ontological knowledge base containing information on known genes, proteins, diseases, their various names, properties, and relationships, acting as a \"compass and a knowledge graph.\"", "index_of_source": "So to do that, we got access to scientific publications, preprint patents, internal data from pharma, basically a vast net around what are all the documents that contain primary research.", "question": "What are the two primary data assets that power BenchSci's Ascend platform, and what types of information do they contain?"}, {"answer": "BenchSci explicitly states they do not do anything around designing clinical trials, patient engagement, recruiting, or drug design. Their focus is specifically on unraveling disease biology and supporting preclinical R&D workflows.", "index_of_source": "We don't do anything around designing clinical trials, patient engagement, recruiting, and so on.", "question": "What specific areas of drug discovery does BenchSci explicitly state they do not focus on, despite their broad application of AI in R&D?"}, {"answer": "BenchSci uses biology-specific multimodal AI, including specialized vision and NLP algorithms, to analyze and understand experiments from both texts and figures. This approach enables powerful evidence-based generative AI with scientific explainability, by combining visual information from scientific figures with text analysis to increase accuracy and data scope.", "index_of_source": "Our biology-specific multimodal AI, including specialized vision and NLP algorithms, focuses on analyzing and understanding experiments from both texts and figures.", "question": "How does BenchSci leverage multimodal AI for its analysis of scientific data?"}]};
 </script>
