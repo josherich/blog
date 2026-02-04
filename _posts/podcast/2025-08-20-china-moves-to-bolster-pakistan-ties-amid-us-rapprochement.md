@@ -15,9 +15,9 @@ Hello, and welcome to another edition of the **China Global South podcast**, a p
 
 But it's been an incredibly busy week in **China's South Asia diplomacy**.
 
-It began on Monday with **Chinese Foreign Minister Wang Yi** arriving in **New Delhi** for high-level talks with **National Security Advisor Ajit Doval** and **External Affairs Minister S.J. Shankar** and even a very rare bilateral meeting with **Narendra Modi** at his residence in New Delhi.
+It began on Monday with **Chinese Foreign Minister Wang Yi** arriving in **New Delhi** for high-level talks with **National Security Advisor Ajit Doval** and **External Affairs Minister S. Jaishankar** and even a very rare bilateral meeting with **Narendra Modi** at his residence in New Delhi.
 
-I say rare because normally the **Indian Prime Minister** does not meet with a visiting foreign minister, but he's doing so this time in part because, listen,  
+I say rare because normally the **Indian Prime Minister** does not meet with a visiting foreign minister, but he's doing so this time in part because, listen,
 
 > "the game has changed right now."
 
@@ -25,21 +25,21 @@ I think a month ago, maybe two months ago, none of us had on our bingo cards tha
 
 Also, bear in mind that Narendra Modi is going to be going up to **China** in about two weeks at the end of the month for the **Shanghai Cooperation Organization Summit**. This will be his first visit to China in seven years. And one has to assume that the talks that went on this week between **Wang Yi** and **Narendra Modi** were about potentially setting up a bilateral meeting between **Xi Jinping** and Modi. We don't know. That has not been confirmed.
 
-Very important now: after he left New Delhi, he went to **Pakistan** for talks with Pakistani foreign minister, **Ishak Dar**. He's going to be there for three days and participating in the sixth round of **China-Pakistan strategic dialogue**.
+Very important now: after he left New Delhi, he went to **Pakistan** for talks with Pakistani foreign minister, **Ishaq Dar**. He's going to be there for three days and participating in the sixth round of **China-Pakistan strategic dialogue**.
 
 That's going to be taking place in **Islamabad**. And again, we're recording this right on the threshold of all of this movement. So you might hear some shifts in my tone. Things are moving very, very quickly.
 
-At the end of the week, after his talks in Pakistan on the bilateral level, he's going to be having discussions with his counterpart from **Afghanistan** —  
+At the end of the week, after his talks in Pakistan on the bilateral level, he's going to be having discussions with his counterpart from **Afghanistan** -
 
-**Afghanistan acting foreign minister, Amir Khan Moutaki**, who's going to join with the Pakistani foreign minister for three-way talks on the Pakistani, Afghan, and China relationship.
+**Afghanistan acting foreign minister, Amir Khan Muttaqi**, who's going to join with the Pakistani foreign minister for three-way talks on the Pakistani, Afghan, and China relationship.
 
-There’s also talk about extending the **China-Pakistan Economic Corridor** into Afghanistan as well.
+There's also talk about extending the **China-Pakistan Economic Corridor** into Afghanistan as well.
 
 So as you can see, lots going on there. And that's why I'm thrilled to have back on the show someone who can help us explain everything.
 
 I reached out to our good friend, **Aram Ashraf**, because I said, help, I need some assistance in understanding what's going on. Aram, for those of you who've been listening to the show, may be familiar. She's a **China-Pakistan expert** normally based in the United Kingdom, but today joins us on the line from **Karachi**.
 
-Aram Ashraf researches **China-Pakistan relations** and the **CPEC corridor**. That's the **China-Pakistan Economic Corridor**. And the only scholar that we know of that does that from a vantage point of looking at **gender issues** in particular. She’s also writing a book now on **gender and China-Pakistan security relations in the Cold War years** for **Bloomsbury Academic**.
+Aram Ashraf researches **China-Pakistan relations** and the **CPEC corridor**. That's the **China-Pakistan Economic Corridor**. And the only scholar that we know of that does that from a vantage point of looking at **gender issues** in particular. She's also writing a book now on **gender and China-Pakistan security relations in the Cold War years** for **Bloomsbury Academic**.
 
 A very good morning to you, Aram. Thank you so much for taking the time to join us.
 
@@ -53,7 +53,7 @@ So I'll just refresh everybody. India and Pakistan had a brief skirmish over **K
 
 Again, a winner out of this conflict depends on who you read:
 
-- The Pakistanis say they came out of it on top.  
+- The Pakistanis say they came out of it on top.
 - The Indians say they came out of it on top.
 Now, **Donald Trump** claimed credit for settling this dispute. That really upset the **Indians**. That was part of the factors that came into consideration for why **Donald Trump** has turned on **India**, because he did not like the fact that they were challenging his narrative on that.
 
@@ -91,9 +91,9 @@ Now, where it got interesting for me was when the attack by **India took place**
 
 It was, both countries need to be careful what they're doing.
 
-We didn't see high-level visits by **Chinese officials with Pakistani**.
+We didn't see high-level visits by **Chinese officials with Pakistan**.
 
-In fact, when **Ishaq Dar** was first asked in a press briefing, "Would China get involved between what India and Pakistan is taking place?" He said,
+In fact, when **Ishaq Dar** was first asked in a press briefing, "Would China get involved between what India and Pakistan is taking place?" he said,
 
 > "No, this is between India and Pakistan. China will not be getting involved."
 
@@ -118,7 +118,7 @@ The other place we saw a change was in the **United Nations**. When the American
 
 It seems, according to the Indians, it was **China which came to the defense of Pakistan** and watered down the letter and said,
 
-> "The guilty parties and all that, third-party influence must be involved," 
+> "The guilty parties and all that, third-party influence must be involved,"
 
 and **Pakistan was not named as such**.
 
@@ -143,7 +143,7 @@ And then, all of a sudden, **the army chief shows up at the White House**, somet
 
 What do you think **China** was seeing when they see this? Because the **Pakistan-China relationship** has always been one that they've said is **all weather**. And when they see the Pakistanis now turning to the Americans and trying to repair those relations, one can only assume that folks in **Beijing may not be that happy about that**.
 
-So, one of the things I started noticing was that around about the same time this, like you said, rapprochement with the U.S. was happening, the **high-level visits started taking place in China**. So, you would see **Field Marshal Muneo going up to China also**. And they were concerned, "What is going on?" Because all of a sudden, as you rightly pointed out, I wrote about this, in fact. For me, it was a shock.
+So, one of the things I started noticing was that around about the same time this, like you said, rapprochement with the U.S. was happening, the **high-level visits started taking place in China**. So, you would see **Field Marshal Munir going up to China also**. And they were concerned, "What is going on?" Because all of a sudden, as you rightly pointed out, I wrote about this, in fact. For me, it was a shock.
 
 It was a New Year tweet by **President Trump** in his first time, that all of a sudden, out of the blue, it comes with:
 
@@ -151,7 +151,7 @@ It was a New Year tweet by **President Trump** in his first time, that all of a 
 
 I think the **Pakistan military played the cards right** because the timing that they handed over the individual, the Afghan they caught, when the U.S. were retreating from Afghanistan, you know, they wanted the terrorists who had created that attack and killed, taken a lot of lives, American lives in Kabul.
 
-So, when **Pakistan found him and then handed over**, I was, in fact, in Chicago for the **ISA conference** — the International Studies Association conference in Chicago in March. And I was watching TV before heading out to the conference, and I saw **President Trump addressing the assembly**.
+So, when **Pakistan found him and then handed over**, I was, in fact, in Chicago for the **ISA conference** - the International Studies Association conference in Chicago in March. And I was watching TV before heading out to the conference, and I saw **President Trump addressing the assembly**.
 
 And all of a sudden, he goes:
 
@@ -188,41 +188,41 @@ There was also another point of convergence, which I'm sure, well, maybe I'm not
 Go on.
 
 And I'd be curious if it surprised you. But it was a **point of convergence between the U.S. and the Chinese**.
-And we don't get many points of convergence these days between the **U.S.** and the **Chinese**. But it's when the **Trump administration** declared that the **Balakistan Liberation Army**, which is a separatist army that's been incredibly troublesome for the government in **Islamabad**, very violent, and also targeting **Chinese nationals** for many years.  
+And we don't get many points of convergence these days between the **U.S.** and the **Chinese**. But it's when the **Trump administration** declared that the **Balochistan Liberation Army**, which is a separatist army that's been incredibly troublesome for the government in **Islamabad**, very violent, and also targeting **Chinese nationals** for many years.
 
-And really been a major irritant in the **China-Pakistan relationship**, given the fact that Chinese nationals and Chinese projects along the **CPEC corridor**, the **China-Pakistan Economic Corridor**, have been targets of this. And the Americans turn around and say, well, they are a terrorist group and designate them officially as a terrorist group.  
+And really been a major irritant in the **China-Pakistan relationship**, given the fact that Chinese nationals and Chinese projects along the **CPEC corridor**, the **China-Pakistan Economic Corridor**, have been targets of this. And the Americans turn around and say, well, they are a terrorist group and designate them officially as a terrorist group.
 
-I can imagine that, again, folks in **Beijing** who may have been concerned about the **U.S.-Pakistan rapprochement** at the same time said, _"hey, this is a good thing, actually."_ Because we think the **BLA** is a problem. And now the Americans also think the **BLA** is a problem.  
+I can imagine that, again, folks in **Beijing** who may have been concerned about the **U.S.-Pakistan rapprochement** at the same time said, _"hey, this is a good thing, actually."_ Because we think the **BLA** is a problem. And now the Americans also think the **BLA** is a problem.
 
-Talk to us about the decision to label the **BLA** as a terrorist group and how that, again, converges with some Chinese interests.  
+Talk to us about the decision to label the **BLA** as a terrorist group and how that, again, converges with some Chinese interests.
 
-So the thing you're talking about, the **BLA** more or less was there, but it was the **Majid Brigade** that has been declared. And the **Majid Brigade** is the most important one because the Majid Brigade was the one who used the first female suicide bomber to kill three Chinese teachers. And the **Confucius Institute**, right? Confucius Institute in **Karachi University**.  
+So the thing you're talking about, the **BLA** more or less was there, but it was the **Majeed Brigade** that has been declared. And the **Majid Brigade** is the most important one because the Majid Brigade was the one who used the first female suicide bomber to kill three Chinese teachers. And the **Confucius Institute**, right? Confucius Institute in **Karachi University**.
 
-It's the **Majid Brigade** which has been using. And again, the recent incident with the railway, where the railway train was hijacked and so many people were affected by it. Hundreds of people were affected. So not only are the Chinese targeted, _they are a problem_. They are a problem.  
+It's the **Majid Brigade** which has been using. And again, the recent incident with the railway, where the railway train was hijacked and so many people were affected by it. Hundreds of people were affected. So not only are the Chinese targeted, _they are a problem_. They are a problem.
 
-So yes, in that incident, again, like you just said, this new phase between the **U.S.** and **Pakistan** is working around terrorism again. So you can see terrorist organizations being recognized. People, Pakistan has been declaring terrorist organizations are being recognized by the United States.  
+So yes, in that incident, again, like you just said, this new phase between the **U.S.** and **Pakistan** is working around terrorism again. So you can see terrorist organizations being recognized. People, Pakistan has been declaring terrorist organizations are being recognized by the United States.
 
-In that sense, I mean, we've got in the past the problem that the Americans were accusing the Chinese were in **Afghanistan** before they withdrew was that the Chinese are benefiting from the security provided by the Americans.  
+In that sense, I mean, we've got in the past the problem that the Americans were accusing the Chinese were in **Afghanistan** before they withdrew was that the Chinese are benefiting from the security provided by the Americans.
 
-It's **American foot in Afghanistan**, which provides the security so then the Chinese businesses are able to take advantage without themselves putting foot on the ground.  
+It's **American foot in Afghanistan**, which provides the security so then the Chinese businesses are able to take advantage without themselves putting foot on the ground.
 
-So if you keep that thing in mind, it makes sense why the Chinese would be, okay, that's interesting. If the Americans can pressurize, first of all, recognize these organizations, because that's a big thing to recognize these organizations as terrorist organizations. And then perhaps because Pakistan keeps on arguing now, they've made the case that these organizations are supported by **India**.  
+So if you keep that thing in mind, it makes sense why the Chinese would be, okay, that's interesting. If the Americans can pressurize, first of all, recognize these organizations, because that's a big thing to recognize these organizations as terrorist organizations. And then perhaps because Pakistan keeps on arguing now, they've made the case that these organizations are supported by **India**.
 
-So the same way India accuses anything, even if a bird falls down from the sky, it's Pakistan-sponsored terrorism in Kashmir. Pakistan is doing now the same in **Balochistan**. They accuse India of having a hand.  
+So the same way India accuses anything, even if a bird falls down from the sky, it's Pakistan-sponsored terrorism in Kashmir. Pakistan is doing now the same in **Balochistan**. They accuse India of having a hand.
 
-So if all these things pile up and somehow can help Pakistan stabilize, for them it's good. Because the other thing you have to remember is, especially in the **Balochistan** where the terrorist organizations are most active, although they've carried out incidents in **Karachi**, even in the airport or other areas near the airport when they came, they flew in and they were going up to their respective companies to work.  
+So if all these things pile up and somehow can help Pakistan stabilize, for them it's good. Because the other thing you have to remember is, especially in the **Balochistan** where the terrorist organizations are most active, although they've carried out incidents in **Karachi**, even in the airport or other areas near the airport when they came, they flew in and they were going up to their respective companies to work.
 
-Majority of the incidents take place in **Balochistan**, **Balochistan** next door to **Iran**, and **Iran** and **Afghanistan**. So that area, and also it has **40% of the landmass of Pakistan**, and it is where the place they have the mines.   
+Majority of the incidents take place in **Balochistan**, **Balochistan** next door to **Iran**, and **Iran** and **Afghanistan**. So that area, and also it has **40% of the landmass of Pakistan**, and it is where the place they have the mines.
 
-So the **Rekodik mines**, the copper mines, where the **MCC** is working. So all of these, if somebody can come in and provide some pressure and enable some sort of security, for the Chinese it's good.  
+So the **Rekodik mines**, the copper mines, where the **MCC** is working. So all of these, if somebody can come in and provide some pressure and enable some sort of security, for the Chinese it's good.
 
-The only concern they have is if American companies come in and they are targeted, will the Americans, you know, we've seen, what was it, **BlackRock** that in the past was in **Pakistan**, the, you know, the security providers, will they be coming in?  
+The only concern they have is if American companies come in and they are targeted, will the Americans, you know, we've seen, what was it, **BlackRock** that in the past was in **Pakistan**, the, you know, the security providers, will they be coming in?
 
-But Pakistan has made, so far, they've made a decision that no more foreign security companies, no more foreigners will be allowed to bring the security forces inside Pakistan. And of course, I'm sure the Pakistani army is still a little bit sensitive over what happened with **Osama bin Laden**, the fact that the American special forces covertly came in and grabbed him.  
+But Pakistan has made, so far, they've made a decision that no more foreign security companies, no more foreigners will be allowed to bring the security forces inside Pakistan. And of course, I'm sure the Pakistani army is still a little bit sensitive over what happened with **Osama bin Laden**, the fact that the American special forces covertly came in and grabbed him.
 
-It is, again, not a shining moment for the Pakistani military. Again, we don't know if the Pakistani military knew that bin Laden was there or if he was there under their protection. But it's something that I think is still a sore point, probably, right?  
+It is, again, not a shining moment for the Pakistani military. Again, we don't know if the Pakistani military knew that bin Laden was there or if he was there under their protection. But it's something that I think is still a sore point, probably, right?
 
-Absolutely. Absolutely.  
+Absolutely. Absolutely.
 
 So in that sense, yeah. But again, they're willing to move on ahead because the reality is they need that support. They need international support.
 And one of the things where people often in **Pakistan**, even, they connect the dots with support from Pakistan is the **IMF**. They link the IMF that, oh, so the IMF is giving you loans. The **IMF** is handing out, despite Indian concerns about Pakistan and its role in **Kashmir**, they still provide the funds for the loans and everything through the IMF to Pakistan. So in Pakistan, I keep on hearing this a lot. They connect the support to IMF.
@@ -241,7 +241,7 @@ And Pakistan always feels like the bank's problem for **China** because they hav
 
 and things like that. There's a huge amount of Chinese money going into Pakistan.
 
-Just in the past few months, there's also been requests from the **Pakistani government** to have more money for the port of **Gawadar**. And the port of **Gawadar**, for those who aren't familiar with it, has been the long-held dream of the Chinese. 
+Just in the past few months, there's also been requests from the **Pakistani government** to have more money for the port of **Gawadar**. And the port of **Gawadar**, for those who aren't familiar with it, has been the long-held dream of the Chinese.
 
 And correct me if I'm wrong here, is to have an **overland trade route** coming basically from the Indian Ocean or be able to avoid the **Straits of Malacca** and to have cargo, potentially even oil, travel overland from Pakistan into southwestern China.
 
@@ -265,7 +265,7 @@ Now, when we talk about **China's interest in Gawadar**, I find it very interest
 
 Who's Andrew Small? He worked for the **German Marshall Fund** and he wrote a book on the **China-Pakistan axis** and people like that. The whole **Gawadar port** idea has been running for a long time. Even the **Americans** were interested in it at one point.
 
-But really, the Chinese got involved when **General Musharraf** first came to power. He's the one who went up to China and said, 
+But really, the Chinese got involved when **General Musharraf** first came to power. He's the one who went up to China and said,
 
 > "Look, we'd like you to set this port up and we're the ones who would like you to have another alternative to Karachi and Port Qasim port."
 
@@ -308,11 +308,11 @@ With all of this in mind, with everything that's going on, let's go back to this
 
 So, the cash isn't as freely available today as it was, say, 10 years ago when they were spending a lot in Pakistan. Do you get the sense that the requests from Pakistan for more investment into the **port of Guadar** will be received well in Beijing?
 
-So, now what I'm tending to do is look at the situation post the downing of the **Raphaels** and then pre the downing. The **Raphaels**, of course, are the Indian fighter jets that were facing off against the **J-10s in Pakistan**, right?
+So, now what I'm tending to do is look at the situation post the downing of the **Rafales** and then pre the downing. The **Raphaels**, of course, are the Indian fighter jets that were facing off against the **J-10s in Pakistan**, right?
 
-Yes. I mean, just look at about **Wong Yi**. He's a foreign minister, right? When was the last time **China's foreign minister** visited **Pakistan**?
+Yes. I mean, just look at about **Wang Yi**. He's a foreign minister, right? When was the last time **China's foreign minister** visited **Pakistan**?
 
-- **2023, Qinggang.**
+- **2023, Qin Gang.**
 
 After that, we all know what happened to Qinggang. But that was the last time China sent a foreign minister.
 
@@ -322,9 +322,9 @@ Yes. So, in that sense, for me, there's definitely a shift.
 
 Of course, then you also have to keep in mind the domestic situation. Within **Pakistan, the political parties changed**. The scenario had changed. So, the **Imran Khan government and the PTI** - they're all under arrest. The new government of **PMLN** and the coalition, they've come about. They took a little while to recover from the setback because it was a change.
 
-Once you have a change, the interest rate was high. The economy wasn't doing well. But now, over a couple of years, they've kind of stabilized to the point that **Moody** and all of those finance companies are saying:
+Once you have a change, the interest rate was high. The economy wasn't doing well. But now, over a couple of years, they've kind of stabilized to the point that **Moody's** and all of those finance companies are saying:
 
-``` 
+```
 OK, yes, they're slightly better now.
 ```
 
@@ -345,14 +345,14 @@ If you remember, some of the deals that have taken place in the power generation
 
 So, how do you expect large new projects to come about if people who are already involved in ground running projects on the ground saying, **"can we have money, please?"** That doesn't look good.
 
-The other change we find is there is this project for the **CPEC** project called the **ML1** — ML1 project, the Mainline 1 train project linking Pakistan, connecting all over. And now, because the Chinese are reluctant because they don't see their investment as fruitful and coming back, they have put a brake on it. Pakistan government has also broken it up now. So, they're trying to make it more, they've broken the thing up and made it more smaller, so smaller projects. That may help them get the funding rather than one huge, one huge project.
+The other change we find is there is this project for the **CPEC** project called the **ML1** - ML1 project, the Mainline 1 train project linking Pakistan, connecting all over. And now, because the Chinese are reluctant because they don't see their investment as fruitful and coming back, they have put a brake on it. Pakistan government has also broken it up now. So, they're trying to make it more, they've broken the thing up and made it more smaller, so smaller projects. That may help them get the funding rather than one huge, one huge project.
 
 So, let me just, if I understand what you're saying, and again, just coming back to the very simple question about whether or not the request for more money in **Beijing** will be well received. It sounds like there's some frustration on the part of Chinese stakeholders over how the money is being spent in the governance of these projects that they may be more reluctant to sink in a lot more money into **Guadal** and CPEC, at least in the near term.
 
 So, what we're finding, what I see, the projects that are being spoken about are not the big government ones, but I'm seeing a lot of small ones, like
 
-- EV assembly plants being opened up  
-- Two or three, I see Changdan  
+- EV assembly plants being opened up
+- Two or three, I see Changdan
 
 And those are private sector, presumably, not government backed then. Yes. And they're basically assembling it. The idea is that they will also transfer some technology, but I don't think so.
 
@@ -440,27 +440,27 @@ Thank you very much, Eric.
 Thank you.
 
 And we'll be back again next week with another episode of the **China Global South podcast**.
-Of course, if you want to support the work that we're doing, the best way that you can do that, and to find out more and all the daily coverage of what **China's doing in Pakistan, India, South Asia, and around the Global South**, is to go to **ChinaGlobalSouth.com**.  
+Of course, if you want to support the work that we're doing, the best way that you can do that, and to find out more and all the daily coverage of what **China's doing in Pakistan, India, South Asia, and around the Global South**, is to go to **ChinaGlobalSouth.com**.
 
-And again, the best way you can support us is to subscribe. Go to **ChinaGlobalSouth.com/subscribe**.  
+And again, the best way you can support us is to subscribe. Go to **ChinaGlobalSouth.com/subscribe**.
 
-If you are a **teacher or a student, we will give you half off**. Send me an email, **eric, E-R-I-C, at ChinaGlobalSouth.com**, and I will send you the links for a half off subscription, only **$10 a month**.  
+If you are a **teacher or a student, we will give you half off**. Send me an email, **eric, E-R-I-C, at ChinaGlobalSouth.com**, and I will send you the links for a half off subscription, only **$10 a month**.
 
-It's very affordable and very worthwhile, and it supports **independent, fact-based, agenda-free journalism** on what China is doing all over the Global South.  
+It's very affordable and very worthwhile, and it supports **independent, fact-based, agenda-free journalism** on what China is doing all over the Global South.
 
-So, for the whole team at the **China Global South Project in Asia, Africa, and soon Latin America,** we're about to launch our **Spanish language service**.  
+So, for the whole team at the **China Global South Project in Asia, Africa, and soon Latin America,** we're about to launch our **Spanish language service**.
 
-I want to thank you for listening and for watching. We'll be back again next week with another episode. Until then, **bye for now**.  
+I want to thank you for listening and for watching. We'll be back again next week with another episode. Until then, **bye for now**.
 
-The discussion continues online.  
+The discussion continues online.
 
-Follow the **China Global South Project** on:  
-- **Blue Sky** and **X** at ChinaGS Project  
-- **YouTube** at China Global South  
+Follow the **China Global South Project** on:
+- **Blue Sky** and **X** at ChinaGS Project
+- **YouTube** at China Global South
 
-Share your thoughts on today's show, or head over to our website at **ChinaGlobalSouth.com**, where you can subscribe to receive full access to more than **5,000 articles and podcasts**.  
+Share your thoughts on today's show, or head over to our website at **ChinaGlobalSouth.com**, where you can subscribe to receive full access to more than **5,000 articles and podcasts**.
 
-Once again, that's **ChinaGlobalSouth.com**.  
+Once again, that's **ChinaGlobalSouth.com**.
 
 We'll see you next week with another episode.
 
