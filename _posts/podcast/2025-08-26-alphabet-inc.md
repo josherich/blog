@@ -156,7 +156,7 @@ Yeah, 1996.
 
 Yes.
 
-So, Larry and Wayne Rosen, who is leading engineering, go and meet with each engineer individually to talk about ideas that they could work on.
+So, Larry and Wayne Rosing, who is leading engineering, go and meet with each engineer individually to talk about ideas that they could work on.
 This tells you so much about **Google-ness**, but it also tells you a lot about the caliber of the **engineers they were hiring at the time**, where they would just approach them and say, 
 
 > "What ideas are you thinking about? Here are some ideas we have. Can you just full stack, own this product entirely yourself?"
@@ -689,7 +689,7 @@ But here's what I will say, David. If you were starting on the foot of competing
 
 And that thing is **real-time collaboration. Real-time multi-user collaboration.**
 
-These were the first — I've tried to rack my brain. I talked to **Sam Chilis, the founder of Rightly**, which Google acquired, which became Google Docs. He believes these were the **first real-time multi-user collaborative pieces of software in history.** It just wasn't possible before the web.
+These were the first — I've tried to rack my brain. I talked to **Sam Schillace, the founder of Writely**, which Google acquired, which became Google Docs. He believes these were the **first real-time multi-user collaborative pieces of software in history.** It just wasn't possible before the web.
 
 Yeah.
 
@@ -703,7 +703,7 @@ And when the Sheets team came in, it was truly an open question of,
 
 Interesting.
 
-The Docs team — so Docs was an acquisition. It was a company called **Rightly** that was founded by Sam and his two co-founders who were great programmers. They've worked together for many years. I used Rightly before it became a Google product.
+The Docs team — so Docs was an acquisition. It was a company called **Writely** that was founded by Sam and his two co-founders who were great programmers. They've worked together for many years. I used Writely before it became a Google product.
 
 No way!
 
@@ -845,7 +845,7 @@ So, yeah. Microsoft's still got all the money.
 Yes.
 **Google's got all the users.** And everybody's happy. But you're so right. Everyone is happy. **This is exactly what Google wants.**
 
-Yeah. And, ultimately, today, **Microsoft is fine with this arrangement, too.** The ultimate fun coda, though, is **Sam Schillis, founder of Rightly.** He would go on to manage all of Docs and Sheets. And I think he actually managed Maps at some point, too. He is now the **deputy CTO of Microsoft.** Careers are long. Amazing.
+Yeah. And, ultimately, today, **Microsoft is fine with this arrangement, too.** The ultimate fun coda, though, is **Sam Schillace, founder of Writely.** He would go on to manage all of Docs and Sheets. And I think he actually managed Maps at some point, too. He is now the **deputy CTO of Microsoft.** Careers are long. Amazing.
 
 The interesting thing, reflecting on **Google's actual business here** and comparing it against all the things that we're talking about, **Google essentially won Search by the mid-late 2000s.** I mean, I know Bing hasn't even launched yet, and we'll get to that. But Search was going to continue becoming a more and more giant market.
 
@@ -1018,7 +1018,7 @@ That's right.
 
 So, **YouTube**.
 
-In early 2005, three **PayPal employees**, part of the **PayPal mafia**, actually fairly junior employees at PayPal, **Chad Hurley, Javid Kareem, and Steve Chen**, leave PayPal and create YouTube.
+In early 2005, three **PayPal employees**, part of the **PayPal mafia**, actually fairly junior employees at PayPal, **Chad Hurley, Jawed Karim, and Steve Chen**, leave PayPal and create YouTube.
 
 Okay, Ben. I have two deep-cut **YouTube corporate history trivia** items for you.
 
@@ -1115,7 +1115,7 @@ Is that right?
 
 Yep.
 
-So it was basically incubated at **Sequoia** when the three founders left **PayPal**. **Sequoia** invested right away. I think it was **Rulof Botha**'s first investment when he joined because **Rulof** knew them from **PayPal**. He's also part of the **PayPal mafia**.
+So it was basically incubated at **Sequoia** when the three founders left **PayPal**. **Sequoia** invested right away. I think it was **Roelof Botha**'s first investment when he joined because **Roelof** knew them from **PayPal**. He's also part of the **PayPal mafia**.
 
 Exactly.
 
@@ -1166,7 +1166,7 @@ I'm glad you caught that, too.
 
 All **Google stock**.
 
-Yes, we heard in the research that after this deal, **Patrick Bichette**, I think, was the CFO of Google at the time. He said,
+Yes, we heard in the research that after this deal, **Patrick Pichette**, I think, was the CFO of Google at the time. He said,
 
 > "Never again, right? This was our biggest mistake."
 
@@ -1192,9 +1192,9 @@ Great.
 
 All right.
 
-So **Google buys it for $1.65 billion**. And interestingly, **Shashir Miroda** this week went on the **Grit podcast**, the **Kleiner Perkins** podcast, and laid out a bunch of data on this. And I actually didn't have a chance to reach out to **Shashir** yet because it just came out. But a lot of this is from that conversation.
+So **Google buys it for $1.65 billion**. And interestingly, **Shishir Mehrotra** this week went on the **Grit podcast**, the **Kleiner Perkins** podcast, and laid out a bunch of data on this. And I actually didn't have a chance to reach out to **Shishir** yet because it just came out. But a lot of this is from that conversation.
 
-So after the acquisition, he said, and **Shashir** was the head of product and basically the CPO, CTO at **YouTube**, not right after the acquisition, but within a year he came in for four or five years.
+So after the acquisition, he said, and **Shishir** was the head of product and basically the CPO, CTO at **YouTube**, not right after the acquisition, but within a year he came in for four or five years.
 
 So after the acquisition, he said it was doing about **$30 million in revenue**.
 
@@ -1209,7 +1209,7 @@ So just imagine every time you loaded YouTube in those years, Google would just 
 So for the first couple of years, the CFO at the time was terrified of its scaling.
 Like, please **don't scale in its current state**. But of course, there's nothing they can do. **The cat's out of the bag. It's scaling.** And the CFO was exploring, hey, can we sell this to one of the other companies who was bidding on it?
 
-That's right, because **Yahoo and the media companies** also wanted to buy **YouTube**. Yes. So Shashira says we were broadly known as **Google's first mistake**.
+That's right, because **Yahoo and the media companies** also wanted to buy **YouTube**. Yes. So Shishir says we were broadly known as **Google's first mistake**.
 
 Well, back to my tee-up in the intro, being a **pure play**, investors didn't like this for a long time. This was a huge knock. I mean, geez, when we did our episode 10 years ago about **YouTube**, we said it was a terrible acquisition. Yes.
 
@@ -1229,7 +1229,7 @@ Yeah, first with related videos and then ultimately the feed.
 
 And just for a sense of scale, there was a report that estimated that **YouTube** that year in 2007 consumed as much bandwidth as the **entire internet did in the year 2000**. So just seven years before.
 
-I have an extremely similar stat from **Shashir**, which is, it's a later period. It's 2014, but it's apples to apples rather than comparing that 07 to 2000. He said in 2014, 
+I have an extremely similar stat from **Shishir**, which is, it's a later period. It's 2014, but it's apples to apples rather than comparing that 07 to 2000. He said in 2014, 
 
 > "YouTube was 20% of the bits on the internet."
 
@@ -2966,7 +2966,7 @@ So **Wave failed** because really nobody knew what to use it for, despite a dazz
 
 ---
 
-So then in 2010, **Erz Holza**, very senior Google, at this point probably distinguished engineer, senior vice president. Yeah, the guy who created the distributed infrastructure. Right after the Buzz failure, he is inspired to write this memo, kind of like the **Bill Gates 1995 internet memo**.
+So then in 2010, **Urs Hölzle**, very senior Google, at this point probably distinguished engineer, senior vice president. Yeah, the guy who created the distributed infrastructure. Right after the Buzz failure, he is inspired to write this memo, kind of like the **Bill Gates 1995 internet memo**.
 
 There’s a sea change going on. The internet is becoming more **people-oriented**. Social media could be a problem for us.
 
@@ -2978,7 +2978,7 @@ Essentially, the internet was now starting to organize around people in this **W
 
 And so here's why I want to pause, David, and I'm going to take it in a little bit different direction than I think you're probably expecting, which is, so therefore they went after Facebook.
 
-I think it's a little bit more related to the **palace intrigue at Google** and a little bit less on-the-nail strategic.
+I think it's a little bit more related to the **palace intrigue at Google** and a little bit less on-the-nose strategic.
 
 So if you zoom out and look at the company right now, it's pretty fragmented. It's got different **fiefdoms** with big personalities at the top of each of these fiefdoms.
 
@@ -3179,9 +3179,9 @@ Then I realized the other as a bigger or bigger thing is **cloud**.
 
 **Google** should have been massively investing in cloud. And there were all sorts of reasons that they did. We're going to save this for the next episode.
 
-But I was like, yeah. Especially think about where the impetus for this came from, from Erz, from this **memo**, the **Erzquake memo**, as it's known.
+But I was like, yeah. Especially think about where the impetus for this came from, from Erz, from this **memo**, the **Ursquake memo**, as it's known.
 
-Erz should have been focused on **cloud**. He should not have been focused on **social**.
+Urs should have been focused on **cloud**. He should not have been focused on **social**.
 
 And Google had the wrong strategy in **cloud** for many years.
 
@@ -3326,15 +3326,15 @@ Great.
 
 Ben, what if I told you that between 2015 and 2016, so this next year, this next 12 months after the Alphabet transition, all of the following people were Google employees:
 
-- **Alex Krzyzewski of AlexNet**, dawn of machine learning AI  
+- **Alex Krizhevsky of AlexNet**, dawn of machine learning AI  
 - His PhD advisor, **Jeff Hinton**, godfather of AI  
-- His collaborator on the AlexNet paper, **Ilya Sutskiver**, founding scientist of OpenAI  
+- His collaborator on the AlexNet paper, **Ilya Sutskever**, founding scientist of OpenAI  
 - **Dario Amadei**, co-founder with his sister of Anthropic  
 - **Andre Karpathy**, until recently chief AI scientist at Tesla  
 - **Chris Ola**, **Noam Shazir**, **Ian Goodfellow**, and of course, the co-founders of **DeepMind**, which Google acquired in 2014:  
   - **Demis Hassabis**  
-  - **Shane Legge**  
-  - **Mustafa Suleiman** (Mustafa runs AI at Microsoft today)  
+  - **Shane Legg**  
+  - **Mustafa Suleyman** (Mustafa runs AI at Microsoft today)  
 - **Andrew Ng** from Stanford  
 - **Kwok Lee**  
 - **Oriol Vinales**  
@@ -3739,7 +3739,7 @@ We have a bunch of people to thank for contributing to this episode. Yes. Yes, w
 
 - **Hiroshi Lockheimer**
 - **Tim Armstrong**
-- **Sam Schillis**
+- **Sam Schillace**
 - **Hunter Walk**
 - **Nick Fox**
 - **Shona Brown**
@@ -3937,7 +3937,7 @@ Huh.
       "section_level": 2
     },
     {
-      "index_sentences": "So, YouTube. In early 2005, three PayPal employees, part of the PayPal mafia, actually fairly junior employees at PayPal, Chad Hurley, Javid Kareem, and Steve Chen, leave PayPal and create YouTube.",
+      "index_sentences": "So, YouTube. In early 2005, three PayPal employees, part of the PayPal mafia, actually fairly junior employees at PayPal, Chad Hurley, Jawed Karim, and Steve Chen, leave PayPal and create YouTube.",
       "section_title": "Chad Hurley, Jim Clark & YouTube's Trifecta of Brilliance",
       "section_level": 2
     },
