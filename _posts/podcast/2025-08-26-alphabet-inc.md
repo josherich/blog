@@ -1385,7 +1385,7 @@ Human attention time sink, known to man.
 
 So, then the question becomes, how profitable is the $50 billion in revenue? And officially, we don't know, but there's these great things called research firms out there that make our jobs at Acquired here much easier.
 
-So, storied firm, **Moffitt Nathanson, published a report earlier this year** that they think YouTube does about **$8 billion in operating income**.
+So, storied firm, **MoffettNathanson, published a report earlier this year** that they think YouTube does about **$8 billion in operating income**.
 
 > "$8 billion a year."
 
@@ -1446,7 +1446,7 @@ In addition to this thing you just said, this becoming the winner in the **short
 
 **Yeah. Let's go.**  
 
-So **Moffat-Nathanson** estimated that if this was publicly traded, it would be worth about **$500 billion as a standalone company**.  
+So **MoffettNathanson** estimated that if this was publicly traded, it would be worth about **$500 billion as a standalone company**.  
 
 And even conservatively, if you sort of take media company comps and do a revenue multiple, and you discount all the strategic future value, it's still like **$200 billion**.  
 
@@ -1543,7 +1543,7 @@ So, in **2002**, after they're sort of limping along for a while, they sell that
 
 So, flash forward to **2004**, they're this kind of sleepy, slow growth company with a shrinking market cap. The ad server, their software was still widely used, but digital marketing on the web just wasn't actually having that much spend flow through it.
 
-So, **Google actually took a meeting to look at it to see if they wanted to buy it**. They decided not to. And eventually, they sold it to private equity. Two different firms, **Helman and Friedman** and **JMI Management**, bought it in **2005** for about a **billion dollars**. IPO day was double this final price tag that they would sell it to private equity for. And in many stories, this is kind of the end of the story. This is the start.
+So, **Google actually took a meeting to look at it to see if they wanted to buy it**. They decided not to. And eventually, they sold it to private equity. Two different firms, **Hellman & Friedman** and **JMI Management**, bought it in **2005** for about a **billion dollars**. IPO day was double this final price tag that they would sell it to private equity for. And in many stories, this is kind of the end of the story. This is the start.
 
 Yeah. It's sort of crazy given the fact pattern that you just told us that two years later, **Google is going to buy this thing for $3 billion**.  
 
@@ -1745,7 +1745,7 @@ And so, all along the way, they're tweaking the algorithm in an attempt to **red
 On the people side of things, they really had solidified themselves as the **preeminent computer science research company** at this point.
 I mean, if you were to refer in **2008** to a really smart programmer, you probably said, **"Oh, they're like a Google-type engineer."** They sort of took the mantle from **Microsoft** and had not yet relinquished it to **Facebook** or later to **Stripe** or **OpenAI** or **Anthropic** or any of the sort of companies we would talk about in the future as this dense concentration of the best engineers.
 
-And they had pulled in a lot of the people from the big research labs that had been collapsing. So, you had **Jeff Dean** and **Sanjay Jemawat** coming from **DEC**. David, we did Sanjay a total disservice on the last episode.
+And they had pulled in a lot of the people from the big research labs that had been collapsing. So, you had **Jeff Dean** and **Sanjay Ghemawat** coming from **DEC**. David, we did Sanjay a total disservice on the last episode.
 
 A lot of the stuff that Jeff did—and, of course, he became sort of a Google executive—Jeff and Sanjay peer-programmed together. Yes, there's an amazing *New Yorker* article that was published long ago about their friendship and career partnership and everything that they accomplished together.
 
@@ -2650,8 +2650,8 @@ I didn't realize that.
 
 So before the Droid, there was this whole consumer electronics product category of dedicated GPS devices. People old enough to remember might recall:  
 
-- **Tom-Toms**  
-- **Navtex**  
+- **TomToms**  
+- **Navteq**  
 - **Garmin**
 
 People would buy these devices, put them in their cars, and pay a monthly subscription fee for the service of the turn-by-turn navigation.
@@ -3336,8 +3336,8 @@ Ben, what if I told you that between 2015 and 2016, so this next year, this next
   - **Shane Legg**  
   - **Mustafa Suleyman** (Mustafa runs AI at Microsoft today)  
 - **Andrew Ng** from Stanford  
-- **Kwok Lee**  
-- **Oriol Vinales**  
+- **Quoc Le**  
+- **Oriol Vinyals**  
 - And oh yeah, in addition to all of those people, the authors of the **Transformer paper** because **Google invented the Transformer and published the paper in June of 2017**.  
 
 Right, which is the novel mechanism that all **LLMs today** from every big foundational model research lab is based on.  
@@ -3479,7 +3479,7 @@ The other one is they make tons of **small acquisitions**. Famously, I mean, tha
 - Docs  
 - Blogger  
 
-They bought **Applied Semantics** with the patents and some of the tech for **AdSense**. They bought the technology for **Google Maps**. They bought **Urchin** for **Google Analytics**, **Dodgeball**, **FeedBurner**, **ReCAPTCHA**, **Slide**, **Jambool**, **Like.com**, **Widevine**, **AdMeld**, **Punched**, **Zagat**, **Sparrow**, **Wavy**.  
+They bought **Applied Semantics** with the patents and some of the tech for **AdSense**. They bought the technology for **Google Maps**. They bought **Urchin** for **Google Analytics**, **Dodgeball**, **FeedBurner**, **ReCAPTCHA**, **Slide**, **Jambool**, **Like.com**, **Widevine**, **AdMeld**, **Punchd**, **Zagat**, **Sparrow**, **Wavy**.  
 
 I mean, like, I could just keep going.  
 
