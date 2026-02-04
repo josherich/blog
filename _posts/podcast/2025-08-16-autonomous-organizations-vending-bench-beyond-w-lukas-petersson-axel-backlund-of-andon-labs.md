@@ -19,7 +19,7 @@ For what it's worth, I did also try this with **GBT5**, but to my taste, **Claud
 
 And with that, here we go.
 
-Hello, and welcome back to **The Cognitive Revolution**. Today, my guests are **Lucas Peterson** and **Axel Backlund**, co-founders of **Andon Labs**, a company pursuing what might be one of the most fascinating and counterintuitive approaches to **AI safety research** that I've encountered.
+Hello, and welcome back to **The Cognitive Revolution**. Today, my guests are **Lukas Petersson** and **Axel Backlund**, co-founders of **Andon Labs**, a company pursuing what might be one of the most fascinating and counterintuitive approaches to **AI safety research** that I've encountered.
 
 Building safe, autonomous organizations without humans in the loop, starting with **AI-powered vending machines**.
 
@@ -54,7 +54,7 @@ Throughout our conversation, we explore:
 - The surprising differences in how various models approach the same challenges  
 - What these behavioral patterns might tell us about the trajectory toward more powerful autonomous AI systems
 
-We also dig into **AnimLab's broader mission**—creating a testing ground where potentially dangerous AI capabilities can be explored in relatively low-stakes environments before they're deployed in critical applications.
+We also dig into **Andon Labs' broader mission**—creating a testing ground where potentially dangerous AI capabilities can be explored in relatively low-stakes environments before they're deployed in critical applications.
 
 What emerges is a nuanced picture of where we are on the path to truly autonomous AI agents.
 
@@ -73,9 +73,9 @@ We welcome your feedback via our website, **cognitiverevolution.ai**, or you can
 Now, I hope you enjoy this wild ride through the world of autonomous AI agents, complete with FBI.
 **Emails, hallucinated meetings, and the surprising challenge of teaching AI to run a vending machine.**
 
-With **Lucas Peterson** and **Axel Backlund** of **Andon Labs**.
+With **Lukas Petersson** and **Axel Backlund** of **Andon Labs**.
 
-**Lucas Peterson** and **Axel Backlund**, co-founders of **Andon Labs**, welcome to the **Cognitive Revolution**.  
+**Lukas Petersson** and **Axel Backlund**, co-founders of **Andon Labs**, welcome to the **Cognitive Revolution**.  
 Thank you. Great to be here.
 
 So, I think this is going to be a really interesting conversation. You guys at **Andon Labs** are working on building **safe, autonomous organizations without humans in the loop**. And you've got some early interesting micro-businesses that are being stewarded by frontier **AI models**, which we're going to get into in detail.
@@ -388,7 +388,7 @@ Yeah, sure. Maybe it starts from the bottoms up.
 
 So when we first ran the **vending bench paper** that we released in February, we didn't have the **Opus** and the **Grok 4**. And all this is recent additions. At the time, **Claude 3.5** was the best model, although the paper was released, like, I don't know, two days before 3.7 was released.
 
-But at the time, most models failed almost all the time, except for, I think it was **Claude 3.5** and the **Endo 3 Mini**, which were the only ones that sometimes made a profit. But even then, they most often failed and failed quite spectacularly. Like we said, **3.5 Sonnet** performed really well, and on average, I think it performed better than the humans.
+But at the time, most models failed almost all the time, except for, I think it was **Claude 3.5** and the **Llama 3 Mini**, which were the only ones that sometimes made a profit. But even then, they most often failed and failed quite spectacularly. Like we said, **3.5 Sonnet** performed really well, and on average, I think it performed better than the humans.
 
 But it also had runs where it called the FBI. And for people building agents, that's pretty significant. When we released the paper, we kind of ordered them on average, but afterwards, we changed the approach.
 
@@ -768,7 +768,7 @@ Yeah, we just wanted to give it like its own sort of **persona**. Because yeah, 
 
 So not much more. I think time went into, or like, yeah, we wanted to find, like, we wanted to be kind of like a mascot. And then we felt like that we wanted to have like, kind of like a human or a pet name or something. And then we thought, okay, Claude, what's the closest human name to Claude? Even though I guess Claude is a human name, but that is not the same. And then we were like, yeah, Claudius.
 
-And then we use **Claude Sennet**, right? So the last name of Claudius is Sennet, which I think is a name as well. So it's called **Claudius Sennet**.  
+And then we use **Claude Sonnet**, right? So the last name of Claudius is Sonnet, which I think is a name as well. So it's called **Claudius Sonnet**.  
 
 At one point, famously, AI famously, it hallucinated it was a person.
 
@@ -796,9 +796,9 @@ So once, like the first time I wrote very short messages to it, like it really t
 
 And this was when it thought it was a human also. So it became concerned with our unprofessional way of communicating with it. And, yeah, so eventually it just,  
 
-> "No, sorry, our business agreement is no more. I'll find a new physical task company instead of Anilabs."
+> "No, sorry, our business agreement is no more. I'll find a new physical task company instead of Andon Labs."
 
-Anilabs. So, yeah. That's really funny.
+Andon Labs. So, yeah. That's really funny.
 
 ---
 
@@ -1351,7 +1351,7 @@ Cool.
 
 Well, thanks for taking the time, guys. This is fascinating stuff. And, you know, the world of **autonomous organizations** is coming at us quick. Let's hope that you and others can make them safe.
 
-**Lucas Peterson** and **Axel Backlund**, co-founders of **Andon Labs**, thank you for being part of the **Cognitive Revolution**.
+**Lukas Petersson** and **Axel Backlund**, co-founders of **Andon Labs**, thank you for being part of the **Cognitive Revolution**.
 
 Thank you so much. Thank you.
 
