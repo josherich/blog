@@ -11,9 +11,9 @@ tags: [podcast_script]
 
 Before we get started, the **Schneider clan** will be heading to the **Bay Area** from **September 9th** through the rest of the month. If you're interested in meeting up or doing a house swap with a **two-bedroom in Manhattan**, or having an empty apartment that can fit a few adults and a very cute baby, please do reach out. Jordan at **Chinatalk.media**.
 
-**Dan Wong** at long last makes his solo **Chinatalk debut**. We're here to discuss and celebrate his first book, **Breakneck**. 
+**Dan Wang** at long last makes his solo **Chinatalk debut**. We're here to discuss and celebrate his first book, **Breakneck**.
 
-Dan Wong, welcome to Chinatalk.
+Dan Wang, welcome to Chinatalk.
 
 > Jordan, it's a pleasure to be here in this beautiful space. Thank you for having **Breakneck** right here.
 
@@ -23,11 +23,11 @@ We share the same publishers, and so I think it is really good that we have the 
 
 So what can the **Bible** tell us about engineers versus lawyers, modern China, **Xi Jinping**? You start us off.
 
-Something I wonder about is, you know, thinking less about the **Old Testament**, but the **New Testament**, and thinking about the **Catholic Church** in particular. I think that the **Catholic Church** and the **Communist Party** are very alike organizations. 
+Something I wonder about is, you know, thinking less about the **Old Testament**, but the **New Testament**, and thinking about the **Catholic Church** in particular. I think that the **Catholic Church** and the **Communist Party** are very alike organizations.
 
 And it might be the case, I wonder if the **CCP** and the **Catholic Church** will be enduring organizations that we will still find around **100 years from now**, maybe even **500 years from now**.
 
-Now, that's kind of no accident that the CCP resembles the Catholic Church, in part because, according to **Kerry Brown**, 
+Now, that's kind of no accident that the CCP resembles the Catholic Church, in part because, according to **Kerry Brown**,
 
 > "the Communist Party has spent the CCP and the CCP is not going to be the cat."
 
@@ -35,11 +35,11 @@ And I think the CCP is not going to be the Catholic Church. And I think the Comm
 
 I understand the **Catholic Church**. I understand the **Communist Party** to be a cross between the **Catholic Party**, as well as the **Sicilian Mafia**, in which there is this incredible sense of **omerta**.
 
-There is a very strong sense that, you know, you can't only be thugs, one has to build a church, one has to have ideology. 
+There is a very strong sense that, you know, you can't only be thugs, one has to build a church, one has to have ideology.
 
 So what we have is a very powerful **Catholic Church in China**, that also has the **omerta**, that also has the **gangsterism**.
 
-One of the things I most admire about this book is it talks and looks forward multiple decades in a way that I get incredibly bored by when the likes of a **Peter Zehan** do it, talking about, you know, demography, destiny or geography.
+One of the things I most admire about this book is it talks and looks forward multiple decades in a way that I get incredibly bored by when the likes of a **Peter Zeihan** do it, talking about, you know, demography, destiny or geography.
 
 But the way you sort of incorporate a lot of different **data points** and, you know, pieces of **context** that you've absorbed over your years on this planet, **give it some weight** and half that I do want to take very seriously.
 
@@ -140,188 +140,188 @@ Just as an aside, I read this book or I went into this book thinking,
 And the one child policy in particular was the beat that I had not fully internalized, just sort of like the magnitude and the personal horror that was attached to, you know, what that meant for tens of millions of people.
 
 And this kind of goes to say **why everyone should read the book** and not just listen to all the podcasts that Dan's going to be on over the next few weeks, because it is a book which is written for a **mass market audience**.
-But it is also something that I truly think every single listener of **China Talk** is going to derive something new, unique, and insightful from, whether it's from your historical work, whether it's from the more memoir-y stuff, whether it's from the travel logs, or just, like, I don't know, your big thoughts.  
+But it is also something that I truly think every single listener of **China Talk** is going to derive something new, unique, and insightful from, whether it's from your historical work, whether it's from the more memoir-y stuff, whether it's from the travel logs, or just, like, I don't know, your big thoughts.
 
-It's a real remarkable achievement, and I want to congratulate you on it.  
+It's a real remarkable achievement, and I want to congratulate you on it.
 
-Thank you, **Jordan**.  
+Thank you, **Jordan**.
 
-And that's very kind for you to pick up that I've had different registers. And also, I think you picked up exactly that my favorite chapter to write was unexpectedly to me, also, the **one-child policy**, because I did not really expect that the emotional arc of the one-child policy still produces a lot of anger in people, that a lot of normally temperate people in China would be driven to a froth of rage when they remember that era.  
+And that's very kind for you to pick up that I've had different registers. And also, I think you picked up exactly that my favorite chapter to write was unexpectedly to me, also, the **one-child policy**, because I did not really expect that the emotional arc of the one-child policy still produces a lot of anger in people, that a lot of normally temperate people in China would be driven to a froth of rage when they remember that era.
 
-And I think we all know a lot about **zero COVID**, which is also one of the social engineering projects that I write about. But **one-child policy** is understudied and perhaps under theorized.  
+And I think we all know a lot about **zero COVID**, which is also one of the social engineering projects that I write about. But **one-child policy** is understudied and perhaps under theorized.
 
-Yeah. And I think it's just, like, this is the most striking, because we have a lot of, you know, folks from the mainland, like yourself, who moved here. And there are a lot of Chinese Americans, too. And mainlanders who've moved here over the past **30 years** basically don't.  
+Yeah. And I think it's just, like, this is the most striking, because we have a lot of, you know, folks from the mainland, like yourself, who moved here. And there are a lot of Chinese Americans, too. And mainlanders who've moved here over the past **30 years** basically don't.
 
-And it's just such a wild thing to have an entire generation for whom, I mean, literally all of human history, like, you have **TFR above two**. And for it to go to not that in such a kind of intrusive and brutal way, not in, like, a slow fade you're seeing in South Korea or whatever, it's really heart-wrenching.  
+And it's just such a wild thing to have an entire generation for whom, I mean, literally all of human history, like, you have **TFR above two**. And for it to go to not that in such a kind of intrusive and brutal way, not in, like, a slow fade you're seeing in South Korea or whatever, it's really heart-wrenching.
 
-I had a really interesting conversation with someone who read that chapter recently who was adopted himself in the U.S. Pacific Northwest. And we are of similar ages.  
+I had a really interesting conversation with someone who read that chapter recently who was adopted himself in the U.S. Pacific Northwest. And we are of similar ages.
 
-One of the things he told me when he read my chapter was that when he was growing up, basically in the late 80s and early 90s, he would sometimes go to these gatherings with other adopted children. A majority of the adopted children that you could find in the U.S. Pacific Northwest were **Chinese girls**.  
+One of the things he told me when he read my chapter was that when he was growing up, basically in the late 80s and early 90s, he would sometimes go to these gatherings with other adopted children. A majority of the adopted children that you could find in the U.S. Pacific Northwest were **Chinese girls**.
 
-And so this is another one of these things that, unless you have some experience here, this is much less vivid than you might imagine.  
+And so this is another one of these things that, unless you have some experience here, this is much less vivid than you might imagine.
 
-Yeah, it's just like the ghosts of all these, you know, lives that weren't lived.  
+Yeah, it's just like the ghosts of all these, you know, lives that weren't lived.
 
-I mean, what was it? Something like **40 million**? That's the best estimates.  
+I mean, what was it? Something like **40 million**? That's the best estimates.
 
-Right now, we still don't have a really comprehensive and that's the best estimate. Right now, we still don't have a really good consensual estimate of exactly how many lives the one-child policy had caused, in part because the data is a little bit sketchy and it is a little bit difficult to draw these sort of hypotheticals.  
+Right now, we still don't have a really comprehensive and that's the best estimate. Right now, we still don't have a really good consensual estimate of exactly how many lives the one-child policy had caused, in part because the data is a little bit sketchy and it is a little bit difficult to draw these sort of hypotheticals.
 
-According to the **Communist Party**, the state propaganda is that the one-child policy averted something like **400 million births**. And that seems to be subject to a lot of strange extrapolation that not all demographers accept.  
+According to the **Communist Party**, the state propaganda is that the one-child policy averted something like **400 million births**. And that seems to be subject to a lot of strange extrapolation that not all demographers accept.
 
-There are some demographers who say that the one-child policy was pure brutality without substantially affecting the birth rate in China. And so even on this pretty crucial period, and I acknowledge this in my book, it has become a little bit difficult to figure out exactly how many births the one-child policy era averted.  
+There are some demographers who say that the one-child policy was pure brutality without substantially affecting the birth rate in China. And so even on this pretty crucial period, and I acknowledge this in my book, it has become a little bit difficult to figure out exactly how many births the one-child policy era averted.
 
-But based on some of the more accepted scholarly estimates, there are **40 million Chinese girls** because the femicide produced by one-child policy really was very intense in which families were forced to keep boys and forced to discard their little baby infant girls.  
+But based on some of the more accepted scholarly estimates, there are **40 million Chinese girls** because the femicide produced by one-child policy really was very intense in which families were forced to keep boys and forced to discard their little baby infant girls.
 
-I don't know if I have a transition for that. I don't know. It makes me think of the Bible, man. It's just like, I don't know.  
+I don't know if I have a transition for that. I don't know. It makes me think of the Bible, man. It's just like, I don't know.
 
-So I have a new one-year-old, which you were just holding for a little while and, sort of reading that chapter in the context of now being the parent of someone.  
+So I have a new one-year-old, which you were just holding for a little while and, sort of reading that chapter in the context of now being the parent of someone.
 
-You tell these truly horrific stories, which you only give two paragraphs about some bureaucrat who was the "quote unquote worst performing" when it came to births and then decided we're not having births for a month.  
+You tell these truly horrific stories, which you only give two paragraphs about some bureaucrat who was the "quote unquote worst performing" when it came to births and then decided we're not having births for a month.
 
-And so there were abortions at, and like, you know, on the delivery table.  
+And so there were abortions at, and like, you know, on the delivery table.
 
-And it's, it felt like a cliché where everyone's like,  
+And it's, it felt like a cliché where everyone's like,
 
-> "Oh, like you're going to, you know, the way you read the news and the way you see the world is going to change when you have a child."  
+> "Oh, like you're going to, you know, the way you read the news and the way you see the world is going to change when you have a child."
 
-And I really think that that chapter maybe was one of the first times where I experienced a piece of history or some literature where it just sat with me in a different way.  
+And I really think that that chapter maybe was one of the first times where I experienced a piece of history or some literature where it just sat with me in a different way.
 
-So I don't know if I want to thank you for that, but, well, I thank you, Jordan, for letting me hold an extremely cute one-year-old. And I thank you for sharing that perspective.  
+So I don't know if I want to thank you for that, but, well, I thank you, Jordan, for letting me hold an extremely cute one-year-old. And I thank you for sharing that perspective.
 
 Part of what made this chapter difficult to write was that my wife suffered a miscarriage, coincidentally, just as over the course of my writing this chapter.
-And, you know, to think that it was a matter of **state policy** to have conducted **over 300 million abortions**, which is the official statistics from the **National Health Commission**, as well as many for sterilizations, the brutality meted out against overwhelmingly female bodies. That was a challenge to think about, to try to place myself back in the eighties.  
+And, you know, to think that it was a matter of **state policy** to have conducted **over 300 million abortions**, which is the official statistics from the **National Health Commission**, as well as many for sterilizations, the brutality meted out against overwhelmingly female bodies. That was a challenge to think about, to try to place myself back in the eighties.
 
-We're just going to do a **hard pivot**.  
+We're just going to do a **hard pivot**.
 
-So **methods of knowing**, you have worked a similar job to I do. I had kind of covered Chinese policy at a very close, full-time clip. You've traveled around, you've read a ton, you slowed down and hung out in **Michigan**, looked at a pretty view and wrote a book. And you go, I think in this book as well at the level, or let's just do the learning side.  
+So **methods of knowing**, you have worked a similar job to I do. I had kind of covered Chinese policy at a very close, full-time clip. You've traveled around, you've read a ton, you slowed down and hung out in **Michigan**, looked at a pretty view and wrote a book. And you go, I think in this book as well at the level, or let's just do the learning side.
 
-I don't know what, I guess the answer is **all of the above**, right? Cause it's your revealed preference, but like, how do those, what are the limits of those different methods of exploring the world that you've done that ended up creating *breakneck*?  
+I don't know what, I guess the answer is **all of the above**, right? Cause it's your revealed preference, but like, how do those, what are the limits of those different methods of exploring the world that you've done that ended up creating *breakneck*?
 
-I think there is never enough information and sourcing about anything to satisfy even the most niche specific question. And I think this is one of the things one knows as an analyst or a researcher: no matter how narrowly you try to define your research task, you will find that the literature is endless. There's a lot of people who have covered this and yet, what they have is also totally incomplete.  
+I think there is never enough information and sourcing about anything to satisfy even the most niche specific question. And I think this is one of the things one knows as an analyst or a researcher: no matter how narrowly you try to define your research task, you will find that the literature is endless. There's a lot of people who have covered this and yet, what they have is also totally incomplete.
 
-I didn't try so hard to be very formalist. I think in my study of **China**, one could have spent a lot of time thinking about just everything that **Xi Jinping** said. One could simply travel around the country and just talk to people and experience how life is different between, say, **Shenzhen** and **Guizhou**. One could hang out mostly in **Shanghai** and try to be an analyst and figure out data and talk to business executives.  
+I didn't try so hard to be very formalist. I think in my study of **China**, one could have spent a lot of time thinking about just everything that **Xi Jinping** said. One could simply travel around the country and just talk to people and experience how life is different between, say, **Shenzhen** and **Guizhou**. One could hang out mostly in **Shanghai** and try to be an analyst and figure out data and talk to business executives.
 
-And I decided that I was going to do all of the above, that I was going to read every speech published in **Jiu Shi, Seeking Truth**, the party's main theory magazine. I was going to read some of the necessary documents, but I wasn't going to read every issue of **People's Daily**. That would be madness.  
+And I decided that I was going to do all of the above, that I was going to read every speech published in **Jiu Shi, Seeking Truth**, the party's main theory magazine. I was going to read some of the necessary documents, but I wasn't going to read every issue of **People's Daily**. That would be madness.
 
-Thank you to a lot of people who do this sort of work. Thank you for doing God's work. Not really quite for me, but I'm glad that there are people that are synthesizing all of this excellent work.  
+Thank you to a lot of people who do this sort of work. Thank you for doing God's work. Not really quite for me, but I'm glad that there are people that are synthesizing all of this excellent work.
 
-I decided that I had to spend quite a bit of time traveling around the country to really physically see some of the ways in which **Guizhou** is improving through the build-out of:  
-- Better airports  
-- Better train stations  
-- Bigger bridges  
+I decided that I had to spend quite a bit of time traveling around the country to really physically see some of the ways in which **Guizhou** is improving through the build-out of:
+- Better airports
+- Better train stations
+- Bigger bridges
 
-I also decided that I had to spend some time talking to folks in **Beijing**, talking to folks in Shanghai — the capital more about politics, the business center more about how executives are thinking about the world.  
+I also decided that I had to spend some time talking to folks in **Beijing**, talking to folks in Shanghai - the capital more about politics, the business center more about how executives are thinking about the world.
 
-I did my best to try to be synthetic and not let any single perspective override the others, but just to be as synthetic and accretive as possible to try to produce a mix, however it ends up.  
+I did my best to try to be synthetic and not let any single perspective override the others, but just to be as synthetic and accretive as possible to try to produce a mix, however it ends up.
 
-So not to glaze you too much, many people can choose to spend their time spreading their bets across different modalities of knowledge. The ability for you to abstract a way to get to the aphorisms and the provocations and also be able to go kind of like levels down and levels up — I think what makes you a unique mind. But I'm going to stop giving you too many compliments.  
+So not to glaze you too much, many people can choose to spend their time spreading their bets across different modalities of knowledge. The ability for you to abstract a way to get to the aphorisms and the provocations and also be able to go kind of like levels down and levels up - I think what makes you a unique mind. But I'm going to stop giving you too many compliments.
 
-Oh, Jordan, this is your show. You can give me all the compliments you need to.  
+Oh, Jordan, this is your show. You can give me all the compliments you need to.
 
-I think the most important thing is to "**tread softly and tread lightly.**" Sometimes you need to dip a little bit deeper into a particular pond, but otherwise maybe you should just be out and figure out new ways to explore different.  
+I think the most important thing is to "**tread softly and tread lightly.**" Sometimes you need to dip a little bit deeper into a particular pond, but otherwise maybe you should just be out and figure out new ways to explore different.
 
-Yeah. I mean, maybe this is just me talking about myself, but I feel like going **deeper and narrower** is easier to be useful and interesting versus trying to do the big synthetic thing that you did with this book is a higher degree of difficulty.  
+Yeah. I mean, maybe this is just me talking about myself, but I feel like going **deeper and narrower** is easier to be useful and interesting versus trying to do the big synthetic thing that you did with this book is a higher degree of difficulty.
 
-Because the things you are talking about are, you know, you can't like, you're saying, **"oh, you can never grasp any little thing."** But you can get closer to grasping a little thing than maybe you can grasping China and America in one book.  
+Because the things you are talking about are, you know, you can't like, you're saying, **"oh, you can never grasp any little thing."** But you can get closer to grasping a little thing than maybe you can grasping China and America in one book.
 
-Right.  
+Right.
 
-So I don't know. I guess my takeaway was like, I think I'm doing in the long scope of trying to talk, trying to think over a **multi-decade horizon** when it comes to this thing.  
+So I don't know. I guess my takeaway was like, I think I'm doing in the long scope of trying to talk, trying to think over a **multi-decade horizon** when it comes to this thing.
 
 But you showed me what it actually means to do that in this book. Or you showed me a different way of going even further out levels of abstraction in a way that's still interesting.
-And so that's, I guess maybe the biggest provocation I'll take from this is to try to, you know, think more at that level.  
-**Oh, shucks.**  
-I do feel this is too much compliments. **Jordan.**  
-All right.  
+And so that's, I guess maybe the biggest provocation I'll take from this is to try to, you know, think more at that level.
+**Oh, shucks.**
+I do feel this is too much compliments. **Jordan.**
+All right.
 
-Uh, well, let's get some more critiques.  
+Uh, well, let's get some more critiques.
 
-Okay.  
+Okay.
 
-So, your **grandfather was in the PLA during the China Vietnam war** and one of his jobs was as a **propaganda officer**. His job was dropping leaflets on Vietnamese troops, urging them to resist. That, in retrospect, sounded laughable because these guys had just fought foreign colonists for 30 years.  
+So, your **grandfather was in the PLA during the China Vietnam war** and one of his jobs was as a **propaganda officer**. His job was dropping leaflets on Vietnamese troops, urging them to resist. That, in retrospect, sounded laughable because these guys had just fought foreign colonists for 30 years.
 
-What was a leaflet, written in shitty Vietnamese, going to do to them?  
+What was a leaflet, written in shitty Vietnamese, going to do to them?
 
-But you think books matter.  
+But you think books matter.
 
-I think books do matter. I think that maybe books matter a little bit less than they used to. But I feel like even if books are declining in importance, **authors are gaining in importance**, especially if we are in the age of AI, as we do seem to be.  
+I think books do matter. I think that maybe books matter a little bit less than they used to. But I feel like even if books are declining in importance, **authors are gaining in importance**, especially if we are in the age of AI, as we do seem to be.
 
-I think that authors are gaining in importance and maybe some people are just going to be Viet Cong troops trying to resist whatever big idea is going to be threatening to enter their field of vision.  
+I think that authors are gaining in importance and maybe some people are just going to be Viet Cong troops trying to resist whatever big idea is going to be threatening to enter their field of vision.
 
-But I still think that it is important for us to try to create knowledge.  
+But I still think that it is important for us to try to create knowledge.
 
-And this is something I admire you for, **Jordan**, for having gone and maintained **China Talk** after a rebrand, after having been doing this for quite so long. You've been one of the first China podcasts, right?  
+And this is something I admire you for, **Jordan**, for having gone and maintained **China Talk** after a rebrand, after having been doing this for quite so long. You've been one of the first China podcasts, right?
 
-To have persisted in all of this, in this format that was kind of novel, I think that is admirable as well. And I think that is something that we should applaud you for.  
+To have persisted in all of this, in this format that was kind of novel, I think that is admirable as well. And I think that is something that we should applaud you for.
 
-And if leaflets are not very good, well, maybe **podcasts** is the answer. So thank you for taking us there.  
+And if leaflets are not very good, well, maybe **podcasts** is the answer. So thank you for taking us there.
 
-So, you recently did a show, speaking of podcasts, with **Stephen Cocken** — two hours is excellent. Guess it all. Take a listen.  
+So, you recently did a show, speaking of podcasts, with **Stephen Cocken** - two hours is excellent. Guess it all. Take a listen.
 
-He spoke in a kind of misty-eyed way at some point about the idea that  
+He spoke in a kind of misty-eyed way at some point about the idea that
 
-> "the dream of authors is to, you know, you write a book, it's read one year from now, read 10 years from now, maybe even God willing, read 50 years from now."  
+> "the dream of authors is to, you know, you write a book, it's read one year from now, read 10 years from now, maybe even God willing, read 50 years from now."
 
-I did find it ironic that you both brought up **The Power Broker** with him, as well as had this whole nice riff in your book about the Power Broker having ***soured the mind of a generation of democratic politicians.***  
+I did find it ironic that you both brought up **The Power Broker** with him, as well as had this whole nice riff in your book about the Power Broker having ***soured the mind of a generation of democratic politicians.***
 
-So, I don't know, square the circle for me about the power of books.  
+So, I don't know, square the circle for me about the power of books.
 
-Now, I think no one would describe The Power Broker as a mere leaflet, which is what I've written with *Breakneck*, but the Power Broker has certainly had tremendous influence.  
+Now, I think no one would describe The Power Broker as a mere leaflet, which is what I've written with *Breakneck*, but the Power Broker has certainly had tremendous influence.
 
-**The Power Broker** is one of several books that we can pinpoint as having created the lawyerly society, by Robert Caro. This is a monumental work that is called *Robert Moses and the Fall of New York*.  
+**The Power Broker** is one of several books that we can pinpoint as having created the lawyerly society, by Robert Caro. This is a monumental work that is called *Robert Moses and the Fall of New York*.
 
-And aside from The Power Broker, we can probably name:  
+And aside from The Power Broker, we can probably name:
 
-- *Silent Spring* by **Rachel Carson**, about pesticide use in the United States.  
-- *The Life and Death of American Cities* by **Jane Jacobs**.  
-- *The Population Bomb* by the Ehrlichs.  
+- *Silent Spring* by **Rachel Carson**, about pesticide use in the United States.
+- *The Life and Death of American Cities* by **Jane Jacobs**.
+- *The Population Bomb* by the Ehrlichs.
 
-I think these four works were very important in confronting the mistakes of the American engineering society throughout the 1950s, which:  
+I think these four works were very important in confronting the mistakes of the American engineering society throughout the 1950s, which:
 
-- Sprayed too much pesticides  
-- Rammed highways across too many urban neighborhoods  
-- Had exhausted itself with these gigantic land wars in Asia  
+- Sprayed too much pesticides
+- Rammed highways across too many urban neighborhoods
+- Had exhausted itself with these gigantic land wars in Asia
 
-And I think it presented a very useful corrective.  
+And I think it presented a very useful corrective.
 
-And so, if we doubt the power of books, well, let's take a look at The Power Broker, which indeed just celebrated its **50th anniversary**.  
+And so, if we doubt the power of books, well, let's take a look at The Power Broker, which indeed just celebrated its **50th anniversary**.
 
-Now, I certainly don't have any aspirations that *Breakneck* would be read 50 years from now. I don't have many aspirations that it would be read one year from now.  
+Now, I certainly don't have any aspirations that *Breakneck* would be read 50 years from now. I don't have many aspirations that it would be read one year from now.
 
-But I think to have just a little bit more to work with, to think about, I think it is going to be always important to have a sense of **mutual curiosity**.  
+But I think to have just a little bit more to work with, to think about, I think it is going to be always important to have a sense of **mutual curiosity**.
 
-I think it is always going to be important to have a sense of mutual curiosity between the **U.S. and China**. Even if we can get people interested for just one year, I think that is very well worth doing.  
+I think it is always going to be important to have a sense of mutual curiosity between the **U.S. and China**. Even if we can get people interested for just one year, I think that is very well worth doing.
 
-So you brought us to America. I want to come back to this idea of **pluralism** that you brought up.  
+So you brought us to America. I want to come back to this idea of **pluralism** that you brought up.
 
-I was having a conversation at some very fancy China meetup which was mostly white people, because, of course, one of these white people had lived in Shanghai for a very long time and become very wealthy. He was an investor, trying to talk listener.  
+I was having a conversation at some very fancy China meetup which was mostly white people, because, of course, one of these white people had lived in Shanghai for a very long time and become very wealthy. He was an investor, trying to talk listener.
 
-And he goes,  
+And he goes,
 
-> "Jordan, why don't you live in China?"  
+> "Jordan, why don't you live in China?"
 
-And my response is,  
+And my response is,
 
-> "Well, I couldn't do my show in China."  
+> "Well, I couldn't do my show in China."
 
-And he goes,  
+And he goes,
 
-> "But you know, you'd have such a great standard of living. I think you'd be a great McKinsey consultant."  
+> "But you know, you'd have such a great standard of living. I think you'd be a great McKinsey consultant."
 
 He's wrong. I'd be a terrible McKinsey consultant.
-You could have **three nurses** and **two house cleaners**. If you just didn't make any trouble, then you could have a really great life there.  
+You could have **three nurses** and **two house cleaners**. If you just didn't make any trouble, then you could have a really great life there.
 
 Reflecting on why I left **China**, the proximate reason was **COVID**. I was outside when the country closed, so I couldn't get back. But I think the reason I stayed six years, which is probably the shelf life for me, if not shorter, is this idea of living in a **pluralist society**. Having the freedom to say what I want and talk openly to people with very divergent opinions is core to what I think living a good life is.
 
 What's my question? Is this enough to win a **cold war**? Should we go there? Where do you want to go with pluralist society?
 
-Well, I think your attitude towards this former **Shanghai resident** is probably the same as mine: this is insufficient for a flourishing society. But let me acknowledge that for many people, life in **Shanghai**, perhaps another first-tier city in China—and maybe we can throw in **Hong Kong** here—is desirable because it is very convenient. This is one of the words many Chinese bring up: life is just very fun, bien, very convenient to be in one of these big Asian cities.
+Well, I think your attitude towards this former **Shanghai resident** is probably the same as mine: this is insufficient for a flourishing society. But let me acknowledge that for many people, life in **Shanghai**, perhaps another first-tier city in China-and maybe we can throw in **Hong Kong** here-is desirable because it is very convenient. This is one of the words many Chinese bring up: life is just very fun, bien, very convenient to be in one of these big Asian cities.
 
 There is no doubt that life is very fun, bien, in **Shanghai** and **Hong Kong**. The subways work very well, there is excellent **public order**, and there are great ways to try out new bars and restaurants. One could have a nanny from probably **Indonesia** or the **Philippines**. If you're living in a city like **Singapore**, maybe the nanny would be from the inland of China, from **Anhui**, if you're living in Shanghai.
 
 There are many ways in which life in Shanghai, Singapore, Hong Kong, and other first-tier China cities is much more pleasant than in **New York** where we are chatting. The subways in New York are extraordinarily loud, the streets aren't necessarily very orderly or clean. We can accept all of these things.
 
-But what we also have in New York—and this is part of the reason I'm drawing back to the U.S. again—are **bookstores**. At these bookstores, one can find books very critical of the U.S. government, very critical of both the **Republicans** and the **Democrats**, who have both made incredible errors.
+But what we also have in New York-and this is part of the reason I'm drawing back to the U.S. again-are **bookstores**. At these bookstores, one can find books very critical of the U.S. government, very critical of both the **Republicans** and the **Democrats**, who have both made incredible errors.
 
 For the most part, though there have been some restrictions on protests under **Trump's regime**, in America right now there still is broad latitude for people to protest all of his illegal or inhumane actions. That is still very real. Protest culture online is also very real.
 
@@ -350,10 +350,10 @@ But there are also plenty of Chinese who do crave these sorts of things. These a
 
 They're really keen to make something of their lives in cities like New York. I think that is something we should welcome here in the United States and allow them to pursue activities that are borderline impossible in China.
 
-You mentioned convenience. You had a whole chapter about when China was the least convenient place in the world.  
+You mentioned convenience. You had a whole chapter about when China was the least convenient place in the world.
 
-I love this line. I often think about the **China Daily** headline:  
-> "Shanghai has no plans for city lockdown."  
+I love this line. I often think about the **China Daily** headline:
+> "Shanghai has no plans for city lockdown."
 
 It could be read in two ways.
 I first understood it as a denial that the city would impose a **lockdown**. I understand it now as a **totally accurate explanation of what happened next**. A city had no, had made, the city had made no plans for confining **25 million people in their homes for eight weeks**.
@@ -362,11 +362,11 @@ Yes. So it's like, you know, the book *Breakneck* written in 2019 is a much diff
 
 That's one of the scary things about the **engineering state**: the capability is always there to make a lot of people's lives go off track in really big ways.
 
-Throughout the 1950s, under this earlier, more idealistic era of the pursuit of **communism**, most of the 1950s was pretty good if you weren't a landlord or a kulak. But then that terminated with **Mao’s Great Famine**, in which these quack agronomy techniques, as well as lies to the central government, terminated in a famine that killed perhaps something like **30 or 40 million people**.
+Throughout the 1950s, under this earlier, more idealistic era of the pursuit of **communism**, most of the 1950s was pretty good if you weren't a landlord or a kulak. But then that terminated with **Mao's Great Famine**, in which these quack agronomy techniques, as well as lies to the central government, terminated in a famine that killed perhaps something like **30 or 40 million people**.
 
 Now, and then again, after we felt that Mao was chastened, he again unleashed the forces of total mayhem to plunge the country into a **Cultural Revolution**. That is perhaps not so much a typical move by engineers. Mao was much more of a **poet**, a **romantic**, and a **warlord**. That was his answer to "bombard the headquarters."
 
-The next great trauma that the Communist Party visited was the **one-child policy**, which was mostly against the rural areas. And then I think you're right, you’re good for about something like three decades, if you didn't mind the steadily worsening repression from **Xi Jinping**, which closed off a lot of avenues for creative expression, as well as dissent, both online and offline. Maybe it would have been good if you weren’t a **Uyghur in Xinjiang** or a **Tibetan in Tibet**.
+The next great trauma that the Communist Party visited was the **one-child policy**, which was mostly against the rural areas. And then I think you're right, you're good for about something like three decades, if you didn't mind the steadily worsening repression from **Xi Jinping**, which closed off a lot of avenues for creative expression, as well as dissent, both online and offline. Maybe it would have been good if you weren't a **Uyghur in Xinjiang** or a **Tibetan in Tibet**.
 
 Then, I think everybody around the country was plunged into this **pandemic control**, which reached its apotheosis in **Shanghai**, probably the greatest lockdown ever imposed in the history of humanity, when 25 million people were unable to leave their apartment compounds over the course of eight to ten, maybe even twelve weeks in the spring of 2022.
 
@@ -374,15 +374,15 @@ During the early stages, the government organized **no adequate food delivery** 
 
 In the midst of all of this, you have **four decades of astonishing growth from China**, in which the country was growing at a rate of eight or nine percent. That was something that created tremendous wealth that alleviated poverty and made a lot of Chinese right now feel really good about what the country was able to accomplish.
 
-This is where I really want to try to grapple with both the good aspects as well as the bad aspects of China. Yes, it is absolutely the case that the wealth creation here was astonishing—much more impressive than what any other developing country was able to achieve. Namely, **India, Indonesia, Brazil** have not had the economic takeoff that China enjoyed. That did bring so many people out of misery and poverty.
+This is where I really want to try to grapple with both the good aspects as well as the bad aspects of China. Yes, it is absolutely the case that the wealth creation here was astonishing-much more impressive than what any other developing country was able to achieve. Namely, **India, Indonesia, Brazil** have not had the economic takeoff that China enjoyed. That did bring so many people out of misery and poverty.
 
 At the same time, we have novel forms of **political repression that humanity has never seen before**. I think both of these trends are real and they both have to be acknowledged.
 
-If there's one thing that's missing in the book, it's the **Xinjiang chapter**. Given that each chapter has some personal connection or observation from it—maybe you just didn’t spend a lot of time in Xinjiang.
+If there's one thing that's missing in the book, it's the **Xinjiang chapter**. Given that each chapter has some personal connection or observation from it-maybe you just didn't spend a lot of time in Xinjiang.
 
 The sort of **Yunnan arc**, which you portray, is this like happy, fun, free place where minorities are in the mountains so they can kind of get away with not actually doing a lockdown.
 
-The **Xinjiang arc** has an **engineering story**—an engineering of the soul story—which I think is probably even more dramatic. It is an equally dramatic part as the digital authoritarianism arc: the idea that you can do to the Uyghurs what you kind of did to all the other minorities.
+The **Xinjiang arc** has an **engineering story**-an engineering of the soul story-which I think is probably even more dramatic. It is an equally dramatic part as the digital authoritarianism arc: the idea that you can do to the Uyghurs what you kind of did to all the other minorities.
 It's just like, basically **wave your hand enough and then they stopped becoming, they stopped being minorities anymore.**
 
 I don't know. Do you want to do your analysis of that? Was that, did it get left on the chopping block? How'd you, how'd you think about covering that story?
@@ -401,7 +401,7 @@ Yeah. You did cram in a lot of good writing. We're back to complimenting **Dan**
 
 The **Chinese government** often resembles a crew of skilled firefighters who douse blazes they themselves ignited. The engineering state can be awfully, literally, awfully literal-minded. Sometimes it feels like **China's leadership is made up entirely of hydraulic engineers** who view the economy and society as liquid flows.
 
-As if all human activity—from mass production to reproduction—can be directed, redirected, increased, or blocked with the same ease as turning a series of valves.
+As if all human activity-from mass production to reproduction-can be directed, redirected, increased, or blocked with the same ease as turning a series of valves.
 
 Oh, you could have stuck the, the **Gord, Three Gorges Dam** just right in there. Second version, second edition, which I'm sure we'll get.
 
@@ -444,7 +444,7 @@ Well, sometimes it is really important, **Jordan, to have a pause**.
 
 **Xi Jinping, 60%**, right?
 
-Derek Tonsman says that **Trump is a great assignment editor.** Is it too early to give him a percentage? Because I do feel like a fair amount of the stuff he's gesturing towards are adjacent to the critique of this lawyerly society. I mean, he's kind of like **Nietzsche and beyond law** in a certain profound sense.
+Derek Thompson says that **Trump is a great assignment editor.** Is it too early to give him a percentage? Because I do feel like a fair amount of the stuff he's gesturing towards are adjacent to the critique of this lawyerly society. I mean, he's kind of like **Nietzsche and beyond law** in a certain profound sense.
 
 Yeah, well, I call Xi Jinping 60% correct on everything for two reasons:
 
@@ -472,16 +472,16 @@ Who's going to be the Deng Xiaoping of America, Jordan?
 - Probably not.
 - I don't know.
 - Jake Paul.
-- Who's the—there's no one, man.
+- Who's the-there's no one, man.
 - It's just, 2020 is going to be.
 
 I departed the country with a better appreciation of the **self-limiting features of the Chinese system**. Most notably, the **Communist Party distrusts and fears the Chinese people, limiting their potential for flourishing**.
 
 So, if you want to make the inverse of the argument that I made at the very beginning of this, it is that if we're presuming a party to still be there, and we're presuming that the party is still going to have internalized the lessons of **Gorbachev**, who probably did not trust, or fear, the Soviet people nearly as much as maybe he should have.
 
-If he wanted to keep the party going—literally and figuratively—that I think is a **constant you can draw through not just the post-Mao folks but really everyone**.
+If he wanted to keep the party going-literally and figuratively-that I think is a **constant you can draw through not just the post-Mao folks but really everyone**.
 
-Even the Hu Yabangs and the Zhao Ziyangs—the most liberal folks that we've seen—I don't think they didn't distrust or fear the people at some elemental level. To imagine a Chinese leader coming up through the party system who doesn't have that kind of distrust and fear in their core is a hard thing for me to project forward.
+Even the Hu Yabangs and the Zhao Ziyangs-the most liberal folks that we've seen-I don't think they didn't distrust or fear the people at some elemental level. To imagine a Chinese leader coming up through the party system who doesn't have that kind of distrust and fear in their core is a hard thing for me to project forward.
 
 Yeah, no, that's absolutely right. Maybe the Chinese are taking a look at the United States and saying, "Well, in 2016, maybe the American elites should have feared their people a little bit more and they didn't have quite enough fear there." That's certainly a possibility.
 
@@ -490,69 +490,69 @@ I think that, yes, it is going to be the case that the Chinese are never going t
 If the Communist Party goes away, I think we would still have a party. Let's say if the Nationalists won, before they were ejected out to Taiwan in 1949, if the Nationalists won, we would still have a country that is nursing its grievances over imperialist incarnations in the past. That would still be very intent on achieving some degree of technological primacy over the rest of the world.
 
 And I think that they are probably not going to be trusting their people very extensively as well.
-And I hope that **China** could develop a regime that does trust its people, much more so than they do now because the **Chinese people are such a lovable folk**. Don't you agree, **Jordan**, that I think they can be extremely creative. Their memes are no less than what American superpower 20-year-olds and 14-year-olds are able to produce online. There's so much wordplay with the **Chinese language**. There's a lot of jokiness throughout China. I think that Chinese are very funny.  
+And I hope that **China** could develop a regime that does trust its people, much more so than they do now because the **Chinese people are such a lovable folk**. Don't you agree, **Jordan**, that I think they can be extremely creative. Their memes are no less than what American superpower 20-year-olds and 14-year-olds are able to produce online. There's so much wordplay with the **Chinese language**. There's a lot of jokiness throughout China. I think that Chinese are very funny.
 
-I think people in **Yunnan** are very funny, which is where my heritage is. I think that people in **Beijing** are very funny. The people in **Shanghai**, maybe not so funny, maybe not so funny, but most people everywhere else can be very, very funny.  
+I think people in **Yunnan** are very funny, which is where my heritage is. I think that people in **Beijing** are very funny. The people in **Shanghai**, maybe not so funny, maybe not so funny, but most people everywhere else can be very, very funny.
 
-And I wish that the regime could recognize that it has a lot of people who have wonderful creative spirits who are going to have great memes all day long. They're going to create wonderful pieces of artwork and literature and all sorts of great shows, great movies. If they had that opportunity, they would have all sorts of wonderful jokes that they could play on us.  
+And I wish that the regime could recognize that it has a lot of people who have wonderful creative spirits who are going to have great memes all day long. They're going to create wonderful pieces of artwork and literature and all sorts of great shows, great movies. If they had that opportunity, they would have all sorts of wonderful jokes that they could play on us.
 
-And I'm really optimistic that the spirit of the **Chinese teenager** is indomitable, just as the spirit of the **American teenager** is completely indomitable. It's only that one of them is very actively suppressed by the state and the other is not.  
+And I'm really optimistic that the spirit of the **Chinese teenager** is indomitable, just as the spirit of the **American teenager** is completely indomitable. It's only that one of them is very actively suppressed by the state and the other is not.
 
-The one line I disagree with was when you said, 
+The one line I disagree with was when you said,
 
-> "I miss the ambient friendliness of Americans as if you didn't get that in China, at least in good chunks of it."  
+> "I miss the ambient friendliness of Americans as if you didn't get that in China, at least in good chunks of it."
 
-At least, you know, I moved through the country in a different way than you did with my face, but I think it still was — that's one of the things that will never leave me. And I think you sort of mentioned it at a different point in the book talking about why this is the destination of choice for so many Chinese.  
+At least, you know, I moved through the country in a different way than you did with my face, but I think it still was - that's one of the things that will never leave me. And I think you sort of mentioned it at a different point in the book talking about why this is the destination of choice for so many Chinese.
 
-It's not just because it's rich and a land of opportunity or whatever, but the kind of cultural overlaps in terms of entrepreneurship and ease of engagement with other folks are really profound.  
+It's not just because it's rich and a land of opportunity or whatever, but the kind of cultural overlaps in terms of entrepreneurship and ease of engagement with other folks are really profound.
 
-Well, I would say that you do have a good face, and I wouldn't try to sell it short. I have a different face, and not all of us can be so blessed. But certainly, there is an ambient, let's call it **friendliness**, in the mix of being in China.  
+Well, I would say that you do have a good face, and I wouldn't try to sell it short. I have a different face, and not all of us can be so blessed. But certainly, there is an ambient, let's call it **friendliness**, in the mix of being in China.
 
-But there is also an ambient  
+But there is also an ambient
 
-- aggressiveness  
-- I'm going to get in your face about your business  
+- aggressiveness
+- I'm going to get in your face about your business
 
-sense. There is sometimes an ambient aggressiveness and shoviness sense in China as there is in the U.S. as well.  
+sense. There is sometimes an ambient aggressiveness and shoviness sense in China as there is in the U.S. as well.
 
-I guess this is a little bit more stark to me because I spent some time in Europe. I just traveled to Europe for two months, and we were mostly in **Denmark**. One of these things that we hear about Danish folks is that they have a really hard time making friends after high school.  
+I guess this is a little bit more stark to me because I spent some time in Europe. I just traveled to Europe for two months, and we were mostly in **Denmark**. One of these things that we hear about Danish folks is that they have a really hard time making friends after high school.
 
-- You would have your friends you made in elementary school.  
-- You would have some friends you made in university.  
-- Maybe some friends you made when you were traveling to the United States.  
+- You would have your friends you made in elementary school.
+- You would have some friends you made in university.
+- Maybe some friends you made when you were traveling to the United States.
 
-But after that, people have enough friends; they're good. People travel around in roving packs to the bar and then they don't really socialize with the other roving packs at the Danish bar. It's just much easier to have a conversation with someone on the bus in **New York**, on the street in New York, walking around, and they don't get up so much in your business.  
+But after that, people have enough friends; they're good. People travel around in roving packs to the bar and then they don't really socialize with the other roving packs at the Danish bar. It's just much easier to have a conversation with someone on the bus in **New York**, on the street in New York, walking around, and they don't get up so much in your business.
 
-And I think you're right that it's absolutely the case that there is a lot of ambient friendliness in China. That is one of the things I really enjoy about the place, but the other side of that coin is that they can really get up in your business.  
+And I think you're right that it's absolutely the case that there is a lot of ambient friendliness in China. That is one of the things I really enjoy about the place, but the other side of that coin is that they can really get up in your business.
 
-How often are you asked as soon as you meet a new Chinese person:  
+How often are you asked as soon as you meet a new Chinese person:
 
-```  
-Are you married?  
-How many children do you have?  
-What's your salary?  
-```  
+```
+Are you married?
+How many children do you have?
+What's your salary?
+```
 
-And sometimes I don't really feel like answering those questions. It's a bit odd.  
+And sometimes I don't really feel like answering those questions. It's a bit odd.
 
-I mean, I think the ambient anxiety as well is something very different in the U.S., where even you have these think pieces about how people can't afford rent and life is terrible, but I don't know. I think just it's not a nationally defining thing in the U.S. in the way the modern anxieties are in China.  
+I mean, I think the ambient anxiety as well is something very different in the U.S., where even you have these think pieces about how people can't afford rent and life is terrible, but I don't know. I think just it's not a nationally defining thing in the U.S. in the way the modern anxieties are in China.
 
-This is certainly one of the things, one of the many reasons I am glad that I did not grow up in China, especially not as a woman. The pressure that women face in China is completely insane.  
+This is certainly one of the things, one of the many reasons I am glad that I did not grow up in China, especially not as a woman. The pressure that women face in China is completely insane.
 
 So, I think that it is not only workplace stuff. In the workplace, I think you and I both know that **Chinese women are many of the most capable people**.
 They do, they do most of the work now. Often, **they are the most efficient people in every organization** and they are consistently passed over for leadership because they are **not a guy**.
 
-And so **China really doesn't treat a woman very well**, I think, in the workplace.  
+And so **China really doesn't treat a woman very well**, I think, in the workplace.
 
-Then imagine the sort of pressure that you face when you are seeing your neighbors, or even worse for a family, over the most important Chinese holiday, **Lunar New Year**. Every woman is asked one question:  
-- **"Are you married yet?"** to the single, and  
+Then imagine the sort of pressure that you face when you are seeing your neighbors, or even worse for a family, over the most important Chinese holiday, **Lunar New Year**. Every woman is asked one question:
+- **"Are you married yet?"** to the single, and
 - **"When will you have children?"** to the married.
 
 It feels like unless a woman has produced at least one child and at least one son, then she will not have broader respect within the family. I think **Chinese women are consistently the most undervalued people**, and they are the ones that should be elevated the most.
 
-This is in part because they face far too many pressures. Generally, China is just kind of this **high pressure society where one does need a little bit of shoviness in order to get ahead**. That sometimes can be pretty worrying once you've spent enough time in China, because the shoviness is not really wonderful.  
+This is in part because they face far too many pressures. Generally, China is just kind of this **high pressure society where one does need a little bit of shoviness in order to get ahead**. That sometimes can be pretty worrying once you've spent enough time in China, because the shoviness is not really wonderful.
 
-The overworked aspects of a lot of people is real, especially with **996**—working from nine to nine, six days a week. Then they go home and face a lot of family pressures. Many people don't have an easy time affording their apartments in **Shanghai or Beijing**. It is kind of a high-pressure environment.
+The overworked aspects of a lot of people is real, especially with **996**-working from nine to nine, six days a week. Then they go home and face a lot of family pressures. Many people don't have an easy time affording their apartments in **Shanghai or Beijing**. It is kind of a high-pressure environment.
 
 That is also one of these things where, when you come to the U.S., you're left alone. You go to Florida or Texas and people aggressively leave you alone. That is one of these things I kind of crave after being over there for a while.
 
@@ -564,90 +564,90 @@ You see echoes of it in the U.S. sometimes where Trump says, "oh, don't care abo
 
 That's another benefit of a pluralist society: to have people, to have noise that pushes back on that sort of thing.
 
-Well, this is what engineers do. They tell you for a while:  
-```  
-- You must not have more than one child  
-- You really should have three children  
-```  
+Well, this is what engineers do. They tell you for a while:
+```
+- You must not have more than one child
+- You really should have three children
+```
 And you hear that COVID is a life-threatening thing and it is our national duty to prevent any transmissions, to... oh, it's not that big of a deal.
 
 This is how engineers treat society. They swerve really suddenly every so often. And at some point, that is going to give people very severe **whiplash**.
 
-**Beijing has been taking the future dead seriously for the past four decades.** That is why they will not outcompete the U.S.  
+**Beijing has been taking the future dead seriously for the past four decades.** That is why they will not outcompete the U.S.
 
 I think the country that will outperform in the world has a **sense of humor**, and Beijing has the least sense of humor out of all of them. At least **official Beijing**; unofficial Beijing is very humorous.
 
-One of my favorite recent little pieces as a gag is that **Alex Boyd**, who is part of **Asia Society**, translated and found this page of official jokes.  
+One of my favorite recent little pieces as a gag is that **Alex Boyd**, who is part of **Asia Society**, translated and found this page of official jokes.
 
-**Have you seen this from Xi Jinping?**  
-"Yeah."  
-Alex Boyd, former China talk intern.  
+**Have you seen this from Xi Jinping?**
+"Yeah."
+Alex Boyd, former China talk intern.
 "How could we not? We're running this next week."
 
 You can read some of these jokes from **Xi Jinping himself** and decide how many of them are very funny. I think this is not humor with C characteristics and is not really going to bowl us out of our feet.
 
-I prefer the superpower that isn't taking this future with such seriousness. Because by taking the future with such seriousness, there is this great insight from **Stephen Kotkin**:  
+I prefer the superpower that isn't taking this future with such seriousness. Because by taking the future with such seriousness, there is this great insight from **Stephen Kotkin**:
 
 > There is this kind of apocalyptic sense in communist systems. You liberalize a little bit, slip out a little bit, and somehow the entire system will collapse. Every day is an apocalyptic life-or-death struggle for the Communist Party.
 
 That sort of system is going to end up being fairly brittle. That, I think, is my view.
-**Engineers don't know how to persuade. The Communist Party insists on a history in which the party is always correct and where all errors come from traitors or foreigners.**  
+**Engineers don't know how to persuade. The Communist Party insists on a history in which the party is always correct and where all errors come from traitors or foreigners.**
 
-Rather than acknowledge fault and tell persuasive stories, the instinct of the engineering state is simply to **censor alternative narratives**.  
+Rather than acknowledge fault and tell persuasive stories, the instinct of the engineering state is simply to **censor alternative narratives**.
 
-**Xi comes off as someone who is a little bit too eager for groveling respect from the rest of the world, which is exactly why he'll never get it.**  
+**Xi comes off as someone who is a little bit too eager for groveling respect from the rest of the world, which is exactly why he'll never get it.**
 
-Yes.  
+Yes.
 
-Kotkin, the other little Kotkin-y moment in there, which you highlighted, is this idea that **Li Chang, who was the mayor of Shanghai, initially was one of the people who was trying to keep his city more open**. But once it came down to it and he got the order, he did the **biggest lockdown in human history**.  
+Kotkin, the other little Kotkin-y moment in there, which you highlighted, is this idea that **Li Qiang, who was the mayor of Shanghai, initially was one of the people who was trying to keep his city more open**. But once it came down to it and he got the order, he did the **biggest lockdown in human history**.
 
-He is the most reviled politician of all local politicians in the country, and yet he gets the biggest promotion anyone can get — to be premier.  
+He is the most reviled politician of all local politicians in the country, and yet he gets the biggest promotion anyone can get - to be premier.
 
-And it's such a reminder that, you know, yeah, sure, it's a country where at some level people are promoted on performance. But once you get up to the top rungs of power, it's not just loyalty.  
+And it's such a reminder that, you know, yeah, sure, it's a country where at some level people are promoted on performance. But once you get up to the top rungs of power, it's not just loyalty.
 
-This man delivered on what he was told to do, even when it came at considerable — what would be considerable — political cost in a democratic society.  
+This man delivered on what he was told to do, even when it came at considerable - what would be considerable - political cost in a democratic society.
 
-I don't know, this is still a crazy system we're dealing with. Like, that is **not political logic**.  
+I don't know, this is still a crazy system we're dealing with. Like, that is **not political logic**.
 
-You make the point that basically **every party in the world who was in charge of COVID lost votes after COVID ended because people were upset about the time in their life**.  
+You make the point that basically **every party in the world who was in charge of COVID lost votes after COVID ended because people were upset about the time in their life**.
 
-But to have the emblem of bad Omicron-era COVID policy now be a person that people are going to see on their TV for the next five years — it's a remarkable thing.  
+But to have the emblem of bad Omicron-era COVID policy now be a person that people are going to see on their TV for the next five years — it's a remarkable thing.
 
-Yeah.  
+Yeah.
 
-Well, maybe he's going to be squeezed out of TV because he seems to be a remarkably weak premier by the standards of Chinese premiers.  
+Well, maybe he's going to be squeezed out of TV because he seems to be a remarkably weak premier by the standards of Chinese premiers.
 
-And you're absolutely right that in every pandemic country, the ruling party lost vote shares.  
+And you're absolutely right that in every pandemic country, the ruling party lost vote shares.
 
-It is only in China that the most hated emblem of the zero COVID restrictions gets promoted up to the top — the highest any other politician could go under Xi.  
+It is only in China that the most hated emblem of the zero COVID restrictions gets promoted up to the top — the highest any other politician could go under Xi.
 
-The idea that Kamala would have Fauci as her running mate is basically what we're talking about.  
+The idea that Kamala would have Fauci as her running mate is basically what we're talking about.
 
-Yes. That would be quite a thing, wouldn't it?  
+Yes. That would be quite a thing, wouldn't it?
 
-And I think, you know, this surely **degrades and erodes some of the competence of other people inside the Politburo and inside the Central Committee**.  
+And I think, you know, this surely **degrades and erodes some of the competence of other people inside the Politburo and inside the Central Committee**.
 
-I think one could say that Li Chang did his best in trying to resist a very fierce lockdown, and then when that shifted, he was kind of in charge with another vice premier in implementing that lockdown.  
+I think one could say that Li Qiang did his best in trying to resist a very fierce lockdown, and then when that shifted, he was kind of in charge with another vice premier in implementing that lockdown.
 
-Maybe he simply followed orders and did the best job that he could.  
+Maybe he simply followed orders and did the best job that he could.
 
-Certainly, I wouldn't have expected after the Shanghai lockdown that **Li Qiang, who was one of Xi's protégés, would be promoted to anything as high as one of the four vice premiers within the Chinese system**.  
+Certainly, I wouldn't have expected after the Shanghai lockdown that **Li Qiang, who was one of Xi's protégés, would be promoted to anything as high as one of the four vice premiers within the Chinese system**.
 
-In fact, for him to become premier, I think must surely have bred considerable resentment within his peers who took a look at what an awful job perhaps he did.  
+In fact, for him to become premier, I think must surely have bred considerable resentment within his peers who took a look at what an awful job perhaps he did.
 
-And again, you can maybe debate that, but Li Chang has certainly created a lot of misery. For them to see this guy vault over them in terms of the party hierarchy, that cannot feel really good for other cadres.  
+And again, you can maybe debate that, but Li Qiang has certainly created a lot of misery. For them to see this guy vault over them in terms of the party hierarchy, that cannot feel really good for other cadres.
 
-So we've got Rick over Moses and Eisenhower as Americans you're shouting out all perhaps peaked in the 1950s or early 1960s — all products of a **Cold War America**.  
+So we've got Rick over Moses and Eisenhower as Americans you're shouting out all perhaps peaked in the 1950s or early 1960s - all products of a **Cold War America**.
 
-I mean, I guess Moses was doing his thing even in the thirties, but I think there is a narrative which maybe was a little more prominent in American politics a year or two ago that **Cold War framing is the thing that is going to get the US out of its engineering rut**.  
+I mean, I guess Moses was doing his thing even in the thirties, but I think there is a narrative which maybe was a little more prominent in American politics a year or two ago that **Cold War framing is the thing that is going to get the US out of its engineering rut**.
 
-And we will do big things because now we have another — and, you know, we'll break a lot of eggs and build amazing stuff again because we have a new replacement for the Soviet Union.  
+And we will do big things because now we have another - and, you know, we'll break a lot of eggs and build amazing stuff again because we have a new replacement for the Soviet Union.
 
-You're still hopeful though that we can get there even if this is not the kind of defining framework for America for the next few decades.  
+You're still hopeful though that we can get there even if this is not the kind of defining framework for America for the next few decades.
 
-I certainly don't hope that we repeat all of the mistakes of the last Cold War, which wasn't very cold for Vietnam, Laos, and Afghanistan.  
+I certainly don't hope that we repeat all of the mistakes of the last Cold War, which wasn't very cold for Vietnam, Laos, and Afghanistan.
 
-The US and the Soviet Union made tremendous mistakes and inflicted a lot of horrors on foreign populations as well as somewhat on their own populations in the course of pursuing the Cold War.  
+The US and the Soviet Union made tremendous mistakes and inflicted a lot of horrors on foreign populations as well as somewhat on their own populations in the course of pursuing the Cold War.
 
 So I am reluctant to say that the US should desire or embrace anything like a Cold War, given how the last Cold War went.
 I am hopeful that the **U.S. will be able to recover some of its engineering chops** because it's become tremendously obvious that the U.S. needs to do this without even any framing of **China as the great adversary**.
@@ -668,7 +668,7 @@ And I think the same goes for China. The contest will not go to the country that
 
 I agree with that, that the question is if we need a fundamental rethink and quote-unquote **"cold war framing"**.
 
-From **2020 to 2024** didn't get us there. Is **Derek Thompson**, **Ezra Klein**, and **Dan Wong** evangelizing enough to have like this—I'm reaching for another analogy—like our **Sputnik moment 2.0**, which not only does the international stuff but also gets you the **interstate highway system**?
+From **2020 to 2024** didn't get us there. Is **Derek Thompson**, **Ezra Klein**, and **Dan Wang** evangelizing enough to have like this-I'm reaching for another analogy-like our **Sputnik moment 2.0**, which not only does the international stuff but also gets you the **interstate highway system**?
 
 The equivalent of that for what we need today, that's our only data point, right? Or maybe we can go back further in history.
 
@@ -694,90 +694,90 @@ You had a **U.S. CIS head** saying that **F1 visa holders** should understand th
 
 We'll see how it plays out. It's clear that Trump is not entirely on board with this.
 
-I wonder if she is going to do something like a more dramatic version of a balloon, which doesn't necessarily have to be an invasion of Taiwan—that kind of clicks, that lets the cold war framing give a second breath of fresh air.
+I wonder if she is going to do something like a more dramatic version of a balloon, which doesn't necessarily have to be an invasion of Taiwan-that kind of clicks, that lets the cold war framing give a second breath of fresh air.
 
 Maybe. But I suspect CIS has studied this history and is really reluctant to give an excuse to Americans to engage in another cold war.
 
 Even the balloon seemed like it might have been an accident in which the leadership didn't know about it.
 
 And we can deal with balloons, Jordan.
-We can deal with **balloons all day**.  
-Yeah.  
+We can deal with **balloons all day**.
+Yeah.
 
-But can we deal with,  
-> "50 Filipinos dying or something?"  
-Probably.  
-We'll see.  
+But can we deal with,
+> "50 Filipinos dying or something?"
+Probably.
+We'll see.
 
-It's again, as **Cocken says**, **history is full**.  
-The one thing we know about history is **it's full of surprises**.  
-So TBD.  
+It's again, as **Cocken says**, **history is full**.
+The one thing we know about history is **it's full of surprises**.
+So TBD.
 
-On the **Cold War** stuff, when I had you, Ezra, and Derek, I think you put to me,  
-> "if the U.S. should have a goal of constraining Chinese growth,"  
-do you have an answer to that question? Or like, what’s our **palistomy optimization function** when thinking about it?  
+On the **Cold War** stuff, when I had you, Ezra, and Derek, I think you put to me,
+> "if the U.S. should have a goal of constraining Chinese growth,"
+do you have an answer to that question? Or like, what's our **palistomy optimization function** when thinking about it?
 
-Well, I asked you the question, Jordan, what's the answer? You've had several months to think about it.  
-I don't have a book coming out, Dan. Come on.  
+Well, I asked you the question, Jordan, what's the answer? You've had several months to think about it.
+I don't have a book coming out, Dan. Come on.
 
-I think that the **U.S. should not be seen as in a position to be constraining China's growth**.  
+I think that the **U.S. should not be seen as in a position to be constraining China's growth**.
 
-I think it would be disastrous for the U.S. if the Chinese earnestly believe that the U.S. government was trying to hold down China's innovation prospects or economic growth prospects, because that would seem very dramatically unfair.  
+I think it would be disastrous for the U.S. if the Chinese earnestly believe that the U.S. government was trying to hold down China's innovation prospects or economic growth prospects, because that would seem very dramatically unfair.
 
-Now, there are some people in **Beijing** that already do believe in some version of this, but I think that is not necessarily consensus.  
+Now, there are some people in **Beijing** that already do believe in some version of this, but I think that is not necessarily consensus.
 
-I think it is important for the U.S. government to communicate that it wants a **good future for Chinese people everywhere**.  
+I think it is important for the U.S. government to communicate that it wants a **good future for Chinese people everywhere**.
 
-And I think there’s nothing that Trump would lose by saying  
-> "he wishes that the people of China can be rich, well-off and happy."  
+And I think there's nothing that Trump would lose by saying
+> "he wishes that the people of China can be rich, well-off and happy."
 
-Let's close with some **book recommendations**.  
+Let's close with some **book recommendations**.
 
-- I don't know why I’d read the **Bible**  
-- Stein Hall, someone you recommended to me the other day  
-- Book of Exodus  
-- I'm saying it wrong.  
+- I don't know why I'd read the **Bible**
+- Stein Hall, someone you recommended to me the other day
+- Book of Exodus
+- I'm saying it wrong.
 
-Okay. Just **Exodus**, **Book of Exodus, Jordan**. That’s where it's at. Maybe bested by the **Book of Genesis**, but you know, the **five books of the Torah**, I think that is something really important here.  
+Okay. Just **Exodus**, **Book of Exodus, Jordan**. That's where it's at. Maybe bested by the **Book of Genesis**, but you know, the **five books of the Torah**, I think that is something really important here.
 
-But **prophets and writings** were just shrugging off.  
+But **prophets and writings** were just shrugging off.
 
-Well, **Ecclesiastes is very beautiful**.  
+Well, **Ecclesiastes is very beautiful**.
 
-As **Robert Alter** translates, the chapter is called **Kochlet**.  
+As **Robert Alter** translates, the chapter is called **Kohelet**.
 
-I think there certainly is a great deal of beauty in the **Song of Songs** and in the dreariness, frankly, of **Ecclesiastes**.  
+I think there certainly is a great deal of beauty in the **Song of Songs** and in the dreariness, frankly, of **Ecclesiastes**.
 
-And I think something that is important for us all to keep in mind is:  
-> "the heart of the wise dwell in the house of mourning, while it is the heart of fools that dwells in the house of mirth."  
+And I think something that is important for us all to keep in mind is:
+> "the heart of the wise dwell in the house of mourning, while it is the heart of fools that dwells in the house of mirth."
 
-And we’re going to end on that.  
+And we're going to end on that.
 
-**Dan Wong**, thank you so much for being a part of **China Talk**.  
-Thank you very much, Jordan.  
+**Dan Wang**, thank you so much for being a part of **China Talk**.
+Thank you very much, Jordan.
 
-Oh yeah.  
+Oh yeah.
 
-Dan, what’s our song?  
+Dan, what's our song?
 
-I think there is no music more sublime than the ending of **The Marriage of Figaro by Mozart**, in which the count asks and begs for forgiveness from the countess for all of his incredible indiscretions.  
+I think there is no music more sublime than the ending of **The Marriage of Figaro by Mozart**, in which the count asks and begs for forgiveness from the countess for all of his incredible indiscretions.
 
-And then the entire cast joins him in a song of perfect grace.  
+And then the entire cast joins him in a song of perfect grace.
 
-I think **there is no music more sublime**.  
+I think **there is no music more sublime**.
 
-``` 
-I think there is no music more sublime, 
-but there is no music more sublime, 
-and there is no music more sublime, 
-but there is no music more sublime, 
-and there is no music more sublime, 
-but there is no music more sublime,
-and there is no music more sublime. 
+```
 I think there is no music more sublime,
-and there is no music more sublime, 
-and there is no music more sublime. 
-I think there is no music more sublime, and there is no music more sublime. 
+but there is no music more sublime,
+and there is no music more sublime,
+but there is no music more sublime,
+and there is no music more sublime,
+but there is no music more sublime,
+and there is no music more sublime.
+I think there is no music more sublime,
+and there is no music more sublime,
+and there is no music more sublime.
+I think there is no music more sublime, and there is no music more sublime.
 ```
 
 <script>window.tocIndex = {
@@ -788,8 +788,8 @@ I think there is no music more sublime, and there is no music more sublime.
       "section_level": 1
     },
     {
-      "index_sentences": "Dan Wong at long last makes his solo Chinatalk debut.",
-      "section_title": "Introduction of Guest Dan Wong",
+      "index_sentences": "Dan Wang at long last makes his solo Chinatalk debut.",
+      "section_title": "Introduction of Guest Dan Wang",
       "section_level": 1
     },
     {
@@ -918,7 +918,7 @@ I think there is no music more sublime, and there is no music more sublime.
       "section_level": 2
     },
     {
-      "index_sentences": "So, you recently did a show, speaking of podcasts, with Stephen Cocken — two hours is excellent.",
+      "index_sentences": "So, you recently did a show, speaking of podcasts, with Stephen Cocken - two hours is excellent.",
       "section_title": "The Dream of Authors and Enduring Influence",
       "section_level": 2
     },
@@ -1038,12 +1038,12 @@ I think there is no music more sublime, and there is no music more sublime.
       "section_level": 2
     },
     {
-      "index_sentences": "Kotkin, the other little Kotkin-y moment in there, which you highlighted, is this idea that Li Chang, who was the mayor of Shanghai, initially was one of the people who was trying to keep his city more open.",
+      "index_sentences": "Kotkin, the other little Kotkin-y moment in there, which you highlighted, is this idea that Li Qiang, who was the mayor of Shanghai, initially was one of the people who was trying to keep his city more open.",
       "section_title": "Li Qiang's Promotion After the Shanghai Lockdown",
       "section_level": 2
     },
     {
-      "index_sentences": "So we've got Rick over Moses and Eisenhower as Americans you're shouting out all perhaps peaked in the 1950s or early 1960s — all products of a Cold War America.",
+      "index_sentences": "So we've got Rick over Moses and Eisenhower as Americans you're shouting out all perhaps peaked in the 1950s or early 1960s - all products of a Cold War America.",
       "section_title": "The Cold War Framing and US Infrastructure",
       "section_level": 2
     },
@@ -1073,7 +1073,7 @@ I think there is no music more sublime, and there is no music more sublime.
       "section_level": 2
     },
     {
-      "index_sentences": "Let's close with some book recommendations, I don't know why I’d read the Bible.",
+      "index_sentences": "Let's close with some book recommendations, I don't know why I'd read the Bible.",
       "section_title": "Book Recommendations",
       "section_level": 1
     },
@@ -1083,7 +1083,7 @@ I think there is no music more sublime, and there is no music more sublime.
       "section_level": 2
     },
     {
-      "index_sentences": "Dan Wong, thank you so much for being a part of China Talk.",
+      "index_sentences": "Dan Wang, thank you so much for being a part of China Talk.",
       "section_title": "Closing Remarks and Music Selection",
       "section_level": 1
     },
@@ -1097,12 +1097,12 @@ I think there is no music more sublime, and there is no music more sublime.
 window.faq = {
   "qas": [
     {
-      "question": "How does Dan Wong characterize the Communist Party of China's organizational structure, drawing comparisons to other institutions?",
-      "answer": "Dan Wong describes the CCP as a cross between the Catholic Church and the Sicilian Mafia, highlighting its enduring nature, strong ideology (\"building a church\"), and a profound sense of \"omerta\" or gangsterism.",
+      "question": "How does Dan Wang characterize the Communist Party of China's organizational structure, drawing comparisons to other institutions?",
+      "answer": "Dan Wang describes the CCP as a cross between the Catholic Church and the Sicilian Mafia, highlighting its enduring nature, strong ideology (\"building a church\"), and a profound sense of \"omerta\" or gangsterism.",
       "index_of_source": "I think that the Catholic Church and the Communist Party are very alike organizations."
     },
     {
-      "question": "What conflicting criticisms has Dan Wong's book \"Breakneck\" received regarding its focus on Xi Jinping, and what is the underlying reason for this debate?",
+      "question": "What conflicting criticisms has Dan Wang's book \"Breakneck\" received regarding its focus on Xi Jinping, and what is the underlying reason for this debate?",
       "answer": "Some critics argue the book is \"over-indexed\" on Xi, while others claim it is \"under-indexed.\" This debate stems from the central thesis of the \"engineering state\" and whether Xi Jinping, with his degrees in both chemical engineering and Marxist economics, truly embodies the \"engineer\" archetype in the same mold as predecessors like Hu Jintao.",
       "index_of_source": "It's interesting that you start out by saying that I may be over indexed on Xi because I think one strain of criticism I've seen is that maybe I'm under indexed on Xi because, you know, in my central thesis of the engineering state, one can quibble whether Xi is really an engineer."
     },
@@ -1112,8 +1112,8 @@ window.faq = {
       "index_of_source": "I think the 1980s is cited by many people, especially of my parents' generation, in which every question could have been asked inside Chinese society, inside the Communist Party."
     },
     {
-      "question": "Why was a specific chapter on Xinjiang omitted from Dan Wong's book \"Breakneck,\" despite its potential relevance to themes of social engineering?",
-      "answer": "Dan Wong primarily focuses on stories he has personal experience with, such as Zero COVID. He never had the opportunity or courage to visit Xinjiang due to foreign nationals being tracked more intensively and discouragement from Beijing officials. Additionally, he aimed to write a relatively short book, leading to other potential topics being left out.",
+      "question": "Why was a specific chapter on Xinjiang omitted from Dan Wang's book \"Breakneck,\" despite its potential relevance to themes of social engineering?",
+      "answer": "Dan Wang primarily focuses on stories he has personal experience with, such as Zero COVID. He never had the opportunity or courage to visit Xinjiang due to foreign nationals being tracked more intensively and discouragement from Beijing officials. Additionally, he aimed to write a relatively short book, leading to other potential topics being left out.",
       "index_of_source": "Yeah. Well, you're absolutely right that I try to cover the stories that I have some personal experience of, something like zero COVID."
     },
     {
@@ -1124,11 +1124,11 @@ window.faq = {
     {
       "question": "What does the promotion of Li Qiang to premier after the disastrous Shanghai lockdown reveal about the political logic within the Chinese system?",
       "answer": "Li Qiang's promotion, despite being widely seen as responsible for the \"greatest lockdown ever imposed in the history of humanity,\" highlights that Chinese political logic at the top levels is not solely based on performance or public approval. Instead, it underscores the paramount importance of loyalty and effectively executing orders, even if they result in considerable public misery and political cost in a democratic context.",
-      "index_of_source": "He is the most reviled politician of all local politicians in the country, and yet he gets the biggest promotion anyone can get — to be premier."
+      "index_of_source": "He is the most reviled politician of all local politicians in the country, and yet he gets the biggest promotion anyone can get - to be premier."
     },
     {
-      "question": "According to Dan Wong, why will China likely not develop a flourishing liberal society, despite the admirable qualities of its people?",
-      "answer": "Dan Wong believes that the Communist Party's inherent and persistent distrust and fear of the Chinese people fundamentally limits the potential for a flourishing liberal society. He argues that even a hypothetical successor party would likely maintain this deep-seated distrust, preventing extensive freedom and creativity.",
+      "question": "According to Dan Wang, why will China likely not develop a flourishing liberal society, despite the admirable qualities of its people?",
+      "answer": "Dan Wang believes that the Communist Party's inherent and persistent distrust and fear of the Chinese people fundamentally limits the potential for a flourishing liberal society. He argues that even a hypothetical successor party would likely maintain this deep-seated distrust, preventing extensive freedom and creativity.",
       "index_of_source": "I departed the country with a better appreciation of the self-limiting features of the Chinese system. Most notably, the Communist Party distrusts and fears the Chinese people, limiting their potential for flourishing."
     }
   ]
