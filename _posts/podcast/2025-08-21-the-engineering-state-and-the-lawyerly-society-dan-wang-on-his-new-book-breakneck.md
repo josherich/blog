@@ -25,7 +25,7 @@ If you’ve used **Babbel**, you would. Babbel’s conversation-based techniques
 
 ---
 
-Welcome to the **Cineca Podcast**, a weekly discussion of current affairs in **China**.  
+Welcome to the **Sinica Podcast**, a weekly discussion of current affairs in **China**.  
 
 In this program, we'll look at:  
 
@@ -42,13 +42,13 @@ that can help us better understand what's happening in China's:
 - Economics  
 - Society  
 
-Join me each week for **in-depth conversations** that shed more light and bring less heat to how we think and talk about China. I'm **Kaiser Guo**, coming to you this week from **Chapel Hill, North Carolina**.
+Join me each week for **in-depth conversations** that shed more light and bring less heat to how we think and talk about China. I'm **Kaiser Kuo**, coming to you this week from **Chapel Hill, North Carolina**.
 
-**Cineca** is supported this year by the **Center for East Asian Studies at the University of Wisconsin-Madison**, a national resource center for the study of East Asia.
+**Sinica** is supported this year by the **Center for East Asian Studies at the University of Wisconsin-Madison**, a national resource center for the study of East Asia.
 
-The **Cineca Podcast** will remain free, but if you work for an organization that believes in what I'm doing with the show, please consider lending your support.
+The **Sinica Podcast** will remain free, but if you work for an organization that believes in what I'm doing with the show, please consider lending your support.
 
-You can reach me at **CinecaPod@gmail.com**. And listeners, please support my work by becoming a paying subscriber at **CinecaPodcast.com**. The semester is starting, two big tuition checks to write, so help a guy educate his kids.
+You can reach me at **SinicaPod@gmail.com**. And listeners, please support my work by becoming a paying subscriber at **SinicaPodcast.com**. The semester is starting, two big tuition checks to write, so help a guy educate his kids.
 
 You will enjoy, in addition to the podcast:
 
@@ -62,11 +62,11 @@ So do check out the page to see all that's on offer, and please do consider help
 
 ---
 
-**Dan Wong** has been on the Cineca Podcast a couple of times before, and I am delighted to have him back today.  
+**Dan Wang** has been on the Sinica Podcast a couple of times before, and I am delighted to have him back today.  
 
 He is one of the sharpest and most original observers of **China's technology sector** and **manufacturing landscape**, having won a certain level of fame for his annual letters and other essays — writings that somehow managed to combine on-the-ground insights with big picture perspectives.
 
-Dan has worked for **Gavacaldragonomics in Beijing** since 2017. After a stint with the **Paul Tsai China Law Center at Yale**, he's now at the **Hoover Institute at Stanford**.
+Dan has worked for **Gavekal Dragonomics in Beijing** since 2017. After a stint with the **Paul Tsai China Law Center at Yale**, he's now at the **Hoover Institute at Stanford**.
 
 If you’ve seen the **PBS Nova documentary "Inside China’s Tech Boom,"** which I had the pleasure of narrating — it’s a film by **David Borenstein** — you’ve already encountered Dan. He was a featured voice helping to explain the deeper drivers behind China's technological rise and talked eloquently, I thought, about the importance of **process knowledge**, of what the Greeks called **metis**, which is an important idea that’s really stayed with me and has become quite foundational to my understanding of China and the importance of manufacturing.
 
@@ -80,9 +80,9 @@ Dan's book is full of memorable witticisms and pithy, trenchant observations. Pe
 Before we jump in, I want to point out that this book was especially interesting for me as somebody whose abortive doctoral dissertation was specifically about the rise of this **engineering state**, about the...
 The **emergence of technocrats in post-Mao China**. So things might get a little in the weeds. I ask your forgiveness in advance and will do my best to keep it reasonably accessible.
 
-**Dan Wong, welcome back to Seneca and happy birthday, man.**  
-**Dan Wong:** Thank you very much, Kaiser. And what better birthday present than to speak to old friends like this?  
-**Dan Wong:** Yeah, it's great to have you.
+**Dan Wang, welcome back to Sinica and happy birthday, man.**  
+**Dan Wang:** Thank you very much, Kaiser. And what better birthday present than to speak to old friends like this?  
+**Dan Wang:** Yeah, it's great to have you.
 
 We have to start with what, for me, was clearly the most important part of your entire book, which is that **magical and totally improbable guitar-making hub in Guizhou** that you stumbled upon as you and Christian Shepard from the *Washington Post* and another friend rode your bikes through that mountainous province toward Chongqing.
 
@@ -560,7 +560,7 @@ So many people died trying to build this canal. The historical records here may 
 
 Again, I don't want to be too literal to say that the emperors were straightforwardly engineers, but I think one can trace the sort of lineage because of the state's management of the imperial exam or the **Keji system**.
 
-And I think one of these differences I want to trace between the West and China is that I think the Chinese were practicing a source of a sense of **absolutism starting from the first Qing dynasty with Qin Shi Huang**, in which the state really tried to control quite a lot of things. 
+And I think one of these differences I want to trace between the West and China is that I think the Chinese were practicing a source of a sense of **absolutism starting from the first Qin dynasty with Qin Shi Huang**, in which the state really tried to control quite a lot of things. 
 
 This is someone that we label today in China as a despot who buried the scholars and standardized the weights. And so there's this sense of **autocracy stretching back for about 2,000 years now**. The Chinese had been practicing absolutism way before the European monarchs ever whiffed this idea in the 17th and 18th centuries.
 
@@ -841,7 +841,7 @@ Yeah. Thank you so much for taking the time. And congrats on the book, which is,
 
 Looking forward to seeing you again.
 
-You've been listening to **The Seneca Podcast**. The show is produced, recorded, engineered, edited, and mastered by me, **Kaiser Guo**. Support the show through Substack at **www.sinecapodcast.com**, where there is a terrific offering of original China-related writing and audio.
+You've been listening to **The Seneca Podcast**. The show is produced, recorded, engineered, edited, and mastered by me, **Kaiser Kuo**. Support the show through Substack at **www.sinecapodcast.com**, where there is a terrific offering of original China-related writing and audio.
 
 Email me at **sinecapod@gmail.com** if you've got ideas on how you can help out with the show. Don't forget to leave a review on **Apple Podcasts**.
 
