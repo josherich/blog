@@ -11,9 +11,9 @@ tags: [podcast_script]
 
 The **China Global South podcast** is supported in part by our subscribers and Patreon supporters. If you'd like to join a global community of readers for daily news and exclusive analysis about **Chinese engagement in Asia, Africa, and throughout the developing world**, go to **ChinaGlobalSouth.com/subscribe**.
 
-Hello and welcome to another edition of the China Global South podcast, a proud member of the **Seneca podcast network**. I'm **Eric Olander**. Today, we're going to get an update on the state of the **Belt and Road Initiative**.
+Hello and welcome to another edition of the China Global South podcast, a proud member of the **Sinica podcast network**. I'm **Eric Olander**. Today, we're going to get an update on the state of the **Belt and Road Initiative**.
 
-Now, for the past several years, we've been hearing that the **BRI is spent**. The Chinese have run out of money and Global South countries that were the destination for so much of that investment simply can't afford to take on more debt. And even the Chinese themselves have tried to change the narrative to make way for what was supposed to be a new, more austere era. Remember all of that talk about **small yet beautiful**? In Chinese, it's called **Xiao Armei**. That was the line that they told everyone about smaller, more affordable, less risky BRI projects around the world.
+Now, for the past several years, we've been hearing that the **BRI is spent**. The Chinese have run out of money and Global South countries that were the destination for so much of that investment simply can't afford to take on more debt. And even the Chinese themselves have tried to change the narrative to make way for what was supposed to be a new, more austere era. Remember all of that talk about **small yet beautiful**? In Chinese, it's called **Xiao Er Mei** (小而美). That was the line that they told everyone about smaller, more affordable, less risky BRI projects around the world.
 
 Well, the data tells a very different story. **BRI engagements last year actually reached an all-time high of more than $200 billion**. Construction projects increased by **81%** and investments surged by **61%** compared to 2024. Energy engagements, especially in the **fossil fuel sector**, were very, very hot in 2025. And while the U.S. may have soured on Africa, Chinese investors haven't. The continent was the **top destination for BRI engagements anywhere in the world last year**.
 
@@ -137,7 +137,7 @@ Over the past couple of years, as we've talked to you, one of the things that we
 
 Are you seeing that in the data for 2025 as well?
 
-Yeah, so definitely for the investment side, it's mostly **private companies** that are leading the free, and it's interestingly also a lot of these new **tech companies** that are both in kind of the IT tech, like **TikTok** and **Alibaba**, as well as in the green tech space, like **Jinko Solar** and other green tech companies that are leading the way.
+Yeah, so definitely for the investment side, it's mostly **private companies** that are leading the fray, and it's interestingly also a lot of these new **tech companies** that are both in kind of the IT tech, like **TikTok** and **Alibaba**, as well as in the green tech space, like **Jinko Solar** and other green tech companies that are leading the way.
 
 These are private companies that are interested in:
 
