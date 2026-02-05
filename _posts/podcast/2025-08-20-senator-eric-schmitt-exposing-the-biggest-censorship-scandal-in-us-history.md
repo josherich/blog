@@ -11,7 +11,7 @@ tags: [podcast_script]
 
 I put on a **jacket** because, you know, we're interviewing a **senator**, but I see that. It's **polo day**.  
 
-**Senator Schmidt's pulled a Zelensky here.**  
+**Senator Schmitt's pulled a Zelensky here.**  
 I did, but I told him I do have these stiff... I have these **stiff collar on the polo**, which is—  
 You look great.  
 It looks great.  
@@ -38,7 +38,7 @@ Yes. And the people demand results.
 And hey, we have another civil servant here.  
 David, why don't you introduce our guest today?  
 
-This is **Senator Eric Schmidt from the state of Missouri**.  
+This is **Senator Eric Schmitt from the state of Missouri**.  
 How did we meet?  
 It was through another former senator, now vice president, **J.D. Vance**, I believe.  
 That's right.  
@@ -126,7 +126,7 @@ Is there a way for the **FBI, for the CIA, for our government** to say to **Twit
 
 What would have been the proper channel as opposed to setting up a covert back channel where they kind of threatened them?
 
-One layer here that I've never heard anybody connect, but when I was listening to your **Tucker** interview, it just dawned on me. They also put **Lena Kahn** in. 
+One layer here that I've never heard anybody connect, but when I was listening to your **Tucker** interview, it just dawned on me. They also put **Lina Khan** in. 
 
 Now, **Zuckerberg** is a cutthroat business executive. He likes to buy companies. That's his thing. And **Twitter** was known for buying a lot of companies. So now you got **Lena Kahn** saying,  
 > "We're going to come down hard on you, not let you buy anything."  
@@ -194,7 +194,7 @@ This is one of the things that Elon had done that very day was he opened up the 
 
 Yeah, but you know what? It was a little bit like **Arkham's Asylum**. You did let a couple of crazy people back onto—
 
-No, all the **bad boys of free speech** were let out. I mean, it was Trump, **Tate**, Jordan Peterson, **Jay Politoria**, folks like that. I would put Jordan Peterson. The public doesn't need to be protected from any of these people. I mean, Milo Yiannopoulos and Alex Jones, you may find them loathsome or funny or anything in between. But it is **freedom of speech**.
+No, all the **bad boys of free speech** were let out. I mean, it was Trump, **Tate**, Jordan Peterson, **Jay Bhattacharya**, folks like that. I would put Jordan Peterson. The public doesn't need to be protected from any of these people. I mean, Milo Yiannopoulos and Alex Jones, you may find them loathsome or funny or anything in between. But it is **freedom of speech**.
 
 But Senator, this has led to a discussion of 230 being repealed. And this is where I think, you know, the lawsuit you did, and there could be further work, is clarifying the nuance of 230. Should an algorithm **de facto be an editorial decision**? So if you have an algorithm and you say,
 
@@ -465,7 +465,7 @@ Sure. I think if the Russians weren't hacking everything—
 
 You don't really have any evidence.
 
-No, no. You don't have specific evidence. You don't have specific evidence of a Russian hack. Go read **Matt Tabi's reporting**.
+No, no. You don't have specific evidence. You don't have specific evidence of a Russian hack. Go read **Matt Taibbi's reporting**.
 
 I just gave it to you. This is refuted. I just gave it to you. The **RNC**, the head of the RNC said, "Yes, we were hacked. Our partners were hacked." They explicitly said this.
 
