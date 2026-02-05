@@ -168,7 +168,7 @@ We'll talk about standard foundation and all the other fun stuff towards the end
 I always want to put some headline numbers up front.
 So I'm just trying to do a better job of giving people the **brain dump** on what they should know about **Chroma**.
 
-- **Five million monthly downloads** is what I have on **PyPy**.  
+- **Five million monthly downloads** is what I have on **PyPI**.  
 - And **21,000 GitHub stars**.  
 
 Anything else people should know? Like, that's the typical sales call headline stuff.
@@ -311,7 +311,7 @@ You know, I don't know. I have some sympathy for why this was not reported on.
 
 But, yeah, I mean, there was this bit of implication where **"oh, look, our model is perfect on this task, needle in a haystack. Therefore, the context window you can use for whatever you want."** There was an implication there. And, well, I hope that that is true someday. That is not the case today.
 
-Yeah. We'll send people, at least on the YouTube video, we'll put this chart, which is kind of your figure one of the **context route report**. It seems like **Sonic 4** is the best in terms of area under curve, is how I think about it.
+Yeah. We'll send people, at least on the YouTube video, we'll put this chart, which is kind of your figure one of the **context rot report**. It seems like **Sonnet** is the best in terms of area under curve, is how I think about it.
 
 Then **Quinn, wow.** And then **GPT-4-1** and **Gemini Flash** degrade a lot quicker in terms of the context length.
 
@@ -586,7 +586,7 @@ Stop.
 Stop.
 
 But there was a paper, or a paper in a GitHub that came out a few weeks ago.  
-I think it was called, unfortunately, **Ragar1,** where they teach DeepCigar1, kind of give it the tool of how to retrieve.  
+I think it was called, unfortunately, **RAG are 1,** where they teach DeepSeek-R1, kind of give it the tool of how to retrieve.  
 
 And so, kind of in its internal chain of thought, in its infinite times compute, it's actually searching.
 
@@ -1003,7 +1003,7 @@ Thank you. Thank you.
       "section_title": "Motivations for Context Rot Research"
     },
     {
-      "index_sentences": "Yeah. We'll send people, at least on the YouTube video, we'll put this chart, which is kind of your figure one of the context route report.",
+      "index_sentences": "Yeah. We'll send people, at least on the YouTube video, we'll put this chart, which is kind of your figure one of the context rot report.",
       "section_level": 3,
       "section_title": "Analyzing LLM Performance with Context Length"
     },
