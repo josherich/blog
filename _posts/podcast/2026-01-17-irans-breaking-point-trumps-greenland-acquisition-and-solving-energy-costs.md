@@ -9,7 +9,7 @@ tags: [podcast_script]
 
 [Iran's Breaking Point, Trump's Greenland Acquisition, and Solving Energy Costs](https://dts.podtrac.com/redirect.mp3/traffic.libsyn.com/secure/allinchamathjason/ALLIN-E258_Ch.mp3?dest-id=1928300)
 
-All right, everybody, welcome back to the **number one podcast in the world**, your favorite podcast, the **all-in podcast**. With me again, the **core four**, the original four, **David Friedberg, Jamal Polly Hoppatea, David Sachs**, we're here. And there's a lot going on in the world.
+All right, everybody, welcome back to the **number one podcast in the world**, your favorite podcast, the **all-in podcast**. With me again, the **core four**, the original four, **David Friedberg, Chamath Palihapitiya, David Sacks**, we're here. And there's a lot going on in the world.
 
 Gentlemen, how's everybody's week going? Anybody got big plans for next week?
 
@@ -27,7 +27,7 @@ Gentlemen, how's everybody's week going? Anybody got big plans for next week?
 
 > **Don't blow it now. Don't blow it.**
 
-Explain to the audience what's happening here, **Sachs**.
+Explain to the audience what's happening here, **Sacks**.
 
 > **What's happening?**
 
@@ -51,11 +51,11 @@ Even **Jason** is going to go to **Davos**.
 - Even J-Cal is at Davos.
 - Even J-Cal.
 
-I mean, it's pretty funny. I was invited to be part of that. Like, you probably got this too, Chimov, back in the day. Like, they're **young leaders for $50,000 a year**.
+I mean, it's pretty funny. I was invited to be part of that. Like, you probably got this too, Chamath, back in the day. Like, they're **young leaders for $50,000 a year**.
 
 So we're going to be doing some interviews.
 
-And if you want to be interviewed by me and or Sachs at the **USA House**, email **jason@allin.com** if you're there, if you have ideas for speakers. And we're going to be booking in real time.
+And if you want to be interviewed by me and or Sacks at the **USA House**, email **jason@allin.com** if you're there, if you have ideas for speakers. And we're going to be booking in real time.
 
 I haven't been to **Davos**. I guess the way it works is there's a bunch of houses. So countries have houses and then companies sponsor houses. And there's stuff happening there. There's, like, stages set up and there's constant interviews.
 
@@ -73,7 +73,7 @@ It's literally going to be heads of state interviewing heads of state.
 
 > **Yes. Everyone's just interviewing everybody.**
 
-> *Hey, welcome to the J.D. Vance Show. I'm J.D. Vance. With me on the show today is Mondami. Welcome to the show.*
+> *Hey, welcome to the J.D. Vance Show. I'm J.D. Vance. With me on the show today is Macron. Welcome to the show.*
 
 Everybody's doing collabs there.
 
@@ -81,19 +81,19 @@ The snake has eaten its tail.
 
 But I think we'll have a fun time.
 
-Me and **Saks** are going.
+Me and **Sacks** are going.
 
 And we're going to tear it up and have a good time.
 
 The **USA house**, I understand, is, like, on a main street there. And my understanding is I was talking to the CEO of **McKinsey**, who's one of the partners, I guess, who sponsors a lot of the stuff at **Davos**.
 
-Look at you rubbing elbows with the **global elite**, talking, texting, with the deep state.
+Look at you rubbing elbows with the **global elite**, talking, texting, with the Deep State.
 
 > **This is fantastic.**
 
-> **Yeah, no, I'm going. It's a deep state. It's my deep state era going into 2026.**
+> **Yeah, no, I'm going. It's the Deep State. It's my Deep State era going into 2026.**
 
-And there's supposedly what the vibe is, **Saks**, is people just kind of walk around the main town, and they'll just pop into **USA house**, and they network, have a coffee. They take a coffee.
+And there's supposedly what the vibe is, **Sacks**, is people just kind of walk around the main town, and they'll just pop into **USA house**, and they network, have a coffee. They take a coffee.
 
 And then what we've got to do is have producer Lisa say,
 
@@ -141,7 +141,7 @@ There have been massive **anti-regime protests** over the last month.
 
 As everybody listening probably knows, **Iran has been ruled by an Islamic dictator since the 1979 revolution**.
 
-**Ali Khomeini** is in power since 1989.
+**Ali Khamenei** is in power since 1989.
 
 And if you want to understand why this is happening, there's probably two data points that you should know.
 
@@ -154,13 +154,13 @@ Long term, here's a chart. And this is from 2020. So, you can add six years to t
 
 And they have **Starlink**. And they have access and VPNs. And so, they want to be part of the future. They want to modernize.
 
-Saks, this was a point of contention last year. We were talking about interventions going on, foreign wars and your concerns about that. This one is from the bottom up. So, I think that makes it quite different. Yeah?
+Sacks, this was a point of contention last year. We were talking about interventions going on, foreign wars and your concerns about that. This one is from the bottom up. So, I think that makes it quite different. Yeah?
 
 Well, look, this is a **highly dynamic situation**. I don't really want to comment on something except to say that I trust **President Trump** to make the right decision and handle it.  
 
 As I understand it, the protests are either fizzling out or being cracked down on at this point. And I tend to think it's dying down. But I'm not sure. And it's a dynamic situation.
 
-I really – look, the problem is whenever I comment on something like this, it ends up being **Trump advisor, David Saks says whatever**. Yeah, you get clipped. And the reality is I'm only involved on two issues. And this isn't one of them. So, I don't really think I should be commenting. Yeah.
+I really – look, the problem is whenever I comment on something like this, it ends up being **Trump advisor, David Sacks says whatever**. Yeah, you get clipped. And the reality is I'm only involved on two issues. And this isn't one of them. So, I don't really think I should be commenting. Yeah.
 
 **Freeberg, you've been talking about this**, and I think it was part of your predictions from the show last week, the prediction show.
 
@@ -206,7 +206,7 @@ So how do you maintain kind of the core functioning of society without breaking 
 
 That's where this gets very messy. So I don't know what's ahead.
 
-Yeah. And the strikes didn't happen last night. Besant announced some increased sanctions. That always seems to be one of the best ways to handle this is to increase the economic pressure, as you pointed out, Freeberg.
+Yeah. And the strikes didn't happen last night. Bessent announced some increased sanctions. That always seems to be one of the best ways to handle this is to increase the economic pressure, as you pointed out, Freeberg.
 
 And for people who are not familiar, **Iran is a large country**. It's the second largest in the Middle East behind Egypt, I believe. And close to 100 million people, 95 million people, I think, live in Iran.
 
@@ -219,13 +219,13 @@ It's really hard to tell. It's an incredibly vibrant people. If you look at the 
 
 The thing that I would say is that I don't think that you can paint the Middle East with the broad brush here. It's a very different culture than the other Middle East countries. It's a fundamentally different religion. It's a fundamentally different language.
 
-So I would just say that I don't know what's actually going on in **Iran**. There's been so much information containment that I take **Saxe's** point of view, which is I think the only people in the **United States** right now that have an accurate sense are probably the military and intelligence apparatus of the United States. And the rest of us are underreacting or overreacting to small pieces of information without really knowing the context and the mosaic of the whole.
+So I would just say that I don't know what's actually going on in **Iran**. There's been so much information containment that I take **Sacks'** point of view, which is I think the only people in the **United States** right now that have an accurate sense are probably the military and intelligence apparatus of the United States. And the rest of us are underreacting or overreacting to small pieces of information without really knowing the context and the mosaic of the whole.
 
 In a breaking news environment, it's best to do some research and, yeah, be humble and thoughtful about your positions. Yeah.
 
 The crazy thing about this, if you shift away from Iran, was specifically the **information warfare** game is totally different. So what did you have? You had **SpaceX enable Starlink over Iran** and then there was the attempt to use that mechanism to get information out, to fill in the mosaic, right?
 
-So was what was happening 90% with what was happening 10%? Was there counter revolutions that were supportive of Khomeini? None of us knew anything because you would see these snippets and it was very hard to actually triangulate.
+So was what was happening 90% with what was happening 10%? Was there counter revolutions that were supportive of Khamenei? None of us knew anything because you would see these snippets and it was very hard to actually triangulate.
 
 Then you had this entire information channel get shut down and you had all kinds of blocking mechanisms that essentially drove the packet loss down to like 80-90%. And it's just important to understand that is the generation of warfare and information that we are going to see in every conflict going forward, especially when you have something as ubiquitous as **Starlink** and other things in the sky to help you get the information out.
 
@@ -245,7 +245,7 @@ Yeah. Hong Kong. Yeah. London. Yeah. Yeah. Dubai. Great potential there. Yeah.
 
 We're rooting for the people of Iran to have their freedom.
 
-And yeah, I actually, and I'll say, **Sachs**, I trust **Trump** in his targeted neocon era. I'm trying to phrase it properly here to not offend anybody, but I think he's really—
+And yeah, I actually, and I'll say, **Sacks**, I trust **Trump** in his targeted neocon era. I'm trying to phrase it properly here to not offend anybody, but I think he's really—
 
 **Trump doctrine**.
 
@@ -253,7 +253,7 @@ Well, I mean, he, I think, doesn't have a problem using our military and the for
 
 It means there's only a few of us left, Jason.
 
-Dictators, yes, he'll be coming for you, **Shavob**.
+Dictators, yes, he'll be coming for you, **Chamath**.
 
 All right. **Microsoft** is going to pay its own way on data centers. We've been talking about this, you know, energy needs for data centers for a long time now. And there's been this theme:
 
@@ -272,7 +272,7 @@ Seems like a pretty simple idea. And they're also going to pay to replenish wate
 
 And **Microsoft has announced they're not going to accept any tax breaks or electricity rate discounts**. So that era seems to have ended.
 
-**Shavath**, you're involved in a number of data centers. And obviously, **David Sachs**, you're involved in this as our **AI czar** and civil servant. So Shavath, why don't you start us off here?
+**Chamath**, you're involved in a number of data centers. And obviously, **David Sacks**, you're involved in this as our **AI czar** and civil servant. So Chamath, why don't you start us off here?
 
 You guys can find the clip, but we talked about this a few weeks ago that these kinds of things were in the offing. I really like it. It's a very good first order set of things to do, which is to step into a local area and take all of these energy issues off the table, at least to the extent that you're contributing to it.
 
@@ -305,9 +305,9 @@ They just put a battery, like a little **R2D2 outside your house**. They fill up
 
 And he said those kinds of deals are in the works or the discussions were happening and that was back then.
 
-So this is a really easy win-win-win type situation, Shemath, you're describing.
+So this is a really easy win-win-win type situation, Chamath, you're describing.
 
-Sachs, this feels like proactive, thoughtful ways to communicate to the populace:
+Sacks, this feels like proactive, thoughtful ways to communicate to the populace:
 
 > "Hey, the AI boom is here and you have concerns, we're going to get ahead of them."
 
@@ -409,7 +409,7 @@ So basically, for **$100 billion, you could do 10% of the country**. If you were
 
 Well, you would not stop worrying about the grid, but Jason, just to refine what you're saying, because you're directionally very right. The consumers would feel less of these issues. Instead of all of us worrying how to underwrite terawatt hours to catch up to China, we actually get a two for one.
 
-The consumer homes don't have that anxiety anymore. They don't have the bill. And because they're generating their own power, they're off the grid. And now what that means is that extra terawatt hour can actually go to the commercial and industrial applications, including these data centers. And you're right, Freebird, we should raise their tariffs.
+The consumer homes don't have that anxiety anymore. They don't have the bill. And because they're generating their own power, they're off the grid. And now what that means is that extra terawatt hour can actually go to the commercial and industrial applications, including these data centers. And you're right, Freeberg, we should raise their tariffs.
 
 I just think it's a lot, it's a lot more complicated, a lot more expensive.
 
@@ -701,11 +701,11 @@ And I think that for all the founders, and whether you're pre-exit, post-exit, o
 
 This is the **direction of travel in California**. And whether it's **SEIU** or whatever they do in 28, this is where it's going. They'd love to see something.
 
-**Sachs, you said something that resonated with me**, which is the next versions of this will be better lawyered and more bulletproof. I've had a team of people looking at this. The thing that is the biggest weakness here is looking at the fact that this is a **wholly new tax** — a **tax that is applied retroactively**. And when you look at the Supreme Court at the federal level, the case law on this, this is the strongest challenge that people will have.
+**Sacks, you said something that resonated with me**, which is the next versions of this will be better lawyered and more bulletproof. I've had a team of people looking at this. The thing that is the biggest weakness here is looking at the fact that this is a **wholly new tax** — a **tax that is applied retroactively**. And when you look at the Supreme Court at the federal level, the case law on this, this is the strongest challenge that people will have.
 
 And this is where there is a **preponderance of evidence in favor of people saying that this is unjust and this is a taking**. And being able to use the Supreme Court to bat this back. Now, that'll take five and 10 years to litigate because it'll be there drawing itself through the courts forever.
 
-But when you look at the fact that that will be the **angle of attack** that people will take if this passes, I 100% agree with you, Sachs.
+But when you look at the fact that that will be the **angle of attack** that people will take if this passes, I 100% agree with you, Sacks.
 
 If this union were smart enough, what they would have done is say, 
 
@@ -739,7 +739,7 @@ So now imagine **AOC's president, AOC's president**. So she says,
 
 > "I got to do this."
 
-And then when it goes to Congress, how does this actually happen? This is, again, where I think Sachs is right. As long as there is a **49-51 kind of a balance**, I don't think anything can really happen without meaningfully deep austerity in California.
+And then when it goes to Congress, how does this actually happen? This is, again, where I think Sacks is right. As long as there is a **49-51 kind of a balance**, I don't think anything can really happen without meaningfully deep austerity in California.
 
 I think there's a way out for—
 
@@ -782,7 +782,7 @@ Crime prevention and enforcement got worse.
 
 Where's it going? They let convicts out of jails. Everything's gotten worse.  
 
-Where's the money going, Saks? Say the word.  
+Where's the money going, Sacks? Say the word.  
 
 It's going to these **government worker unions** who have accumulated too much political power. Look, you go all the way back to **FDR**, and he was opposed to, even though he was for unions, he was opposed to **government workers' unions** because he thought they would accumulate too much political power.  
 
@@ -896,7 +896,7 @@ And that legal territory should allow for the resurrection of the great American
 
 Yeah, welcome to the sound. We're making our last stand here. Absolutely. The .50 calibers are up on the ranch.  
 
-I think it would be helpful to get something that's federally set up, Sachs, that you could have like untouchable legislation that says:  
+I think it would be helpful to get something that's federally set up, Sacks, that you could have like untouchable legislation that says:  
 ```markdown
 This is not to be touched.
 ```
@@ -933,8 +933,8 @@ All right. Another amazing episode. And just want to give a shout out, **Chamath
 - He's awesome.  
 - Yeah, I'm really impressed by him.  
 
-And **Freeberg**, on a bit of a heater here, today we dropped an incredible interview with **FDA Commissioner Marty Macaray**. Am I pronouncing it correctly?  
-- McCary.  
+And **Freeberg**, on a bit of a heater here, today we dropped an incredible interview with **FDA Commissioner Marty Makary**. Am I pronouncing it correctly?  
+- Makary.  
 - McCary. Great job there.  
 
 And also, you got to hang out with your childhood hero. We grew up on **Howard Stern** on the East Coast, but you grew up with **Adam Carolla**. And you got to interview him. You were fangirling a little bit there at the start, weren't you?
@@ -953,7 +953,7 @@ It was really cute.
 - You were like, oh, I do summer stuff.  
 - I would never degrade myself like that, Jacob. I actually am doing random acts of broadcasting.
 
-The sun never sets on the all-in empire. And I also did a fun **CES** interview with the CEO of **McKinsey**, **Bob Sternfels**, and **Hamon** from General Catalyst. And that's up on the feed.
+The sun never sets on the all-in empire. And I also did a fun **CES** interview with the CEO of **McKinsey**, **Bob Sternfels**, and **Hemant** from General Catalyst. And that's up on the feed.
 
 So four, four, one, two, three, four interview shows waiting for you in your feed.
 
@@ -1034,7 +1034,7 @@ Wet your feet. Wet your feet. Wet your feet.
 
 We need to get merch. These are back. I'm going **all in**. I'm going **all in**.
 
-<script>window.tocIndex = {"index":[{"index_sentences":"All right, everybody, welcome back to the number one podcast in the world, your favorite podcast, the all-in podcast.","section_title":"Welcome to the All-In Podcast and Davos Plans","section_level":1},{"index_sentences":"Well, as it turns out, one of the houses there is in need of content.","section_title":"All-In Podcast's Role at Davos","section_level":2},{"index_sentences":"So I canceled my ski trip in Japan to go to Davos.","section_title":"Attendees and Networking at Davos","section_level":2},{"index_sentences":"And there's supposedly what the vibe is, Saks, is people just kind of walk around the main town, and they'll just pop into USA house, and they network, have a coffee.","section_title":"The Davos Experience and J. Cal's Approach","section_level":2},{"index_sentences":"All right, I guess we got to talk about what's going on in Iran.","section_title":"Discussion on Iran's Anti-Regime Protests","section_level":1},{"index_sentences":"And if you want to understand why this is happening, there's probably two data points that you should know.","section_title":"Causes of Protests: Inflation and Youth Modernization","section_level":2},{"index_sentences":"Well, look, this is a highly dynamic situation.","section_title":"David Sachs' Reluctance to Comment","section_level":2},{"index_sentences":"I mean, I think it's inevitable that there's a break in the country because of the effect of sanctions.","section_title":"Freeberg's Predictions and Economic Impact","section_level":2},{"index_sentences":"Yeah. And the strikes didn't happen last night.","section_title":"Geopolitical Ramifications of a Transition","section_level":2},{"index_sentences":"The thing that I would say is that I don't think that you can paint the Middle East with the broad brush here.","section_title":"Chamath's Perspective and Information Warfare","section_level":2},{"index_sentences":"All right. Microsoft is going to pay its own way on data centers.","section_title":"Microsoft's Pledge for Data Center Energy Costs","section_level":1},{"index_sentences":"You guys can find the clip, but we talked about this a few weeks ago that these kinds of things were in the offing.","section_title":"Chamath's Proposal for Energy Subsidies","section_level":2},{"index_sentences":"Yeah, I had Zach Dell from Base Power on this week in startups, I don't know, a year ago now.","section_title":"Homeowner Battery Storage Solutions","section_level":2},{"index_sentences":"Well, Jason, the president's been ahead of the curve on this issue really since the beginning of the administration.","section_title":"David Sachs on Hyperscalers and Regulations","section_level":2},{"index_sentences":"Well, they got a lot of water, but it just goes around in a circle, so I don't think that's an issue.","section_title":"Debunking Water Usage Misperceptions","section_level":3},{"index_sentences":"Here's my pitch: I think the president should try to create a three, four, $500 billion tax equity fund Help eliminate the electricity costs of 50 to 100 million American households.","section_title":"Chamath's Vision for Free Residential Electricity","section_level":2},{"index_sentences":"The other thing is, we've talked about this.","section_title":"Economic Threat to Utilities","section_level":2},{"index_sentences":"Okay. OpenAI has struck another compute deal.","section_title":"OpenAI's Compute Partnership with Cerebras","section_level":1},{"index_sentences":"If you see a chip, what you actually see is a wafer, and a wafer is full of little chips, right?","section_title":"Cerebras Technology and Industry Diversification","section_level":2},{"index_sentences":"Is there any argument that compute needs will level off in some way, will have built so much capacity, and the software will get better?","section_title":"Future of Compute Demand and AI Efficiency","section_level":2},{"index_sentences":"Well, maybe we should just talk about BTA, because that's where this is going.","section_title":"Discussion on California's Billionaires Tax Act (BTA)","section_level":1},{"index_sentences":"I think we're going through the rolling wake-up process right now, which is people are waking up to the fact that the asset seizure tax is an elimination of private property rights.","section_title":"Argument Against: Erosion of Private Property Rights","section_level":2},{"index_sentences":"Well, can I take the other side of that bet, that bet you mentioned about it not getting on the ballot?","section_title":"Arguments For: Getting BTA on the Ballot","section_level":2},{"index_sentences":"And I'll tell you why.","section_title":"Long-Term Implications and Exit Strategy","section_level":2},{"index_sentences":"There are other unions who weren’t part of this ballot initiative who are preparing similar ones for 2028.","section_title":"Future Versions of the Wealth Tax","section_level":2},{"index_sentences":"Freeberg, you said something that I really liked in your post, which is it begs the question, what will happen when California goes BK and then they go to the feds?","section_title":"Economic Ramifications for California and the US","section_level":2},{"index_sentences":"But just some interesting stats here: California collects roughly double per capita what Texas and Florida do.","section_title":"California's Spending vs. Tax Collection","section_level":2},{"index_sentences":"It's going to these government worker unions who have accumulated too much political power.","section_title":"Role of Government Worker Unions and Pension Obligations","section_level":3},{"index_sentences":"Okay, I just want to hit one last topic.","section_title":"Discussion on Greenland Acquisition","section_level":1},{"index_sentences":"Well, it is becoming more significant from a national security standpoint as those Arctic ices melt, and you have new shipping lanes that have opened up.","section_title":"Strategic Importance and Historical Interest","section_level":2},{"index_sentences":"The old adage is: There's always a deal. There's always a price.","section_title":"Challenges and the Idea of a Freedom Province","section_level":2},{"index_sentences":"And it's regionally encased with a set of legislated things like Guam or Puerto Rico or something where you set it up and you're like, 'look, this is untouchable.'","section_title":"The Frontier as an Escape Valve","section_level":2},{"index_sentences":"All right. Another amazing episode.","section_title":"Podcast Updates and New Interviews","section_level":1},{"index_sentences":"Did you guys see me rage bait Twitter two days ago?","section_title":"Social Media and Underreported Stories","section_level":2},{"index_sentences":"Check this out. There's these transportation companies.","section_title":"Government Fraud in Minnesota","section_level":2},{"index_sentences":"All right, everybody. Another amazing All In episode.","section_title":"Podcast Outro and YouTube Milestone","section_level":2}]};
+<script>window.tocIndex = {"index":[{"index_sentences":"All right, everybody, welcome back to the number one podcast in the world, your favorite podcast, the all-in podcast.","section_title":"Welcome to the All-In Podcast and Davos Plans","section_level":1},{"index_sentences":"Well, as it turns out, one of the houses there is in need of content.","section_title":"All-In Podcast's Role at Davos","section_level":2},{"index_sentences":"So I canceled my ski trip in Japan to go to Davos.","section_title":"Attendees and Networking at Davos","section_level":2},{"index_sentences":"And there's supposedly what the vibe is, Sacks, is people just kind of walk around the main town, and they'll just pop into USA house, and they network, have a coffee.","section_title":"The Davos Experience and J. Cal's Approach","section_level":2},{"index_sentences":"All right, I guess we got to talk about what's going on in Iran.","section_title":"Discussion on Iran's Anti-Regime Protests","section_level":1},{"index_sentences":"And if you want to understand why this is happening, there's probably two data points that you should know.","section_title":"Causes of Protests: Inflation and Youth Modernization","section_level":2},{"index_sentences":"Well, look, this is a highly dynamic situation.","section_title":"David Sacks' Reluctance to Comment","section_level":2},{"index_sentences":"I mean, I think it's inevitable that there's a break in the country because of the effect of sanctions.","section_title":"Freeberg's Predictions and Economic Impact","section_level":2},{"index_sentences":"Yeah. And the strikes didn't happen last night.","section_title":"Geopolitical Ramifications of a Transition","section_level":2},{"index_sentences":"The thing that I would say is that I don't think that you can paint the Middle East with the broad brush here.","section_title":"Chamath's Perspective and Information Warfare","section_level":2},{"index_sentences":"All right. Microsoft is going to pay its own way on data centers.","section_title":"Microsoft's Pledge for Data Center Energy Costs","section_level":1},{"index_sentences":"You guys can find the clip, but we talked about this a few weeks ago that these kinds of things were in the offing.","section_title":"Chamath's Proposal for Energy Subsidies","section_level":2},{"index_sentences":"Yeah, I had Zach Dell from Base Power on this week in startups, I don't know, a year ago now.","section_title":"Homeowner Battery Storage Solutions","section_level":2},{"index_sentences":"Well, Jason, the president's been ahead of the curve on this issue really since the beginning of the administration.","section_title":"David Sacks on Hyperscalers and Regulations","section_level":2},{"index_sentences":"Well, they got a lot of water, but it just goes around in a circle, so I don't think that's an issue.","section_title":"Debunking Water Usage Misperceptions","section_level":3},{"index_sentences":"Here's my pitch: I think the president should try to create a three, four, $500 billion tax equity fund Help eliminate the electricity costs of 50 to 100 million American households.","section_title":"Chamath's Vision for Free Residential Electricity","section_level":2},{"index_sentences":"The other thing is, we've talked about this.","section_title":"Economic Threat to Utilities","section_level":2},{"index_sentences":"Okay. OpenAI has struck another compute deal.","section_title":"OpenAI's Compute Partnership with Cerebras","section_level":1},{"index_sentences":"If you see a chip, what you actually see is a wafer, and a wafer is full of little chips, right?","section_title":"Cerebras Technology and Industry Diversification","section_level":2},{"index_sentences":"Is there any argument that compute needs will level off in some way, will have built so much capacity, and the software will get better?","section_title":"Future of Compute Demand and AI Efficiency","section_level":2},{"index_sentences":"Well, maybe we should just talk about BTA, because that's where this is going.","section_title":"Discussion on California's Billionaires Tax Act (BTA)","section_level":1},{"index_sentences":"I think we're going through the rolling wake-up process right now, which is people are waking up to the fact that the asset seizure tax is an elimination of private property rights.","section_title":"Argument Against: Erosion of Private Property Rights","section_level":2},{"index_sentences":"Well, can I take the other side of that bet, that bet you mentioned about it not getting on the ballot?","section_title":"Arguments For: Getting BTA on the Ballot","section_level":2},{"index_sentences":"And I'll tell you why.","section_title":"Long-Term Implications and Exit Strategy","section_level":2},{"index_sentences":"There are other unions who weren’t part of this ballot initiative who are preparing similar ones for 2028.","section_title":"Future Versions of the Wealth Tax","section_level":2},{"index_sentences":"Freeberg, you said something that I really liked in your post, which is it begs the question, what will happen when California goes BK and then they go to the feds?","section_title":"Economic Ramifications for California and the US","section_level":2},{"index_sentences":"But just some interesting stats here: California collects roughly double per capita what Texas and Florida do.","section_title":"California's Spending vs. Tax Collection","section_level":2},{"index_sentences":"It's going to these government worker unions who have accumulated too much political power.","section_title":"Role of Government Worker Unions and Pension Obligations","section_level":3},{"index_sentences":"Okay, I just want to hit one last topic.","section_title":"Discussion on Greenland Acquisition","section_level":1},{"index_sentences":"Well, it is becoming more significant from a national security standpoint as those Arctic ices melt, and you have new shipping lanes that have opened up.","section_title":"Strategic Importance and Historical Interest","section_level":2},{"index_sentences":"The old adage is: There's always a deal. There's always a price.","section_title":"Challenges and the Idea of a Freedom Province","section_level":2},{"index_sentences":"And it's regionally encased with a set of legislated things like Guam or Puerto Rico or something where you set it up and you're like, 'look, this is untouchable.'","section_title":"The Frontier as an Escape Valve","section_level":2},{"index_sentences":"All right. Another amazing episode.","section_title":"Podcast Updates and New Interviews","section_level":1},{"index_sentences":"Did you guys see me rage bait Twitter two days ago?","section_title":"Social Media and Underreported Stories","section_level":2},{"index_sentences":"Check this out. There's these transportation companies.","section_title":"Government Fraud in Minnesota","section_level":2},{"index_sentences":"All right, everybody. Another amazing All In episode.","section_title":"Podcast Outro and YouTube Milestone","section_level":2}]};
 window.faq = {
   "qas": [
     {
