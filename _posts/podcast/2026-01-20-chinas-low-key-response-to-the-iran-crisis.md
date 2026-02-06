@@ -25,7 +25,7 @@ China gets between **12% and 14% of its imported oil from Iran**. And so the pro
 
 But it's interesting because the **Chinese reaction**—you would never know that so much was potentially on the line. The Chinese have had a **very subdued reaction** to the situation in Iran. They've kind of issued the **pro forma denunciations of the U.S. threats to intervene**. At the same time, we saw a very different reaction coming out of Beijing and also out of the **United Nations** than what China did for the abduction of Nicolas Maduro.
 
-So to find out why there's been such a divergence between Venezuela and Gaza earlier and now Iran, we have our old friend back on the show, one of the leading **China-Iran scholars in the world**, **William Figueroa**, who is an assistant professor at the **University of Kroningen in the Netherlands** and really, again, one of the great go-to people on this issue.
+So to find out why there's been such a divergence between Venezuela and Gaza earlier and now Iran, we have our old friend back on the show, one of the leading **China-Iran scholars in the world**, **William Figueroa**, who is an assistant professor at the **University of Groningen in the Netherlands** and really, again, one of the great go-to people on this issue.
 
 Bill published a fascinating article on CGSP:
 > *As Iran faces its gravest crisis in decades, China stays on the sidelines*  
@@ -63,7 +63,7 @@ They talk a lot in Iran about **poor millionaires**, basically people who had en
 
 Right. So this is kind of the wider mood across the board.  
 
-So this is getting, as I mentioned, a lot of people in conservative media and **mega circles in Washington** excited that there is the prospect that the regime, the **Ayatollahs** in particular, are in jeopardy of collapsing.  
+So this is getting, as I mentioned, a lot of people in conservative media and **MAGA circles in Washington** excited that there is the prospect that the regime, the **Ayatollahs** in particular, are in jeopardy of collapsing.  
 
 And again, something similar is also happening in **Havana** as well, where again, the cutoff of the **Venezuelan oil** is prompting an economic crisis there.  
 
@@ -175,7 +175,7 @@ So this might then explain a little bit why we have not heard much from China. A
 
 Let me just refresh everybody.
 
-Within hours, less than 24 hours, the Chinese issued a statement on January 4th denouncing the United States. Then on that same day, a second statement denouncing the United States and calling for the release of **Maduro and his wife, Cecilia, from detention**. And then on Sunday, **Wang Yi** used his meeting with the Pakistani foreign minister to say:
+Within hours, less than 24 hours, the Chinese issued a statement on January 4th denouncing the United States. Then on that same day, a second statement denouncing the United States and calling for the release of **Maduro and his wife, Cilia, from detention**. And then on Sunday, **Wang Yi** used his meeting with the Pakistani foreign minister to say:
 
 > "The world doesn't need an international policeman, an international judge."
 
@@ -241,7 +241,7 @@ So this idea that the Chinese could match U.S. hard power so far afield is simpl
 
 So I guess, I mean, this is why it's been frustrating to watch a lot of the analysis coming down about this, because, again, it's just a misunderstanding of what or an ignorance of **Chinese security strategy**.
 
-Yeah, to give you a great example of how this kind of exaggeration versus reality happens, a couple of years ago, there were reports that there was a doubling of the presence of China's fleets in the Persian Gulf. And this was interpreted as potentially having to do with the ongoing bombardment of shipping lanes that was happening at the time because of the **Houthi, the Ansar-la attacks**.
+Yeah, to give you a great example of how this kind of exaggeration versus reality happens, a couple of years ago, there were reports that there was a doubling of the presence of China's fleets in the Persian Gulf. And this was interpreted as potentially having to do with the ongoing bombardment of shipping lanes that was happening at the time because of the **Houthi, the Ansar Allah attacks**.
 
 What actually was happening was that the **three ships that China often has in the region**, that it basically just uses to, as you said, sort of run supplies and protect some of its own military maneuvers, had crossed paths with the other three ships that were moving into the region as the two were switching, basically.
 
@@ -303,7 +303,7 @@ I always remind people that the **Americans** rolled into **Baghdad** in **2003*
 
 Let's remind everybody that today **China is the number one buyer of Iraqi oil**. So this is a long game, and so to make any bold declarations about Iran or Venezuela or any of these very fast-moving situations I think is highly premature.  
 
-One last question, and I'm throwing you a curveball here, so if you want to kind of deflect it, that's fine. But while all of this was going on, **China's special envoy for the Middle East, Jai Jun**, made an interesting stop in **Jerusalem** and met with the **Israeli Foreign Minister**, the Israeli foreign minister.  
+One last question, and I'm throwing you a curveball here, so if you want to kind of deflect it, that's fine. But while all of this was going on, **China's special envoy for the Middle East, Zhai Jun**, made an interesting stop in **Jerusalem** and met with the **Israeli Foreign Minister**, the Israeli foreign minister.  
 
 This is very interesting because it overlaps with the response or the muted response, you know, in Iran. What do you make of that? And a lot of people have said that **Israel**, in some respects, at least strategically, is more important to the Chinese in the long run than even Iran is, given the great power dynamics with the **U.S.**  
 
