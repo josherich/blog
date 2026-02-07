@@ -9,22 +9,22 @@ tags: [podcast_script]
 
 [The Most Important Foreign Policy Speech in Years](https://dts.podtrac.com/redirect.mp3/pdst.fm/e/pfx.vpixl.com/6qj4J/pscrb.fm/rss/p/nyt.simplecastaudio.com/3026b665-46df-4d18-98e9-d1ce16bbb1df/episodes/c0ad32d0-d83f-4c7d-b892-4a0fa475b8a9/audio/128/default.mp3?aid=rss_feed&awCollectionId=3026b665-46df-4d18-98e9-d1ce16bbb1df&awEpisodeId=c0ad32d0-d83f-4c7d-b892-4a0fa475b8a9&feed=kEKXbjuJ)
 
-Hey, **Drake May** here. You know that calm you get when your team has a drive under control? That's the same feeling I get investing and saving with **Betterment**. Their automated technology does the work to help grow your money and save you on taxes. So when the market gets unpredictable, you can stay calm, cool, and confident. 
+Hey, **Drake May** here. You know that calm you get when your team has a drive under control? That's the same feeling I get investing and saving with **Betterment**. Their automated technology does the work to help grow your money and save you on taxes. So when the market gets unpredictable, you can stay calm, cool, and confident.
 
-That's what I call the **Betterment effect**. And it's why I'm glad they're on my team. Get started today at **Betterment.com**. Investing involves risk. Performance not guaranteed. Pay a client ad. Views may not be representative. See **App Store** and **Google Play Store** reviews. Learn more at  
+That's what I call the **Betterment effect**. And it's why I'm glad they're on my team. Get started today at **Betterment.com**. Investing involves risk. Performance not guaranteed. Pay a client ad. Views may not be representative. See **App Store** and **Google Play Store** reviews. Learn more at
 `Betterment.com/PursuitBetter/Partners`.
 
 At **Davos last week**, **Mark Carney**, the Prime Minister of **Canada**, gave a speech that sent shockwaves through the international community.
 
-Let me be direct.  
+Let me be direct.
 
 > "We are in the midst of a rupture, not a transition. Canadians know that our old comfortable assumptions that our geography and alliance memberships automatically conferred prosperity and security. That assumption is no longer valid. We know the old order is not coming back. We shouldn't mourn it. Nostalgia is not a strategy. But we believe that from the fracture, we can build something bigger, better, stronger, more just."
 
 To understand why this speech has been such an international relations earthquake, I think you need to understand something about him.
 
-**Carney** is as establishment as you get. He is a **technocrat's technocrat**, former governor of the **Bank of Canada** and former governor of the **Bank of England**. For Carney, this kind of figure to come out at Davos in front of all those assembled government elites and business elites at this moment when *Trump is threatening tariffs on Europe in order to take over Greenland* — for him to come out and say that we are living in a rupture, that the old order in which you could have values-based relationships with the United States of America is over — for Carney, the leader of Canada, America's both geographically and in many ways spiritually closest ally, to say this, that is a **break point**. I think that's a moment, a week that's going to be remembered for a long time.
+**Carney** is as establishment as you get. He is a **technocrat's technocrat**, former governor of the **Bank of Canada** and former governor of the **Bank of England**. For Carney, this kind of figure to come out at Davos in front of all those assembled government elites and business elites at this moment when *Trump is threatening tariffs on Europe in order to take over Greenland* - for him to come out and say that we are living in a rupture, that the old order in which you could have values-based relationships with the United States of America is over - for Carney, the leader of Canada, America's both geographically and in many ways spiritually closest ally, to say this, that is a **break point**. I think that's a moment, a week that's going to be remembered for a long time.
 
-Beneath Carney's analysis of what is happening here is an idea I've been following for some time called **Weaponized Interdependence**. This idea comes from the international relations theorists and professors **Henry Farrell** and **Abraham Newman**. It's in their book  
+Beneath Carney's analysis of what is happening here is an idea I've been following for some time called **Weaponized Interdependence**. This idea comes from the international relations theorists and professors **Henry Farrell** and **Abraham Newman**. It's in their book
 **Underground Empire: How America Weaponized the World Economy**.
 
 The basic concept is that over time in this globalized, woven-together world, there are a lot of ways in which being on American technologies and American financial markets gave us leverage. That was fine for our allies and the world, so long as we didn't use that leverage too much. But now we've begun to make that a way we can harm them, a way we can extort them, a way we can control them. And that has really changed the nature of the bargain.
@@ -36,29 +36,29 @@ I want to have him on to talk me through Carney's speech, these ideas, and if th
 
 ---
 
-**Henry Farrell, welcome to the show.**  
+**Henry Farrell, welcome to the show.**
 > "I'm delighted to be here."
 
 So I want to begin with this clip of **Mark Carney**, the Prime Minister of Canada, speaking at Davos.
 
-> "This bargain no longer works.  
-> Let me be direct. We are in the midst of a rupture, not a transition.  
-> Over the past two decades, a series of crises in finance, health, energy, and geopolitics have laid bare the risks of extreme global integration.  
-> But more recently, great powers have begun using economic integration as weapons.  
-> Tariffs as leverage, financial infrastructure as coercion, supply chains as vulnerabilities to be exploited.  
+> "This bargain no longer works.
+> Let me be direct. We are in the midst of a rupture, not a transition.
+> Over the past two decades, a series of crises in finance, health, energy, and geopolitics have laid bare the risks of extreme global integration.
+> But more recently, great powers have begun using economic integration as weapons.
+> Tariffs as leverage, financial infrastructure as coercion, supply chains as vulnerabilities to be exploited.
 > You cannot live within the lie of mutual benefit through integration when integration becomes the source of your subordination."
 
 When integration becomes the source of your subordination. What is he saying there?
 
 ---
 
-So, in a weird way, it feels to me like he is channeling things that **Abe Newman** and I, my co-author on this book **Underground Empire**, started saying six or seven years ago. And here, I'm not claiming that we are the people who discovered it. But this was not the consensus when we were writing. And it has become a new kind of consensus now, which is, if we think about globalization — globalization back in the 90s and the 2000s — it seemed like it was an incredible opportunity to build a new kind of economic world in which markets dominated rather than geopolitics.
+So, in a weird way, it feels to me like he is channeling things that **Abe Newman** and I, my co-author on this book **Underground Empire**, started saying six or seven years ago. And here, I'm not claiming that we are the people who discovered it. But this was not the consensus when we were writing. And it has become a new kind of consensus now, which is, if we think about globalization - globalization back in the 90s and the 2000s - it seemed like it was an incredible opportunity to build a new kind of economic world in which markets dominated rather than geopolitics.
 
 So, you have all of these ideas floating around about:
 
 ```markdown
-- We're past the world of the Cold War, 
-- We're past the world of the Berlin Wall, 
+- We're past the world of the Cold War,
+- We're past the world of the Berlin Wall,
 - We're now in a new world where it is going to be...
 ```
 
@@ -78,7 +78,7 @@ Okay, so this really began post-**September 11, 2001**, when the United States l
 
 So this really begins to get going with a measure against a bank which is very closely associated with **North Korea**. The United States begins to target that bank. And so you see suddenly when that happens, a massive flight of money away from the bank. The bank nearly goes under.
 
-**When you say they target that bank, slow down a little bit.**  
+**When you say they target that bank, slow down a little bit.**
 **Yeah. What do they do?**
 
 So, okay, so there's this whole complicated system. And let me just explain. Maybe the best place to start is with the **US dollar**.
@@ -89,7 +89,7 @@ So, okay, so there's this whole complicated system. And let me just explain. May
 - You are effectively, you become subject indirectly or directly to **US regulation**.
 - Because if you don't have these banking relations, which will allow you to clear transactions through US dollars, you effectively stop becoming an international bank.
 
-And so this then means that you are in a world, as the United States discovers, where it is possible for the United States to effectively declare that a bank or another institution is a **pariah**—that nobody should have anything to do with it.
+And so this then means that you are in a world, as the United States discovers, where it is possible for the United States to effectively declare that a bank or another institution is a **pariah**-that nobody should have anything to do with it.
 
 And any bank which wants to maintain access to the US dollar, which means most banks in the world, is going to respect that demand from the United States. So suddenly the United States is able to turn the entire global banking system into a means of **power projection**. And it uses this first against **terrorists**, obviously, then against **rogue states** such as **North Korea**.
 
@@ -116,45 +116,45 @@ Iran does figure out ways around this over time. It does, especially under the *
 But these techniques are perfected from administration to administration. And they're handed on a little bit like a baton in a relay race.
 
 This is not to say that this is the...
-This is not a product of grand planning. At every moment, I think these are officials who are desperately improvising to try to do whatever the policy need of the moment demands. But over time, they create this entire ramshackle system for coercion, which turns out to be pretty extraordinary and to have pretty extraordinary powers.  
+This is not a product of grand planning. At every moment, I think these are officials who are desperately improvising to try to do whatever the policy need of the moment demands. But over time, they create this entire ramshackle system for coercion, which turns out to be pretty extraordinary and to have pretty extraordinary powers.
 
-One example of this that was striking to me was the **Trump administration** sanctioned some top judges and prosecutors of the **International Criminal Court** because of bringing suit against **Benjamin Netanyahu**. Tell me a bit about that moment and what happened.  
+One example of this that was striking to me was the **Trump administration** sanctioned some top judges and prosecutors of the **International Criminal Court** because of bringing suit against **Benjamin Netanyahu**. Tell me a bit about that moment and what happened.
 
-So really, what's happening here is, of course, the **Trump administration** sees the **International Criminal Court** and all of these other international organizations as being, in a sense, **illegitimate**. And this is not just about Trumpism itself.  
+So really, what's happening here is, of course, the **Trump administration** sees the **International Criminal Court** and all of these other international organizations as being, in a sense, **illegitimate**. And this is not just about Trumpism itself.
 
-This has always been a tension between the **United States** and this global system. On the one hand, the United States does want to take advantage of it. There are many people in the United States who see **global human rights** as being a very, very important thing that we need to protect. But the United States, like every other country, does not want itself to be constrained by the system when the system acts against it.  
+This has always been a tension between the **United States** and this global system. On the one hand, the United States does want to take advantage of it. There are many people in the United States who see **global human rights** as being a very, very important thing that we need to protect. But the United States, like every other country, does not want itself to be constrained by the system when the system acts against it.
 
-And so the United States has never actually signed on to the **International Criminal Court**. Both Democrats and Republicans have been somewhat resistant to it. So then when the **Trump administration** sees what is happening with **Netanyahu**, it begins to go after these **International Criminal Court officials**.  
+And so the United States has never actually signed on to the **International Criminal Court**. Both Democrats and Republicans have been somewhat resistant to it. So then when the **Trump administration** sees what is happening with **Netanyahu**, it begins to go after these **International Criminal Court officials**.
 
-And what happens then is that these officials suddenly find they can't use credit cards because credit cards all rely upon these payment systems. They can't use Google.  
+And what happens then is that these officials suddenly find they can't use credit cards because credit cards all rely upon these payment systems. They can't use Google.
 
-And so you discover that there's this entire incredibly boring-seeming infrastructure of institutions, communication systems, and money that really underpins our ordinary life. It's possible to live without access to these systems, as these judges and other officials who have been targeted have discovered. But it is a real pain.  
+And so you discover that there's this entire incredibly boring-seeming infrastructure of institutions, communication systems, and money that really underpins our ordinary life. It's possible to live without access to these systems, as these judges and other officials who have been targeted have discovered. But it is a real pain.
 
-What **Carney** is describing here, which he describes as a **rupture, not a transition**, is not just the use of these tools, but the use of these tools for something. What to you is the rupture he's describing?  
+What **Carney** is describing here, which he describes as a **rupture, not a transition**, is not just the use of these tools, but the use of these tools for something. What to you is the rupture he's describing?
 
-So here I think it is worth going back to this whole idea of the **liberal international order**.  
+So here I think it is worth going back to this whole idea of the **liberal international order**.
 
-The way in which this term comes into being is really from two academics: **Doodny** and **Ikenberry**, who come up with this idea. Their argument is pretty straightforward:  
+The way in which this term comes into being is really from two academics: **Ikenberry** and others, who come up with this idea. Their argument is pretty straightforward:
 
-- The **United States** is incredibly powerful, and that power is actually a problem for other countries.  
-- If you are another country wanting to deal with the United States, you worry that it is too powerful for you; you might make some concession.  
-- Then the United States decides it wants a little bit more, and wants a little bit more, and you find yourself in a situation of complete vassalage, of complete dependence.  
+- The **United States** is incredibly powerful, and that power is actually a problem for other countries.
+- If you are another country wanting to deal with the United States, you worry that it is too powerful for you; you might make some concession.
+- Then the United States decides it wants a little bit more, and wants a little bit more, and you find yourself in a situation of complete vassalage, of complete dependence.
 
-Their argument is that the way the United States has worked over the decades after **World War II** is to create something which amounts to a kind of **international quasi-constitution**, a set of relationships through which it binds itself, effectively making it more difficult for itself to abuse at least its allies—other countries dependent upon it.  
+Their argument is that the way the United States has worked over the decades after **World War II** is to create something which amounts to a kind of **international quasi-constitution**, a set of relationships through which it binds itself, effectively making it more difficult for itself to abuse at least its allies-other countries dependent upon it.
 
-From this perspective, the more that the **Trump administration** takes that role, the more it decides to use that leverage, the less other countries want to trust it.  
+From this perspective, the more that the **Trump administration** takes that role, the more it decides to use that leverage, the less other countries want to trust it.
 
-This is why I think many people like **Doodny** and **Ikenberry**, people who felt that the **liberal international order** was a wonderful thing, are extremely despondent about the world. Because from their perspective, the United States has effectively thrown away this massive advantage.  
+This is why I think many people like **Ikenberry**, people who felt that the **liberal international order** was a wonderful thing, are extremely despondent about the world. Because from their perspective, the United States has effectively thrown away this massive advantage.
 
-If you are self-restrained in this way, you are actually able to encourage much richer, much deeper integration with other countries, and everybody ends up better off as a result.  
+If you are self-restrained in this way, you are actually able to encourage much richer, much deeper integration with other countries, and everybody ends up better off as a result.
 
-You've called what we're doing the ***inshittification*** of American power. Tell me about that idea.  
+You've called what we're doing the ***inshittification*** of American power. Tell me about that idea.
 
-Okay, so this is a term we are taking very directly from **Cory Doctorow**, who is a science fiction writer and general thinker, who is also, I guess, a shit stirrer, since we have used the S word already.  
+Okay, so this is a term we are taking very directly from **Cory Doctorow**, who is a science fiction writer and general thinker, who is also, I guess, a shit stirrer, since we have used the S word already.
 
-He uses this to talk about the way in which the **platform economy** works. His argument is that the platform economy, typically, platforms start out as being absolutely awesome.  
+He uses this to talk about the way in which the **platform economy** works. His argument is that the platform economy, typically, platforms start out as being absolutely awesome.
 
-You have these wonderful uses, which you can make of **Google search** and whatever, it is beautiful. You have incredible access to information.  
+You have these wonderful uses, which you can make of **Google search** and whatever, it is beautiful. You have incredible access to information.
 
 But over time, the platform has these incentives to get shittier and shittier and shittier for the user. It basically begins to see the ways in which the users...
 **The customers are not the users. The customers are, of course, the advertisers.** And so you find, for example, if you're using **Google** these days, you look up a restaurant, **Google does not want you to go to that restaurant's homepage.** It wants you to click on some affiliate link to **DoorDash** or somebody else. So you order via Google rather than the restaurant.
@@ -163,7 +163,7 @@ So our argument is that if you look at the ways in which **United States power a
 
 So the **dollar clearing system** we've already talked about, the way in which the U.S. is able to use the dollar in order to leverage its advantage against other countries. We can also think about **weapon systems** as being very similar.
 
-Once you buy, for example, a **fifth-generation fighter aircraft,** you are not just buying the aircraft, you are buying into this extensive platform which you need to support the aircraft, to provide the information that allows you to figure out where to target things—all of these other bits and pieces. And the United States can possibly shut that off.
+Once you buy, for example, a **fifth-generation fighter aircraft,** you are not just buying the aircraft, you are buying into this extensive platform which you need to support the aircraft, to provide the information that allows you to figure out where to target things-all of these other bits and pieces. And the United States can possibly shut that off.
 
 So this is one of the big dilemmas that **Canada faces**. I think Canada is very, very deeply bought into these platforms. Canada is more deeply integrated into the **United States military structure,** I think, than any other ally. And suddenly it's in a world where it has to make some extremely difficult choices.
 
@@ -198,7 +198,7 @@ So I think the United States did **not** set this up as a deliberate kind of hon
 
 But I do think that this very much is the way in which **Trump and the people around him view the world.** They do see this as a world in which the United States bluntly ought to be getting tribute.
 
-So I had this, I remember 15 years ago, I had this big fight with the late **David Graeber,** which was about whether or not the world economy was a tribute system. And he was saying, absolutely, it is. And I was saying, nope, it was not.
+So I had this, I remember 15 years ago, I had this big fight with the late **David Graeber,** which was about whether or not the world economy was a tribute system. And he was saying, absolutely, it is. And I was saying, nope, it is not.
 
 And I kind of feel like the last year or so, **Donald Trump has been doing everything he can possibly to prove that it is a tribute system and to try and figure that out.**
 
@@ -211,15 +211,15 @@ The more that you use it as well, the less other countries are going to be willi
 And I think one of the really interesting test cases that is coming up is **AI,** because if you look at the political economy of AI,
 The **Trump administration's approach to AI** seems to be to offer it as freely and widely as possible in the expectation that **everybody is going to be so impressed** with the ways in which **US AI companies have powered ahead**, that they will have no choice but to become dependent upon it. And then presumably after that, at some point, the **US is able to use this as a new means of power**. It is effectively in control of another of the great infrastructures of the world.
 
-I'm going to be really interested to see whether countries actually—I'm sure—shrug their shoulders and go for it, or whether they decide that it makes better sense for them to build their own platforms, even if these platforms are worse, because at least these platforms are theirs and cannot be used against them.
+I'm going to be really interested to see whether countries actually-I'm sure-shrug their shoulders and go for it, or whether they decide that it makes better sense for them to build their own platforms, even if these platforms are worse, because at least these platforms are theirs and cannot be used against them.
 
-I want to pick up on the debate you had with **Graber** for a minute, because the idea that this **liberal rules-based world order was something of a sham** has been around for a long time. And it's something **Carney** talks about in his speech. I want to play this clip for you.
+I want to pick up on the debate you had with **Graeber** for a minute, because the idea that this **liberal rules-based world order was something of a sham** has been around for a long time. And it's something **Carney** talks about in his speech. I want to play this clip for you.
 
-> "We knew the story of the international rules-based order was partially false.  
-> That the strongest would exempt themselves when convenient.  
-> That trade rules were enforced asymmetrically.  
-> And we knew that international law applied with varying rigor, depending on the identity of the accused or the victim.  
-> This fiction was useful.  
+> "We knew the story of the international rules-based order was partially false.
+> That the strongest would exempt themselves when convenient.
+> That trade rules were enforced asymmetrically.
+> And we knew that international law applied with varying rigor, depending on the identity of the accused or the victim.
+> This fiction was useful.
 > And American hegemony, in particular, helped provide public goods, open sea lanes, a stable financial system, collective security, and support for frameworks for resolving disputes."
 
 Tell me what you make of that story he's telling there.
@@ -235,13 +235,13 @@ Equally, at the same time, as Carney says, **the services that the United States
 
 I think that the interesting thing about what Carney says is not that this is something profoundly new. I and other academics, my colleague **Martha Finnemore**, have talked about the incredibly important role of **U.S. hypocrisy in securing the order** for a long while. This is not new, but the fact that Carney is prepared to say this bluntly, plainly, and openly, this *is* new.
 
-This suggests that whatever order Carney wants to build—and I think there are still some question marks open about how to build it—it is going to be different than the order that was before. This is **not to say that it would not have its own hypocrisies or areas of self-interest**, because that is a fact of international politics, but it is a recognition that **the United States has gone beyond the realm of hypocrisy into the realm of pretty naked demands**:
+This suggests that whatever order Carney wants to build-and I think there are still some question marks open about how to build it-it is going to be different than the order that was before. This is **not to say that it would not have its own hypocrisies or areas of self-interest**, because that is a fact of international politics, but it is a recognition that **the United States has gone beyond the realm of hypocrisy into the realm of pretty naked demands**:
 
 > "We want you to do what we want you to do, and if you don't do this, we are going to punish you."
 
 I guess if you're somebody in Trump's orbit, and when I listen to Trump at **Davos** in a very strange speech, and I listen to him more broadly, what he always says is:
 
-> "Look how much we've done for you. Look at how much of the burden of collective security we've borne," 
+> "Look how much we've done for you. Look at how much of the burden of collective security we've borne,"
 
 and these things that Carney mentions, **open sea lanes, a stable financial system, collective security**. But the American political system is still guaranteeing those.
 
@@ -251,15 +251,15 @@ So, from the **MAGA perspective**, American hegemony is still providing these pu
 
 So, I think the way you would respond to that is:
 
-- The United States does pay a disproportionate amount of the cost,  
-- This has always been a problem with the U.S. and **NATO** in particular.  
-- There was bipartisan agreement around this.  
+- The United States does pay a disproportionate amount of the cost,
+- This has always been a problem with the U.S. and **NATO** in particular.
+- There was bipartisan agreement around this.
 - But also the United States has gotten a disproportionate amount of many of the benefits from it.
 And also, when it comes to things like **NATO**, it has been the actor which has been able to set the agenda. There's a saying in **Ireland**, **"he who pays the piper calls the tune,"** and the **United States** has been capable of calling the tune. The **Trump calculation** seems to be that we can stop paying, and we can use our awesome terror and wrath in order to provide a kind of substitute, in order to keep on being able to be a substantial power internationally.
 
 And I don't think that that actually works, because its resources are limited. If it is fighting a war in this place, it is deploying the resources that cannot be used in other places instead of that. And we also have seen this with **Venezuela**. It's very clear that they had to pull in a lot of resources from other places that meant that there were other things that they weren't able to do in the world at the time.
 
-And there's also this weird kind of disconnect that I see, for example, the **national security strategy**, which on the one hand does seem to suggest that the United States wants to withdraw from some of its role as global hegemon. It wants to focus on really controlling the **Western Hemisphere**, sort of the notorious so-called **Donro Doctrine**.
+And there's also this weird kind of disconnect that I see, for example, the **national security strategy**, which on the one hand does seem to suggest that the United States wants to withdraw from some of its role as global hegemon. It wants to focus on really controlling the **Western Hemisphere**, sort of the notorious so-called **Monroe Doctrine**.
 
 But at the same time, I think the United States still wants to be recognized as the **800-pound gorilla in the jungle**. It wants all of the awesomeness and wonderful things which come with that. And you can't do both at once. You can't both withdraw from the world and expect the world to continue to treat you as a hegemon at one and the same time. And this is the fundamental dilemma that I think a lot of the Trump administration, thinking about these things, tries to skirt around and doesn't do so successfully.
 
@@ -275,14 +275,14 @@ And I think very clearly through the election to Carney, now creating this figur
 
 I'm curious how you think about that dynamic of all this. So, it's a very clear dynamic. And it also is something that you saw over the last few days in Europe.
 
-So, when we began to see the **Trump-Greenland crisis** really come to a head, that's something we actually haven't talked about yet, which is…  
+So, when we began to see the **Trump-Greenland crisis** really come to a head, that's something we actually haven't talked about yet, which is…
 "Oh, we're getting there. Don't you worry, Henry."
 
 But you saw a lot of very clear nervousness coming from people like **Nigel Farage**, who clearly do not want to be in a world where Trump is making these moves. Because if you think about this from a nationalist perspective, and all of these parties, which are to some extent, I'm sort of sympathetic to Trump, they are all nationalists in one way, shape, or form.
 
-All of them, clearly, because they're nationalists, they are strongly attached to things like:  
-- **territorial sovereignty**  
-- **"don't touch me"** attitudes  
+All of them, clearly, because they're nationalists, they are strongly attached to things like:
+- **territorial sovereignty**
+- **"don't touch me"** attitudes
 - and whatever else aligns with nationalist sentiment.
 And the **Trump administration's perspective** seems to be not necessarily to want to grow these parties, sort of in a clear way. I think **J.D. Vance** absolutely would love to do that.
 
@@ -298,10 +298,10 @@ So when the market gets unpredictable, you can stay calm, cool, and confident. T
 
 Get started today at **Betterment.com**.
 
-- Investing involves risk  
-- Performance not guaranteed  
-- Paid client ad  
-- Views may not be representative  
+- Investing involves risk
+- Performance not guaranteed
+- Paid client ad
+- Views may not be representative
 
 See App Store and Google Play Store reviews. Learn more at **Betterment.com/PursuitBetter/Partners**.
 
@@ -315,7 +315,7 @@ Welcome to the **Goddard School.** Every great journey begins with the right sta
 
 Research shows that **90% of a child's brain development happens in the first five years.** That's why where your child starts their educational and social-emotional development journey matters so much.
 
-With over **35 years of experience** as the premier provider of early childhood education, the Goddard School's skilled and caring teachers guide your child to realize their extraordinary potential. 
+With over **35 years of experience** as the premier provider of early childhood education, the Goddard School's skilled and caring teachers guide your child to realize their extraordinary potential.
 
 And this is further complemented by our **innovative education program**, designed to spark your child's curiosity and confidently prepare them for what's next.
 
@@ -343,8 +343,8 @@ So, the idea is here that we are together in some kind of a civilization. Explic
 
 This civilization is being weakened because:
 
-- Europe is weak  
-- Europe is allowing hordes of people who have different skin colors, who are very often Muslim, to come in  
+- Europe is weak
+- Europe is allowing hordes of people who have different skin colors, who are very often Muslim, to come in
 
 And so, we are going to see the Europe that we know **fundamentally disappear over the next generation to two generations.**
 
@@ -367,15 +367,15 @@ It is a pushback, at least, against a certain version of liberalism, which is ab
 
 And that is something that has, to some lesser or greater extent, united the United States and Europe over the last few generations.
 
-You know, the United States has been a country which has had wave after wave of immigration. Many of these waves have been seen as problematic.  
+You know, the United States has been a country which has had wave after wave of immigration. Many of these waves have been seen as problematic.
 
-I'm sort of, I was, my equivalents, I'm sort of three or four generations ago, or five or six generations ago, inspired the **no-nothings**, sort of **Irish people coming in**, I'm sort of, were seen as being a fundamental civilization threat.  
+I'm sort of, I was, my equivalents, I'm sort of three or four generations ago, or five or six generations ago, inspired the **no-nothings**, sort of **Irish people coming in**, I'm sort of, were seen as being a fundamental civilization threat.
 
-**Jewish people** were seen as being problematic in a variety of ways. We still see, of course—still are, by many members of the Trump coalition.
+**Jewish people** were seen as being problematic in a variety of ways. We still see, of course-still are, by many members of the Trump coalition.
 
-Yeah, and we see this happening, of course, in **Minneapolis** at the moment, where **Somali people** are being identified, I'm sort of, by the Trump administration as being evil, low IQ—  
+Yeah, and we see this happening, of course, in **Minneapolis** at the moment, where **Somali people** are being identified, I'm sort of, by the Trump administration as being evil, low IQ-
 
-**Pirate culture**, is what they keep calling.  
+**Pirate culture**, is what they keep calling.
 
 Exactly.
 
@@ -385,7 +385,7 @@ That is what I think the Trump administration is pushing back against.
 
 And it also is going hand-in-hand with work by people like **Orbán in Hungary**, who not only share a similar perspective, but also, I think, have been extremely influential on people such as, for example, **Michael Anton**, who is one of the major ideologues of this way of thinking about the world.
 
-Hungary has been pushing something like this version of how we need to have a Europe, which is **illiberal, but democratic**, as long as you have the right description of who the majority, who the people are, who the system is actually supposed to respond to, and these are the **white native people**.  
+Hungary has been pushing something like this version of how we need to have a Europe, which is **illiberal, but democratic**, as long as you have the right description of who the majority, who the people are, who the system is actually supposed to respond to, and these are the **white native people**.
 
 These are not the people who are coming in.
 
@@ -393,7 +393,7 @@ So, there's this dimension of the Trump administration's contempt for European g
 
 And then there's this side, but increasingly central, fixation on **Greenland**.
 
-Does Trump, or his administration, but it seems at least partly him, want Greenland so much?  
+Does Trump, or his administration, but it seems at least partly him, want Greenland so much?
 
 So, there are a lot of different theories about that, and it's really hard to know what goes into his head.
 
@@ -403,7 +403,7 @@ Other people have speculated that this is something that various Silicon Valley 
 
 I don't have a very strong sense of what is actually driving this real obsession that Trump seems to have had.
 
-It is also, I think, interesting, however, that he actually seems to have backed off on this obsession rather quickly once he got real opposition.
+It is also, I think, interesting, however, that he actually seems to have backed off on this obsession rather quickly once he faced real opposition.
 
 One argument I've been hearing from more Trump-aligned figures is that what we just saw play out was **classic art of the deal**.
 
@@ -420,63 +420,63 @@ And he came out with this framework of a deal that gave, under the new telling o
 > "everything we wanted, you know, at a cost of nothing."
 
 How do you think about that justification of Trumpism, that this is all just negotiating?
-And it's just allowing him to get better deals than a more polite president would?  
-So this is just, I think, a **complete delusional argument**. I don't think that there is any reasonable way in which you can actually say that **Trump got substantial advantages** from whatever is going to come out of this that he would not have gotten otherwise.  
+And it's just allowing him to get better deals than a more polite president would?
+So this is just, I think, a **complete delusional argument**. I don't think that there is any reasonable way in which you can actually say that **Trump got substantial advantages** from whatever is going to come out of this that he would not have gotten otherwise.
 
-So as best as we can tell, this is a deal which is being negotiated via **NATO**, and this is going to probably involve some kind of a deeper **basing agreement**, which allows, I'm sure, the administration more control over bases in the **Arctic area**. It also provides perhaps some protection of **mineral rights** against being bought by **China** or **Russia** or others.  
+So as best as we can tell, this is a deal which is being negotiated via **NATO**, and this is going to probably involve some kind of a deeper **basing agreement**, which allows, I'm sure, the administration more control over bases in the **Arctic area**. It also provides perhaps some protection of **mineral rights** against being bought by **China** or **Russia** or others.
 
-These are not things that would have been difficult to negotiate for. These are things that I think the **Danish government** and the **Greenland** and sort of autonomous government would have been willing to give probably no matter what right at the beginning of the situation.  
+These are not things that would have been difficult to negotiate for. These are things that I think the **Danish government** and the **Greenland** and sort of autonomous government would have been willing to give probably no matter what right at the beginning of the situation.
 
-You know, **Trump prides himself on the art of the deal**. One important part of the art of the deal is being willing to stick to deals so that people are willing to make them with you. And this is, I think, another example of how it is that Trump, by keeping on pushing, pushing, pushing, he creates a world in which nobody is willing to trust that he is going to stick by a deal that he actually makes.  
+You know, **Trump prides himself on the Art of the Deal**. One important part of the Art of the Deal is being willing to stick to deals so that people are willing to make them with you. And this is, I think, another example of how it is that Trump, by keeping on pushing, pushing, pushing, he creates a world in which nobody is willing to trust that he is going to stick by a deal that he actually makes.
 
-And so your strength then becomes whatever temporary concessions you can win. And over the longer term, people are less and less willing to actually do deals with you.  
+And so your strength then becomes whatever temporary concessions you can win. And over the longer term, people are less and less willing to actually do deals with you.
 
-I want to play you something again from **Carney**, which felt in a way like his version of a warning to America. There's another truth.  
+I want to play you something again from **Carney**, which felt in a way like his version of a warning to America. There's another truth.
 
-> "If great powers abandon even the pretense of rules and values for the unhindered pursuit of their power and interests, the gains from transactionalism will become harder to replicate. Hegemons cannot continually monetize their relationships. Allies will diversify to hedge against uncertainty. They'll buy insurance, increase options in order to rebuild sovereignty. Sovereignty that was once grounded in rules, but will increasingly be anchored in the ability to withstand pressure."  
+> "If great powers abandon even the pretense of rules and values for the unhindered pursuit of their power and interests, the gains from transactionalism will become harder to replicate. Hegemons cannot continually monetize their relationships. Allies will diversify to hedge against uncertainty. They'll buy insurance, increase options in order to rebuild sovereignty. Sovereignty that was once grounded in rules, but will increasingly be anchored in the ability to withstand pressure."
 
-This seems to me to connect to what just happened with **Greenland**, which is I think the Europeans began to realize that if they keep giving Trump what he wants, **he's never going to stop taking**. So they began to raise the price. It became clear he had faced real opposition.  
+This seems to me to connect to what just happened with **Greenland**, which is I think the Europeans began to realize that if they keep giving Trump what he wants, **he's never going to stop taking**. So they began to raise the price. It became clear he had faced real opposition.
 
-What Carney, I think, is arguing here is that the more America acts like this, the higher the cost of acting like this will become.  
+What Carney, I think, is arguing here is that the more America acts like this, the higher the cost of acting like this will become.
 
-**Is he right?**  
-I think he is. I think he is.  
+**Is he right?**
+I think he is. I think he is.
 
-So I think we are going to see a world in which there are going to be a lot of people who want to hedge their bets. We're going to be much more skeptical about deep integration with the United States in ways that could allow the United States to take advantage of them.  
+So I think we are going to see a world in which there are going to be a lot of people who want to hedge their bets. We're going to be much more skeptical about deep integration with the United States in ways that could allow the United States to take advantage of them.
 
-So this is something that **Carney pretty clearly and explicitly acknowledges**. This is going to be not just expensive for the United States, it's going to be expensive for the countries that are doing it as well.  
+So this is something that **Carney pretty clearly and explicitly acknowledges**. This is going to be not just expensive for the United States, it's going to be expensive for the countries that are doing it as well.
 
-- Canada, if it wants to do this, is going to be poorer.  
-- It's going to have to build its own platforms.  
-- It's going to have to try and figure out ways that it can insulate itself.  
+- Canada, if it wants to do this, is going to be poorer.
+- It's going to have to build its own platforms.
+- It's going to have to try and figure out ways that it can insulate itself.
 
-And insulating itself is going to mean foregoing a lot of the advantages of a globally integrated economic system in favor of going it alone.  
+And insulating itself is going to mean foregoing a lot of the advantages of a globally integrated economic system in favor of going it alone.
 
-And so here, this is, I think, why Carney talks about **middle powers working together**. His ambition is to create a world in which we have **Europe, Canada, perhaps Japan and South Korea**, although they are more dependent on the U.S. in some ways for security, working together and trying to figure out some way to build a minimal system in which they can all have each other's backs.  
+And so here, this is, I think, why Carney talks about **middle powers working together**. His ambition is to create a world in which we have **Europe, Canada, perhaps Japan and South Korea**, although they are more dependent on the U.S. in some ways for security, working together and trying to figure out some way to build a minimal system in which they can all have each other's backs.
 
-The question is, of course, is that going to be adequate to the challenges that they face? And I don't think it is. Is it going it alone or is it balancing hedge funds against each other?  
+The question is, of course, is that going to be adequate to the challenges that they face? And I don't think it is. Is it going it alone or is it balancing hedge funds against each other?
 
-You know, quite publicly right before **Davos**, Carney made a deal with **China**, lowering the tariff on Chinese electric vehicles. He made a deal with **Qatar** that in a very public way, I think what he is saying and threatening and even advising other countries like Canada to do is to make clear to America that if they're an unreliable partner, well, over there is China.  
+You know, quite publicly right before **Davos**, Carney made a deal with **China**, lowering the tariff on Chinese electric vehicles. He made a deal with **Qatar** that in a very public way, I think what he is saying and threatening and even advising other countries like Canada to do is to make clear to America that if they're an unreliable partner, well, over there is China.
 
-So it's very, very clear that this does go together with making deals with China, for example, on things like electric cars, where the United States has seen these connected electric vehicles as being both a security and an economic threat.  
+So it's very, very clear that this does go together with making deals with China, for example, on things like electric cars, where the United States has seen these connected electric vehicles as being both a security and an economic threat.
 
-And Carney is saying:  
-> "We are going to have more imports whether the United States likes it or not."  
+And Carney is saying:
+> "We are going to have more imports whether the United States likes it or not."
 
-But I think that's one possible way in which other countries can respond, which is **hedging between the fact that there is a rising power, which is China and the United States**.  
+But I think that's one possible way in which other countries can respond, which is **hedging between the fact that there is a rising power, which is China and the United States**.
 
 A second is going it alone to a greater degree, that is building your own independent resources.
 And the third is **building up the capacity for deterrence**. So in a certain sense, thinking about this as if we were back in the **Cold War**, when the **United States deterred attacks against it by having the nuclear button**. The **USSR similarly deterred attacks against itself by having its own nuclear and other forces**.
 
 We may be moving back into a world in which whatever kinds of commercial peace we have may depend upon the capacity of other countries than the United States to begin to leverage these counter threats so that people like **Trump back off when they are pushing too far**.
 
-One of the—I don't know if it's an irony or a failure of the **Trump administration's foreign policy**—is that to the extent **Trump had, in my view, a distinctive foreign policy when he came into power in 2016, it was that he broke so much with the Washington consensus on China**. He was so much more anti-China than either the Republican or the Democratic Party was at that time. 
+One of the-I don't know if it's an irony or a failure of the **Trump administration's foreign policy**-is that to the extent **Trump had, in my view, a distinctive foreign policy when he came into power in 2016, it was that he broke so much with the Washington consensus on China**. He was so much more anti-China than either the Republican or the Democratic Party was at that time.
 
 He began to move in the second term, from the trade war with the world into a **trade war with China**. He then backed down from that. But he also seems to be driving other countries into China's arms, so that **China becomes the only way to, in a sense, both punish the U.S. but also balance against it**.
 
 Now, that's dangerous because then you're dependent on **China**. But **Trump seems to be ushering in a much more multipolar world by making it much more dangerous for our traditional allies to be dependent on us, on our technology companies**.
 
-I think the experience of the **European Union with Starlink and Elon Musk has become very sobering**.  
+I think the experience of the **European Union with Starlink and Elon Musk has become very sobering**.
 
 > "Do you really want to be dependent on an Internet platform run by such a mercurial and highly politicized American billionaire?"
 
@@ -488,26 +488,26 @@ So the **carny bet**, I think, seems to be that it is much better to have some r
 
 Equally, as you say, it does involve its own risks.
 
-The other interesting thing, which I still don't have a good sense of what is driving it, is the extent to which the, within the administration, the **China hawks have pretty comprehensively lost**. 
+The other interesting thing, which I still don't have a good sense of what is driving it, is the extent to which, within the administration, the **China hawks have pretty comprehensively lost**.
 
 You have seen various people being kicked out of the National Security Council. There was news suggesting that people in the **Bureau of Industry and Security**, which is a part of the **Department of Commerce** that deals with export controls, had a special unit devoted to looking at the development of Chinese technology, and the people from that unit have effectively been pushed out.
 
 And so I think we are seeing, on the one hand, the **counterproductive policies that the United States has**, which makes it very, very easy for **Xi**, who is not, under anybody's understandings, a particularly nice or benevolent individual, to seem like the predictable, somewhat safe alternative.
 
-On the other hand, there does seem to be this pursuit of the deal, or pursuit of something, which is really reshaping the internal organization of the Trump administration, pushing people who are skeptical about China—people who might perhaps have been linked to **Matt Pottinger** in the Trump One administration. Those people are losing. I really don't have a good understanding of what exactly is happening inside the administration to make that happen. 
+On the other hand, there does seem to be this pursuit of the deal, or pursuit of something, which is really reshaping the internal organization of the Trump administration, pushing people who are skeptical about China-people who might perhaps have been linked to **Matt Pottinger** in the Trump One administration. Those people are losing. I really don't have a good understanding of what exactly is happening inside the administration to make that happen.
 
 ---
 
 Hey, **Drake May** here.
 
-You know that calm you get when your team has a drive under control? That's the same feeling I get investing and saving with **Betterment**.  
+You know that calm you get when your team has a drive under control? That's the same feeling I get investing and saving with **Betterment**.
 
 Their automated technology does the work to help grow your money and save you on taxes. So when the market gets unpredictable, you can stay calm, cool, and confident.
 
-That's what I call the **Betterment effect**. And it's why I'm glad they're on my team.  
+That's what I call the **Betterment effect**. And it's why I'm glad they're on my team.
 
-Get started today at **Betterment.com**.  
-*Investing involves risk. Performance not guaranteed. Paid client ad. Views may not be representative.*  
+Get started today at **Betterment.com**.
+*Investing involves risk. Performance not guaranteed. Paid client ad. Views may not be representative.*
 
 See App Store and Google Play Store reviews. Learn more at:
 `Betterment.com/PursuitBetter/Partners`
@@ -516,7 +516,7 @@ See App Store and Google Play Store reviews. Learn more at:
 
 Let me tell you about **Bob**, a building manager for a budding business.
 
-Bob's boss asked Bob to help the business save big bucks. So he called **Beth at PSE&G** and bounced around ideas on all their business programs.  
+Bob's boss asked Bob to help the business save big bucks. So he called **Beth at PSE&G** and bounced around ideas on all their business programs.
 
 Bob bought a new boiler with big incentives and on-bill repayment and used his savings to benefit his business.
 
@@ -524,97 +524,97 @@ Visit **PSEG.com/BusinessSavings** to see how your business can be made even bet
 
 ---
 
-*Quiero el iPhone nuevo.*  
-*Y yo también quiero uno.*  
+*Quiero el iPhone nuevo.*
+*Y yo también quiero uno.*
 *¿Sabes qué?*
-Con **Verizon** nos llevamos cuatro **iPhone 17** sin intercambio.  
+Con **Verizon** nos llevamos cuatro **iPhone 17** sin intercambio.
 
-Todos vamos a estrenar iPhone. Y yo termino ahorrando.  
+Todos vamos a estrenar iPhone. Y yo termino ahorrando.
 
-Con **Verizon**, tu familia disfruta más por menos.  
+Con **Verizon**, tu familia disfruta más por menos.
 
-Llévate cuatro **iPhone 17s** y no se necesita intercambio con cuatro líneas nuevas en ciertos planes **unlimited**.  
+Llévate cuatro **iPhone 17s** y no se necesita intercambio con cuatro líneas nuevas en ciertos planes **unlimited**.
 
-Visítanos o habla con un representante en español al **844-464-8796**.  
+Visítanos o habla con un representante en español al **844-464-8796**.
 
-Se aplican términos adicionales para las ofertas. Visita **Verizon.com** para detalles.  
+Se aplican términos adicionales para las ofertas. Visita **Verizon.com** para detalles.
 
-One of the framing devices in **Carney's** speech comes from **Vaclav Havel**, the famed **Czech** dissident who later became president.  
+One of the framing devices in **Carney's** speech comes from **Vaclav Havel**, the famed **Czech** dissident who later became president.
 
-And let me play this part for you.  
+And let me play this part for you.
 
-In 1978, the **Czech** dissident **Vaclav Havel**, later president, wrote an essay called **The Power of the Powerless**.  
+In 1978, the **Czech** dissident **Vaclav Havel**, later president, wrote an essay called **The Power of the Powerless**.
 
-And in it, he asked a simple question:  
-> **How did the communist system sustain itself?**  
+And in it, he asked a simple question:
+> **How did the communist system sustain itself?**
 
-And his answer began with a green grocer. Every morning, this shopkeeper places a sign in his window:  
-- **Workers of the world unite.**  
+And his answer began with a green grocer. Every morning, this shopkeeper places a sign in his window:
+- **Workers of the world unite.**
 
-He doesn't believe it. No one does. But he places a sign anyway to avoid trouble,  
-to signal compliance,  
-to get along.  
+He doesn't believe it. No one does. But he places a sign anyway to avoid trouble,
+to signal compliance,
+to get along.
 
-And because every shopkeeper on every street does the same, the system persists.  
+And because every shopkeeper on every street does the same, the system persists.
 
-Not through violence alone, but through the participation of ordinary people in rituals they privately know  
-to be false.  
+Not through violence alone, but through the participation of ordinary people in rituals they privately know
+to be false.
 
-Tell me about what Havel meant by that story and what **Carney** is saying or suggesting and invoking it.  
+Tell me about what Havel meant by that story and what **Carney** is saying or suggesting and invoking it.
 
-Okay. So, the way in which I think about Havel's story is to introduce another academic.  
+Okay. So, the way in which I think about Havel's story is to introduce another academic.
 
-I'm a professor, so professors, I guess, have professional guild responsibilities.  
+I'm a professor, so professors, I guess, have professional guild responsibilities.
 
-So, it's a book by a guy called **Timur Kuran**, who's a somewhat conservative libertarian professor  
-in **Duke**, called **Private Truths, Public Lies**.  
+So, it's a book by a guy called **Timur Kuran**, who's a somewhat conservative libertarian professor
+in **Duke**, called **Private Truths, Public Lies**.
 
-And so, the argument more or less is: you can think about political society and authoritarian regimes as being like a collective action problem, where if everybody knew how much the regime was hated, everybody could rise up against it.  
+And so, the argument more or less is: you can think about political society and authoritarian regimes as being like a collective action problem, where if everybody knew how much the regime was hated, everybody could rise up against it.
 
-So, the regime has a lot of incentive to disrupt that kind of shared collective knowledge of how much the regime is loathed.  
+So, the regime has a lot of incentive to disrupt that kind of shared collective knowledge of how much the regime is loathed.
 
-And one way in which it does it is by introducing uncertainty.  
+And one way in which it does it is by introducing uncertainty.
 
-If you have everybody having those pictures of the dear beloved leader in the shop window, then everybody is unsure about whether everybody else is actually as willing to act against the beloved leader as, in fact, they might be.  
+If you have everybody having those pictures of the dear beloved leader in the shop window, then everybody is unsure about whether everybody else is actually as willing to act against the beloved leader as, in fact, they might be.
 
-So, in a certain sense, you're creating this corroded public understanding.  
+So, in a certain sense, you're creating this corroded public understanding.
 
-And by doing that, you're preventing collective action from happening.  
+And by doing that, you're preventing collective action from happening.
 
-So, I think what **Carney** here is suggesting is that we have something similar with respect to the way that people talk about **U.S. hegemony** right now.  
+So, I think what **Carney** here is suggesting is that we have something similar with respect to the way that people talk about **U.S. hegemony** right now.
 
-On the one hand, we have people who really hark back to the good old days and who still are a little bit paralyzed, they don't know what to say.  
+On the one hand, we have people who really hark back to the good old days and who still are a little bit paralyzed, they don't know what to say.
 
-On the other hand, we have people who are frankly calculating that their best approach is to be craven, to put the sign out in the shop window.  
+On the other hand, we have people who are frankly calculating that their best approach is to be craven, to put the sign out in the shop window.
 
-So, we have here the head of **NATO** calling **Trump** “daddy” and saying that, you know, more or less,  
-> **"daddy has to come back in and to fix things."**  
+So, we have here the head of **NATO** calling **Trump** "daddy" and saying that, you know, more or less,
+> **"daddy has to come back in and to fix things."**
 
-And it's very clear, I don't think that anybody thinks that the head of **NATO** actually believes this,  
-but he is sort of putting out his picture and he is demonstrating his devotion by so doing.  
+And it's very clear, I don't think that anybody thinks that the head of **NATO** actually believes this,
+but he is sort of putting out his picture and he is demonstrating his devotion by so doing.
 
-And this means, I think, there's something interesting and weird that happened at **Davos**.  
+And this means, I think, there's something interesting and weird that happened at **Davos**.
 
-So, my sense of this, and I wasn't there, is there are a couple of things which have happened:  
+So, my sense of this, and I wasn't there, is there are a couple of things which have happened:
 
-- I think that a lot of Europeans in particular, they have not been directly exposed to the way in which **Trump** talks and thinks about the world.  
-- People here in the United States are pretty used to it.  
-- From talking to Europeans a lot over the last year, I think they just don't have any understanding of how incoherent, how disconnected his way of thinking and talking about the world is.  
+- I think that a lot of Europeans in particular, they have not been directly exposed to the way in which **Trump** talks and thinks about the world.
+- People here in the United States are pretty used to it.
+- From talking to Europeans a lot over the last year, I think they just don't have any understanding of how incoherent, how disconnected his way of thinking and talking about the world is.
 
-I think that speech actually was kind of shocking to a lot of people who simply hadn't realized how bad it had gotten.  
+I think that speech actually was kind of shocking to a lot of people who simply hadn't realized how bad it had gotten.
 
-Also, we saw the backing down on **Greenland**.  
+Also, we saw the backing down on **Greenland**.
 
-And I think this is creating a greater degree of public consensus to some extent among these people who are, in some ways, **Trump’s** natural allies, that there is something deeply wrong, that we do actually need to start moving against this.  
+And I think this is creating a greater degree of public consensus to some extent among these people who are, in some ways, **Trump's** natural allies, that there is something deeply wrong, that we do actually need to start moving against this.
 
-And one should remember that when **Havel** was thinking about these things, it took a couple of decades from **Havel** being a grumpy **Velvet Underground** fan who was trying to work with other dissidents to actually getting to be the president of the **Czech Republic**.  
+And one should remember that when **Havel** was thinking about these things, it took a couple of decades from **Havel** being a grumpy **Velvet Underground** fan who was trying to work with other dissidents to actually getting to be the president of the **Czech Republic**.
 
-That was a long and extremely painful period.  
+That was a long and extremely painful period.
 
-And it was also a period where there was obviously a lot of pushback against **Havel** and other dissidents who were targeted, punished, and humiliated.  
+And it was also a period where there was obviously a lot of pushback against **Havel** and other dissidents who were targeted, punished, and humiliated.
 
-And the way that I think about this is that the willingness to completely capitulate  
-is probably not as strong as it was.  
+And the way that I think about this is that the willingness to completely capitulate
+is probably not as strong as it was.
 
 But we are perhaps moving into the one battle after another realization.
 That if you actually want to do stuff about this, you ought to do it. But it is going to be difficult, it is going to be hard, and it is going to be uncertain.
@@ -656,7 +656,7 @@ The other thing that I think is really interesting here is this so-called **boar
 
 You could think about this as being, and I do think that this explains maybe 80% of it, it's a little bit like **True Social**, which is his pet social media service in the United States, which is a platform wrapped up in a special purpose vehicle, which is intended to profit him and the people around him. But it also is, I think, a kind of a bid for a different kind of legitimacy.
 
-So my co-author, **Abe Newman**, who I've mentioned, together with **Stacey Goddard**, has this piece which they wrote recently on what they call **neo-royalism**, which is effectively arguing that what Trump and people around him are trying to do is to create a different kind of international system, which is based around clan loyalties and based around people recognizing that legitimacy does not come from the fact that they are states, but comes from their relationship to **Donald Trump**.
+So my co-author, **Abe Newman**, who I've mentioned, together with **Stacie Goddard**, has this piece which they wrote recently on what they call **neo-royalism**, which is effectively arguing that what Trump and people around him are trying to do is to create a different kind of international system, which is based around clan loyalties and based around people recognizing that legitimacy does not come from the fact that they are states, but comes from their relationship to **Donald Trump**.
 
 So I think, in a certain sense, you know, so if you could see the **Carney speech as pointing towards an uncertain future**...
 And you could see the **Trump approach** of the **Board of Peace** as pointing towards a project, which I think is going to be extremely difficult for them to actually pull off. In this project, the power of the world shifts to people like **Trump**, shifts to **authoritarian regimes**, and shifts, in a sense, to recognition of who are the big, powerful individuals and those connected to them, and, in a certain sense, to a kind of the creation of a **dark Davos**.
@@ -674,36 +674,36 @@ So if you think about a transition in political order, and you can think about t
 - collective knowledge,
 - collective wisdom,
 - collective consensus,
-- everybody’s understanding of the way things work,
+- everybody's understanding of the way things work,
 
 around a different pattern, a different approach of one sort or another.
 
 And so this creates advantages and disadvantages for people like Trump, who in a certain sense want to recreate the system around themselves and around their own desires.
 
-Their advantage is, if they are in charge, as the **United States** is in a certain sense, it does have power in the global system. If you’re in charge, as Trump is domestically, if you’re capable of getting goons to do your stuff for you, you are able to frighten and to terrorize people. And you’re also able to offer people incentives to get on board.
+Their advantage is, if they are in charge, as the **United States** is in a certain sense, it does have power in the global system. If you're in charge, as Trump is domestically, if you're capable of getting goons to do your stuff for you, you are able to frighten and to terrorize people. And you're also able to offer people incentives to get on board.
 
 So what you want to do is to create a world in which everybody knows that the sensible strategic thing is to join the **Trump coalition**. You want to create a world in which this becomes just the general consensus. Everybody knows that this is what they ought to do if they actually want to prosper and succeed and have any chance.
 
 And so you try to organize the world around this.
 
-Equally, the problem that you face is that the more you’re capable of using this violence, the more that you’re capable of using these tools, the more that people will be nervous that if they sign on to your side of the bargain, they are going to perhaps delay their punishment, but they’re going to end up being comprehensively screwed over at some later stage in the process.
+Equally, the problem that you face is that the more you're capable of using this violence, the more that you're capable of using these tools, the more that people will be nervous that if they sign on to your side of the bargain, they are going to perhaps delay their punishment, but they're going to end up being comprehensively screwed over at some later stage in the process.
 
-So that is the **strategic dilemma** you're trying to solve. You’re trying to, on the one hand, bring people in. On the other hand, you’re trying to reassure them that if they are brought in, they are not themselves going to become victims some way down the line.
+So that is the **strategic dilemma** you're trying to solve. You're trying to, on the one hand, bring people in. On the other hand, you're trying to reassure them that if they are brought in, they are not themselves going to become victims some way down the line.
 
 The other side of the thing that both the world and that the opposition in the United States have going for them is that **Trump is not particularly good at this game** of persuading people on board and then persuading them that they will get what they want out of them. He is, in a certain sense, his **short-term transactionalism** works very heavily against him.
 
 And I think you see this, for example, the best example I see of this is the law firms.
 
-So you see there’s one firm, **Paul Weiss**, which signs on very early. It crumples and sort of gives in in a way that encourages other law firms to give in as well. But once it gives in, it discovers that the deal that it thought it was signing up to is not the deal that **Trump thinks** that he wants to have.
+So you see there's one firm, **Paul Weiss**, which signs on very early. It crumples and sort of gives in in a way that encourages other law firms to give in as well. But once it gives in, it discovers that the deal that it thought it was signing up to is not the deal that **Trump thinks** that he wants to have.
 
 And it is very clear that it finds itself in a situation where it is going to get squeezed and squeezed and squeezed and squeezed. And reputationally destroyed. You know, sort of young associates, presumably, do not want to go with the firm who capitulated. And you find yourself in an extremely difficult position.
 
 And this sort of wins short-term benefits for the Trump administration. But it wins those benefits at the cost of undermining its long-term ability, again, to commit, in a certain sense, to restrain itself.
 
-And that is the one thing that is **Trump’s fundamental weakness**: he is incapable of committing to restrain himself in the future.
+And that is the one thing that is **Trump's fundamental weakness**: he is incapable of committing to restrain himself in the future.
 
 And I think that this is perhaps the single greatest flaw and weakness that other people can push back against.
-There's another **weakness** here, too. Or I think it's a weakness. You go back to the piece in which **Havel** offers up this story. He describes the importance of the **sign** saying something that is principled, right? The sign in his story is, 
+There's another **weakness** here, too. Or I think it's a weakness. You go back to the piece in which **Havel** offers up this story. He describes the importance of the **sign** saying something that is principled, right? The sign in his story is,
 
 - **"workers of the world unite."**
 
@@ -726,7 +726,7 @@ But it also creates this vulnerability because actually people aren't all like t
 
 He is doing something that is somewhat dangerous for him to do. He's clearly taking a risk by doing it. He's clearly committing to certain ideals by doing it.
 
-I do think a weakness of Trumpism is that I don't think people want to live in that world. And he doesn't pretend it's a different world than it is. He just, like the mafia boss, 
+I do think a weakness of Trumpism is that I don't think people want to live in that world. And he doesn't pretend it's a different world than it is. He just, like the mafia boss,
 
 > **"tells you to pay your tribute and bend the knee or something bad is going to happen."**
 
@@ -757,7 +757,7 @@ I do think that a lot of the **power of the powerless**, in a sense, comes from 
 - What is happening is, in some fundamental sense, **evil**.
 And I think that to the extent that what the **Trump administration** is doing gets on the wrong side of that, either internationally or domestically, it does create a way for people to start pushing back.
 
-There's another framing device **Karni** uses in a speech that I thought was interesting, where he references a famous quote of **Thucydides**. I want to play it for you.
+There's another framing device **Carney** uses in a speech that I thought was interesting, where he references a famous quote of **Thucydides**. I want to play it for you.
 
 > It seems that every day we're reminded that we live in an era of **great power rivalry**, that the **rules-based order** is fading, that the strong can do what they can, and the weak must suffer what they must.
 
@@ -765,11 +765,11 @@ And this aphorism of **Thucydides** is presented as inevitable, as the natural l
 
 Okay, so the lesson is very straightforward, and it is a very different lesson than many people take from it. People take this dialogue, this famous dialogue in **Thucydides**, as being evidence of a dog-eat-dog world, a world in which the **Melians**, who are desperately pleading that the **Athenians** not massacre them,
 
-- they make this plea, and the Athenians tell them,  
-- **tough luck, we're going to sort of massacre your menfolk**, and  
+- they make this plea, and the Athenians tell them,
+- **tough luck, we're going to sort of massacre your menfolk**, and
 - we're going to take your women and children away and turn them into slaves.
 
-So this is seen as being a kind of expression of **realpolitik**. This is not how **Thucydides** himself talks about it. It's very, very clear that the dramatic tension that he is describing here is effectively a description of **Athenian hubris**. 
+So this is seen as being a kind of expression of **realpolitik**. This is not how **Thucydides** himself talks about it. It's very, very clear that the dramatic tension that he is describing here is effectively a description of **Athenian hubris**.
 
 It is a description of **Athens' willingness** to more or less do whatever the hell it thinks it wants to do, whatever is in its temporary interest, in the assumption that it is going to be able to keep on getting away with it. And **Thucydides**, he has these passages where he describes how this **hubris** really infects the entire **Athenian population**.
 
@@ -787,9 +787,9 @@ I think that's a good place to end. What was our final question? What are **thre
 
 Okay, so I've got three books, one of which is directly connected to these questions. It's by a woman, a historian called **Mary Bridges**, called **Dollars and Dominion**.
 
-- On the one hand, it is not about what is happening right now.  
-- It is about what was happening in the beginning of the 1900s, when the **United States** was trying to build up the kind of hegemony that we've talked about during the course of this show.  
-- It is really about how the people who are trying to build it up look like some of the people who are acting now and sort of in the twilight of this period.  
+- On the one hand, it is not about what is happening right now.
+- It is about what was happening in the beginning of the 1900s, when the **United States** was trying to build up the kind of hegemony that we've talked about during the course of this show.
+- It is really about how the people who are trying to build it up look like some of the people who are acting now and sort of in the twilight of this period.
 
 They are very self-interested. They're kind of venal. They're building on their political connections. They also don't have much of a clue of what they are doing.
 
@@ -819,34 +819,34 @@ We live in times when it's very easy to just feel unhappy and despairing. And I 
 
 ---
 
-This episode of **The Oso Clown Show** is produced by **Jack McCordick**.  
-Fact-checking by **Michelle Harris** with **Kate Sinclair** and **Mary Marge Locker**.  
-Our senior audio engineer is **Jeff Gelb** with additional mixing by **Isaac Jones** and **Amun Sahota**.  
-Our executive producer is **Claire Gordon**.  
+This episode of **The Ezra Klein Show** is produced by **Jack McCordick**.
+Fact-checking by **Michelle Harris** with **Kate Sinclair** and **Mary Marge Locker**.
+Our senior audio engineer is **Jeff Gelb** with additional mixing by **Isaac Jones** and **Aman Sahota**.
+Our executive producer is **Claire Gordon**.
 
 The show's production team also includes:
 - **Annie Galvin**
-- **Marie Cassione**
-- **Marina King**
+- **Marie C. Biondi**
+- **Marina Peña**
 - **Roland Hu**
-- **Kristen Lynn**
+- **Kristen Lin**
 - **Emmett Kelbeck**
-- **Jan Kobel**
+- **Jan Koelbel**
 
-Original music by **Carol Saburo** and **Pat McCusker**.  
-Audience strategy by **Christina Samalewski** and **Shannon Busta**.  
-The director of **New York Times Pending Audio** is **Annie Rose Strasser**.
+Original music by **Isaac Jones** and **Pat McCusker**.
+Audience strategy by **Christina Samulewicz** and **Shannon Busta**.
+The director of **New York Times Opinion Audio** is **Annie-Rose Strasser**.
 
 ---
 
-**Get ready for AKC Meet the Breeds in New York City.**  
+**Get ready for AKC Meet the Breeds in New York City.**
 Don't miss your chance to meet, greet, and play with **hundreds of dogs**. It's **the biggest game in town if you're a dog lover**.
 
 - Saturday, February 7th
-- Sunday, February 8th  
+- Sunday, February 8th
 Only at the **Jacob K. Javits Convention Center**.
 
-Get your tickets now for **the best weekend ever**.  
+Get your tickets now for **the best weekend ever**.
 Visit **akc.org/meetthebreeds**.
 
 <script>window.tocIndex = {
@@ -992,7 +992,7 @@ Visit **akc.org/meetthebreeds**.
       "section_level": 2
     },
     {
-      "index_sentences": "One of the—I don't know if it's an irony or a failure of the Trump administration's foreign policy—is that to the extent Trump had, in my view, a distinctive foreign policy when he came into power in 2016, it was that he broke so much with the Washington consensus on China.",
+      "index_sentences": "One of the-I don't know if it's an irony or a failure of the Trump administration's foreign policy-is that to the extent Trump had, in my view, a distinctive foreign policy when he came into power in 2016, it was that he broke so much with the Washington consensus on China.",
       "section_title": "The Irony of Trump's China Strategy",
       "section_level": 2
     },
@@ -1077,7 +1077,7 @@ window.faq = {
     },
     {
       "question": "How does \"Weaponized Interdependence\" explain the shift from globalization promoting market competition to becoming a source of subordination?",
-      "answer": "Weaponized Interdependence describes how globalization, initially seen as an opportunity for market competition beyond geopolitics, has evolved. The \"plumbing\" of the global economy—financial systems, supply chains, and American technologies—has become political, allowing great powers, particularly the United States, to use economic integration as a means of coercion and control, leading to subordination.",
+      "answer": "Weaponized Interdependence describes how globalization, initially seen as an opportunity for market competition beyond geopolitics, has evolved. The \"plumbing\" of the global economy-financial systems, supply chains, and American technologies-has become political, allowing great powers, particularly the United States, to use economic integration as a means of coercion and control, leading to subordination.",
       "index_of_source": "But we're in a world now where, the plumbing has become political. All of these means that we use to integrate the world, all of these financial systems, all of these trade and production systems, are suddenly being turned against countries."
     },
     {
@@ -1108,11 +1108,11 @@ window.faq = {
     {
       "question": "According to Henry Farrell, what is Trump's \"fundamental weakness\" in his approach to international relations, and how does it make it difficult for him to achieve long-term goals despite short-term gains?",
       "answer": "Trump's \"fundamental weakness\" is his \"incapacity of committing to restrain himself in the future.\" While his short-term transactionalism can win temporary concessions, it undermines trust. Countries are less willing to make deals or fully commit to alliances with the US because they anticipate being \"comprehensively screwed over at some later stage.\" This lack of commitment capability prevents him from building stable, long-term relationships and effectively organizing the world around his vision.",
-      "index_of_source": "And that is the one thing that is Trump’s fundamental weakness: he is incapable of committing to restrain himself in the future."
+      "index_of_source": "And that is the one thing that is Trump's fundamental weakness: he is incapable of committing to restrain himself in the future."
     },
     {
       "question": "How does the popular understanding of Thucydides' quote, \"the strong can do what they can, and the weak must suffer what they must,\" misinterpret its original meaning, and what was Thucydides' true lesson?",
-      "answer": "The popular understanding often views this quote as an expression of \"realpolitik,\" a dog-eat-dog world where power dictates morality. However, Thucydides himself presented it as a description of \"Athenian hubris\"—Athens' excessive pride and willingness to act solely on temporary self-interest, ignoring pleas for justice. Thucydides' true lesson was that this hubris was a symptom of Athens' internal decay and ultimately led to its gradual collapse and downfall as a major power.",
+      "answer": "The popular understanding often views this quote as an expression of \"realpolitik,\" a dog-eat-dog world where power dictates morality. However, Thucydides himself presented it as a description of \"Athenian hubris\"-Athens' excessive pride and willingness to act solely on temporary self-interest, ignoring pleas for justice. Thucydides' true lesson was that this hubris was a symptom of Athens' internal decay and ultimately led to its gradual collapse and downfall as a major power.",
       "index_of_source": "It seems that every day we're reminded that we live in an era of great power rivalry, that the rules-based order is fading, that the strong can do what they can, and the weak must suffer what they must."
     }
   ]
