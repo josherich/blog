@@ -83,7 +83,7 @@ This isn't just going to be a conversation about time travel sci-fi — though t
 About how a country explains to itself **why it fell behind**.
 and what it thinks **salvation looks like.**
 
-**Afro Wang**, a very, very warm welcome to **Seneca.**
+**Afra Wang**, a very, very warm welcome to **Seneca.**
 
 Oh, wow. Thank you so much, **Kaiser**.
 
@@ -93,7 +93,7 @@ Really?
 
 Yeah. I was told by a lot of nerdy technologists, people who are Chinese cypherpunks, saying there is the greatest **DAO experiment ever**, which is a sci-fi story collectively written by many people, like hundreds of thousands of people. I was like, **"wow, what do you mean?"**
 
-Because **DAO** in crypto represents decentralized, autonomous organization. Referring to this science fiction writing as a **DAO experimentation** is really fascinating. It also sort of reflects on the demographic — the people who are reading this story, right? Who are reading the Morning Star of Ling Gao? Who are reading Ligal Qi Ming? And it turns out to be:
+Because **DAO** in crypto represents decentralized, autonomous organization. Referring to this science fiction writing as a **DAO experimentation** is really fascinating. It also sort of reflects on the demographic — the people who are reading this story, right? Who are reading the Morning Star of Lingao? Who are reading Lingao Qiming? And it turns out to be:
 
 - **STEM people**
 - **Technologists**
@@ -112,15 +112,15 @@ I think probably I am a somewhat open-minded and perceiving person, so I don't k
 
 Also, I like to use the vibe because this is how I feel. I'm really sensitive to the **aesthetic**, the sensations when I encounter something, for example, the **Silicon Valley mental model** versus the **Hangzhou-Shenzhen-Beijing mental model**, right? I was really fascinated by the sort of the **cognitive infrastructure**, like the intellectual backbone of the Chinese version.
 
-So I, you know, last year I wrote something called the **China Tech Cannon**, which is a response.
+So I, you know, last year I wrote something called the **China Tech Canon**, which is a response.
 
 Yeah, that was great. Thank you so much.
 
 Yeah, I think it's like, it's all come to the sense that I want to like deeply, contextually translate certain, you can say:
 
-- lures  
-- myths  
-- mental frameworks  
+- lore
+- myths
+- mental frameworks
 - cultural influences.
 
 I want to translate something to the Western discourse, but in a much more like humanistic and personal way because I think I am somehow constantly digesting cultures from both sides. I am native in Chinese, but I feel really native in English as well, in the Silicon Valley discourse as well. So I think that I'm just kind of like naturally juggled in between.
@@ -154,7 +154,7 @@ Wow, that sounds so healthy and grounded. That's fantastic. It seems like you ex
 
 I would say so. Like, for example, this piece for **Wired**, it's about Industrial Party, it's about this poorly written, crowdsourced science fiction writing. I do not like reading this piece. I do not like reading this story at all because it's so poorly written.
 
-But at the same time, it gives this energy and spirit of what people are actually craving for in the rapidly developing, urbanizing **China** and why people feel so strongly about this developmentalism. And in a sense, maybe U.S. needs more poorly written collective science fiction like Ling Gao because U.S. right now kind of needs some industrial party people.
+But at the same time, it gives this energy and spirit of what people are actually craving for in the rapidly developing, urbanizing **China** and why people feel so strongly about this developmentalism. And in a sense, maybe U.S. needs more poorly written collective science fiction like Lingao because U.S. right now kind of needs some industrial party people.
 
 I mean, I hate the story. I hate the, you know, like the greatest Chinese science fiction as the title of this **Wired** piece is actually an irony, right? It's not actually greatest because it's like honestly really bad, but it speaks to so many things that I, yeah.
 
@@ -184,7 +184,7 @@ I think **China's society logic** was dictated by the **STEM optimization logic*
 
 So back then, maybe 10 years ago, optimizing everything — trying hard. There was an internet slang for people trying too hard, trying to get promoted, make a lot of money during the economic boom — during the Chinese economic boom and internet attack boom. This was admirable.
 
-But right now, this bubble bursted, so people proactively do not want to participate, such as **Nuli lores, Nuli fairy tales**. Instead, you see China’s today’s mainstream sentiment is:
+But right now, this bubble bursted, so people proactively do not want to participate, such as **Nuli** lore, **Nuli** fairy tales. Instead, you see China’s today’s mainstream sentiment is:
 
 - How to **lay flat**
 - How to **dodge more work**
@@ -260,17 +260,17 @@ Is it because they're all very put together and scrappy? It doesn't read a thoug
 
 What do we know about these people, about these principal writers? Who are they? What kinds of backgrounds do they come from?
 
-They all use **pseudonyms online**, but we know some phenomenon writers sort of emerged out of the Ling Gao scene, later became the influencers or the writers for **Guan Cha Zheu Wang, Guan Cha Dao Si En**. And **Guan Cha Zheu Wang** is inseparable from Ling Gao's collective writing.
+They all use **pseudonyms online**, but we know some phenomenon writers sort of emerged out of the Ling Gao scene, later became the influencers or the writers for **Guancha Zhe Wang (观察者网)**. And **Guan Cha Zheu Wang** is inseparable from Ling Gao's collective writing.
 
 Give us a sense of what Guan Cha Zheu Wang is. I mean, they have a certain political slant, a certain reputation. Why don't you explain what Guan Cha Zheu is?
 
 Okay, so in the **Wired piece**, I told the readers that Guan Cha Zheu Wang is almost like Chinese breadboard, but I think it's less like breadboard because it doesn't punch up. It kind of only punches west.
 
-So Guan Cha Zheu isn't that up though?
+So Guancha isn't that up though?
 
 Yeah, so it is, I would argue, a more thoughtful **patriotic or nationalistic collective online magazine** delivering a lot of pro-industrial policy, pro-state opinion pieces, and some of the pieces are quite persuasive.
 
-You know, I used to be a reader of Guan Cha Zheu Wang when I was in college. Guan Cha Zheu Wang I think reached its peak in the early 2010s. The founder himself, **Eric Lee**, I think he studied at **UC Berkeley**.
+You know, I used to be a reader of Guancha when I was in college. Guancha reached its peak in the early 2010s. The founder himself, **Eric Lee**, I think he studied at **UC Berkeley**.
 
 Yeah, I think he was the same year as me, in fact.
 
@@ -330,9 +330,9 @@ Implies don't let such bloody train crashes happen again because this is a price
 
 And this is a moment when **industrial party people** came and then they took the stage. They organized a systematic rebuttal against the humanistic sort of **pro-slowdown discussion.**
 
-Because the industrial party intellectuals have a lot of advantages for knowing so much industrial knowledge because they are the ones building a lot of Chinese infrastructure. For example, I featured this one intellectual, his name is **Ma Qian Zhu**, one of the authors.
+Because the industrial party intellectuals have a lot of advantages for knowing so much industrial knowledge because they are the ones building a lot of Chinese infrastructure. For example, I featured this one intellectual, his name is **Ma Qianzu**, one of the authors.
 
-- He's one of the authors of the Ling Gao story.
+- He's one of the authors of the Lingao story.
 - He is a **bridge engineer**, right?
 - So he really knows infrastructure, not just from a witnessing perspective, but he is the engineer, he is the builder.
 
@@ -365,7 +365,7 @@ So how does the alternate timeline then unfold? What kind of society do these gu
 Yes, so okay. So reading this book is very interesting because the plot evolves as the people who write the story evolve. So like, and also a lot of the writers would write themselves in.
 The story features a **captain**—like a **captain of the ship** that would transport the **500 time travelers back to the Ming dynasty**. The captain himself, his real name and real-life nickname, became known as **Captain** as well. At a certain point, the boundaries between **past and present**, **fictional and reality**, kind of blurred. 
 
-The same happens with **Ma Qian Zu** himself. He is one of the main people in the novel. So, it’s **Qian Zu and Qian Zu**—they almost spell the same in Pinyin, but one is **Ma Qian Zu** and the other implies humbleness. **Ma Qian Zu** means you stand next to the horse to serve, but fictional Ma Qian Zu is arrogant. You are Qian Zu: you can see a thousand miles away. **Zu means seeing**. 
+The same happens with **Ma Qian Zu** himself. He is one of the main people in the novel. So, it’s **Qian Zu and Qian Zu**—they almost spell the same in Pinyin, but one is **Ma Qian Zu** and the other implies humbleness. **Ma Qianzu** means you stand next to the horse to serve, but fictional Ma Qianzu is arrogant. You are Qianzu: you can see a thousand miles away. **Zu means seeing**. 
 
 I think things like this are very interesting. The basic premise starts from a simple thought experiment: **what if you can travel back to the Ming dynasty with modern knowledge and equipment?** People started writing about it without character building or discussion. The first 30 chapters are all about people getting together to think about what equipment they should bring to the Ming dynasty. 
 
@@ -406,7 +406,7 @@ There are also plots, like some fanfic, which are not part of the main story:
 - They see huge opportunities in the New World and decide to colonize the East Coast  
 
 There is also a story plot that diverges from the main story that...
-**People ended up colonizing Australia**, and they formed a huge sort of empire, almost like a **British empire**. In the 19th century, they forged a huge **Linggao Australian empire** across Australia, New Zealand, and Southeast Asia. The north part would be like **Linggao county**, like **Hainan** and **Taiwan**. Yeah, so like crazy stuff, really crazy stuff.
+**people ended up colonizing Australia**, and they formed a huge sort of empire, almost like a **British empire**. In the 19th century, they forged a huge **Linggao Australian empire** across Australia, New Zealand, and Southeast Asia. The north part would be like **Linggao county**, like **Hainan** and **Taiwan**. Yeah, so like crazy stuff, really crazy stuff.
 
 But what really strikes me about this, as you've described it, is this is an **alternate history** that doesn't imagine salvation through new ideas, or a moral awakening, or the scientific revolution necessarily, but actually just through kind of **competence**, and very specifically through technological, technical competence.
 
@@ -444,7 +444,7 @@ It seems like engineers really enjoy this sheer ability to transform the surroun
 
 Like homo sapiens seems to us like we're homo sapiens. We seem to really enjoy thinking about our ability to transform our surroundings.
 
-I mentioned **Robinson Crusoe**. I think Robinson Crusoe is like the 18th-century primitive technology YouTube channel.
+I mentioned **Robinson Crusoe**. I think *Robinson Crusoe* is like the 18th-century Primitive Technology YouTube channel.
 
 > "For sure, for sure."
 
