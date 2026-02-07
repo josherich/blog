@@ -53,7 +53,7 @@ Let me just read you from this story:
 > **"unabashedly and aggressively remind African governments about the generosity of the American people,"**  
 > according to a leaked email sent to staff in the **U.S. State Department's Bureau of African Affairs.**
 
-And this is from **Nick Checker**, who is the acting assistant secretary for the Bureau of African Affairs. And here's what he said, quote:
+And this is from **Nick Checker** (actually **Nicole Checker**), who is the acting assistant secretary for the Bureau of African Affairs. And here's what he said, quote:
 
 > **"It's not gauche to remind these countries of the American people's generosity in containing HIV-AIDS or alleviating famine."**
 
@@ -385,7 +385,7 @@ So I think that there's a pragmatism. There's also the real threat that **speaki
 
 And most African governments, I think, have struggled with how to navigate this administration, which I completely understand.  
 
-Your president, **Kobus Romposa** of Sierra Romposa, had an **Oval Office meeting** that was very difficult to watch. And while he showed a lot of courage by going, he didn't get any of the things that he wanted. They still have a **30% tariff**. They're probably not going to be in the **G7**, which we should talk about at some point. And they may be kicked out of the **G20**.  
+Your president, **Cyril Ramaphosa** of South Africa, had an **Oval Office meeting** that was very difficult to watch. And while he showed a lot of courage by going, he didn't get any of the things that he wanted. They still have a **30% tariff**. They're probably not going to be in the **G7**, which we should talk about at some point. And they may be kicked out of the **G20**.  
 
 The Nigerians have actually— No, they can't be kicked out of the G20. That's a **consensus decision**, and China and a lot of countries won't agree with it.  
 
