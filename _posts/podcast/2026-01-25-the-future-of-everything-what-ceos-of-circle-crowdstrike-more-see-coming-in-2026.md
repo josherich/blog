@@ -35,7 +35,7 @@ Yeah. And for guys like us who've been through this three times now — we went 
 **COVID.**  
 "Yeah, which was also pretty spicy. That was a great disruptive moment. But when you have those moments happen, I'm guessing for you and many of the founders I talked to, you just think, 'This is the time to build.'"
 
-"Yeah, totally. I mean, **constraints** have a huge impact on what an entrepreneur does. And even in the history of Circle, we've had extraordinary ups and downs, some of which are endogenous shocks, exogenous shocks, all of this. And back to that **2009**, that year, actually, I got my company profitable, **Freikov**. And then not long after, it went public. And so we deal with what we're dealt with — constraints."  
+"Yeah, totally. I mean, **constraints** have a huge impact on what an entrepreneur does. And even in the history of Circle, we've had extraordinary ups and downs, some of which are endogenous shocks, exogenous shocks, all of this. And back to that **2009**, that year, actually, I got my company profitable, **Flickr**. And then not long after, it went public. And so we deal with what we're dealt with — constraints."  
 "Yeah. Constraint makes for great art, is, I think, the old expression."
 
 So let's talk about your journey with **Circle**. And **stablecoins**, obviously, are top of mind because we have the **Genius Act**. My bestie, **David Sachs**, who's our **crypto and AI czar for America**, who's here with me at Davos. Or I should say I'm here with him. He invited me to come. This technology is important. Why?
@@ -54,7 +54,7 @@ So let's talk about your journey with **Circle**. And **stablecoins**, obviously
 "And so we're right at the front edge of kind of, I think, a renaissance in how money is used in the world. We'll come back to AI, I'm sure, because it ties into that. But fundamentally, we need a native way to have money on the internet. We need a very safe form of dollars on the internet. And that's what stablecoins provide."
 
 "And variability and not knowing how much your dollar is worth when you open your wallet or your bank..."
-**Account was a blocker for consumers.** Volatile cryptocurrencies—no one's going to buy a cup of coffee with a Bitcoin, et cetera. That's where the word **stable coin** came from. It's like, well, it's a coin, but it's stable.
+**Volatility was a blocker for consumers.** Volatile cryptocurrencies—no one's going to buy a cup of coffee with a Bitcoin, et cetera. That's where the word **stable coin** came from. It's like, well, it's a coin, but it's stable.
 
 How do you actually achieve that? That's a whole different thing. And that's where the model that we built, which is fully reserved with **ultra safe assets**, comes in. We have regulators look after it and auditors look after it to make sure it's all done the right way.
 
@@ -209,7 +209,7 @@ and they make that transition.
 It takes like 5 to 10 years. It takes them three times longer than probably the innovator.  
 
 For example, **Walmart** and **Target** now do an exceptional job. The **United Airlines app**...
-**Is not terrible.** Right. I mean, it's not Uber, but this is the difference between a **software-driven company** and, and they're not like, *"we're a software company,"* like, you know, we fundamentally, of course, we're going to go faster. Of course, we're going to understand **UX**.
+**is not terrible.** Right. I mean, it's not Uber, but this is the difference between a **software-driven company** and, and they're not like, *"we're a software company,"* like, you know, we fundamentally, of course, we're going to go faster. Of course, we're going to understand **UX**.
 
 So the banks now, my understanding is some of them are threatened by the concept of a **stable coin**, having the ability to generate points, incentives, or interest essentially. And that's kind of the sticking point. The **Genius Act** says,
 
