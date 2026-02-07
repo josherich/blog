@@ -331,7 +331,7 @@ I mean, so stepping back to **AI for science in general**, can you talk a little
 
 So what are the, I know that there's been some publicity in the past. What are the latest and greatest hits of the things that big labs or any lab is doing with open AIs?
 
-I mean, when you step back and look at the trend, I think that's the biggest thing. Because we can debate exactly – like you've probably seen in the last few weeks, even – there've been a bunch of different examples of like **GPT 5.2 contributing to open Airdish problems** and things like that.
+I mean, when you step back and look at the trend, I think that's the biggest thing. Because we can debate exactly – like you've probably seen in the last few weeks, even – there've been a bunch of different examples of like **GPT 5.2 contributing to open research problems** and things like that.
 
 And then you get into this debate of:
 
@@ -455,7 +455,7 @@ Yeah.
 
 We're covering all sorts of disciplines from chemistry to structural biology to material science. It's all over the place. There's a lot to do.
 
-One thing I did want to bring across also was that **AFRA Science sits within the broader research org at OpenAI**. One of the more interesting things is like **self-acceleration**, let's call it.
+One thing I did want to bring across also was that **AI for Science sits within the broader research org at OpenAI**. One of the more interesting things is like **self-acceleration**, let's call it.
 
 Where **Jakub has very publicly declared that we'll have an automated researcher by September 2026**.
 
@@ -469,7 +469,7 @@ Yep.
 
 And I'm sure you have more cooking internally, but why so soon? That's eight months away. What's the goal there? Anything you can share?
 
-Yeah, I mean, eight months feels like forever in this industry. ATI by then? Basically infinite time.
+Yeah, I mean, eight months feels like forever in this industry. AGI by then? Basically infinite time.
 
 I mean, no, it's exactly what you said, right?
 It's if we can create a **a model, an AI researcher** that can actually do novel AI research, then we can move way faster, right? We will **self-accelerate**. We can discover more things quickly. We can apply **GPUs and compute** to moving our own research faster. And that just means that we can improve our models at a faster rate.
@@ -642,7 +642,7 @@ Thank you.
       "section_level": 2
     },
     {
-      "index_sentences": "One thing I did want to bring across also was that AFRA Science sits within the broader research org at OpenAI.",
+      "index_sentences": "One thing I did want to bring across also was that AI for Science sits within the broader research org at OpenAI.",
       "section_title": "Self-Acceleration and the AI Researcher",
       "section_level": 2
     },
