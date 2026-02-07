@@ -188,7 +188,7 @@ We saw this in the latest trade numbers for 2025:
 - Exports are up **20%** last year
 - Imports up **0.5%**
 
-So we see that imbalance right there. At Vice Premier **Li Qiang**, he said this week at **Davos**, they're going to do better at imports. But here we are.
+So we see that imbalance right there. At Vice Premier **He Lifeng**, he said this week at **Davos**, they're going to do better at imports. But here we are.
 
 What's your take on this debate about **China's role** in terms of commodity exporting countries and the benefits and the drawbacks that they bring?
 
