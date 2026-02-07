@@ -11,7 +11,7 @@ tags: [podcast_script]
 
 The **China in Africa podcast** is supported in part by our subscribers and Patreon supporters. If you'd like to join a global community of readers for daily news and exclusive analysis about **Chinese engagement in Asia, Africa**, and throughout the developing world, go to **ChinaGlobalSouth.com/subscribe**.
 
-Hello, and welcome to this special joint edition of the **China Global South podcast** and the **China in Africa podcast**. Both are proud members of the **Seneca podcast network**. I'm **Eric Olander**. And as always, I'm joined by CGSP's head of research based in lovely **Cape Town, South Africa**, **Kobus van Staden**. A very good afternoon to you, Kobus.
+Hello, and welcome to this special joint edition of the **China Global South podcast** and the **China in Africa podcast**. Both are proud members of the **Sinica podcast network**. I'm **Eric Olander**. And as always, I'm joined by CGSP's head of research based in lovely **Cape Town, South Africa**, **Kobus van Staden**. A very good afternoon to you, Kobus.
 
 Good afternoon.
 
@@ -78,7 +78,7 @@ Zoe is the **Maurice R. Greenberg Senior Fellow for China Studies at the Council
 
 ---
 
-**Eric**: Thank you so much for having me. And Akobas, it's great to see you again.  
+**Zoe**: Thank you so much for having me. And Kobus, it's great to see you again.  
 
 It's wonderful to have you on the show. Again, the timing just couldn't be better, given the ideas you laid out in the article.  
 
@@ -102,7 +102,7 @@ I was wondering, in listening to comments, he was mostly mentioning **great powe
 
 ---
 
-**Zoe**: Right. I think **Cobas**, that's a very cleverly crafted way to describe it. He talked about great powers rather than superpowers, because many countries can consider themselves as once a great power or among the great powers, but perhaps countries that can consider themselves or aspire to become...
+**Zoe**: Right. I think **Kobus**, that's a very cleverly crafted way to describe it. He talked about great powers rather than superpowers, because many countries can consider themselves as once a great power or among the great powers, but perhaps countries that can consider themselves or aspire to become...
 **Superpowers.** At this particular moment, probably there are only **two countries**. I'm not in any way suggesting this is a **G2 world**, but if we measure great power, like superpowers, probably by a lot of matrix, **China** is, in some ways, can claim it has achieved a **superpower status**, especially in **manufacturing and industrial capacity**.
 
 Right. But listening to **Prime Minister Mark Carney** and when specifically he talks about **great powers** and the **weaponization of supply chains**, I immediately realized, okay, so this is not really about the **United States**. And he cleverly talked about many countries being part of this supply chain diversification or the weaponization of supply chains without naming specific ones. I thought that was very clever.
@@ -188,7 +188,7 @@ We saw this in the latest trade numbers for 2025:
 - Exports are up **20%** last year
 - Imports up **0.5%**
 
-So we see that imbalance right there. At Vice Premier **Li Hefeng**, he said this week at **Davos**, they're going to do better at imports. But here we are.
+So we see that imbalance right there. At Vice Premier **Li Qiang**, he said this week at **Davos**, they're going to do better at imports. But here we are.
 
 What's your take on this debate about **China's role** in terms of commodity exporting countries and the benefits and the drawbacks that they bring?
 
@@ -277,7 +277,7 @@ So I'd say I'm very cautious about the call for the government to just have to g
 
 But then on the other hand, I think for the **Chinese economy** to rebalance itself, I think they just ought to change their **growth model**. Not just because the existing model is losing its steam, also because **China's rise for almost four decades** now has not necessarily translated into a stronger sense of **individual economic security** and **individual economic prosperity**. I think that is not a good thing.
 
-Chinese people used to go abroad and travel. Chinese middle class used to like to buy luxury goods. But now, in the name of **xiaofei jiangji**, like downgrading, you can package it up as “we are prioritizing values rather than brand.” But then, again, new people don't occasionally spend or do some conspicuous expenditure.
+Chinese people used to go abroad and travel. Chinese middle class used to like to buy luxury goods. But now, in the name of **xiaofei jiangji** (消费降级), like downgrading, you can package it up as “we are prioritizing values rather than brand.” But then, again, new people don't occasionally spend or do some conspicuous expenditure.
 
 So from that perspective, to rebalance the Chinese economy, to achieve a better, more sustainable model, it ought to stimulate consumption. But again, this is easier said than done.
 
@@ -306,7 +306,7 @@ The **Thucydides trap** kind of is a Greek story that says basically,
 
 And so China has become rich, it's become powerful, but you also talk about a major **credibility gap**, particularly in the developing world.
 
-And this is why I am so excited to have you on the show to talk about the **debt trap**. We at the **CGSP** have wondered for years why this narrative of the debt trap, that was started in 2017 by an Indian pundit, **Brahma Chalini**, has had such durability, even though leading universities from **Johns Hopkins** to **Boston University** to think tanks like **Chatham House**, and we can go down the list, have debunked it. There isn't any evidence of it.
+And this is why I am so excited to have you on the show to talk about the **debt trap**. We at the **CGSP** have wondered for years why this narrative of the debt trap, that was started in 2017 by an Indian pundit, **Brahma Chellaney**, has had such durability, even though leading universities from **Johns Hopkins** to **Boston University** to think tanks like **Chatham House**, and we can go down the list, have debunked it. There isn't any evidence of it.
 
 Yet, nonetheless, in **Kenya**, in **Uganda**, in **Southeast Asia**, people still believe the **debt trap narrative**, in part because there's a **credibility gap**—they don't necessarily trust China.
 
