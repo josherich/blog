@@ -49,8 +49,6 @@ I would like to hear a little about your reflections on the book tour. So what w
 
 I think the first thing I should acknowledge is that this idea of **lawyers and engineers** has become a memetic idea, but it hasn't exactly been original to me. And I want to first acknowledge that this is sort of an idea that's been more or less in the air for quite a long time.
 
-I think the first thing I should acknowledge is that this idea of **lawyers and engineers** has become a memetic idea, but it hasn't exactly been original to me. And I want to first acknowledge that this is sort of an idea that's been more or less in the air for quite a long time.
-
 We've had **Bill Clinton** quip in something like 1996 when he was in China to say,  
 > "Well, we are governed by so many lawyers, you're governed by so many engineers, we should have a swap."
 
