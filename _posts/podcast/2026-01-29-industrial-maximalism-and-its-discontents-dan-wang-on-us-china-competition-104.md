@@ -15,9 +15,9 @@ We've moved on to another idea, which is that, okay, the Chinese are much better
 
 And there's also an idea of, you know, *what does it matter if you go from 0 to 1 if you cannot go from 1 to 100?*
 
-Welcome to **Manifold**. It's my pleasure to be here with **Dan Wong** at his home institution. We're here at the **Hoover Institution**.
+Welcome to **Manifold**. It's my pleasure to be here with **Dan Wang** at his home institution. We're here at the **Hoover Institution**.
 
-Dan, as you know, is the author of *Breakneck, China's Quest to Engineer the Future*. This was a huge success. The book was listed as one of the best books of 2025 by the **Financial Times**.
+Dan, as you know, is the author of *Breakneck: China's Quest to Engineer the Future*. This was a huge success. The book was listed as one of the best books of 2025 by the **Financial Times**.
 
 I think it will become one of the go-to books for everyone in the United States or in the English-speaking world that wants to learn more about **China and the competition between the U.S. and China**.
 
@@ -49,6 +49,8 @@ I would like to hear a little about your reflections on the book tour. So what w
 
 I think the first thing I should acknowledge is that this idea of **lawyers and engineers** has become a memetic idea, but it hasn't exactly been original to me. And I want to first acknowledge that this is sort of an idea that's been more or less in the air for quite a long time.
 
+I think the first thing I should acknowledge is that this idea of **lawyers and engineers** has become a memetic idea, but it hasn't exactly been original to me. And I want to first acknowledge that this is sort of an idea that's been more or less in the air for quite a long time.
+
 We've had **Bill Clinton** quip in something like 1996 when he was in China to say,  
 > "Well, we are governed by so many lawyers, you're governed by so many engineers, we should have a swap."
 
@@ -68,7 +70,7 @@ I think **Trump really did you a favor** by starting this **trade war** and ensu
 
 > Perhaps. And I think that one might have to say, “thank you, President Trump.” And maybe more of us will be compelled to say, **thank you, President Trump, more on an ongoing basis now**.
 
-But I think there was something about the year **2025** in which we started the year with news about **DeepSeq**, moved on to news about **electric vehicles**, and then had more of the **trade war**, the **14th five-year plan**. But I think that, you know, every day now there is going to be more and more **China news**. And frankly, that's probably a good thing because 
+But I think there was something about the year **2025** in which we started the year with news about **DeepSeek**, moved on to news about **electric vehicles**, and then had more of the **trade war**, the **14th five-year plan**. But I think that, you know, every day now there is going to be more and more **China news**. And frankly, that's probably a good thing because 
 
 > *What is more important to the United States now than these two big trends, namely the rise of China in a more adversarial relationship, as well as the rise of technology,* which has been something that I've been thinking about for the past decade.
 
@@ -78,7 +80,7 @@ So when you were working in China, was it roughly **2017 to 2023?**
 
 - Correct.
 
-You were working for **Gavacol**, which is an investment analysis firm. I mean, you were often analyzing companies in the **chip industry**, **semiconductor industry**. So you were very familiar with the engineering state, the technological development of China, the competitiveness of the products and companies.
+You were working for **Gavekal**, which is an investment analysis firm. I mean, you were often analyzing companies in the **chip industry**, **semiconductor industry**. So you were very familiar with the engineering state, the technological development of China, the competitiveness of the products and companies.
 
 But then I think when you were writing the book, you were in residence at **Yale Law School**.
 
@@ -88,7 +90,7 @@ So you were surrounded by the top legal minds in our country. And so you had bot
 
 - Yes. And I would furthermore add that my mother was a **radio news anchor** as well as a **TV news anchor** in **Yunnan** for the **Yunnan Broadcasting Network**. And so she has also prepared me exquisitely to speak to you today, Steve.
 
-So I think that that is absolutely right, that I've been thinking about China and technology, working for **Gavacol Economics**, working for my rabbi, **Arthur Kroeber**, thinking very extensively about China's developments in
+So I think that that is absolutely right, that I've been thinking about China and technology, working for **Gavekal Economics**, working for my rabbi, **Arthur Kroeber**, thinking very extensively about China's developments in
 
 - semiconductors,
 - clean technology,
@@ -698,7 +700,7 @@ And so, that's why I think there's parts of America that want to wage a Cold War
 
 Yeah, when I mentioned that a lot of my listeners are, in a way, members of the Industrial Party, I didn't mean the Industrial Party of China. I meant they're members of the **Industrial Party of America.** So, lots of entrepreneurs, Silicon Valley people, are astonished that we can't seem to get our shit together.
 
-We talk about reshoring manufacturing to the United States. The hard work of really doing it, the government doesn't seem, or society doesn't seem serious enough, really, to undertake that heavy lift. And it might take decades for us to get there. It'll take decades of sustained effort. And I'm not sure, I'm not, as an American, as an American who grew up in the Midwest, I'm not sure that we still have it in us to do that. I hope we do.
+We talk about **reshoring** manufacturing to the United States. The hard work of really doing it, the government doesn't seem, or society doesn't seem serious enough, really, to undertake that heavy lift. And it might take decades for us to get there. It'll take decades of sustained effort. And I'm not sure, I'm not, as an American, as an American who grew up in the Midwest, I'm not sure that we still have it in us to do that. I hope we do.
 
 Yes. Let me read a few things about **innovation and manufacturing in China** from you. I'm going to read a few of them and then you comment.
 
@@ -715,7 +717,7 @@ And so, I think, you know, this idea of going from 0 to 1 as just exclusively th
 
 And there's also an idea of, you know, what does it matter if you go from 0 to 1 if you cannot go from 1 to 100?
 
-So, I cite the example of, you know, who was it who, you know, which American lab invented solar panels? Popquets, do you know? No. **Bell Labs, 1957 in New Jersey.**
+So, I cite the example of, you know, who was it who, you know, which American lab invented solar panels? **Bell Labs, 1957 in New Jersey.**
 
 Where is Bell Labs today? Nowhere, because this thing is gone.
 
@@ -743,7 +745,7 @@ Maybe half-half. I think that there is still plenty of clinginess among the _quo
 
 I mean, it starts sounding a little bit absurd. _"Oh, well, they can make all the toys and T-shirts, and they can make the large-capacity batteries for the EVs, but they can't."_ You know, these sort of things, statements, don't really make sense to me.
 
-I think that, you know, **2025 was an important year** in terms of the deep-seek moment. Maybe that scale of success was overstated, you know, there was this big market reaction to deep-seek, and that was a little bit hard to predict based on the release of a paper.  
+I think that, you know, **2025 was an important year** in terms of the DeepSeek moment. Maybe that scale of success was overstated, you know, there was this big market reaction to deep-seek, and that was a little bit hard to predict based on the release of a paper.  
 
 But, you know, **EVs are definitely taking over**, and, you know, we don't have to over-index our expectations of the economy based on EVs alone. Transportation equipment is not a giant sector of the American economy, even though the auto sector is politically important.
 
