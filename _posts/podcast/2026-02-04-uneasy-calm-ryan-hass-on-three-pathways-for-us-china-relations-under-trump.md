@@ -604,4 +604,82 @@ Enormous gratitude to the **University of Wisconsin-Madison Center for East Asia
 
 I'm really – thank you, Ryan, once again. Thank you, guys. Thanks for listening. We'll see you next week. Take care.
 
----
+<script>window.tocIndex = {
+  "index": [
+    {
+      "index_sentences": "As we move into the second year of Donald Trump's seemingly interminable second presidency, U.S.-China relations have once again defied easy characterization.",
+      "section_title": "Interview: U.S.-China Relations Under Trump (with Ryan Hass)",
+      "section_level": 1
+    },
+    {
+      "index_sentences": "What began as a return to tariff escalation and hardball trade tactics has somewhat unexpectedly given way to a period of relative strategic calm.",
+      "section_title": "Current State of U.S.-China Relations",
+      "section_level": 2
+    },
+    {
+      "index_sentences": "Well, to help us think through all these questions, I am joined by Ryan Hass, director of the John L. Thornton China Center at Brookings.",
+      "section_title": "Introducing Ryan Hass and His Three Scenarios",
+      "section_level": 2
+    },
+    {
+      "index_sentences": "So Ryan, like I said, you're joining us from Washington. Let me start there. One of the strengths of your piece is that it treats leaders as not free agents but constrained actors.",
+      "section_title": "Domestic Forces Shaping U.S.-China Policy",
+      "section_level": 2
+    },
+    {
+      "index_sentences": "But speaking of Beijing, let's flip the lens to Beijing. Is Xi similarly unconstrained?",
+      "section_title": "Xi Jinping's Constraints and Policy Determinants",
+      "section_level": 2
+    },
+    {
+      "index_sentences": "So Ryan, a central claim or assumption in your essay is that both sides, Beijing and Washington, are behaving less out of mutual trust than out of mutual sense of vulnerability.",
+      "section_title": "Mutual Vulnerability as a Driver",
+      "section_level": 2
+    },
+    {
+      "index_sentences": "So, what comes next? Are we headed toward a genuine lasting stabilization or a familiar snapback to the acrimony that once dominated?",
+      "section_title": "Exploring Future Pathways for the Relationship",
+      "section_level": 2
+    },
+    {
+      "index_sentences": "But so Ryan, let's jump in with your first scenario, the soft landing.",
+      "section_title": "Scenario 1: The Soft Landing",
+      "section_level": 2
+    },
+    {
+      "index_sentences": "But there are other scenarios that you posit here. The second scenario is the one I sincerely hope to avoid: a hard split.",
+      "section_title": "Scenario 2: The Hard Split",
+      "section_level": 2
+    },
+    {
+      "index_sentences": "You, fortunately, ultimately judged scenario three, which is about buying time and building insulation, as the most likely path.",
+      "section_title": "Scenario 3: Buying Time and Building Insulation",
+      "section_level": 2
+    },
+    {
+      "index_sentences": "A final question to you. I mean, if listeners wanted to just cut through the rhetoric and only watch for just a handful of real concrete indicators over the next, say, 12 to 18 months, what would you tell them to focus on?",
+      "section_title": "Concrete Indicators and Future Outlook",
+      "section_level": 2
+    }
+  ]
+};
+window.faq = {
+  "qas": [
+    {
+      "question": "What are Ryan Hass's three plausible pathways for the U.S.-China relationship under Trump, and which does he consider most likely?",
+      "answer": "Ryan Hass lays out three plausible pathways: a soft landing, a hard split, and the most likely outcome, a period of uneasy calm in which both Washington and Beijing seek stability out of mutual constraint.",
+      "index_of_source": "Ryan has just published an essay on the Brookings website laying out three plausible pathways for the relationship under Trump scenarios ranging from: a soft landing a hard split the most likely outcome: a period of uneasy calm"
+    },
+    {
+      "question": "What are some 'underappreciated vulnerabilities' for the U.S. and China that reinforce the 'uneasy calm' scenario?",
+      "answer": "For the U.S., an underappreciated vulnerability is its dependence on active pharmaceutical ingredients (APIs) from China. For China, it's dependence on the U.S. and West for airplane components, advanced semiconductor manufacturing materials, and access to America's higher educational system.",
+      "index_of_source": "When I was in China last December, I was discomforted to be reminded in almost every meeting about America's dependence upon active pharmaceutical ingredients from China, APIs."
+    },
+    {
+      "question": "What indicators should listeners watch to assess which scenario we're headed toward?",
+      "answer": "Watch the frequency of interaction between the two leaders, how well both sides prepare for engagements, U.S. progress in reducing supply chain vulnerabilities, and China's progress in innovating around export controls.",
+      "index_of_source": "I would encourage people to watch the frequency of interaction between the two leaders, how often they talk on the phone, how often they acknowledge exchanging views through each other as ambassadors or intermediaries."
+    }
+  ]
+};
+</script>
