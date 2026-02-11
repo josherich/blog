@@ -35,7 +35,7 @@ The report I mentioned looks beyond just the **U.S.-China competition**, but als
 
 I'm thrilled to have two of the lead authors of the report join me today for our discussion.
 
-- **Zagar Prasai** is an independent advisor for international development agencies and joins us today from **Kathmandu, Nepal**.
+- **Sagar Prasai** is an independent advisor for international development agencies and joins us today from **Kathmandu, Nepal**.
 - **Mandakini Suri** is an independent consultant who spent more than 20 years doing development work for government, NGOs, and think tanks.
 
 Zagar and Mandakini, thank you so much for taking the time to join us today.
@@ -46,7 +46,7 @@ It's great to have you today, and what a great time to have this. When you wrote
 
 Before we get started looking into the report, I'd like to get both of your perspectives, both from **India and from Nepal**, on the Carney speech. Whether you think the message he signaled is as important where you are as it's being discussed in **Europe** and parts of **industrial Asia**.
 
-Zagar, let's start with you, and then Mandakini, I'd like to get your take on that.
+Sagar, let's start with you, and then Mandakini, I'd like to get your take on that.
 
 > Yeah, so it's like that moment when somebody suddenly screams from the sides, you know, the **emperor has no clothes**, right?
 
@@ -120,7 +120,7 @@ You're like, well, what about the millions of people south of the equator who ha
 
 So I think there is definitely a factor. And I suspect it would not have made such mainstream headline news had it not been a **white leader** who had said it, a white male leader. I mean, if **Modi** said it or if Modi or she said it, people would have been like, yeah. And they have. Modi, she, the prime minister, Barbados, the **BRICS countries**, all of them.
 
-If you Google it, Chad GPT, you will find statements from them going back decades, which would have said something to the effect that the existing world order is not fair.
+If you Google it, ChatGPT, you will find statements from them going back decades, which would have said something to the effect that the existing world order is not fair.
 
 You know, there's a similar phenomenon going on in the **United States** where white people are shocked, shocked that the police are abusive and that even video recordings of police brutality...
 Against **white protesters in places like Minneapolis** and killings now of **white people and brown and black people**, many have been saying this for decades, for centuries actually, that the **police have been impartial**. So again, this is a reckoning happening both inside and outside the U.S.
@@ -353,149 +353,9 @@ Go to **ChinaGlobalSouth.com** and you can get all of the coverage that really i
 
 So for the entire team around the world, thank you so much for joining me today and for watching and for listening.
 
-The discussion continues online. Follow the **China Global South Project** on **Blue Sky** and **F at ChinaGS Project** or on YouTube.
+The discussion continues online. Follow the **China Global South Project** on **Blue Sky** and **X @ChinaGSProject** or on YouTube.
 At **China Global South**, share your thoughts on today's show or head over to our website at **ChinaGlobalSouth.com**, where you can subscribe to receive full access to more than **5,000 articles and podcasts**.
 
 Once again, that's **ChinaGlobalSouth.com**.
 
 Thank you.
-
-<script>window.tocIndex = {
-  "index": [
-    {
-      "index_sentences": "Today, the fallout from Canadian Prime Minister Mark Carney's speech at Davos is still reverberating.",
-      "section_title": "Introduction: Fallout from Mark Carney's Davos Speech",
-      "section_level": 1
-    },
-    {
-      "index_sentences": "Not surprisingly, his remarks were not well-received in the United States, but they sparked a lot of conversation in wealthier middle-power countries like:",
-      "section_title": "Reaction in Wealthier Middle-Power Countries",
-      "section_level": 2
-    },
-    {
-      "index_sentences": "But we haven't heard much at all about what all this means in smaller, lesser-developed countries in Asia, Africa, and Latin America.",
-      "section_title": "Implications for Smaller, Lesser-Developed Countries",
-      "section_level": 2
-    },
-    {
-      "index_sentences": "So we're going to focus on a fascinating report that came out last October focusing on how small states in South Asia are navigating this new multipolar world that we're in.",
-      "section_title": "Report Focus: Small States in South Asia Navigating a Multipolar World",
-      "section_level": 1
-    },
-    {
-      "index_sentences": "I'm thrilled to have two of the lead authors of the report join me today for our discussion.",
-      "section_title": "Guest Introduction",
-      "section_level": 1
-    },
-    {
-      "index_sentences": "Yeah, so it's like that moment when somebody suddenly screams from the sides, you know, the emperor has no clothes, right?",
-      "section_title": "Nepalese Perspective on Carney's Speech",
-      "section_level": 2
-    },
-    {
-      "index_sentences": "Well, I think for one thing, I'm not sure that it actually made the frontline news.",
-      "section_title": "Indian Perspective on Carney's Speech",
-      "section_level": 2
-    },
-    {
-      "index_sentences": "Yes. Because we don't, I mean, the whiteness matters here.",
-      "section_title": "The Significance of a White Western Leader's Statement",
-      "section_level": 3
-    },
-    {
-      "index_sentences": "What we are essentially bringing out in that paper is that, look, countries are—it’s difficult to say countries are rational actors because countries are only as rational as their ruling establishments are rational, right?",
-      "section_title": "How Small States in South Asia Manage Rivalries",
-      "section_level": 1
-    },
-    {
-      "index_sentences": "Well, I think it's useful to think of it in sort of like an analogy, right?",
-      "section_title": "Impact of Domestic Politics and Historical Baggage",
-      "section_level": 2
-    },
-    {
-      "index_sentences": "When you're sitting in Nepal and you're relying on India, you're up to the whims of what happens in New Delhi, and that's it.",
-      "section_title": "Asymmetries and Imbalances in Relationships",
-      "section_level": 2
-    },
-    {
-      "index_sentences": "It is more or less the same as Indonesia. China is an emergent actor here.",
-      "section_title": "Major Powers as Conditional Opportunities",
-      "section_level": 1
-    },
-    {
-      "index_sentences": "I think infrastructure is a really big one.",
-      "section_title": "Infrastructure as a Vector of Great Power Competition",
-      "section_level": 1
-    },
-    {
-      "index_sentences": "So for the small states, it's a risk.",
-      "section_title": "Future Outlook: Breakdown of the International System",
-      "section_level": 1
-    },
-    {
-      "index_sentences": "I think it's, you know, it's sort of like you may, we all may have known that the rules of the game were not fair, but at least we knew what the rules were.",
-      "section_title": "Risks and Opportunities for Small States in a Changing World Order",
-      "section_level": 2
-    },
-    {
-      "index_sentences": "Yeah. And we also didn't touch on it, but there's going to be bottom-up pressure as well from Gen Z where if a cigar, I mean, we can talk about that at some other future time, but, you know, Nepal was ground zero for one of the most violent uprisings of Gen Z that expressed their frustration.",
-      "section_title": "Bottom-Up Pressure and Concluding Thoughts",
-      "section_level": 1
-    }
-  ]
-};
-window.faq = {
-  "qas": [
-    {
-      "question": "What was the main declaration made by Canadian Prime Minister Mark Carney at Davos, and what was its general reception?",
-      "answer": "He declared that the old U.S.-led international order is dead and called for middle-power states to work together to form a new coalition. His remarks were not well-received in the United States but sparked conversation in wealthier middle-power countries.",
-      "index_of_source": "If you recall, he declared that the old U.S.-led international order is dead and called for middle-power states to work together to form a new coalition."
-    },
-    {
-      "question": "Why did Mark Carney's speech about the U.S.-led international order being dead cause a \"quiet celebration\" in Nepal, despite the overwhelming presence of the dollar?",
-      "answer": "In Nepal, the existence of U.S. hegemony was well understood at all levels, but Carney's speech was seen as an open admission, a \"quiet celebration\" that the truth was out, especially since no one had openly confronted the U.S. in this fashion before.",
-      "index_of_source": "And so, there was some, let's just say, a quiet celebration that the truth is out, right, from that angle."
-    },
-    {
-      "question": "How did India's reaction to Mark Carney's speech differ from the reception in wealthier middle-power countries, and why was it described as \"underwhelmed\"?",
-      "answer": "India's reaction was \"underwhelmed\" because what Carney was saying was not new; developing countries had been vocal about structural inequalities in international processes for decades. The novelty was that a Western democratic leader was finally acknowledging it.",
-      "index_of_source": "Underwhelmed in the sense that what he was saying was not really new."
-    },
-    {
-      "question": "According to the discussion, why did the \"whiteness\" of Mark Carney, as a leader of a G7 country, matter significantly in the reception of his speech?",
-      "answer": "The \"whiteness\" mattered because while countries in the Global South had been vocal about unfairness for generations, the fact that a white leader from a G7 country was saying it gave the message mainstream headline news attention it might not have otherwise received.",
-      "index_of_source": "I mean, 100% it matters. I think, you know, the fact that a white person who is, you know, the leader of a G7 country saying, \"Oh, you know, it's unfair and it's unfair to Canadian people.\""
-    },
-    {
-      "question": "What challenge do small states in South Asia face when managing rivalries between major powers, particularly regarding the interests of ruling elites?",
-      "answer": "The challenge is that foreign policy positions are often not derived from a broad national consensus but rather from the will of ruling elites, who might use the influence of powers like China as a resource to extend their legitimacy to rule, making the balancing act risky.",
-      "index_of_source": "What we are essentially bringing out in that paper is that, look, countries are—it’s difficult to say countries are rational actors because countries are only as rational as their ruling establishments are rational, right?"
-    },
-    {
-      "question": "Mandakini describes India as a \"regional hegemon\" and \"big brother\" that small states in South Asia \"love to hate.\" How does this dynamic influence their engagement with India versus China?",
-      "answer": "Engagement with India comes with historical baggage, including accusations of high-handedness, which sometimes pushes smaller countries to seek alternatives like China. However, in times of crisis, India is often the one to provide immediate support, despite previous self-interested decisions.",
-      "index_of_source": "So India has, and the region has a baggage which it carries, which I think very often plays very emotionally into foreign policy decision-making."
-    },
-    {
-      "question": "How do small states in South Asia perceive China, the U.S., and India differently, and is their relationship with China conditional, similar to Indonesia's perspective?",
-      "answer": "Small states in South Asia generally perceive China as an \"opportunity\" due to its technological advancements and financial offerings, a conditional relationship where they look elsewhere if the opportunity ceases. While the U.S. exerts overwhelming financial influence, India's neighbors often feel overlooked.",
-      "index_of_source": "It is more or less the same as Indonesia. China is an emergent actor here. And then it comes with all these goodies. It's an opportunity, right?"
-    },
-    {
-      "question": "Why is infrastructure considered a critical \"vector\" of great power competition in South Asia, and what are the observed differences between Chinese and Indian infrastructure projects?",
-      "answer": "Infrastructure is critical because it meets a real need for small states. China is highly efficient, delivering large projects like highways in record time with its own engineers and equipment, built to last. India's track record is less consistent due to bureaucratic inefficiencies, making it difficult for India to compete on scale and proficiency.",
-      "index_of_source": "I think infrastructure is a really big one. And of course, India cannot hope to compete with China in terms of the scale and the number of projects with the BRI, the Belt and Road Initiative."
-    },
-    {
-      "question": "The discussion highlights a \"flip-flop\" in Maldives' political parties regarding engagement with China and India. What does this reveal about the decision-making process in small states?",
-      "answer": "This flip-flop reveals that decisions are often \"politically expedient\" and designed to demonstrate \"certain optics to your domestic constituency.\" Small states prioritize maintaining an image of neutrality and non-alignment as strategically important, even if it means changing alliances with successive governments.",
-      "index_of_source": "So I think also you have this flip-flop very often between competing opposition political parties where, you know, one is openly pro-China, while they're in government, they'll bring in Chinese investment, that the person in opposition will be like, \"No, no, China out, India in.\""
-    },
-    {
-      "question": "What are the primary risks and potential \"existential anxiety\" that small states face with the breakdown of international institutions like the UN and the disruption of development financing?",
-      "answer": "Small states face heightened risks of being \"squished\" between jostling middle powers, losing their voice in a rules-based system, and facing jeopardy on development financing streams as major donors withdraw or face their own economic issues, leading to uncertainty and anxiety about future support.",
-      "index_of_source": "So for the small states, it's a risk. It's a risk because the number one issue comes from the fact that small states as such couldn't or never did have much of a voice in actually making these rules in the rules-based order."
-    }
-  ]
-};
-</script>
