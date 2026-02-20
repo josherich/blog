@@ -13,13 +13,13 @@ Hello, and welcome back to the **Cognitive Revolution**. The presenting sponsor 
 
 I love that concept, but it's also worth highlighting how Granola can help raise your team's level of execution by supporting follow-through on a day-to-day basis. This morning, for example, I had two very practical calls in which I committed to a number of things. In the past, to be honest, there's a good chance I'd have forgotten at least a couple of the things I said I'd do. But with Granola, I can easily run a **to-do finder recipe** and get a comprehensive list of everything I owe my teammates.
 
-This is the sort of bread and butter use case that has driven Granola's growth and inspired investment from execution-obsessed CEOs, including past guests **Guillermo Rauch of Purcell** and **Amjad Massad of Replit**.
+This is the sort of bread and butter use case that has driven Granola's growth and inspired investment from execution-obsessed CEOs, including past guests **Guillermo Rauch of Vercel** and **Amjad Massad of Replit**.
 
 See the link in our show notes to try my blind spot finder recipe and explore all of the ways that Granola can make your raw meeting notes awesome.
 
 ---
 
-Now, today, my guests are **Vlad Tenev** and **Tudor Akim**, co-founders of **Harmonic**, an AI research lab dedicated to building mathematical superintelligence, and also the creators of **Aristotle**, an AI system that achieved gold medal-level performance at the **2025 International Mathematical Olympiad**.
+Now, today, my guests are **Vlad Tenev** and **Tudor Achim**, co-founders of **Harmonic**, an AI research lab dedicated to building mathematical superintelligence, and also the creators of **Aristotle**, an AI system that achieved gold medal-level performance at the **2025 International Mathematical Olympiad**.
 
 While **OpenAI** and **Google DeepMind** achieved similar performance by scaling reasoning in chain of thought, Harmonic stands out for their commitment to **formally verifiable methods**. This is because it generates candidate proofs in **Lean**, a programming language that serves as a proof-checking assistant by using a **trusted kernel** to confirm that every single step of reasoning follows from a few explicit premises and accepted logical rules.
 
@@ -77,9 +77,9 @@ If you're like me, you'll find this episode a useful opportunity to:
 - Improve your intuition for the nature of math
 - Get an instructive preview of what's to come as reinforcement learning continues to scale across the industry
 - Receive an inspiring challenge to keep thinking bigger and bolder about the nature and impact of superintelligence
-With that, I hope you enjoy my conversation with **Vlad Tenev** and **Tudor Akeem**, co-founders of **Harmonic**.  
+With that, I hope you enjoy my conversation with **Vlad Tenev** and **Tudor Achim**, co-founders of **Harmonic**.  
 
-**Vlad Tenev** and **Tudor Akeem**, co-founders of **Harmonic**, makers of **Aristotle**, and winners with an asterisk of the **IMO gold in 2025**.  
+**Vlad Tenev** and **Tudor Achim**, co-founders of **Harmonic**, makers of **Aristotle**, and winners with an asterisk of the **IMO gold in 2025**.  
 
 Welcome to the **Cognitive Revolution**.  
 *Thanks for having us.*  
@@ -716,7 +716,7 @@ So, you know, you can swing or take any of those pitches, but what do you think 
 
 ---
 
-Well, first, I have to say that if your audience knows about **reinforced money from verified rewards**, you've got a great audience.
+Well, first, I have to say that if your audience knows about **reinforcement learning from verifiable rewards**, you've got a great audience.
 
 > "That's not betting data."
 
@@ -742,7 +742,7 @@ And then, in this scenario, taste is expressed by the community by the revealed 
 
 So, we don't choose what kind of math they do.
 
-> We're not saying, hey, **Navi or Stokes is more important than P versus NP**.
+> We're not saying, hey, **Navier-Stokes is more important than P versus NP**.
 
 It's the mathematicians that have the credits on the API to say, well, we care about X or some other thing.
 
@@ -824,7 +824,7 @@ And so you want to mix in reasoning systems that are not trained from human know
 
 That kind of thing we always play with, but it hasn't really been the living factor so far. I think that pre-trained models are a **great starting point.**  
 
-Cool. I guess one thing: Goodfire just announced today that they raised a bunch of money at a **unicorn valuation.** I was a very small-scale supporter of theirs, and it got me thinking.  
+Cool. I guess one thing: **Goodfire** just announced today that they raised a bunch of money at a **unicorn valuation.** I was a very small-scale supporter of theirs, and it got me thinking.  
 
 This also connects to **Vlad's comment** where you said the system can sort of invent new theory.  
 
@@ -962,7 +962,7 @@ You know, they're hiring **Lean or Rock or Isabel experts** and kind of painstak
 
 Yeah, I love the term **vibe-proving**, by the way. Yeah, I think that vision is an incredibly compelling one. And, you know, it's also one that I'm still kind of wrapping my head around.
 
-For listeners who haven't already heard it, I did one episode with **Kathleen Fisher**, who was at **RAN**, and I think now has just moved to **ARIA in the U.K.** to lead their whole operation. And **Byron Cook**, who's like a legend of the formal methods field at **AWS**. And, yeah, they're kind of right there with you, you know, envisioning this world of basically **totally verified, bug-free software**, starting with mission-critical stuff, but potentially extending to everything over time.
+For listeners who haven't already heard it, I did one episode with **Kathleen Fisher**, who was at **DARPA**, and I think now has just moved to **ARIA in the U.K.** to lead their whole operation. And **Byron Cook**, who's like a legend of the formal methods field at **AWS**. And, yeah, they're kind of right there with you, you know, envisioning this world of basically **totally verified, bug-free software**, starting with mission-critical stuff, but potentially extending to everything over time.
 
 I guess one – so I think that is super compelling.
 
@@ -1133,7 +1133,7 @@ Thanks for having me. Pleasure to be with you.
 If you're finding value in the show, we'd appreciate it if you'd take a moment to share it with friends, post online, write a review on Apple Podcasts or Spotify, or just leave us a comment on YouTube.
 
 Of course, we always welcome your feedback, guests and topic suggestions, and sponsorship inquiries, either via our website, **cognitiverevolution.ai**, or by DMing me on your favorite social network.
-The **cognitive revolution** is part of the **Turpentine Network**, a network of podcasts, which is now part of a **16 Z** where experts talk **technology, business, economics, geopolitics, culture, and more**.
+The **cognitive revolution** is part of the **Turpentine Network**, a network of podcasts, which is now part of **a16z** where experts talk **technology, business, economics, geopolitics, culture, and more**.
 
 We're produced by **AI Podcasting**. If you're looking for podcast production help for everything from the moment you stop recording to the moment your audience starts listening, check them out and see my endorsement at **AI podcast.ing**.
 
@@ -1327,7 +1327,7 @@ window.faq = {
   "qas": [
     {
       "question": "What is Harmonic, and what is its primary focus in AI research?",
-      "answer": "Harmonic is an AI research lab co-founded by Vlad Tenev and Tudor Akim, dedicated to building mathematical superintelligence. They are known for creating Aristotle, an AI system that achieved gold medal-level performance at the 2025 International Mathematical Olympiad.",
+      "answer": "Harmonic is an AI research lab co-founded by Vlad Tenev and Tudor Achim, dedicated to building mathematical superintelligence. They are known for creating Aristotle, an AI system that achieved gold medal-level performance at the 2025 International Mathematical Olympiad.",
       "index_of_source": "Now, today, my guests are Vlad Tenev and Tudor Akim, co-founders of Harmonic, an AI research lab dedicated to building mathematical superintelligence, and also the creators of Aristotle, an AI system that achieved gold medal-level performance at the 2025 International Mathematical Olympiad."
     },
     {
@@ -1361,7 +1361,7 @@ window.faq = {
       "index_of_source": "By outputting our reasoning in a formally verified way, that is the most interpretable possible output."
     },
     {
-      "question": "What is Tudor Akim's vision for the state of scientific understanding by 2030, influenced by mathematical superintelligence?",
+      "question": "What is Tudor Achim's vision for the state of scientific understanding by 2030, influenced by mathematical superintelligence?",
       "answer": "Tudor Akim envisions that by 2030, there will be theoretical explanations for everything, with humanity receiving theories for everything that are self-consistent and make sense. This will lead to a regime where we are data-limited, potentially having multiple grand unified theories that require exotic experiments to distinguish.",
       "index_of_source": "I think that by 2030, we will have theoretical explanations for everything, basically."
     },
