@@ -10,9 +10,9 @@ tags: [podcast_script]
 [The programming language after Kotlin – with the creator of Kotlin](https://api.substack.com/feed/podcast/187478763/3c1dde09a2e4479488bbd3ff21b5ee2f.mp3)
 
 **Why would anyone create a new programming language today if AI can already write most of your code?**  
-**Andrey Bresla** has an interesting answer.
+**Andrey Breslav** has an interesting answer.
 
-Andrey is the creator of **Kotlin**, a language that runs on billions of Android devices and is one of the fastest growing languages in the world. Today we cover how Andrey designed Kotlin by deliberately borrowing ideas from **Scala, C Sharp, and Groovy**, and why he considers leaving out the ternary operator one of his biggest regrets.
+Andrey Breslav is the creator of **Kotlin**, a language that runs on billions of Android devices and is one of the fastest growing languages in the world. Today we cover how Andrey designed Kotlin by deliberately borrowing ideas from **Scala, C Sharp, and Groovy**, and why he considers leaving out the ternary operator one of his biggest regrets.
 
 We also discuss why making Kotlin interoperate seamlessly with **Java** was a gigantic undertaking, and what it took to get it done. Kotlin adoption went through the roof after **Google announced it as the official language for Android**, in a move that even took Andrey and the Kotlin team by surprise.
 
@@ -149,7 +149,7 @@ Then I came to **St. Petersburg** for one month because after that I had an inte
 
 I said, "Okay, guys, I have this month. I can work in the office and we can try to sketch things, but then I'll go into Microsoft and then I will decide whether I commit or not." Which in hindsight, I made the right decision in the end.
 
-I had a great time for this month or so. I worked with the guys in the office — it was mostly **Max Schofiroff** we were working with and it was incredible. We had such great discussions and I actually saw Max this morning and it was like, it was great time.
+I had a great time for this month or so. I worked with the guys in the office — it was mostly **Max Shafirov** we were working with and it was incredible. We had such great discussions and I actually saw Max this morning and it was like, it was great time.
 
 So then I went to Seattle, did something completely different. There are Microsoft researchers, some really great researchers working there, actually was exposed to the **top notch level of academia** for the first time — was very insightful.
 
@@ -226,7 +226,7 @@ And **Kotlin** has multiple back-ends for different target languages:
 - Java back-end
 - native back-end for iOS and other native platforms
 - JavaScript back-end
-- WAZM back-end
+- WASM back-end
 
 At that time, nobody was full-time working on this project.
 Even I was part-time, a **PhD student**, part-time **Kotlin developer**. And it was the very early days.  
@@ -266,7 +266,7 @@ And those weren't great.
 
 By that time, other languages were popping up. One of the alternative languages was called **Ceylon**. The logic was: Java was the island of coffee. And Ceylon was an island of tea.  
 
-**Dmitry Shemirov** basically looked out of the window and said,  
+**Dmitry Jemerov** basically looked out of the window and said,  
 
 > "OK, we have an island here in St. Petersburg. In the Gulf of Finland, there's a big island called Kotlin."  
 
@@ -298,7 +298,7 @@ So, when it started, what were the main differences with Kotlin compared to Java
 
 Yeah, I guess there were a few major selling points. Then there were other things on top of that. When we started, like in the very beginning, we didn't have **null safety** in mind. Null safety came a little later.  
 
-After one of the internal presentations, it was **Max Rofirov** who invited **Roman Yelizarov**, who later was the project lead for Kotlin. Roman came and listened to the presentation, gave some feedback, and said something like,  
+After one of the internal presentations, it was **Max Shafirov** who invited **Roman Elizarov**, who later was the project lead for Kotlin. Roman came and listened to the presentation, gave some feedback, and said something like,  
 
 > "Guys, if you want to do something really big for enterprise developers, figure out null safety."  
 
@@ -606,7 +606,7 @@ And there were like, we had some **annotations** for the Java side. It was also 
 
 And basically we realized that this assumption that everything in Java has to be treated as nullable just doesn't work. This was a turning point where we sat down and reimagined the whole thing.
 
-And we worked with a great **type theory** type practice, I would say, guy from, I think it was back then he was in **Cornell**, **Ross State**. So Ross helped me figure out the sort of mathematical side of how you can represent those types that come from Java and should be, like we should be aware of that they are from Java and can possibly be nullable. 
+And we worked with a great **type theory** type practice, I would say, guy from, I think it was back then he was in **Cornell**, **Ross Tate**. So Ross helped me figure out the sort of mathematical side of how you can represent those types that come from Java and should be, like we should be aware of that they are from Java and can possibly be nullable. 
 
 But we shouldn't treat them as nullable because it was very inconvenient. And Ross put together a very nice sort of **calculus** about those.
 
@@ -716,9 +716,9 @@ Assignment, rollouts, measurements, dashboard, debugging, the whole thing.
 
 For a long time, only a handful of companies really pulled this off at scale. Companies like **Meta** and **Uber**.
 
-Which brings me to **Statsik**.
+Which brings me to **Statsig**.
 
-Statsik is our presenting partner for the season. Statsik gives engineering teams the tooling for **experimentation and feature flagging** that used to require years of internal work to build.
+Statsig is our presenting partner for the season. Statsig gives engineering teams the tooling for **experimentation and feature flagging** that used to require years of internal work to build.
 
 Here's what it looks like in practice:
 
@@ -733,9 +733,9 @@ Here's what it looks like in practice:
 
 And the key is that the measurement is part of the workflow. You're not switching between three different tools and trying to match up segments and dashboards after the fact. Feature flags, experiments, and analytics are in one place, using the same underlying user assignments and data.
 
-This is why teams and companies like **Notion, Brex, and Atlassian** use Statsik. Statsik has a generous free tier to get started, and pro pricing for teams starts at $150 per month.
+This is why teams and companies like **Notion, Brex, and Atlassian** use Statsig. Statsig has a generous free tier to get started, and pro pricing for teams starts at $150 per month.
 
-To learn more and get a 30-day enterprise trial, go to **Statsik.com/pragmatic**.
+To learn more and get a 30-day enterprise trial, go to **Statsig.com/pragmatic**.
 
 And with this, let's get back to Andre and experimental features in Kotlin.
 
@@ -1178,9 +1178,9 @@ Thank you very much. It was great to chat.
 
 It was great. Thank you.  
 
-The thing that struck me most from this conversation with **Andre** was his observation about how we work with **AI coding agents today**. You talk to an agent and play in English. It generates code. You commit the code. But that conversation, your actual intent, it disappears. You communicate with the machine in human language, but with your teammates in code, in machine language.  
+The thing that struck me most from this conversation with **Andrey** was his observation about how we work with **AI coding agents today**. You talk to an agent and play in English. It generates code. You commit the code. But that conversation, your actual intent, it disappears. You communicate with the machine in human language, but with your teammates in code, in machine language.  
 
-Whether or not **Codespeak** becomes the answer, what is sure is that we're missing an **intent layer**. And someone is going to figure out how to preserve it.  
+Whether or not **CodeSpeak** becomes the answer, what is sure is that we're missing an **intent layer**. And someone is going to figure out how to preserve it.  
 
 If you enjoyed this episode, please do share it with a colleague who's been thinking about where programming is headed. And if you're not subscribed yet, now's a good time. We have more conversations like this one coming.  
 
@@ -1438,8 +1438,8 @@ Thank you and see you in the next one.
 window.faq = {
   "qas": [
     {
-      "question": "Who is Andrey Bresla and what is Kotlin?",
-      "answer": "Andrey Bresla is the creator of Kotlin, a language that runs on billions of Android devices and is one of the fastest growing languages in the world.",
+      "question": "Who is Andrey Breslav and what is Kotlin?",
+      "answer": "Andrey Breslav is the creator of Kotlin, a language that runs on billions of Android devices and is one of the fastest growing languages in the world.",
       "index_of_source": "Andrey is the creator of Kotlin, a language that runs on billions of Android devices and is one of the fastest growing languages in the world."
     },
     {
@@ -1478,12 +1478,12 @@ window.faq = {
       "index_of_source": "When we started Kotlin, we were not really very aware of Android."
     },
     {
-      "question": "What is Andrey Bresla's new project, CodeSpeak, and how does it relate to AI?",
-      "answer": "CodeSpeak is Andrey Bresla's new programming language built on English, designed for an era dominated by AI. It leverages LLMs to significantly reduce the amount of information programmers need to explicitly tell computers, focusing on communicating intent rather than writing verbose code.",
+      "question": "What is Andrey Breslav's new project, CodeSpeak, and how does it relate to AI?",
+      "answer": "CodeSpeak is Andrey Breslav's new programming language built on English, designed for an era dominated by AI. It leverages LLMs to significantly reduce the amount of information programmers need to explicitly tell computers, focusing on communicating intent rather than writing verbose code.",
       "index_of_source": "Andrey's new project, CodeSpeak, is a new programming language built on English, designed for an era where AI writes most of the code."
     },
     {
-      "question": "Why does Andrey Bresla believe it might be misguided to design a new programming language specifically for LLMs?",
+      "question": "Why does Andrey Breslav believe it might be misguided to design a new programming language specifically for LLMs?",
       "answer": "Andrey believes it's misguided because LLMs require huge training sets, which new languages lack, and their power comes from exposure to existing human language and code. Inventing a new, formal language for them might not be as promising as leveraging their natural language understanding.",
       "index_of_source": "So, one, to get an LLM to understand some language well, you need a huge training set."
     }
