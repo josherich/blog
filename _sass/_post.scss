@@ -3,20 +3,15 @@
 }
 
 .post h1, .site h1 {
-  text-align: center;
-  margin-top: 4em;
-  margin-bottom: 1em;
-  color: #600;
-  font: 19px optima, STHeiti;
-  font-weight: 600;
+  margin-top: 2em;
+  margin-bottom: 0.5em;
 }
 
 pre {
-  padding: 8px 15px;
-  background: #191919;
-  border-radius: 2px;
-  border: 1px solid #121212;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
+  padding: 12px 16px;
+  background: #f6f8fa;
+  border: 1px solid #e1e4e8;
+  border-radius: 4px;
   overflow: auto;
   overflow-y: hidden;
 }
@@ -33,21 +28,21 @@ code {
   font-size: 85%;
   white-space: break-spaces;
   background-color: rgba(129, 139, 152, 0.12);
-  border-radius: 6px;
+  border-radius: 4px;
 }
 
 .highlight pre {
-  border: 1px solid #ddd;
-  border-radius: 4px;
   margin: 20px 0;
-  padding: 0.4em .7em;
+  padding: 12px 16px;
   color: #b7b7b7;
+  background: #191919;
+  border: 1px solid #121212;
+  border-radius: 4px;
 }
 
 .post code {
-  font-size: 0.8em;
+  font-size: 0.85em;
   white-space: pre-wrap;
-  // padding: 3px 3px;
   border-radius: 3px;
 }
 
@@ -72,21 +67,9 @@ code {
 }
 
 .post-page {
-  a         { color: #1e6aff; }
-  a:hover   { color: #666; }
-  a:visited { color: #7aa7ff; }
-}
-
-/* pandas done right tables */
-#select-1, #select-2, #select-3 {
-  font-size: 9px;
-}
-#select-4 {
-  font-size: 9px;
-}
-
-.cell-selected {
-  background: #aaa!important;
+  a         { color: #0366d6; }
+  a:hover   { color: #024ea4; }
+  a:visited { color: #6f42c1; }
 }
 
 .image-caption {

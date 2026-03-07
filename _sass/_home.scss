@@ -1,12 +1,12 @@
 ul.posts {
   list-style-type: none;
   margin-bottom: 2em;
+  padding-left: 0;
 }
 
 ul.posts li {
   line-height: 1.75em;
-  margin: 0.5em 0;
-  font-size: 1.25em;
+  margin: 0.4em 0;
 }
 
 ul.posts li a {
@@ -14,21 +14,7 @@ ul.posts li a {
 }
 
 ul.posts .date {
-  color: #aaa;
-  font-family: Monaco, "Courier New", monospace;
-  font-size: 14px;
-  line-height: 14px;
-}
-
-.frontend {
-  // position: absolute;
-  // right: -150px;
-  list-style: none;
-  li {
-    line-height: 1.75em;
-    margin: 0.5em 0;
-    font-size: 1.25em;
-    display: inline;
-    margin-right: 1em;
-  }
+  color: #999;
+  font-size: 0.8em;
+  font-variant-numeric: tabular-nums;
 }
