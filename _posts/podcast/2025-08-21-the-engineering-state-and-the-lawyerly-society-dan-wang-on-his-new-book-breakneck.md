@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "The Engineering State and the Lawyerly Society: Dan Wang on his new book "Breakneck""
+title: "The Engineering State and the Lawyerly Society: Dan Wang on his new book Breakneck"
 date: 2025-08-21 00:00:01
 categories: podcast sinica-podcast
 tags: [podcast_script]
@@ -9,13 +9,13 @@ tags: [podcast_script]
 
 [The Engineering State and the Lawyerly Society: Dan Wang on his new book "Breakneck"](https://pdcn.co/e/rss.art19.com/episodes/496f4fe1-456c-446f-9ffa-34ea7fb911c8.mp3?rss_browser=BAhJIhFQb2NrZXQgQ2FzdHMGOgZFVA%3D%3D--9a7540b1738e8dccad5621cba5faeb89fdae34ca)
 
-This episode is brought to you by **Progressive Commercial Insurance**.  
+This episode is brought to you by **Progressive Commercial Insurance**.
 
-As a business owner, you take on a lot of roles: **Marketer, bookkeeper, CEO**. But when it comes to **small business insurance**, Progressive has you covered. They offer:  
+As a business owner, you take on a lot of roles: **Marketer, bookkeeper, CEO**. But when it comes to **small business insurance**, Progressive has you covered. They offer:
 
-- Discounts on commercial auto insurance  
-- Customizable coverages that can grow with your business  
-- Reliable protection for whatever comes your way  
+- Discounts on commercial auto insurance
+- Customizable coverages that can grow with your business
+- Reliable protection for whatever comes your way
 
 Count on **Progressive** to handle your insurance while you do, well, everything else. Quote today in as little as seven minutes at **progressivecommercial.com**. Progressive Casualty Insurance Company coverage provided in service by affiliated and third-party insurers. Discounts and coverage selections not available in all states or situations.
 
@@ -25,22 +25,22 @@ If you’ve used **Babbel**, you would. Babbel’s conversation-based techniques
 
 ---
 
-Welcome to the **Sinica Podcast**, a weekly discussion of current affairs in **China**.  
+Welcome to the **Sinica Podcast**, a weekly discussion of current affairs in **China**.
 
-In this program, we'll look at:  
+In this program, we'll look at:
 
-- Books  
-- Ideas  
-- New research  
-- Intellectual currents  
-- Cultural trends  
+- Books
+- Ideas
+- New research
+- Intellectual currents
+- Cultural trends
 
-that can help us better understand what's happening in China's:  
+that can help us better understand what's happening in China's:
 
-- Politics  
-- Foreign relations  
-- Economics  
-- Society  
+- Politics
+- Foreign relations
+- Economics
+- Society
 
 Join me each week for **in-depth conversations** that shed more light and bring less heat to how we think and talk about China. I'm **Kaiser Kuo**, coming to you this week from **Chapel Hill, North Carolina**.
 
@@ -52,9 +52,9 @@ You can reach me at **SinicaPod@gmail.com**. And listeners, please support my wo
 
 You will enjoy, in addition to the podcast:
 
-- The complete transcript of the show  
-- Essays from me  
-- Writings and podcasts from some of your very favorite China-focused columnists and commentators  
+- The complete transcript of the show
+- Essays from me
+- Writings and podcasts from some of your very favorite China-focused columnists and commentators
 
 And of course, you will have the knowledge that you are helping me to do what I honestly believe is **important work**.
 
@@ -62,7 +62,7 @@ So do check out the page to see all that's on offer, and please do consider help
 
 ---
 
-**Dan Wang** has been on the Sinica Podcast a couple of times before, and I am delighted to have him back today.  
+**Dan Wang** has been on the Sinica Podcast a couple of times before, and I am delighted to have him back today.
 
 He is one of the sharpest and most original observers of **China's technology sector** and **manufacturing landscape**, having won a certain level of fame for his annual letters and other essays — writings that somehow managed to combine on-the-ground insights with big picture perspectives.
 
@@ -70,7 +70,7 @@ Dan has worked for **Gavekal Dragonomics in Beijing** since 2017. After a stint 
 
 If you’ve seen the **PBS Nova documentary "Inside China’s Tech Boom,"** which I had the pleasure of narrating — it’s a film by **David Borenstein** — you’ve already encountered Dan. He was a featured voice helping to explain the deeper drivers behind China's technological rise and talked eloquently, I thought, about the importance of **process knowledge**, of what the Greeks called **metis**, which is an important idea that’s really stayed with me and has become quite foundational to my understanding of China and the importance of manufacturing.
 
-Today, we're going to be talking about his new book, which comes out just about the time you’ll be listening to this. It's called:  
+Today, we're going to be talking about his new book, which comes out just about the time you’ll be listening to this. It's called:
 **"Breakneck: China’s Quest to Engineer the Future."**
 
 It’s a book that posits — and here I’m greatly oversimplifying — that **China is ruled by engineers and they do what engineers like to do: they build.** America, on the other hand, is ruled by lawyers. It's an **engineering state** on the one hand and a **lawyerly society** on the other.
@@ -80,8 +80,8 @@ Dan's book is full of memorable witticisms and pithy, trenchant observations. Pe
 Before we jump in, I want to point out that this book was especially interesting for me as somebody whose abortive doctoral dissertation was specifically about the rise of this **engineering state**, about the...
 The **emergence of technocrats in post-Mao China**. So things might get a little in the weeds. I ask your forgiveness in advance and will do my best to keep it reasonably accessible.
 
-**Dan Wang, welcome back to Sinica and happy birthday, man.**  
-**Dan Wang:** Thank you very much, Kaiser. And what better birthday present than to speak to old friends like this?  
+**Dan Wang, welcome back to Sinica and happy birthday, man.**
+**Dan Wang:** Thank you very much, Kaiser. And what better birthday present than to speak to old friends like this?
 **Dan Wang:** Yeah, it's great to have you.
 
 We have to start with what, for me, was clearly the most important part of your entire book, which is that **magical and totally improbable guitar-making hub in Guizhou** that you stumbled upon as you and Christian Shepard from the *Washington Post* and another friend rode your bikes through that mountainous province toward Chongqing.
@@ -94,7 +94,7 @@ And I guess more importantly, were there any of you guys who were guitar players
 
 How indeed did kind of a third or fourth tier city in Guizhou become one of the great hubs of guitar making?
 
-Well, in **2021**, when I was stuck in China during the summer due to the success of the zero COVID strategy at the time, I asked two friends of mine,  
+Well, in **2021**, when I was stuck in China during the summer due to the success of the zero COVID strategy at the time, I asked two friends of mine,
 
 > “Hey, why don't we go on a really long bike ride somewhere in the southwest, which I find the most beautiful part of China?”
 
@@ -116,7 +116,7 @@ And something that the local government in **Zhengan** did was that it found tha
 
 > I'm working to change that, but yeah.
 
-Well, you're a big force, Kaiser. Maybe we can change that. But it just attracted a lot of people to try to say,  
+Well, you're a big force, Kaiser. Maybe we can change that. But it just attracted a lot of people to try to say,
 
 > “Hey, why don't you move back home to Guizhou? You can make a lot of guitars here.”
 
@@ -129,45 +129,45 @@ Yeah. I mean, it's amazing how good quality the **Chinese guitars** have. I mean
 - Indonesia is coming up in the world, but it used to be Japan and then South Korea.
 - It's migrated to China, from China off to Indonesia, I imagine.
 - But there's still quite a bit happening there.
-The **guitar ecosystem**, all the electronics, the effects pedals and all that, it's huge. I hope to one day make a pilgrimage to the **guitar mecca** and maybe even spend some time there and get some free stuff. I'll show you my cycling route for **Kaiser**.  
+The **guitar ecosystem**, all the electronics, the effects pedals and all that, it's huge. I hope to one day make a pilgrimage to the **guitar mecca** and maybe even spend some time there and get some free stuff. I'll show you my cycling route for **Kaiser**.
 
-Yeah. No, that'd be great. You can pedal there. Right. Yeah. No, I'm not going to do that.  
+Yeah. No, that'd be great. You can pedal there. Right. Yeah. No, I'm not going to do that.
 
-But yeah, was the enticements just the usual package of tax incentives, of steeply discounted infrastructure promises of raw materials? What do they do to entice people to a place like that? What do they typically do?  
+But yeah, was the enticements just the usual package of tax incentives, of steeply discounted infrastructure promises of raw materials? What do they do to entice people to a place like that? What do they typically do?
 
-I think the typical enticement is:  
-- **We will give you the infrastructure**  
-- **We will give you the taxes**  
-- **We will also let you be close to the hometown where a lot of people want to be**.  
+I think the typical enticement is:
+- **We will give you the infrastructure**
+- **We will give you the taxes**
+- **We will also let you be close to the hometown where a lot of people want to be**.
 
-A lot of folks in **Guizhou**, folks in the Southwest can't necessarily love the Southeast and **Guangdong** where they were working. It's too humid. They might say, "we don't love the Cantonese food. Where's all the spices? Where's all the pickles? Where is the really pungent flavors that folks in Guizhou are used to?"  
+A lot of folks in **Guizhou**, folks in the Southwest can't necessarily love the Southeast and **Guangdong** where they were working. It's too humid. They might say, "we don't love the Cantonese food. Where's all the spices? Where's all the pickles? Where is the really pungent flavors that folks in Guizhou are used to?"
 
-And so this coincided with sort of this **rural revitalization program** that **Beijing** has emphasized for quite a while now. And so I think it is just this big happy accident that I would say a pretty random place in **Guizhou** is just making so many guitars now.  
+And so this coincided with sort of this **rural revitalization program** that **Beijing** has emphasized for quite a while now. And so I think it is just this big happy accident that I would say a pretty random place in **Guizhou** is just making so many guitars now.
 
-Awesome. **Dan**, I know you're going to end up on every major podcast talking about this book, so I want to avoid just asking you about the main themes or going through chapter by chapter. Instead, I was hoping that we could use the main themes of the book as kind of a jumping-off point to explore a lot of the questions that popped into my head as I read it, questions I'm sure you've thought about as well. Not necessarily things that made their way into the pages of the book itself, but let me start here.  
+Awesome. **Dan**, I know you're going to end up on every major podcast talking about this book, so I want to avoid just asking you about the main themes or going through chapter by chapter. Instead, I was hoping that we could use the main themes of the book as kind of a jumping-off point to explore a lot of the questions that popped into my head as I read it, questions I'm sure you've thought about as well. Not necessarily things that made their way into the pages of the book itself, but let me start here.
 
-I mean, we can all rattle off the obvious differences between an **engineering state** and a **lawyerly society**. You got speed versus procedure, certain social orderliness versus the chaos of pure market forces. But what are some of the more **subtle trade-offs**, the ones that most people don't even know that they're making that maybe shape daily life in each system? I'm thinking predictability, dignity, moral legitimacy. I mean, which of these things matters to people who live inside each system?  
+I mean, we can all rattle off the obvious differences between an **engineering state** and a **lawyerly society**. You got speed versus procedure, certain social orderliness versus the chaos of pure market forces. But what are some of the more **subtle trade-offs**, the ones that most people don't even know that they're making that maybe shape daily life in each system? I'm thinking predictability, dignity, moral legitimacy. I mean, which of these things matters to people who live inside each system?
 
-Yeah. Well, I want to push you a little bit on this, **Kaiser**. I wonder which is the system that delivers legitimacy. I could posit that the lawyerly society has some degree of legitimacy because there are some procedures in place that people expect that rules have to be followed, and maybe the lawyers are better at following the rules.  
+Yeah. Well, I want to push you a little bit on this, **Kaiser**. I wonder which is the system that delivers legitimacy. I could posit that the lawyerly society has some degree of legitimacy because there are some procedures in place that people expect that rules have to be followed, and maybe the lawyers are better at following the rules.
 
-On the other hand, the **Communist Party**, I think, would say, well, we have much greater legitimacy. We have this, what is that term, **whole process, substantive democracy**, in which we are delivering much better things for the people. So I think legitimacy is a concept here that we can play around a little bit with.  
+On the other hand, the **Communist Party**, I think, would say, well, we have much greater legitimacy. We have this, what is that term, **whole process, substantive democracy**, in which we are delivering much better things for the people. So I think legitimacy is a concept here that we can play around a little bit with.
 
-What I'll say is that the engineering state, I think I came onto this framework in part due to these excellent articles I found in 2001, I believe, that was written by an interesting analyst at the time called **Kaiser Kuo**, who pointed out that there were quite a lot of engineers that were being promoted into the Central Committee and the Politburo.  
+What I'll say is that the engineering state, I think I came onto this framework in part due to these excellent articles I found in 2001, I believe, that was written by an interesting analyst at the time called **Kaiser Kuo**, who pointed out that there were quite a lot of engineers that were being promoted into the Central Committee and the Politburo.
 
-And I think there has been quite a lot of discussion since 2002, which is the really striking year when every member of the Standing Committee of the Politburo, notably **Hu Jintao**, as well as **Wen Jiabao**, had degrees in engineering.  
+And I think there has been quite a lot of discussion since 2002, which is the really striking year when every member of the Standing Committee of the Politburo, notably **Hu Jintao**, as well as **Wen Jiabao**, had degrees in engineering.
 
-- Hu Jintao was a **hydraulic engineer**  
-- Wen Jiabao was a **geologist**  
+- Hu Jintao was a **hydraulic engineer**
+- Wen Jiabao was a **geologist**
 
-Of course this was a really striking fact for a lot of people.  
+Of course this was a really striking fact for a lot of people.
 
-I think there has also been this kind of view and understanding that **America is very lawyerly** and that the government is **of the lawyers, by the lawyers, and for the lawyers**.  
+I think there has also been this kind of view and understanding that **America is very lawyerly** and that the government is **of the lawyers, by the lawyers, and for the lawyers**.
 
-And so what I wanted to add onto this kind of general understanding that was in the air, so to speak, was that I felt like I really experienced the merits and the madness of the engineering state by living there from 2017 to 2023.  
+And so what I wanted to add onto this kind of general understanding that was in the air, so to speak, was that I felt like I really experienced the merits and the madness of the engineering state by living there from 2017 to 2023.
 
-I was in **China** at a time when a lot of things were getting a lot better. The **high-speed rail system** had really come into fruition at that time. People were no longer shoving each other around to get in line. The system felt quite rational and well-organized.  
+I was in **China** at a time when a lot of things were getting a lot better. The **high-speed rail system** had really come into fruition at that time. People were no longer shoving each other around to get in line. The system felt quite rational and well-organized.
 
-**Shanghai** is a marvelously functional city where one is never really more than 15 or 20 minutes away from a subway stop. Shanghai was building all sorts of parks. It built about 500 parks by the year 2020. By the end of this year, the city targets that it will have a thousand parks. Shanghai is just this remarkably well-functional, livable place.  
+**Shanghai** is a marvelously functional city where one is never really more than 15 or 20 minutes away from a subway stop. Shanghai was building all sorts of parks. It built about 500 parks by the year 2020. By the end of this year, the city targets that it will have a thousand parks. Shanghai is just this remarkably well-functional, livable place.
 
 And so that was something that I really experienced by living there. But Shanghai is also infamously the city that suffered perhaps the worst lockdown ever.
 In the **history of humanity**, in which 25 million people were unable to leave their apartment compounds for about eight to ten weeks over the course of the spring in 2022. And so that was something that I felt very ethically myself.
@@ -178,17 +178,17 @@ That was sort of what I wanted to add, that this was something I lived and felt 
 
 ---
 
-Yeah, absolutely. We'll talk a little bit about this idea of **performance legitimacy** down the road here. But so I want to dig into sort of maybe philosophical underpinnings of this contrast that you highlight. 
+Yeah, absolutely. We'll talk a little bit about this idea of **performance legitimacy** down the road here. But so I want to dig into sort of maybe philosophical underpinnings of this contrast that you highlight.
 
 In the West, we often reach for the **trolley problem** as a kind of shorthand for thinking about moral tradeoffs.
 
-I mean, do you pull that lever to sacrifice one life in order to save five? I've often wondered how this dilemma looks different through the lens, you know, like the one that you've drawn, whether it looks different between an **engineering state** and a **lawyerly society**. 
+I mean, do you pull that lever to sacrifice one life in order to save five? I've often wondered how this dilemma looks different through the lens, you know, like the one that you've drawn, whether it looks different between an **engineering state** and a **lawyerly society**.
 
 I would imagine an engineering-oriented society be more inclined to treat this as kind of a **technical optimization problem**. You just kind of minimize total loss, while a maybe more lawyerly society would insist on:
 
-- **Rules**  
-- **Rights**  
-- **Procedures** that, you know, can't be violated even for a greater good  
+- **Rules**
+- **Rights**
+- **Procedures** that, you know, can't be violated even for a greater good
 
 Kind of, you know, a **utilitarian versus a deontological philosophical orientation**.
 
@@ -200,10 +200,10 @@ Yeah. I think that's actually a pretty fascinating question. I wonder if there i
 
 I think the level that I was thinking a little bit more about was that I think part of the reason I wanted to come up with this framework of engineers and lawyers is that I think we've been reasoning about the **US-China conflict** in these 20th century terms like:
 
-- Socialist or capitalist  
-- Autocratic  
-- Neoliberal  
-- Democratic  
+- Socialist or capitalist
+- Autocratic
+- Neoliberal
+- Democratic
 
 And all of these terms have some use, but I'm not really sure that they still really apply in very nice ways now.
 
@@ -215,9 +215,9 @@ You know, I don't think that **Marxism** is quite the right lens to try to under
 
 Maybe we should have something like the discussion of:
 
-- How socialist China is  
-- How engineering it is  
-- How communitarian it is  
+- How socialist China is
+- How engineering it is
+- How communitarian it is
 
 We just need to have more than one framework really to think about the great conflict of the moment.
 
@@ -229,12 +229,12 @@ But the one thing that I think it all circles around is this **technocratic poli
 
 I've often used a concept I kind of borrow from **economics** when I think about what a society values. And that's, you know, the concept of **elasticity**.
 
-You know, I imagine that in every society, individuals have kind of an intuitive sense. I don't think they have it mapped out really explicitly, but, you know, how much of one thing that they value, they'd be willing to give up to gain some amount of something else that they value. 
+You know, I imagine that in every society, individuals have kind of an intuitive sense. I don't think they have it mapped out really explicitly, but, you know, how much of one thing that they value, they'd be willing to give up to gain some amount of something else that they value.
 
 You can, you know, kind of almost put numbers to it.
 
 ```markdown
-I'll trade you three points of administrative efficiency to get one point of procedural fairness, right?  
+I'll trade you three points of administrative efficiency to get one point of procedural fairness, right?
 Or I'll trade you two points of transparency for one point of speed.
 ```
 
@@ -254,10 +254,10 @@ The **U.S.** has not been very functional because especially in the bigger citie
 You know, I was really struck that it's not just that New York is unable to build new subway stations and new subway lines with any sort of efficiency; it costs about **$2 billion per mile** to build a new mile of subway in New York City. They're not even doing simpler stuff very well.
 
 - The **Port Authority bus terminal** is getting an upgrade and it will be completed, I think, something like six years from now at the cost of about **$5 billion** to upgrade a bus station.
-  
+
 And so this is the sort of thing that looks kind of ridiculous. Why does it take several years to upgrade a bus station? I realize that's kind of a complex structure. There are all sorts of intricacies with the tunnels, but still this is fundamentally a bus station that shouldn't take more than five years to build out.
 
-So, you know, we have broken mass transit. We have unaffordable housing. The pandemic revealed that the **U.S.** isn't able to manufacture a lot of pretty basic goods. There were shortages of masks and cotton swabs. There were shortages of furniture, all sorts of simple consumer goods that weren't easily exportable from China at the time. 
+So, you know, we have broken mass transit. We have unaffordable housing. The pandemic revealed that the **U.S.** isn't able to manufacture a lot of pretty basic goods. There were shortages of masks and cotton swabs. There were shortages of furniture, all sorts of simple consumer goods that weren't easily exportable from China at the time.
 
 And so there is a pretty big sense that nothing is working when we have to face this critical transition to decarbonize the economy and to build a lot more solar, wind, transmission lines, which all demand quite a lot of land.
 
@@ -286,7 +286,7 @@ Now, I would say that there have certainly been some costs:
 
 But in spite of these costs — human, environmental, financial — I would still say that the benefits of infrastructure **way exceeded the downsides** of so much frenetic construction.
 
-When I say that you talk about downsides, I don't mean to suggest that you present a kind of moral equivalence between the systems. It's pretty clear that you believe one side needs to learn more from the other right now.  
+When I say that you talk about downsides, I don't mean to suggest that you present a kind of moral equivalence between the systems. It's pretty clear that you believe one side needs to learn more from the other right now.
 
 It's pretty clear where you think the osmotic gradient should flow.
 
@@ -305,7 +305,7 @@ I think the first act of this big dramatic arc of zero COVID was the spring of 2
 
 And when we saw the **Wuhan lockdown**, which was in January, I believe January 23rd, you have these sort of dates that are emblazoned in your mind if you lived through the pandemic in China.
 
-**Wuhan lockdown**, hearing the stories of the ophthalmologist, **Dr. Li Wenliang**, who raised valid concerns and was disciplined by the state for raising these sort of concerns, created a lot of anger among pretty much everyone I knew that there was yet another respiratory virus that was spreading from China.  
+**Wuhan lockdown**, hearing the stories of the ophthalmologist, **Dr. Li Wenliang**, who raised valid concerns and was disciplined by the state for raising these sort of concerns, created a lot of anger among pretty much everyone I knew that there was yet another respiratory virus that was spreading from China.
 
 This is the second one after 20 years with the first SARS crisis.
 
@@ -314,7 +314,7 @@ A big way. And so that was the great first act when a lot of commentators from t
 
 And then the second act proved a lot of that wrong. So the second act of **China's COVID experience** was the much longer time period when **Beijing, Shanghai, central government, local governments** proved that **China was able to control the virus much more effectively** than the U.S. can or much of the West could. And so the second act was people in China feeling relatively glad that they were living in China and able to be free of transmissions, able to carry on life relatively normally.
 
-There were some costs. I wasn't able to see my parents who were in Pennsylvania. My parents were telling me this very un-Chinese thing, which is to say, 
+There were some costs. I wasn't able to see my parents who were in Pennsylvania. My parents were telling me this very un-Chinese thing, which is to say,
 
 > "Stay there. Don't come to visit us. Trump's America in 2020 is a terrible mess. So, you should just stay in China where life is a lot better."
 
@@ -341,7 +341,7 @@ Yeah, absolutely. But, you know, at the same time, I worry that there's a certai
 - "There are empty malls the size of Rhode Island."
 - "There are all these cemented-over rivers."
 - "And, yeah, the occasional citywide lockdown of 25 million people."
-  
+
 So, you know, actually, **America is doing great. Thank you very much.**
 
 Yeah, I wonder.
@@ -352,35 +352,35 @@ I remember at the end of 2022, there was just excessive triumphalism in the U.S.
 
 **Russia then wasn't doing very well in its fight against Ukraine.** And so it looked like Ukraine was also winning against autocracy.
 
-And the end of 2022 was also the years when it seemed like the U.S. had these great technological breakthroughs, 
+And the end of 2022 was also the years when it seemed like the U.S. had these great technological breakthroughs,
 
-- artificial intelligence on the one hand,  
-- and mRNA vaccines on the other hand,  
+- artificial intelligence on the one hand,
+- and mRNA vaccines on the other hand,
 
 and the autocracies simply didn't have these technologies in place.
 
 And so the views have shifted quite a lot. And these views go up and down, I think, a little bit too wildly given the state of...
-The evidence. And one of the things that I'm always trying to say, you know, when I was at **China**, now when I'm at the **Hoover Institution** is always that **this is going to be a really long struggle between the U.S. and China.** This conflict, these tensions will go on for a very long time. I don't think that it is anything like a static picture in which one country is winning and they will have any sort of a decisive advantage. I think that the struggle will take place over a very long time. 
+The evidence. And one of the things that I'm always trying to say, you know, when I was at **China**, now when I'm at the **Hoover Institution** is always that **this is going to be a really long struggle between the U.S. and China.** This conflict, these tensions will go on for a very long time. I don't think that it is anything like a static picture in which one country is winning and they will have any sort of a decisive advantage. I think that the struggle will take place over a very long time.
 
 And there's not going to be any scenario in which **one country simply disappears off the face of the earth. That is a fantasy.** And I think it is also a fantasy to imagine that either country will collapse and never get back on its feet. I think that both countries are going to be winning and losing. And when they're winning, they're going to be making a lot of mistakes. When they're losing, they're going to try to catch up. And that's just going to be a dynamic process over the next few decades.
 
 **Do you agree?**
 
-I do agree. I think the language of **existential threat** and the framing of **zero sum** is foolish when you see it on either side. Let me get to the things that we ought to be, we as Americans ought to be learning from China. One of the things that you really emphasize is **process knowledge**. I mentioned that in the introduction. For you, is that primarily a cultural asset? That is the status of engineers, the kind of tolerance for iteration. Is it a firm level capability, having long patient capital, kind of shop floor autonomy? Or for you, is it kind of a policy environment with permitting and procurement and standards at the fore? 
+I do agree. I think the language of **existential threat** and the framing of **zero sum** is foolish when you see it on either side. Let me get to the things that we ought to be, we as Americans ought to be learning from China. One of the things that you really emphasize is **process knowledge**. I mentioned that in the introduction. For you, is that primarily a cultural asset? That is the status of engineers, the kind of tolerance for iteration. Is it a firm level capability, having long patient capital, kind of shop floor autonomy? Or for you, is it kind of a policy environment with permitting and procurement and standards at the fore?
 
 Where would you intervene first, in other words, to sort of rebuild process knowledge in the United States where it's so sorely lacking?
 
-I think it is **all of the above, Kaiser**, that it is cultural, it is policy driven, it is a matter of economics. So I think the most important thing to grasp about technology is not the actual physical instruments or tools that we can see, anything like a robotic arm. It's also not a recipe or a blueprint or a patent, any sort of knowledge that's really easy to write down. 
+I think it is **all of the above, Kaiser**, that it is cultural, it is policy driven, it is a matter of economics. So I think the most important thing to grasp about technology is not the actual physical instruments or tools that we can see, anything like a robotic arm. It's also not a recipe or a blueprint or a patent, any sort of knowledge that's really easy to write down.
 
-I think **the most important part of technology has to be the process knowledge**, which is all of this **meta and tacit knowledge** that exists more on a population level. And so this is something that various hubs of knowledge production have been able to recreate in the past. 
+I think **the most important part of technology has to be the process knowledge**, which is all of this **meta and tacit knowledge** that exists more on a population level. And so this is something that various hubs of knowledge production have been able to recreate in the past.
 
 You know, at the start of the **industrial revolution in the UK**, there was just a lot of knowledge about how to build textiles in order and how to build engines.
 
 Right.
 
-When that moved from **Britain to Germany**, Germany had a lot of process knowledge about how to do interesting new fields like **electrical engineering**, as well as **chemistry**. And that has moved from country to country. The **US has been a major industrial leader** on something like automotives, on something like semiconductors in the past. 
+When that moved from **Britain to Germany**, Germany had a lot of process knowledge about how to do interesting new fields like **electrical engineering**, as well as **chemistry**. And that has moved from country to country. The **US has been a major industrial leader** on something like automotives, on something like semiconductors in the past.
 
-And right now, a lot of **process knowledge with manufacturing is being built and activated and grown in China**, where you could be a worker in **Shenzhen**, making iPhones in the first year, being poached to make Huawei phones the second year, then making a DJI drone the third year, and then making a **CATL electric vehicle battery** the fourth year. 
+And right now, a lot of **process knowledge with manufacturing is being built and activated and grown in China**, where you could be a worker in **Shenzhen**, making iPhones in the first year, being poached to make Huawei phones the second year, then making a DJI drone the third year, and then making a **CATL electric vehicle battery** the fourth year.
 
 And so there's just so much knowledge that **can't be written down with technology** that is necessary for the production of a lot of different goods.
 
@@ -413,7 +413,7 @@ You guys wrote that, you know, China has taken in **all of the above technology 
 
 I think that people know, you know, big pieces of it, but some of it, I think there is still a gap in our understanding of how China did this. What would you identify?
 
-**Arthur and I wrote that piece in Foreign Affairs called _The Real China Model_**, in part to try to rebut the sense that China has succeeded technologically simply because it has stolen all the IP from the US. And so, you know, I, one of my favorite boogeymen is this tweet by **Senator Tom Cotton**, which he tweeted on World IP Day, 
+**Arthur and I wrote that piece in Foreign Affairs called _The Real China Model_**, in part to try to rebut the sense that China has succeeded technologically simply because it has stolen all the IP from the US. And so, you know, I, one of my favorite boogeymen is this tweet by **Senator Tom Cotton**, which he tweeted on World IP Day,
 
 > "China doesn't innovate, it only steals."
 
@@ -452,54 +452,54 @@ What we can acknowledge is that **China has both a strong state as well as stron
 Dan, I've often remarked on how China in the 21st century is a much less **technophobic** or **techno-pessimistic** society than America is today. You can see it in survey research on attitudes toward things like **AI**. But I mean, anyone who's lived in China and the US, as both you and I have, we know this intuitively, right? Just in the posture that people have toward technology.
 
 I mean, so years ago, I interviewed a philosopher named **Anna Greenspan** about a book that she wrote.
-Called **Shanghai Future**, one I highly recommend.  
-Me too.  
-You've read this?  
-Yes, I'm a big admirer of **Anna's work**.  
-Yeah, she's great. So you remember, she talked about this big difference in attitudes toward futurity in the **US** and **China**. I've come to use kind of shorthand that I like. **China is still in its Star Trek phase and the US is in its Black Mirror phase**, right?  
+Called **Shanghai Future**, one I highly recommend.
+Me too.
+You've read this?
+Yes, I'm a big admirer of **Anna's work**.
+Yeah, she's great. So you remember, she talked about this big difference in attitudes toward futurity in the **US** and **China**. I've come to use kind of shorthand that I like. **China is still in its Star Trek phase and the US is in its Black Mirror phase**, right?
 
-So the question I have for you is, what is the causal direction, if indeed you see any causality at work here, between **China's technocratic engineer-dominated polity** and its **technophilic society**? Does the technocracy create the technophilia or does the technophilia create the technocracy?  
+So the question I have for you is, what is the causal direction, if indeed you see any causality at work here, between **China's technocratic engineer-dominated polity** and its **technophilic society**? Does the technocracy create the technophilia or does the technophilia create the technocracy?
 
-I think that the **technocracy creates the technophilia**. I'm willing to change my mind on this, but I think it is definitely the case that **China's leadership uses mega projects, big prestige projects**, really to try to rally the population into doing something better. And I think there are some ways in which this could be a little bit insidious.  
+I think that the **technocracy creates the technophilia**. I'm willing to change my mind on this, but I think it is definitely the case that **China's leadership uses mega projects, big prestige projects**, really to try to rally the population into doing something better. And I think there are some ways in which this could be a little bit insidious.
 
-One theory that I've come across is that one of the reasons that **Li Peng**, the premier throughout the 1990s, was so heavily invested in the **Three Gorges Dam** was in part to try to distract from his own image as what the Western media labeled as *"the butcher of Beijing"* for having ordered the Tiananmen crackdowns.  
+One theory that I've come across is that one of the reasons that **Li Peng**, the premier throughout the 1990s, was so heavily invested in the **Three Gorges Dam** was in part to try to distract from his own image as what the Western media labeled as *"the butcher of Beijing"* for having ordered the Tiananmen crackdowns.
 
-And so the Chinese government decided that it is going to try to **build its way out of this political crisis of 1989** and to really invest in a lot of technology here. There should be a forthcoming book about this. And so once that book is out, maybe we can point to it.  
+And so the Chinese government decided that it is going to try to **build its way out of this political crisis of 1989** and to really invest in a lot of technology here. There should be a forthcoming book about this. And so once that book is out, maybe we can point to it.
 
-I think it is definitely the case that the Chinese government loves pointing at pictures of great infrastructure. You can't open an issue of **Tioshe**, which I was fervently reading when I was living in China, without coming across some amazing new bridge that the government has built, some great new port, which always looks very telegenic, or some speeding high-speed rail going through the countryside.  
+I think it is definitely the case that the Chinese government loves pointing at pictures of great infrastructure. You can't open an issue of **Tioshe**, which I was fervently reading when I was living in China, without coming across some amazing new bridge that the government has built, some great new port, which always looks very telegenic, or some speeding high-speed rail going through the countryside.
 
-And so they definitely love to create these sort of images. There is a sense, I think, in which the Chinese government really likes to promote these big novels like **Wandering Earth**, which has been adapted into a film, and **Three-Body Problem**, in which there is kind of this emphasis on a world government that is entirely run by engineers working together to overcome a great threat to humanity.  
+And so they definitely love to create these sort of images. There is a sense, I think, in which the Chinese government really likes to promote these big novels like **Wandering Earth**, which has been adapted into a film, and **Three-Body Problem**, in which there is kind of this emphasis on a world government that is entirely run by engineers working together to overcome a great threat to humanity.
 
-That is, I think, a common theme to **Liu Cixin**. I think he is one of these progenitors of the **engineering state's mindset**.  
+That is, I think, a common theme to **Liu Cixin**. I think he is one of these progenitors of the **engineering state's mindset**.
 
-Right. Of the so-called **Industrial Party**, the **Gongyedang**.  
-That's right. It's sort of the *Ur text* of the Gongyedang.  
+Right. Of the so-called **Industrial Party**, the **Gongyedang**.
+That's right. It's sort of the *Ur text* of the Gongyedang.
 
-And I spent a lot of time talking about the Gongyedang in my chapter on tech power.  
-Right.  
+And I spent a lot of time talking about the Gongyedang in my chapter on tech power.
+Right.
 
-And I think the contrast is with the United States, which has had a pretty major tech clash. I think we saw a lot of skepticism of social media, especially after 2017. There right now is still a lot of worries about what smartphones are doing to young people, what social media is doing to young people, what AI might be doing to all of us.  
+And I think the contrast is with the United States, which has had a pretty major tech clash. I think we saw a lot of skepticism of social media, especially after 2017. There right now is still a lot of worries about what smartphones are doing to young people, what social media is doing to young people, what AI might be doing to all of us.
 
-That is all real. And that strain is less present in China, I think, in part because the state loves to create new engineering projects, and in part because I think the Chinese have naturally been more optimistic over the last 40 years than Americans have because they've seen their lives improve in such obvious ways.  
+That is all real. And that strain is less present in China, I think, in part because the state loves to create new engineering projects, and in part because I think the Chinese have naturally been more optimistic over the last 40 years than Americans have because they've seen their lives improve in such obvious ways.
 
-In lockstep with the improvement of technology. So yeah, it's reinforcing, right?  
+In lockstep with the improvement of technology. So yeah, it's reinforcing, right?
 
-And I wonder to what extent the Chinese government might actually be actively censoring some of these views. There has been extensive censorship of opposition to the Three Gorges Dam. And there may even now be some censorship to the big new dam that is being built in Tibet as well.  
+And I wonder to what extent the Chinese government might actually be actively censoring some of these views. There has been extensive censorship of opposition to the Three Gorges Dam. And there may even now be some censorship to the big new dam that is being built in Tibet as well.
 
-And so I think there is, on the one hand, the leadership itself is **technophilic and trying to engineer their way out of every problem**. On the other hand, they may also be censoring some of the perhaps merited, humanistic, critical backlash against what technologies are doing to us.  
+And so I think there is, on the one hand, the leadership itself is **technophilic and trying to engineer their way out of every problem**. On the other hand, they may also be censoring some of the perhaps merited, humanistic, critical backlash against what technologies are doing to us.
 
-I want to get into how maybe the technophilia has enabled the technocracy in just a little bit, but because I do think there's a little bit of bidirectional causality here.  
+I want to get into how maybe the technophilia has enabled the technocracy in just a little bit, but because I do think there's a little bit of bidirectional causality here.
 
-But I want to first ask you whether you think that things like the fact that so many of the leaders are themselves engineers, it sets up a **ladder of success**, right? I mean, where high status and access to resources and power are kind of enabled by technical, technological prowess, right? So it sets up an incentive system.  
+But I want to first ask you whether you think that things like the fact that so many of the leaders are themselves engineers, it sets up a **ladder of success**, right? I mean, where high status and access to resources and power are kind of enabled by technical, technological prowess, right? So it sets up an incentive system.
 
-So if you are a parent, you're raising children, you're going to want to push your children into **STEM education**. And that itself kind of reinforces that technophilia in society, you know, to your point.  
+So if you are a parent, you're raising children, you're going to want to push your children into **STEM education**. And that itself kind of reinforces that technophilia in society, you know, to your point.
 
 I feel like that's a big piece of it. Have you given much thought to that as well, to the sort of social forces that work in reinforcing technocratic politics?
 I think there is definitely a sense that **Chinese parents prefer that their kids study STEM degrees**. And that is definitely much more obvious that many more Chinese kids are studying **math relative to American kids**, which I think is a shame. Many more Americans need to be much, much better than the pathetic math capabilities that they presently possess through a lackluster education focused on **STEM**. I think that should definitely be the case.
 
 So **Vivek Ramaswamy was right**. Maybe Vivek was right. The issue, I think, is that the slight wrinkle that I would present to you, Kaiser, is I wonder if it is the case that though parents encourage kids to study STEM, they're not necessarily encouraging the kids to become **engineers**.
 
-I think the allure of working in tech and **consumer internet**, especially for one of these big, prestigious firms like 
+I think the allure of working in tech and **consumer internet**, especially for one of these big, prestigious firms like
 
 - **Baidu**
 - **ByteDance**
@@ -518,15 +518,15 @@ Maybe I'm just getting too old and cranky here, Kaiser. Maybe you can talk me in
 
 But yeah, I mean, I've remarked on this before. I used to, you know, you're standing on the sidelines of a soccer game and you turned another parent of one of your kids' classmates and you say,
 
-> "What are you doing about juniors' screen time?" 
+> "What are you doing about juniors' screen time?"
 
 And they're too busy on their own damn phone to even hear your question. And yeah, it's a problem.
 
 It's a problem. I wonder if it might be slightly worse in China because everything has to be turned into a **Wang Hong spot** and everything has to be photographed as well.
 
-Oh, Christ. Yeah. I mean, I was in **Shaxi in Yunnan** and it's becoming that way, you know, because **Li Weifei** shot a television show called 
+Oh, Christ. Yeah. I mean, I was in **Shaxi in Yunnan** and it's becoming that way, you know, because **Li Weifei** shot a television show called
 
-> "Chiou Fung Le Di Phang" 
+> "Chiou Fung Le Di Phang"
 
 and everyone has to, you know, like have their picture taken where she was and where that scene was shot. Christ.
 
@@ -545,26 +545,26 @@ The **technical demands of water management in China** created both the opportun
 
 Yeah, I think there are definitely deeper roots in both the **engineering state** as well as the **lawyerly society**. That was my next question.
 
-The part of America being very lawyerly, you can read the **Declaration of Independence** as almost a legal document. So many of the founding fathers were lawyers: first 16 U.S. presidents from Washington to Lincoln—**13 of them have been lawyers** at some point. And so in the U.S. there is definitely this very obvious **legal tradition**. 
+The part of America being very lawyerly, you can read the **Declaration of Independence** as almost a legal document. So many of the founding fathers were lawyers: first 16 U.S. presidents from Washington to Lincoln—**13 of them have been lawyers** at some point. And so in the U.S. there is definitely this very obvious **legal tradition**.
 
 And I think that you can say the same about China as well. I don't want to take this too literally. I think the work of **Karl Wittfogel** on oriental hydraulic despotism was a product of the time. He was this strange cold warrior that was trying to discredit the Soviet Union. I don't refer to Wittfogel at all in my book. But I am definitely a big fan of the work on the clergy system. In particular, **Professor Huang Yashun's book, The Rise and Fall of the East**. What is it? Examination.
 
 *The Rise and Fall of the East. Examination, autocracy, science and technology.* That might be right. We have to fact-check that one. But I think the **examination system** is very real.
 
-And so I do want to trace a lineage of the **engineering state** to imperial times. Without being too literal about this, but one might be able to say that **imperial China was a proto-engineering state** in part because the emperors ordered so many people to build **Great Walls** or **Grand Canals**. 
+And so I do want to trace a lineage of the **engineering state** to imperial times. Without being too literal about this, but one might be able to say that **imperial China was a proto-engineering state** in part because the emperors ordered so many people to build **Great Walls** or **Grand Canals**.
 
-- **Great Walls** was a big fortification system.  
-- The **Grand Canal** was also a water management system.  
+- **Great Walls** was a big fortification system.
+- The **Grand Canal** was also a water management system.
 
-So many people died trying to build this canal. The historical records here may be exaggerating some things, but so many people were supposed to have fallen in the course of building this Grand Canal. One might be able to say that the emperors rarely hesitated to almost completely reorder a peasant's relationship to her land. So there was some social engineering here as well. 
+So many people died trying to build this canal. The historical records here may be exaggerating some things, but so many people were supposed to have fallen in the course of building this Grand Canal. One might be able to say that the emperors rarely hesitated to almost completely reorder a peasant's relationship to her land. So there was some social engineering here as well.
 
 Again, I don't want to be too literal to say that the emperors were straightforwardly engineers, but I think one can trace the sort of lineage because of the state's management of the imperial exam or the **Keji system**.
 
-And I think one of these differences I want to trace between the West and China is that I think the Chinese were practicing a source of a sense of **absolutism starting from the first Qin dynasty with Qin Shi Huang**, in which the state really tried to control quite a lot of things. 
+And I think one of these differences I want to trace between the West and China is that I think the Chinese were practicing a source of a sense of **absolutism starting from the first Qin dynasty with Qin Shi Huang**, in which the state really tried to control quite a lot of things.
 
 This is someone that we label today in China as a despot who buried the scholars and standardized the weights. And so there's this sense of **autocracy stretching back for about 2,000 years now**. The Chinese had been practicing absolutism way before the European monarchs ever whiffed this idea in the 17th and 18th centuries.
 
-And so one of my ideas here is that one of the reasons, perhaps, that China did not develop a liberal tradition was that the court administered the exams, which was how one became an intellectual in the first place. And so it becomes really difficult for an intellectual to become a court intellectual by advocating for constraints on the power of the emperor. So mostly all of the mandarins were encouraged to just say, 
+And so one of my ideas here is that one of the reasons, perhaps, that China did not develop a liberal tradition was that the court administered the exams, which was how one became an intellectual in the first place. And so it becomes really difficult for an intellectual to become a court intellectual by advocating for constraints on the power of the emperor. So mostly all of the mandarins were encouraged to just say,
 
 > "How do we govern better? How do we increase the discretion of the sovereign?"
 
@@ -589,7 +589,7 @@ Maybe we can start with **China**. What are some ways where these institutions c
 
 Yeah. Well, here is where I would give a plug to my friend, **Nick Bagley's** work. He is a law professor at the **University of Michigan**. He has a book that will be coming out that I think is a perfect encapsulation of the problems of the lawyerly society. He doesn't quite call it that. And he proposes these tangible legal reforms such that:
 
-- We are able to build dormitories for students in **UC Berkeley**  
+- We are able to build dormitories for students in **UC Berkeley**
 - We can build mass transit for all of us
 
 So that is one of these books that will be coming out sometime next year.
@@ -602,9 +602,9 @@ And so, countries like Denmark, countries like Japan, which has built a lot of h
 
 I would say that, you know, we can just take a look at:
 
-- **Germany**  
-- **Japan**  
-- **Denmark**  
+- **Germany**
+- **Japan**
+- **Denmark**
 - **France**
 
 They are able to build trains and subways and all sorts of infrastructure at really reasonable costs without having violated a lot of rights. And so it is mostly the **Chinese** and the **Americans** that have gotten the balance wrong.
@@ -624,19 +624,19 @@ And I think there is definitely this big sense in the U.S., as we mentioned befo
 Now, for the most part, I would say that the U.S. government now isn't learning the right lessons from China. Rather, it's learning most of the bad lessons from China.
 
 Yeah, as you said. So on the topic of learning lessons, you know, the **COVID lockdowns**...
-**showed the extreme downsides of the engineering state.** I mean, a good engineer, a good scientist, presumably learns from mistakes. I think it's widely accepted that there were a lot of mistakes made during that time. 
+**showed the extreme downsides of the engineering state.** I mean, a good engineer, a good scientist, presumably learns from mistakes. I think it's widely accepted that there were a lot of mistakes made during that time.
 
 **What lessons do you think China's leaders themselves drew from the experience?**
 
-That's a great question. And I haven't given that too much thought. And I wonder whether there is a lot of studies here. Now, how did enforcing these lockdowns really change the leadership's mind? Now, I wonder whether they have also learned some of the wrong lessons with COVID. 
+That's a great question. And I haven't given that too much thought. And I wonder whether there is a lot of studies here. Now, how did enforcing these lockdowns really change the leadership's mind? Now, I wonder whether they have also learned some of the wrong lessons with COVID.
 
-I mean, one of the things that really struck me was that the **Shanghai lockdown, locking down 25 million people in 2022 for eight weeks** was accomplished through just the normal police systems. You know, you just had the regular police actually enforce COVID lockdowns. 
+I mean, one of the things that really struck me was that the **Shanghai lockdown, locking down 25 million people in 2022 for eight weeks** was accomplished through just the normal police systems. You know, you just had the regular police actually enforce COVID lockdowns.
 
-As best as I can tell, no officers of the **People's Armed Police**, which is the paramilitary force that wear what looked like army uniforms, were really deployed to try to enforce a lockdown of that magnitude. And they certainly didn't have to bring out the **People's Liberation Army** to try to suppress the desire to be free. 
+As best as I can tell, no officers of the **People's Armed Police**, which is the paramilitary force that wear what looked like army uniforms, were really deployed to try to enforce a lockdown of that magnitude. And they certainly didn't have to bring out the **People's Liberation Army** to try to suppress the desire to be free.
 
 And so I wonder whether the leadership has learned a lesson that actually the **coercive internal security apparatus doesn't have to be so large** in order for the people to be pretty obedient about what are really extraordinary controls that no one had expected at that time. That could be a potential lesson there.
 
-Perhaps other lessons have been that the **Chinese surveillance state grew very extensively**, that people were tracked on their phones all the time for contact tracing purposes. And there were some issues about privacy concerns. But for the most part, people went along with all sorts of these projects. 
+Perhaps other lessons have been that the **Chinese surveillance state grew very extensively**, that people were tracked on their phones all the time for contact tracing purposes. And there were some issues about privacy concerns. But for the most part, people went along with all sorts of these projects.
 
 And I wonder if the Chinese state has just learned that **autocracy is actually much more possible.** It's even more possible than they thought. And I'm hopeful that they learn some good lessons out of this as well. Off the top of my head, I'm not sure I can name any, but I'm wondering, what do you think?
 
@@ -689,7 +689,7 @@ I would love people to ask them whether that was a tactical choice on their part
 
 I suspect that what is the case is that, I mean, it's not only, I mean, it's not the case that **China is avoided entirely**. Both Abundance as well as Breakneck talk about **California high-speed rail and its awful failings relative to the Beijing-Shanghai line**. I suspect what is the case is that Ezra and Derek believe, as I do, that **America doesn't need to become like China in order to build infrastructure**. It would be good enough to be like France, Denmark, or Japan.
 
-And so I think we really don't need to reach the China model. There's just much better models for the U.S. to reach. And so this is why I say that China is a good operating model of abundance, not the best. 
+And so I think we really don't need to reach the China model. There's just much better models for the U.S. to reach. And so this is why I say that China is a good operating model of abundance, not the best.
 
 It is good because China has demonstrated that there are virtues to **overcapacity**, that it is really good to have a **hyper-competitive solar sector** that is driving prices down, not making a lot of money for investors, but, you know, creating a lot of consumer surplus and building a lot of mass transit for a country that desperately needed it.
 
@@ -718,7 +718,7 @@ Yeah, no, I think that he's not wrong, that that is a problem. It's not systemat
 
 I want to move on though and talk about **legitimacy itself**. I think there's this inability among many Americans, and I think you just hinted at it just now, to see beyond **procedural legitimacy** as the only possible foundation for proper political authority.
 
-I have long believed that this fundamental refusal—it's not always articulated, but it's often really present in the American habitus, just in the language that we use—is a big part of the problem when it comes to forming a good understanding of China. It produces a very **unhelpful moral framing**, and it makes us interpret everything that Beijing does in the most negative possible light. 
+I have long believed that this fundamental refusal—it's not always articulated, but it's often really present in the American habitus, just in the language that we use—is a big part of the problem when it comes to forming a good understanding of China. It produces a very **unhelpful moral framing**, and it makes us interpret everything that Beijing does in the most negative possible light.
 
 I think it fuels escalation. It's not like Beijing is unaware also that there is this kind of assumption of illegitimacy on the American part. I mean, it's pretty obvious from **China's point of view**, and it makes them very defensive. It makes them very anxious. It makes them also assume the worst: that they assume **America's real goal is to destabilize China**, which, yeah, they’re not necessarily wrong.
 
@@ -729,35 +729,35 @@ So my question is, does this appear to you to be changing? Do you think that the
 Because I mean, just to put my cards on the table, I mean, I've noticed since January of this year a **vibe shift, especially among younger people**, in their attitudes toward China. And often it seems to be on the grounds that, hey, look, *they deliver the goods*.
 
 I think there absolutely is a sense even within the American elite to say, well, we design all of these...
-**Procedures in place in order to ensure some sort of fairness and making sure that the public interest is consulted.** And I think there has been a sense even within the **Democratic Party** that, you know, we take a look at these **blue states and blue cities**, big cities, which are almost unanimously governed by Democrats. And they don't seem to be working all that well.  
+**Procedures in place in order to ensure some sort of fairness and making sure that the public interest is consulted.** And I think there has been a sense even within the **Democratic Party** that, you know, we take a look at these **blue states and blue cities**, big cities, which are almost unanimously governed by Democrats. And they don't seem to be working all that well.
 
-You know, there's tremendous public disorder in a lot of cities. Mass transit isn't functioning very well. A lot of politicians are much more interested to govern on social issues rather than delivering economic issues that many families, working-class families care the most about. And I think there is a sense that we can't just rely on processes in order to deliver the sort of legitimacy that we're talking about.  
+You know, there's tremendous public disorder in a lot of cities. Mass transit isn't functioning very well. A lot of politicians are much more interested to govern on social issues rather than delivering economic issues that many families, working-class families care the most about. And I think there is a sense that we can't just rely on processes in order to deliver the sort of legitimacy that we're talking about.
 
-I think that that is a very vibrant debate within the left now, that we can't simply be the lawyerly society anymore. **How do we actually deliver the goods?** And so this is where, to put my own cards on the table, I am in favor of abundance. I am in favor of **Ezra and Derek's program** to create much better cities, show that **California and New York are not deeply broken things.**  
+I think that that is a very vibrant debate within the left now, that we can't simply be the lawyerly society anymore. **How do we actually deliver the goods?** And so this is where, to put my own cards on the table, I am in favor of abundance. I am in favor of **Ezra and Derek's program** to create much better cities, show that **California and New York are not deeply broken things.**
 
-That when voters point to the track record of Democratic mayors as well as governors, there is something real here to be able to say that they're actually meeting the needs of the people rather than just making sort of statements and performative gestures that don't actually deliver the goods for anyone.  
+That when voters point to the track record of Democratic mayors as well as governors, there is something real here to be able to say that they're actually meeting the needs of the people rather than just making sort of statements and performative gestures that don't actually deliver the goods for anyone.
 
-So in the end, and here, I mean, we'll kind of wrap up with this, but you know, the engineering mindset can be way too literal, right? And the lawyerly mindset can be way too formal. I guess what I want is some kind of **conceptual pluralism**. I want like this set of institutional practices that somehow are able to switch frames, you know, to use the right frame in the right moment.  
+So in the end, and here, I mean, we'll kind of wrap up with this, but you know, the engineering mindset can be way too literal, right? And the lawyerly mindset can be way too formal. I guess what I want is some kind of **conceptual pluralism**. I want like this set of institutional practices that somehow are able to switch frames, you know, to use the right frame in the right moment.
 
-I guess what I'd like to see is somehow that we build the muscle inside China, its one-party state, to build that muscle inside polarized democracies like the one we live in right now, to be able to do that, to be able to be, you know, conceptually plural in that way. And I feel like that's what your book gets at.  
+I guess what I'd like to see is somehow that we build the muscle inside China, its one-party state, to build that muscle inside polarized democracies like the one we live in right now, to be able to do that, to be able to be, you know, conceptually plural in that way. And I feel like that's what your book gets at.
 
 > Is that a fair characterization? And what are the ways we can build toward that kind of, you know, conceptual pluralism?
 
-You're absolutely right, Kaiser. And I'm glad that you picked up on this point, that one of the things I really craved after spending six years in **China** was some degree of pluralism, that, you know, it wasn't just one official register speaking above all the rest. That was really eagerly censoring all of these different viewpoints.  
+You're absolutely right, Kaiser. And I'm glad that you picked up on this point, that one of the things I really craved after spending six years in **China** was some degree of pluralism, that, you know, it wasn't just one official register speaking above all the rest. That was really eagerly censoring all of these different viewpoints.
 
-And I think I've said so many cancelable remarks on this podcast, Kaiser, but let me offer a yet more cancelable remark. I think there is a better profession rather than engineers and lawyers to govern the population, and that is **dentists**. No, I joke.  
+And I think I've said so many cancelable remarks on this podcast, Kaiser, but let me offer a yet more cancelable remark. I think there is a better profession rather than engineers and lawyers to govern the population, and that is **dentists**. No, I joke.
 
-I think that the right profession to govern the population, if we had to choose but one, would be something like **economists**. I think that economists have a sense of procedure, they have a sense of getting things done, and they have a sense of social science, not to engage in really stupid things.  
+I think that the right profession to govern the population, if we had to choose but one, would be something like **economists**. I think that economists have a sense of procedure, they have a sense of getting things done, and they have a sense of social science, not to engage in really stupid things.
 
-Unfortunately, I think economists are the most reviled academic profession on the planet. They certainly have gotten into a sticky wicket for themselves. But I think one thing that I will always be glad for for economists is that they were the people most actively pushing back against things like policies like the one-child policy.  
+Unfortunately, I think economists are the most reviled academic profession on the planet. They certainly have gotten into a sticky wicket for themselves. But I think one thing that I will always be glad for for economists is that they were the people most actively pushing back against things like policies like the one-child policy.
 
-That was the case in China, in which it was the economist who was the head of **Peking University** that really pushed back against the one-child policy in earlier formulations in the 1950s. And it was mostly the economic profession in the West that pushed back against the **population bomb** by Ehrlich.  
+That was the case in China, in which it was the economist who was the head of **Peking University** that really pushed back against the one-child policy in earlier formulations in the 1950s. And it was mostly the economic profession in the West that pushed back against the **population bomb** by Ehrlich.
 
-And so I think that economists are the happy go-between. But I think that economists certainly need to be supplemented by degrees of pluralism on themselves. There should be lawyers in government. Absolutely. There should also be engineers in government rather than the U.S. Senate, which has 47 people who went to law school and one person trained in engineering.  
+And so I think that economists are the happy go-between. But I think that economists certainly need to be supplemented by degrees of pluralism on themselves. There should be lawyers in government. Absolutely. There should also be engineers in government rather than the U.S. Senate, which has 47 people who went to law school and one person trained in engineering.
 
-I think there should be some sort of a balance with all of these things. I certainly don't want to be entirely ruled by humanists. **Mao Zedong was many things. He was, I think, primarily a poet.** And if you take a look at earlier iterations of the **Soviet Union**, you had all these fantastic writers around Joseph Stalin. They were such good writers. They were such good literary critics.  
+I think there should be some sort of a balance with all of these things. I certainly don't want to be entirely ruled by humanists. **Mao Zedong was many things. He was, I think, primarily a poet.** And if you take a look at earlier iterations of the **Soviet Union**, you had all these fantastic writers around Joseph Stalin. They were such good writers. They were such good literary critics.
 
-And look at what a mess they made. So I don't want to be governed by poets and literary critics. That sounds like an absolutely terrible paradigm. I think what we need are people who understand social science. And so my nomination is to be ruled by economists.  
+And look at what a mess they made. So I don't want to be governed by poets and literary critics. That sounds like an absolutely terrible paradigm. I think what we need are people who understand social science. And so my nomination is to be ruled by economists.
 
 > I'm going to put my vote in for historians. I think they have that sort of...
 **Perspicacity** and then that broader frame. And they're not as paralyzed as **economists** are. And if we have to go with economists, I'm going to go with the **Arthur Krobers** over the **Michael Pettises** to rule us. That's a better economist, perhaps. I think I, as someone who belongs to an institution called the **Hoover History Lab**, think that **historians** would not be so bad either.
@@ -766,8 +766,8 @@ Yeah, not so bad at all. Well, **Dan**, what a fantastically fun and wide-rangin
 
 Let's move on now, though, down to the segment I call **"Paying It Forward,"** where I ask you to name-check a younger colleague, maybe somebody at **Hoover**. I mean, Hoover was full of villains as far as I can tell, but there's got to be one person worth name-checking there before we move on to recommendations. So who do you offer **"Paying It Forward"**?
 
-I will offer two names:  
-- One is **Afra Wong**, who writes a sub-stack called **Concurrent**. I think she is a great new thing that is sharing some interesting **Chinese perspectives**. She hosts a podcast called **"Cyberpink,"** and I think that is just a nice thing—creating more voices that are building some sort of liberal society among the diaspora.  
+I will offer two names:
+- One is **Afra Wong**, who writes a sub-stack called **Concurrent**. I think she is a great new thing that is sharing some interesting **Chinese perspectives**. She hosts a podcast called **"Cyberpink,"** and I think that is just a nice thing—creating more voices that are building some sort of liberal society among the diaspora.
 - The other person really doing this is **He Liu**, who is of the **Hoover Institution**. He Liu works with **Liz Economy**, and he has a podcast series interviewing people who have built **US-China relations** starting in the 1970s. So there's an **oral history project** that He Liu is involved in.
 
 So those are my two names, **Afra Wong** as well as **He Liu**. He Liu and I have crossed swords a little bit on **Substack**. He's extremely committed to the liberal project when it comes to **China**, and nothing wrong with that. But like I said, we've crossed swords a bit. But great recommendations both. Afra, I've seen some of her work as well, and it's excellent.
@@ -776,9 +776,9 @@ What about recommendations, Dan? Do you have a book you've read recently that yo
 
 Well, I think over the course of book writing, I really got myself back into the **classics**, the things that I have really enjoyed. And so I guess I will recommend two sets of things.
 
-The first set are the **Mozart's Italian operas written with Lorenzo da Ponte**. These are:  
-- **The Marriage of Figaro**  
-- **Don Giovanni**  
+The first set are the **Mozart's Italian operas written with Lorenzo da Ponte**. These are:
+- **The Marriage of Figaro**
+- **Don Giovanni**
 - **Cosi Fan Tutte**
 
 I found myself, over the course of book writing, listening to these highly pleasurable, fun, and inventive operas that I think will stay with me for the rest of my life. So these are the Italian operas by **Mozart**.
@@ -812,7 +812,7 @@ I'm hard-pressed to think of a working historian who has all the things that Cla
 
 So if you've got to write a book on this, you need to be able to:
 
-- Zoom into a very specific country and its context  
+- Zoom into a very specific country and its context
 - Then zoom out to see how its experience fits into this bigger European and, really, frankly, global tapestry.
 
 And the other thing, of course, is that Clarke is just a **brilliant, brilliant writer**. His prose is just delicious.

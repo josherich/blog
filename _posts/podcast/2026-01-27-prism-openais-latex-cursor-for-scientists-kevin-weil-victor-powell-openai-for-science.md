@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "⚡️ Prism: OpenAI's LaTeX "Cursor for Scientists" — Kevin Weil & Victor Powell, OpenAI for Science"
+title: "⚡️ Prism: OpenAI's LaTeX Cursor for Scientists — Kevin Weil & Victor Powell, OpenAI for Science"
 date: 2026-01-27 00:00:01
 categories: podcast untitled
 tags: [podcast_script]
@@ -99,7 +99,7 @@ Yeah, that's right. So that's kind of interesting.
 
 - DMs forever.
 - Right.
-  
+
 Like I actually, yeah, probably one of the most important social network innovations, I guess, is those, that stuff. And I'm sure you know a lot about that.
 
 Shall we go right into a demo or talk about it?
@@ -110,7 +110,7 @@ I’m a fan of **show, don't tell**. Push people to the video.
 
 All right. I'll try and arrange this so you guys can see a little bit.
 
-Yes.  
+Yes.
 
 So what you have here, so this is, this is **Prism**. And what you can see is on the left here, this is actual **LaTeX**. You can see why you might want AI to help you write it because it's a little bit, it's a language. It's a little bit messy.
 
@@ -118,10 +118,10 @@ And then on the right, this is my colleague's paper. **Alex Lipsoske** is a phys
 
 This is why LaTeX is super powerful.
 
-And then, you've got kind of your files here that make up the project:  
+And then, you've got kind of your files here that make up the project:
 
-- Tech file, which is the actual main source file  
-- Bibliography files  
+- Tech file, which is the actual main source file
+- Bibliography files
 - Etc.
 
 You can go through and change it and then you compile that into the PDF itself. But here I can say, at the bottom, you can use the AI using **GPT 5.2**. And I could say, you know, this introduction, maybe I want a little help writing the introduction.
@@ -140,7 +140,7 @@ So here it's looking at the files.
 
 And it's given us kind of a diff here. So it's suggesting changes. You've got:
 
-- The part in **red**, which is the part that it's changing  
+- The part in **red**, which is the part that it's changing
 - The part in **green**, what it wants to change it to
 
 You can see the different places where it is suggesting that we change things.
@@ -157,7 +157,7 @@ So I will upload this photo and I’ll say here, whoops.
 
 Is there a tech bench for this kind of stuff? Like a set of evals?
 
-- Yeah, we totally need one.  
+- Yeah, we totally need one.
 - I think there’s an opportunity to do that for sure.
 
 So here’s a commutative diagram that I drew on the whiteboard:
@@ -231,7 +231,7 @@ And that's just basically all in parallel.
 
 And you can imagine lots of other things you can do.
 
-For example, if you have a proof and maybe just have the bullet points on a proof, you can say, **"Here are the bullet points. Now flesh it out for me."** 
+For example, if you have a proof and maybe just have the bullet points on a proof, you can say, **"Here are the bullet points. Now flesh it out for me."**
 
 You can imagine **checking all of your references before you publish**, making sure all of them are real and up to date. You can imagine having it generate your references based on the topic.
 
@@ -246,78 +246,78 @@ I would say definitely be careful about including references you haven't read.
 Like that's the point: you can put a hundred references, but if you didn't read them, you might as well not have them.
 
 But yeah, I think that web connection is very important.
-**And like, is this stock GPT five or is this like a fine tune?**  
-It's **GPT 5.2.**  
-Yeah.  
-Yeah.  
+**And like, is this stock GPT five or is this like a fine tune?**
+It's **GPT 5.2.**
+Yeah.
+Yeah.
 
-But, and by the way, when you're looking at **references**, you can also ask **ChatGPT** to help you understand the reference, you know, **read this paper, tell me the relevance.** So all of the things that you might want to do to accelerate your work, you can just do from within this interface.  
+But, and by the way, when you're looking at **references**, you can also ask **ChatGPT** to help you understand the reference, you know, **read this paper, tell me the relevance.** So all of the things that you might want to do to accelerate your work, you can just do from within this interface.
 
-You still have to do your work, but it should make it faster, especially like even linking to the references. So you can go and verify like, okay, this is this one. So this might also make it easier to write the paper as you do the work, right? Rather than, rather than, oh, okay. Now I got to spend two days in LaTeX land, like trying to get my paper.  
+You still have to do your work, but it should make it faster, especially like even linking to the references. So you can go and verify like, okay, this is this one. So this might also make it easier to write the paper as you do the work, right? Rather than, rather than, oh, okay. Now I got to spend two days in LaTeX land, like trying to get my paper.
 
-Right. Like a **tool for thought** rather than just a publishing tool.  
-Yeah.  
+Right. Like a **tool for thought** rather than just a publishing tool.
+Yeah.
 
-**What about collaboration?**  
-It's great.  
-Yeah.  
+**What about collaboration?**
+It's great.
+Yeah.
 
-So it's built for, I mean, you can speak to this. Well, it's built for **collaboration.** So you can bring on as many collaborators as you want, which is nice. I think most other tools in the space have hard limits and charge you money and other things. In **Prism,** it's as many collaborators as you want for **free.**  
+So it's built for, I mean, you can speak to this. Well, it's built for **collaboration.** So you can bring on as many collaborators as you want, which is nice. I think most other tools in the space have hard limits and charge you money and other things. In **Prism,** it's as many collaborators as you want for **free.**
 
-**Commenting.**  
-Yeah. So you've got commenting, you've got all the kind of collaboration tools that you would want.  
-Yeah.  
+**Commenting.**
+Yeah. So you've got commenting, you've got all the kind of collaboration tools that you would want.
+Yeah.
 
-Good.  
+Good.
 
-And then any of the like engineering choices, like, you know, what might engineers not appreciate when just looking at a tool like this?  
+And then any of the like engineering choices, like, you know, what might engineers not appreciate when just looking at a tool like this?
 
-Often it would be like multi-line diff generation that you need to do because you're editing a pretty complex document. It does get pretty complicated. I mean, we're using, let me know if I'm getting too technical into the weeds, but, you know, we're relying heavily on the **Monaco JavaScript framework.**  
+Often it would be like multi-line diff generation that you need to do because you're editing a pretty complex document. It does get pretty complicated. I mean, we're using, let me know if I'm getting too technical into the weeds, but, you know, we're relying heavily on the **Monaco JavaScript framework.**
 
-So that I'm very familiar with the lack of documentation of Monaco. That's actually interesting you say that because it's very true that it's an extremely powerful library that is almost entirely undocumented.  
-Yeah. It's just types. But you can use **codecs** now to generate the documentation for you.  
-Yeah. You think Microsoft should get on that.  
-But yeah, yeah.  
+So that I'm very familiar with the lack of documentation of Monaco. That's actually interesting you say that because it's very true that it's an extremely powerful library that is almost entirely undocumented.
+Yeah. It's just types. But you can use **codecs** now to generate the documentation for you.
+Yeah. You think Microsoft should get on that.
+But yeah, yeah.
 
-You know, like just stuff like that. Like I like to hear about the behind the scenes of like building something like this.  
+You know, like just stuff like that. Like I like to hear about the behind the scenes of like building something like this.
 
-- What do you struggle with?  
-- What's the model really like surprisingly good at?  
-- And what's the model it should be good at, but it's not?  
-- What were some of the hardest problems as you were building this in the first place?  
-- What are some of the hardest things to get right?  
+- What do you struggle with?
+- What's the model really like surprisingly good at?
+- And what's the model it should be good at, but it's not?
+- What were some of the hardest problems as you were building this in the first place?
+- What are some of the hardest things to get right?
 
-I think initially one of the, one interesting challenges was that we really pushed on it being **WebAssembly** and fully just running in the browser at first, the whole entire **LaTeX compilation.** That did help us in the sense that we were able to flesh out the design and the AI capabilities early on without having to invest heavily in the backend infrastructure.  
+I think initially one of the, one interesting challenges was that we really pushed on it being **WebAssembly** and fully just running in the browser at first, the whole entire **LaTeX compilation.** That did help us in the sense that we were able to flesh out the design and the AI capabilities early on without having to invest heavily in the backend infrastructure.
 
-But eventually we did hit a wall with that approach. Once we switched it to a backend **PDF rendering,** that's when we really started to hit an inflection point with usage.  
+But eventually we did hit a wall with that approach. Once we switched it to a backend **PDF rendering,** that's when we really started to hit an inflection point with usage.
 
-Now fast.  
-Yeah.  
-Yeah.  
+Now fast.
+Yeah.
+Yeah.
 
-I think we also, the AI in here benefits a lot from everything that we've learned building **codecs.** And as we go forward, I think we'll likely just integrate the full codecs harness into the application here.  
+I think we also, the AI in here benefits a lot from everything that we've learned building **codecs.** And as we go forward, I think we'll likely just integrate the full codecs harness into the application here.
 
-So you get all the benefits of the tools and the skills and all the things that codecs can do today, and you just sort of automatically can bring that into your environment here.  
-Yeah.  
+So you get all the benefits of the tools and the skills and all the things that codecs can do today, and you just sort of automatically can bring that into your environment here.
+Yeah.
 
-Are they just the same app?  
-Maybe. I think potentially it depends on...  
+Are they just the same app?
+Maybe. I think potentially it depends on...
 
-I mean, here's the reason I'm hesitating: I think the interesting thing with this and with codecs is we're still mostly in a world today where:  
+I mean, here's the reason I'm hesitating: I think the interesting thing with this and with codecs is we're still mostly in a world today where:
 
-- You have your main screen which is your document  
-- Then you have your AI on the side  
+- You have your main screen which is your document
+- Then you have your AI on the side
 
-But the more that AI improves, people trust it and they're just YOLOing it, right? You're generating code and you're looking at the code sort of secondary to instructing the AI and driving from that.  
+But the more that AI improves, people trust it and they're just YOLOing it, right? You're generating code and you're looking at the code sort of secondary to instructing the AI and driving from that.
 
-The UI probably changes for all of these things, right? You don't need your document front and center because you're actually not looking at your document as much. That's sort of your backup and your interaction with your AI is primary.  
+The UI probably changes for all of these things, right? You don't need your document front and center because you're actually not looking at your document as much. That's sort of your backup and your interaction with your AI is primary.
 
-And as that happens, I think you might see these UIs kind of converge over time. So we'll see.  
+And as that happens, I think you might see these UIs kind of converge over time. So we'll see.
 
-But I definitely would love to see a world where people needed to spend less time thinking about the actual syntax and much more about what they're trying to create.  
-Yeah.  
+But I definitely would love to see a world where people needed to spend less time thinking about the actual syntax and much more about what they're trying to create.
+Yeah.
 
-I feel like this plus a **notebook** would be amazing.  
+I feel like this plus a **notebook** would be amazing.
 Yeah.
 Because, because, and something that **AI can run quite, run a analysis, generate plots**. So stick that in the paper here. Like, "Oh, read, you know, like this paper, like this part of the paper, like take that equation and like, you know, do something with it." That would be a really amazing integration.
 
@@ -371,7 +371,7 @@ So, it's hard to imagine that doesn't even have to be yellow science, right? To 
 
 And again, like this is **acceleration**: if we're successful, you end up doing maybe the **next 25 years of science in five years instead**. So in 2030, we could be doing **2050 level science**, and that would be an awesome outcome. The world is a better place if that happens.
 
-Absolutely. I guess we spoke recently with **Heather Kulik at MIT**, and one of the things she pointed out was that there's an element of **serendipity to working in a lab that you lose.** She was of the opinion that there's 
+Absolutely. I guess we spoke recently with **Heather Kulik at MIT**, and one of the things she pointed out was that there's an element of **serendipity to working in a lab that you lose.** She was of the opinion that there's
 
 - a class of problems, especially when you have a large search space, where robotics is going to really accelerate science
 - another class where even experimental science will not move forward very fast because of robotics
@@ -386,7 +386,7 @@ By the way, the same is true in the **more theoretical fields** as well, where i
 
 I think the same is true whether you're talking about:
 
-``` 
+```
 - something happening in silico proving a theoretical problem
 - something happening in the real world with a lab
 ```
@@ -414,9 +414,9 @@ It's right there at the lobby. Yeah. It's amazing. You see it every day you walk
 
 And imagine, I mean, if we had **GPT-9 inside of ChatGPT** today, it would be awesome. You could do lots of things. But if you had GPT-9, which I'm using as a stand-in for AGI, and it could:
 
-- Create new materials  
-- The devices we were using were all incredible and had 30-day battery lives  
-- We had personalized medicine and knew someone whose life was saved because we were developing personalized cancer treatments much faster  
+- Create new materials
+- The devices we were using were all incredible and had 30-day battery lives
+- We had personalized medicine and knew someone whose life was saved because we were developing personalized cancer treatments much faster
 
 Like, that's the **real benefit of AGI**. That's, I think, maybe the most tangible way that we're all going to feel AGI as it starts to be real.
 
@@ -424,8 +424,8 @@ Yeah. And that's why this work is so **mission-driven** for us.
 
 So, that brings up two questions in my mind:
 
-1. Who owns the invention?  
-2. Does **OpenAI become a drug company and a fusion company**?  
+1. Who owns the invention?
+2. Does **OpenAI become a drug company and a fusion company**?
 
 Because this is how—though you laugh, it's a little bit serious—all the AI for drug discovery companies ended up being drug companies because they couldn't sell the drug, so far, with some exceptions now like Noetic, for example.
 
