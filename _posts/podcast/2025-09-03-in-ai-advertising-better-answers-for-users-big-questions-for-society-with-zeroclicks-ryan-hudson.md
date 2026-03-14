@@ -2,7 +2,7 @@
 layout: post
 title: "In-AI Advertising: Better Answers for Users, Big Questions for Society, with ZeroClick's Ryan Hudson"
 date: 2025-09-03 00:00:01
-categories: podcast the-cognitive-revolution-ai-builders-researchers-and-live-player-analysis
+categories: podcast cognitive-revolution
 tags: [podcast_script]
 ---
 

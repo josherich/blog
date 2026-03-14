@@ -2,7 +2,7 @@
 layout: post
 title: "Iran's Breaking Point, Trump's Greenland Acquisition, and Solving Energy Costs"
 date: 2026-01-17 00:00:01
-categories: podcast all-in-with-chamath-jason-sacks-friedberg
+categories: podcast all-in
 tags: [podcast_script]
 ---
 
@@ -146,7 +146,7 @@ As everybody listening probably knows, **Iran has been ruled by an Islamic dicta
 And if you want to understand why this is happening, there's probably two data points that you should know.
 
 In the short term, last six, seven years, inflation has been bonkers.
-If you think, **seven, eight, nine percent inflation during COVID** was acute and, 2.6 now people complaining about, take a look at this chart, boys.  
+If you think, **seven, eight, nine percent inflation during COVID** was acute and, 2.6 now people complaining about, take a look at this chart, boys.
 
 It's been **30 percent on average since 2019 due to sanctions**. Obviously, those things can work. There's been food shortages, people in the streets.
 
@@ -156,7 +156,7 @@ And they have **Starlink**. And they have access and VPNs. And so, they want to 
 
 Sacks, this was a point of contention last year. We were talking about interventions going on, foreign wars and your concerns about that. This one is from the bottom up. So, I think that makes it quite different. Yeah?
 
-Well, look, this is a **highly dynamic situation**. I don't really want to comment on something except to say that I trust **President Trump** to make the right decision and handle it.  
+Well, look, this is a **highly dynamic situation**. I don't really want to comment on something except to say that I trust **President Trump** to make the right decision and handle it.
 
 As I understand it, the protests are either fizzling out or being cracked down on at this point. And I tend to think it's dying down. But I'm not sure. And it's a dynamic situation.
 
@@ -166,10 +166,10 @@ I really – look, the problem is whenever I comment on something like this, it 
 
 Here's your poly markets, and then I'll let you give your thoughts on it.
 
-- **Khamenei out as Supreme Leader of Iran by January 31st**  
+- **Khamenei out as Supreme Leader of Iran by January 31st**
   That was up around 27% and now has dropped to a 10% chance.
 
-- Will the regime fall before 2027?  
+- Will the regime fall before 2027?
   $2.6 million in volume, 37% chance. It's been up there as high as, I think, 50-some-odd percent.
 
 And this is before the end of the year. So, obviously, a breaking news-type situation by the time we tape on Thursdays, as everybody knows, and come out on Fridays. So, this could be radically changing.
@@ -188,7 +188,7 @@ And these are the sorts of things that ultimately lead to these moments. So, it 
 
 The United States has put a lot of pressure on the regime in Iran, and it seems to be starting to break.
 
-The key question that everyone's asking is: 
+The key question that everyone's asking is:
 
 > **Is Trump going to act in supporting the revolution, which theoretically I would imagine would involve attacking IRGC sites, which are the Revolutionary Guard that are sort of the internal security force that maintains the regime's control over the people?**
 
@@ -233,11 +233,11 @@ You're just going to see these tactics increase.
 
 And I don't know if you guys ever saw it. **Anthony Bourdain, rest in peace**, did a really great *Parts Unknown* in 2013 or 14. That's the best Anthony Bourdain I've ever watched. Yeah. If you want to see **Iran**, it looks so amazing. Look at the *Anthony Bourdain Parts Unknown in Tehran*. It looks like a party.
 
-Well, yeah. And young people there. There's a total vibe there. Yeah. Young people are like really living their life under this oppression and you really get the sense that they're not much different than us or any other folks in the world. 
+Well, yeah. And young people there. There's a total vibe there. Yeah. Young people are like really living their life under this oppression and you really get the sense that they're not much different than us or any other folks in the world.
 
 And the journalists who took them around were later detained. And I really respect Anthony Bourdain for even doing that episode, man. They took a lot of risks doing that.
 
-Remember there was a period where one of the most popular accounts on Instagram was the **rich kids of Tehran**. Right. If you follow them, you'd be like, 
+Remember there was a period where one of the most popular accounts on Instagram was the **rich kids of Tehran**. Right. If you follow them, you'd be like,
 
 > "Man, this looks like L.A. or New York."
 
@@ -314,43 +314,43 @@ Sacks, this feels like proactive, thoughtful ways to communicate to the populace
 So have you been involved in any of these discussions? Are you talking with **Chris Wright** and like overlapping in terms of the communication here? Is it just a free market solution?
 
 Well, Jason, the president's been ahead of the curve on this issue really since the beginning of the administration. I don't know if you recall, but he said that he was going to make AI companies into the biggest...
-**Power companies** understood that the **data centers** they needed required a lot of power, but they were going to stand up their own power generation and wouldn't just draw off the grid. 
+**Power companies** understood that the **data centers** they needed required a lot of power, but they were going to stand up their own power generation and wouldn't just draw off the grid.
 
-And so I think this understanding has always been there. When I've talked to the **hyperscalers**, they also tell me that their plan is not to draw from the grid; it is to basically set up their own power generation behind the meter. It's called **co-location**.  
+And so I think this understanding has always been there. When I've talked to the **hyperscalers**, they also tell me that their plan is not to draw from the grid; it is to basically set up their own power generation behind the meter. It's called **co-location**.
 
-And in fact, I think ultimately this will bring down rates for **residential consumers** for two reasons:  
+And in fact, I think ultimately this will bring down rates for **residential consumers** for two reasons:
 
-- One is that when the data centers create their own power, they can sell back or donate back to the grid when they connect. They don't have to connect to the grid, but once they do, they can donate back.  
-- Second, there are a number of **fixed costs** in power generation. It's not just variable costs. There are these large fixed costs. As you increase scale, those fixed costs get amortized over a greater amount of supply. That brings down the variable rate, basically the meter rate for everybody.  
+- One is that when the data centers create their own power, they can sell back or donate back to the grid when they connect. They don't have to connect to the grid, but once they do, they can donate back.
+- Second, there are a number of **fixed costs** in power generation. It's not just variable costs. There are these large fixed costs. As you increase scale, those fixed costs get amortized over a greater amount of supply. That brings down the variable rate, basically the meter rate for everybody.
 
-So scale is good. And I think the deceptive nature of the criticism here about people like **Bernie Sanders** is that they say, 
+So scale is good. And I think the deceptive nature of the criticism here about people like **Bernie Sanders** is that they say,
 
 > "We just have to shut down all the data centers, period."
 
-When the real problem is that he and others like him have **over-regulated power generation to death** so that it’s too hard to set up net new power. If power generation were easier, there wouldn’t need to be a limit on what the data centers could use. They could just bring their own power. So that is the obvious solution here.  
+When the real problem is that he and others like him have **over-regulated power generation to death** so that it’s too hard to set up net new power. If power generation were easier, there wouldn’t need to be a limit on what the data centers could use. They could just bring their own power. So that is the obvious solution here.
 
 It’s good to see **Microsoft** make this pledge and formalize it. I think all the other hyperscalers will do that. Again, it was never part of their plan to draw on the grid for their power needs. They always understood they’d have to stand up their own power.
 
 The issue is just **regulations getting in the way** of that. Just one final point on this: there are a bunch of regulations by **FERC**, for example, that interfere with the ability to do co-location. Co-location is when you put a data center and the power generation next to each other — you do them together.
 
-**Chris Wright**, the Secretary of Energy, has directed FERC to make a bunch of changes to make behind the meter and co-location easier so that these data centers can stand up their own power. The only reason that hasn’t happened yet is due to usual bureaucratic delays, but that is well on its way to happening.  
+**Chris Wright**, the Secretary of Energy, has directed FERC to make a bunch of changes to make behind the meter and co-location easier so that these data centers can stand up their own power. The only reason that hasn’t happened yet is due to usual bureaucratic delays, but that is well on its way to happening.
 
-Does that make sense? It makes total sense.  
+Does that make sense? It makes total sense.
 
-When we think about incentives, incentives obviously matter. Not many people know this, but when we were talking about **nuclear** earlier, in **France**, people who live near the **Avoin** (I think that's how it's pronounced) reactor pay a 0.1% tax versus the 12% regional average. The **UK** has also talked about these kinds of danger zone proposals and payments. You can give people a discount to incentivize and reward them, such as giving free local electricity for living near a nuclear power plant. This hasn’t come up here in the United States.  
+When we think about incentives, incentives obviously matter. Not many people know this, but when we were talking about **nuclear** earlier, in **France**, people who live near the **Avoin** (I think that's how it's pronounced) reactor pay a 0.1% tax versus the 12% regional average. The **UK** has also talked about these kinds of danger zone proposals and payments. You can give people a discount to incentivize and reward them, such as giving free local electricity for living near a nuclear power plant. This hasn’t come up here in the United States.
 
-There’s been a lot of **FUD** — fear, uncertainty, and doubt — around these data centers, with people throwing around a lot of talking points. You and I discussed offline the **misperceptions about water usage**, explaining that water usage is largely recycled in these data centers. If you know about that, would you inform the audience about that piece of data?  
+There’s been a lot of **FUD** — fear, uncertainty, and doubt — around these data centers, with people throwing around a lot of talking points. You and I discussed offline the **misperceptions about water usage**, explaining that water usage is largely recycled in these data centers. If you know about that, would you inform the audience about that piece of data?
 
-Well, they got a lot of water, but it just goes around in a circle, so I don't think that's an issue. However, clean water and the cost of clean water **increasing for a local population** is the real issue and the misperception there. The modern cooling systems in these data centers recirculate water to transport heat out of the data center — so the water is not used up.  
+Well, they got a lot of water, but it just goes around in a circle, so I don't think that's an issue. However, clean water and the cost of clean water **increasing for a local population** is the real issue and the misperception there. The modern cooling systems in these data centers recirculate water to transport heat out of the data center — so the water is not used up.
 
-I guess there is a separate type of evaporative cooling that uses some water, but modern data centers don’t use that. So the water issue is really a **total hoax**. It's kind of a sub-hoax of this larger affordability issue. I’m not saying affordability isn’t an issue, but it was caused by **Biden’s 9% inflation**, and now **Democrats** are trying to make it an issue.  
+I guess there is a separate type of evaporative cooling that uses some water, but modern data centers don’t use that. So the water issue is really a **total hoax**. It's kind of a sub-hoax of this larger affordability issue. I’m not saying affordability isn’t an issue, but it was caused by **Biden’s 9% inflation**, and now **Democrats** are trying to make it an issue.
 
-When it comes to power for data centers, again, it comes back to the fact that **regulations make it too hard to generate net new power**. Scaling demand on its own is not a problem if you also scale the supply of electricity. In fact, it brings down prices for everyone because **scale creates economies of scale.**  
+When it comes to power for data centers, again, it comes back to the fact that **regulations make it too hard to generate net new power**. Scaling demand on its own is not a problem if you also scale the supply of electricity. In fact, it brings down prices for everyone because **scale creates economies of scale.**
 
-And 90% of that water is reused with closed water loop systems. Here’s my pitch: I think the president should try to create a  
+And 90% of that water is reused with closed water loop systems. Here’s my pitch: I think the president should try to create a
 
-```  
-three, four, $500 billion tax equity fund  
+```
+three, four, $500 billion tax equity fund
 ```
 **Help eliminate the electricity costs of 50 to 100 million American households. Amazing.**
 
@@ -433,7 +433,7 @@ It comes out of **corporations, which are printing money**. If you want to talk 
 
 The fact that Americans don't think about their **water bill** that much is a **mitzvah**. It's a great thing. Now, if they didn't have to think about electricity, wow, amazing. We will look back, and I think that we will want to have seen these big companies who are unbelievably profitable step up on behalf of **American homeowners more**. Some might say, absolutely.
 
-I just think it's a great mission to the moon style framing to say, 
+I just think it's a great mission to the moon style framing to say,
 
 > "What if we could make all residential electricity free in the United States?"
 
@@ -478,94 +478,94 @@ What I can tell you is that **OpenAI is aggressively trying to diversify** so th
 If you look at the trail of breadcrumbs, my belief, there's going to be a renaissance in silicon. Young, small teams building **decode silicon** can make a fortune over the next 10 to 20 years. It's a huge opportunity. It's going to be like the PC wars, Dell versus Compaq versus all of these companies. It's super exciting.
 
 And congrats to **Cerebras**. They deserve it.
-Is there any argument that **compute needs** will level off in some way, will have built so much capacity, and the software will get better?  
+Is there any argument that **compute needs** will level off in some way, will have built so much capacity, and the software will get better?
 
-There's been some talk about **Anthropic** being resource-constrained as the contemporary to **OpenAI**, and I think there's pretty much uniformity amongst elite AI users that **Claude** is a much better product now than OpenAI, and the models are better, the applications are better, but they're doing it with less.  
+There's been some talk about **Anthropic** being resource-constrained as the contemporary to **OpenAI**, and I think there's pretty much uniformity amongst elite AI users that **Claude** is a much better product now than OpenAI, and the models are better, the applications are better, but they're doing it with less.
 
-So could the build-out be ... Could it slow down? Is that a scenario that's out there, or is this always going to be up and to the right for the next five, 10 years? What's your crystal ball saying?  
+So could the build-out be ... Could it slow down? Is that a scenario that's out there, or is this always going to be up and to the right for the next five, 10 years? What's your crystal ball saying?
 
-**Sax**, are you still there?  
-**I'm here.**  
-Oh, okay.  
-Why is this video off?  
-Turn it on.  
-I mean, you can turn it back on, and then when you talk, we'll just go back and forth.  
+**Sax**, are you still there?
+**I'm here.**
+Oh, okay.
+Why is this video off?
+Turn it on.
+I mean, you can turn it back on, and then when you talk, we'll just go back and forth.
 
-**Texas still has a ways to go, I have to say.**  
-Yeah, all right.  
-There you go.  
-All right.  
+**Texas still has a ways to go, I have to say.**
+Yeah, all right.
+There you go.
+All right.
 
-So, anyway, **Abbott**, if you could ...  
-This is your best internet?  
-Texas infrastructure is ...  
-Oh, my God.  
-Sax is going to do the **Texas bounce back**.  
-Don't I just tweet at Abbott?  
-Abbott will send someone over immediately. They're pretty responsive in Texas.  
+So, anyway, **Abbott**, if you could ...
+This is your best internet?
+Texas infrastructure is ...
+Oh, my God.
+Sax is going to do the **Texas bounce back**.
+Don't I just tweet at Abbott?
+Abbott will send someone over immediately. They're pretty responsive in Texas.
 
-My prediction is there'll be a big meme by the end of this year called the **Texas bounce back**, and it's a bunch of billionaires. They do a little jiggy as they dance back from Texas back to California.  
-No. It ain't happening. You're there for good, huh?  
-Well, here's the thing.  
-Okay.  
+My prediction is there'll be a big meme by the end of this year called the **Texas bounce back**, and it's a bunch of billionaires. They do a little jiggy as they dance back from Texas back to California.
+No. It ain't happening. You're there for good, huh?
+Well, here's the thing.
+Okay.
 
-Well, maybe we should just talk about **BTA**, because that's where this is going.  
+Well, maybe we should just talk about **BTA**, because that's where this is going.
 
-Well, I mean, listen. You move houses. Say you move houses, you could have a little internet issue. It's okay.  
-Well, I mean, I'd rather have an internet issue and keep 100% of my money than ...  
-- Lose 5%.  
-- Lose 5% plus 13.3% per year.  
+Well, I mean, listen. You move houses. Say you move houses, you could have a little internet issue. It's okay.
+Well, I mean, I'd rather have an internet issue and keep 100% of my money than ...
+- Lose 5%.
+- Lose 5% plus 13.3% per year.
 
-And it's not going to be a one-time tax. That's the biggest lie.  
-It's 5% now, 5% later, 10% after that.  
-Yeah.  
-But you can afford it. It'll be an exit tax.  
-Yeah. They're coming for all of it.  
-Yeah.  
+And it's not going to be a one-time tax. That's the biggest lie.
+It's 5% now, 5% later, 10% after that.
+Yeah.
+But you can afford it. It'll be an exit tax.
+Yeah. They're coming for all of it.
+Yeah.
 
-So the internet can get fixed. The internet, let's put it this way. My internet can get fixed a lot more easily than California can.  
+So the internet can get fixed. The internet, let's put it this way. My internet can get fixed a lot more easily than California can.
 
-What are the 10 states that constitutionally ban asset taxes?  
-Yeah. So it's direct and implicit in those states' constitutions, or they have an amendment to the constitution that makes it direct or implicit that you can't do a wealth tax or an asset taxation tax.  
+What are the 10 states that constitutionally ban asset taxes?
+Yeah. So it's direct and implicit in those states' constitutions, or they have an amendment to the constitution that makes it direct or implicit that you can't do a wealth tax or an asset taxation tax.
 
-Which are they?  
+Which are they?
 
-- **Alaska**  
-- **Florida**  
-- **Nevada**  
-- **New Hampshire**  
-- **South Dakota**  
-- **Tennessee**  
-- **Texas**  
+- **Alaska**
+- **Florida**
+- **Nevada**
+- **New Hampshire**
+- **South Dakota**
+- **Tennessee**
+- **Texas**
 
-According to **Grok**, only **Texas** explicitly bans wealth taxes.  
-Yes, that is correct. But because of some of the other state constitutions, it's implicit.  
+According to **Grok**, only **Texas** explicitly bans wealth taxes.
+Yes, that is correct. But because of some of the other state constitutions, it's implicit.
 
-So:  
-- Texas has in their constitution a prohibition on, quote, **tax on wealth or net worth**.  
-- Washington has a **uniformity clause**, which treats income as property, which bans non-uniform rates.  
-- Florida's constitution bans any sort of personal tax.  
-- Pennsylvania has a strict uniformity clause, which would make it impossible to have graduated tax rates or distinguished tax rates amongst populations.  
-- Illinois has a strict constitutional mandate for a flat, non-graduated tax rate. So you cannot do a separation.  
+So:
+- Texas has in their constitution a prohibition on, quote, **tax on wealth or net worth**.
+- Washington has a **uniformity clause**, which treats income as property, which bans non-uniform rates.
+- Florida's constitution bans any sort of personal tax.
+- Pennsylvania has a strict uniformity clause, which would make it impossible to have graduated tax rates or distinguished tax rates amongst populations.
+- Illinois has a strict constitutional mandate for a flat, non-graduated tax rate. So you cannot do a separation.
 
-And then asset seizure is referred to as a **civil asset forfeiture**, which is a separate legal issue, but implies in states like **New Mexico, Nebraska, and North Carolina**, you cannot actually have an asset taken from you by the state.  
+And then asset seizure is referred to as a **civil asset forfeiture**, which is a separate legal issue, but implies in states like **New Mexico, Nebraska, and North Carolina**, you cannot actually have an asset taken from you by the state.
 
-So there's a bunch of states that this would be constitutionally protected against.  
+So there's a bunch of states that this would be constitutionally protected against.
 
-**Freberg**, has your mind changed since last week about whether this is going to make the ballot?  
-I don't think it's going to make the ballot. I mean, look, I think it's not, I'm not saying 100%. I'm saying slight overweight that it's not going to get there. So nothing has changed in your perspective.  
+**Freberg**, has your mind changed since last week about whether this is going to make the ballot?
+I don't think it's going to make the ballot. I mean, look, I think it's not, I'm not saying 100%. I'm saying slight overweight that it's not going to get there. So nothing has changed in your perspective.
 
-I think we're going through the rolling wake-up process right now, which is people are waking up to the fact that the **asset seizure tax is an elimination of private property rights**.  
+I think we're going through the rolling wake-up process right now, which is people are waking up to the fact that the **asset seizure tax is an elimination of private property rights**.
 
-That fundamentally what you're saying, and I wrote this in my tweet, that **private property now becomes public property**.  
+That fundamentally what you're saying, and I wrote this in my tweet, that **private property now becomes public property**.
 
-Because as soon as you give the government the right to collect your post-tax assets through a legislative vote, you are basically saying that you no longer have private property. Because at any point in the future, the government can vote to say,  
+Because as soon as you give the government the right to collect your post-tax assets through a legislative vote, you are basically saying that you no longer have private property. Because at any point in the future, the government can vote to say,
 
-> "I'm going to take your private property,"  
+> "I'm going to take your private property,"
 
-which is different than an income tax, which is when you earn something that you didn't have before. And they take a percentage of your earnings, of your income.  
+which is different than an income tax, which is when you earn something that you didn't have before. And they take a percentage of your earnings, of your income.
 
-The statement now is after you've made your income, it's now your private property, they can come and take it. And so that is a distinction that has never existed in the United States.  
+The statement now is after you've made your income, it's now your private property, they can come and take it. And so that is a distinction that has never existed in the United States.
 
 And I will make the retort right now to property tax, because people always say to me, well, what about property tax? A property tax is a service fee on a particular specific asset. The money that is collected provides services for that asset to make it more valuable.
 So you get **roads, infrastructure, policing, fire care, schools**, all the stuff that comes with **property tax** makes that asset more and you have the option at any point you want to sell that property and stop paying that property tax. You have the option at any point to downgrade your property and get a cheaper property and pay it lower.
@@ -580,7 +580,7 @@ You're not looking through to the individual to determine whether or not they're
 
 And you may roll your hand and be like, *"oh, who cares about the billionaires, eat the rich,"* that's great. But fundamentally, you're giving the government, the legislature, the ability to, in the future, take any demographic definition they want, and go in and take any percentage they want of after-tax property from you. That is why this is so troubling.
 
-And we can harp all day long about *eat the rich,* and obviously this group is biased, but the general population should be very much aware of the fact that as soon as you give a legislature the ability to discriminate a group and take whatever percentage they want — 
+And we can harp all day long about *eat the rich,* and obviously this group is biased, but the general population should be very much aware of the fact that as soon as you give a legislature the ability to discriminate a group and take whatever percentage they want —
 
 - You've set precedent.
 - You've set, and it's over.
@@ -628,11 +628,11 @@ So, if you're this guy, **Regan**, you're like, **"oh, my God, look how much lev
 
 So, why wouldn't you increase your leverage by spending the **$8 million**, put it on the ballot, and then negotiate with him?
 
-Was that a *Deliverance* reference?  
-I hope not.  
-No, it's just an expression. I don't know why your mind is going to *Deliverance*.  
-I don't know, you squeal louder, baby.  
-Well, you've got *Deliverance* on the brain.  
+Was that a *Deliverance* reference?
+I hope not.
+No, it's just an expression. I don't know why your mind is going to *Deliverance*.
+I don't know, you squeal louder, baby.
+Well, you've got *Deliverance* on the brain.
 I mean, yeah, I do.
 
 So, I'll tell you why. I've obviously been a believer. I've been a believer in the **long cycle**, and I've said this for a long time.
@@ -661,8 +661,8 @@ Now, the polling data shows that there's room for influence, Zach. So I do think
 
 Like, that's where America’s going to end up, in the **socialist death spiral loophole**. Like, good luck. Have a good time. I'm going to **Terminus** to start the foundation.
 
-I don't know where the hell that is, but **I'm out.**  
-You're out.  
+I don't know where the hell that is, but **I'm out.**
+You're out.
 
 And in the meantime, all we can do is speak truth to it and try and shine light on it and see where it goes.
 
@@ -695,7 +695,7 @@ As a result of that, the other **unions are actually against it**. And this is w
 
 And that's why I think that if we defeat this in 26, it doesn't mean it's dead for good. It just means it's going to come back in a new form in 28, but with much more broad-based **union support**. All the unions are going to do it together. So I just think this is **inevitable**.
 
-And I think that for all the founders, and whether you're pre-exit, post-exit, or on your way to an exit, my advice would be that, to quote **Maya Angelou**, 
+And I think that for all the founders, and whether you're pre-exit, post-exit, or on your way to an exit, my advice would be that, to quote **Maya Angelou**,
 
 > "when a state shows you who they are, believe them the first time."
 
@@ -707,9 +707,9 @@ And this is where there is a **preponderance of evidence in favor of people sayi
 
 But when you look at the fact that that will be the **angle of attack** that people will take if this passes, I 100% agree with you, Sacks.
 
-If this union were smart enough, what they would have done is say, 
+If this union were smart enough, what they would have done is say,
 
-``` 
+```
 this is going to start Jan 1 of 2027.
 ```
 
@@ -729,13 +729,13 @@ Well, because I'll tell you why. Because we still have plenty of conservatives i
 
 **Freeberg, you said something that I really liked in your post**, which is it begs the question, what will happen when California goes BK and then they go to the feds? And it doesn't actually matter who is in charge at that time, but let's think about it if **Trump were in charge for a second**.
 
-California knocks and says, 
+California knocks and says,
 
 > "hey, I need you to bail us out."
 
 The deal that California would need to do with the president for that to even be palatable so that he could build a coalition of Republicans around it, man, California will go through tremendous pain. But then go through the other side.
 
-So now imagine **AOC's president, AOC's president**. So she says, 
+So now imagine **AOC's president, AOC's president**. So she says,
 
 > "I got to do this."
 
@@ -745,7 +745,7 @@ I think there's a way out for—
 
 Now, if the **filibuster is gone by that time**, and it's simple majority, and then if there's a Democrat in the Oval plus a Democratic Congress, David, you're right, because that is the one shot on goal that they have—a two-year window to run that play at the federal level—and they will be able to get it done.
 
-Now ask yourself the question, what happens to the citizens of: 
+Now ask yourself the question, what happens to the citizens of:
 
 - Florida
 - Texas
@@ -761,166 +761,166 @@ And this is where the union starts to unravel. And that's where I get very conce
 As soon as you allow this **asset seizure tax to pass**, even on a state level, the economic ramifications—or on a national level, the economic ramifications—are inevitable that some states are going to have to **bail out other states**, and that's where things get very ugly.
 
 The bill will come due at some point. This is super easy out here for the Democrats or people who are supporting this.
-Just go after **fraud first, tax a second**.  
+Just go after **fraud first, tax a second**.
 **"That's got to be the mantra going forward."** We're going to eliminate **fraud and waste**, and then we'll have a discussion about taxes. That's the only way for them to find an escape hatch here.
 
-Okay, we've beaten this to death. Well, it's how you win the moderates.  
-Yeah, I mean, like—  
-Yeah, that's what I'm talking about.  
+Okay, we've beaten this to death. Well, it's how you win the moderates.
+Yeah, I mean, like—
+Yeah, that's what I'm talking about.
 
-But just some interesting stats here:  
-- **California collects roughly double per capita what Texas and Florida do.**  
-- California collects about **$10,319 per taxpayer**, whereas Texas, **$5,469**.  
-- Florida, **$4,914**.  
+But just some interesting stats here:
+- **California collects roughly double per capita what Texas and Florida do.**
+- California collects about **$10,319 per taxpayer**, whereas Texas, **$5,469**.
+- Florida, **$4,914**.
 
-So there's not an issue here of California not collecting enough taxes. The issue is all on the **spending**. On that front, the **California budget has doubled over the past decade while the population stayed flat**.  
+So there's not an issue here of California not collecting enough taxes. The issue is all on the **spending**. On that front, the **California budget has doubled over the past decade while the population stayed flat**.
 
-And in fact—  
-Services got worse.  
-Test scores got worse.  
-Crime prevention and enforcement got worse.  
+And in fact—
+Services got worse.
+Test scores got worse.
+Crime prevention and enforcement got worse.
 
-Where's it going? They let convicts out of jails. Everything's gotten worse.  
+Where's it going? They let convicts out of jails. Everything's gotten worse.
 
-Where's the money going, Sacks? Say the word.  
+Where's the money going, Sacks? Say the word.
 
-It's going to these **government worker unions** who have accumulated too much political power. Look, you go all the way back to **FDR**, and he was opposed to, even though he was for unions, he was opposed to **government workers' unions** because he thought they would accumulate too much political power.  
+It's going to these **government worker unions** who have accumulated too much political power. Look, you go all the way back to **FDR**, and he was opposed to, even though he was for unions, he was opposed to **government workers' unions** because he thought they would accumulate too much political power.
 
-> **"They elect the politicians, and then the politicians are the ones paying them."**  
+> **"They elect the politicians, and then the politicians are the ones paying them."**
 
-So they just end up extracting more and more and more iteratively with every election cycle. It's the same as an **antitrust monopoly in a corporation**. It's the same ultimate dynamics as having a monopoly in private industry and corporations.  
+So they just end up extracting more and more and more iteratively with every election cycle. It's the same as an **antitrust monopoly in a corporation**. It's the same ultimate dynamics as having a monopoly in private industry and corporations.
 
-It basically gives you a monopoly on political power, and it gives you the ability to monopolize assets. And that's effectively where we are now. They're at the point where one union is saying, **"I'm going to take the assets, $100 billion of assets from a small minority of people in the state."**  
+It basically gives you a monopoly on political power, and it gives you the ability to monopolize assets. And that's effectively where we are now. They're at the point where one union is saying, **"I'm going to take the assets, $100 billion of assets from a small minority of people in the state."**
 
-The reality is that a lot of it is the **pension obligations**. You can work for the state for 20 years, retire in your 40s, and you basically, what, you get like **90% of your wage for the rest of your life**. It doesn't work. It doesn't pencil out. It's got to end.  
+The reality is that a lot of it is the **pension obligations**. You can work for the state for 20 years, retire in your 40s, and you basically, what, you get like **90% of your wage for the rest of your life**. It doesn't work. It doesn't pencil out. It's got to end.
 
-They use your last year's **W-2**, so you stuff it with overtime your last year, and you end up retiring with like **150% of your annual salary for life.** It doesn't even apply to your spouse, too. But this was the promise that was given in order to get the votes that have gotten us to the point we're at today.  
+They use your last year's **W-2**, so you stuff it with overtime your last year, and you end up retiring with like **150% of your annual salary for life.** It doesn't even apply to your spouse, too. But this was the promise that was given in order to get the votes that have gotten us to the point we're at today.
 
-Because that is how the unions operate, right? It is a system that drives political influence by making these sorts of benefits law and brings them to bear.  
+Because that is how the unions operate, right? It is a system that drives political influence by making these sorts of benefits law and brings them to bear.
 
-If the average retirement age is 50 and your lifespan is 80, this is not how it was intended. People used to get these at 60 and they would die at 68. It was meant for a decade or less.  
+If the average retirement age is 50 and your lifespan is 80, this is not how it was intended. People used to get these at 60 and they would die at 68. It was meant for a decade or less.
 
-Let's say you start working for the state at 22 and you can retire at 42. Actually, what a lot of people do is they'll go then take a second government job and they'll stack a second pension. But yeah, you could retire at 42. Can you do that? If you stuff it with overtime, you can stuff it with overtime.  
+Let's say you start working for the state at 22 and you can retire at 42. Actually, what a lot of people do is they'll go then take a second government job and they'll stack a second pension. But yeah, you could retire at 42. Can you do that? If you stuff it with overtime, you can stuff it with overtime.
 
-And I think it applies to your spouse as well. Just fact check me on that. But I know I'm aware of it in New York where a little bit of this stuffing on the margins does occur, I've heard.  
+And I think it applies to your spouse as well. Just fact check me on that. But I know I'm aware of it in New York where a little bit of this stuffing on the margins does occur, I've heard.
 
-I'm not against police officers and teachers and people getting reasonable. You need to do superannuation funds. You have to have people buying into the market over time, and the government shouldn't be managing this.  
+I'm not against police officers and teachers and people getting reasonable. You need to do superannuation funds. You have to have people buying into the market over time, and the government shouldn't be managing this.
 
-It's just the government is terrible at whatever it does and there's too much for them to do. Let it stand alone. Take it out. Carve it out. You're forced to put 12% into this or your employer puts a little bit into it and then we'd have a very happy society. More participation in the market would solve so many problems.  
+It's just the government is terrible at whatever it does and there's too much for them to do. Let it stand alone. Take it out. Carve it out. You're forced to put 12% into this or your employer puts a little bit into it and then we'd have a very happy society. More participation in the market would solve so many problems.
 
-Okay, I just want to hit one last topic.  
+Okay, I just want to hit one last topic.
 
-Congratulations to **Greenland** on accepting a very generous offer from **President Trump**. We welcome you as the **51st state**. Maybe that'll be happening any day now.  
+Congratulations to **Greenland** on accepting a very generous offer from **President Trump**. We welcome you as the **51st state**. Maybe that'll be happening any day now.
 
-**U.S. officials met with reps from Denmark and Greenland at the White House** on Wednesday to discuss how the U.S. could take control of Greenland. This has been something Trump’s been talking about for years.  
+**U.S. officials met with reps from Denmark and Greenland at the White House** on Wednesday to discuss how the U.S. could take control of Greenland. This has been something Trump’s been talking about for years.
 
-And remember my rule number one of **President Trump**:  
-> **"He says a lot of things. One way or another, we're going to get it."**  
+And remember my rule number one of **President Trump**:
+> **"He says a lot of things. One way or another, we're going to get it."**
 
-**March 4th, 2025.** I need it for psychological reasons to actually own it. In 2021, he said that:  
+**March 4th, 2025.** I need it for psychological reasons to actually own it. In 2021, he said that:
 
 > **"We're going to do something with Greenland either the nice way or the more difficult way."**
 
-**January 9th, 2026.** Denmark doesn't seem to want to play ball. They say they have a fundamental disagreement about this.  
+**January 9th, 2026.** Denmark doesn't seem to want to play ball. They say they have a fundamental disagreement about this.
 
 That being said, there's only **50,000 people there**, and **Polymarket's got a 17% chance that we acquire it, which is significant as a starting point.**
-**50,000 people getting a half million or a million dollars each would probably be a pretty good deal.**  
+**50,000 people getting a half million or a million dollars each would probably be a pretty good deal.**
 
-Well, it's a very strategic piece of land. If you look at what's happening with the **ice caps melting, SACs, and Russia positioning a lot of their ships up in the Arctic,** there's a pretty clean shot going past Greenland to the northeast of America.  
+Well, it's a very strategic piece of land. If you look at what's happening with the **ice caps melting, SACs, and Russia positioning a lot of their ships up in the Arctic,** there's a pretty clean shot going past Greenland to the northeast of America.
 
-So maybe you could just talk about why this is, and again, you're not speaking for the administration, and it's not your lane, but **why is Greenland so important?**  
+So maybe you could just talk about why this is, and again, you're not speaking for the administration, and it's not your lane, but **why is Greenland so important?**
 
-Well, it is becoming more significant from a national security standpoint as those Arctic ices melt, and you have new shipping lanes that have opened up. So it is important on that dimension.  
+Well, it is becoming more significant from a national security standpoint as those Arctic ices melt, and you have new shipping lanes that have opened up. So it is important on that dimension.
 
-But look, American politicians have wanted to acquire **Greenland for a long time.** The great Secretary of State, **William Seward, wanted to acquire it.** He acquired Alaska. He wanted to get Greenland, too, was unable to make that deal. But **FDR and Truman both were interested in acquiring Greenland.** It didn't work out, obviously.  
+But look, American politicians have wanted to acquire **Greenland for a long time.** The great Secretary of State, **William Seward, wanted to acquire it.** He acquired Alaska. He wanted to get Greenland, too, was unable to make that deal. But **FDR and Truman both were interested in acquiring Greenland.** It didn't work out, obviously.
 
-So this is an old idea that's new again, thanks to **President Trump.** I think he makes a great point. 
+So this is an old idea that's new again, thanks to **President Trump.** I think he makes a great point.
 
-> "Why does it belong to the Danes? You know, it's a small country in Europe. It's not part of North America. And I think if we can acquire it for national security reasons and resource reasons, we should."  
+> "Why does it belong to the Danes? You know, it's a small country in Europe. It's not part of North America. And I think if we can acquire it for national security reasons and resource reasons, we should."
 
-And I think the odds of him pulling this off are much greater than 17%.  
+And I think the odds of him pulling this off are much greater than 17%.
 
 ---
 
-**Chamath or Freeberg, do you have any thoughts on the 51st state?**  
+**Chamath or Freeberg, do you have any thoughts on the 51st state?**
 
-- I don't know anything about it.  
-- Well, they don't have to become a state, to be clear.  
-- No, no, I don't. They can become a little facetious here.  
-- Yeah, I mean, territory, whatever it is.  
-- Yeah. It could be like a country club, whatever. It's important that we get memberships.  
+- I don't know anything about it.
+- Well, they don't have to become a state, to be clear.
+- No, no, I don't. They can become a little facetious here.
+- Yeah, I mean, territory, whatever it is.
+- Yeah. It could be like a country club, whatever. It's important that we get memberships.
 
-This is a **huge piece of real estate in the Western Hemisphere.** It doesn't really make a ton of sense for Denmark to own it. It makes a lot more sense for it to be part of the U.S.  
+This is a **huge piece of real estate in the Western Hemisphere.** It doesn't really make a ton of sense for Denmark to own it. It makes a lot more sense for it to be part of the U.S.
 
-And?  
+And?
 
-- We're willing to pay for it.  
-- And I think that we can make them an offer that they can't refuse.  
+- We're willing to pay for it.
+- And I think that we can make them an offer that they can't refuse.
 
-Absolutely. And it has...  
+Absolutely. And it has...
 
-> "We're going to send Luca Brasi over there."  
+> "We're going to send Luca Brasi over there."
 
-I thought Luca Brasi, yeah, I'm going to make him an offer I can't refuse.  
+I thought Luca Brasi, yeah, I'm going to make him an offer I can't refuse.
 
-It's got a lot of railroads, minerals. There's a lot of oil offshore. Their big export now is fish, obviously. But this has lots of potential, Freeberg, in terms of the resources.  
+It's got a lot of railroads, minerals. There's a lot of oil offshore. Their big export now is fish, obviously. But this has lots of potential, Freeberg, in terms of the resources.
 
-And yeah, why not get it done? Trump loves real estate. We got him for another three years. I say let **President Trump cook.** And if he wants to buy some other land, I'm here for it. I love building the empire. This is my favorite Trump.  
+And yeah, why not get it done? Trump loves real estate. We got him for another three years. I say let **President Trump cook.** And if he wants to buy some other land, I'm here for it. I love building the empire. This is my favorite Trump.
 
-Freeberg, you love this Trump or not?  
+Freeberg, you love this Trump or not?
 
-The old adage is:  
+The old adage is:
 ```markdown
-- There's always a deal.  
+- There's always a deal.
 - There's always a price.
-```  
-Except when you're negotiating with the government. So I don't know how that's going to go.  
+```
+Except when you're negotiating with the government. So I don't know how that's going to go.
 
-My understanding, my experience is that they do not want to deal. They're not interested. There's a whole bunch of national pride associated with that. You can't break national pride.  
+My understanding, my experience is that they do not want to deal. They're not interested. There's a whole bunch of national pride associated with that. You can't break national pride.
 
-As we know, as patriots of America, it is very hard to fight national pride.  
+As we know, as patriots of America, it is very hard to fight national pride.
 
-I don't know if the economics are really going to play out, but **security guarantees, maybe other benefits for the great kingdom of Denmark.** There could be a strong alliance and partnership for the United States. I think it could be important for the U.S. to have a new frontier.  
+I don't know if the economics are really going to play out, but **security guarantees, maybe other benefits for the great kingdom of Denmark.** There could be a strong alliance and partnership for the United States. I think it could be important for the U.S. to have a new frontier.
 
-You know, maybe what we can do is send all these progressive socialists off to Greenland to tame this new frontier. I want to go.  
+You know, maybe what we can do is send all these progressive socialists off to Greenland to tame this new frontier. I want to go.
 
-Yeah, send Mondami there. They get that grit. We need that spirit of the frontier, of cowboys, of exploration. Yes, send Mondami. He seems like a very resilient, gritty guy. He'll come with his whole crew. The socialists, Ro Khanna, let him set up there. Let's see what they build.  
+Yeah, send Mondami there. They get that grit. We need that spirit of the frontier, of cowboys, of exploration. Yes, send Mondami. He seems like a very resilient, gritty guy. He'll come with his whole crew. The socialists, Ro Khanna, let him set up there. Let's see what they build.
 
-I think the idea of having what's called a freedom province or freedom state or freedom city. Economic free zone, yeah.  
+I think the idea of having what's called a freedom province or freedom state or freedom city. Economic free zone, yeah.
 
-Yeah, and I do think if we are looking down the barrel of socialism in the United States, which I think socially leads to a destruction of individual liberties and a degradation of the social fabric in America, before that happens, it's important that those who are on the other side and before they get overwhelmed with the votes and the elected officials that will fight against them, before this all happens, it's important to think about carving out a legal territory.  
+Yeah, and I do think if we are looking down the barrel of socialism in the United States, which I think socially leads to a destruction of individual liberties and a degradation of the social fabric in America, before that happens, it's important that those who are on the other side and before they get overwhelmed with the votes and the elected officials that will fight against them, before this all happens, it's important to think about carving out a legal territory.
 
-And that legal territory should allow for the resurrection of the great American union, of the great American spirit. And we should find a place within our sphere of influence before we get overwhelmed to set something up.  
+And that legal territory should allow for the resurrection of the great American union, of the great American spirit. And we should find a place within our sphere of influence before we get overwhelmed to set something up.
 
-> "It's called Texas, dude. It's called Texas. Remember the Alamo."  
+> "It's called Texas, dude. It's called Texas. Remember the Alamo."
 
-Yeah, welcome to the sound. We're making our last stand here. Absolutely. The .50 calibers are up on the ranch.  
+Yeah, welcome to the sound. We're making our last stand here. Absolutely. The .50 calibers are up on the ranch.
 
-I think it would be helpful to get something that's federally set up, Sacks, that you could have like untouchable legislation that says:  
+I think it would be helpful to get something that's federally set up, Sacks, that you could have like untouchable legislation that says:
 ```markdown
 This is not to be touched.
 ```
-There's **pioneering**, whatever it is. Join the militia. We got a militia.  
+There's **pioneering**, whatever it is. Join the militia. We got a militia.
 
-And maybe **Greenland** is the place, but it's something that feels, it's got to be something that feels difficult, something that feels open, something that feels a little bit untouched.  
+And maybe **Greenland** is the place, but it's something that feels, it's got to be something that feels difficult, something that feels open, something that feels a little bit untouched.
 
 And it's regionally encased with a set of legislated things like **Guam** or **Puerto Rico** or something where you set it up and you're like, *"look, this is untouchable."* It takes a big action to change it. Something where people can have protection against the socialist milieu that's all the way.
 
-You know, it is kind of interesting, as I remember from my high school history, I think the frontier was officially over by 1910. I think that was meaning every longitude basically had been fully explored. Every latitude and longitude had been sort of settled.  
+You know, it is kind of interesting, as I remember from my high school history, I think the frontier was officially over by 1910. I think that was meaning every longitude basically had been fully explored. Every latitude and longitude had been sort of settled.
 
-And that is when the **progressive era** kind of began. And I do kind of wonder whether the frontier was this like escape valve for pressure that builds up, you know, resentments that build up in the economy. People could always just go west and become pioneers and find new territory.  
+And that is when the **progressive era** kind of began. And I do kind of wonder whether the frontier was this like escape valve for pressure that builds up, you know, resentments that build up in the economy. People could always just go west and become pioneers and find new territory.
 
-That's right. And in a way, that's what **America was for Europe**, right? I mean, Europe was sort of this overcrowded place. It was oppressive and people just left that they could opt out by going to America and settling over in what would become the United States.  
+That's right. And in a way, that's what **America was for Europe**, right? I mean, Europe was sort of this overcrowded place. It was oppressive and people just left that they could opt out by going to America and settling over in what would become the United States.
 
 And I kind of wonder whether maybe we need something like that again. And by the way, I think the **digital frontier** as an escape hatch for all the discontents.
 
-You're right. So they don't become democratic socialists in America. And for a while, the digital frontier became that escape valve. But now that's being shut off and it's being closed down. And the place where it's been run from is being subjugated to the socialists.  
+You're right. So they don't become democratic socialists in America. And for a while, the digital frontier became that escape valve. But now that's being shut off and it's being closed down. And the place where it's been run from is being subjugated to the socialists.
 
 So the question is, what's next? I think it's a very good question.
 
-Well, the problem is that the socialists, they're not explorers. They're not pioneers. They don't create anything. They're not builders. What they are is they're really good at hijacking existing institutions.  
+Well, the problem is that the socialists, they're not explorers. They're not pioneers. They don't create anything. They're not builders. What they are is they're really good at hijacking existing institutions.
 
-And that's what they do is they take things that were created by great people and they subvert them and they seize control. And that's what they're going for is total control. First in California and then in Washington.  
+And that's what they do is they take things that were created by great people and they subvert them and they seize control. And that's what they're going for is total control. First in California and then in Washington.
 
 But I do wonder whether the existence of some sort of release valve might defer that day, right? Because you get less pressure building up in the system.
 
@@ -928,29 +928,29 @@ But I do wonder whether the existence of some sort of release valve might defer 
 
 All right. Another amazing episode. And just want to give a shout out, **Chamath** did an amazing interview with my guy, **Howard Lutnick**. That was fun, huh?
 
-- Yeah, Chamath?  
-- That was awesome.  
-- He's awesome.  
-- Yeah, I'm really impressed by him.  
+- Yeah, Chamath?
+- That was awesome.
+- He's awesome.
+- Yeah, I'm really impressed by him.
 
-And **Freeberg**, on a bit of a heater here, today we dropped an incredible interview with **FDA Commissioner Marty Makary**. Am I pronouncing it correctly?  
-- Makary.  
-- McCary. Great job there.  
+And **Freeberg**, on a bit of a heater here, today we dropped an incredible interview with **FDA Commissioner Marty Makary**. Am I pronouncing it correctly?
+- Makary.
+- McCary. Great job there.
 
 And also, you got to hang out with your childhood hero. We grew up on **Howard Stern** on the East Coast, but you grew up with **Adam Carolla**. And you got to interview him. You were fangirling a little bit there at the start, weren't you?
 
 Well, it was great. I'd never met him. So, it was great to interview him. I mean, he has a lot of interesting ideas. I got a lot of texts about his coined term, **gyno-fascism**, which I think some people take people's face to it.
 
-Explain to the audience what gyno-fascism is.  
-- Watch the interview.  
+Explain to the audience what gyno-fascism is.
+- Watch the interview.
 - Okay, watch the interview. We don't want to get a...
 
-He was great. You had to see the start of this interview, Javon. Freeberg's like, *"oh, Mr. Carolla, I used to watch you and Dr. Drew talking on Loveline."* And it really was formative in my years as a broadcaster. And now I, too, am a broadcaster.  
+He was great. You had to see the start of this interview, Javon. Freeberg's like, *"oh, Mr. Carolla, I used to watch you and Dr. Drew talking on Loveline."* And it really was formative in my years as a broadcaster. And now I, too, am a broadcaster.
 
-It was really cute.  
-- It was really cute.  
-- I never said I'm a broadcaster. I would never...  
-- You were like, oh, I do summer stuff.  
+It was really cute.
+- It was really cute.
+- I never said I'm a broadcaster. I would never...
+- You were like, oh, I do summer stuff.
 - I would never degrade myself like that, Jacob. I actually am doing random acts of broadcasting.
 
 The sun never sets on the all-in empire. And I also did a fun **CES** interview with the CEO of **McKinsey**, **Bob Sternfels**, and **Hemant** from General Catalyst. And that's up on the feed.
@@ -959,44 +959,44 @@ So four, four, one, two, three, four interview shows waiting for you in your fee
 
 And to the mainstream media trying to keep up with this, **GFY**. GFY. Good for you. Have fun trying.
 
-You guys believe that Jacob's been invited to **Davos**? I can't wait to see this. I'm bringing my acoustic guitar. I can't wait to see this. I'm going to tear it up. We're going to have fun.  
+You guys believe that Jacob's been invited to **Davos**? I can't wait to see this. I'm bringing my acoustic guitar. I can't wait to see this. I'm going to tear it up. We're going to have fun.
 
-Did you guys see me rage bait Twitter two days ago?  
-- What did you say?  
-- No, what did you do?  
-- I put this thing where...  
-- You showed your legs?  
-- No.  
+Did you guys see me rage bait Twitter two days ago?
+- What did you say?
+- No, what did you do?
+- I put this thing where...
+- You showed your legs?
+- No.
 
-Remember when we did the interview at the **All-In Summit** where **Tulsi** talked about the Obama documents?  
-- Yeah.  
-- Well, this guy did a rant. I thought the rant was great, but I just retweeted it and people lost their mind.  
+Remember when we did the interview at the **All-In Summit** where **Tulsi** talked about the Obama documents?
+- Yeah.
+- Well, this guy did a rant. I thought the rant was great, but I just retweeted it and people lost their mind.
 
-Basically, he was calling for **Obama's arrest**.  
-- Oh, God.  
+Basically, he was calling for **Obama's arrest**.
+- Oh, God.
 - Oh, gosh.
 I said very casually, **gosh, this is a really underreported story**.
 
 Oh, I saw that one. To be sure. I was wondering who that guy was, though. I'm like, hmm.
 
-"Didn't that make you take it down?"  
+"Didn't that make you take it down?"
 No, he's still up there. Still up there.
 
 Wait, who is that streamer? I don't know who he is. It could be AI. There's some guy saying **Obama's going to jail**. Yeah, I don't know. I think he said he met Obama.
 
-Did you guys watch **Nick Shirley's new video**?  
+Did you guys watch **Nick Shirley's new video**?
 Oh, no. He goes looking for the...
 
-Check this out. There's these **transportation companies**. They get **$10 million a day in Minnesota**.  
+Check this out. There's these **transportation companies**. They get **$10 million a day in Minnesota**.
 
-- A day?  
+- A day?
 - A day for **non-emergency medical transportation**.
 
 So the state will pay, if you transport someone that's autistic to Target, to get them groceries, **$50 a ride**. And there's a website where the transportation company gets to log into the website, and they're registered as one of the transportation companies. And they're like, "I took someone from this place to Target."
 
 And you get... And you fill out all these forms, and then you get a check immediately.
 
-On the trust...  
+On the trust...
 It's a trust system? They never investigate. They don't audit. They don't check. Nothing.
 
 So **Nick Shirley starts going around looking for the transportation companies**. And it's like a liquor store. He's like, "Where's the transportation company?" The liquor store guy's like, "There's no transportation here." It's like a burrito place, like a deli. Like all of these places are just like...
@@ -1017,15 +1017,15 @@ All right, everybody. Another amazing **All In** episode. Thanks. Thank you for 
 
 Like, oh, by the way, guys, we hit **a million subs on YouTube**. They sent me a gorgeous plaque. I'm putting it up in my office. It's amazing. They sent me a million plaque. It's great. All the team autographed it and wrote it a really nice note.
 
-Can I say something?  
-Can I say something?  
-Yeah.  
+Can I say something?
+Can I say something?
+Yeah.
 You're welcome. You're welcome.
 
-**Jamal would like to say, "You're welcome."**  
+**Jamal would like to say, "You're welcome."**
 Jamal's like, "You're welcome."
 
-All right. See you at **Davos**.  
+All right. See you at **Davos**.
 Kumbaya, Davos. We'll see you there.
 
 We should all just get a room and just have one big huge orgy because they're all just useless. It's like this sexual tension, but they just need to release somehow. I'll see you there.

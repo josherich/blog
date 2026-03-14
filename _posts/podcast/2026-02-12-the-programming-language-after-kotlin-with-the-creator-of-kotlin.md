@@ -2,14 +2,14 @@
 layout: post
 title: "The programming language after Kotlin – with the creator of Kotlin"
 date: 2026-02-12 00:00:01
-categories: podcast the-pragmatic-engineer
+categories: podcast
 tags: [podcast_script]
 ---
 
 
 [The programming language after Kotlin – with the creator of Kotlin](https://api.substack.com/feed/podcast/187478763/3c1dde09a2e4479488bbd3ff21b5ee2f.mp3)
 
-**Why would anyone create a new programming language today if AI can already write most of your code?**  
+**Why would anyone create a new programming language today if AI can already write most of your code?**
 **Andrey Breslav** has an interesting answer.
 
 Andrey Breslav is the creator of **Kotlin**, a language that runs on billions of Android devices and is one of the fastest growing languages in the world. Today we cover how Andrey designed Kotlin by deliberately borrowing ideas from **Scala, C Sharp, and Groovy**, and why he considers leaving out the ternary operator one of his biggest regrets.
@@ -22,8 +22,8 @@ This episode is presented by **Statsig**, the unified platform for flags, analyt
 
 ---
 
-**Andrey, welcome to the podcast.**  
-Hello.  
+**Andrey, welcome to the podcast.**
+Hello.
 Thank you for having me.
 
 It is not often that I meet someone who designed such an influential language across mobile and backend. So let's start with: **how did it all start?**
@@ -50,7 +50,7 @@ But I was completely wrong.
 
 What they wanted was to start a **new programming language**.
 
-I was completely unprepared for that. I had never thought about doing something like this. My first reaction was:  
+I was completely unprepared for that. I had never thought about doing something like this. My first reaction was:
 > "You don't do new language. You don't need it."
 
 The basic pitch was that the **Java ecosystem needs a new language**. Java is outdated, so on and so forth. We can talk more about this.
@@ -76,8 +76,8 @@ But they saw an opportunity in the market because basically Groovy was too dynam
 
 What are dynamic languages for? What are their strengths and best use cases? The trade-off, I guess, if you look at a statically-typed language like **Java**, **Kotlin**, and **Scala**, for example, versus dynamic languages like **Python**, **Ruby**, **JavaScript**, and Groovy:
 
-- In dynamic languages, it's very easy to start and build something working very quickly because basically the language is not in your way as much.  
-- There's a saying that **"nothing limits the imagination of a programmer like a compiler."**  
+- In dynamic languages, it's very easy to start and build something working very quickly because basically the language is not in your way as much.
+- There's a saying that **"nothing limits the imagination of a programmer like a compiler."**
 
 And this may be changing nowadays a little bit. And this is in part what I'm working on now. But back in the day, it was completely true. The whole art of making a good language was to restrict the user in a good way.
 
@@ -116,7 +116,7 @@ Just because **JetBrains is genuinely run by engineers?** Hold that thought from
 
 If there's a time when we need true engineers, it's now. As **AI coding assistants** change how we build software, code is generated faster than before. But **engineering basics remain important**. We still need to verify all this new AI-generated code for **quality, security, reliability, and maintainability**.
 
-A question that is tricky to answer:  
+A question that is tricky to answer:
 **How do we get the speed of AI without inheriting a mountain of risk?**
 
 Sonar, the makers of **SonarQube,** has a really clear way of framing this:
@@ -176,11 +176,11 @@ I can see, including my spelling mistakes in the slides — my English wasn't as
 So we were basically doing **whiteboard design for some time.**
 And the great thing about doing this at **JetBrains** was that there were a lot of people with opinions about not so much how to make a language, but **what problems do programmers face and what they like and don't like in other languages**. So I had tons and tons of input from other people and very good people. So that helped. And I really, I don't think I realized how special that environment was back then. Like I was 26, to be clear. And I had no idea how things were done in general. But somehow these people just trusted me. I'm not sure it was very rational on their part. It worked out. But I'm not sure I would recommend anyone to do this.
 
-And so in the first few months, I understand that you kind of **whiteboarded and wrote down how you want this language to evolve**. You kind of, you know, like wrote out like, 
+And so in the first few months, I understand that you kind of **whiteboarded and wrote down how you want this language to evolve**. You kind of, you know, like wrote out like,
 
 > "We're going to have these features. Or how can we imagine?"
 
-So I guess the easiest way to explain this would be like this. It basically went off what the pains were with **Java**. And there were quite a few. And there was a lot of experience of using Java across the community and inside JetBrains. And we kept making lists of things we wanted to fix. 
+So I guess the easiest way to explain this would be like this. It basically went off what the pains were with **Java**. And there were quite a few. And there was a lot of experience of using Java across the community and inside JetBrains. And we kept making lists of things we wanted to fix.
 
 I came up with some ideas and some other people suggested other ideas about how things can be fixed, what is an actual problem, and what we don't care about, and so on and so forth. For some time, I was just, you know, pieces of the puzzle basically laid out on a table without fitting together. And then at some point, we started fitting them together. I was just doing a lot of that in my head, which is not the best way. But this is how I knew how to do it.
 
@@ -229,80 +229,80 @@ And **Kotlin** has multiple back-ends for different target languages:
 - WASM back-end
 
 At that time, nobody was full-time working on this project.
-Even I was part-time, a **PhD student**, part-time **Kotlin developer**. And it was the very early days.  
+Even I was part-time, a **PhD student**, part-time **Kotlin developer**. And it was the very early days.
 
-Then, at some point, I gave up my PhD and focused 100%. Which was also, like, isn't it a weird decision to start a new language part-time? Yeah. Looking back, I was young and stupid.  
+Then, at some point, I gave up my PhD and focused 100%. Which was also, like, isn't it a weird decision to start a new language part-time? Yeah. Looking back, I was young and stupid.
 
 There's a saying that **we didn't do it because it was easy. We did it because we thought it was easy.** Absolutely that. I didn't realize how hard the problem was. I also had an unreasonable amount of hubris. I just thought I knew how to do everything. I didn't. But it worked out in the end.
 
 ---
 
-So, when the language started, what did you call it internally? There's always internal code names, right? Right, yeah.  
+So, when the language started, what did you call it internally? There's always internal code names, right? Right, yeah.
 
 So, I don't think there was a discussion of this first name at all. It was generally understood that the language will be named **Jet**. And it was logical. We had all the code base using the name Jet. We had:
 
-- JetParser  
-- JetEditor  
+- JetParser
+- JetEditor
 - JetHighlighter, something like that.
 
-Then someone realized that the name was trademarked by someone else. It was actually people we know there in **Novosibirsk in Russia** doing something. It's not a language, but it was a compiler, and we couldn't use it.  
+Then someone realized that the name was trademarked by someone else. It was actually people we know there in **Novosibirsk in Russia** doing something. It's not a language, but it was a compiler, and we couldn't use it.
 
-This is when we started looking for another name. It was very painful — looking for names. Guys, this is so bad. It's one of the worst things because you never know what name will work unless you want to do an extensive study.  
+This is when we started looking for another name. It was very painful — looking for names. Guys, this is so bad. It's one of the worst things because you never know what name will work unless you want to do an extensive study.
 
-And then all the good names are taken, of course. Then some of the names that are not taken are not taken because they're not really **Google-able**.  
+And then all the good names are taken, of course. Then some of the names that are not taken are not taken because they're not really **Google-able**.
 
-Some people are just very brave. People who named their language **Go**. This is why people now call it **Golang** because otherwise you can't identify it. It's a verb in English, a very common word.  
+Some people are just very brave. People who named their language **Go**. This is why people now call it **Golang** because otherwise you can't identify it. It's a verb in English, a very common word.
 
-Yeah, so we had weird options. In one of my old presentations, I found a list of early names:  
+Yeah, so we had weird options. In one of my old presentations, I found a list of early names:
 
-- Robusta (a flavor of coffee)  
-- Up  
-- G  
-- Something else like that  
+- Robusta (a flavor of coffee)
+- Up
+- G
+- Something else like that
 
 And those weren't great.
 
 ---
 
-By that time, other languages were popping up. One of the alternative languages was called **Ceylon**. The logic was: Java was the island of coffee. And Ceylon was an island of tea.  
+By that time, other languages were popping up. One of the alternative languages was called **Ceylon**. The logic was: Java was the island of coffee. And Ceylon was an island of tea.
 
-**Dmitry Jemerov** basically looked out of the window and said,  
+**Dmitry Jemerov** basically looked out of the window and said,
 
-> "OK, we have an island here in St. Petersburg. In the Gulf of Finland, there's a big island called Kotlin."  
+> "OK, we have an island here in St. Petersburg. In the Gulf of Finland, there's a big island called Kotlin."
 
-And it's a good name in the sense that it's very Google-able. Nobody uses it for anything. It's very recognizable. It's not super smooth for many languages, but it's kind of OK.  
+And it's a good name in the sense that it's very Google-able. Nobody uses it for anything. It's very recognizable. It's not super smooth for many languages, but it's kind of OK.
 
-Nobody was in love with that name and we were kind of hesitant.  
+Nobody was in love with that name and we were kind of hesitant.
 
-You know, "Kot" means a bad thing in German. Also, there is like some negative connotation in Mandarin, I was told, or something like that. You know, it's always some language has some nasty association with any word.  
+You know, "Kot" means a bad thing in German. Also, there is like some negative connotation in Mandarin, I was told, or something like that. You know, it's always some language has some nasty association with any word.
 
-We basically were super hesitant. So when we announced, and we had this deadline, that we were basically putting this off, when we announced, we were still not sure.  
+We basically were super hesitant. So when we announced, and we had this deadline, that we were basically putting this off, when we announced, we were still not sure.
 
 So we called it, we decided it would be a **code name**. We called it **Project Kotlin** to have wiggle room to later replace the name — but it stuck.
 
 ---
 
-The first thing we did was put out basically a **Confluence page** with a description of the language. It was just a bunch of wiki pages and there was no compiler available then, I think.  
+The first thing we did was put out basically a **Confluence page** with a description of the language. It was just a bunch of wiki pages and there was no compiler available then, I think.
 
-There, the word Kotlin appeared many, many times. I was like,  
+There, the word Kotlin appeared many, many times. I was like,
 
-> "My God, this thing doesn't, like, I can't do search and replace and then change the name everywhere."  
+> "My God, this thing doesn't, like, I can't do search and replace and then change the name everywhere."
 
-So the workaround that I came up with was to create an empty page called **Kotlin**. And so it had a name. And then everywhere else, you mention it as a page. When you rename a page, it gets renamed everywhere.  
+So the workaround that I came up with was to create an empty page called **Kotlin**. And so it had a name. And then everywhere else, you mention it as a page. When you rename a page, it gets renamed everywhere.
 
 This is why there was an empty page called Kotlin in that documentation. But yeah, the name stuck and it turns out to be not a bad name.
 
 ---
 
-So, when it started, what were the main differences with Kotlin compared to Java? Because Java was, what was the big one? How did you explain to developers who initially started onboard or wanted to give it a go?  
+So, when it started, what were the main differences with Kotlin compared to Java? Because Java was, what was the big one? How did you explain to developers who initially started onboard or wanted to give it a go?
 
-Yeah, I guess there were a few major selling points. Then there were other things on top of that. When we started, like in the very beginning, we didn't have **null safety** in mind. Null safety came a little later.  
+Yeah, I guess there were a few major selling points. Then there were other things on top of that. When we started, like in the very beginning, we didn't have **null safety** in mind. Null safety came a little later.
 
-After one of the internal presentations, it was **Max Shafirov** who invited **Roman Elizarov**, who later was the project lead for Kotlin. Roman came and listened to the presentation, gave some feedback, and said something like,  
+After one of the internal presentations, it was **Max Shafirov** who invited **Roman Elizarov**, who later was the project lead for Kotlin. Roman came and listened to the presentation, gave some feedback, and said something like,
 
-> "Guys, if you want to do something really big for enterprise developers, figure out null safety."  
+> "Guys, if you want to do something really big for enterprise developers, figure out null safety."
 
-And we did. It took a while.  
+And we did. It took a while.
 
 So in the very beginning, it was the general idea of what makes **Java feel so outdated**. There were a bunch of things. Lambdas were very big.
 The general, like, the general feeling from **Java** back then was it was very verbose. It was called the **ceremony language**. A lot of people were grumpy about too many keywords, like **public static void main** is something everybody was really grumpy about.
@@ -448,7 +448,7 @@ There is like, when you call generic functions, you use **angle brackets inside 
 
 Yeah, look, you can do anything about it. And the way other languages handle this is:
 
-- **Java**, for example, when you're passing type arguments to a call, it has to be after a dot. So you say `collections.<Type>functionName()`.  
+- **Java**, for example, when you're passing type arguments to a call, it has to be after a dot. So you say `collections.<Type>functionName()`.
   Really awkward. Which is kind of weird.
 - And the way **Scala** deals with that, they use **square brackets for types**. And then arrays can't use square brackets, so they use round brackets. Which is unfamiliar, like, it's not the end of the world. Scala is doing fine, but still.
 - And **C Sharp** uses **angle brackets** because there's a **hack in the parser** that basically disambiguates ad hoc.
@@ -467,7 +467,7 @@ So all that side basically was inspired by how Groovy people did this and rework
 
 So, yeah, many, many things came from different languages.
 
-A less known language called **Gosu**, I think it was what inspired us to do **smart casts**. 
+A less known language called **Gosu**, I think it was what inspired us to do **smart casts**.
 
 What are smart casts? Oh, yeah. So, I think smart casts are **one of the nicest things a compiler can do to a developer**. Because it's a very common situation when you say:
 
@@ -517,7 +517,7 @@ This is the **saddest story** I think in the design of Kotlin. I didn't realize 
 
 The logic was:
 
-``` 
+```
 okay, we have if as an expression already,
 can we just get rid of this extra syntax construct,
 especially given that it's using very precious characters?
@@ -586,7 +586,7 @@ But then when Java sees the Kotlin collections, they are normal again. When we e
 Okay, I'm starting to see why you said you need a lot of money for this because this is just one of many things. But this itself sounds like, I don't know how you solve that.
 
 Yeah, so just to add a little bit of detail to this.
-So the nice thing about those **read-only collections** is that you can pass a list of string for a list of object, right? 
+So the nice thing about those **read-only collections** is that you can pass a list of string for a list of object, right?
 
 Wouldn't it be nice if a **Kotlin method** that takes a list of any could accept a list of string in Java? But aren't we erasing all the Kotlin nice stuff? We are, but we know that this list is actually what's called **covariant**. So we can expose it to Java as a list of **question mark extends** and not just list of objects. So, you know, it becomes covariant for the Java world as well. And that's like one hack that makes it a little more transparent.
 
@@ -596,7 +596,7 @@ But basically, so **Java doesn't know anything about nulls**, right? Well, it kn
 
 And this is where we started. We said, okay, so Kotlin types can be **not null** and it's very convenient. And when you have a not null type, you can just call a method on it normally, right? But if something is nullable, you can't just dereference it. You have to first check for null and then use it, right? Or if there is a **safe call operator**, well, just propagate null is on the left-hand side.
 
-So we started with saying, 
+So we started with saying,
 
 > "Okay, all Java types are nullable, which is a conservative, like very mathematical way of treating it."
 
@@ -606,7 +606,7 @@ And there were like, we had some **annotations** for the Java side. It was also 
 
 And basically we realized that this assumption that everything in Java has to be treated as nullable just doesn't work. This was a turning point where we sat down and reimagined the whole thing.
 
-And we worked with a great **type theory** type practice, I would say, guy from, I think it was back then he was in **Cornell**, **Ross Tate**. So Ross helped me figure out the sort of mathematical side of how you can represent those types that come from Java and should be, like we should be aware of that they are from Java and can possibly be nullable. 
+And we worked with a great **type theory** type practice, I would say, guy from, I think it was back then he was in **Cornell**, **Ross Tate**. So Ross helped me figure out the sort of mathematical side of how you can represent those types that come from Java and should be, like we should be aware of that they are from Java and can possibly be nullable.
 
 But we shouldn't treat them as nullable because it was very inconvenient. And Ross put together a very nice sort of **calculus** about those.
 
@@ -699,9 +699,9 @@ We have different options. And one option a lot of languages go for is:
 
 But it's a little hard for people then to manage their versions because new libraries, new versions of libraries come with new compiler expectations and you have to migrate your entire project to do that. It's a little annoying. And if what you're adding is like one method that basically invalidates the whole library for an old compiler, that's not great.
 
-So what we're doing is a newer compiler can write something into the binary that tells the old compiler, **"okay, this method is what you can't understand, but everything else is fine."** 
+So what we're doing is a newer compiler can write something into the binary that tells the old compiler, **"okay, this method is what you can't understand, but everything else is fine."**
 
-> Wow, that's smart.  
+> Wow, that's smart.
 > Yeah.
 
 So we call this a **message from the future** and like it can provide some details. So there's that.
@@ -710,7 +710,7 @@ And there's also the discipline of **experimental features**, which is incredibl
 
 **Andrei just talked about experimental features in programming languages** and how that used to be rare back in the 2010s. What this reminded me is that running experiments in production used to also be rare. Not because teams did not want to do it, but because doing it meant building a lot of internal tooling around it:
 
-``` 
+```
 Assignment, rollouts, measurements, dashboard, debugging, the whole thing.
 ```
 
@@ -915,9 +915,9 @@ So this was basically the moment happening.
 
 I knew many years before that the easiest way for a language to succeed is to be part of a **platform**.
 
-For example:  
-- C was part of **Unix**  
-- C Sharp was part of **Windows**  
+For example:
+- C was part of **Unix**
+- C Sharp was part of **Windows**
 - JavaScript was part of the **web platform**
 
 And I knew that **Kotlin had no platform**.
@@ -944,7 +944,7 @@ So, you can imagine a normal program, some application code. A lot of the things
 
 There are, you know, it depends on how detailed the specification is. But you can tell me a lot less than you would have to tell a compiler.
 
-And so, this is the point with **Codespeak**. We want to basically shrink the amount of information a programmer needs to tell the computer to make the program work. From my current anecdotal experience, you can shrink a lot of the code about **10x**. 
+And so, this is the point with **Codespeak**. We want to basically shrink the amount of information a programmer needs to tell the computer to make the program work. From my current anecdotal experience, you can shrink a lot of the code about **10x**.
 
 Which means that a lot of projects out there can be a lot smaller. And it will be a lot easier for humans to deal with that and a lot easier to read — and reading is the most important bit — and a lot easier to navigate.
 
@@ -997,26 +997,26 @@ And, you know, there are ways around it. I think the later models added some mor
 
 Also, challenge number two, I don't think there necessarily has to exist a language that makes it better because LLMs are trained on **human language**. Their knowledge of programming languages is part of that. Their power is in having been exposed to **all the code in the world** and its existing code. And inventing a new language for that, I don't know how promising that can be.
 
-You can do another thing, which is an interesting research project. You can sort of **extract a language from an LLM** because, internally, it has some intermediate representations of what's going on during inference. And maybe you can sort of extract the **optimal prompting language**. 
+You can do another thing, which is an interesting research project. You can sort of **extract a language from an LLM** because, internally, it has some intermediate representations of what's going on during inference. And maybe you can sort of extract the **optimal prompting language**.
 
 > It's not guaranteed to be intelligible to humans. And there are some experiments that show that you can create completely unintelligible prompts that give the same results as normal human prompts, but they will be shorter.
 
 You maybe can do something like this. I don't know if it will help a lot. But what we're doing in **code speak** as part of working in this language, we need to really nail down this **query language capacity**.
 
-What we're doing now is we are looking at existing code, and we're trying to find the **shortest English descriptions** for this code that can generate equivalent implementations—not necessarily character to character, but they have to work the same way. 
+What we're doing now is we are looking at existing code, and we're trying to find the **shortest English descriptions** for this code that can generate equivalent implementations—not necessarily character to character, but they have to work the same way.
 
 That's an interesting exercise because you need to figure out how to represent the ideas in the code in a way that:
 
 - You can generate the same kind of code.
 - The ideas are represented much more compactly.
 
-But also, this code you represent evolves over time, right? So you have a **commit history** on top of this version. Going forward in time, you need to be able to represent all the changes in your **code speak version**. 
+But also, this code you represent evolves over time, right? So you have a **commit history** on top of this version. Going forward in time, you need to be able to represent all the changes in your **code speak version**.
 
 You need to make sure that when it's a small change in the original code, the change in the spec is smaller. That's an interesting challenge. So in this way, we're sort of **discovering code speak as a language**, or at least parts of it, and not really designing that bit of it.
 
 You know, it's a very new world in the sense that, nowadays, if you work with AI, **everything is a machine learning problem**. That means, back in the day, if you had a very smart algorithm on paper, you could just implement it and make sure it works. Nowadays, whatever algorithms you have in mind, you need the dataset.
 
-First of all, like if you don't know how to collect a dataset, don't even start. And, yeah, this is what we're doing. 
+First of all, like if you don't know how to collect a dataset, don't even start. And, yeah, this is what we're doing.
 
 So just taking a look at, you are using these tools day in, day out. I mean, you're building with them. How do you think programming as a whole, or I'll say **software engineering**, is being changed by AI? And how do you think the future is starting to look? Especially thinking about software engineers. You're a **software engineer** yourself. You've written so much code in your life. And are you still writing code?
 
@@ -1037,8 +1037,8 @@ Yeah, so it turns out I'm talking to a machine in human language. But the way I 
 
 So, yeah, so what we're trying to do in the **Codespeak** is to **elevate everything to the human language level**. So this is where we start. We say, okay, we have this incredible tool. We can prompt agents to implement code for us. And we are just picking it up. So I think a lot of teams haven't yet realized how difficult it is to review the code.
 
-And I've talked to people who are like,  
-> "Maybe we can just not review this code."  
+And I've talked to people who are like,
+> "Maybe we can just not review this code."
 
 I'm like, yeah, I mean, you can for a couple of days and then it just collapses. And I think another big theme of today is that we'll be doing a lot of **testing**.
 
@@ -1064,8 +1064,8 @@ So one thing I know about the future and it's hard to know the future, but this 
 
 Yeah. And humans, I know I can build a tool for them.
 
-I guess an important footnote is that many people will say things like,  
-> "If we have smart enough models, they can review the code themselves and they can test the code themselves."  
+I guess an important footnote is that many people will say things like,
+> "If we have smart enough models, they can review the code themselves and they can test the code themselves."
 
 But then my question would be like, **who's making the decisions here?**
 
@@ -1125,64 +1125,64 @@ You yourself have coded for a longer time. What would your advice be for develop
 I think we, and I talk with some folks, a lot of people message me as well. How are you thinking about this specifically these last few months? It's really hard to give advice.
 
 There are a few ideas I can share.
-So one thing is there's a lot of **hype** and a lot of it gets to the **management** and a lot of people make **suboptimal decisions**. But that will go away.  
+So one thing is there's a lot of **hype** and a lot of it gets to the **management** and a lot of people make **suboptimal decisions**. But that will go away.
 
-So, you know, there's more and more news about people not hiring **junior developers**, for example.  
-- This is dumb.  
-- It's stupid.  
-- This is dumb.  
-This is not going to stay for long. I mean, it's hard to tell how long this can go on. But people will figure out that they need **new people in the industry**.  
+So, you know, there's more and more news about people not hiring **junior developers**, for example.
+- This is dumb.
+- It's stupid.
+- This is dumb.
+This is not going to stay for long. I mean, it's hard to tell how long this can go on. But people will figure out that they need **new people in the industry**.
 
-And a lot of other things can be really stressful in the moment, but some of them will be rolled back. So that's one thing.  
+And a lot of other things can be really stressful in the moment, but some of them will be rolled back. So that's one thing.
 
-Another thing, it's absolutely worth it to invest your time into learning these **tools** and getting good at it. There's a lot of skepticism around in the developer community about how useful it actually is. And, you know, I tried it on my project and it's no good.  
+Another thing, it's absolutely worth it to invest your time into learning these **tools** and getting good at it. There's a lot of skepticism around in the developer community about how useful it actually is. And, you know, I tried it on my project and it's no good.
 
-There is quite a bit of **skill** to using these tools. Unfortunately, it's not super formalizable. At least so far, nobody figured out a really good, clear way of communicating how to do it well. But there are people who can do it much better than others. They not always can't articulate why their prompts work better. But, you know, you can learn it. You can get a lot better at it.  
+There is quite a bit of **skill** to using these tools. Unfortunately, it's not super formalizable. At least so far, nobody figured out a really good, clear way of communicating how to do it well. But there are people who can do it much better than others. They not always can't articulate why their prompts work better. But, you know, you can learn it. You can get a lot better at it.
 
-And, you know, not necessarily believing everyone on Twitter. Some people claim crazy things, but you can be very productive with these things when you use them well. And it's absolutely worth investing into that.  
+And, you know, not necessarily believing everyone on Twitter. Some people claim crazy things, but you can be very productive with these things when you use them well. And it's absolutely worth investing into that.
 
-And yeah, so as I mentioned before, in the future, it will still be **engineers building complex systems**. So keep that in mind. It's not like we all go to nothing.  
+And yeah, so as I mentioned before, in the future, it will still be **engineers building complex systems**. So keep that in mind. It's not like we all go to nothing.
 
-And for new grads, people coming out of university, what would your advice be for them who are like determined, like, "all right, I actually want to be a standout engineer. Maybe with these tools, I can do it faster." What would you advise them to focus on either skills or experiences to get?  
+And for new grads, people coming out of university, what would your advice be for them who are like determined, like, "all right, I actually want to be a standout engineer. Maybe with these tools, I can do it faster." What would you advise them to focus on either skills or experiences to get?
 
-I guess it's a matter of what your inclinations are.  
+I guess it's a matter of what your inclinations are.
 
-- If you can just become incredibly productive and put out a lot of working code that is really robust and you can evolve it for a long time, get good at that. And, like, there is a lot to be done there.  
-- If you can or like to do harder things, go into the most **hardcore things** you can and get good at that because it will be your rare expertise. It will be marketable. Even if that very thing goes away, you will just become a lot smarter through that.  
+- If you can just become incredibly productive and put out a lot of working code that is really robust and you can evolve it for a long time, get good at that. And, like, there is a lot to be done there.
+- If you can or like to do harder things, go into the most **hardcore things** you can and get good at that because it will be your rare expertise. It will be marketable. Even if that very thing goes away, you will just become a lot smarter through that.
 
-So, you know, generally, if you have any inclination in looking under the hood and figuring out how things work, go as deep as you can. As a younger person, you have a lot of mental capacity for that. And this helps a lot. You become a very good expert in very wide fields, just through drilling down on many things.  
+So, you know, generally, if you have any inclination in looking under the hood and figuring out how things work, go as deep as you can. As a younger person, you have a lot of mental capacity for that. And this helps a lot. You become a very good expert in very wide fields, just through drilling down on many things.
 
-That's closing. I just wanted to do some rapid questions. I just ask and you shoot what comes next.  
+That's closing. I just wanted to do some rapid questions. I just ask and you shoot what comes next.
 
-**What is a favorite tool that you have? It can be digital. It doesn't have to be digital.**  
+**What is a favorite tool that you have? It can be digital. It doesn't have to be digital.**
 
-> Well, I love my **AirPods**. They're incredibly convenient. They fit under my earmuffs.  
+> Well, I love my **AirPods**. They're incredibly convenient. They fit under my earmuffs.
 
-Well, another tool would be **earmuffs**.  
+Well, another tool would be **earmuffs**.
 
-> Earmuffs. Incredibly good.  
+> Earmuffs. Incredibly good.
 
-Yeah, I saw you wearing it. I'll take that one, Earmuff.  
+Yeah, I saw you wearing it. I'll take that one, Earmuff.
 
-**And what's a book recommendation that you recommend and why?**  
+**And what's a book recommendation that you recommend and why?**
 
-There is this classic that's been recommended across the tech community for many years. It's called ***Zen and the Art of Motorcycle Maintenance.***  
+There is this classic that's been recommended across the tech community for many years. It's called ***Zen and the Art of Motorcycle Maintenance.***
 
-> I heard that recommended.  
+> I heard that recommended.
 
-Yeah, it's a very good book. I mean, there is a part of it that's about technology and how to deal with the real systems and others, but it's also a very good novel. I really like it.  
+Yeah, it's a very good book. I mean, there is a part of it that's about technology and how to deal with the real systems and others, but it's also a very good novel. I really like it.
 
-Well, **Andrew**, thank you so much. This was very interesting and I think inspiring as well.  
+Well, **Andrew**, thank you so much. This was very interesting and I think inspiring as well.
 
-Thank you very much. It was great to chat.  
+Thank you very much. It was great to chat.
 
-It was great. Thank you.  
+It was great. Thank you.
 
-The thing that struck me most from this conversation with **Andrey** was his observation about how we work with **AI coding agents today**. You talk to an agent and play in English. It generates code. You commit the code. But that conversation, your actual intent, it disappears. You communicate with the machine in human language, but with your teammates in code, in machine language.  
+The thing that struck me most from this conversation with **Andrey** was his observation about how we work with **AI coding agents today**. You talk to an agent and play in English. It generates code. You commit the code. But that conversation, your actual intent, it disappears. You communicate with the machine in human language, but with your teammates in code, in machine language.
 
-Whether or not **CodeSpeak** becomes the answer, what is sure is that we're missing an **intent layer**. And someone is going to figure out how to preserve it.  
+Whether or not **CodeSpeak** becomes the answer, what is sure is that we're missing an **intent layer**. And someone is going to figure out how to preserve it.
 
-If you enjoyed this episode, please do share it with a colleague who's been thinking about where programming is headed. And if you're not subscribed yet, now's a good time. We have more conversations like this one coming.  
+If you enjoyed this episode, please do share it with a colleague who's been thinking about where programming is headed. And if you're not subscribed yet, now's a good time. We have more conversations like this one coming.
 
 Thank you and see you in the next one.
 

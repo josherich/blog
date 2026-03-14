@@ -2,7 +2,7 @@
 layout: post
 title: "Africa and the New World Order: U.S. Pulls Back and China Moves Forward"
 date: 2026-01-27 00:00:01
-categories: podcast the-china-global-south-podcast
+categories: podcast
 tags: [podcast_script]
 ---
 
@@ -48,9 +48,9 @@ A story in **The Guardian** came out, and it just feels like every day we're get
 
 Let me just read you from this story:
 
-> "U.S. diplomats have been encouraged," I'm quoting here from The Guardian story,  
-> to, quote,  
-> **"unabashedly and aggressively remind African governments about the generosity of the American people,"**  
+> "U.S. diplomats have been encouraged," I'm quoting here from The Guardian story,
+> to, quote,
+> **"unabashedly and aggressively remind African governments about the generosity of the American people,"**
 > according to a leaked email sent to staff in the **U.S. State Department's Bureau of African Affairs.**
 
 And this is from **Nick Checker** (actually **Nicole Checker**), who is the acting assistant secretary for the Bureau of African Affairs. And here's what he said, quote:
@@ -102,7 +102,7 @@ Number two, saying the quiet part out loud and then expecting your team to do th
 So I think it works on two levels.
 
 1. One, I don't think it's accurate. I disagree. Obviously, I wrote a strategy under **President Biden** that highlighted the increasing strategic importance of Africa.
-2. I think that historically, people have believed that Africa is important. They may have not been able to put the resources against it.  
+2. I think that historically, people have believed that Africa is important. They may have not been able to put the resources against it.
 3. And then three, how are you going to be a functioning, effective administration when you're telling your workforce that this isn't that important?
 
 **Kobus**, let me get your take on this. When the top **U.S. diplomat for Africa**, the equivalent—remember **Wu Peng**, who's the ambassador in **South Africa**, used to be in that role, in the Chinese role, in the equivalent in China. But when you hear that from the top U.S. diplomat in Africa, what's your reaction?
@@ -127,7 +127,7 @@ Now, however, we have the new **National Security Strategy** that effectively sa
 - The US is not going to compete against China in other parts of the world.
 - The **Western Hemisphere** is the priority.
 
-Is it surprising to you, Judd? And **Kobus**, I’d like your take too. We're no longer seeing competition with China as the key framing mechanism shaping policy. Nick is not talking about China anymore; he’s saying it’s not important. 
+Is it surprising to you, Judd? And **Kobus**, I’d like your take too. We're no longer seeing competition with China as the key framing mechanism shaping policy. Nick is not talking about China anymore; he’s saying it’s not important.
 
 This is a very sharp pivot from the past quarter century.
 
@@ -160,103 +160,103 @@ By the way, all the concerns from the **Trump and Biden administrations** about 
 They just don’t say the word **China** explicitly. China is no longer the primary actor of concern for these activities. Instead, the vision of China in the world and what it means to the US is much narrower.
 
 Of course, this narrower vision causes cascading effects in how we talk about China and Africa.
-And by the way, as I said in this piece that we're going to talk about, when I would make the argument about **China and Africa**, oftentimes I'd still lose resources. The resources would go to the **Indo-Pacific** or other places. So I just think it's important to have that framing. 
+And by the way, as I said in this piece that we're going to talk about, when I would make the argument about **China and Africa**, oftentimes I'd still lose resources. The resources would go to the **Indo-Pacific** or other places. So I just think it's important to have that framing.
 
 **What are you trying to articulate? What is the case that you are making? And does it resonate?**
 
-So maybe it would then be helpful. Just kind of circle back to that same kind of question that I was asking your former colleague in the **U.S.** 
+So maybe it would then be helpful. Just kind of circle back to that same kind of question that I was asking your former colleague in the **U.S.**
 
-So, outside of moral imperatives to support development, for example, or to support global health, narrowly looking at the **U.S.** in kind of interests, like what are core interests for the **U.S. in Africa**, particularly as it relates to **critical minerals**? Of course, we jump number one onto this conversation. 
+So, outside of moral imperatives to support development, for example, or to support global health, narrowly looking at the **U.S.** in kind of interests, like what are core interests for the **U.S. in Africa**, particularly as it relates to **critical minerals**? Of course, we jump number one onto this conversation.
 
-But if we leave for the moment the stuff under the ground in Africa kind of out of the conversation, which is difficult to leave out for a while— 
+But if we leave for the moment the stuff under the ground in Africa kind of out of the conversation, which is difficult to leave out for a while—
 
-**Yeah, but Kobus, I'm sorry. Why would you do that?** 
+**Yeah, but Kobus, I'm sorry. Why would you do that?**
 
 Because the **Trump administration** has made it abundantly clear that that is the priority. I mean, you saw the **U.S.-DRC mineral deal**. There is nothing else. So leaving the critical minerals off the table really takes everything off the table for the Trump administration, as they've articulated it.
 
 I'm leaving it off the table because for **critical minerals**, you don't even really need a real relationship with the country itself, because you can simply work with mining companies to extract that.
 
-So in terms of the actual work of diplomacy in Africa, where you actually need to set up relationships, critical minerals is not actually that **relationship dependent**, but other things are—like other more kind of core priorities would be. 
+So in terms of the actual work of diplomacy in Africa, where you actually need to set up relationships, critical minerals is not actually that **relationship dependent**, but other things are—like other more kind of core priorities would be.
 
-So, like, what do you think that kind of **relationship-based priorities** are? 
+So, like, what do you think that kind of **relationship-based priorities** are?
 
 Look, I wrote this in the strategy, and I still believe it. I don't think the Trump administration cares a hoot about this, but I believe the future is **African demographically**. I think that for global stability, you need a **global order**. And I don't believe that we can build a global order that really works without **African voices**.
 
-And in particular for the **U.S.**, a global order that continues to work for the U.S.—building relationships with African leaders and publics, understanding their priorities, their interests, their agenda, and working together to craft something that is inclusive and enduring—in some respects, is the challenge of the 21st century. 
+And in particular for the **U.S.**, a global order that continues to work for the U.S.—building relationships with African leaders and publics, understanding their priorities, their interests, their agenda, and working together to craft something that is inclusive and enduring—in some respects, is the challenge of the 21st century.
 
-And I don't think you can negate or ignore Africans for that. 
+And I don't think you can negate or ignore Africans for that.
 
 And everything else that we've talked about, by the way, those all underpin that partnership:
 
-- Investing in health  
-- Investing in democracy  
-- Investing in security and conflict resolution  
+- Investing in health
+- Investing in democracy
+- Investing in security and conflict resolution
 
 Countries that are in conflict or have low socioeconomic growth, or many of them that are maybe trapped by autocratic or authoritarian rule, they're not going to be the best partners when it comes to building this global order.
 
-You know, I've said this before, but I'll say it again. 
+You know, I've said this before, but I'll say it again.
 
 **It is astounding to me how many Africans are now leading all the most important global bodies in the world.**
 
-Now, again, the U.S. is stepping away from them, but I'll just say it for the audience, right? 
+Now, again, the U.S. is stepping away from them, but I'll just say it for the audience, right?
 
-- The head of the **World Trade Organization**  
-- The head of the **World Health Organization**  
-- The head of the **International Labor Organization**  
-- The head of the **Organization of Islamic Cooperation**  
-- The **Francophonie**  
-- The **Commonwealth**  
-- Even the **Olympics**  
+- The head of the **World Trade Organization**
+- The head of the **World Health Organization**
+- The head of the **International Labor Organization**
+- The head of the **Organization of Islamic Cooperation**
+- The **Francophonie**
+- The **Commonwealth**
+- Even the **Olympics**
 
 Those are all headed by Africans.
 
-So if you have a goal, which I do, in terms of crafting an **international order**, rewriting an international order that works for the world, but particularly works for U.S. interests, for freedom of navigation, for rules of the road on trade, Africans have to be at the table. 
+So if you have a goal, which I do, in terms of crafting an **international order**, rewriting an international order that works for the world, but particularly works for U.S. interests, for freedom of navigation, for rules of the road on trade, Africans have to be at the table.
 
-And that is one reason why we should be investing in them. 
+And that is one reason why we should be investing in them.
 
 And you can't have good cooperation with partners if you've imposed visa sanctions, if you talk disparagingly about them, if you cut all your assistance, if you pull all your ambassadors, if you say that this is not important to you.
 
-So that's my position. And I understand that may sound out of time, but I genuinely believe that. I get it that you believe it. I mean, it's nothing that I recognize from current U.S. policy, as you've acknowledged. 
+So that's my position. And I understand that may sound out of time, but I genuinely believe that. I get it that you believe it. I mean, it's nothing that I recognize from current U.S. policy, as you've acknowledged.
 
 And I think you—you know, I'm not going to say anything that shocks you, but the president has been very clear that he thinks **Somalis are garbage**. He's believing in these kinds of made-up fantasies about **white genocide in South Africa**. He's threatened to—I mean, he actually did bomb parts of Nigeria. The majority of the countries on the visa ban list and now the visa bond list are African countries.
-I mean, you really can't do more damage in the way you're framing things than what's been done over the past year.  
+I mean, you really can't do more damage in the way you're framing things than what's been done over the past year.
 
-And one of the things that we were in **Jakarta last week meeting with a variety of stakeholders**, and one of the things that we picked up here in Jakarta, and I've heard this elsewhere in **Southeast Asia**, is just how **U.S. credibility has collapsed** to a level that I think most Americans have no idea because they don't hear it in the mainstream discourse in the U.S.  
+And one of the things that we were in **Jakarta last week meeting with a variety of stakeholders**, and one of the things that we picked up here in Jakarta, and I've heard this elsewhere in **Southeast Asia**, is just how **U.S. credibility has collapsed** to a level that I think most Americans have no idea because they don't hear it in the mainstream discourse in the U.S.
 
-But it is shocking to see how far **U.S. credibility has collapsed**. By the way, we have data on this coming out of **Europe now** that only one out of eight Europeans has any positive things to say about the United States. And in **Africa, the assaults from the U.S. on Southeast Asia and Europe**, well, Europe's been pretty rough, but nowhere near as what we've seen with Africa.  
+But it is shocking to see how far **U.S. credibility has collapsed**. By the way, we have data on this coming out of **Europe now** that only one out of eight Europeans has any positive things to say about the United States. And in **Africa, the assaults from the U.S. on Southeast Asia and Europe**, well, Europe's been pretty rough, but nowhere near as what we've seen with Africa.
 
-How do you feel that U.S. can recover, if it can recover, from what's happened? And we're only one year out of four years into this administration.  
+How do you feel that U.S. can recover, if it can recover, from what's happened? And we're only one year out of four years into this administration.
 
-Yeah, I mean, what did **Mark Carney say at Davos earlier this week, that there's been a rupture?**   
-> "It's a rupture. Not a transition, it's a rupture."  
+Yeah, I mean, what did **Mark Carney say at Davos earlier this week, that there's been a rupture?**
+> "It's a rupture. Not a transition, it's a rupture."
 
-And there's no denying that. And there's no justifying, at least in my mind, for where we are headed and heading.  
+And there's no denying that. And there's no justifying, at least in my mind, for where we are headed and heading.
 
-For me, the most important thing to be doing is building the **people-to-people relationships that still exist**. Kobus was just talking about this a couple podcasts ago about the way **South Africans still think about the American people, if not the Trump administration.**  
+For me, the most important thing to be doing is building the **people-to-people relationships that still exist**. Kobus was just talking about this a couple podcasts ago about the way **South Africans still think about the American people, if not the Trump administration.**
 
-And two, thinking about what comes after the damage that has been wrought by this administration. When the Biden administration came into power, they talked about **building back better**. That's a fallacy at this point. We're starting over. We have to start over, because what we knew prior to 2025 is being eviscerated as we speak.  
+And two, thinking about what comes after the damage that has been wrought by this administration. When the Biden administration came into power, they talked about **building back better**. That's a fallacy at this point. We're starting over. We have to start over, because what we knew prior to 2025 is being eviscerated as we speak.
 
-And we're going to have to, I think, people who are like-minded, Africans and Americans and other partners, we're going to have to build something totally different. And so at this point, we have to think, what is that going to be? And how do we do it in a way that is going to be more equitable?  
+And we're going to have to, I think, people who are like-minded, Africans and Americans and other partners, we're going to have to build something totally different. And so at this point, we have to think, what is that going to be? And how do we do it in a way that is going to be more equitable?
 
-Because as you're right, right now, the **U.S.'s brand is being severely damaged**. And the only way to restart is to **reset**. We need to relaunch, right? We need to relaunch the U.S. brand.  
+Because as you're right, right now, the **U.S.'s brand is being severely damaged**. And the only way to restart is to **reset**. We need to relaunch, right? We need to relaunch the U.S. brand.
 
-It's going to be maybe a decadal, multi-decadal effort. But let's start with first principles. Let's start with commonalities. Let's acknowledge, we'll have to acknowledge what has happened.  
+It's going to be maybe a decadal, multi-decadal effort. But let's start with first principles. Let's start with commonalities. Let's acknowledge, we'll have to acknowledge what has happened.
 
-And then we should be critical both of the moment that we're in right now. But we can also, if we're going to be really thoughtful, be critical of previous administrations, Republican and Democrat, whether they worked or didn't work. And what else do we want?  
+And then we should be critical both of the moment that we're in right now. But we can also, if we're going to be really thoughtful, be critical of previous administrations, Republican and Democrat, whether they worked or didn't work. And what else do we want?
 
-But I don't disagree with anything you've said, Eric. Like, it's a terrible time right now for **U.S.-Africa relations**. And the only question to me is, in this moment, what can we preserve, you know, outside of a government-to-government relationship?  
+But I don't disagree with anything you've said, Eric. Like, it's a terrible time right now for **U.S.-Africa relations**. And the only question to me is, in this moment, what can we preserve, you know, outside of a government-to-government relationship?
 
-And then what can we think about starting over and building from scratch and building anew and relaunching a relationship that is really battered right now?  
+And then what can we think about starting over and building from scratch and building anew and relaunching a relationship that is really battered right now?
 
-One of the interesting things, like, as Eric mentioned, we were in Jakarta last week. And so, one of the very interesting conversations we had was with people from this **Indonesian think tank** who do regular opinion kind of surveys of Indonesian perceptions of China.  
+One of the interesting things, like, as Eric mentioned, we were in Jakarta last week. And so, one of the very interesting conversations we had was with people from this **Indonesian think tank** who do regular opinion kind of surveys of Indonesian perceptions of China.
 
-And one of the interesting takeaways was that the Indonesians don't tend to think of China as either an adversary or particularly a massive ally, even though there's very high approval for working with China in particular fields. And they actually phrase it as they don't see China as an adversary or an ally. They just see it as basically a big mountain of opportunities.  
+And one of the interesting takeaways was that the Indonesians don't tend to think of China as either an adversary or particularly a massive ally, even though there's very high approval for working with China in particular fields. And they actually phrase it as they don't see China as an adversary or an ally. They just see it as basically a big mountain of opportunities.
 
-I get a similar kind of vibe in **Africa** as well. You know, kind of there isn't, outside of maybe some leaders or some countries, there isn't a very close organic historical relationship with China. But still, China is seen as, in lots of ways, in a lot of key fields as basically the only game in town.  
+I get a similar kind of vibe in **Africa** as well. You know, kind of there isn't, outside of maybe some leaders or some countries, there isn't a very close organic historical relationship with China. But still, China is seen as, in lots of ways, in a lot of key fields as basically the only game in town.
 
-So, I was wondering if you could reflect a little bit about that. Like, you know, from your perspective in the U.S., like, how do you see the **China-Africa relationship** as it looks now? And what kind of spaces do you think that leaves for the U.S.?  
+So, I was wondering if you could reflect a little bit about that. Like, you know, from your perspective in the U.S., like, how do you see the **China-Africa relationship** as it looks now? And what kind of spaces do you think that leaves for the U.S.?
 
-I remember listening to that episode, Kobus, and the parallels which at least my friends, African friends, have said about the way they think about China, I think is very consonant with the way the Indonesians were explaining it to you or talking to you about it.  
+I remember listening to that episode, Kobus, and the parallels which at least my friends, African friends, have said about the way they think about China, I think is very consonant with the way the Indonesians were explaining it to you or talking to you about it.
 
 I think right now the **China-Africa relationship**, or the way the U.S. looks at it, is pretty narrow. In some respects, that's a positive thing. But it's all become just wrapped up in **critical minerals**.
 And the truth is, at this point, we don't even say **China** when we talk about **critical minerals**. Or at least it's three or four or five or six lines down, right? I think this administration thinks about China in Africa that way.
@@ -273,13 +273,13 @@ Yeah, that's fair. I mean, but the way I'm looking at it now, and especially bec
 
 And again, while in Washington, they only see **critical minerals**, what we see is this massive expansion of **e-mobility**. And we're not even talking about **EVs**. We're talking about:
 
-- Bicycles  
-- Motorcycles  
-- Tractors  
-- Tricycles  
-- Farm equipment  
-- Boats  
-- Delivery vans  
+- Bicycles
+- Motorcycles
+- Tractors
+- Tricycles
+- Farm equipment
+- Boats
+- Delivery vans
 - Boda-bodas
 
 I mean, you go down the list. It's Chinese mobility across Africa.
@@ -288,7 +288,7 @@ We see huge expansions of **Chinese technology**, **Chinese e-commerce services*
 
 And this was what confronted Africans in the early 2000s when the U.S. and Europe basically withdrew from the continent for the most part. You know, the Cold War was over. **Francis Fukuyama** declared *the end of history*. Europe was kind of saying, *"Do they know it's Christmas in Ethiopia and all the starving babies?"* And they just withdrew. There was no creativity in the policy, no vision.
 
-And **China** took full advantage of that and came in and said, *"We're going to start FOCAC. We're going to have a consistent relationship."* 
+And **China** took full advantage of that and came in and said, *"We're going to start FOCAC. We're going to have a consistent relationship."*
 
 And today we're in a situation where starting this year, the **FOCAC preparations for 2027** are going to get underway again. And yet **Europe and the U.S.** are completely missing in action when it comes to any type of creative vision for the continent. And yet the Chinese are having so many initiatives, one after another, that I think the gap between China and the rest of the world in terms of their engagement strategies on the continent is going to grow just immeasurably.
 
@@ -300,7 +300,7 @@ That's a free plug for you. That's a very small piece of D.C. that does that, th
 
 Let's do it.
 
-Yeah, but I'm giving you a plug. But what you find is, and I wrote about this in my **Substack**, is that you find that older narratives still sort of exist. So, you know, *debt trap diplomacy* or *Chinese labor.*  
+Yeah, but I'm giving you a plug. But what you find is, and I wrote about this in my **Substack**, is that you find that older narratives still sort of exist. So, you know, *debt trap diplomacy* or *Chinese labor.*
 
 And so there's one dynamic in which these conversations that you're raising about **e-mobility** or how the provinces in China are doing more in terms of investment in Africa, that doesn't— that's not even in Washington's ecosystem. That will take, unfortunately, it will take too long. And then they'll be focused on that and China will be on to the new thing.
 
@@ -309,115 +309,115 @@ So one, there's always this issue about the **dynasticism** of the China-Africa 
 I noted in the Substack that I had to correct a senior policymaker twice about some old language that actually wasn't accurate. So that's just one I want to make sure I address that.
 
 This other question about reinventing oneself — you know, you are right, Eric, that in the aftermath of the **Cold War**, in the end of the **Bush 41 administration** and in the beginning of the **Clinton administration**, there was a massive retrenchment in U.S. investment in Africa. We closed embassies, we closed U.S. aid missions, we cut the budget dramatically.
-We decided that we weren't going to do much. And then **Black Hawk Down happened** and the **Rwandan genocide happened**, and the **Clinton administration** was like, _"oh, I don't think that we can do this. I don't think that we can be bystanders."_ This wasn't a China conversation. This was just about the criticality of what's happening in **Africa**.  
+We decided that we weren't going to do much. And then **Black Hawk Down happened** and the **Rwandan genocide happened**, and the **Clinton administration** was like, _"oh, I don't think that we can do this. I don't think that we can be bystanders."_ This wasn't a China conversation. This was just about the criticality of what's happening in **Africa**.
 
-Which, by the way, he later said was one of the biggest regrets of his presidency. And that began a reset.  
+Which, by the way, he later said was one of the biggest regrets of his presidency. And that began a reset.
 
-And then under the **Bush administration**, really, we've got to, I think, the apogee of **U.S.-Africa policy** with huge amounts of investment, **PEPFAR** and **MCC** and all these other things. If you look at polling, right, U.S. is the most popular than it ever was during the end of the Bush administration.  
+And then under the **Bush administration**, really, we've got to, I think, the apogee of **U.S.-Africa policy** with huge amounts of investment, **PEPFAR** and **MCC** and all these other things. If you look at polling, right, U.S. is the most popular than it ever was during the end of the Bush administration.
 
-And so I like to believe that America and as Americans, Eric, we have to believe that we have a power of reinvention. And I've seen it in U.S. policy before: we went from a very limited **Cold War mindset** to a sort of absenteeism to a reinvention.  
+And so I like to believe that America and as Americans, Eric, we have to believe that we have a power of reinvention. And I've seen it in U.S. policy before: we went from a very limited **Cold War mindset** to a sort of absenteeism to a reinvention.
 
-And then, you know, now we're in this new phase where I will acknowledge, and I used to say this on your podcast when I wasn't in government, we were running out of steam. When we came in the Biden administration, we did try to put some more coal in the engine and try to go faster and go in a different direction.  
+And then, you know, now we're in this new phase where I will acknowledge, and I used to say this on your podcast when I wasn't in government, we were running out of steam. When we came in the Biden administration, we did try to put some more coal in the engine and try to go faster and go in a different direction.
 
-I don't think that we were fully successful in that. And now the boat's not even moving. It's going backwards. So it is going to take a huge amount of reinvention. And China's going to move it in its own trajectory.  
+I don't think that we were fully successful in that. And now the boat's not even moving. It's going backwards. So it is going to take a huge amount of reinvention. And China's going to move it in its own trajectory.
 
-But we need a **blue ocean strategy**, right? It's a business idea of, like, don't go where everyone's going and compete in that space. We've got to find our new a new space, a new definition, a new way of approaching it.  
+But we need a **blue ocean strategy**, right? It's a business idea of, like, don't go where everyone's going and compete in that space. We've got to find our new a new space, a new definition, a new way of approaching it.
 
-I don't know what that answer is right now. It's one of the reasons why I'm writing. I'm trying to think through what could that be. And it's hard, right? It's hard because you've spent a career rooted in a particular way about thinking about the continent.  
+I don't know what that answer is right now. It's one of the reasons why I'm writing. I'm trying to think through what could that be. And it's hard, right? It's hard because you've spent a career rooted in a particular way about thinking about the continent.
 
-And if we are going to succeed, if we're going to have a strong relationship and it's going to look very different, you've got to be able to cast out some of the old ways of thinking and be ready to do something new. And I find it hard. I'm trying really hard, but it's hard. I'm invested in the way we used to work, and that world doesn't exist anymore.  
-
----
-
-Following up on that point, if you turn it into the other direction, what do you feel has been – if one talks in real terms, what has been the impact of this kind of withdrawal of **U.S. attention and energy** and so on so far?  
-
-So, obviously, when the **U.S. ARD cuts** were announced, **South Africa**, particularly, the reporting was extremely gloomy, right? Kind of like it was like, okay, apocalypse is coming. You know, so far, obviously, a lot of people have suffered.  
-
-A lot of people have suffered from the withdrawal of food aid. A lot of people have suffered particularly from the disruptions of **HIV care**, not least because of the disruption it took in very, very advanced kind of like product development. You know, that would have definitely benefited the U.S. and other countries as well.  
-
-You know, and also the possible withdrawal or end of **AGOA** or South Africa's possible exclusion from it. You know, like some people have lost jobs, right? You know, may lose jobs. But no apocalypse. Like, Africa, largely, is moving along.  
-
-And in a lot of cases, like, what was very revealing for me was the muted reaction in Africa. Even the stuff said about **Somalia**, the stuff, you know, the tensions with **Nigeria**, all of these things, very little reaction in Africa.  
-
-And there was a part of me that was wondering, do people even notice? Do they even care? You know, among African public. So, I was wondering, like, where you see the relationship going.  
+And if we are going to succeed, if we're going to have a strong relationship and it's going to look very different, you've got to be able to cast out some of the old ways of thinking and be ready to do something new. And I find it hard. I'm trying really hard, but it's hard. I'm invested in the way we used to work, and that world doesn't exist anymore.
 
 ---
 
-**Judd**, just before you get to that, I just want to interject here. No apocalypse, maybe in the mainstream discourse in Africa, but for the hundreds of thousands of people who no longer have access to antiretroviral medications, whose children have died.  
+Following up on that point, if you turn it into the other direction, what do you feel has been – if one talks in real terms, what has been the impact of this kind of withdrawal of **U.S. attention and energy** and so on so far?
 
-The numbers of children who have died in Africa, the estimates from the **USAID closures**, are staggering.  
+So, obviously, when the **U.S. ARD cuts** were announced, **South Africa**, particularly, the reporting was extremely gloomy, right? Kind of like it was like, okay, apocalypse is coming. You know, so far, obviously, a lot of people have suffered.
 
-So, I don't know if that's an…  
+A lot of people have suffered from the withdrawal of food aid. A lot of people have suffered particularly from the disruptions of **HIV care**, not least because of the disruption it took in very, very advanced kind of like product development. You know, that would have definitely benefited the U.S. and other countries as well.
 
-> _Like, staggering in terms of what numbers, roughly?_  
+You know, and also the possible withdrawal or end of **AGOA** or South Africa's possible exclusion from it. You know, like some people have lost jobs, right? You know, may lose jobs. But no apocalypse. Like, Africa, largely, is moving along.
 
-I mean, I don't have them off the top of my head, and I don't want to put them out, but I read them in a real…  
+And in a lot of cases, like, what was very revealing for me was the muted reaction in Africa. Even the stuff said about **Somalia**, the stuff, you know, the tensions with **Nigeria**, all of these things, very little reaction in Africa.
 
-But we're talking thousands of people.  
+And there was a part of me that was wondering, do people even notice? Do they even care? You know, among African public. So, I was wondering, like, where you see the relationship going.
 
-Just to be real about it, you know, kind of interrupted HIV care is a relatively slow process, right? You know, so people are certainly sicker right now.  
+---
 
-You know, we're not seeing the kind of, for example, like, collapse in public health systems that some people have announced.  
+**Judd**, just before you get to that, I just want to interject here. No apocalypse, maybe in the mainstream discourse in Africa, but for the hundreds of thousands of people who no longer have access to antiretroviral medications, whose children have died.
+
+The numbers of children who have died in Africa, the estimates from the **USAID closures**, are staggering.
+
+So, I don't know if that's an…
+
+> _Like, staggering in terms of what numbers, roughly?_
+
+I mean, I don't have them off the top of my head, and I don't want to put them out, but I read them in a real…
+
+But we're talking thousands of people.
+
+Just to be real about it, you know, kind of interrupted HIV care is a relatively slow process, right? You know, so people are certainly sicker right now.
+
+You know, we're not seeing the kind of, for example, like, collapse in public health systems that some people have announced.
 
 So, you know, we may, you know, and obviously this is a country of a vast continent of many, many countries. So, it is different in different places.
-But **Judd**, on the wider, in terms of the wider thing, even if we don't even leave, like, kind of **health impacts particularly off the table**.  
+But **Judd**, on the wider, in terms of the wider thing, even if we don't even leave, like, kind of **health impacts particularly off the table**.
 
-Like, what reaction do you think the continent is having?  
+Like, what reaction do you think the continent is having?
 
-Okay, you're asking for the numbers. Here's from **The Lancet**, which is a very credible source. They estimate:  
-- **63,000 adult deaths**  
-- **130,000 child deaths**  
-until mid-April 2025 that they can trace back to the cuts of **USAID**.  
+Okay, you're asking for the numbers. Here's from **The Lancet**, which is a very credible source. They estimate:
+- **63,000 adult deaths**
+- **130,000 child deaths**
+until mid-April 2025 that they can trace back to the cuts of **USAID**.
 
-Now, for a continent of **1.3 billion people**, which is certainly significant. But keep in mind, it's **1.2 billion** people. I understand that. But that's **200,000 people who are dead because of these cuts**.  
+Now, for a continent of **1.3 billion people**, which is certainly significant. But keep in mind, it's **1.2 billion** people. I understand that. But that's **200,000 people who are dead because of these cuts**.
 
-Yeah. I think, **Eric**, I'm glad that you said that because I don't think we should minimize the human cost of these cuts.  
+Yeah. I think, **Eric**, I'm glad that you said that because I don't think we should minimize the human cost of these cuts.
 
-You know, systems, African health systems were built around a lot of this assistance from the **United States**. And I'll get to in a second why, you know, maybe there's some cause for optimism in the long term. But in the short term, **people are going to die. People are going to suffer**. And I think that we just can't ignore that.  
+You know, systems, African health systems were built around a lot of this assistance from the **United States**. And I'll get to in a second why, you know, maybe there's some cause for optimism in the long term. But in the short term, **people are going to die. People are going to suffer**. And I think that we just can't ignore that.
 
-Now, I think that there's been a muted response, in part because there's only a few African leaders who've even spoken out about this. **President Mahama of Ghana** has. You know, I don't think there's much to be gained by rallying against this.  
+Now, I think that there's been a muted response, in part because there's only a few African leaders who've even spoken out about this. **President Mahama of Ghana** has. You know, I don't think there's much to be gained by rallying against this.
 
-And there's a sentiment—I wrote about this in a different sub-stack on foreign assistance—there's a sentiment from both **African intellectuals and African leaders**:  
+And there's a sentiment—I wrote about this in a different sub-stack on foreign assistance—there's a sentiment from both **African intellectuals and African leaders**:
 
-> "Perhaps we were getting too reliant on this as well. And maybe we need to build out some of our own independence and self-reliance and have health sectors that we fund and we run and drive."  
+> "Perhaps we were getting too reliant on this as well. And maybe we need to build out some of our own independence and self-reliance and have health sectors that we fund and we run and drive."
 
-So I think that there's a pragmatism. There's also the real threat that **speaking up can lead to penalty**. I mean, we're seeing that, right?  
+So I think that there's a pragmatism. There's also the real threat that **speaking up can lead to penalty**. I mean, we're seeing that, right?
 
-And most African governments, I think, have struggled with how to navigate this administration, which I completely understand.  
+And most African governments, I think, have struggled with how to navigate this administration, which I completely understand.
 
-Your president, **Cyril Ramaphosa** of South Africa, had an **Oval Office meeting** that was very difficult to watch. And while he showed a lot of courage by going, he didn't get any of the things that he wanted. They still have a **30% tariff**. They're probably not going to be in the **G7**, which we should talk about at some point. And they may be kicked out of the **G20**.  
+Your president, **Cyril Ramaphosa** of South Africa, had an **Oval Office meeting** that was very difficult to watch. And while he showed a lot of courage by going, he didn't get any of the things that he wanted. They still have a **30% tariff**. They're probably not going to be in the **G7**, which we should talk about at some point. And they may be kicked out of the **G20**.
 
-The Nigerians have actually— No, they can't be kicked out of the G20. That's a **consensus decision**, and China and a lot of countries won't agree with it.  
+The Nigerians have actually— No, they can't be kicked out of the G20. That's a **consensus decision**, and China and a lot of countries won't agree with it.
 
-Sorry, let me say it again. The U.S. is threatening.  
+Sorry, let me say it again. The U.S. is threatening.
 
-Yeah, but the U.S. doesn't have the power to do that.  
+Yeah, but the U.S. doesn't have the power to do that.
 
-Right. That's fine. That's fair.  
+Right. That's fine. That's fair.
 
-Also, what President Romposa asked for was that the U.S. would come to the **G20 in South Africa**, and they didn't.  
+Also, what President Romposa asked for was that the U.S. would come to the **G20 in South Africa**, and they didn't.
 
-The Nigerians have done a better job trying to flip the script on some of these falsehoods about **Christian genocide** by saying,  
+The Nigerians have done a better job trying to flip the script on some of these falsehoods about **Christian genocide** by saying,
 
-> "Look, we're concerned about Christians dying. We're also concerned about Muslims dying. What can you do to help us?"  
+> "Look, we're concerned about Christians dying. We're also concerned about Muslims dying. What can you do to help us?"
 
-But I think the governments are trying to figure this out.  
+But I think the governments are trying to figure this out.
 
-The key question here is—and this has been a problem in our relationship—an **asymmetry** where the U.S. says:  
+The key question here is—and this has been a problem in our relationship—an **asymmetry** where the U.S. says:
 
-> "These are the things we're going to do."  
+> "These are the things we're going to do."
 
-And many African governments say:  
+And many African governments say:
 
-> "Okay, that's great, thank you, is to be more self-reliant, to build relationships with each other."  
+> "Okay, that's great, thank you, is to be more self-reliant, to build relationships with each other."
 
-You know, this is the moment to see the **African Free Trade Agreement** really sort of take hold. This is about building relationships, not just with the U.S. or China, but with others.  
+You know, this is the moment to see the **African Free Trade Agreement** really sort of take hold. This is about building relationships, not just with the U.S. or China, but with others.
 
-And then setting up an **affirmative agenda** of what they want from their partners, because right now they're not going to get much from the U.S.  
+And then setting up an **affirmative agenda** of what they want from their partners, because right now they're not going to get much from the U.S.
 
-I mean, there's, you know, you can take some U.S. migrants and maybe avoid visa bans, but the relationship and the opportunities are pretty limited outside of the critical mineral space.  
+I mean, there's, you know, you can take some U.S. migrants and maybe avoid visa bans, but the relationship and the opportunities are pretty limited outside of the critical mineral space.
 
-And so what I think Africans need to do, or what I would advise, is:  
+And so what I think Africans need to do, or what I would advise, is:
 
 ```markdown
 - Put out some, do the homework.
@@ -428,18 +428,18 @@ And so what I think Africans need to do, or what I would advise, is:
 - And be clear about that.
 ```
 
-And in the meantime, this is the moment to **strengthen your health systems**, to strengthen your governance systems, to build the relationships that are going to allow you to navigate, survive, to persevere when they're during this rupture, which is dramatic, spectacular, and devastating.  
+And in the meantime, this is the moment to **strengthen your health systems**, to strengthen your governance systems, to build the relationships that are going to allow you to navigate, survive, to persevere when they're during this rupture, which is dramatic, spectacular, and devastating.
 
-Very quickly, because I do want to get to your article on **China**, which you've published as part of a series on foreign policy, on think tanks.  
+Very quickly, because I do want to get to your article on **China**, which you've published as part of a series on foreign policy, on think tanks.
 
-And it's this: you can really feel you are trying to hash all these things out. You're clearly struggling intellectually with what's happening and trying to make sense of it all.  
+And it's this: you can really feel you are trying to hash all these things out. You're clearly struggling intellectually with what's happening and trying to make sense of it all.
 
-And that's why, you know, I feel like we get to kind of be in the room with you as you sift through all this.  
+And that's why, you know, I feel like we get to kind of be in the room with you as you sift through all this.
 
 And by the way, you're **not alone**. We're all trying to figure out what's going on. So this is, this is just, we get to see what you're doing.
 You wrote this, this column on **China**. And I'm curious why, what was the motivation to focus specifically on **China**? You're a **U.S. Africa** guy. You're a, you know, a creature of **D.C.** Now, what was the thinking about this China column that you put together?
 
-Yeah, well, let me take a step back. I was out of the administration for about a year and a half. I left in **February of 2024**. And so there was another almost year of **Biden**, and then we were about six months into the **Trump administration**. 
+Yeah, well, let me take a step back. I was out of the administration for about a year and a half. I left in **February of 2024**. And so there was another almost year of **Biden**, and then we were about six months into the **Trump administration**.
 
 I want to accomplish three things in this **substack**:
 
@@ -503,7 +503,7 @@ But I want to go through all of these facets of our relationship and illuminate 
 
 **How optimistic are you that there will be a way towards a more concrete relationship in the future**, particularly around the issue, as you were saying, around **shared interests or finding shared interests**? Because I have to admit, it's difficult for me to really see a concrete set of shared interests, you know, kind of that, particularly if one takes seriously how marginalized many African countries feel within the global system.
 
-Kind of, so the level of global reform that it would take to really take **African aspirations seriously** does seem to mitigate against a lot of core **U.S. interests**. 
+Kind of, so the level of global reform that it would take to really take **African aspirations seriously** does seem to mitigate against a lot of core **U.S. interests**.
 
 Do you think there is a kind of a space for an actual real relationship that actually takes the stuff that the continent wants to do seriously?
 
@@ -589,7 +589,7 @@ And if you are a student or a teacher, send me an email, **eric@ChinaGlobalSouth
 
 So for **Kobus van Staden in Cape Town**, I'm **Eric Olander**. We'll be back again next week with another edition. Until then, thank you so much for listening and for watching.
 
-The discussion continues online. Follow the **China Global South Project** on **Blue Sky** and **X** at `ChinaGSProject` or on **YouTube** at **China Global South** and share your thoughts on today's show. 
+The discussion continues online. Follow the **China Global South Project** on **Blue Sky** and **X** at `ChinaGSProject` or on **YouTube** at **China Global South** and share your thoughts on today's show.
 
 Or head over to our website at:
 

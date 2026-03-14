@@ -2,7 +2,7 @@
 layout: post
 title: "Uneasy Calm: Ryan Hass on Three Pathways for U.S.-China Relations Under Trump"
 date: 2026-02-04 00:00:01
-categories: podcast sinica-podcast
+categories: podcast sinica
 tags: [podcast_script]
 ---
 
@@ -36,9 +36,9 @@ As we move into the second year of **Donald Trump's** seemingly interminable sec
 
 What began as a return to tariff escalation and hardball trade tactics has somewhat unexpectedly given way to a period of relative strategic calm marked by:
 
-- Pauses  
-- Truces  
-- A noticeable softening of tone at the very top  
+- Pauses
+- Truces
+- A noticeable softening of tone at the very top
 
 Even in the **national security strategy** and the **national defense strategy** that was just released.
 
@@ -59,11 +59,11 @@ So, what comes next? Are we headed toward a genuine lasting stabilization or a f
 
 Well, to help us think through all these questions, I am joined by **Ryan Haas**, director of the **John L. Thornton China Center at Brookings**, and one of the most clear-eyed analysts of the U.S.-China relationship working today. Ryan has just published an essay on the Brookings website laying out **three plausible pathways** for the relationship under Trump scenarios ranging from:
 
-- a soft landing  
-- a hard split  
+- a soft landing
+- a hard split
 - **the most likely outcome: a period of uneasy calm** in which both Washington and Beijing seek stability, not out of trust, but out of mutual constraint.
 
-He joins me from D.C. And Ryan, welcome back to Sinica, man.  
+He joins me from D.C. And Ryan, welcome back to Sinica, man.
 Thank you, Kaiser. It's wonderful to be back with you.
 
 So Ryan, like I said, you're joining us from Washington. Let me start there. One of the strengths of your piece is that it treats leaders as not free agents but constrained actors. From where you sit in D.C., what are the most powerful domestic forces that are shaping the U.S.-China policy right now? And which of them do you think actually matter to **President Trump**?
@@ -75,10 +75,10 @@ I'm a little less confident of that. In fact, I'm fairly skeptical that's where 
 To your question, I actually think that **President Trump is fairly unconstrained** in terms of his approach to China. I believe he is pursuing the approach that he thinks will yield the best benefit for him personally and politically, but also for the country. The basic contours of it, to the extent that you can assign strategy to what President Trump is doing, are:
 
 ```markdown
-- Trying to lower the temperature of the U.S.-China relationship through direct engagement with President Xi.  
-- Showing tremendous respect to President Xi and, by extension, China in service of that effort.  
-- Building deterrence in Asia militarily.  
-- Reducing dependence upon China for critical inputs to the U.S. economy.  
+- Trying to lower the temperature of the U.S.-China relationship through direct engagement with President Xi.
+- Showing tremendous respect to President Xi and, by extension, China in service of that effort.
+- Building deterrence in Asia militarily.
+- Reducing dependence upon China for critical inputs to the U.S. economy.
 - In his own way, trying to rebalance the U.S.-China economy.
 ```
 
@@ -97,7 +97,7 @@ His **reptilian feel for the mood of the American people**. And in this regard, 
 
 Well, that's comforting. The other questions, industrial policy coalitions used to be, at various times, a ballast for stability or even an active force for improved relations with China. Are they acting on him today? Is there business pressure somewhere? Is **Jensen Huang** a major force in his thought these days?
 
-Well, I think that **President Trump operates much differently than traditional U.S. presidents**, in the sense that he is not sitting in the Oval Office waiting for his staff to bring him options for him to decide upon as it relates to China. As we've talked about before in Berkeley and elsewhere, he **is his own China desk officer**. He takes his own responsibility for calling the shots and setting the direction of U.S. policy towards China. 
+Well, I think that **President Trump operates much differently than traditional U.S. presidents**, in the sense that he is not sitting in the Oval Office waiting for his staff to bring him options for him to decide upon as it relates to China. As we've talked about before in Berkeley and elsewhere, he **is his own China desk officer**. He takes his own responsibility for calling the shots and setting the direction of U.S. policy towards China.
 
 And in doing so, he is not informed by stale, turgid intelligence briefings that stone-faced people deliver to him early in the morning. He is talking to a range of people in and outside of government. He's talking to people he treats as peers and considers as peers, including **Jensen Huang**, but not just Jensen Huang. He is basing judgments upon the body of inputs he's receiving, which are far broader than a traditional U.S. president would.
 
@@ -125,7 +125,7 @@ Is it:
 
 - elite risk aversion among his broader circle of elites?
 - concerns about regime stability?
-- his longer-term project of technological self-reliance?  
+- his longer-term project of technological self-reliance?
 - something else?
 
 What are **Xi's considerations** as far as you can tell?
@@ -137,9 +137,9 @@ He is very invested in and that his **brand is associated with**, his **politica
 
 The second is being able to give proof to the narrative that **time is on China's side**, that China has "winded its back" and that it's the United States that on a relative basis is declining. And I think there are plenty of proof points that **President Xi** and those around him can point to, to build that case persuasively inside China today, which I think also gives some momentum to the current direction that we're in.
 
-I mean, I know it's hard to say with any certainty, but is it your sense that there's debate within the Chinese system about how hard or soft to lean into this current period of calm? Is this something that, you know, is he facing opposition? In other words, are there people who are saying, 
+I mean, I know it's hard to say with any certainty, but is it your sense that there's debate within the Chinese system about how hard or soft to lean into this current period of calm? Is this something that, you know, is he facing opposition? In other words, are there people who are saying,
 
-> "Hey, America's showing weakness, time to press our strength," 
+> "Hey, America's showing weakness, time to press our strength,"
 
 or does it seem to be, you know, Xi's calling the shot in that case?
 
@@ -165,7 +165,7 @@ My sense is that both leaders and those around them have come over the past year
 
 And I think that this has been a revelation, more so on the **US side** than the **Chinese side**. The Chinese side has been well aware for a long time that the United States is capable of being a dangerous superpower that can do immense harm to China.
 
-But when **President Trump** and **Secretary of Treasury Besant** and others entered office last year, they entered office with a certain degree of bravado and hubris. Secretary Besant famously said that 
+But when **President Trump** and **Secretary of Treasury Besant** and others entered office last year, they entered office with a certain degree of bravado and hubris. Secretary Besant famously said that
 
 > "China is holding a pair of twos in terms of, you know, the cards it has in its hand and the lack of leverage it has over the United States."
 
@@ -193,7 +193,7 @@ But so Ryan, let's jump in with your first scenario, the **soft landing**. In th
 - maintain regular contact,
 - lower barriers to trade and investment,
 - and move toward a narrative of peaceful...
-**Coexistence or managed competition.** What would actually have to go right on each side for this to move from a theoretical possibility to a durable trajectory? I mean, you could point to a couple of things that say, well, this step actually does seem to have been taken. 
+**Coexistence or managed competition.** What would actually have to go right on each side for this to move from a theoretical possibility to a durable trajectory? I mean, you could point to a couple of things that say, well, this step actually does seem to have been taken.
 
 I mean, you know, they're really talking about **investment** right now. We’ve got **Ford** talking about working with **Xiaomi** possibly, according to the **FT**, at least on a **battery plant**, right?
 
@@ -205,13 +205,13 @@ So that's the first prerequisite.
 
 - Second, both sides need to take costly signals to invest in durably improving the relationship over the long term. The types of things that you're pointing to — if the United States became more welcoming of **Chinese investment**, that would be a costly signal.
 
-I think one of the things that some people point to who are advocates of this approach would be some type of **grand bargain**. 
+I think one of the things that some people point to who are advocates of this approach would be some type of **grand bargain**.
 
 So we know that **President Trump** is planning to travel to **China in April**. If that visit were to yield a sort of significant breakthrough on a contentious issue, most people would identify **Taiwan** as the candidate, Taiwan combined with some type of transactional benefit for the United States and its workers. Then that would give momentum or solidity to the idea that we could travel down this path.
 
 But short of that, I think it's hard to imagine both sides really sort of believing and acting in ways that both leaders believe they can sustainably improve over the long term of the nature of the relationship.
 
-**What makes that costly from the American side?** 
+**What makes that costly from the American side?**
 
 - In the case of inbound investment, it could potentially displace entrenched interests in the U.S. economy.
 - It could invite criticism of President Trump and his judgment that he is growing too soft and giving away the store to China in service of **soybean sales** or whatever it is that he's setting up.
@@ -242,7 +242,7 @@ And so, President Trump has never shown a lot of conviction about election outco
 I can't think of anything off the top of my head right now that would give a lot of confidence to the notion that restraint for restraint is a time-tested and well-established trend. This is the critique that I think people of the soft landing approach would make, is that the soft landing would
 The discussion involves the **United States making concessions to China without receiving reciprocal benefits in return**. There’s a **pretty calloused skepticism** that has built up over years, including within the **Trump administration**, as a consequence of the underperformance of China in the phase one trade deal.
 
-Obviously, you floated this possibility that something like a **fourth joint communique on Taiwan** could anchor the sort of soft landing you're talking about, the grand bargain. 
+Obviously, you floated this possibility that something like a **fourth joint communique on Taiwan** could anchor the sort of soft landing you're talking about, the grand bargain.
 
 What problem would such a document actually be trying to solve? What would be the content of a fourth communique? And is **Taiwan ultimately the issue** that makes this scenario maybe politically untenable, even if both leaders are inclined toward restraint? I mean, is Taiwan going to flummox this?
 
@@ -257,7 +257,7 @@ In Washington, it's treated as sort of a foregone conclusion that Beijing is des
 - The Chinese have to ask themselves whether or not this will be an ephemeral understanding that exists between **President Trump and President Xi**. Trump has a shelf life of three years in office.
 - If the Chinese reach an understanding with Trump over Taiwan, will that trigger **Congress** to become more active and engaged to try to counterbalance whatever concessions members of Congress believe the president has made in return for some type of commercial transaction?
 
-Yeah, yeah, yeah. Just to remind everyone, this is your most optimistic scenario. And in this most optimistic version, there is still a sense that the soft landing would be kind of inherently provisional, something closer still to a pause than to a full reset. 
+Yeah, yeah, yeah. Just to remind everyone, this is your most optimistic scenario. And in this most optimistic version, there is still a sense that the soft landing would be kind of inherently provisional, something closer still to a pause than to a full reset.
 
 I am ineradicably optimistic but still have trouble seeing either polity really arriving at some kind of durable **modus vivendi** right now. There’s just no trust. There are many deeply entrenched habits of mind on both sides.
 
@@ -291,7 +291,7 @@ I also think that President Trump is pretty comfortable with the **status quo** 
 
 And then lastly, I think that President Trump is very focused on **legacy** and blowing up relations, burning down the house with China is not a legacy enhancing exercise. Putting the relationship on a new plane potentially could be.
 
-So, I mean, the fear of a **blue wave** in 2026 in the midterms, I mean, I get that. But part of him also has somebody's got to be showing him these polls that say, 
+So, I mean, the fear of a **blue wave** in 2026 in the midterms, I mean, I get that. But part of him also has somebody's got to be showing him these polls that say,
 
 > "there's just not a lot of appetite right now among voters for tough on China. It's not a winning campaign strategy right now."
 
@@ -327,9 +327,9 @@ Something along those lines that the Chinese perceive as violating the truce, th
 
 Well, that problem may be solved. Trump has apparently neutered **BIS**, right? So we'll see.
 
-One thing that struck me is how much this scenario depends on **momentum**, on anger compounding on anger. Once the relationship starts moving in this direction, how easy is it to reverse? 
+One thing that struck me is how much this scenario depends on **momentum**, on anger compounding on anger. Once the relationship starts moving in this direction, how easy is it to reverse?
 
-- Are there off-ramps? 
+- Are there off-ramps?
 - Does it become just like self-reinforcing super quickly?
 
 I ask because this isn't the first time either Beijing or Washington has seen things go sideways. And you'd think that both sides might have learned something about how to manage that sort of crisis. And at least sometimes they've managed to get the relationship back on track.
@@ -453,61 +453,61 @@ Growth comes from productivity. Innovation and diffusion come from:
 This is how America gains strength.
 
 The further we turn from that, the more that I fear we will lose our ability to achieve the sort of **escape from dependence** that your question was anchored in.
-Yeah, I mean, it's so frustrating to be, this is a man whose favorite metaphor is **cards**, but, you know, he's talking about who's got the stronger hand, you know, who holds more cards.  
+Yeah, I mean, it's so frustrating to be, this is a man whose favorite metaphor is **cards**, but, you know, he's talking about who's got the stronger hand, you know, who holds more cards.
 
-It feels like somebody's got to be able to convince him that what he's been doing by, like you say, turning away talent at the **border**, by destroying those things like **predictability, rule of law, alliances**, all these things, you know, that act as **force multipliers** for us.  
+It feels like somebody's got to be able to convince him that what he's been doing by, like you say, turning away talent at the **border**, by destroying those things like **predictability, rule of law, alliances**, all these things, you know, that act as **force multipliers** for us.
 
-He's plucking valuable cards out of his hand and, you know, lighting them on fire to light his cigars. It's just bizarre.  
+He's plucking valuable cards out of his hand and, you know, lighting them on fire to light his cigars. It's just bizarre.
 
-I mean, I feel like at this point, **Beijing** must look at, you know, the hands that each side holds and conclude that there's some very pronounced asymmetry here.  
+I mean, I feel like at this point, **Beijing** must look at, you know, the hands that each side holds and conclude that there's some very pronounced asymmetry here.
 
-I feel also like that could really make this equilibrium that you described in **scenario three** more fragile. I mean, if one side succeeds faster than the other in reducing vulnerability, and right now it looks like **China's succeeding faster in reducing vulnerability**, that actually seems like it would destabilize this equilibrium.  
+I feel also like that could really make this equilibrium that you described in **scenario three** more fragile. I mean, if one side succeeds faster than the other in reducing vulnerability, and right now it looks like **China's succeeding faster in reducing vulnerability**, that actually seems like it would destabilize this equilibrium.
 
-I agree with you if the equilibrium is measured in **bilateral terms only**.  
+I agree with you if the equilibrium is measured in **bilateral terms only**.
 
-And I thought that **Adam Tooze** made a very important point in the interview that you flagged to his with **Ezra Klein** after Davos, which is that if we are thinking about the world as undergoing a **power transition** from the United States to China, it is going to trigger all the anxieties, insecurities, and antibodies in the United States about China's rise and compel us to try to suppress it.  
+And I thought that **Adam Tooze** made a very important point in the interview that you flagged to his with **Ezra Klein** after Davos, which is that if we are thinking about the world as undergoing a **power transition** from the United States to China, it is going to trigger all the anxieties, insecurities, and antibodies in the United States about China's rise and compel us to try to suppress it.
 
-And if we rather think about what's going on in the world, not as a power transition, but as a **power diffusion**, where the United States is not significantly declining, but power is growing much more diffuse in the international system. The international system is splintering. It's growing more disordered.  
+And if we rather think about what's going on in the world, not as a power transition, but as a **power diffusion**, where the United States is not significantly declining, but power is growing much more diffuse in the international system. The international system is splintering. It's growing more disordered.
 
-Then the nature of the challenge shifts, and the way that we think about and address and respond to it also evolves.  
+Then the nature of the challenge shifts, and the way that we think about and address and respond to it also evolves.
 
-I am much more inclined to the latter view, that we're seeing a **splintering and a diffusion of power** rather than a transition in power. But this is going to be, I think, sort of a core aspect of the debate that will be underway about the way that America relates to the world for the next couple of years.  
+I am much more inclined to the latter view, that we're seeing a **splintering and a diffusion of power** rather than a transition in power. But this is going to be, I think, sort of a core aspect of the debate that will be underway about the way that America relates to the world for the next couple of years.
 
-Yeah, it's interesting. I seized on that **metaphor** that Tooze used, too.  
+Yeah, it's interesting. I seized on that **metaphor** that Tooze used, too.
 
-And I started thinking about that kind of **moral panic securitization** that we've seen in this country as an **autoimmune response**.  
-> "You've got to take some goddamn antihistamines and chill."  
+And I started thinking about that kind of **moral panic securitization** that we've seen in this country as an **autoimmune response**.
+> "You've got to take some goddamn antihistamines and chill."
 
-I agree with you that this scenario, this third scenario that you describe, is probably the most likely.  
+I agree with you that this scenario, this third scenario that you describe, is probably the most likely.
 
-Does this framework, just stepping back, suggest that we've entered a phase right now where **U.S.-China relations** are less about, you know, trying to build trust or establish shared norms and more just about **engineering resilience under assumed conditions of enduring mistrust**?  
+Does this framework, just stepping back, suggest that we've entered a phase right now where **U.S.-China relations** are less about, you know, trying to build trust or establish shared norms and more just about **engineering resilience under assumed conditions of enduring mistrust**?
 
-I mean, where each side, you know, we've got a hand on the other's choke points,  
-- they're grabbing our oxygen tube  
-- we're grabbing their oxygen tube.  
+I mean, where each side, you know, we've got a hand on the other's choke points,
+- they're grabbing our oxygen tube
+- we're grabbing their oxygen tube.
 
-It's, you know, I guess it's structurally analogous to, obviously not identical to, kind of, you know, **mutual assured destruction during the Cold War**.  
+It's, you know, I guess it's structurally analogous to, obviously not identical to, kind of, you know, **mutual assured destruction during the Cold War**.
 
-If that's right, how should it change the way policymakers even think about **stability**?  
+If that's right, how should it change the way policymakers even think about **stability**?
 
-Well, it's a great question. I am inclined to your second scenario that you just described. I do think that we're both sort of holding each other's oxygen tubes to a certain extent.  
+Well, it's a great question. I am inclined to your second scenario that you just described. I do think that we're both sort of holding each other's oxygen tubes to a certain extent.
 
-I don't think that there's any outbreak of goodwill or warm, fuzzy feelings towards each other right now. And I also think that we're in a pretty fraught moment. Both countries believe that they are gaining a certain degree of advantage over the other or that they can do immense harm to the other.  
+I don't think that there's any outbreak of goodwill or warm, fuzzy feelings towards each other right now. And I also think that we're in a pretty fraught moment. Both countries believe that they are gaining a certain degree of advantage over the other or that they can do immense harm to the other.
 
-But on top of that, if you look at, you know, social science work and some public polling data,  
+But on top of that, if you look at, you know, social science work and some public polling data,
 
-- the **Chinese public feels pretty triumphal and nationalistic** right now.  
-- The **American public feels pretty beaten down, distraught, and just sort of beleaguered** at the moment.  
+- the **Chinese public feels pretty triumphal and nationalistic** right now.
+- The **American public feels pretty beaten down, distraught, and just sort of beleaguered** at the moment.
 
-And so this isn't the time. We are not at a moment where there's going to be some grand breakthrough in the relationship.  
+And so this isn't the time. We are not at a moment where there's going to be some grand breakthrough in the relationship.
 
-I think that if we manage it well through this coming period, we will have done a service as stewards of a long-term relationship rather than as authors of some concluding chapter to it.  
+I think that if we manage it well through this coming period, we will have done a service as stewards of a long-term relationship rather than as authors of some concluding chapter to it.
 
-Well put. Beautiful.  
+Well put. Beautiful.
 
-A final question to you. I mean, if listeners wanted to just cut through the rhetoric and only watch for just a handful of real concrete indicators over the next, say, 12 to 18 months, what would you tell them to focus on to assess which scenario we're actually in or which we're careening toward?  
+A final question to you. I mean, if listeners wanted to just cut through the rhetoric and only watch for just a handful of real concrete indicators over the next, say, 12 to 18 months, what would you tell them to focus on to assess which scenario we're actually in or which we're careening toward?
 
-I would encourage people to watch the **frequency of interaction between the two leaders**,  
+I would encourage people to watch the **frequency of interaction between the two leaders**,
 
 ```markdown
 - how often they talk on the phone,
@@ -564,9 +564,9 @@ And **Dumas** gives him a really kind of believable personality. I mean, much be
 
 But there are loads of fascinating characters. Many of them are historical. It sent me skirting to **Wikipedia** many a time just to sort of look these people up. But it's also just got a ton of historical material mixed in. It's got letters and decrees and courtroom proceedings, all kind of jumbled into the fictional stuff.
 
-I mean, the story, the plot is a bit of a shaggy dog. It's maybe, you know, 40% fewer total tangential plot lines might have made this book a little more sort of readable. But it's still worthwhile if you're interested. 
+I mean, the story, the plot is a bit of a shaggy dog. It's maybe, you know, 40% fewer total tangential plot lines might have made this book a little more sort of readable. But it's still worthwhile if you're interested.
 
-**Dumas** actually writes himself or his father. I mean, he does this sort of breaking the fourth wall thing where he suddenly starts talking to the first person and then talks about his father, who was this Napoleonic general, who's also **Alexander Dumas**. 
+**Dumas** actually writes himself or his father. I mean, he does this sort of breaking the fourth wall thing where he suddenly starts talking to the first person and then talks about his father, who was this Napoleonic general, who's also **Alexander Dumas**.
 
 It's anyway, great stuff to take your mind off the world as it is. But still, you kind of get to scratch this itch for, you know, political turmoil and intrigue. If you're listening to this show, you probably have such a niche.
 
@@ -574,7 +574,7 @@ For a couple of quick **China-related recommendations**, some really good sense-
 
 She's joined by two of my faves:
 
-- former World Bank country head for China, **Bert Hoffman**  
+- former World Bank country head for China, **Bert Hoffman**
 - **Gerard DiPippo** of RAND, formerly **CSIS**, also just one of the smartest dudes on the Chinese economy.
 
 It's about the challenges of rebalancing the Chinese economy, but it goes way beyond that. It goes, you know, into the – obviously, you know, the problems of the property market and much else. It's as good as you would expect with these three all taking part.
@@ -585,7 +585,7 @@ Related to that is the latest outstanding **Trivium China podcast**, of course, 
 
 The second half, though, features **Danny McMahon** and **Corey Combs**, who are both absolutely brilliant.
 
-- **Danny McMahon** looks at markets mainly.  
+- **Danny McMahon** looks at markets mainly.
 - **Corey**, who is – they're so lucky to have this guy. Corey covers – he does strategic minerals and supply chains for Trivium.
 
 They are both really brilliant. It's on, you know, why China is facing headwinds on boosting capital expenditure, which, if you follow the Chinese economy, you've probably heard, dropped really, really precipitously in the last quarter. So check out those shows.

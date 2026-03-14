@@ -2,7 +2,7 @@
 layout: post
 title: "Tulsi Gabbard on Russiagate Hoax Evidence and How She’s Reforming Politicized Intelligence Agencies"
 date: 2025-09-15 00:00:01
-categories: podcast all-in-with-chamath-jason-sacks-friedberg
+categories: podcast all-in
 tags: [podcast_script]
 ---
 
@@ -17,7 +17,7 @@ Hello, nice to see you, Tulsi. Thanks for coming.
 
 Thank you. **Aloha everybody, aloha.**
 
-We were all clamoring to kind of frame this, and then Sacks said, _"I really just need to do the kickoff because he really wanted to tee this up."_ So I'm going to cede my responsibility in introducing you because everybody knows who you are. But **David**—there's just too much red meat. David's been frothing. Tulsi doesn't need a big introduction, but everyone knows she's a **director of national intelligence** and, in the words of **President Trump**, is the 
+We were all clamoring to kind of frame this, and then Sacks said, _"I really just need to do the kickoff because he really wanted to tee this up."_ So I'm going to cede my responsibility in introducing you because everybody knows who you are. But **David**—there's just too much red meat. David's been frothing. Tulsi doesn't need a big introduction, but everyone knows she's a **director of national intelligence** and, in the words of **President Trump**, is the
 
 > "the hottest member of the administration."
 
@@ -25,9 +25,9 @@ I think he means in the sense of having released the biggest news story of the y
 
 Can you just maybe—this is the place to start—that we can drill into some of the details, but just at a very high level, what exactly happened? I mean, I think we saw for years there were all these accusations that somehow that Trump was an agent of **Putin**, of Russia. Was that all just made up? And who made it up? How did that happen?
 
-Yeah, I think just setting the baseline of like why should you care? Why should people at home care about this? And this really speaks to the power of the **intelligence community** and the power of "quote unquote" intelligence is that, as you know, these headlines returning out about, you know, 
+Yeah, I think just setting the baseline of like why should you care? Why should people at home care about this? And this really speaks to the power of the **intelligence community** and the power of "quote unquote" intelligence is that, as you know, these headlines returning out about, you know,
 
-- Trump is a Putin puppet, or 
+- Trump is a Putin puppet, or
 - He is colluding with Putin in order to get elected.
 
 We're going back to the 2016 election here. If you're just watching the headlines from home, you got to believe that there's some credibility here—that there's some intelligence that's actually driving this. And that really is the significance of the documents that we uncovered, declassified, and released that shows how intelligence and information can be actually manipulated intentionally so that it shows something that is not reflective of the truth at all and how it can be done in a deeply impactful way politicizing it.
@@ -46,7 +46,7 @@ What we saw then play out was now known as—what does it mean “she seeded”?
 
 But we saw early signs of the weaponization of this when the FBI under **Comey** basically got illegal—they got warrants through the **FISA court** to illegally surveil Americans like **Carter Page** in **Crossfire Hurricane** and others around President Trump and his campaign at that time.
 
-November 2016: President Trump shocks the world and wins the election. The intelligence community, and the assessments and all these documents we've made public already, throughout this period of time during the campaign leading up to the general election, the intelligence community almost uniformly assessed that 
+November 2016: President Trump shocks the world and wins the election. The intelligence community, and the assessments and all these documents we've made public already, throughout this period of time during the campaign leading up to the general election, the intelligence community almost uniformly assessed that
 
 - Putin did not have either the intent or the capability to hack the outcome of the U.S. election.
 
@@ -84,8 +84,8 @@ So they're... oh my. So they’re also stupid? Would you like to apologize now o
 
 No, no. There’s a few more pieces here. So no, no, no. I’ll have the receipts. We’ll go to those in a moment.
 
-This **January 2017 assessment** was published on January 6th. It was very quickly leaked out to different members of the media:  
-- **Washington Post**  
+This **January 2017 assessment** was published on January 6th. It was very quickly leaked out to different members of the media:
+- **Washington Post**
 - **New York Times**, etc.
 
 Then it was briefed to Congress, but the key thing here is that the **most classified and compartmentalized pieces of intelligence** they used as the basis for this total 180 intelligence assessment, which basically contradicted what the intelligence community had assessed leading up to the election, they **hid those sources even from the vast majority of members of Congress**. Based on intelligence community tradecraft standards, they were deemed even at the time to be not acceptable.
@@ -96,15 +96,15 @@ Then after that, this assessment again leaked to the media and was briefed to Co
 
 What we declassified and released provided further reinforcement of how **politicized** this document was. It showed a few things, for example:
 
-- In those hidden sources, **Putin didn’t believe Trump would win the election in 2016**  
-- Putin thought **Hillary Clinton** was going to win  
+- In those hidden sources, **Putin didn’t believe Trump would win the election in 2016**
+- Putin thought **Hillary Clinton** was going to win
 - He thought, "Hey, we know who she is, we know how she operates; we can try to figure out a way to deal with a Hillary Clinton presidency."
 
-Russia and Putin claimed they had extremely derogatory information about Hillary Clinton —  
-- Her health  
-- Her state of mind  
-- Alleged illegal bribery acts  
-- Illegal activities going on  
+Russia and Putin claimed they had extremely derogatory information about Hillary Clinton —
+- Her health
+- Her state of mind
+- Alleged illegal bribery acts
+- Illegal activities going on
 
 If Putin and Russia were truly trying to help Trump win the election, they would have done so at a **critical time in October 2016** to try to push him over the top. They didn’t believe he could win.
 There is so much evidence that disproves this **manufactured politicized intelligence assessment** ordered by **President Obama** that was very conveniently hid by **John Brennan**, **James Clapper**, and **James Comey**.
@@ -256,12 +256,12 @@ How do you **lead that change**?
 
 Yeah, you know, I've made some pretty big changes within **the Office of the Director of National Intelligence** itself — finding those pockets, those places that have been weaponized and politicized and really ultimately bringing a **mission focus** to the organization.
 
-- Trimming down and slimming down our manning and personnel count  
+- Trimming down and slimming down our manning and personnel count
 - Ensuring we have the right people in the right positions who focus on the mission itself
 
-Ultimately, every day it's just about **doing the right thing because it's the right thing to do** and setting that culture of leadership that focuses on our responsibility:  
-- The American people  
-- The Constitution  
+Ultimately, every day it's just about **doing the right thing because it's the right thing to do** and setting that culture of leadership that focuses on our responsibility:
+- The American people
+- The Constitution
 - Holding people accountable when they are not fulfilling that responsibility they have been entrusted with
 
 ---
@@ -281,34 +281,34 @@ It also, it's got to warp people's brains. It is maybe on its surface. But the t
 I hear you.
 Talk about it as well. I mean, for me, I was **21** when I made a decision to join the **Democratic Party in Hawaii**. I was running for the state house and had to choose a party. For me at that time, the **Democratic Party** still represented the values of:
 
-- Fighting for the little guy  
-- Fighting for working people  
-- Protecting the environment  
-- Standing up for free speech even if you didn't like that speech  
+- Fighting for the little guy
+- Fighting for working people
+- Protecting the environment
+- Standing up for free speech even if you didn't like that speech
 
 To fast forward from then to now, the party is **unrecognizable in just about every way**. I ended up writing a book about why I left the Democratic Party because fundamentally—and it's not about well what do you believe about health care, should we take this approach or that approach—**it really is foundational how the Democratic Party has completely gone away from the party of JFK and Martin Luther.**
 
-The good news is you get to work for somebody who's a former Democrat himself—**exactly, President.** There are a number of us in power; it's all Democrats. That's how Trump won his second term: he rallied all those moderate Democrats like yourself to become his cabinet. 
+The good news is you get to work for somebody who's a former Democrat himself—**exactly, President.** There are a number of us in power; it's all Democrats. That's how Trump won his second term: he rallied all those moderate Democrats like yourself to become his cabinet.
 
 I was really saying that in jest, but I think there's some truth to it. It was, you know, **Bobby Kennedy and I**. For the last few months of President Trump's campaign, we went and traveled all across the country together. The final event we did together was in **Wisconsin**, I don't know, a couple weeks before the election, and it was really incredible.
 
 It was in a district that normally votes pretty solidly Democrat. We were in this big beautiful barn and there were probably at least a thousand people there, maybe more. At a certain point, I asked the crowd:
 
-> "Raise your hand if you're a Republican."  
+> "Raise your hand if you're a Republican."
 
-A whole bunch of hands went up.  
+A whole bunch of hands went up.
 
-> "Raise your hand if you're an Independent or Libertarian."  
+> "Raise your hand if you're an Independent or Libertarian."
 
-A few hands went up.  
+A few hands went up.
 
-> "Raise your hand if you're a Democrat."  
+> "Raise your hand if you're a Democrat."
 
-The reaction was so fascinating because first, there was like one or two hands that went up very timidly and they were kind of looking around. Then more hands went up, and then more hands went up, and then the whole crowd got on their feet and just started cheering and looking at each other.  
+The reaction was so fascinating because first, there was like one or two hands that went up very timidly and they were kind of looking around. Then more hands went up, and then more hands went up, and then the whole crowd got on their feet and just started cheering and looking at each other.
 
 Folks came up to me after and just said things like:
 
-> "I felt like I was getting a hug from everyone that was there."  
+> "I felt like I was getting a hug from everyone that was there."
 
 There was no separation or difference between us.
 
@@ -318,27 +318,27 @@ I served in a medical unit in **Iraq** back in 2005. I was there for all of that
 
 Ultimately, one of the things I found to be true and **very detrimental to our country and national interest** is that very rarely did leaders in our country ask the fundamental question:
 
-- What is our objective?  
-- What are we actually trying to accomplish?  
-- If we're discussing a potential military operation or an act of war or any policy for that matter, what is our objective?  
-- Is it achievable?  
-- Does it serve the best interests of the United States?  
-- If it's a military operation, what is winning? How do you define winning?  
-- What's our exit strategy?  
+- What is our objective?
+- What are we actually trying to accomplish?
+- If we're discussing a potential military operation or an act of war or any policy for that matter, what is our objective?
+- Is it achievable?
+- Does it serve the best interests of the United States?
+- If it's a military operation, what is winning? How do you define winning?
+- What's our exit strategy?
 
-Those are the things I've brought to every foreign policy question in every aspect of my professional life and personal considerations of these different policies.  
+Those are the things I've brought to every foreign policy question in every aspect of my professional life and personal considerations of these different policies.
 
 This is where I appreciate **President Trump's leadership** in his approach to Iran. My position has always been that **Iran cannot have a nuclear weapons capability, period.** President Trump was very clear, but the reports were that you were not in favor. There were a lot of bullshit reports out there.
 
 My job is to provide the president with intelligence so that he can make the best-informed decision. Ultimately, what we saw in that **Operation Midnight Hammer** was a president who made a decision and executed a very precise military operation with a very clear objective that was accomplished in the best possible way—and a very clear exit.
 
-Seems to have turned out okay, but…  
+Seems to have turned out okay, but…
 
 **Tulsi, don't** worry because **Sacks also…**
 
 By the way, **Sacks also was against bombing Iran**. He absolutely did not want Nikki Haley to become president because his fear was, and he talked about it on the podcast, that he didn't want to start up with Iran. To speak just using his precise words:
 
-> "I didn't want a war with Iran. I still don't want a war."  
+> "I didn't want a war with Iran. I still don't want a war."
 
 But what is the condition that you can share with us?
 The public on the strength, the fortitude in **Iran** today with that government—what is the state on the ground that you can share, and what do you think the paths ahead are? Well, I mean, you know, their **nuclear capability was destroyed**, much of their infrastructure destroyed, much of their military capability destroyed. When you look at **Israel's actions throughout that 12-day war**, their economy is tanking, their energy sector is tanking. So, it's a, it, **Iran is facing a very challenging, unstable position**.
@@ -377,26 +377,26 @@ We're seeing that these cartels:
 
 It's a serious adversary that is highly adaptable and ultimately will do what they feel is necessary in order to continue their illegal activities at the harm of the American people.
 
-If we lost 3,000 people on 9/11 tragically from Al-Qaeda, we're losing 100,000 Americans to fentanyl. 
+If we lost 3,000 people on 9/11 tragically from Al-Qaeda, we're losing 100,000 Americans to fentanyl.
 
 > If they're not a terrorist organization, please tell me what one is. I am 100% in favor of you crossing the border and... **fucking killing them immediately with prejudice. I applaud the administration for doing that.** It's far too many. When we talked about this issue with **Rick Caruso**, of the people who are on the street over here, they're on the street because of **fentanyl**, not because they can't get a home.
 
-I applaud you guys for doing that; it takes true courage to do it.  
+I applaud you guys for doing that; it takes true courage to do it.
 
-The historical context of this is, if you look back at what happened with **Britain and China in the 1800s**, there was a period where Britain wanted to desperately weaken the Chinese. What they did was start the **Opium Wars**, and it's incredibly analogous to this moment where you see all these foreign actors trying to weaken the **United States from within**.  
+The historical context of this is, if you look back at what happened with **Britain and China in the 1800s**, there was a period where Britain wanted to desperately weaken the Chinese. What they did was start the **Opium Wars**, and it's incredibly analogous to this moment where you see all these foreign actors trying to weaken the **United States from within**.
 
-This is why I think the **cartel thing is not talked about enough**. Closing the southern border was critical, but designating these organizations as what they are allows, exactly as you said, a really **360-degree view of what is going on**. They are sophisticated; they have incredible capability and an unlimited balance sheet—it turns out, **bad intent**.  
+This is why I think the **cartel thing is not talked about enough**. Closing the southern border was critical, but designating these organizations as what they are allows, exactly as you said, a really **360-degree view of what is going on**. They are sophisticated; they have incredible capability and an unlimited balance sheet—it turns out, **bad intent**.
 
-Do you think this is a strategic issue in **China**? Are they making this decision to support **fentanyl supply chains because it's destabilizing to the United States**?  
+Do you think this is a strategic issue in **China**? Are they making this decision to support **fentanyl supply chains because it's destabilizing to the United States**?
 
-I'm reviewing in my mind what I can say and what I can't say with regard to classified intelligence. This is a point... So, I have not seen intelligence that reflects the statement you just made.  
+I'm reviewing in my mind what I can say and what I can't say with regard to classified intelligence. This is a point... So, I have not seen intelligence that reflects the statement you just made.
 
-The precursor issue coming out of China with regards to fentanyl continues to obviously be a point of negotiation in the president's ongoing negotiations with China. Ultimately, China is not the only one providing precursors, but what we're seeing is a downstream—or maybe like a downtick—in fentanyl coming across our borders, as well as the cartels in Mexico struggling to create fentanyl because they are not able to access these precursors as easily as they have been over the last several years.  
+The precursor issue coming out of China with regards to fentanyl continues to obviously be a point of negotiation in the president's ongoing negotiations with China. Ultimately, China is not the only one providing precursors, but what we're seeing is a downstream—or maybe like a downtick—in fentanyl coming across our borders, as well as the cartels in Mexico struggling to create fentanyl because they are not able to access these precursors as easily as they have been over the last several years.
 
-So when you look at that, **President Trump going after the precursor issue as well as securing our borders**, the significance and impact of that really cannot be overstated in how it's positively affecting the ability for people to live here in our own country more safely.  
+So when you look at that, **President Trump going after the precursor issue as well as securing our borders**, the significance and impact of that really cannot be overstated in how it's positively affecting the ability for people to live here in our own country more safely.
 
-Folks, on that, I just want to thank **Tulsi Gabbard, amazing Director of National Intelligence**.  
-Thank you, thank you, thank you. Got a lot of Tulsey fans out there. You got to thank you. Thank you, thank you. You got to stand alone. Thank you, well done. Thank you, appreciate you. Good to see you—that was awesome. Thank you, thanks everybody.  
+Folks, on that, I just want to thank **Tulsi Gabbard, amazing Director of National Intelligence**.
+Thank you, thank you, thank you. Got a lot of Tulsey fans out there. You got to thank you. Thank you, thank you. You got to stand alone. Thank you, well done. Thank you, appreciate you. Good to see you—that was awesome. Thank you, thanks everybody.
 
 Absolutely incredible.
 

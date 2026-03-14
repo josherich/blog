@@ -2,7 +2,7 @@
 layout: post
 title: "The Most Important Foreign Policy Speech in Years"
 date: 2026-01-27 00:00:01
-categories: podcast the-ezra-klein-show
+categories: podcast ezra-klein
 tags: [podcast_script]
 ---
 

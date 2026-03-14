@@ -2,14 +2,14 @@
 layout: post
 title: "The Future of Everything: What CEOs of Circle, CrowdStrike & More See Coming in 2026"
 date: 2026-01-25 00:00:01
-categories: podcast all-in-with-chamath-jason-sacks-friedberg
+categories: podcast all-in
 tags: [podcast_script]
 ---
 
 
 [The Future of Everything: What CEOs of Circle, CrowdStrike & More See Coming in 2026](https://dts.podtrac.com/redirect.mp3/traffic.libsyn.com/secure/allinchamathjason/Davos_Public_Ch.mp3?dest-id=1928300)
 
-All right, everybody, welcome back to **All In at Davos**. We're here at the **World Economic Forum**. For some reason, they invited me, and I'm here interviewing all the most important people in the All In style, which is **Full Contact**. 
+All right, everybody, welcome back to **All In at Davos**. We're here at the **World Economic Forum**. For some reason, they invited me, and I'm here interviewing all the most important people in the All In style, which is **Full Contact**.
 
 We're always debating investment ideas on the pod. Well, generated assets on **public** lets you turn your ideas into an investable index with **AI**. You just enter a prop like **companies benefiting from power plant construction**. Then their AI will build an index of curated stocks for you and backtest it against the **S&P 500**. Then you can invest in it just like an ETF.
 
@@ -17,32 +17,32 @@ Go to **public.com** and check out **generated assets**. Public, investing for t
 
 I think most of us agree going into **2026**, **stablecoins** and **AI crypto** are having a huge resurgence, and we were lucky enough to get two of my friends:
 
-- **Brian Armstrong**, from Coinbase  
+- **Brian Armstrong**, from Coinbase
 - **Jeremy Allaire**, CEO and co-founder of Circle.
 
-We've known each other for **30 years**.  
-"Yeah, that's amazing. What a long, strange trip it's been."  
+We've known each other for **30 years**.
+"Yeah, that's amazing. What a long, strange trip it's been."
 "I know. It's great to be with you again."
 
-Yeah, and this is not your first time at **Davos**. You've been here a couple of times.  
+Yeah, and this is not your first time at **Davos**. You've been here a couple of times.
 "Yeah. I started coming with my last company, **Brightcove**, back in 2008, 2009. And a very different time, both for WEF. It was a different time in the world. There was a great financial crisis breaking out everywhere. And that was an interesting backdrop. And also notable, I always reference that same week, was when the first block of the **Bitcoin blockchain** was minted with **The Chancellor on the Brink**, bailout kind of embedded in the blockchain."
 
-"Yeah, it's fascinating. I think it's Game of Thrones.  
-> **Chaos is a ladder.**  
+"Yeah, it's fascinating. I think it's Game of Thrones.
+> **Chaos is a ladder.**
 > Chaos is a ladder."
 
-Yeah. And for guys like us who've been through this three times now — we went through it in the dot-com boom. I think we're too young to have... You remember, obviously, that **Black Friday in '87**, but we were in college. And so we had our dot-com boom, great financial crisis, and then we had COVID.  
-**COVID.**  
+Yeah. And for guys like us who've been through this three times now — we went through it in the dot-com boom. I think we're too young to have... You remember, obviously, that **Black Friday in '87**, but we were in college. And so we had our dot-com boom, great financial crisis, and then we had COVID.
+**COVID.**
 "Yeah, which was also pretty spicy. That was a great disruptive moment. But when you have those moments happen, I'm guessing for you and many of the founders I talked to, you just think, 'This is the time to build.'"
 
-"Yeah, totally. I mean, **constraints** have a huge impact on what an entrepreneur does. And even in the history of Circle, we've had extraordinary ups and downs, some of which are endogenous shocks, exogenous shocks, all of this. And back to that **2009**, that year, actually, I got my company profitable, **Flickr**. And then not long after, it went public. And so we deal with what we're dealt with — constraints."  
+"Yeah, totally. I mean, **constraints** have a huge impact on what an entrepreneur does. And even in the history of Circle, we've had extraordinary ups and downs, some of which are endogenous shocks, exogenous shocks, all of this. And back to that **2009**, that year, actually, I got my company profitable, **Flickr**. And then not long after, it went public. And so we deal with what we're dealt with — constraints."
 "Yeah. Constraint makes for great art, is, I think, the old expression."
 
 So let's talk about your journey with **Circle**. And **stablecoins**, obviously, are top of mind because we have the **Genius Act**. My bestie, **David Sachs**, who's our **crypto and AI czar for America**, who's here with me at Davos. Or I should say I'm here with him. He invited me to come. This technology is important. Why?
 
 ---
 
-**David Sachs:**  
+**David Sachs:**
 "I mean, look, when I got started working on this almost 13 years ago, **Bitcoin** had emerged. And it was from my perspective as an internet technologist, I was thinking about, wow, this seems like a new infrastructure layer for the internet, like a missing infrastructure layer of the internet. The internet had ways to represent in data, media, audio, video, software. But there was no notion of **money on the internet**. And there was no protocol for money on the internet. And it was very clear at the time that that was going to happen."
 
 "And when we started, I wasn't convinced that everyone in the world is just going to use like a new commodity money like Bitcoin. My view is that we needed a **bridge**. We needed to connect kind of the existing **fiat system to crypto** and to these new networks and build like what we called like an **HTTP for dollars on the internet**. And that was the idea."
@@ -58,23 +58,23 @@ So let's talk about your journey with **Circle**. And **stablecoins**, obviously
 
 How do you actually achieve that? That's a whole different thing. And that's where the model that we built, which is fully reserved with **ultra safe assets**, comes in. We have regulators look after it and auditors look after it to make sure it's all done the right way.
 
-I remember talking to you offline about this. It was the easier decision for most people in crypto to go to the **ZUG**. 
+I remember talking to you offline about this. It was the easier decision for most people in crypto to go to the **ZUG**.
 
-- What is it?  
-- ZUG—the **ZUG here in Switzerland**, or just be based in Zurich or maybe Dubai.  
-- And yeah, just YOLO it and don't worry about regulations.  
-- Don't worry about audits.  
+- What is it?
+- ZUG—the **ZUG here in Switzerland**, or just be based in Zurich or maybe Dubai.
+- And yeah, just YOLO it and don't worry about regulations.
+- Don't worry about audits.
 - Don't worry about regulators.
 
-You made a different decision. You told me, 
+You made a different decision. You told me,
 
 > "No, I'm going to do this buttoned up and proper."
 
-And why didn't you go for the quick, 
+And why didn't you go for the quick,
 
-> "I'll just do this offshore and give up my United States, or even go to jail."  
+> "I'll just do this offshore and give up my United States, or even go to jail."
 
-Why not?  
+Why not?
 
 Yes, we have many crypto people right now watching this show from **San Quentin** and, yeah, I mean, look, shows popular there.
 
@@ -90,38 +90,38 @@ Explain, take yourself back to that moment in time where you’re in the right, 
 
 Well, I think with a lot of technologies on the internet, I was around, I think we were both around in the early stages of the internet, early stages of the web. There’s a very kind of hard **libertarian view**, and then there’s obviously the statist view at the other end of that.
 
-I lean libertarian, but I think also in the early days of the internet, it was like, 
+I lean libertarian, but I think also in the early days of the internet, it was like,
 
-- If we want to allow companies to get on,  
-- We need to have regulation for **ISPs**,  
-- We need to be able to have secure transactions, secure transactions and **SSL**.  
+- If we want to allow companies to get on,
+- We need to have regulation for **ISPs**,
+- We need to be able to have secure transactions, secure transactions and **SSL**.
 
 Well then we're going to need people who are making decisions about who's a valid site and who's not a valid site. These were really controversial things at the time that the more anarcho side of things was against.
 
 Now **crypto itself, cryptography, and crypto** kind of birthed out of that. These are people who wanted to be outside the system. Wanted to be outside.
 
-And I think **Circle** has always kind of tried to find this middle way, which is:  
+And I think **Circle** has always kind of tried to find this middle way, which is:
 
-- Open public networks  
-- Permissionless innovation  
-- Building on public blockchains  
+- Open public networks
+- Permissionless innovation
+- Building on public blockchains
 - Using open source infrastructure.
 
 What you can do with something like **USDC** as a dollar and as a technology is far more open than the legacy payment systems and the legacy money systems.
 
-So there is a very deep commitment to those fundamental internet ideas. But at the same time, 
+So there is a very deep commitment to those fundamental internet ideas. But at the same time,
 
-- If you want **BlackRock** to use it,  
-- Or you want the biggest tech companies in the world to use it,  
+- If you want **BlackRock** to use it,
+- Or you want the biggest tech companies in the world to use it,
 - Or just someone to hold it in a digital wallet and say, **"Yeah, this is actually a dollar and I can rely on it."**
 
-You end up needing to have this kind of structure around it.  
+You end up needing to have this kind of structure around it.
 
 **For trust.**
 
 Trust remains a key thing.
 
-Obviously, people talk about 
+Obviously, people talk about
 
 > "In code we trust,"
 
@@ -132,81 +132,81 @@ But for a civilian, a non-anarchist, maybe you want to understand how the dollar
 That's exactly right.
 
 So I think we just took that path, and that was like a harder path. It took more.
-**Capital.** It took more, I had to hire, you know, my first executive was a **general counsel** and **chief compliance officer**. Right. Well, you had to bring those in house, I suppose, because if you went to a law firm, they would be like, **"we don't know. Totally. And don't take this risk."**  
+**Capital.** It took more, I had to hire, you know, my first executive was a **general counsel** and **chief compliance officer**. Right. Well, you had to bring those in house, I suppose, because if you went to a law firm, they would be like, **"we don't know. Totally. And don't take this risk."**
 
-I mean, one of the stories actually is that before, you know, **Jim Breyer** and **General Catalyst** would give me capital when we were starting the company, they were like, **"we really need to know that if you do this, it's like, it's not illegal. Like we're not going to have some kind of liability issue."**  
+I mean, one of the stories actually is that before, you know, **Jim Breyer** and **General Catalyst** would give me capital when we were starting the company, they were like, **"we really need to know that if you do this, it's like, it's not illegal. Like we're not going to have some kind of liability issue."**
 
-So I personally, on my own, with my own money, hired the top kind of regulatory advisory firm in the world to:  
-- go look closely at this  
-- talk to people at the **US Treasury Department**  
-- talk to others  
-- really figure out, "can we do this?"  
+So I personally, on my own, with my own money, hired the top kind of regulatory advisory firm in the world to:
+- go look closely at this
+- talk to people at the **US Treasury Department**
+- talk to others
+- really figure out, "can we do this?"
 
-And actually, we could. There was a path to do it. That’s because the **US Treasury Department** actually had given guidance about how to deal with **virtual currency in the banking system**. This was in **March, 2013**, so super early. But yeah, we needed to know:  
-- Is there a legitimate legal pathway to accomplishing what we want to accomplish?  
+And actually, we could. There was a path to do it. That’s because the **US Treasury Department** actually had given guidance about how to deal with **virtual currency in the banking system**. This was in **March, 2013**, so super early. But yeah, we needed to know:
+- Is there a legitimate legal pathway to accomplishing what we want to accomplish?
 
-It's always been important. And as we've seen, there are things that are legal, and then there are incumbents. **Incumbents will use the legal system to try to stop innovators.**  
+It's always been important. And as we've seen, there are things that are legal, and then there are incumbents. **Incumbents will use the legal system to try to stop innovators.**
 
-You've also faced a little bit of that?  
-Yeah, I would say in the entire history of building this, it's been huge uphill battles with regulators and incumbents.  
+You've also faced a little bit of that?
+Yeah, I would say in the entire history of building this, it's been huge uphill battles with regulators and incumbents.
 
-What's interesting is that over the years, I found if you come into a policymaker or regulator and say,  
-> "Hey, there's this new technology. It can improve things in this way. We're trying to figure out how to deal with the risks. There are real risks. Let's not pretend there aren't risks. Let's come up with ways to address that."  
+What's interesting is that over the years, I found if you come into a policymaker or regulator and say,
+> "Hey, there's this new technology. It can improve things in this way. We're trying to figure out how to deal with the risks. There are real risks. Let's not pretend there aren't risks. Let's come up with ways to address that."
 
-Actually, people are pretty interested in talking.  
+Actually, people are pretty interested in talking.
 
-Generally, when you go to the incumbents and say,  
-> "Hey, we want to work with you or integrate this because we kind of need to work with you to make the whole thing happen,"  
+Generally, when you go to the incumbents and say,
+> "Hey, we want to work with you or integrate this because we kind of need to work with you to make the whole thing happen,"
 
-there's a lot more skepticism and constraint there.  
+there's a lot more skepticism and constraint there.
 
-And so that's changed now. I mean, we're in a very different world. It’s gone from a threat to an opportunity.  
+And so that's changed now. I mean, we're in a very different world. It’s gone from a threat to an opportunity.
 
-But there is still some reticence to **stablecoins** and **crypto** by some of the major banks and big players because they are maybe a little concerned that  
-> "you're too good at what you do and you might be too far ahead."  
+But there is still some reticence to **stablecoins** and **crypto** by some of the major banks and big players because they are maybe a little concerned that
+> "you're too good at what you do and you might be too far ahead."
 
-If you weren't so dexterous and capable and had started five years ago, they might feel differently about it.  
+If you weren't so dexterous and capable and had started five years ago, they might feel differently about it.
 
-Is my intuition close to your assessment or am I wrong?  
-I think that there's some truth in that for sure.  
+Is my intuition close to your assessment or am I wrong?
+I think that there's some truth in that for sure.
 
-It's interesting — both you and I have this juxtaposition against other eras of the internet. When **digital media** happened:  
-- You could stream media  
-- You could put up content on the web  
-- There were all these digital media startups  
+It's interesting — both you and I have this juxtaposition against other eras of the internet. When **digital media** happened:
+- You could stream media
+- You could put up content on the web
+- There were all these digital media startups
 
-The media companies were like,  
-> "well, we can do that too. Okay, our business model might have to change,"  
+The media companies were like,
+> "well, we can do that too. Okay, our business model might have to change,"
 
-and **digital advertising** transformed:  
-> "You can make it more targeted."  
+and **digital advertising** transformed:
+> "You can make it more targeted."
 
-But then there were companies that executed fundamentally different technical and software approaches. They built completely different types of utilities with different unit economics that turned the product, user experience, and economics upside down.  
+But then there were companies that executed fundamentally different technical and software approaches. They built completely different types of utilities with different unit economics that turned the product, user experience, and economics upside down.
 
-Those companies are:  
-- **Craigslist** (to classifieds)  
-- **Google Ad Network**  
-- **New York Times**  
-- **Amazon Marketplace**  
+Those companies are:
+- **Craigslist** (to classifieds)
+- **Google Ad Network**
+- **New York Times**
+- **Amazon Marketplace**
 
-and many more like that.  
+and many more like that.
 
-I think we're in a similar place now where:  
-- Media companies  
-- Communications companies  
-- Software enterprise companies  
-- Retailers  
+I think we're in a similar place now where:
+- Media companies
+- Communications companies
+- Software enterprise companies
+- Retailers
 
-have said,  
-> "This is a new paradigm. It's better for customers. I can deliver a better product. The economics are better."  
+have said,
+> "This is a new paradigm. It's better for customers. I can deliver a better product. The economics are better."
 
-They accept,  
-- "We just have to do this,"  
-- "We're going to face the innovator's dilemma,"  
+They accept,
+- "We just have to do this,"
+- "We're going to face the innovator's dilemma,"
 
-and they make that transition.  
+and they make that transition.
 
-It takes like 5 to 10 years. It takes them three times longer than probably the innovator.  
+It takes like 5 to 10 years. It takes them three times longer than probably the innovator.
 
 For example, **Walmart** and **Target** now do an exceptional job. The **United Airlines app**...
 **is not terrible.** Right. I mean, it's not Uber, but this is the difference between a **software-driven company** and, and they're not like, *"we're a software company,"* like, you know, we fundamentally, of course, we're going to go faster. Of course, we're going to understand **UX**.
@@ -278,17 +278,17 @@ I need to post collateral on an exchange to trade and I'm trading different...
 
 If you talk to a global money center bank, like **JP Morgan** or **Citi**, and ask them, "How many different payment networks are you integrated into as a bank?" they'll tell you over **200**. They integrate to over **200 different payment networks**, all over the planet, with all different standards and systems.
 
-If you go to them and say, "Stable coin networks are like a new payment network," they're like,  
+If you go to them and say, "Stable coin networks are like a new payment network," they're like,
 > "I get it. This is on the internet. It has the attributes of how the internet works. We understand that. And this will be your fastest, cheapest, and most trackable version."
 
 We actually work with a **global systemically important bank** that's moving their own money between their global branches using **USDC** because it's faster than going through the correspondent banking system. They trust it more.
 
 Bottom line is there's a lot of opportunity for banks. This is not a black or white thing. We'll figure out the rewards aspect, I'm very sure.
 
-**Amex figured it out, and so have video games.** There was some initial confusion, like,  
-> "Is this a currency?"  
-People were trading items on eBay, like swords from World of Warcraft, and asking if that counted as currency. The response:  
-> "They're playing video games, who cares? Can we just move on?"  
+**Amex figured it out, and so have video games.** There was some initial confusion, like,
+> "Is this a currency?"
+People were trading items on eBay, like swords from World of Warcraft, and asking if that counted as currency. The response:
+> "They're playing video games, who cares? Can we just move on?"
 
 There are more important things than sweating Amex points being traded and pretending it's a currency.
 
@@ -336,7 +336,7 @@ You know where the 2 percent came from? I talked about it in a previous **All In
 
 > "Yeah, New Zealand."
 
-Yeah. There was a politician in **New Zealand** who was talking to their central bank, and he's like, 
+Yeah. There was a politician in **New Zealand** who was talking to their central bank, and he's like,
 
 > "What should it be?"
 
@@ -377,28 +377,28 @@ Under that **regulatory framework**, you can do that. And I think many people wi
 
 So my view is there's absolutely going to be more **competition**. My view is also that the structure of this market, **stable coins** are **network businesses**, meaning they actually exist as platforms and utilities on the internet. Like the **USDC** and our stable coin network is literally the software protocols. But it's also the tens of thousands of applications that have integrated to the APIs.
 
-Every time an app integrates, you know, **Cash App** just said,  
-> "Hey, we're adding USDC support."  
+Every time an app integrates, you know, **Cash App** just said,
+> "Hey, we're adding USDC support."
 
-That's great. Now all those—  
-- Coinbase has you.  
-- Coinbase has it.  
-- Revolut has it.  
-- Banks have it.  
+That's great. Now all those—
+- Coinbase has you.
+- Coinbase has it.
+- Revolut has it.
+- Banks have it.
 - Visa's using it.
 
-Every time someone adds it, you know, **Stripe merchants**, **Shopify merchants** can use it. Every time someone adds that, it adds utility to the network. It adds **network effects**. And then the next developer who comes along and says,  
-> "Hey, I want to build an app that uses digital dollars, etc. Which one should I use? Well, I have interoperability with all this stuff."  
+Every time someone adds it, you know, **Stripe merchants**, **Shopify merchants** can use it. Every time someone adds that, it adds utility to the network. It adds **network effects**. And then the next developer who comes along and says,
+> "Hey, I want to build an app that uses digital dollars, etc. Which one should I use? Well, I have interoperability with all this stuff."
 
 Great. So you have these network effects that are really key.
 
-Then you also have what I call **liquidity network effects**, which is the ability for one to easily get it and use it within banking systems all around the world. We've built out this incredible liquidity network by being regulated in:  
+Then you also have what I call **liquidity network effects**, which is the ability for one to easily get it and use it within banking systems all around the world. We've built out this incredible liquidity network by being regulated in:
 
 ```markdown
-- Singapore  
-- UAE  
-- European Union  
-- US  
+- Singapore
+- UAE
+- European Union
+- US
 ```
 
 This is an easy thing to do. I mean, this is a huge build. Yeah. It's a huge build. And now it's at a point where—it's defensibility. It is defensibility.
@@ -409,16 +409,16 @@ So I think it's a long-winded answer. But the answer is essentially, we feel lik
 
 When companies are going to choose what they're going to build on and what they're going to use, they're going to look at all that. Yeah, the footprint matters. It does. And so the marginal value of a net new dollar stablecoin coming into the market is essentially zero. All these things are needed.
 
-And what do you think about this concept that everybody's going to have their own stablecoin? There'll be an Amazon one, obviously PayPal's added one. Do you think that's realistic? Or do you think people are going to be like,  
+And what do you think about this concept that everybody's going to have their own stablecoin? There'll be an Amazon one, obviously PayPal's added one. Do you think that's realistic? Or do you think people are going to be like,
 > "I might as well just use Circle"?
 
 Yeah, I don't see that. I think this is a lot like other internet platform markets. Like, everyone doesn't need their own data center. Everyone didn't need their own vertical search engines. There are a lot of things that people thought everyone didn't need to build their own video platform.
 
-Internet scale utilities achieve:  
+Internet scale utilities achieve:
 
-- network effects  
-- unit economics  
-- developer flywheels  
+- network effects
+- unit economics
+- developer flywheels
 
 Like all these things. They tend to lower their prices over time. It tends to get more and more economical and more and more capable. So there's a lot one would need to do to do that. I think even the biggest banks who have pretty big technology budgets may reach that same conclusion.
 
@@ -433,76 +433,76 @@ I think now, one of the things that concerns me is sort of the changing **geopol
 Yes. We're entering an era of new alliances and national champions. Yeah, for sure. And you're an **American company**.
 And **America first**. And so, yeah, you might be looked at differently based upon how the American enterprises is generally done. Yeah. That is very true. Our headquarters is **Freedom Tower in New York City**.
 
-At the same time, the technology of these networks, there's an opportunity actually to develop versions of this that are more **geopolitically neutral, geo-economically neutral**. So that if you're from **India, Brazil, Southeast Asia, or the Middle East**, you can build—these are high growth markets that you're comfortable building on this with a variety of different nexuses of economic relationships. And so that's something we think about actually.  
+At the same time, the technology of these networks, there's an opportunity actually to develop versions of this that are more **geopolitically neutral, geo-economically neutral**. So that if you're from **India, Brazil, Southeast Asia, or the Middle East**, you can build—these are high growth markets that you're comfortable building on this with a variety of different nexuses of economic relationships. And so that's something we think about actually.
 
-Yeah, like a **euro-based stablecoin**. We have the largest euro-based stablecoin.  
+Yeah, like a **euro-based stablecoin**. We have the largest euro-based stablecoin.
 
-**How many currencies have you done that with so far?**  
-We've really only focused on dollars and euros.  
+**How many currencies have you done that with so far?**
+We've really only focused on dollars and euros.
 
-**Why?**  
+**Why?**
 Well, I think those are two widely adopted currencies for both—as a store of value and as freely floatable, circulated, tradable currencies. And we have a big commitment to the European market. And so it's also part of just being committed to that market. We think it's a **big opportunity**.
 
-And then for everything else, we've really built a technology stack for other stablecoin issuers from other markets now that there's laws around the world.  
+And then for everything else, we've really built a technology stack for other stablecoin issuers from other markets now that there's laws around the world.
 
-**Ah, so if they want to do their national stablecoin—**  
+**Ah, so if they want to do their national stablecoin—**
 
 **Absolutely.**
 
-**--centralized. Are you doing that with Bermuda or some sort of partnership?**  
-The Bermuda partnership is related to helping them kind of have digital dollars and have economic activity, commerce activity, treasury activity all happen **on chain**.  
+**--centralized. Are you doing that with Bermuda or some sort of partnership?**
+The Bermuda partnership is related to helping them kind of have digital dollars and have economic activity, commerce activity, treasury activity all happen **on chain**.
 
-**Got it. So that's infrastructure play, not—I don't know what their dollar is.**  
-Well, they're a dollar. It's a **dollar-backed currency**. They're already their own stablecoin.  
+**Got it. So that's infrastructure play, not—I don't know what their dollar is.**
+Well, they're a dollar. It's a **dollar-backed currency**. They're already their own stablecoin.
 
-But in other places, you know, in the Philippines, Mexico, Brazil, Japan, and other markets like Australia and Korea, there are stablecoins coming. And we want to make sure that we can provide technology so that they can do all the same things—  
+But in other places, you know, in the Philippines, Mexico, Brazil, Japan, and other markets like Australia and Korea, there are stablecoins coming. And we want to make sure that we can provide technology so that they can do all the same things—
 
-**To the government or to banks?**  
+**To the government or to banks?**
 Well, more to the **private sector** because stablecoins are private sector innovated. But these companies all need to be regulated by the government. They need to follow the same—
 
-**So easier for you to partner with a major partner in those markets?**  
+**So easier for you to partner with a major partner in those markets?**
 Yes. Yeah. And we want to see that grow and flourish, you know, this idea of an **internet financial system** where all the economies of the world can be on chain and all of the contracts and financial contracts and markets and capital formation, lending—everything can happen on chain.
 
 It's obvious that small businesses and people who are very—and poker players—people who are concerned about their fees will, and are focused on that, are being driven to stablecoins. They get it. They're like,
 
 > "Yeah, I'm doing my design job for—you know, I'm a designer in the Philippines working for somebody in India or America."
 
-People are figuring it out. They're starting to figure out,  
+People are figuring it out. They're starting to figure out,
 
 > "Hey, I don't need to pay these."
 
-And then consumers are starting to figure it out. Maybe if they're, like me, a poker player, you're sending a lot of wires. Every year, I send tons of wires back and forth for different poker games.  
+And then consumers are starting to figure it out. Maybe if they're, like me, a poker player, you're sending a lot of wires. Every year, I send tons of wires back and forth for different poker games.
 
-Yeah. Well, now, you know, **Polymark and Kalshi both**—you fund your account with **USDC**.  
+Yeah. Well, now, you know, **Polymark and Kalshi both**—you fund your account with **USDC**.
 
-Right.  
+Right.
 
-To give that kind of thing.  
+To give that kind of thing.
 
-And, well, that's because that audience understands because they're always looking for edge.  
+And, well, that's because that audience understands because they're always looking for edge.
 
-- Speed, speed, yeah.  
+- Speed, speed, yeah.
 - But they're looking for edge.
 
-In a poker game, like, if you were a novice and I was an expert, I was **Jason Kuhn** and you were **Phil Hellmuth**, whatever it is, you know, it's got a bigger edge on him. It's an inside joke. Anyway, point is, like, you might have a 1% or 2% advantage, but it compounds after 100 poker games to be a bigger number.  
+In a poker game, like, if you were a novice and I was an expert, I was **Jason Kuhn** and you were **Phil Hellmuth**, whatever it is, you know, it's got a bigger edge on him. It's an inside joke. Anyway, point is, like, you might have a 1% or 2% advantage, but it compounds after 100 poker games to be a bigger number.
 
-It does. This is why the **rake matters**. And, you know, gamblers and people like to wager things.  
+It does. This is why the **rake matters**. And, you know, gamblers and people like to wager things.
 
-Well, you know who the biggest users of **USDC** are?  
+Well, you know who the biggest users of **USDC** are?
 
-Yeah, that's what I was kind of getting at.  
+Yeah, that's what I was kind of getting at.
 
-It's actually—a form of gamblers, which is the biggest **electronic markets firms** in the world.  
+It's actually—a form of gamblers, which is the biggest **electronic markets firms** in the world.
 
-Got it.  
+Got it.
 
-The guys who need the—they need every edge in terms of milliseconds and cost and capital efficiency to be able to move capital in markets. Because at the end of the day, they are algorithmically trying to figure out the very next best thing to do. And if they have dollars that operate with the **physics of the internet** and the **cost efficiency of data**, they have an edge. And so they love it.  
+The guys who need the—they need every edge in terms of milliseconds and cost and capital efficiency to be able to move capital in markets. Because at the end of the day, they are algorithmically trying to figure out the very next best thing to do. And if they have dollars that operate with the **physics of the internet** and the **cost efficiency of data**, they have an edge. And so they love it.
 
-They love it. And then the people who are sending money home to their family.  
+They love it. And then the people who are sending money home to their family.
 
-They love it too.  
+They love it too.
 
-Yeah, because they're like,  
+Yeah, because they're like,
 
 > "Wait, I'm paying Western Union 12% of this? This is a bullshit."
 
@@ -515,7 +515,7 @@ Well, **Intuit's an amazing company.** Obviously, they've been around for a long
 
 And if you can invoice people and settle in **USDC, that's better than ACH. And it's faster.** And you can imagine a world where small businesses can gain an advantage from something like that. And if you're a TurboTax user, and you file your taxes, and you get a refund, imagine being able to get your refund **instantly.** So I think there's a lot of cool stuff. And too, it's a very innovative company. It's a tech company that is in these financial technology adjacencies. And so we're super excited about the collaboration that we have.
 
-I don't want to say there's a loser in this, but there are people who are going to be challenged by it. How does **American Express and Bank of America look at Circle and stablecoins** in your mind, because they must call at some point? 
+I don't want to say there's a loser in this, but there are people who are going to be challenged by it. How does **American Express and Bank of America look at Circle and stablecoins** in your mind, because they must call at some point?
 
 I mean, look, I think all these companies have an opportunity to use this technology, right? They have an opportunity to use this technology to improve how they provide **payment utility.** They have an opportunity to use it if their customers want to interact with the whole **on-chain economy and on-chain investments** and what's happening there from a wealth management perspective. I eventually think that there's going to be more **credit products that are actually built using stablecoins.**
 
@@ -547,7 +547,7 @@ Imagine something that was that efficient and clear and **settle credit decision
 If you think about also monetary velocity and the economy, you can get more things moving.
 
 Exactly. More jobs created, more chances, more swings at bat, more shots on goal. **100%.** So money velocity increases. And I think these kinds of...
-**Credit intermediation models powered by AI and blockchain networks** can actually further increase **money velocity**. And we have a mission statement to increase **global economic prosperity through the frictionless exchange of value**. That is literally our mission statement. 
+**Credit intermediation models powered by AI and blockchain networks** can actually further increase **money velocity**. And we have a mission statement to increase **global economic prosperity through the frictionless exchange of value**. That is literally our mission statement.
 
 Many people think exchange of value means just making a payment. No. **Value exchange is the sort of time value of money transformation.** It’s the idea that *I have value I don’t need right now, you have a need for that value*, and I’m going to use time to transform that and then create new things from it. That’s where actual growth comes from. So that’s what we want to see.
 
@@ -638,13 +638,13 @@ You don't have a domestic—
 
 I don't have a domestic Slack.
 
-Okay. I have a domestic Slack and a domestic Notion. So I took the stack from the office and I just did it at home. And what that did for us was the people who bridge, you know, the family office and this, you know, can kind of—they know the same tool Slack. Then Notion has been investing in their AI so much that when you do a query, like an AI query of your Notion, and you're like, 
+Okay. I have a domestic Slack and a domestic Notion. So I took the stack from the office and I just did it at home. And what that did for us was the people who bridge, you know, the family office and this, you know, can kind of—they know the same tool Slack. Then Notion has been investing in their AI so much that when you do a query, like an AI query of your Notion, and you're like,
 
 > "Hey, this house with this HVAC, you know, this issue is like, answer."
 
 You're like, oh my god, that would have taken like three phone calls in an hour. And I think it's going to change everything about how we work.
 
-**Yeah.**  
+**Yeah.**
 
 What else did Dario think? I think I might have cut you off before—
 
@@ -652,7 +652,7 @@ Yeah. I mean, look, I think the big picture there was just like, whatever your p
 
 No.
 
-It can't be. And so that's why I, you know, my answer is like, yeah, there's things **California, New York**, et cetera, are doing. But I think when we look at that in comparison to the broader political economy that we're going to have in front of us, those will seem modest in comparison to what we've got to think about.  
+It can't be. And so that's why I, you know, my answer is like, yeah, there's things **California, New York**, et cetera, are doing. But I think when we look at that in comparison to the broader political economy that we're going to have in front of us, those will seem modest in comparison to what we've got to think about.
 
 By the way, we fixed it in startup land long ago. It's called **stock options**.
 
@@ -707,71 +707,71 @@ Well, there's a couple of different areas. One is if we think about the adversar
 - And then the bottom is just **hacktivism**.
 
 So essentially you're minting new adversaries because you don't have to have all the knowledge.
-That you had to have in the past. You can ask any number of **LLMs** and you can get answers back.  
+That you had to have in the past. You can ask any number of **LLMs** and you can get answers back.
 
-So what's happened is the **attack timeline has been compressed**. You can automate all of these sort of attacks and you can do it with a level of sophistication that looks like a **nation state**. That's one of the greatest areas of exposure: **the speed and the sophistication have dramatically increased**. Because the answers have been compiled, the scenarios can be run even by somebody who is a level six hacker out of ten. I'm just making a number up here, and they can become an eight.  
+So what's happened is the **attack timeline has been compressed**. You can automate all of these sort of attacks and you can do it with a level of sophistication that looks like a **nation state**. That's one of the greatest areas of exposure: **the speed and the sophistication have dramatically increased**. Because the answers have been compiled, the scenarios can be run even by somebody who is a level six hacker out of ten. I'm just making a number up here, and they can become an eight.
 
-So just like a developer using a **co-pilot** goes from being an average developer to above average, the same thing is happening with hackers. Absolutely.  
+So just like a developer using a **co-pilot** goes from being an average developer to above average, the same thing is happening with hackers. Absolutely.
 
-And one of the things that we're seeing is **autonomous malware**. Most people are probably familiar with malware that runs on your computer. Typically, people would use antivirus to protect against that malware. But what we're seeing now is **prompt-only autonomous malware**. Meaning I can drop the prompt on your computer by a variety of means and then it will autonomously interact with an LLM, and it will give a unique fingerprint every time it runs. So your computer is different than the next guy's. You have different data, and it will begin to prompt its way to getting to what it needs without ever phoning home to someone controlling it.  
+And one of the things that we're seeing is **autonomous malware**. Most people are probably familiar with malware that runs on your computer. Typically, people would use antivirus to protect against that malware. But what we're seeing now is **prompt-only autonomous malware**. Meaning I can drop the prompt on your computer by a variety of means and then it will autonomously interact with an LLM, and it will give a unique fingerprint every time it runs. So your computer is different than the next guy's. You have different data, and it will begin to prompt its way to getting to what it needs without ever phoning home to someone controlling it.
 
 > Oh wow.
 
-So just to unpack that and translate it, I did a little hacking in my day in the 80s. Okay. A little phone freaking mainly. All right. **Hayes modems. I had a Hayes 2400.** I started with the Vantel 300 baud.  
+So just to unpack that and translate it, I did a little hacking in my day in the 80s. Okay. A little phone freaking mainly. All right. **Hayes modems. I had a Hayes 2400.** I started with the Vantel 300 baud.
 
-> I think we're of the same. I had a 300 Hayes.  
+> I think we're of the same. I had a 300 Hayes.
 
-You had the 300 Hayes. It was a tank. It literally had such a great form factor that's never been repeated. It's great—like rectangle, but... We're old.  
+You had the 300 Hayes. It was a tank. It literally had such a great form factor that's never been repeated. It's great—like rectangle, but... We're old.
 
-We are old. People are now saying,  
+We are old. People are now saying,
 
-> "Hey, I'm going to use the Comet browser by Perplexity. ChatGPT's got a browser. Claude has an extension."  
+> "Hey, I'm going to use the Comet browser by Perplexity. ChatGPT's got a browser. Claude has an extension."
 
-And it's really wonderful to say,  
+And it's really wonderful to say,
 
-> "Hey, get all my emails from LinkedIn and then put that into a database and add it to my CRM."  
+> "Hey, get all my emails from LinkedIn and then put that into a database and add it to my CRM."
 
-Wonderful. You watch it work. Get me the cheapest flight. The same thing can be used by an adversary to get on your computer.  
+Wonderful. You watch it work. Get me the cheapest flight. The same thing can be used by an adversary to get on your computer.
 
-And one of the great ways is detection in security. You're in the business of detecting the attacker. But what you've just informed me of, which kind of blew my mind, even though it's completely obvious, is the LLM could say,  
+And one of the great ways is detection in security. You're in the business of detecting the attacker. But what you've just informed me of, which kind of blew my mind, even though it's completely obvious, is the LLM could say,
 
-> "I'm going to do a thousand attacks today and I'm going to make each one different and unique."  
+> "I'm going to do a thousand attacks today and I'm going to make each one different and unique."
 
-And unique. Absolutely. They're unique. So scary. They're not actually code because they're prompts.  
+And unique. Absolutely. They're unique. So scary. They're not actually code because they're prompts.
 
-Right. And traditionally malware would phone home. There would be like a tether. You'd always be able to see the signature of something phoning home. Now these can run autonomously, whatever, without ever phoning home. Like a sleeper agent. Like you drop them into America, 20 years later, they start pursuing, but they never have to return to base.  
+Right. And traditionally malware would phone home. There would be like a tether. You'd always be able to see the signature of something phoning home. Now these can run autonomously, whatever, without ever phoning home. Like a sleeper agent. Like you drop them into America, 20 years later, they start pursuing, but they never have to return to base.
 
-Exactly.  
+Exactly.
 
-How does one counter that?  
+How does one counter that?
 
-> Well, you need AI to counter it.  
+> Well, you need AI to counter it.
 
-And I mean, that's been a big part of the success of **CrowdStrike**. When I started the company, I founded it in 2011, it was using, we'll say AI, but machine learning at the time to detect malware that's never been seen before. Now, obviously, that's evolved into **Gen AI** and really leveraging basically the large data set that we have, that we've amassed over 14 years to train our own models, to be able to counteract with the speed that you need what the adversary is doing.  
+And I mean, that's been a big part of the success of **CrowdStrike**. When I started the company, I founded it in 2011, it was using, we'll say AI, but machine learning at the time to detect malware that's never been seen before. Now, obviously, that's evolved into **Gen AI** and really leveraging basically the large data set that we have, that we've amassed over 14 years to train our own models, to be able to counteract with the speed that you need what the adversary is doing.
 
-So we took, if you think about it,  
+So we took, if you think about it,
 
-> there's only a few ways to break into a bank. I'll use this analogy, right?  
-> - You can drive there  
-> - You can walk there  
-> - You can use a gun  
-> - You can blow the safe  
+> there's only a few ways to break into a bank. I'll use this analogy, right?
+> - You can drive there
+> - You can walk there
+> - You can use a gun
+> - You can blow the safe
 
-But at the end of the day, you got to get the money and you got to get out.  
+But at the end of the day, you got to get the money and you got to get out.
 
-Yeah. And these, it's the same way in the computer world. There are certain—we call **indicators of attack**. We've trained our models to look for these. So it doesn't matter kind of what you look like or what car you're driving. We can identify that.  
+Yeah. And these, it's the same way in the computer world. There are certain—we call **indicators of attack**. We've trained our models to look for these. So it doesn't matter kind of what you look like or what car you're driving. We can identify that.
 
-And a big part of our success has been the AI we've built over the years with this tremendous data set.  
+And a big part of our success has been the AI we've built over the years with this tremendous data set.
 
-Yeah. So you might be able to get into the bank, but at some point, you got to leave with the diamonds and you got to get to the safe.  
+Yeah. So you might be able to get into the bank, but at some point, you got to leave with the diamonds and you got to get to the safe.
 
-Exactly. That's where you can catch them.  
+Exactly. That's where you can catch them.
 
-Exactly.  
+Exactly.
 
-You mentioned **state actors** and you mentioned **for profit**. When we look at a country like **North Korea**, they need revenue. Yep. Hacking is a pretty great revenue source. They were even using AI, my understanding, and I'm sure you've been following this, to get developer jobs in the United States, convince Americans to put laptops in their homes so that they could remote work.  
+You mentioned **state actors** and you mentioned **for profit**. When we look at a country like **North Korea**, they need revenue. Yep. Hacking is a pretty great revenue source. They were even using AI, my understanding, and I'm sure you've been following this, to get developer jobs in the United States, convince Americans to put laptops in their homes so that they could remote work.
 
-Talk to me about that attack factor: actually infiltrating companies as employees because of this remote work nonsense.  
+Talk to me about that attack factor: actually infiltrating companies as employees because of this remote work nonsense.
 
 > Well, we were one of the first to ever find that. So we were actually going...
 Through developing some new **AI algorithms**, we saw something that was called **Signal**, which basically strips the noise from the signal. We saw the signal and said, **this is really weird**. We investigated it and said, okay, this looks like somebody using remote tools to, you know, what's going on here. We went further and then said, **we think it's North Korea**. We think that it's an employee who, or the company thinks it's an employee.
@@ -837,7 +837,7 @@ So what we're seeing now is the best companies are actually embedding a **securi
 
 So you want to catch them upfront rather than in the interview process.
 
-Here's a crazy idea:  
+Here's a crazy idea:
 
 ```markdown
 Hey, for your final interview,
@@ -848,7 +848,7 @@ Or hey, week one, you're going to be at HQ.
 
 That's it. You solve the whole problem because then they don't take the job. They move on to the next person. That's it.
 
-Okay. So we're looking at **state actors**. 
+Okay. So we're looking at **state actors**.
 
 - Russia is still number one state actor,
 - China,
@@ -922,7 +922,7 @@ Generally, if you click on something and it's not a known zero day, you just by 
 
 A zero day is a—yeah, sorry, you know, we're talking technical jargon. Not everybody's got the hacker. I know. Not everybody's a haze guy.
 
-But yeah, if there is a software vulnerability that hasn't been found and patched, it means that they can exploit that and then they can run code. And in some cases in the past, there was a vulnerability where they could simply send you an **SMS message**, like you didn't even know. You didn't have to click on anything. Wow. 
+But yeah, if there is a software vulnerability that hasn't been found and patched, it means that they can exploit that and then they can run code. And in some cases in the past, there was a vulnerability where they could simply send you an **SMS message**, like you didn't even know. You didn't have to click on anything. Wow.
 
 The SMS message would process this information and then they would put an implant on the phone.
 
@@ -935,107 +935,107 @@ If you look at a lot of the attacks, they're identity-based attacks. And what yo
 Right. So even if you have two-factor, if you have the session token, you can replay that and get access to a system. The crypto people learned this the hard way.
 
 They basically were using two-factor over SMS. People call the phone company. Yep.
-**Reset the SIM.**  
-Yep.  
-And then they got you.  
-**Game over.**  
-Yeah.  
-**Game over. Now your Bitcoin wallet is emptied.**  
-Correct.  
+**Reset the SIM.**
+Yep.
+And then they got you.
+**Game over.**
+Yeah.
+**Game over. Now your Bitcoin wallet is emptied.**
+Correct.
 
-Where there's money, the hackers will go figure out a way. They figure it out. And the humans are normally the **weakest link.**  
-Yeah.  
+Where there's money, the hackers will go figure out a way. They figure it out. And the humans are normally the **weakest link.**
+Yeah.
 
-You know, the way I was able to get my first exploit was I called the **New York Public Library.** I knew they had like a **VAX system** with the dial-up.  
-Okay.  
+You know, the way I was able to get my first exploit was I called the **New York Public Library.** I knew they had like a **VAX system** with the dial-up.
+Okay.
 
-And I just said,  
-> *"Hey, it's Joe from IT at the 34th Street branch."*  
-Yeah. I need the number for the dial-up.  
-Yeah. Literally, the person gave it to me at IT over the phone. They want to be helpful.  
+And I just said,
+> *"Hey, it's Joe from IT at the 34th Street branch."*
+Yeah. I need the number for the dial-up.
+Yeah. Literally, the person gave it to me at IT over the phone. They want to be helpful.
 
-I dialed it and then I could **search the stack.**  
-There you go. I could search all the books. That was the only thing you could do.  
+I dialed it and then I could **search the stack.**
+There you go. I could search all the books. That was the only thing you could do.
 
-What year was this?  
-'87.  
-Okay.  
-Yeah. I was at **Fordham** and they had **BitNet.** They had the internet there.  
-Yeah. And I was just starting to see these things.  
+What year was this?
+'87.
+Okay.
+Yeah. I was at **Fordham** and they had **BitNet.** They had the internet there.
+Yeah. And I was just starting to see these things.
 
-But it's almost universally that:  
+But it's almost universally that:
 
-- calling somebody on the phone,  
-- meeting somebody,  
-- compromising somebody.  
+- calling somebody on the phone,
+- meeting somebody,
+- compromising somebody.
 
-**That's it.**  
-**That's it.** And normally the weaknesses between the **keyboard and the chair.**  
-The keyboard and the chair.  
+**That's it.**
+**That's it.** And normally the weaknesses between the **keyboard and the chair.**
+The keyboard and the chair.
 
-What is the best practice then for you when you're advising your customers, explaining to them just how the **human factors** part of this is the most important one to focus on?  
+What is the best practice then for you when you're advising your customers, explaining to them just how the **human factors** part of this is the most important one to focus on?
 
-Well, there's certainly an **educational element** and you also have to look at how people get paid in the motivation.  
+Well, there's certainly an **educational element** and you also have to look at how people get paid in the motivation.
 
-So typically, they're going to call a **help desk.** How does a help desk get paid and what are their metrics? Their metrics is **get a call, open a ticket and close it as quick as you can.**  
-Right. The incentive is speed.  
-Right. Particularly if it's a third party.  
-Oh, in another country.  
-Right.  
+So typically, they're going to call a **help desk.** How does a help desk get paid and what are their metrics? Their metrics is **get a call, open a ticket and close it as quick as you can.**
+Right. The incentive is speed.
+Right. Particularly if it's a third party.
+Oh, in another country.
+Right.
 
-So their whole job is to open a ticket, solve a problem, close a ticket. So if you follow the money and the incentives, you can see why there's a problem. And people want to be helpful at the **help desk.** And hence, they get into the situation.  
+So their whole job is to open a ticket, solve a problem, close a ticket. So if you follow the money and the incentives, you can see why there's a problem. And people want to be helpful at the **help desk.** And hence, they get into the situation.
 
-So, you know, first start with the **education piece** and then having the right controls, identity protection, things like what **CrowdStrike** builds is going to be additive to making sure those sort of things don't happen.  
+So, you know, first start with the **education piece** and then having the right controls, identity protection, things like what **CrowdStrike** builds is going to be additive to making sure those sort of things don't happen.
 
-People using their own devices.  
-**Bring your own device.** This is the other major attack vector corporations make the mistake on you.  
-Yes, that, you know, your own device could be like a cesspool if you let your kids, you know, use it or it could be pretty good. But that's the reason why now there's **enterprise browsers** to kind of contain what people do, even if you bring your own device.  
-Yeah.  
+People using their own devices.
+**Bring your own device.** This is the other major attack vector corporations make the mistake on you.
+Yes, that, you know, your own device could be like a cesspool if you let your kids, you know, use it or it could be pretty good. But that's the reason why now there's **enterprise browsers** to kind of contain what people do, even if you bring your own device.
+Yeah.
 
-The enterprise browser is running on a virtual machine at some headquarters.  
-You provide that kind of situation?  
-That's sort of the old school way of doing it.  
+The enterprise browser is running on a virtual machine at some headquarters.
+You provide that kind of situation?
+That's sort of the old school way of doing it.
 
-So what we've done, we actually just acquired a company called **Seraphic.**  
-I saw that. Explain to me the state of the art there.  
-Yeah.  
+So what we've done, we actually just acquired a company called **Seraphic.**
+I saw that. Explain to me the state of the art there.
+Yeah.
 
-So the **state of the art** is not switching out a browser because if you use Comet or, you know, Firefox or whatever, you want to use the browser you have. So it's actually running beneath the browser and will support any browser, which basically looks at the interaction with the browser is doing.  
+So the **state of the art** is not switching out a browser because if you use Comet or, you know, Firefox or whatever, you want to use the browser you have. So it's actually running beneath the browser and will support any browser, which basically looks at the interaction with the browser is doing.
 
-And if there's sort of **malicious activity** in the browser or there's an identity that's compromised, you can stop it at the browser and you can wall off what you do with the browser, including what data you take out of it.  
+And if there's sort of **malicious activity** in the browser or there's an identity that's compromised, you can stop it at the browser and you can wall off what you do with the browser, including what data you take out of it.
 
-So it's the **front door** now for how people work and how adversaries get in us through the browser.  
+So it's the **front door** now for how people work and how adversaries get in us through the browser.
 
-How should companies implementing **AI in the enterprise,** putting their data into these clouds and working with partners—**Claude co-worked this week, kind of blew people's mind.**  
+How should companies implementing **AI in the enterprise,** putting their data into these clouds and working with partners—**Claude co-worked this week, kind of blew people's mind.**
 
-I don't know if you saw the announcement or played with it.  
-Yeah.  
-And I was using it earlier this week and I'm authenticating. Gmail, Notion, oh, yeah, my desktop files.  
-And I got like halfway through this and I was like,  
-> *"this probably isn't a good idea,"* but  
-It can be pretty scary.  
-Yellow.  
+I don't know if you saw the announcement or played with it.
+Yeah.
+And I was using it earlier this week and I'm authenticating. Gmail, Notion, oh, yeah, my desktop files.
+And I got like halfway through this and I was like,
+> *"this probably isn't a good idea,"* but
+It can be pretty scary.
+Yellow.
 
-Well, let me, let me tell you a story, not specific to that, but...  
-Right.  
-Yeah, we don't want to throw them under the bus, but it was a lot of authentications I did.  
-Exactly, exactly. They're doing great work.  
+Well, let me, let me tell you a story, not specific to that, but...
+Right.
+Yeah, we don't want to throw them under the bus, but it was a lot of authentications I did.
+Exactly, exactly. They're doing great work.
 
-But there was a customer who basically created a whole suite of **AI agents** to help their automation in their **IT department,** right?  
+But there was a customer who basically created a whole suite of **AI agents** to help their automation in their **IT department,** right?
 
-So they had one agent that was looking for sort of IT problems, software bugs, and it found something, you know, while the code was being, before it was committed.  
+So they had one agent that was looking for sort of IT problems, software bugs, and it found something, you know, while the code was being, before it was committed.
 
-So the agent said,  
-> *"hey, I found this bug. I want to fix it,"* but it didn't have access to fix it.  
+So the agent said,
+> *"hey, I found this bug. I want to fix it,"* but it didn't have access to fix it.
 
-So it went to the Slack channel that had the other 99 agents and said,  
-> *"Hey, does any other agent have access to this thing because I need it fixed?"*  
+So it went to the Slack channel that had the other 99 agents and said,
+> *"Hey, does any other agent have access to this thing because I need it fixed?"*
 
-And there was an agent that raised his hand and said,  
-> *"Oh, I have access and I can fix it."*  
+And there was an agent that raised his hand and said,
+> *"Oh, I have access and I can fix it."*
 
-Do you see how scary this is?  
-Yeah.  
+Do you see how scary this is?
+Yeah.
 
 These two agents are reasoning and they went right around the **guardrails** that were put in place.
 This is **unintended consequences**. And these **LLMs** are essentially guessing what you want them to do. They're reasoning it.
@@ -1046,8 +1046,8 @@ Now, what if it pushes the wrong code? What if it makes a mistake? And then how 
 
 The **agent technology** has unlimited upside. But my Lord, you're going to be in business for a long time.
 
-Well, this is it. It's called **AIDR**.  
-**AIDR.**  
+Well, this is it. It's called **AIDR**.
+**AIDR.**
 Yeah. AI detection and response. Got it.
 
 So there's a concept that's been around that we helped pioneer, which is really **endpoint detection and response**. So on your computer, most companies have it. You can monitor and see what's happening and prevent bad things from happening.
@@ -1209,604 +1209,604 @@ They gave me an **E-ray** to play with.
 Yeah. Which is kind of the precursors.
 
 Yeah. You know, they took the E-ray and they put it in the ZRX1.
-Yeah.  
+Yeah.
 
-And, **my Lord**, off the line. It's like having the **Tesla acceleration off the line**. And then you have the, you know, **600 in that one**. I think it was **600 horsepower plus 150**. You got about **800**. This new one. It's a **thousand horsepower**. It's a great car. Plus 250. I think it costs **$200,000**. And for the money, it's, it's, it's, it's a tremendous car.  
+And, **my Lord**, off the line. It's like having the **Tesla acceleration off the line**. And then you have the, you know, **600 in that one**. I think it was **600 horsepower plus 150**. You got about **800**. This new one. It's a **thousand horsepower**. It's a great car. Plus 250. I think it costs **$200,000**. And for the money, it's, it's, it's, it's a tremendous car.
 
-And you know, I, I still think to this day, I mean, someone will keep me honest that...  
+And you know, I, I still think to this day, I mean, someone will keep me honest that...
 
-> "The ZR1 will, and we'll still have a warranty, even if you track it."  
+> "The ZR1 will, and we'll still have a warranty, even if you track it."
 
-Really? Yeah. It's one of the rare cars. At least it used to be. Yeah.  
+Really? Yeah. It's one of the rare cars. At least it used to be. Yeah.
 
-They said you can take the **ZR1** in the, with the **E-ray version**, you could change the driver profile, lower the RPMs, you know, when it shifts and everything. So you can actually talk on the phone. Yeah. You know, and have a conversation and not make the passenger throw up.  
+They said you can take the **ZR1** in the, with the **E-ray version**, you could change the driver profile, lower the RPMs, you know, when it shifts and everything. So you can actually talk on the phone. Yeah. You know, and have a conversation and not make the passenger throw up.
 
-You want to hear the engine? I think that's right. I had a **C6 convertible** in that generation, which was just dynamite. Yeah. Canary yellow.  
+You want to hear the engine? I think that's right. I had a **C6 convertible** in that generation, which was just dynamite. Yeah. Canary yellow.
 
-What color are you looking at? This is where we're going to get real. You saw that crazy green. I like the blue. You like the blue. Yeah. It's beautiful. They have like a really beautiful, vibrant blue. Yeah.  
+What color are you looking at? This is where we're going to get real. You saw that crazy green. I like the blue. You like the blue. Yeah. It's beautiful. They have like a really beautiful, vibrant blue. Yeah.
 
-That's a— I was looking at the silver and I don't usually like silver on cars, but it looks on that car. It looks tremendous. I keep all my Mercedes silver. You do? Yeah. Oh, interesting.  
+That's a— I was looking at the silver and I don't usually like silver on cars, but it looks on that car. It looks tremendous. I keep all my Mercedes silver. You do? Yeah. Oh, interesting.
 
-All right. Listen, the question everybody wants to know, Greenland, what should we pay? You know, I'm—  
+All right. Listen, the question everybody wants to know, Greenland, what should we pay? You know, I'm—
 
-How do we make a deal? I'm sure, I'm sure there's lots of deals that's above my pay grade, but I think whenever you see the **geopolitical tensions go up**, there's always more security activities. So I think it's good, it's good for business.  
+How do we make a deal? I'm sure, I'm sure there's lots of deals that's above my pay grade, but I think whenever you see the **geopolitical tensions go up**, there's always more security activities. So I think it's good, it's good for business.
 
-So seems like something we should, the Trump administration is spicy on the margins. You may have seen, but they've been good for business. Yeah. Supportive of the business community. I think so.  
+So seems like something we should, the Trump administration is spicy on the margins. You may have seen, but they've been good for business. Yeah. Supportive of the business community. I think so.
 
-And you know, when you think about what the administration is doing with **security**, they're taking a **business first approach**. You know what that means? They want to save money. They want to consolidate. They want platforms. They want better outcomes, right? And they don't want this piecemeal buying across the government.  
+And you know, when you think about what the administration is doing with **security**, they're taking a **business first approach**. You know what that means? They want to save money. They want to consolidate. They want platforms. They want better outcomes, right? And they don't want this piecemeal buying across the government.
 
-So absolutely, I think they're doing a great job on security. Yeah. I've been asking people's perceptions and it's overwhelmingly been, yeah, they're calling us up, they're at the table, they're engaged. Yeah.  
+So absolutely, I think they're doing a great job on security. Yeah. I've been asking people's perceptions and it's overwhelmingly been, yeah, they're calling us up, they're at the table, they're engaged. Yeah.
 
-So whatever you think politically, you know, all these cultural issues, they're listening and they're engaging the business community. I think it's a great thing.  
+So whatever you think politically, you know, all these cultural issues, they're listening and they're engaging the business community. I think it's a great thing.
 
-All right, brother. Thanks for doing it. Thank you so much. Talk soon.  
+All right, brother. Thanks for doing it. Thank you so much. Talk soon.
 
 ---
 
-And **transportation**, of course, is one of the **most important parts in the business sector**. And **VTOLs**, we're promised flying cars. We still don't have them. But my guest today, who's spoken and is a friend of the **All In podcast**, is going to tell us how close we are to getting rid of these noisy helicopters buzzing around and having VTOLs, nice and quiet ones.  
+And **transportation**, of course, is one of the **most important parts in the business sector**. And **VTOLs**, we're promised flying cars. We still don't have them. But my guest today, who's spoken and is a friend of the **All In podcast**, is going to tell us how close we are to getting rid of these noisy helicopters buzzing around and having VTOLs, nice and quiet ones.
 
-**Adam Goldstein, CEO of Archer Aviation.**  
+**Adam Goldstein, CEO of Archer Aviation.**
 
-Welcome back to **All In**.  
-Thank you. Good to be here.  
+Welcome back to **All In**.
+Thank you. Good to be here.
 
-Two years ago, you were at the summit. You promised us we'd get flying cars. Let's just get to brass tax. This is all anybody wants to know.  
+Two years ago, you were at the summit. You promised us we'd get flying cars. Let's just get to brass tax. This is all anybody wants to know.
 
-- When can I go from **Manhattan to JFK**?  
-- When can I go from **San Francisco to Oakland Airport**?  
-- When is this going to happen?  
-- And is it going to happen in the United States first? Or is it going to happen in the UAE or Saudi, or maybe China?  
+- When can I go from **Manhattan to JFK**?
+- When can I go from **San Francisco to Oakland Airport**?
+- When is this going to happen?
+- And is it going to happen in the United States first? Or is it going to happen in the UAE or Saudi, or maybe China?
 
-The hardest part about bringing these aircraft to market is the **certification**. We have to prove that these aircraft are really safe. You can't blame the regulators. It's not a regulatory thing. They actually have to be very safe and reliable.  
+The hardest part about bringing these aircraft to market is the **certification**. We have to prove that these aircraft are really safe. You can't blame the regulators. It's not a regulatory thing. They actually have to be very safe and reliable.
 
-So the rules got put in place, but the most important thing that happened in the most recent history was that **President Trump issued an executive order that was fast-tracking the program through the regulators** and really starting to create a platform for us to launch.  
+So the rules got put in place, but the most important thing that happened in the most recent history was that **President Trump issued an executive order that was fast-tracking the program through the regulators** and really starting to create a platform for us to launch.
 
-And so they are now five cities going to be announced in the first quarter. And then we'll start flying in the summer. And that will be the first time you'll see these aircraft flying around the cities on a regular basis.  
+And so they are now five cities going to be announced in the first quarter. And then we'll start flying in the summer. And that will be the first time you'll see these aircraft flying around the cities on a regular basis.
 
-That will allow the general public to get comfortable with this. And they will certify us sometime after that. Because the political side of this is not a **Democratic-Republican thing**.  
+That will allow the general public to get comfortable with this. And they will certify us sometime after that. Because the political side of this is not a **Democratic-Republican thing**.
 
-It's consumers have to feel comfortable with this. They have to work with this. Yeah. And so we don't want to be fighting that. And so they're giving us a chance to go do that.  
+It's consumers have to feel comfortable with this. They have to work with this. Yeah. And so we don't want to be fighting that. And so they're giving us a chance to go do that.
 
 Okay. So it's 2026. We're sitting here in January of 2026. You guys are going to announce five cities? The government will. DOT will. Oh. Here in the United States. They're going to...
-And these are for **all veto companies**.  
-**Jovi**, yourself, all the contemporaries will get to do those **five cities first**.  
+And these are for **all veto companies**.
+**Jovi**, yourself, all the contemporaries will get to do those **five cities first**.
 
-Correct.  
+Correct.
 
-You got any guesses of what they could be?  
-What are people thinking?  
-And how are they selecting them?  
+You got any guesses of what they could be?
+What are people thinking?
+And how are they selecting them?
 
-Well, my big push has been around **Huntington Beach, right around Los Angeles**, because...  
+Well, my big push has been around **Huntington Beach, right around Los Angeles**, because...
 
-You live there?  
+You live there?
 
-I don't, but we won the exclusive for the **LA-28 Olympics**.  
+I don't, but we won the exclusive for the **LA-28 Olympics**.
 
-Oh, wow.  
+Oh, wow.
 
-And so that was a big deal for us. So we need to start trial operations, really ramping up the ops, because it's challenging.  
+And so that was a big deal for us. So we need to start trial operations, really ramping up the ops, because it's challenging.
 
-We also recently bought the **Hawthorne Airport right outside of LAX** to help give us a hub.  
+We also recently bought the **Hawthorne Airport right outside of LAX** to help give us a hub.
 
-**Hawthorne, the private...**  
+**Hawthorne, the private...**
 
-I've flown out of it many times.  
+I've flown out of it many times.
 
-Exactly. So that's a great platform.  
+Exactly. So that's a great platform.
 
-You bought it...  
+You bought it...
 
-Wait, let's just let this soak in, folks.  
+Wait, let's just let this soak in, folks.
 
-**Archer Aviation bought an airport.**  
+**Archer Aviation bought an airport.**
 
-We did.  
+We did.
 
-Can you just buy airports?  
+Can you just buy airports?
 
-It's a privately owned enterprise, Hawthorne.  
+It's a privately owned enterprise, Hawthorne.
 
-What did that cost you?  
+What did that cost you?
 
-Yeah, you can. It's... I'll call it a sort of buy it. You can control it.  
+Yeah, you can. It's... I'll call it a sort of buy it. You can control it.
 
-So there's a runway that's owned by the municipality. There's all the property around it. And then there's the control of the master lease.  
+So there's a runway that's owned by the municipality. There's all the property around it. And then there's the control of the master lease.
 
-It is very hard to do. They come up for sale every 50 years.  
+It is very hard to do. They come up for sale every 50 years.
 
-So if you look back...  
+So if you look back...
 
-What did that cost you?  
+What did that cost you?
 
-It's around **$170 million** for everything, including the FBO and all the real estate around it.  
+It's around **$170 million** for everything, including the FBO and all the real estate around it.
 
-So you own all the real estate. That's got some residual value.  
+So you own all the real estate. That's got some residual value.
 
-Right. But this gives you a massive opportunity because Los Angeles is known for its traffic.  
+Right. But this gives you a massive opportunity because Los Angeles is known for its traffic.
 
-So that would be a place where you could have a home base for these?  
+So that would be a place where you could have a home base for these?
 
-Exactly.  
+Exactly.
 
-It also happens to be home to a lot of the **Elon companies**.  
+It also happens to be home to a lot of the **Elon companies**.
 
-And so it borders **SpaceX**. The original **Boring Tunnel** was there. **Tesla Design Center** is there. You have a lot of good connectivity around people trying to change the future of transportation.  
+And so it borders **SpaceX**. The original **Boring Tunnel** was there. **Tesla Design Center** is there. You have a lot of good connectivity around people trying to change the future of transportation.
 
-Oh, yes. I'm sorry. I was thinking Van Nuys. Hawthorne in the South.  
+Oh, yes. I'm sorry. I was thinking Van Nuys. Hawthorne in the South.
 
-Yeah.  
+Yeah.
 
-Funny story. Name drop.  
+Funny story. Name drop.
 
-Elon was like,  
-> "Hey, I'm thinking about renting a place for my rocket ship company before I had a name. Want to come down and see it."  
+Elon was like,
+> "Hey, I'm thinking about renting a place for my rocket ship company before I had a name. Want to come down and see it."
 
-I went down to see it. It was at Hawthorne. And I said, he had just gotten the Falcon. And I said,  
-> "Can you land the Falcon here?"  
+I went down to see it. It was at Hawthorne. And I said, he had just gotten the Falcon. And I said,
+> "Can you land the Falcon here?"
 
-He said,  
-> "Yeah."  
+He said,
+> "Yeah."
 
-I said,  
-> "Get this off of space immediately."  
+I said,
+> "Get this off of space immediately."
 
-Yeah.  
+Yeah.
 
-So you own the SpaceX office or you're the...  
+So you own the SpaceX office or you're the...
 
-That's on the other side of the fence. Got it.  
+That's on the other side of the fence. Got it.
 
-And so we have the airport side. They have some hangars there. What a perfect location.  
+And so we have the airport side. They have some hangars there. What a perfect location.
 
-Because if memory serves me, it's just south of LAX. About two miles from LAX, about two miles from SoFi Stadium.  
+Because if memory serves me, it's just south of LAX. About two miles from LAX, about two miles from SoFi Stadium.
 
-So the goal is to make that a **hub of Los Angeles**. Imagine a **Grand Central type of facility**.  
+So the goal is to make that a **hub of Los Angeles**. Imagine a **Grand Central type of facility**.
 
-Yeah, you go down to San Diego, Laguna, just so many places to the south, Manhattan Beach.  
+Yeah, you go down to San Diego, Laguna, just so many places to the south, Manhattan Beach.
 
-And let's push our imagination here.  
+And let's push our imagination here.
 
-**Boring Company is also based there too.**  
+**Boring Company is also based there too.**
 
-And so maybe we can convince Elon to start digging some holes around LA.  
+And so maybe we can convince Elon to start digging some holes around LA.
 
-Yeah. And all of a sudden, you could really transform LA.  
+Yeah. And all of a sudden, you could really transform LA.
 
-What do you think the other cities will be in America? And how are they picking them?  
+What do you think the other cities will be in America? And how are they picking them?
 
-Well, **FAA and DOT** are going to be the ones that choose.  
+Well, **FAA and DOT** are going to be the ones that choose.
 
-Okay.  
+Okay.
 
-So the companies have submitted, in partnership with the cities, these different bids.  
+So the companies have submitted, in partnership with the cities, these different bids.
 
-And I think it's going to be a mix of urban areas, rural areas. I think it's probably going to be a lot of **red states** you'll see.  
+And I think it's going to be a mix of urban areas, rural areas. I think it's probably going to be a lot of **red states** you'll see.
 
-So my guess is you'll see something in **Texas**. You'll probably see something in **Florida**. Maybe you'll see something in **New York**.  
+So my guess is you'll see something in **Texas**. You'll probably see something in **Florida**. Maybe you'll see something in **New York**.
 
-Red states because Trump's a Republican or because they're easier when it comes to regulations?  
+Red states because Trump's a Republican or because they're easier when it comes to regulations?
 
-I think both. It's also just easier to operate.  
+I think both. It's also just easier to operate.
 
-Got it. And so if you want to land a helicopter in California, there's a lot of rules. You want to land one in Texas, you put it on the grass wherever you want.  
+Got it. And so if you want to land a helicopter in California, there's a lot of rules. You want to land one in Texas, you put it on the grass wherever you want.
 
-You know, it's interesting. When I got my ranch in Texas, they were like,  
-> "This is a perfect place to put a helipad."  
+You know, it's interesting. When I got my ranch in Texas, they were like,
+> "This is a perfect place to put a helipad."
 
-And I was like,  
-> "Hell yes."  
+And I was like,
+> "Hell yes."
 
-Like you can really put a pad down?  
+Like you can really put a pad down?
 
-And they're like,  
-> "Yeah, it's your ranch. You can do whatever you want."  
+And they're like,
+> "Yeah, it's your ranch. You can do whatever you want."
 
-Now in LA, it used to be that people would land helicopters in their backyards. I don't know when that stopped, but what are the rules in LA now?  
+Now in LA, it used to be that people would land helicopters in their backyards. I don't know when that stopped, but what are the rules in LA now?
 
-Each municipality has different rules around the different permitting you need, the different amount of time that takes to get done, how you certify the helipad. If you need to certify the helipad.  
+Each municipality has different rules around the different permitting you need, the different amount of time that takes to get done, how you certify the helipad. If you need to certify the helipad.
 
-So you basically can't do it.  
+So you basically can't do it.
 
-Yeah, it makes it very hard.  
+Yeah, it makes it very hard.
 
-Yeah. That being said, this is a **safer platform than what already exists, helicopters**.  
+Yeah. That being said, this is a **safer platform than what already exists, helicopters**.
 
-So I think there'll be a lot of loosening of that because it's just increasing safety to something they already do.  
+So I think there'll be a lot of loosening of that because it's just increasing safety to something they already do.
 
-Now, **New York City**, that's the big one. I think **Joby made an announcement that they're going to be at one of the ports**.  
+Now, **New York City**, that's the big one. I think **Joby made an announcement that they're going to be at one of the ports**.
 
-Yeah, you're contemporary.  
+Yeah, you're contemporary.
 
 I don't know if I would describe you guys as competitors now because like the early days of say EVs or self-driving cars, if this works,
-**Man, we're going to need 10 Archers and Jobys to do it.**  
+**Man, we're going to need 10 Archers and Jobys to do it.**
 
-But they're going to be at **Manhattan soon**, yeah?  
+But they're going to be at **Manhattan soon**, yeah?
 Yeah, we both will operate out of the **city**. I mean, it's a wonderful place.
 
-It's already the biggest **helicopter market** in the US. So there are three big heliports that exist already:  
-- the **west side**  
-- **east side**  
-- the **downtown Wall Street heliport**.  
+It's already the biggest **helicopter market** in the US. So there are three big heliports that exist already:
+- the **west side**
+- **east side**
+- the **downtown Wall Street heliport**.
 
-Yep. So it's already naturally kind of configured. It is very complex, congested airspace.  
+Yep. So it's already naturally kind of configured. It is very complex, congested airspace.
 
-And so I also think the way that this will come to market will be in relatively **low volumes**. We'll gain the trust of the public. They'll allow us to keep scaling this stuff up. So you can start with maybe tens of aircraft and then maybe over five, 10 years, you scale it up to hundreds of aircraft.  
+And so I also think the way that this will come to market will be in relatively **low volumes**. We'll gain the trust of the public. They'll allow us to keep scaling this stuff up. So you can start with maybe tens of aircraft and then maybe over five, 10 years, you scale it up to hundreds of aircraft.
 
-It's like the **robo-taxi and Waymo story**.  
-Exactly. You start slow, build trust.  
+It's like the **robo-taxi and Waymo story**.
+Exactly. You start slow, build trust.
 
-Are you guys on the clock? You've been working on this for a decade, yeah?  
-Yeah. So the tech actually goes back to **NASA 40 years ago**, having to use multiple electric engines to fly airplanes. And then really kind of thanks to **Larry Page** and the early work at **Xerox**. They really helped bring a lot of that technology.  
+Are you guys on the clock? You've been working on this for a decade, yeah?
+Yeah. So the tech actually goes back to **NASA 40 years ago**, having to use multiple electric engines to fly airplanes. And then really kind of thanks to **Larry Page** and the early work at **Xerox**. They really helped bring a lot of that technology.
 
-Yeah. Larry bet on two or three, right?  
-Yeah. So he's been super involved. He was a huge part of the industry. And then if you go back, really **Uber did a great job** when they had the **Uber Elevate platform**, which really put it into the mainstream. That was around 2016.  
+Yeah. Larry bet on two or three, right?
+Yeah. So he's been super involved. He was a huge part of the industry. And then if you go back, really **Uber did a great job** when they had the **Uber Elevate platform**, which really put it into the mainstream. That was around 2016.
 
-With **Blade**, right? They were doing or—  
-Yeah. They kind of, well, they really were like almost a research project to showcase what—  
-Oh, right. I remember when Travis did that, yes.  
+With **Blade**, right? They were doing or—
+Yeah. They kind of, well, they really were like almost a research project to showcase what—
+Oh, right. I remember when Travis did that, yes.
 
-Yeah. And then 2018, **Morgan Stanley** had a hundred-page initiation report saying it's the next **$9 trillion market**. That opened up the capital markets to everybody. And so that allowed us to do this.  
+Yeah. And then 2018, **Morgan Stanley** had a hundred-page initiation report saying it's the next **$9 trillion market**. That opened up the capital markets to everybody. And so that allowed us to do this.
 
-You guys SPACed right after or during COVID, yeah?  
-2021, yeah.  
-Okay. So right after COVID started to wane.  
+You guys SPACed right after or during COVID, yeah?
+2021, yeah.
+Okay. So right after COVID started to wane.
 
-And was that the right decision? I know these SPACs have been up and down. Being public can be a distraction. And you guys are a **deep tech** company with a long runway. What's it like trying to deal with shareholders in a public company when you're in a multi-decade rollout of a product like this?  
+And was that the right decision? I know these SPACs have been up and down. Being public can be a distraction. And you guys are a **deep tech** company with a long runway. What's it like trying to deal with shareholders in a public company when you're in a multi-decade rollout of a product like this?
 
-Well, I actually give a lot of credit also to the **Reddit community** because the retail army really helped allow Archer to raise the money it needed to raise in order to get to where it is. So we've raised around **$4 billion of capital today**.  
-$4 billion. Wow.  
-Yeah. And we'll probably, over time, raise more.  
+Well, I actually give a lot of credit also to the **Reddit community** because the retail army really helped allow Archer to raise the money it needed to raise in order to get to where it is. So we've raised around **$4 billion of capital today**.
+$4 billion. Wow.
+Yeah. And we'll probably, over time, raise more.
 
-But the **stock is super liquid**. Because it has such a huge fan base in the retail market, it creates liquidity, which allows the institutional investors to play, which allows the whole kind of cycle to keep going.  
+But the **stock is super liquid**. Because it has such a huge fan base in the retail market, it creates liquidity, which allows the institutional investors to play, which allows the whole kind of cycle to keep going.
 
-So as long as we keep performing, there's this pot of gold at the end of the Morgan Stanley sort of pot of gold, we should be able to keep stair-stepping up the valuation, keeping everybody happy, raising the capital, keeping it going.  
+So as long as we keep performing, there's this pot of gold at the end of the Morgan Stanley sort of pot of gold, we should be able to keep stair-stepping up the valuation, keeping everybody happy, raising the capital, keeping it going.
 
-**Deep tech is extremely capital intensive.**  
-Yeah. And this was the right avenue for us, for sure.  
+**Deep tech is extremely capital intensive.**
+Yeah. And this was the right avenue for us, for sure.
 
-It's really interesting when you think about it. Who is a better base of investors for long-term, public markets:  
-- institutional investors  
-- venture capitalists  
-- private equity  
-- or the lunatics on Reddit?  
+It's really interesting when you think about it. Who is a better base of investors for long-term, public markets:
+- institutional investors
+- venture capitalists
+- private equity
+- or the lunatics on Reddit?
 
-It turns out the lunatics on Reddit, all due respect, I say that with peace and love, they actually probably get it right because they know what consumers want. And they're willing to go for it. They're also willing to kind of look past the quarterly earnings issues and really to say,  
+It turns out the lunatics on Reddit, all due respect, I say that with peace and love, they actually probably get it right because they know what consumers want. And they're willing to go for it. They're also willing to kind of look past the quarterly earnings issues and really to say,
 
-> *"like, this is a technology they want."*  
+> *"like, this is a technology they want."*
 
-I mean, who wouldn't want it? It's safer than helicopters. They're super quiet. They cost less. It's convenience for everyone. Nobody loses here. This is a **win-win type of product**.  
+I mean, who wouldn't want it? It's safer than helicopters. They're super quiet. They cost less. It's convenience for everyone. Nobody loses here. This is a **win-win type of product**.
 
-Where's your product out? You guys are flying runs, obviously. Where are you flying the runs currently?  
-Yeah. So two core places we fly:  
+Where's your product out? You guys are flying runs, obviously. Where are you flying the runs currently?
+Yeah. So two core places we fly:
 
-- One is in **Northern California in the Bay Area**. So we fly at **Salinas**, the airport there, which is about 90 minutes south of the Bay Area.  
-- And then also in the **UAE**. So we have a great partnership with **Abu Dhabi**.  
+- One is in **Northern California in the Bay Area**. So we fly at **Salinas**, the airport there, which is about 90 minutes south of the Bay Area.
+- And then also in the **UAE**. So we have a great partnership with **Abu Dhabi**.
 
-**Mubadala has been an investor.**  
-IHC has been an investor.  
-Oh, Mubadala is an investor?  
-Yeah. They've been a wonderful partner.  
+**Mubadala has been an investor.**
+IHC has been an investor.
+Oh, Mubadala is an investor?
+Yeah. They've been a wonderful partner.
 
-Ibrahim.  
-Yeah. It's really opened up the country. They're a long term. Yeah. They're thinking in **50-year cycles**, I think.  
+Ibrahim.
+Yeah. It's really opened up the country. They're a long term. Yeah. They're thinking in **50-year cycles**, I think.
 
-How often do you fly this thing? What's the distance that it flies? And are there humans in it?  
-Yeah. So we fly most days **piloted flights**. And so you can't fly them without pilots.  
+How often do you fly this thing? What's the distance that it flies? And are there humans in it?
+Yeah. So we fly most days **piloted flights**. And so you can't fly them without pilots.
 
-It's actually pretty easy to fly the planes autonomously or remotely. Or automated is a better way to really describe it. But we fly and piloted.  
+It's actually pretty easy to fly the planes autonomously or remotely. Or automated is a better way to really describe it. But we fly and piloted.
 
 And the goal is to work towards enough flight hours, enough confidence from us, from the regulators, that we can start operating a commercial service. We're getting there. It takes time to do that. I mean—
-**How often do you fly in it?**  
-I haven't flown it. Just the **test pilots** do.  
+**How often do you fly in it?**
+I haven't flown it. Just the **test pilots** do.
 
-**Why?**  
-They won't let you?  
+**Why?**
+They won't let you?
 
-**You're the CEO.**  
-No, you could.  
+**You're the CEO.**
+No, you could.
 
-I mean, if you look at, and we're just sort of honest about flight test programs, there's a **dangerous part until you kind of cross every T here**.  
+I mean, if you look at, and we're just sort of honest about flight test programs, there's a **dangerous part until you kind of cross every T here**.
 
-And if you go back in time, I mean, most of the big aerospace companies have had crashes with early platforms.  
+And if you go back in time, I mean, most of the big aerospace companies have had crashes with early platforms.
 
-Got it.  
+Got it.
 
-So you really try to be careful with just the **test pilots**, very serious testing, until you get to the point where you're close to the certification side.  
+So you really try to be careful with just the **test pilots**, very serious testing, until you get to the point where you're close to the certification side.
 
-**Virgin Galactic**, another SPAC, they had a tragic instance, and yeah, **aviation is dangerous in the early days**.  
+**Virgin Galactic**, another SPAC, they had a tragic instance, and yeah, **aviation is dangerous in the early days**.
 
-**When will you be willing to get in one?**  
-I guess is the question we all want to answer because we're not getting in until you do it every day.  
+**When will you be willing to get in one?**
+I guess is the question we all want to answer because we're not getting in until you do it every day.
 
-Later this year.  
+Later this year.
 
-That'd be my guess.  
+That'd be my guess.
 
-Later this year?  
+Later this year?
 
-Yeah.  
+Yeah.
 
-**Now, you're married. You got kids?**  
-Married, two kids.  
+**Now, you're married. You got kids?**
+Married, two kids.
 
-Okay. So we have the conversation with the wife, I assume.  
+Okay. So we have the conversation with the wife, I assume.
 
-I'll probably tell her after.  
+I'll probably tell her after.
 
-Oh, but what's our position? When will she let you go in it?  
+Oh, but what's our position? When will she let you go in it?
 
-She's a huge believer and supporter of everything I've done.  
+She's a huge believer and supporter of everything I've done.
 
-Okay. So I think she'd trust me when I think it's time I would do it. She'd be okay.  
+Okay. So I think she'd trust me when I think it's time I would do it. She'd be okay.
 
-All right.  
+All right.
 
-Listen, continued success with it. It's obviously going to work. It's obviously going to change the world.  
+Listen, continued success with it. It's obviously going to work. It's obviously going to change the world.
 
-**What do we need to know as we wrap here about safety and why these are much safer?** Because the idea of even having a pilot seems a little bit performative. Is it just to make the passengers feel a little bit better? Because these things obviously are going to be flown by computers much better than pilots eventually.  
+**What do we need to know as we wrap here about safety and why these are much safer?** Because the idea of even having a pilot seems a little bit performative. Is it just to make the passengers feel a little bit better? Because these things obviously are going to be flown by computers much better than pilots eventually.
 
-And eventually, I mean, like by the end of this year.  
+And eventually, I mean, like by the end of this year.
 
-Yeah.  
+Yeah.
 
-The challenge with autonomy is regulation and infrastructure. So even if you couldn't do it, there's no rules in place to get that done.  
+The challenge with autonomy is regulation and infrastructure. So even if you couldn't do it, there's no rules in place to get that done.
 
-And even if the rules were in place, how does the system work? Because today, **air traffic control is very, very manual**.  
+And even if the rules were in place, how does the system work? Because today, **air traffic control is very, very manual**.
 
-If you listen on ATC, when you fly in somewhere, they're guiding you in.  
+If you listen on ATC, when you fly in somewhere, they're guiding you in.
 
-- Turn 10 degrees to the left.  
-- Drop 1,000 feet in altitude.  
+- Turn 10 degrees to the left.
+- Drop 1,000 feet in altitude.
 
-That makes total sense.  
+That makes total sense.
 
-**So the infrastructure doesn't allow for autonomy?**  
+**So the infrastructure doesn't allow for autonomy?**
 
-Yet.  
+Yet.
 
-Yet.  
+Yet.
 
-Even though autonomy, we would both agree, would be safer this year than a pilot? Would you agree with that statement?  
+Even though autonomy, we would both agree, would be safer this year than a pilot? Would you agree with that statement?
 
-You could work your way into the air traffic control system?  
+You could work your way into the air traffic control system?
 
-Definitely.  
+Definitely.
 
-The actual, you know, humans make mistakes. Computers make a lot less mistakes. And so maybe no mistakes.  
+The actual, you know, humans make mistakes. Computers make a lot less mistakes. And so maybe no mistakes.
 
-And so it's certainly, that's the dream. That's the goal.  
+And so it's certainly, that's the dream. That's the goal.
 
-With the advancements of **LLMs**, it actually allows this interesting period of time where you can now communicate with a machine in a way you couldn't really before.  
+With the advancements of **LLMs**, it actually allows this interesting period of time where you can now communicate with a machine in a way you couldn't really before.
 
-And so there's this probably middle ground that happens where there's pilots talking to machines, machines talking to pilots.  
+And so there's this probably middle ground that happens where there's pilots talking to machines, machines talking to pilots.
 
-And so you can start to implement different systems and that's where I think it goes first actually.  
+And so you can start to implement different systems and that's where I think it goes first actually.
 
-That's fascinating.  
+That's fascinating.
 
-So when you're clearing with the tower, it's just that the VTOL is talking to the tower.  
+So when you're clearing with the tower, it's just that the VTOL is talking to the tower.
 
-Yeah.  
+Yeah.
 
-It's think about like, you know, instead of like looking at your map, looking at the weather, you know, understanding, you know, all the different trackers you have to follow, the machines can just do that and make the decision and say to do this.  
+It's think about like, you know, instead of like looking at your map, looking at the weather, you know, understanding, you know, all the different trackers you have to follow, the machines can just do that and make the decision and say to do this.
 
-So it actually is easier for a machine to do it than a human.  
+So it actually is easier for a machine to do it than a human.
 
-And again, I would encourage you, listen to air traffic control.  
+And again, I would encourage you, listen to air traffic control.
 
-Oh, I've listened to it.  
+Oh, I've listened to it.
 
-Public frequency. I'm obsessed with it.  
+Public frequency. I'm obsessed with it.
 
-Yeah.  
+Yeah.
 
-I mean, I've seen a lot of people on the channel on YouTube called **Blanco Lirio**. Have you ever heard it?  
+I mean, I've seen a lot of people on the channel on YouTube called **Blanco Lirio**. Have you ever heard it?
 
-No.  
+No.
 
-So go on YouTube and Patreon and throw this guy five or 10 bucks a month.  
+So go on YouTube and Patreon and throw this guy five or 10 bucks a month.
 
-Yeah.  
+Yeah.
 
-He's based out of, he's a pilot, commercial pilot, and he's based out of a **Lake Tahoe area**.  
+He's based out of, he's a pilot, commercial pilot, and he's based out of a **Lake Tahoe area**.
 
-And all he does is break down every aviation incident. And it's amazing.  
+And all he does is break down every aviation incident. And it's amazing.
 
-And I've become a little bit obsessed with it. And he just breaks it all down.  
+And I've become a little bit obsessed with it. And he just breaks it all down.
 
-It's almost universally the pilot makes some series of incredibly poor judgments.  
+It's almost universally the pilot makes some series of incredibly poor judgments.
 
-I'm talking about private aviation as opposed to commercial aviation.  
+I'm talking about private aviation as opposed to commercial aviation.
 
-And yeah, it's just great that there's somebody like him out there.  
+And yeah, it's just great that there's somebody like him out there.
 
-**Now, how many rotors on the thing?**  
+**Now, how many rotors on the thing?**
 
-12.  
+12.
 
-12.  
+12.
 
-Now, is that six with two in each or is it like 12?  
+Now, is that six with two in each or is it like 12?
 
-It's 12.  
+It's 12.
 
-Which means 12 motors?  
+Which means 12 motors?
 
-Yeah.  
+Yeah.
 
-There's actually redundant motors. There's actually 24.  
+There's actually redundant motors. There's actually 24.
 
-Right. But we, for simplicity, call it 12.  
+Right. But we, for simplicity, call it 12.
 
-So there's 12 redundant motors, 24.  
+So there's 12 redundant motors, 24.
 
-And then how many blades? How many are they double blades? Like one on the bottom, one on the top?  
+And then how many blades? How many are they double blades? Like one on the bottom, one on the top?
 
-There's five blades on the ones on the forward part of the wing and four blades on the ones on the back.  
+There's five blades on the ones on the forward part of the wing and four blades on the ones on the back.
 
-Why?  
+Why?
 
-There's lots of different reasons. They're used just for the lifting portion.  
+There's lots of different reasons. They're used just for the lifting portion.
 
-So the ones in the back and then they stop.  
+So the ones in the back and then they stop.
 
-And then the ones in the front are used for both lifting and the cruise.  
+And then the ones in the front are used for both lifting and the cruise.
 
 So they have different configurations.
 What scenario do you have the most concern about and then work on the most? Because with **12 of these**, anybody who's flown just a toy drone, if you come up to it and you push it, you hit it, it just immediately gets back. Now with 12 of these and 24 and your technology, I'm sure it's even smoother and better than that.
 
-So what do you worry about? Like some catastrophic **electronic failure**? Are the electronic systems redundant? The battery failure?  
+So what do you worry about? Like some catastrophic **electronic failure**? Are the electronic systems redundant? The battery failure?
 
-**Everything is redundant.** Like you have to design it. What do you worry about?  
+**Everything is redundant.** Like you have to design it. What do you worry about?
 
-From a **safety perspective** today, I would say the biggest thing is the **pilots**. That's probably the thing you worry about the most.  
+From a **safety perspective** today, I would say the biggest thing is the **pilots**. That's probably the thing you worry about the most.
 
-Okay, take the pilots out. Now what are we worried about? You're always worried about just different **cascading failures**.  
+Okay, take the pilots out. Now what are we worried about? You're always worried about just different **cascading failures**.
 
 Got it. So, you know, there was an incident in the industry where one of the companies had a **propeller blade dislodge** and it cascaded their aircraft. You don't really know that unless it actually happens.
 
-- So the blade comes off, hits the other blades?  
-- And then the whole thing cascades.  
+- So the blade comes off, hits the other blades?
+- And then the whole thing cascades.
 
 So you don't really know if that's going to happen until it happens. You have the math behind it that you can try to predict. But when scenarios happen, you know, so there's, you know, you try to protect against cascading failures.
 
-How many of these 12 could go out and the thing could safely land?  
+How many of these 12 could go out and the thing could safely land?
 
-Well, one of the beauties is we're also building it to be able to **take off and land conventionally**. And so you can lose a lot. We have a big **50-foot wing**. You can glide. The glide ratio is huge. You can get up to max 10 miles of glide. So you can do a lot of things here. That's the only way to really certify at the standards the **FAA** wants you to do it. So it gives you a pretty big...  
+Well, one of the beauties is we're also building it to be able to **take off and land conventionally**. And so you can lose a lot. We have a big **50-foot wing**. You can glide. The glide ratio is huge. You can get up to max 10 miles of glide. So you can do a lot of things here. That's the only way to really certify at the standards the **FAA** wants you to do it. So it gives you a pretty big...
 
-So you have those nice wide wings. You can glide in.  
+So you have those nice wide wings. You can glide in.
 
-Yeah. What height, what's the ceiling on these now?  
+Yeah. What height, what's the ceiling on these now?
 
-They can go up to **11,000 feet**. There's no real reason to. It's not pressurized. You really want to fly helicopter range, **500 to 2,000 feet**.  
+They can go up to **11,000 feet**. There's no real reason to. It's not pressurized. You really want to fly helicopter range, **500 to 2,000 feet**.
 
-And what do you take from the helicopter industry away from, you know, when they have accidents, what happens? It seems like those pilots particularly are really skilled, but also maybe on the margins. Maybe I'm reading into this. Cowboys, a little bit eccentric.  
+And what do you take from the helicopter industry away from, you know, when they have accidents, what happens? It seems like those pilots particularly are really skilled, but also maybe on the margins. Maybe I'm reading into this. Cowboys, a little bit eccentric.
 
-Yeah. Yeah. I mean, it depends. I mean, every scenario is obviously pretty different.  
+Yeah. Yeah. I mean, it depends. I mean, every scenario is obviously pretty different.
 
-The beauty behind these aircraft is the **redundancy** allows you to just have a capability to certify with near zero single points of failure or zero single points of failure, where a helicopter doesn't have that.  
+The beauty behind these aircraft is the **redundancy** allows you to just have a capability to certify with near zero single points of failure or zero single points of failure, where a helicopter doesn't have that.
 
-So, you know, if you think about one big rotor, there's a lot of parts that go into making that one big rotor work. And if that one part fails, you have a catastrophic event. So that can happen. They're mechanical complex machines.  
+So, you know, if you think about one big rotor, there's a lot of parts that go into making that one big rotor work. And if that one part fails, you have a catastrophic event. So that can happen. They're mechanical complex machines.
 
-Yeah.  
+Yeah.
 
-And so, you know, with the eVTOL side, you reduce that complexity.  
+And so, you know, with the eVTOL side, you reduce that complexity.
 
-By what if you were to say it's **X times more safer** without us, like, you know, holding you to it. If you were to ask the 10 engineers working across the 10 companies in your field, not you, but what do you guess those 10 engineers would say it's currently this times more safer than helicopters?  
+By what if you were to say it's **X times more safer** without us, like, you know, holding you to it. If you were to ask the 10 engineers working across the 10 companies in your field, not you, but what do you guess those 10 engineers would say it's currently this times more safer than helicopters?
 
-Well, that will be a standard that the **FAA** makes us certified to. So the question will be, what's the ultimate standard?  
+Well, that will be a standard that the **FAA** makes us certified to. So the question will be, what's the ultimate standard?
 
-- 10 to the minus 7  
-- 10 to the minus 8  
-- 10 to the minus 9  
+- 10 to the minus 7
+- 10 to the minus 8
+- 10 to the minus 9
 
-One in a billion. One in a hundred million.  
+One in a billion. One in a hundred million.
 
-Yeah, but you think it's twice. What would your...  
+Yeah, but you think it's twice. What would your...
 
-It would be an order of magnitude safer. So three, four, five times safer is a pretty reasonable goal, 10 times a reasonable goal.  
+It would be an order of magnitude safer. So three, four, five times safer is a pretty reasonable goal, 10 times a reasonable goal.
 
-Why are you here at **Davos**? You virtue signaling about being all electric? What's going on? Selling aircraft. You're here to do business?  
+Why are you here at **Davos**? You virtue signaling about being all electric? What's going on? Selling aircraft. You're here to do business?
 
-Yeah.  
+Yeah.
 
-Who are you selling to? Just nation states?  
+Who are you selling to? Just nation states?
 
-Yeah. So geographically, obviously, easier to sell stuff in the U.S. or kind of close to the U.S. Here you get to meet different companies and countries.  
+Yeah. So geographically, obviously, easier to sell stuff in the U.S. or kind of close to the U.S. Here you get to meet different companies and countries.
 
-- The Middle East, **GCC** has been very active.  
-- Africa has been very active.  
-- Asia has been very active.  
+- The Middle East, **GCC** has been very active.
+- Africa has been very active.
+- Asia has been very active.
 
-So there's a lot of great folks to go see where you can kind of line them all up. So we'll announce, you know, deals here. We'll, you know, sign things here that will ultimately get announced. So it actually is very beneficial from a business standpoint to come here.  
+So there's a lot of great folks to go see where you can kind of line them all up. So we'll announce, you know, deals here. We'll, you know, sign things here that will ultimately get announced. So it actually is very beneficial from a business standpoint to come here.
 
-And most of the companies here are **AI**. So there's a lot of AI talk. We're a non-AI predominant company. There's a lot of AI in what we do, but we don't sell AI. And so we sell infrastructure. And it's the perfect place to meet the ministers of transportation. Perfect.  
+And most of the companies here are **AI**. So there's a lot of AI talk. We're a non-AI predominant company. There's a lot of AI in what we do, but we don't sell AI. And so we sell infrastructure. And it's the perfect place to meet the ministers of transportation. Perfect.
 
-Yeah. Super efficient. The heads of state.  
+Yeah. Super efficient. The heads of state.
 
-So there's lots of opportunities to, you know, kind of bring Western tech to this country. I think they see having VTOLs as a **point of pride** for their country.  
+So there's lots of opportunities to, you know, kind of bring Western tech to this country. I think they see having VTOLs as a **point of pride** for their country.
 
 Yes. Oh, absolutely. Like this is, I don't want to say ban any project, but it is something they can point to and
-**Say, look, we got here first.**  
+**Say, look, we got here first.**
 Yeah. And they can see the **UAE**. I could see **Saudi**. I could see **Qatar**. Absolutely. We're all feeling that way. Like, oh, we have this. Absolutely.
 
-There is another element where, you know, **Davos** is sort of a non-defense oriented. They don't like you to talk about defense here. We do have a really strong partnership with **Anderil**.  
+There is another element where, you know, **Davos** is sort of a non-defense oriented. They don't like you to talk about defense here. We do have a really strong partnership with **Anderil**.
 
-So we've been building the new kind of autonomous, attritable aircrafts. We talked about one of the programs.  
-Wait, what was the second word?  
-**Autonomous?**  
-**Attritable**, they call it.  
-Attritable? What does it mean?  
+So we've been building the new kind of autonomous, attritable aircrafts. We talked about one of the programs.
+Wait, what was the second word?
+**Autonomous?**
+**Attritable**, they call it.
+Attritable? What does it mean?
 
-It's not a 20-year plane. It's not expendable, like a one-time missile, one-way type of product. They call it the space in between. They call it **attritable**. If you lost it, it wouldn't be a big deal. Yeah.  
+It's not a 20-year plane. It's not expendable, like a one-time missile, one-way type of product. They call it the space in between. They call it **attritable**. If you lost it, it wouldn't be a big deal. Yeah.
 
-So the goal is, one of the programs we've talked about is one called **Project NIX**. It is an autonomous collaborative attack helicopter drone.  
+So the goal is, one of the programs we've talked about is one called **Project NIX**. It is an autonomous collaborative attack helicopter drone.
 
-- Think like, sort of like an Apache type of platform.  
-- There’ll be a big manned asset and they’ll have a bunch of drones that fly with it.  
+- Think like, sort of like an Apache type of platform.
+- There’ll be a big manned asset and they’ll have a bunch of drones that fly with it.
 
-So that's a program we're working on with **Anderil**. We build the core aircraft and Anderil missionizes it.  
+So that's a program we're working on with **Anderil**. We build the core aircraft and Anderil missionizes it.
 
-Think sensors or munitions, those kinds of things.  
+Think sensors or munitions, those kinds of things.
 
-But it would fly with a bunch of little drones around it to protect it?  
-We are effectively, they're not little, but these are huge aircraft.  
+But it would fly with a bunch of little drones around it to protect it?
+We are effectively, they're not little, but these are huge aircraft.
 
-Oh, I see. It's almost like, think about it this way:  
+Oh, I see. It's almost like, think about it this way:
 
-- If you have an Apache, which is a $50 to $70 million asset, and it has a person in it, you don’t want to risk it for lots of reasons:  
-  1. There’s a person.  
-  2. It’s super expensive.  
+- If you have an Apache, which is a $50 to $70 million asset, and it has a person in it, you don’t want to risk it for lots of reasons:
+  1. There’s a person.
+  2. It’s super expensive.
   3. Very hard to replace.
 
-If you're not willing to risk it, it's not that much of a deterrent. And so when you do risk it, you want to be certain you can have these things come back.  
+If you're not willing to risk it, it's not that much of a deterrent. And so when you do risk it, you want to be certain you can have these things come back.
 
-But what if I can make an aircraft that does the same thing, the same fighting power, maybe more fighting power, **at 90% lower cost with no pilot?**  
-**Wow, that's key.** Because these pilots are worth $25 million each.  
+But what if I can make an aircraft that does the same thing, the same fighting power, maybe more fighting power, **at 90% lower cost with no pilot?**
+**Wow, that's key.** Because these pilots are worth $25 million each.
 
-They literally have a friend who was in special forces. And he told me that they put a number on each of them, how much they invested in the replacement cost of a Navy SEAL of a—he wasn’t in the Navy SEALs, but one of these kind of type groups.  
+They literally have a friend who was in special forces. And he told me that they put a number on each of them, how much they invested in the replacement cost of a Navy SEAL of a—he wasn’t in the Navy SEALs, but one of these kind of type groups.
 
-You could actually know the replacement cost of a person and they called them assets, you know, these top elite folks.  
+You could actually know the replacement cost of a person and they called them assets, you know, these top elite folks.
 
-So you have no problem working in defense?  
-That's awesome.  
+So you have no problem working in defense?
+That's awesome.
 
-Yeah, I'm a country. I'm a patriot. I'm a super believer in what the **U.S.** is doing. And they've been, you know, as a country, extremely helpful to new industries like **Archer** and **eBtals**. And so maybe more so than the last administration. A lot more.  
+Yeah, I'm a country. I'm a patriot. I'm a super believer in what the **U.S.** is doing. And they've been, you know, as a country, extremely helpful to new industries like **Archer** and **eBtals**. And so maybe more so than the last administration. A lot more.
 
-So just the quick example on that was: I could not get a meeting with the former Secretary **Trump**. But the former Secretary of Transportation? Couldn't get a meeting. Wouldn’t take a meeting.  
+So just the quick example on that was: I could not get a meeting with the former Secretary **Trump**. But the former Secretary of Transportation? Couldn't get a meeting. Wouldn’t take a meeting.
 
-And I know he's busy.  
+And I know he's busy.
 
-Wait, wait, you’re a publicly traded VTOL company who's meeting with the Gulf monarchies being courted. Zero meetings.  
+Wait, wait, you’re a publicly traded VTOL company who's meeting with the Gulf monarchies being courted. Zero meetings.
 
-And you requested meetings? Multiple times.  
+And you requested meetings? Multiple times.
 
-And they literally—this is **Brian Armstrong**’s story—he wanted to meet with the SEC. They’re like,  
-> “yeah, no, we're good.”  
+And they literally—this is **Brian Armstrong**’s story—he wanted to meet with the SEC. They’re like,
+> “yeah, no, we're good.”
 
-Secretary **Duffy** comes in and all of a sudden, like monthly, it was,  
-> “we want to make sure we can re-industrialize America.”  
+Secretary **Duffy** comes in and all of a sudden, like monthly, it was,
+> “we want to make sure we can re-industrialize America.”
 
-Yeah. This is important. Aviation leading the world is important. And modernizing air traffic is important. And if you can help in all that, we want to hear from you.  
-> “What can we do to help you?”  
+Yeah. This is important. Aviation leading the world is important. And modernizing air traffic is important. And if you can help in all that, we want to hear from you.
+> “What can we do to help you?”
 
-And that resulted, by the way, in the executive order that came out. Yeah.  
+And that resulted, by the way, in the executive order that came out. Yeah.
 
-And so that helped the industry, because I showed them a path. Because we won the exclusive for the **LA 28 Olympics** to fly air taxis around that city during the games.  
+And so that helped the industry, because I showed them a path. Because we won the exclusive for the **LA 28 Olympics** to fly air taxis around that city during the games.
 
-So we'll sort of control the air during that. And I said, I need a path to make sure I can do that. Right? This will be a huge opportunity.  
+So we'll sort of control the air during that. And I said, I need a path to make sure I can do that. Right? This will be a huge opportunity.
 
-I think people have not taken— the **Democratic Party** has not taken this to heart yet. It’s not about being subservient to the technology industry or capitalism or corporates. It’s about winning the future.  
+I think people have not taken— the **Democratic Party** has not taken this to heart yet. It’s not about being subservient to the technology industry or capitalism or corporates. It’s about winning the future.
 
-And part of winning together for American companies is at least meeting with them and hearing the vision.  
+And part of winning together for American companies is at least meeting with them and hearing the vision.
 
-- How does that hurt the previous Secretary of Transportation to meet with the VTOL companies?  
-- How did it hurt the SEC to meet with **Brian Armstrong** or any number of crypto companies?  
+- How does that hurt the previous Secretary of Transportation to meet with the VTOL companies?
+- How did it hurt the SEC to meet with **Brian Armstrong** or any number of crypto companies?
 
-It was like they were in contempt, it seems, in hindsight, of the entire technology and business industry.  
+It was like they were in contempt, it seems, in hindsight, of the entire technology and business industry.
 
-Yeah. I mean, in the end, if this works, imagine the jobs we will create. Imagine the GDP contribution we will create.  
+Yeah. I mean, in the end, if this works, imagine the jobs we will create. Imagine the GDP contribution we will create.
 
 I mean, the **FAA administrator** kind of publicly keeps saying 11% of GDP touches aviation. And so it’s capped because of air traffic. We have to upgrade that system.
 I'm **red-pilling myself** as we speak here. But it's like, if you believe that, then you would think you want to unlock that. And it will help everybody, like literally no one loses. So you would think you'd want to do that.
@@ -1896,102 +1896,102 @@ Exactly.
 That's wild to think about.
 
 It's also wild to think about that **Texas has the largest solar base of any state in the union**.
-Yeah, absolutely.  
+Yeah, absolutely.
 
-And, you know, we went there and we said, **man, you guys have too much energy.**  
-**Hey, buddy, I got a do I have a do I got an idea for you.**  
+And, you know, we went there and we said, **man, you guys have too much energy.**
+**Hey, buddy, I got a do I have a do I got an idea for you.**
 
-And so we, you know, we have a **1.2 gigawatt substation** there. We've also built a **350 megawatt gas plant** on site to energize one of the largest clusters of GPUs in the world.  
+And so we, you know, we have a **1.2 gigawatt substation** there. We've also built a **350 megawatt gas plant** on site to energize one of the largest clusters of GPUs in the world.
 
-So was there gas under the actual data center or they’re shipping?  
-**No, no, no, no.** We had access to a pipeline that feeds into, you know, **10 gas turbines** that are on site there.  
-Amazing.  
+So was there gas under the actual data center or they’re shipping?
+**No, no, no, no.** We had access to a pipeline that feeds into, you know, **10 gas turbines** that are on site there.
+Amazing.
 
-And the gas turbines, those were a blocker for a while, too, huh?  
-They still are. I mean, you know, **gas turbines are a massive supply chain constraint** as people look to energize compute infrastructure.  
+And the gas turbines, those were a blocker for a while, too, huh?
+They still are. I mean, you know, **gas turbines are a massive supply chain constraint** as people look to energize compute infrastructure.
 
-I think a lot of people—**we were really one of the first groups** to be focused on, you know, natural gas power data centers doing things **behind the meter off grid**. And I think a lot of people have sort of followed this pathway, which has created a lot of supply chain challenges with some of the major producers, folks like:  
-- **GE Vernova**  
-- Caterpillar (has a company called Solar that we work with very closely)  
-- Siemens  
-- Mitsubishi  
+I think a lot of people—**we were really one of the first groups** to be focused on, you know, natural gas power data centers doing things **behind the meter off grid**. And I think a lot of people have sort of followed this pathway, which has created a lot of supply chain challenges with some of the major producers, folks like:
+- **GE Vernova**
+- Caterpillar (has a company called Solar that we work with very closely)
+- Siemens
+- Mitsubishi
 
-And we actually recently did something with an incredible company, **Boom Supersonic.**  
-Yes, Boom Supersonic was making the Concorde replacement, **Blake.**  
-Correct. Blake's the CEO. And they're making their own engines that go pretty fast.  
+And we actually recently did something with an incredible company, **Boom Supersonic.**
+Yes, Boom Supersonic was making the Concorde replacement, **Blake.**
+Correct. Blake's the CEO. And they're making their own engines that go pretty fast.
 
-And so what was the idea there?  
-Yeah. So, you know, they had re-engineered this turbine for supersonic jet travel.  
+And so what was the idea there?
+Yeah. So, you know, they had re-engineered this turbine for supersonic jet travel.
 
-And, you know, Colleen, my co-founder, and I were talking to Blake and said,  
-> *"Hey, you know, could we use that to generate power instead of, you know, transport people over the ocean at supersonic speeds?"*  
+And, you know, Colleen, my co-founder, and I were talking to Blake and said,
+> *"Hey, you know, could we use that to generate power instead of, you know, transport people over the ocean at supersonic speeds?"*
 
-And, you know, now we're, you know, their first large purchase order for **$1.2 billion of gas turbines** to power critical AI infrastructure.  
-**It's wild to think about.** The gas turbines and jet engines are not super dissimilar.  
+And, you know, now we're, you know, their first large purchase order for **$1.2 billion of gas turbines** to power critical AI infrastructure.
+**It's wild to think about.** The gas turbines and jet engines are not super dissimilar.
 
-No, I mean, I think this is the full playbook of, you know, **GE historically, right?** I mean, the reason **GE Vernova exists is,** you know, their leadership in terms of, you know, air transportation as well as power generation.  
+No, I mean, I think this is the full playbook of, you know, **GE historically, right?** I mean, the reason **GE Vernova exists is,** you know, their leadership in terms of, you know, air transportation as well as power generation.
 
-Yeah. And I wonder if it's really interesting about that opportunistic thing for Blake to do from Boom Supersonic is that now that will allow him to fund his Concorde replacement.  
+Yeah. And I wonder if it's really interesting about that opportunistic thing for Blake to do from Boom Supersonic is that now that will allow him to fund his Concorde replacement.
 
-Yeah. You know, **power is a great business** and, you know, we think he can make a lot of money as, you know, the scaling up of AI infrastructure occurs.  
+Yeah. You know, **power is a great business** and, you know, we think he can make a lot of money as, you know, the scaling up of AI infrastructure occurs.
 
-And hopefully, you know, he's able to build those incredible supersonic jets that get us to **Tokyo much faster.**  
+And hopefully, you know, he's able to build those incredible supersonic jets that get us to **Tokyo much faster.**
 
-And the **Stargate project** is a **$300 billion project.**  
+And the **Stargate project** is a **$300 billion project.**
 
-What's the number? Because there was a big announcement at the White House and there's been a little bit of, you know, wink, wink, like these are numbers were kind of estimates.  
+What's the number? Because there was a big announcement at the White House and there's been a little bit of, you know, wink, wink, like these are numbers were kind of estimates.
 
-What's the realistic footprint of this?  
+What's the realistic footprint of this?
 
-So, you know, I think **Stargate has been a term that's been used to describe a lot of different things at this point.**  
+So, you know, I think **Stargate has been a term that's been used to describe a lot of different things at this point.**
 
-You know, initially our campus was called **Stargate** and then, you know, Stargate was then a company for a while.  
+You know, initially our campus was called **Stargate** and then, you know, Stargate was then a company for a while.
 
-And then I think OpenAI sort of described it as all of their spend on compute is just sort of broadly labeled as **Stargate.**  
+And then I think OpenAI sort of described it as all of their spend on compute is just sort of broadly labeled as **Stargate.**
 
-So I think the number is **$500 billion** and this incorporates, you know, chips, data centers, energy to ultimately power this intelligent infrastructure that's running and scaling both **ChatGPT and all their other core services.**  
+So I think the number is **$500 billion** and this incorporates, you know, chips, data centers, energy to ultimately power this intelligent infrastructure that's running and scaling both **ChatGPT and all their other core services.**
 
-One of the blockers, in addition to the turbines, has been **electricians and construction workers.**  
+One of the blockers, in addition to the turbines, has been **electricians and construction workers.**
 
-Yes. My understanding is you’re paying two to three times what they were getting paid before the data center.  
+Yes. My understanding is you’re paying two to three times what they were getting paid before the data center.
 
-No comment on exactly what we're paying the electricians, but they’re **very well compensated.**  
+No comment on exactly what we're paying the electricians, but they’re **very well compensated.**
 
-Am I in the right zone that their salaries in the industry have doubled or tripled?  
+Am I in the right zone that their salaries in the industry have doubled or tripled?
 
-Look, I think it's an incredibly exciting career path for anybody looking to do work with their hands and get well.  
+Look, I think it's an incredibly exciting career path for anybody looking to do work with their hands and get well.
 
-Hundreds of thousands of dollars a year.  
+Hundreds of thousands of dollars a year.
 
-Yes. So, you know what? I mean, let's think about that for a second.  
+Yes. So, you know what? I mean, let's think about that for a second.
 
-No. No college degree.  
+No. No college degree.
 
-Yeah. You just have to be an apprentice as an electrician and you can make **hundreds of thousands of dollars a year.**  
+Yeah. You just have to be an apprentice as an electrician and you can make **hundreds of thousands of dollars a year.**
 
-And you need how many? Thousands? Hundreds?  
+And you need how many? Thousands? Hundreds?
 
-Correct.  
+Correct.
 
-Which one? Thousands or hundreds?  
+Which one? Thousands or hundreds?
 
-**Thousands.**  
+**Thousands.**
 
-So I'll get into it in a second.  
+So I'll get into it in a second.
 
-Okay. I'll give you an example.  
+Okay. I'll give you an example.
 
-So in **Abilene today, we have 8,000 people on site every day.** They’re working day and night to bring this facility online as fast as possible so we can energize this intelligence.  
+So in **Abilene today, we have 8,000 people on site every day.** They’re working day and night to bring this facility online as fast as possible so we can energize this intelligence.
 
-That's three hours west of Dallas.  
+That's three hours west of Dallas.
 
-Correct. So it's in **West Texas.**  
+Correct. So it's in **West Texas.**
 
-You know, Abilene is a town of **120,000 people.** So, you know, when you're hiring 8,000 people to work in that town, you can't source everybody locally.  
+You know, Abilene is a town of **120,000 people.** So, you know, when you're hiring 8,000 people to work in that town, you can't source everybody locally.
 
-So we've actually had to bring in a lot of labor from all states.  
+So we've actually had to bring in a lot of labor from all states.
 
-And housing, I would assume.  
+And housing, I would assume.
 
 Yeah.
 **Housing**, the market's actually fairly efficient. There are a lot of people that won't be long-term permanent workers there; they bring mobile homes and collect a stipend. It's kind of a very efficient process in that regard.
@@ -2039,8 +2039,8 @@ Yeah, yeah, you could say that. Compared to where you were like two or three yea
 
 I think it just really speaks to the demand for **compute**. I think people are constantly having this conversation of like, *are we in an AI bubble?* You know, I think there's just an incredible demand—**nobody has enough compute**. None of the leading labs, none of the leading application companies can get their hands on enough compute. And that's just driving an incredible amount of urgency to deliver infrastructure, both the **chips** and the **data center**.
 
-So even this year, going into 2026, you're seeing the same amount of inbound requests:  
-- **"Hey, we need more, we need more, we need more, what do you got?"**  
+So even this year, going into 2026, you're seeing the same amount of inbound requests:
+- **"Hey, we need more, we need more, we need more, what do you got?"**
 
 Or was last year people putting in their big orders for the next couple of years?
 
@@ -2072,13 +2072,13 @@ How much faster?
 
 No, but did he—my understanding is he did it in half the time anybody else had ever done something like that.
 
-I mean, it depends on how you sort of measure these things. I think **Colossus 1** was sort of this unique case where he had this large-scale industrial building. He had power to the building. And really what he was doing was what I would call the **tenant fit-out**, which is basically the in-the-data-hall build-out of:  
+I mean, it depends on how you sort of measure these things. I think **Colossus 1** was sort of this unique case where he had this large-scale industrial building. He had power to the building. And really what he was doing was what I would call the **tenant fit-out**, which is basically the in-the-data-hall build-out of:
 
 ```markdown
-- cooling distribution units  
-- RPPs  
-- electrical systems  
-- hot aisle containment systems  
+- cooling distribution units
+- RPPs
+- electrical systems
+- hot aisle containment systems
 ```
 
 and then you sort of roll racks of GPUs into these.
@@ -2095,7 +2095,7 @@ You as running, not competitive to him, but building the same things, you have t
 
 How do you think he was able to do it so fast?
 
-I think Elon does an incredible job of breaking down a large industrial process into a lot of sub-processes and understanding constraints, and really taking a **first-principles approach** of:  
+I think Elon does an incredible job of breaking down a large industrial process into a lot of sub-processes and understanding constraints, and really taking a **first-principles approach** of:
 
 > **"How do I build things as quickly as possible? How do I parallelize things as quickly as possible?"**
 
@@ -2109,10 +2109,10 @@ You know, we self-perform a lot of procurement functions and engineering functio
 
 There's actually a bunch of folks that worked on the **Tesla Gigafactory** in your new hometown in **Austin** that are working on our campus in **Abilene, Texas**. So there's a lot of overlap in methodologies.
 
-There's been a lot of talk, and I think **Brad Gerstner** kind of started this discussion on his BG2 podcast when he had **Sam Altman** on:  
+There's been a lot of talk, and I think **Brad Gerstner** kind of started this discussion on his BG2 podcast when he had **Sam Altman** on:
 
-- How does a company with a 20, or at the time, 12 billion, now it's 20 billion run rate,  
-- How does **OpenAI** pay for a **$500 billion build-out** in your contract with them and your relationship with them?  
+- How does a company with a 20, or at the time, 12 billion, now it's 20 billion run rate,
+- How does **OpenAI** pay for a **$500 billion build-out** in your contract with them and your relationship with them?
 
 I'm assuming this is being done in stages, not one giant $100 billion contract, but stages, yeah?
 Yeah, so I think it's important to understand, **in a lot of ways, my role as CEO of Caruso, half my time is really spent on risk management**. The amount of capital going into this is just enormous.
@@ -2133,9 +2133,9 @@ So, in our case, I'll give you an example in **Abilene, Texas**, because that's 
 
 That helped unlock a lot of the construction debt and the capital we needed to build this project. We worked with **JP Morgan** and a number of other folks in the syndicate:
 
-- Bank of America  
-- Apollo  
-- SMBC  
+- Bank of America
+- Apollo
+- SMBC
 - a bunch of different institutions
 
 And they must be very excited about this opportunity.
@@ -2178,7 +2178,7 @@ You're specifically targeting up-and-coming startups to be their provider.
 
 Yeah. So, I really think about Crusoe being a **vertically integrated business**. We offer three core things, right?
 
-- We can **build the data centers**  
+- We can **build the data centers**
 - We can **rent those to customers**
 
 We really only focus on a small subset, maybe five customers, these very big tech companies. And that's really their key bottleneck, their key pain point.
@@ -2200,8 +2200,8 @@ So we can kind of charge on a:
 
 Yeah, and that's **thousands of customers**, tens of thousands eventually.
 
-And that's where you're going up against **Azure, AWS, and Google Cloud**, yeah?  
-**Correct.**  
+And that's where you're going up against **Azure, AWS, and Google Cloud**, yeah?
+**Correct.**
 **Correct, yeah.**
 
 Those are some pretty significant competitors. How do you compete with those kind of folks?
@@ -2209,7 +2209,7 @@ Those are some pretty significant competitors. How do you compete with those kin
 You know, I think when you look at those really large hyperscalers, they're incredible platforms and they've been able to accomplish so much. But they really are the **outsourced IT solution** that's meant to be everything to everyone, which means their lowest common denominator isn't AI—it's every reason.
 
 - You need an email server
-- You need storage  
+- You need storage
 - It's everything
 
 We're relentlessly focused just on the **AI use case** and the AI application to deliver the most reliable, most high-performance computing infrastructure directly for the AI use case and application.
@@ -2223,7 +2223,7 @@ That's all we care about, which means all of the optimizations we're making on:
 
 is entirely in service of **AI use cases**.
 
-There’s going to be some technological advancement in the coming years that really ramps up what we're able to do in building **large language models** and doing **inference**.  
+There’s going to be some technological advancement in the coming years that really ramps up what we're able to do in building **large language models** and doing **inference**.
 
 What do you think that will be? A lot of people have talked about:
 
@@ -2271,77 +2271,77 @@ So it’s an incredible amount of **energy infrastructure** that’s going to ne
 And there’s, like I said, challenges in every domain—from cooling to networking to... yeah.
 As that **density arrives**, this **10 to one density** you're talking about, the **heat also arrives**.
 
-Yeah.  
-Correct.  
-Yeah.  
-Yeah.  
+Yeah.
+Correct.
+Yeah.
+Yeah.
 
 A lot of **exciting stuff happening**.
 
 And what do you think of the **small modular nuclear getting close to hydro**?
 
-Yep.  
+Yep.
 
-What, what, what do you, you know, obviously **gas is the layup at gas**.  
-It's everywhere.  
+What, what, what do you, you know, obviously **gas is the layup at gas**.
+It's everywhere.
 
-- We're leaders in that  
-- Solar  
-- That feels like a layup  
-- And battery, that combo to add  
+- We're leaders in that
+- Solar
+- That feels like a layup
+- And battery, that combo to add
 
-But **hydro**, I don't know if there's much left.  
+But **hydro**, I don't know if there's much left.
 
-We're actually doing a lot with **hydro**, you know, in the **Nordics**.  
-So **Norway**, in **Iceland**, we have, in Iceland, you know, there's **abundant geothermal**.  
+We're actually doing a lot with **hydro**, you know, in the **Nordics**.
+So **Norway**, in **Iceland**, we have, in Iceland, you know, there's **abundant geothermal**.
 
-It's like this sort of geological phenomenon and there's **ultra low cost geothermal energy** and also a lot of hydro there.  
+It's like this sort of geological phenomenon and there's **ultra low cost geothermal energy** and also a lot of hydro there.
 
 So that's a **one, two, you get the one, two punch there**.
 
-Yeah.  
+Yeah.
 
-And I don't know if you guys heard, but **America just acquired Iceland**.  
+And I don't know if you guys heard, but **America just acquired Iceland**.
 That was like the rim shot off of the **Greenland**.
 
-Yeah.  
-That wasn't a mistake.  
+Yeah.
+That wasn't a mistake.
 
-Yeah.  
-We're taking both.  
-I mean, or you're giving us both.  
+Yeah.
+We're taking both.
+I mean, or you're giving us both.
 
-It's, it's, it's like **Greenland**.  
-We don't ask for much.  
+It's, it's, it's like **Greenland**.
+We don't ask for much.
 
-Yeah.  
-We don't ask for much.  
+Yeah.
+We don't ask for much.
 
-Okay.  
-It's a very simple request.  
+Okay.
+It's a very simple request.
 
-We have a little Iceland, a little, we have data centers.  
-You may have heard of **big data, big data centers in the fjords**.  
+We have a little Iceland, a little, we have data centers.
+You may have heard of **big data, big data centers in the fjords**.
 
 Just listen, but yeah, go ahead to your comment on **small modular nuclear reactors**.
 
-We are very **bullish on SMRs**.  
+We are very **bullish on SMRs**.
 
-And have you signed a contract yet?  
-Are you in negotiation or, uh, contracts that we've signed?  
+And have you signed a contract yet?
+Are you in negotiation or, uh, contracts that we've signed?
 
-Wow.  
-We're going to energize the first **AI factory powered by an SMR in 2027**.  
+Wow.
+We're going to energize the first **AI factory powered by an SMR in 2027**.
 
-2027.  
-That's next year, bro.  
+2027.
+That's next year, bro.
 
-2027.  
-I know.  
+2027.
+I know.
 
 And one of the ways we've been able to do this is, it's actually gonna be at the **Idaho national lab**.
 
-Ah.  
+Ah.
 
 Where you actually are, you're outside of the regulatory domain of the **NRC**.
 
@@ -2349,95 +2349,95 @@ It's considered experimental technology.
 
 So...
 
-Who's the partner on that?  
+Who's the partner on that?
 
-I don't think we've made it...  
+I don't think we've made it...
 
-You know, it's okay.  
+You know, it's okay.
 
-We're going to make some news here.  
+We're going to make some news here.
 
-The journalists here...  
+The journalists here...
 
-No, I know because I was told this exact same insight by the company that's doing it, but I won't say the name of it.  
+No, I know because I was told this exact same insight by the company that's doing it, but I won't say the name of it.
 
-Yeah.  
-Yes.  
+Yeah.
+Yes.
 
-Well, I think we can announce it.  
+Well, I think we can announce it.
 
-Okay.  
-Let's, we should announce it.  
+Okay.
+Let's, we should announce it.
 We should announce it.
 
 The partner is **Ollo Energy**.
 
-Yes.  
+Yes.
 
-So, they're an incredible partner.  
+So, they're an incredible partner.
 
-Isn't it amazing that for solar, it was something we haven't been able to do since the seventies?  
-And now it's like,  
-> "Yeah, we're going to do solar. It's absolutely necessary."  
+Isn't it amazing that for solar, it was something we haven't been able to do since the seventies?
+And now it's like,
+> "Yeah, we're going to do solar. It's absolutely necessary."
 
 So we're going to do it.
 
-Yep.  
+Yep.
 
-What do you attribute that to?  
+What do you attribute that to?
 
-I think there's this like **human ingenuity** and sort of the **passage of time** and sort of the **relentless pursuit of efficiencies**.  
+I think there's this like **human ingenuity** and sort of the **passage of time** and sort of the **relentless pursuit of efficiencies**.
 
-Like I just think, yeah, it's really incredible.  
+Like I just think, yeah, it's really incredible.
 
-If you look at the **cost curve of solar**, just how much it's come down over the course of time.  
+If you look at the **cost curve of solar**, just how much it's come down over the course of time.
 
 I think you're going to see a similar thing play out in:
 
-- SMRs  
-- Next gen geothermal  
+- SMRs
+- Next gen geothermal
 
-Like we're really excited about innovations like Fervo's made, in terms of being able to produce geothermal at scale at a very competitive price point, leveraging a lot of the technology from **fracking in oil and gas**.  
+Like we're really excited about innovations like Fervo's made, in terms of being able to produce geothermal at scale at a very competitive price point, leveraging a lot of the technology from **fracking in oil and gas**.
 
 And we're not going to have this impact consumers' electrical bills.
 
-Yeah.  
+Yeah.
 
-I think that's such an interesting story.  
+I think that's such an interesting story.
 
-When we look at this problem, we say,  
+When we look at this problem, we say,
 
-> "Look, a lot of the power on the grid is very saturated."  
-> "A lot of the data center capacity is saturated."  
+> "Look, a lot of the power on the grid is very saturated."
+> "A lot of the data center capacity is saturated."
 
-So it just makes sense for the technology industry that wants to bring online all of this new infrastructure to also bring online the power to go with it.  
+So it just makes sense for the technology industry that wants to bring online all of this new infrastructure to also bring online the power to go with it.
 
-And you know, the incredible opportunity from my perspective is that when we bring on new power generation to support an AI data center, we're sizing it to the **peak demand** of the data center, which means, you know, and we're only using peak demand and call like 0.1% of the time.  
+And you know, the incredible opportunity from my perspective is that when we bring on new power generation to support an AI data center, we're sizing it to the **peak demand** of the data center, which means, you know, and we're only using peak demand and call like 0.1% of the time.
 
 So you might have some excess 0.9% of the time.
 
-Yeah.  
+Yeah.
 
 We have excess power that can be:
 
-- Support the local community  
-- Create an abundance of energy that drives down the overall cost for rate payers in the local communities  
+- Support the local community
+- Create an abundance of energy that drives down the overall cost for rate payers in the local communities
 
-People will have **lower cost power**.  
+People will have **lower cost power**.
 
-We're going to have **advanced intelligent infrastructure** that's driving massive efficiency gains in the economy.  
+We're going to have **advanced intelligent infrastructure** that's driving massive efficiency gains in the economy.
 
-It's going to be like an incredible future we're building towards.  
+It's going to be like an incredible future we're building towards.
 
-And this is something that I think the technology industry could be self-aware enough to understand:  
+And this is something that I think the technology industry could be self-aware enough to understand:
 
-> "If we're making this incredible new business, it's a great way to share it with other Americans."  
+> "If we're making this incredible new business, it's a great way to share it with other Americans."
 
 Hey, maybe your energy bill will get lower or eventually free.
 
-Absolutely.  
+Absolutely.
 
-And you're already seeing this trend unfold.  
+And you're already seeing this trend unfold.
 
 I mean, we've taken this **energy first approach**.
 
@@ -2446,38 +2446,38 @@ You saw **Google** recently make the acquisition of **Intersect Power**.
 
 Well, really appreciate you taking the time, **Chase**, and continued success. What an amazing story. You really got there early, and one of two things can happen when you get there early:
 
-- You can just fail fabulously  
+- You can just fail fabulously
 - Or you can absolutely crush it.
 
 And it's been the latter for you.
 
-But there might've been some moments where you stared at the ceiling at night as an entrepreneur and said, **"Are we too early?"**  
+But there might've been some moments where you stared at the ceiling at night as an entrepreneur and said, **"Are we too early?"**
 
 It's mostly been up and to the right, no real... no, I'm just kidding. There have been tons of complex problems and challenges and moments of doubt throughout the company's lifetime.
 
 But, you know, I wouldn't have wanted to do anything else with my life. It's nice to move from **"Will the customers arrive?"** to **"Okay, we've got too many customers. We really need to deliver."**
 
-It's actually a whole organizational mindset shift: from  
+It's actually a whole organizational mindset shift: from
 
-> *Will the customers ever show up?*  
+> *Will the customers ever show up?*
 
-to  
+to
 
 > *Oh my God, I hope my customers are happy and delighted.*
 
 Totally.
 
-But scaling people, scaling culture, scaling technology has its own set of challenges and problems. The culture part is important. It's difficult.  
+But scaling people, scaling culture, scaling technology has its own set of challenges and problems. The culture part is important. It's difficult.
 
-It's difficult to go from a small startup of tens of people to more than a thousand people.  
+It's difficult to go from a small startup of tens of people to more than a thousand people.
 
-**And adding... what are you adding?**  
+**And adding... what are you adding?**
 
-- A thousand a year?  
+- A thousand a year?
 
 > *We're going to add 2,400 people this year, full-time employees, and then tens of thousands of contractors.*
 
-Yeah, I've seen that movie before.  
+Yeah, I've seen that movie before.
 
 And no, I mean, I've watched it with **Uber** and **Robinhood** as they were adding one person a day, then it was five new people— and now you've just got training and recruitment and just trying to keep that culture tight and make sure you hire the right people.
 
@@ -2485,8 +2485,8 @@ Well, listen, you have to go, and we're way over time. I appreciate you taking t
 
 All right, give it up for **Chase**. Thanks, guys.
 
-**I'm going all in.**  
-**I'm doing all in.**  
+**I'm going all in.**
+**I'm doing all in.**
 **I'm doing all in.**
 
 <script>window.tocIndex = {"index": [{"index_sentences": "All right, everybody, welcome back to All In at Davos. We're here at the World Economic Forum.", "section_title": "All In at Davos: World Economic Forum Introduction", "section_level": 1}, {"index_sentences": "We're always debating investment ideas on the pod. Well, generated assets on public lets you turn your ideas into an investable index with AI.", "section_title": "Sponsor Spotlight: Public.com and Generated Assets", "section_level": 2}, {"index_sentences": "I think most of us agree going into 2026, stablecoins and AI crypto are having a huge resurgence, and we were lucky enough to get two of my friends: Brian Armstrong, from Coinbase; Jeremy Allaire, CEO and co-founder of Circle.", "section_title": "Jeremy Allaire (Circle) Interview: Stablecoins and AI Crypto", "section_level": 1}, {"index_sentences": "Yeah, and this is not your first time at Davos. You've been here a couple of times.", "section_title": "Davos Experience and Historical Context", "section_level": 2}, {"index_sentences": "Yeah, it's fascinating. I think it's Game of Thrones. Chaos is a ladder. Chaos is a ladder.", "section_title": "Embracing Chaos: A Time to Build", "section_level": 3}, {"index_sentences": "So let's talk about your journey with Circle. And stablecoins, obviously, are top of mind because we have the Genius Act.", "section_title": "Circle's Journey and the Rise of Stablecoins", "section_level": 2}, {"index_sentences": "I mean, look, when I got started working on this almost 13 years ago, Bitcoin had emerged.", "section_title": "The Origin of Stablecoins and Money on the Internet", "section_level": 3}, {"index_sentences": "I remember talking to you offline about this. It was the easier decision for most people in crypto to go to the ZUG.", "section_title": "The 'Buttoned Up' Approach to Regulation", "section_level": 3}, {"index_sentences": "Well, I think with a lot of technologies on the internet, I was around, I think we were both around in the early stages of the internet, early stages of the web.", "section_title": "Navigating Early Regulatory Challenges and Libertarian Views", "section_level": 3}, {"index_sentences": "Now crypto itself, cryptography, and crypto kind of birthed out of that. These are people who wanted to be outside the system.", "section_title": "Building Trust and Structure in Stablecoins", "section_level": 4}, {"index_sentences": "Yeah, I would say in the entire history of building this, it's been huge uphill battles with regulators and incumbents.", "section_title": "Engagement with Policymakers vs. Incumbents", "section_level": 3}, {"index_sentences": "But there is still some reticence to stablecoins and crypto by some of the major banks and big players because they are maybe a little concerned that 'you're too good at what you do and you might be too far ahead.'", "section_title": "Banks' Perception: Threat or Opportunity?", "section_level": 3}, {"index_sentences": "So if you go back a few years, when stable coins sort of emerged, the biggest regulators, bank regulators around the world got together, what's called the Financial Stability Board, and said, We have to have regulations around this.", "section_title": "Stablecoins as Payment Instruments and the Genius Act", "section_level": 3}, {"index_sentences": "At the same time, we're building a business. We do generate revenue, and we work with lots of different types of platforms, markets, distributors, and brokerages.", "section_title": "Revenue Generation, Rewards, and Bank Collaborations", "section_level": 4}, {"index_sentences": "You're up against an offshore platform that manages maybe three to five times the amount under management. Who's counting? Tether.", "section_title": "USDC's Growth and Competition with Tether", "section_level": 3}, {"index_sentences": "Since we're a public company, you can look that up. Regarding interest rates dropping to zero, that could pose challenges.", "section_title": "Impact of Interest Rates on USDC Circulation", "section_level": 3}, {"index_sentences": "Tether as a competitor would not be able to operate in the US. Lots of reports.", "section_title": "Tether's Potential US Entry and Legitimacy", "section_level": 3}, {"index_sentences": "I mean, look, the beauty of having the Genius Act is that it creates a level playing field.", "section_title": "Future of Stablecoins: Competition and Network Effects", "section_level": 4}, {"index_sentences": "And what do you think about this concept that everybody's going to have their own stablecoin? There'll be an Amazon one, obviously PayPal's added one.", "section_title": "The Idea of Proprietary Stablecoins", "section_level": 4}, {"index_sentences": "What worries you now? What's 2026 forward looking like? What keeps you up at night?", "section_title": "Future Challenges: Geopolitics and Regulatory Clarity", "section_level": 3}, {"index_sentences": "Yeah, like a euro-based stablecoin. We have the largest euro-based stablecoin.", "section_title": "Multi-Currency Stablecoins and Partnership Strategy", "section_level": 4}, {"index_sentences": "It's obvious that small businesses and people who are very—and poker players—people who are concerned about their fees will, and are focused on that, are being driven to stablecoins.", "section_title": "Real-World Applications and Users of Stablecoins", "section_level": 3}, {"index_sentences": "What's the QuickBooks TurboTax thesis there? Because that seemed like there's something underlying that I wasn't getting to.", "section_title": "Integrating Stablecoins with QuickBooks and TurboTax", "section_level": 4}, {"index_sentences": "I eventually think that there's going to be more credit products that are actually built using stablecoins.", "section_title": "The Future of Credit Products in DeFi", "section_level": 3}, {"index_sentences": "So AI coming into play, AI plus these sort of smart contract machines and stablecoins, I think creates a really interesting little cauldron for credit market innovation.", "section_title": "AI, Blockchain, and Economic Prosperity", "section_level": 4}, {"index_sentences": "There's a movement towards socialism in New York City, my hometown. It's kind of heartbreaking for me to watch.", "section_title": "Political Economy: Socialism, Capitalism, and AI's Impact", "section_level": 3}, {"index_sentences": "By the way, the CEO job seems ripe for AI doing a better job than we would do at times.", "section_title": "AI's Transformative Effect on Management and Labor", "section_level": 4}, {"index_sentences": "Yeah. I mean, look, I think the big picture there was just like, whatever your politics are, whatever you think about taxes, whatever you think about the social contract, all that's, I think, in the coming years, going to kind of have to get thought about again in different ways.", "section_title": "Rethinking the Political Economy in the Age of AI", "section_level": 4}, {"index_sentences": "I can't believe it. George Kurtz is here. He's the CEO and co-founder of CrowdStrike.", "section_title": "George Kurtz (CrowdStrike) Interview: Cybersecurity in the AI Era", "section_level": 1}, {"index_sentences": "Speaking of security, AI has had, or is going to have, I want to get your opinion on this, a profound impact on defense and also offense, black hat, white hat, everything in between.", "section_title": "AI's Profound Impact on Cyber Warfare", "section_level": 2}, {"index_sentences": "And one of the things that we're seeing is autonomous malware. Most people are probably familiar with malware that runs on your computer.", "section_title": "The Threat of Autonomous Malware", "section_level": 3}, {"index_sentences": "Well, you need AI to counter it. And I mean, that's been a big part of the success of CrowdStrike.", "section_title": "CrowdStrike's AI-Driven Defense Strategy", "section_level": 3}, {"index_sentences": "You mentioned state actors and you mentioned for profit. When we look at a country like North Korea, they need revenue.", "section_title": "Nation-State Hacking and Revenue Generation", "section_level": 2}, {"index_sentences": "Well, we were one of the first to ever find that. So we were actually going through developing some new AI algorithms, we saw something that was called Signal, which basically strips the noise from the signal.", "section_title": "Remote Work and Insider Threat: North Korean Infiltration", "section_level": 3}, {"index_sentences": "Russia is still number one state actor, China, Russia. It depends. Like if you talk pure intelligence, pure ability, Russia, Russia.", "section_title": "Analysis of Top State Actors: Russia and China", "section_level": 2}, {"index_sentences": "And let's go to China. Ten years ago, we'd be talking Kumbaya, China, we're all going to win together. But the decoupling has happened essentially.", "section_title": "China's Commercial Espionage and Decoupling", "section_level": 3}, {"index_sentences": "Now there's also something very unique. They make hardware. They ship a lot of hardware, our laptops in some cases, Huawei, other countries, they're putting spyware or backdoors into all that hardware.", "section_title": "Hardware Supply Chain Security Concerns", "section_level": 3}, {"index_sentences": "Do you trust Signal and your iPhone to protect you as a corporate executive? Like what measures do you take?", "section_title": "Personal Cybersecurity for Executives", "section_level": 2}, {"index_sentences": "Explain in plain English to the audience what a zero day is. A zero day is a—yeah, sorry, you know, we're talking technical jargon.", "section_title": "Zero-Day Exploits and Multi-Factor Authentication", "section_level": 3}, {"index_sentences": "Where there's money, the hackers will go figure out a way. They figure it out. And the humans are normally the weakest link.", "section_title": "The Human Element as the Weakest Link in Security", "section_level": 2}, {"index_sentences": "People using their own devices. Bring your own device. This is the other major attack vector corporations make the mistake on you.", "section_title": "BYOD and Enterprise Browser Solutions", "section_level": 3}, {"index_sentences": "How should companies implementing AI in the enterprise, putting their data into these clouds and working with partners—Claude co-worked this week, kind of blew people's mind.", "section_title": "Security Implications of AI Agents in the Enterprise", "section_level": 2}, {"index_sentences": "Well, this is it. It's called AIDR. AIDR. Yeah. AI detection and response. Got it.", "section_title": "Introducing AI Detection and Response (AIDR)", "section_level": 3}, {"index_sentences": "Do you trust the LLM operators with CrowdStrike's data? Or do you want to stand up your own large language models?", "section_title": "Trusting LLM Operators and Internal Models", "section_level": 3}, {"index_sentences": "You're also a race car driver. Yes. And, hey, you've done well in your life.", "section_title": "Personal Interests: F1 Racing and Mercedes Team Ownership", "section_level": 2}, {"index_sentences": "What should we pay? You know, I'm—How do we make a deal? I'm sure, I'm sure there's lots of deals that's above my pay grade, but I think whenever you see the geopolitical tensions go up, there's always more security activities.", "section_title": "Geopolitics, Government Engagement, and Business", "section_level": 2}, {"index_sentences": "If President Trump gets incredible enjoyment out of negotiating a deal and solving a long-term problem for America, I say let them cook.", "section_title": "The Greenland Acquisition and Political Strategy", "section_level": 3}, {"index_sentences": "And transportation, of course, is one of the most important parts in the business sector. And VTOLs, we're promised flying cars. We still don't have them.", "section_title": "Adam Goldstein (Archer Aviation) Interview: The Future of VTOLs", "section_level": 1}, {"index_sentences": "The hardest part about bringing these aircraft to market is the certification. We have to prove that these aircraft are really safe.", "section_title": "Regulatory Fast-Tracking and Initial City Rollouts", "section_level": 2}, {"index_sentences": "You got any guesses of what they could be? What are people thinking? And how are they selecting them?", "section_title": "City Selection and the Hawthorne Airport Acquisition", "section_level": 3}, {"index_sentences": "Now, New York City, that's the big one. I think Joby made an announcement that they're going to be at one of the ports.", "section_title": "VTOL Operations in New York City", "section_level": 3}, {"index_sentences": "Are you guys on the clock? You've been working on this for a decade, yeah? Yeah. So the tech actually goes back to NASA 40 years ago, having to use multiple electric engines to fly airplanes.", "section_title": "History of the VTOL Industry and Capital Markets", "section_level": 2}, {"index_sentences": "You guys SPACed right after or during COVID, yeah? 2021, yeah. Okay. So right after COVID started to wane.", "section_title": "SPACs and the Power of Retail Investors", "section_level": 3}, {"index_sentences": "Where's your product out? You guys are flying runs, obviously. Where are you flying the runs currently?", "section_title": "Current Flight Operations and Global Partnerships", "section_level": 2}, {"index_sentences": "When will you be willing to get in one? I guess is the question we all want to answer because we're not getting in until you do it every day.", "section_title": "The CEO's First Flight and Safety Protocols", "section_level": 3}, {"index_sentences": "What do we need to know as we wrap here about safety and why these are much safer? Because the idea of even having a pilot seems a little bit performative.", "section_title": "Understanding VTOL Safety vs. Helicopters", "section_level": 2}, {"index_sentences": "The challenge with autonomy is regulation and infrastructure. So even if you couldn't do it, there's no rules in place to get that done.", "section_title": "Challenges of Autonomy: Regulation and Infrastructure", "section_level": 3}, {"index_sentences": "Now, how many rotors on the thing? 12. 12. Which means 12 motors?", "section_title": "VTOL Design: Rotors, Motors, and Redundancy", "section_level": 3}, {"index_sentences": "What scenario do you have the most concern about and then work on the most? Because with 12 of these, anybody who's flown just a toy drone, if you come up to it and you push it, you hit it, it just immediately gets back.", "section_title": "Addressing Catastrophic Failures and Glide Capability", "section_level": 3}, {"index_sentences": "What height, what's the ceiling on these now? They can go up to 11,000 feet. There's no real reason to. It's not pressurized.", "section_title": "Flight Ceiling and Lessons from Helicopter Accidents", "section_level": 3}, {"index_sentences": "Why are you here at Davos? You virtue signaling about being all electric? What's going on? Selling aircraft. You're here to do business?", "section_title": "Davos for Business Development and Global Sales", "section_level": 2}, {"index_sentences": "There is another element where, you know, Davos is sort of a non-defense oriented. They don't like you to talk about defense here. We do have a really strong partnership with Anderil.", "section_title": "Defense Partnerships: Project NIX and Autonomous Aircraft", "section_level": 3}, {"index_sentences": "So you have no problem working in defense? That's awesome. Yeah, I'm a country. I'm a patriot. I'm a super believer in what the U.S. is doing.", "section_title": "Government Support for New Industries and Job Creation", "section_level": 3}, {"index_sentences": "Greenland, how much should we pay? What do you think? What do you think it takes?", "section_title": "Greenland Acquisition and Political Engagement", "section_level": 3}, {"index_sentences": "We're very lucky to have Chase Lockmiller with us. He's the CEO and co-founder of Crusoe Cloud. C-R-U-S-O-E. Not Caruso, Crusoe Cloud.", "section_title": "Chase Lockmiller (Crusoe Cloud) Interview: Powering AI Infrastructure", "section_level": 1}, {"index_sentences": "How did, did that occur because you had anticipated buying a bunch of H100s before everybody else and you had the inventory? How did that start that you got such a good lead?", "section_title": "Crusoe Cloud's Energy-First Approach and Origins", "section_level": 2}, {"index_sentences": "So, why West Texas? Is it because the politicians there are pretty permissive in terms of giving permits and you can build quickly, like Elon experienced with his big factory in Austin? Or is it because of energy?", "section_title": "West Texas: An Energy-Driven Location for Data Centers", "section_level": 3}, {"index_sentences": "And the gas turbines, those were a blocker for a while, too, huh? They still are. I mean, you know, gas turbines are a massive supply chain constraint as people look to energize compute infrastructure.", "section_title": "Gas Turbines and Supply Chain Constraints", "section_level": 3}, {"index_sentences": "And we actually recently did something with an incredible company, Boom Supersonic. Yes, Boom Supersonic was making the Concorde replacement, Blake.", "section_title": "Partnership with Boom Supersonic for Gas Turbines", "section_level": 4}, {"index_sentences": "And the Stargate project is a $300 billion project. What's the number? Because there was a big announcement at the White House and there's been a little bit of, you know, wink, wink, like these are numbers were kind of estimates.", "section_title": "Understanding the 'Stargate Project' and AI Compute Spend", "section_level": 3}, {"index_sentences": "One of the blockers, in addition to the turbines, has been electricians and construction workers. Yes. My understanding is you're paying two to three times what they were getting paid before the data center.", "section_title": "Labor Demand, Compensation, and Challenges in Construction", "section_level": 3}, {"index_sentences": "This is just one campus. We have another campus in Armstrong County, Texas, with close to 3,000 people on site every day.", "section_title": "Campus Locations and Carbon Capture Initiatives", "section_level": 3}, {"index_sentences": "How are batteries? I think we saw Elon bought a lithium refinery in his building and is building his own batteries. They're one of the larger battery manufacturers.", "section_title": "Role of Batteries in AI Data Centers and Recycling", "section_level": 2}, {"index_sentences": "You're under massive pressure to deliver these data centers, correct? Yeah, yeah, you could say that. Compared to where you were like two or three years ago, maybe let's say three or four years ago, you were knocking on doors saying, 'hey, do you need a data center?'", "section_title": "Massive Demand and Urgency for AI Compute Infrastructure", "section_level": 2}, {"index_sentences": "Brad Gerstner kind of started this discussion on his BG2 podcast when he had Sam Altman on: How does a company with a 20, or at the time, 12 billion, now it's 20 billion run rate, How does OpenAI pay for a $500 billion build-out in your contract with them and your relationship with them?", "section_title": "Funding Large-Scale AI Infrastructure: Project Equity and Debt", "section_level": 2}, {"index_sentences": "But people don't know this, but you've also made a bet on startups. You've been incredibly generous to give credits to startups.", "section_title": "Supporting Startups with Crusoe's AI Cloud Platform", "section_level": 2}, {"index_sentences": "And that's where you're going up against Azure, AWS, and Google Cloud, yeah? Correct. Correct, yeah.", "section_title": "Competing with Hyperscalers: Focus on AI Use Cases", "section_level": 3}, {"index_sentences": "There’s going to be some technological advancement in the coming years that really ramps up what we're able to do in building large language models and doing inference.", "section_title": "Future Technological Advancements: Density and Cooling", "section_level": 2}, {"index_sentences": "And what do you think of the small modular nuclear getting close to hydro? Yep. What, what, what do you, you know, obviously gas is the layup at gas.", "section_title": "Renewable Energy Sources: Hydro, Geothermal, and SMRs", "section_level": 2}, {"index_sentences": "And we're not going to have this impact consumers' electrical bills. Yeah. I think that's such an interesting story.", "section_title": "Impact on Consumers and Economic Abundance", "section_level": 3}, {"index_sentences": "But there might've been some moments where you stared at the ceiling at night as an entrepreneur and said, 'Are we too early?'", "section_title": "Entrepreneurial Journey: From Early Doubts to Scaling Success", "section_level": 2}]};

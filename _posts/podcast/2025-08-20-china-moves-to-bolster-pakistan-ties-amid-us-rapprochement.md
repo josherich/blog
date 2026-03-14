@@ -2,7 +2,7 @@
 layout: post
 title: "China Moves to Bolster Pakistan Ties Amid U.S. Rapprochement"
 date: 2025-08-20 00:00:01
-categories: podcast the-china-global-south-podcast
+categories: podcast
 tags: [podcast_script]
 ---
 

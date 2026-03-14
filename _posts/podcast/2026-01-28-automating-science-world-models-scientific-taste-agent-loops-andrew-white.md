@@ -2,7 +2,7 @@
 layout: post
 title: "🔬 Automating Science: World Models, Scientific Taste, Agent Loops - Andrew White"
 date: 2026-01-28 00:00:01
-categories: podcast latent-space-the-ai-engineer-podcast
+categories: podcast latent-space
 tags: [podcast_script]
 ---
 
@@ -1035,7 +1035,7 @@ This is the only shared activity we've been doing for this long - coming up with
 
 And so I think that for that reason, **natural language is the only possible way to connect all the different pieces of data we need in biology, medicine, or any domain for that matter.**
 
-I think there are some caveats to this, like you can make an argument — 
+I think there are some caveats to this, like you can make an argument —
 
 - If **Yann LeCun** were here, he might make an argument about **world models, vision, or embodiedness**.
 

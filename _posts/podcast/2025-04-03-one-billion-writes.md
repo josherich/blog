@@ -3,7 +3,7 @@ layout: post
 title:  "Why does it take so long to write to an array with one billion elements in Python?"
 description: ""
 date: 2025-04-03 00:00:01
-categories: short
+categories: podcast
 tags: [short]
 ---
 

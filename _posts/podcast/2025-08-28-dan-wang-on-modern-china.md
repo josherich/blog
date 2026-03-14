@@ -2,7 +2,7 @@
 layout: post
 title: "Dan Wang on Modern China"
 date: 2025-08-28 00:00:01
-categories: podcast chinatalk
+categories: podcast
 tags: [podcast_script]
 ---
 

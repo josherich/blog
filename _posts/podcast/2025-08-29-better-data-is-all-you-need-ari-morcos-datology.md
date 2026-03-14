@@ -2,80 +2,80 @@
 layout: post
 title: "Better Data is All You Need — Ari Morcos, Datology"
 date: 2025-08-29 00:00:01
-categories: podcast latent-space-the-ai-engineer-podcast
+categories: podcast latent-space
 tags: [podcast_script]
 ---
 
 
 [Better Data is All You Need — Ari Morcos, Datology](https://assets.flightcast.com/track-v2/01K37RW8RHT3YX3Z48CGY7FJ1F.mp3)
 
-Hey, everyone. Welcome to the **Lit in Space podcast**. This is **Alessio**, partner and CTO at **Decibel**, and I'm joined by **Swix**, founder of **SmallAI**.  
+Hey, everyone. Welcome to the **Lit in Space podcast**. This is **Alessio**, partner and CTO at **Decibel**, and I'm joined by **Swix**, founder of **SmallAI**.
 
-Hello, hello. And we're so excited to be in the studio with **Ari Morkos**, CEO, co-founder of **Datology**. Welcome.  
+Hello, hello. And we're so excited to be in the studio with **Ari Morkos**, CEO, co-founder of **Datology**. Welcome.
 
-Thank you so much for having me.  
+Thank you so much for having me.
 
-Ari, so you first came across my radar. I mean, I guess **Datology** is like a relatively, I guess, exciting, well-hyped startup, at least with the fundraising and the higher profile of the people that you hire. I reached out to book this interview after you worked on the **RC**, I don't even know how to pronounce it, R-K?  
+Ari, so you first came across my radar. I mean, I guess **Datology** is like a relatively, I guess, exciting, well-hyped startup, at least with the fundraising and the higher profile of the people that you hire. I reached out to book this interview after you worked on the **RC**, I don't even know how to pronounce it, R-K?
 
-- RC, yeah.  
-- RC.  
-- It's inspired by a real transformer that was called RC.  
-- Yeah, the **RC Foundation models**.  
+- RC, yeah.
+- RC.
+- It's inspired by a real transformer that was called RC.
+- Yeah, the **RC Foundation models**.
 
-You guys have been doing a lot of data work. How would you describe **Datology** today?  
+You guys have been doing a lot of data work. How would you describe **Datology** today?
 
-Yeah, so our mission at **Datology** is to take everything around the **data side of machine learning**, right?  
+Yeah, so our mission at **Datology** is to take everything around the **data side of machine learning**, right?
 
-So going from you have a bunch of data sitting in storage to you're going to feed it into a model, you know, via a data loader. There are a ton of choices you would make in that process, ranging from:  
-- how you're going to filter the data,  
-- how you're going to sequence the data,  
-- what synthetic data you're going to generate, if any,  
-- how you're going to batch the data,  
+So going from you have a bunch of data sitting in storage to you're going to feed it into a model, you know, via a data loader. There are a ton of choices you would make in that process, ranging from:
+- how you're going to filter the data,
+- how you're going to sequence the data,
+- what synthetic data you're going to generate, if any,
+- how you're going to batch the data,
 
-all of those things. And those will have a tremendous impact on the performance of the model that you train on the data.  
+all of those things. And those will have a tremendous impact on the performance of the model that you train on the data.
 
-One of my favorite catchphrases is **"models are what they eat."** If you show them great data, they're going to be really high quality. If you show them low quality data, they're going to be low quality.  
+One of my favorite catchphrases is **"models are what they eat."** If you show them great data, they're going to be really high quality. If you show them low quality data, they're going to be low quality.
 
-But this is a **frontier research problem**. How do you actually do this effectively? How do you do this automatically at scale, right? It has to be automatic to be able to process trillions of tokens, billions of images, things like that.  
+But this is a **frontier research problem**. How do you actually do this effectively? How do you do this automatically at scale, right? It has to be automatic to be able to process trillions of tokens, billions of images, things like that.
 
-And that's our mission at **Datology**—to take that whole process, make it really easy so that anybody can get access to **state-of-the-art data curation** without needing to be an expert themselves.  
+And that's our mission at **Datology**—to take that whole process, make it really easy so that anybody can get access to **state-of-the-art data curation** without needing to be an expert themselves.
 
-And in doing so, help the folks we work with to:  
-- train models much faster  
-- achieve much better performance  
-- also help them train much smaller models to the same or better performance, which I actually think is some of the most exciting stuff going forward.  
+And in doing so, help the folks we work with to:
+- train models much faster
+- achieve much better performance
+- also help them train much smaller models to the same or better performance, which I actually think is some of the most exciting stuff going forward.
 
-But fundamentally, that's what we do at **Datology**—help people **curate their data** so they can train models faster, better, smaller.  
+But fundamentally, that's what we do at **Datology**—help people **curate their data** so they can train models faster, better, smaller.
 
-So the key words for that:  
-- **data curation as a service**  
-- **data efficiency**,  
+So the key words for that:
+- **data curation as a service**
+- **data efficiency**,
 
-all those terms.  
+all those terms.
 
-In the pre-chat before we started recording, you mentioned that there's a cool story around how you got into data in the first place, right? You were at **GDM**, you were at **Meta** as a research scientist. Describe how that became an interest.  
+In the pre-chat before we started recording, you mentioned that there's a cool story around how you got into data in the first place, right? You were at **GDM**, you were at **Meta** as a research scientist. Describe how that became an interest.
 
-My PhD is actually in **neuroscience**. So I come much more from an **empirical science** sort of background.  
+My PhD is actually in **neuroscience**. So I come much more from an **empirical science** sort of background.
 
-I actually spent time trying to teach mice how to count and then analyze the activity of thousands of neurons in the brain while mice did count and try to understand:  
+I actually spent time trying to teach mice how to count and then analyze the activity of thousands of neurons in the brain while mice did count and try to understand:
 
-> "How did that actually happen? What were the neural dynamics that enabled that?"  
+> "How did that actually happen? What were the neural dynamics that enabled that?"
 
-And that's actually initially how I got into machine learning—was as a means to analyze my neural data sets.  
+And that's actually initially how I got into machine learning—was as a means to analyze my neural data sets.
 
-I also started my PhD **2011**. So Alex Nett came right after that, Tari Dekuen right after that. Lots of evidence that **AI was going to be very, very exciting**, which led to me transitioning.  
+I also started my PhD **2011**. So Alex Nett came right after that, Tari Dekuen right after that. Lots of evidence that **AI was going to be very, very exciting**, which led to me transitioning.
 
-But as a result, because I had this kind of somewhat different background of being trained as an empirical scientist rather than as a computer scientist, my real first mission when I joined AI was to try to build more of a **science of deep learning**.  
+But as a result, because I had this kind of somewhat different background of being trained as an empirical scientist rather than as a computer scientist, my real first mission when I joined AI was to try to build more of a **science of deep learning**.
 
-Something that I think is still true today in many cases is that **deep learning is an empirical science**, but most people that have computer science backgrounds were trained more in the context of a branch of theory, right? Everything was very provable.  
+Something that I think is still true today in many cases is that **deep learning is an empirical science**, but most people that have computer science backgrounds were trained more in the context of a branch of theory, right? Everything was very provable.
 
-That was the initial pushback to deep learning actually—that you couldn't prove anything in it. But deep learning is at its core an empirical science, right? We have to run large experiments. We understand the rules for how we design these systems, but the properties that come out of them when we actually train them on a ton of data are **emergent and unexpected**.  
+That was the initial pushback to deep learning actually—that you couldn't prove anything in it. But deep learning is at its core an empirical science, right? We have to run large experiments. We understand the rules for how we design these systems, but the properties that come out of them when we actually train them on a ton of data are **emergent and unexpected**.
 
-So I always really wanted to write these papers where they had two halves, where:  
-1. The first half of the paper was trying to understand why is this representation desirable or undesirable? Why does the model good or bad?  
-2. Then understand that and then use that understanding to then improve the model.  
+So I always really wanted to write these papers where they had two halves, where:
+1. The first half of the paper was trying to understand why is this representation desirable or undesirable? Why does the model good or bad?
+2. Then understand that and then use that understanding to then improve the model.
 
-And that was always my goal. That was kind of the perfect paper. Rather than just throwing spaghetti against the wall and seeing what stuck, we were able to really understand why something didn't work and then use that understanding to improve it.  
+And that was always my goal. That was kind of the perfect paper. Rather than just throwing spaghetti against the wall and seeing what stuck, we were able to really understand why something didn't work and then use that understanding to improve it.
 
 Unfortunately, it turns out that it's not so difficult to do the first half of that, try to...
 **Understand the system, but really, really difficult to actually use that understanding to improve the system.** A lot of times what would happen is you go, you optimize for this variable, you find, hey, here's this property of representations that makes models good. You go and you optimize for that, and then it turns out that wasn't a causal variable. That was a correlate, and it doesn't actually work.
@@ -181,9 +181,9 @@ So I think first off, there's this general perception that this is **lower quali
 I think part of this had to do with the way that **research incentives were set up**. The data set was viewed as the given. So if you think about research circa, say, 2018, given **ImageNet** maximized performance on the VAL set or on the test set, right? But the data set **ImageNet was given as something you don't change**.
 
 Even **Kaggle** had this framework, right? Given the data set, go and make this...
-**Better.** People might try things like **bootstrapping** or stuff like that. But generally, the assumption was you're going to improve the model through **better modeling**, not through improving the data set. 
+**Better.** People might try things like **bootstrapping** or stuff like that. But generally, the assumption was you're going to improve the model through **better modeling**, not through improving the data set.
 
-And part of this also was just in the **supervised learning era**, this made sense, right? We generally weren't compute limited. We were generally very **data limited**, right? Data was very scarce. Like if you want to assemble **ImageNet**, you have to go to **MTurk** and get a whole bunch of people to label the data set. And then there's generally some quality floor, right? Because a human has looked at every data point in this data set. Even if there's still a lot of errors there, at least it's not going to be as bad as just the internet scraped. 
+And part of this also was just in the **supervised learning era**, this made sense, right? We generally weren't compute limited. We were generally very **data limited**, right? Data was very scarce. Like if you want to assemble **ImageNet**, you have to go to **MTurk** and get a whole bunch of people to label the data set. And then there's generally some quality floor, right? Because a human has looked at every data point in this data set. Even if there's still a lot of errors there, at least it's not going to be as bad as just the internet scraped.
 
 But then in **2019**, the field underwent this pretty massive change, right? We figured out how to train **without labels**. And one of my more **controversial viewpoints**, I think, is that I think the **Transformer** is a great advance to be sure, but I think it's one of a very large set of equivalently good architectures that we could have found. And there are many, many ways we could get to the same performance without the Transformer. But I do not think there's any way we could get to where we are today without **self-supervised learning** and the ability to train on **unlabeled data**. That was the real advance, to my mind, that enabled us to get these incredible increases in capabilities.
 
@@ -191,9 +191,9 @@ It's not just **masking objectives**. I think **masked language modeling objecti
 
 And that also changed everything. Because now we went from data being scarce and having a high-quality floor to now all of a sudden data is absolutely massive. All of our models are basically always **underfitting the data**. Whereas previously we would do 160 epochs on an image data set, right? Where they would all be overfitting the data generally. So now we move to this **underfitting the data regime**. There's no more quality floor. And now we have all of these problems with:
 
-- Redundancy  
-- Low quality  
-- Low information gain  
+- Redundancy
+- Low quality
+- Low information gain
 
 All these various things that come with these massive **unlabeled data sets**. So I think the problem also changed pretty dramatically from the 2010s to the 2020s.
 
@@ -220,15 +220,15 @@ I think **data curation** also is a hard problem to solve, *quote unquote*, beca
 
 Yeah. I'll make a quick observation on, you mentioned **self-supervised learning**. I definitely agree that just getting rid of labels altogether is great or forming your own labels, right? And I have a general observation that I think that extends to things that are not just learning:
 
-- self-supervised optimization  
-- self-supervised neural architecture search  
-- self-supervised curation  
+- self-supervised optimization
+- self-supervised neural architecture search
+- self-supervised curation
 
 If you can just automate everything, I think that's the lesson, really. **Just get the machines to do it because we are the rate limiters if we must label everything.**
 
 Yeah, I think that's very true. It's actually something I think about a lot is, are we actually falling prey to **the bitter lesson** again here by trying to have human-guided methods of data curation?
 
-Probably the best open effort on data curation is **DCLM, DataCompLM**. It was led by **Ludwig Schmidt**, a professor at **Stanford**, and about 30 students across many different institutions. Really wonderful effort to kind of curate **Common Crawl-style data sets**.  
+Probably the best open effort on data curation is **DCLM, DataCompLM**. It was led by **Ludwig Schmidt**, a professor at **Stanford**, and about 30 students across many different institutions. Really wonderful effort to kind of curate **Common Crawl-style data sets**.
 
 Yeah, we've actually covered **DataComp and DCLM on the podcast**.
 
@@ -240,8 +240,8 @@ So, you know, this comes up a lot of times where people often ask me, *how can y
 
 But even if we could, we actually wouldn't want that. Humans are not good at this task. And to give an intuition as to why humans aren't good at this task, I think the easiest way to think about this is that **the value of a data point is not just a function of that data point itself**. It's rather a function of **how that data point relates to every other data point in the training set**.
 
-For example, if I have 10,000 copies of slightly variable summaries of *Hamlet*, I don't need all of those. But if I were to look at any one of those individual summaries, I might say:  
-> *"Hey, this is really high quality. This is a really accurate, it tracks all the characters, it's well-written, it's clear."*  
+For example, if I have 10,000 copies of slightly variable summaries of *Hamlet*, I don't need all of those. But if I were to look at any one of those individual summaries, I might say:
+> *"Hey, this is really high quality. This is a really accurate, it tracks all the characters, it's well-written, it's clear."*
 
 But I don't need 10,000 of those. And that's just a task that a human would never be able to do because a human can't keep the whole data set in their head, obviously. So even if you could have this scale with humans, you wouldn't want to.
 
@@ -251,16 +251,16 @@ But so what's the right number between one and 10,000? The unsatisfying answer i
 
 So some redundancy is good, but I think we all have the intuitive understanding that **infinite redundancy is not good. It's bad**. So where is this line for different concepts?
 
-Well, one example I like to give for this is **elephants versus dogs**. Elephants are pretty stereotyped. There are two kinds of elephants in the world:  
-- Asian elephants  
-- African elephants  
+Well, one example I like to give for this is **elephants versus dogs**. Elephants are pretty stereotyped. There are two kinds of elephants in the world:
+- Asian elephants
+- African elephants
 
 They're all gray.
 They all have **floppy ears**. They all have a **trunk and some tusks**. They all have **wrinkly skin**. **African elephants are bigger than Asian elephants**, but largely they're all pretty similar. There's not too much variability. So **I don't need that much data or that much redundancy to understand the concept of elephants fully and completely**.
 
 But **dogs**, on the other hand, are totally different, right? Dogs are **super variable**. There are hundreds of breeds, not to mention all the mixes of different dog breeds. There are different shapes, sizes, textures, colors, all of these different things. The amount of data that I need in order to properly understand dogs is going to be a lot higher than the amount of data I need to understand elephants.
 
-So this comes to some of the challenge when you're actually trying to do this sort of creation, at least on the filtering side. You have to, first off, you don't get a dataset where you're given, "Hey, these are a bunch of dogs, these are a bunch of elephants." Instead, you just get, "here's a bunch of data," right? 
+So this comes to some of the challenge when you're actually trying to do this sort of creation, at least on the filtering side. You have to, first off, you don't get a dataset where you're given, "Hey, these are a bunch of dogs, these are a bunch of elephants." Instead, you just get, "here's a bunch of data," right?
 
 So first off, you have to, in an unsupervised way:
 - discover what these concepts are
@@ -281,24 +281,24 @@ I mean, look, it's an empirical question. Like, like all things are, right? Is t
 
 And it's one of these things where, I think to your point, it's why we've run hundreds and hundreds of thousands of experiments to try to figure this out. I think this is something where it requires just a lot of experimentation to understand how to do this.
 
-And I think one of the challenges we have is not only do we have to make this work on one dataset, but we also have to build a system that can automatically adapt to any **arbitrary data distribution** and be able to make the appropriate inferences, you know, in **zero shot on a new data distribution**. 
+And I think one of the challenges we have is not only do we have to make this work on one dataset, but we also have to build a system that can automatically adapt to any **arbitrary data distribution** and be able to make the appropriate inferences, you know, in **zero shot on a new data distribution**.
 
-So we kind of have these two sets of questions: 
+So we kind of have these two sets of questions:
 
-1. How do we push the frontier of data curation forward?  
+1. How do we push the frontier of data curation forward?
 2. How do we do out of distribution generalization, where we say, "Hey, we have this great data creation approach. How do we make sure that this generalizes to a novel data distribution?"
 
 ---
 
-I don't know if this is like a good time, but I was going to ask for like a brief history of datasets. It might be too much. I'll just list off because we've done a datasets one-on-one episode. I think that was like one of our earliest episodes by far, because we want people to know the datasets. And I think everyone starts at **Common Crawl**. I think every lab has their own **web scrape**. Would you say that's true? Or do they start from Common Crawl?  
+I don't know if this is like a good time, but I was going to ask for like a brief history of datasets. It might be too much. I'll just list off because we've done a datasets one-on-one episode. I think that was like one of our earliest episodes by far, because we want people to know the datasets. And I think everyone starts at **Common Crawl**. I think every lab has their own **web scrape**. Would you say that's true? Or do they start from Common Crawl?
 
-**At this point:**  
+**At this point:**
 Yeah, I think, like I said, this is where most of the labs have actually invested most of their time and effort — building better versions of **Common Crawl** for themselves.
 
 I'll just name-check some of these. If you have commentary, just chime in:
 
-- **GitHub**, the source of code  
-- Maybe **Stack Overflow**, even though that's cut off these days  
+- **GitHub**, the source of code
+- Maybe **Stack Overflow**, even though that's cut off these days
 
 I don't know. Do people get code from anywhere else? I mean, I think there are obviously places where you buy code data, but for public code, I think those are the most common.
 
@@ -358,8 +358,8 @@ It turns out that we were able to prove this in **perceptrons**, at least, becau
 
 And that's why you get **power law scaling**, because every successive data point is teaching you less and less, and it follows a power law. So then you get performance decaying as a power law as well. **If instead you can keep that so it's flat, then you bend the scaling law.** And now, all of a sudden, you learn dramatically faster because the amount of information you're learning is not decaying with dataset size.
 
-Now that was all in theory what you could accomplish, and we proposed a couple of metrics that got us one step there. But in many ways, I would actually say that the whole point of **Datology** is:  
-> *How do we realize the potential that was shown in that paper? How do we actually make that a reality?*  
+Now that was all in theory what you could accomplish, and we proposed a couple of metrics that got us one step there. But in many ways, I would actually say that the whole point of **Datology** is:
+> *How do we realize the potential that was shown in that paper? How do we actually make that a reality?*
 
 And I think fundamentally, if we want to get **scaling to work well**, fundamentally, we need to do a better job here.
 
@@ -367,10 +367,10 @@ Are you measuring the quality of these **open data sets over time**? Are the mos
 
 They do get better, but I think they're not relative to the headroom and potential, I would say. Right. Like, **Nematron** is actually pretty similar in quality to **DCLM**. It came out about six months later. It has more unique tokens. They made a really big deal about it having more unique tokens. But on average, the quality is pretty straightforward.
 
-So, when we think about what we are able to accomplish at **Datology**, we usually think about these three axes I mentioned:  
+So, when we think about what we are able to accomplish at **Datology**, we usually think about these three axes I mentioned:
 
-- **Train faster**  
-- **Train better**  
+- **Train faster**
+- **Train better**
 - **Train smaller**
 
 Typically, the first question is, **train faster**. Given a certain baseline dataset, how much faster can we achieve the same performance? And how many fewer tokens?
@@ -381,8 +381,8 @@ When you say performance, do you mean like **GPQA**, or do you mean loss?
 
 Yeah. So we typically take the accuracy across 15 kind of standard benchmark tasks that are relevant for a given model size. So your **MMLUs**, your **ARCs**, your **RACES**, et cetera.
 
-The problem with those is:  
-> *Are you training to the test?*  
+The problem with those is:
+> *Are you training to the test?*
 
 I'm sure you know this.
 
@@ -471,17 +471,17 @@ We're very far from a brand moat at this point in our journey. Eventually, I wou
 
 But in the meantime, you know, we have to rely on the other two moats, on the science know-how and the engineering infrastructure. I think on the open data side, what we've seen is that the engineering infrastructure definitely can be a moat. But unfortunately, I think that **science know-how moat is actually pretty important**. And a lot of the evidence that we've seen so far has suggested that that is something that's meaningful.
 
-As an example, you know, many of the customers we talk to, one of the first things they'll ask is, 
+As an example, you know, many of the customers we talk to, one of the first things they'll ask is,
 
 > "Hey, compare to the best open source data set, right?"
 
-So if we were giving away everything we needed to in order to build that best open source data set, some folks would just go there. So I think that's been where our challenge has been. 
+So if we were giving away everything we needed to in order to build that best open source data set, some folks would just go there. So I think that's been where our challenge has been.
 
 Now, what we've tried to do, and I think we've done a good job of, and I'm generally happy with the balance we've struck, is try to, in the blog posts that we put out, give a lot of **intuition** as to kind of what we're doing and how it works without necessarily getting to that point of reproducibility. You know, that's, I think, much more open than you see most of the big labs be.
 
-Yeah. If you look at, like, the **data section of the Gemini tech report**, it basically says, like, 
+Yeah. If you look at, like, the **data section of the Gemini tech report**, it basically says, like,
 
-> "Data quality was the single most important thing for making great model." 
+> "Data quality was the single most important thing for making great model."
 
 One paragraph. We used algorithms and heuristics. It's like, great.
 
@@ -495,7 +495,7 @@ That's something that we do a lot of. **Pratouche Maney**, the guy who first cam
 
 But that's something that, you know, we've, like, I think that there would have been an incentive to just, like, not even talk about that at all.
 
-Just on that, do you feel like this is, like, a great example of you were talking about it in the data and then the Kimi paper comes out with a model and then people are like, 
+Just on that, do you feel like this is, like, a great example of you were talking about it in the data and then the Kimi paper comes out with a model and then people are like,
 
 > "Oh, the rephrasing is important."
 
@@ -603,7 +603,7 @@ With rephrasing, I think this is super possible because most of the information 
 
 ---
 
-A couple of follow-ups on that, just things I've always wondered. 
+A couple of follow-ups on that, just things I've always wondered.
 
 **Are textbooks all you need?** No, they are not all you need. I think textbooks are great. And I think there's a lot of really great content and high quality data points like that.
 
@@ -611,9 +611,9 @@ But obviously textbooks are also a **very narrow data distribution**. And if the
 
 Like in many ways, right, there was this, like, I used to do all this work on **out-of-distribution generalization**. And we had all of these, like, very careful studies where we would say:
 
-- "Okay, let's make this corner of the data distribution, then we leave this held out where it's never seen this combination of things, and let's see if it can generalize." 
+- "Okay, let's make this corner of the data distribution, then we leave this held out where it's never seen this combination of things, and let's see if it can generalize."
 
-And then, like, you know, **LLMs** and the modern way of training models came along and said, 
+And then, like, you know, **LLMs** and the modern way of training models came along and said,
 
 > "Hey, what if nothing was out-of-distribution? What if we just made it so that we train on everything, and everything's now in distribution?"
 
@@ -622,9 +622,9 @@ And by the way, you know, that is in line with **AGI**, right? So you might as w
 I made a strong bet that there is no way you can get **compositionality just from scaling**. And, well, you can, it turns out. It does work when you get big enough.
 
 What I was really referencing was, this is the **Microsoft V papers**, right? One, two, three, four.
-A lot of them do the **rephrasing or rewriting in textbook format**. And I feel like that's a little bit of **cargo culting of like,** 
+A lot of them do the **rephrasing or rewriting in textbook format**. And I feel like that's a little bit of **cargo culting of like,**
 
-> "oh, just because you write like Wikipedia or write like textbooks, the models learn better." 
+> "oh, just because you write like Wikipedia or write like textbooks, the models learn better."
 
 That's not, I don't know, that's not automatically proven to be the case.
 
@@ -647,7 +647,7 @@ And then the other question was more on **curriculum**. Curriculum learning had 
 
 Yeah. So a bunch of things. And this was really interesting because when I was going out and initially deciding whether to start tautology and raising and talking to various initial recruits and stuff, it was like mid-23. And at the time I was saying,
 
-> "curricula are going to be a really important aspect." 
+> "curricula are going to be a really important aspect."
 
 And a lot of people were basically just like,
 
@@ -724,7 +724,7 @@ Yeah. So we usually work with folks who are either:
 - Doing continued pre-training on an open model with a bunch of **domain-specific data** that they have that's unique to their use cases and their business
 
 We typically focus on folks that are doing...
-Training comes at a **significant cost**. Typically, that means at least a couple tens of billions of tokens, oftentimes more. The standard small-scale post-training fine-tuning case is not our main focus here. 
+Training comes at a **significant cost**. Typically, that means at least a couple tens of billions of tokens, oftentimes more. The standard small-scale post-training fine-tuning case is not our main focus here.
 
 That said, this question has been asked consistently: **“Who’s actually training their own models? Why don’t I just rely on the open models?”** There are several reasons why people choose to train their own models.
 
@@ -736,7 +736,7 @@ It is largely what you see now: **public-private partnerships where governments 
 
 Usually, **countries provide large grants to private companies** or form public-private partnerships to build these models. This is a major trend.
 
-Secondly, many **larger enterprises with proprietary data** want to train their own models. When considering the value proposition, we recognize three main goals: 
+Secondly, many **larger enterprises with proprietary data** want to train their own models. When considering the value proposition, we recognize three main goals:
 
 - **Train faster**
 - **Train better**
@@ -752,29 +752,29 @@ Secondly, many **larger enterprises with proprietary data** want to train their 
 
 - Interestingly, for the most advanced companies on their AI transformation journeys, **train smaller** matters the most. The total cost of ownership for models is heavily weighted towards **inference**.
 
-Consider a company spending $50 million a year on inference, which isn't very large in the grand scheme. Deploying a model twice as big as needed costs about $25 million more annually. Training a smaller model with fewer than half the parameters, but with equally good or better performance on specific use cases, might cost just $2–3 million. 
+Consider a company spending $50 million a year on inference, which isn't very large in the grand scheme. Deploying a model twice as big as needed costs about $25 million more annually. Training a smaller model with fewer than half the parameters, but with equally good or better performance on specific use cases, might cost just $2–3 million.
 
 This is a clear **no-brainer if it can be done easily and correctly on the first try**. If difficult, companies will avoid it.
 
 Given that current products have only a tiny fraction of their future user bases, we're still very much in the **“first inning”** of this AI journey.
-**Using AI nonstop**, but the rest of the world is not yet. So, the **inference costs are going to skyrocket** with these models. And if you use a **general purpose model** that you then constrain to say, 
+**Using AI nonstop**, but the rest of the world is not yet. So, the **inference costs are going to skyrocket** with these models. And if you use a **general purpose model** that you then constrain to say,
 
-> "hey, this model knows about everything but now only do this one thing," 
+> "hey, this model knows about everything but now only do this one thing,"
 
-that model is going to have a ton of parameters that do not need to be there, which are going to massively increase the cost of serving that model. 
+that model is going to have a ton of parameters that do not need to be there, which are going to massively increase the cost of serving that model.
 
-So, I think that when you think about the use case of an enterprise where they need a model that's 
+So, I think that when you think about the use case of an enterprise where they need a model that's
 
-- an inch wide and a mile deep,  
-- can do a small handful of things,  
-- but can do that really, really effectively to **five nines of reliability**,  
-- and can do it for as low a cost as possible,  
+- an inch wide and a mile deep,
+- can do a small handful of things,
+- but can do that really, really effectively to **five nines of reliability**,
+- and can do it for as low a cost as possible,
 
-the economics make it so that it really makes a lot of sense to do this yourself if you can do it easily.  
+the economics make it so that it really makes a lot of sense to do this yourself if you can do it easily.
 
-The way we think about it is that there were kind of **two big barriers**:  
-1. You have to get **training right**,  
-2. Then you have to get **data right**.  
+The way we think about it is that there were kind of **two big barriers**:
+1. You have to get **training right**,
+2. Then you have to get **data right**.
 
 On the training side, I think three years ago this was super hard. But **Mosaic** was the first to really recognize that there was a huge opportunity in making this easy. Now this has largely been commoditized by things like **SageMaker**, **Together**, and lots of different folks that help you on the training side.
 
@@ -782,8 +782,8 @@ But on the **data side**, the barrier is just as high as ever. In many ways, tha
 
 They don't have to:
 
-- Spend 40 years in the desert,  
-- Get it wrong 100 times first,  
+- Spend 40 years in the desert,
+- Get it wrong 100 times first,
 
 which is what will happen if you don't have this experience. Instead, on the first shot, they get a really great model.
 
@@ -795,7 +795,7 @@ I think a lot of people, you know, **Jonathan Frankel** was on the podcast very 
 
 ---
 
-So it's funny. Jonathan actually **interned with me when I was at Meta**, and we worked on this stuff together. He had the **lottery ticket hypothesis**, which is a really beautiful paper, which he now completely disowns.  
+So it's funny. Jonathan actually **interned with me when I was at Meta**, and we worked on this stuff together. He had the **lottery ticket hypothesis**, which is a really beautiful paper, which he now completely disowns.
 
 I had this whole idea when Jonathan and I worked together that we wanted to create a **lottery ticket initialization**. It would just be an initialization you'd sample from for initializing the weights that would then be one of these perfect winning ticket initializations.
 
@@ -807,12 +807,12 @@ I don't think pruning is dead. **Parameter pruning** still absolutely has a plac
 
 I think one of the big tricks with pruning, parameter pruning, just to be clear, was:
 
-- **Unstructured pruning**: when you prune weights randomly — you view all the weights as a smorgasbord and just prune them randomly. That worked really well, and you could remove massive quantities of weights.  
+- **Unstructured pruning**: when you prune weights randomly — you view all the weights as a smorgasbord and just prune them randomly. That worked really well, and you could remove massive quantities of weights.
 
 The problem is, unstructured pruning doesn't really give you a clear **compute advantage** because you need to have a **sparse matrix** now to reflect this. And there's a pretty huge overhead of sparse matrix multiplies. **GPUs are not very good at sparse matrix multiplies.**
 
-- There is some support for them now,  
-- Some hardware optimizations,  
+- There is some support for them now,
+- Some hardware optimizations,
 - People have talked about building ASICs to be really good at unstructured pruning, but I haven't seen one that works super well.
 
 I think if someone did make something that worked really well for models that were pruned in an unstructured way, that could be effective.
@@ -821,11 +821,11 @@ I think if someone did make something that worked really well for models that we
 
 ---
 
-So, I think there's still potential here. I don't think it's the panacea that I and many others had hoped. 
+So, I think there's still potential here. I don't think it's the panacea that I and many others had hoped.
 
 That said, one thing that's cool about using **better data to train smaller models** is that it's **complementary** with any other approaches for optimizing inference.
 
-- Pruning and quantization obviously still have a lot of role to play in helping inference go faster.  
+- Pruning and quantization obviously still have a lot of role to play in helping inference go faster.
 
 That would stack on top of anything that we're...
 **Doing, which I think is kind of cool.** One also, I think kind of a grand challenge, golden question that'd be very valuable for you, or just in general, is this idea of like, **what is the smallest possible model for given capability?** Do you have any insights on that?
@@ -851,7 +851,7 @@ cost of inference × number of thinking steps
 
 And you have to do a lot of thinking steps, minimizing the cost of inference is really important. Anything we can do to make that inference model—doing the one step of thinking—a lot faster enables test time compute to be a lot more effective.
 
-Yeah, I think there's another version of this, which is the sort of **Andre Karpathy cognitive core concept of a model that doesn't know anything but can use tools a lot** to find, to figure out again, another information theoretical limit that would be very helpful to figure out: 
+Yeah, I think there's another version of this, which is the sort of **Andre Karpathy cognitive core concept of a model that doesn't know anything but can use tools a lot** to find, to figure out again, another information theoretical limit that would be very helpful to figure out:
 
 > "What is the minimal viable model for that stuff? Like a zero on GPQA, a hundred on browse conf."
 
@@ -860,8 +860,8 @@ I really like that idea, and I think it's very possible to do that because **kno
 We can look at this through one of my first papers I ever wrote, which was about showing that when you train models on **randomized labels** — because this was a common test to do:
 
 - You randomize all the labels; there's no actual true association
-- The model would have to memorize it  
-- Models could do this really well  
+- The model would have to memorize it
+- Models could do this really well
 
 There was an **ICLR best paper from 2017** that showed this. People were really surprised that models could memorize all of ImageNet. At the time, that was crazy.
 
@@ -881,7 +881,7 @@ I think it's very possible to do this, and we are wasting a ton of capacity in t
 Before we wrap, since we started with the **RC models** and never talked about them much, I think the most interesting thing to me was they started with **23 trillion tokens of data,** and then you helped them get down to **6.6 trillion.** Any learnings from that? And this is a 4.5B model.
 which is par with **Gemma 4b** and a little worse than **Quan 3**, but roughly the same. Any learnings there, experiences, things that other open models should adopt?
 
-So yeah, so we started for that one. We started with a combination of **DCLM**, **Nemetron**, and **FineWeb**. We basically just concatenate them all together. It's about **25 trillion tokens** to combine for all those to produce **7 trillion** out of that.  
+So yeah, so we started for that one. We started with a combination of **DCLM**, **Nemetron**, and **FineWeb**. We basically just concatenate them all together. It's about **25 trillion tokens** to combine for all those to produce **7 trillion** out of that.
 
 You know, I mean, I think what was exciting to us about that was in general, you know, seeing the speed at which the model learned. So, you know, it was beating **Gemma** pretty consistently before the 1 trillion mark, which was pretty cool to see. And I think really highlighted in many ways, you know, how **higher quality data** can get you much better performance much more quickly.
 
@@ -903,22 +903,22 @@ So, you know, there really is a lot that we can do here. And I think that would 
 
 We already have better data sets than what **RC** trained on, because that model was largely trained in May. And pretty excited about all the next trainings that we'll have that go even bigger.
 
-I have a couple more lightning fun questions.  
+I have a couple more lightning fun questions.
 
 - **What data does everyone want, based on your customer conversation, what data does everyone want, but it's really hard to get?**
 
-I mean, I think **expert data** is the pretty obvious thing.  
-Just **domain experts**.  
-Domain expertise.  
+I mean, I think **expert data** is the pretty obvious thing.
+Just **domain experts**.
+Domain expertise.
 
 That said, I would also note that most people don't know what data they actually should be getting. They just show up with whatever they have.
 
 Yeah. And I think something we've actually found shockingly frequently is we talk to folks who have been planning for a really expensive training run, millions and millions of dollars training run. They've been thinking about the architecture they're going to use. They've been thinking about all this stuff.
 
-And then they reach out to us and they're like,  
+And then they reach out to us and they're like,
 > "hey, we realize we need a good data set and we're planning to kick off training in two weeks. Like, can you help us?"
 
-And a lot of it's like,  
+And a lot of it's like,
 > "hey, you probably should be thinking about your data set before all the other things. If anything, that's actually the most important thing."
 
 So I think, honestly, the most surprising thing is maybe how often people don't even have a conception of what **good data** is. And oftentimes I think when people, what they think is good data often isn't, which goes to the **DCLM** point.
@@ -928,9 +928,9 @@ This is a little bit of a **recruiting question**. What **data efficiency questi
 
 The first thing I would just say is, if you are one of these people that keeps on finding yourself just staring at the data, you keep going into the data set. If you can tell me what your favorite and least favorite **C4 example** is, you belong at **Datology**. You should come join us and join a bunch of other nerds that love doing that exact same thing.
 
-I think in many ways, that's kind of the single biggest predictor of whether someone is going to be really happy at **Datology**: 
+I think in many ways, that's kind of the single biggest predictor of whether someone is going to be really happy at **Datology**:
 
-> **How much do you just look at the data in your own work?** 
+> **How much do you just look at the data in your own work?**
 
 Because you'd be surprised by how many really talented researchers don't do it very often; they really just view it as a given. I think it's been pretty surprising across the board.
 
@@ -969,8 +969,8 @@ Awesome. And just to wrap on some gossip, let's talk about **Meta** and **super 
 
 Just for context, when you talk about science moat and whatnot, you raised a lot of money from very prominent people. You have:
 
-- **Jan LeCun** as one of your investors, 
-- **Jeffrey Hinton**, 
+- **Jan LeCun** as one of your investors,
+- **Jeffrey Hinton**,
 - **Jeff Dean**.
 
 So, when Ari says that they have a science moat, believe it.
@@ -982,7 +982,7 @@ And, you know, Jan was also on LinkedIn, and he was like:
 > "Hey, you know..."
 I'm actually working on, you know, I fear we're focused on the **next generation of AI**, not on this current generation. So, my role is the same, but then maybe people might say, you know, then why didn't you do the current generation 10 years ago? What do you make of the whole change and whether or not you think this is an interesting direction for **Meta**, especially given the large platform and user base that they have?
 
-Well, first, with respect to **Jan** specifically, I mean, Jan's an incredibly talented scientist, of course, but I think that, you know, his preference has always been to do **science rather than to run an organization**. So, I think he ran **FAIR**, like, organizationally for a year or two right at the very beginning, but pretty quickly, he handed that off to other people. And, like, when I was there, it was **Joelle Pinot** and **Antoine Bordes**, and then Joelle for most of it, that really were running FAIR, and she was an incredible leader. I really respect her deeply and couldn't have asked for a better kind of advocate for science within FAIR. 
+Well, first, with respect to **Jan** specifically, I mean, Jan's an incredibly talented scientist, of course, but I think that, you know, his preference has always been to do **science rather than to run an organization**. So, I think he ran **FAIR**, like, organizationally for a year or two right at the very beginning, but pretty quickly, he handed that off to other people. And, like, when I was there, it was **Joelle Pinot** and **Antoine Bordes**, and then Joelle for most of it, that really were running FAIR, and she was an incredible leader. I really respect her deeply and couldn't have asked for a better kind of advocate for science within FAIR.
 
 When she left, people were saying, like, **"this is the end of FAIR."** I hope that's not true, but I also had that concern. But I think Jan always really wanted to just actually do the **science himself**. And, you know, he's generally for much of, most of the time I was at FAIR, he kind of operated with his own group of a couple kind of postdocs and visiting scientists, and then he'd have a couple students through **NYU**, and he would kind of do his own research there. So, I don't think he was ever, you know, or at least not since the beginning, in a role where he was defining **AI strategy for Meta**. I don't think that's the role he wanted at any point. You know, I think he really wanted to be doing that research. And I think, so, I don't think that his role probably is changing very significantly in the sense that he wasn't doing that previously. And I don't think it was what he wanted to do.
 

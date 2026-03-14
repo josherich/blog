@@ -2,7 +2,7 @@
 layout: post
 title: "The China Commission Reports!"
 date: 2026-01-17 00:00:01
-categories: podcast chinatalk
+categories: podcast
 tags: [podcast_script]
 ---
 

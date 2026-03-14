@@ -2,7 +2,7 @@
 layout: post
 title: "SCO Summit Review: Xi, Modi & Putin Present a United Front"
 date: 2025-09-03 00:00:01
-categories: podcast the-china-global-south-podcast
+categories: podcast
 tags: [podcast_script]
 ---
 
