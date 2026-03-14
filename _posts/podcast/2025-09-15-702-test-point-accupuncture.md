@@ -2,17 +2,17 @@
 layout: post
 title: "#702 – Test Point Acupuncture"
 date: 2025-09-15 00:00:01
-categories: podcast the-amp-hour-electronics-podcast
+categories: podcast
 tags: [podcast_script]
 ---
 
 
 [#702 – Test Point Acupuncture](https://traffic.libsyn.com/theamphour/TheAmpHour-702-TestPointAccupuncture.mp3)
 
-**This is the Amp Hour**, released September 14th, 2025.  
+**This is the Amp Hour**, released September 14th, 2025.
 **Episode 702, Test Point Acupuncture.**
 
-Welcome to the Amp Hour. I'm **Dave Jones** from the **EEVblog**.  
+Welcome to the Amp Hour. I'm **Dave Jones** from the **EEVblog**.
 And I'm **Chris Gamble** of **Contextual Electronics**.
 
 ## Dave's Refurbished Microsoft Surface Issues

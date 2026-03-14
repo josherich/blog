@@ -3,7 +3,7 @@ layout: post
 title:  "不在场 文字稿 S2E7 内容创作者的困境"
 description: "不在场 S2E7"
 date: 2024-11-01 00:00:01
-categories: short
+categories: podcast
 tags: [podcast_script]
 ---
 

@@ -2,7 +2,7 @@
 layout: post
 title: "Learning from Ukraine, Preparing for Taiwan"
 date: 2025-08-20 00:00:01
-categories: podcast chinatalk
+categories: podcast
 tags: [podcast_script]
 ---
 

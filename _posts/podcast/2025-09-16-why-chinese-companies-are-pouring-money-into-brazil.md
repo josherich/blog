@@ -2,18 +2,18 @@
 layout: post
 title: "Why Chinese Companies Are Pouring Money Into Brazil"
 date: 2025-09-16 00:00:01
-categories: podcast the-china-global-south-podcast
+categories: podcast
 tags: [podcast_script]
 ---
 
 
 [Why Chinese Companies Are Pouring Money Into Brazil](https://traffic.libsyn.com/secure/ea0f0fdd-2944-4ff3-8a00-704e8c67d58b/CGSP_09162025_Libsyn.mp3?dest-id=4287628)
 
-The **China Global South podcast** is supported in part by our subscribers and Patreon supporters.  
+The **China Global South podcast** is supported in part by our subscribers and Patreon supporters.
 
 If you'd like to join a global community of readers for daily news and exclusive analysis about **Chinese engagement in Asia, Africa, and throughout the developing world**, go to **ChinaGlobalSouth.com/subscribe**.
 
-Hello and welcome to another edition of the **China Global South podcast**, a proud member of the **Sinica podcast network**.  
+Hello and welcome to another edition of the **China Global South podcast**, a proud member of the **Sinica podcast network**.
 I'm **Eric Olander**.
 
 Today, we're going to focus on the surging economic relationship between **China and Brazil**. It's been a topic of mounting concern in the United States, where Chinese soybean buyers once accounted for **60% of the U.S. market**.
@@ -22,8 +22,8 @@ Now, get this. So far this year, the Chinese haven't bought a single soybean fro
 
 Here's how one farmer in Arkansas described the dire situation in an interview on the cable news channel **MSNBC**:
 
-> "We've got a real disaster with this tariff deal.  
-> I mean, we produce 40% more agricultural products in this country than we can consume domestically.  
+> "We've got a real disaster with this tariff deal.
+> I mean, we produce 40% more agricultural products in this country than we can consume domestically.
 > One in every four rows of soybeans in every field in the entire United States of America has to go abroad."
 
 **China is the largest importer of soybeans in the world.** They import **61% of the world's market**. Last year, we sent around **$12 billion**, I think **$14 billion** worth of soybeans the year before.
@@ -66,14 +66,14 @@ I mean, again, let's be careful here. This all happened before Trump was in offi
 
 Tell us why you think this number went up as much as it did.
 
-"Yeah, that's right, Eric. Well, part of this growth came from projects in the **electricity sector**, which are usually very capital-intensive."  
+"Yeah, that's right, Eric. Well, part of this growth came from projects in the **electricity sector**, which are usually very capital-intensive."
 
 And it wasn't just hydropower that, in terms of stock, will still dominate the investments in the electricity sector, but also new initiatives in **solar and wind energy**, both areas that have been especially attractive to Chinese investors in Brazil in the last years.
 
 And at the same time, even though there is a clear trend of Chinese investors focusing...
 More on **renewables**, as we know, there were also considerable investments in the **oil sector**, close to a billion dollars last year, especially from **China National Offshore Oil Corporation**. It may sound paradoxical, but **China still relies heavily on fossil fuels** because the reality is that, in order to invest in the energy transition, they need energy. And much of that energy still comes from fossil fuels.
 
-Besides that, **mining** also gained new momentum. So what we saw was an increase in investments in electricity, especially renewables, along with oil and mining. All of these are **capital-intensive sectors**, as I mentioned, and that explains the sharp rise compared to the previous year. 
+Besides that, **mining** also gained new momentum. So what we saw was an increase in investments in electricity, especially renewables, along with oil and mining. All of these are **capital-intensive sectors**, as I mentioned, and that explains the sharp rise compared to the previous year.
 
 It's also worth noticing that the **number of projects**, as you mentioned, in general, was higher than ever, which also helped push the total value of investments to a new level, right?
 
@@ -83,7 +83,7 @@ So in terms of the **number of projects**, that increased quite a bit. And that'
 
 Tell us about the numbers of projects and why that's important.
 
-As you mentioned, we saw a record of **39 projects confirmed**, some of them brand new projects starting last year, and others continuing from previous years, just like the investments from **BYD**, **Great Wall Motors** that started their investments some years ago. 
+As you mentioned, we saw a record of **39 projects confirmed**, some of them brand new projects starting last year, and others continuing from previous years, just like the investments from **BYD**, **Great Wall Motors** that started their investments some years ago.
 
 So these projects cover a range of sectors, actually. But **manufacturing really stood out**, especially in the automotive industry, which has been key to attracting new investments. It's not just BYD or Great Wall Motors. There are other companies, especially car makers, that are very interested in the **Brazilian market**.
 
@@ -151,7 +151,7 @@ The **Northeast region of Brazil** is very promising for **renewables as well**,
 
 We have even some projects in:
 
-- Solar energy  
+- Solar energy
 - Wind energy
 
 coming from those companies, but also in the **manufacturing industry**.
@@ -205,12 +205,12 @@ One of the trends that we're seeing in Africa is that on the Chinese side, it's 
 So provinces like **Shandong** and **Guangdong** are coming over.
 
 Also cities like **Chongqing** and **Shanghai** are leading investment delegations.
-Are you seeing the same thing that just as in **Brazil**, it's at **subnational level**, but also the **Chinese partners** now are less from the **central government** and more and more from provinces and big cities like **Chongqing**?  
+Are you seeing the same thing that just as in **Brazil**, it's at **subnational level**, but also the **Chinese partners** now are less from the **central government** and more and more from provinces and big cities like **Chongqing**?
 **Exactly.**
 
 Actually, in my personal experience in **Brazil-China Business Council**, we received much more delegations from **cities and provinces** than from the **central government**. And it's very common that we receive those delegations trying to build new partnerships in the country, offering opportunities even for Brazilians to invest in China in those cities or provinces. So in general, it's very decentralized, let's say.
 
-I believe it's interesting to notice that **China is not a monolith**, let's say, right? It's much more common to see provinces and cities coming to Brazil to start new partnerships in general.  
+I believe it's interesting to notice that **China is not a monolith**, let's say, right? It's much more common to see provinces and cities coming to Brazil to start new partnerships in general.
 Yeah, that's very interesting.
 
 Well, let's talk about the kind of investment. So there's really two kinds of investment:
@@ -218,7 +218,7 @@ Well, let's talk about the kind of investment. So there's really two kinds of in
 - **Brownfield investment**: investment in projects that are already existing. The Chinese would take over an existing Brazilian company.
 - **Greenfield investment**: starting up new things like the **BYD factory** that they're building there.
 
-How much did we see in brownfield and how much did we see in greenfield in the report that you just completed?  
+How much did we see in brownfield and how much did we see in greenfield in the report that you just completed?
 
 Yeah, most of recent projects here are **greenfield investments**, meaning Chinese companies coming to Brazil to start from scratch, let's say. But we also see companies that have been here for some years expanding their operations. So overall, there's been less activity in mergers and acquisitions in recent years.
 
@@ -230,7 +230,7 @@ So in general, it's very common to see a Chinese company come to Brazil, buying 
 
 You know, one of the areas on both greenfield and brownfield is **manufacturing**. And again, I mentioned this **BYD factory**. It's been very controversial, this factory, given that there were accusations of **slave labor** in the construction of the factory. But it does highlight the drive that Chinese companies are pursuing in terms of relocating more of their manufacturing closer to their customers in places like Brazil.
 
-How much, again, is this manufacturing push that the Chinese are doing, not just in Brazil, but across the **global south**? How much is that factoring into all of this investment surge that you're seeing in Brazil in 2024?  
+How much, again, is this manufacturing push that the Chinese are doing, not just in Brazil, but across the **global south**? How much is that factoring into all of this investment surge that you're seeing in Brazil in 2024?
 
 I believe **China can be a key partner in Brazil's re-industrialization** through investment projects, right? Chinese companies bring capital, technology, and they are interested in key sectors for us, like **economy and energy, infrastructure, new technologies**. So there's a lot of opportunity there.
 
@@ -251,14 +251,14 @@ Let's look forward. We're into **2025 now**. I'm sure you're doing the research 
 
 I started the top of the show talking about **soybeans** and agriculture, where the Chinese are buying up a lot. They're buying **sorghum now**. We're talking about increases in **beef exports**. Any sense that the momentum will slow in 2025, especially given everything that's going on in the geopolitical competition?
 
-Actually, I believe it's going to be stronger this year. Actually, I've recorded some projects, and I believe we are going to see a lot more investments in **clean energy here in Brazil**, especially in **solar and wind generation**, and even in the production of equipment for these industries, like solar panels, wind turbines, and other components in general. 
+Actually, I believe it's going to be stronger this year. Actually, I've recorded some projects, and I believe we are going to see a lot more investments in **clean energy here in Brazil**, especially in **solar and wind generation**, and even in the production of equipment for these industries, like solar panels, wind turbines, and other components in general.
 
 This is particularly true now, since **clean energy is a state priority** in **China itself and Brazil**. And I believe also **manufacturing** is a very promising area. We've seen reports of companies interested in producing:
 
 - electric bicycles
 - smartphones
 - trains
-- trucks  
+- trucks
 
 Many of those products are still just plans, but the level of interest is very clear.
 
@@ -279,19 +279,19 @@ Well, I mean, the beauty of the Brazilian market is it's like **Indonesia and Ni
 So at the time of this recording, there's been a back and forth between **Mexico, the United States, and China** over the Mexican government's proposal. And maybe by the time that the show airs, it's passed to put a **50 percent tariff on Chinese EVs** in order to accommodate the U.S.
 The relationship between **Lula** and **Trump** has gotten so bad that it seems unlikely that the Brazilians will do much to accommodate the Americans and try to restrict Chinese investment in Brazil. That seems unlikely. And the Americans just don't have the leverage on Brazil that they have on Mexico. So that's probably unlikely.
 
-But let's talk about politics very quickly. In many **South American countries**, we're going to see **presidential elections** or **prime minister elections**, changes of government.  
+But let's talk about politics very quickly. In many **South American countries**, we're going to see **presidential elections** or **prime minister elections**, changes of government.
 
-- Colombia  
-- Bolivia  
-- Chile  
+- Colombia
+- Bolivia
+- Chile
 
 all have elections coming up. **China** is going to be an issue. Brazil has an election coming up. Lula's polls before Trump were a little shaky. They've gotten stronger now. Lula is obviously very close with the **BRICS** and China. Bolsonaro, his predecessor, was very anti-Chinese and very critical of the Chinese. Yet investment, despite that rhetoric, still kind of continued and trade still flourished.
 
-What role do you think China will play in an election in Brazil? That's a very interesting question, I believe. In general, one very interesting aspect of **Brazilian foreign policy** is that it has certain continuity, right? Because we have a very strong institution here when we talk about foreign policy.  
+What role do you think China will play in an election in Brazil? That's a very interesting question, I believe. In general, one very interesting aspect of **Brazilian foreign policy** is that it has certain continuity, right? Because we have a very strong institution here when we talk about foreign policy.
 
 In general, even though we change the government, as you mentioned, Bolsonaro was more anti-China, while Lula is more pro-China. We still see investments coming. We see the trade flourishing. Especially in the Bolsonaro government, we actually saw the highest records of bilateral trade ever, right? Even though the negative rhetoric concerning the Chinese here during Bolsonaro's government.
 
-But now China poses as a very clear opportunity for Brazil, while the **U.S.**, because of the **Trump government**, is in a very bad situation here when we talk about the general view of the Americans. The U.S. is actually a key partner, a historical key partner of Brazil. It was the first country to recognize the Brazilian independency. It's a country that has been investing here for a long time, as I mentioned, that we have some companies investing here for a century already. 
+But now China poses as a very clear opportunity for Brazil, while the **U.S.**, because of the **Trump government**, is in a very bad situation here when we talk about the general view of the Americans. The U.S. is actually a key partner, a historical key partner of Brazil. It was the first country to recognize the Brazilian independency. It's a country that has been investing here for a long time, as I mentioned, that we have some companies investing here for a century already.
 
 Probably we are in the worst moment of U.S.-Brazil relationship ever. I believe in general, China doesn't interfere in Brazilian national politics. And it's not sure in the case of Trump government right now, because he's trying to make pressure, especially considering Bolsonaro's trial now that it's **in the Brazilian Supreme Court**.
 
@@ -305,28 +305,28 @@ And I believe now with this Brazilian efforts to **re-industrialize**, China com
 
 When we see the UN's reports on foreign investments, we see that Brazil is usually ranked a **top 10 country** that has been attracting most of the investments abroad. So it's not only the Chinese that see Brazil as a very interesting destination for investments.
 
-But in general, I believe there are some sectors that will be key for the coming years, not only this year, for Chinese investments here. As I mentioned,  
+But in general, I believe there are some sectors that will be key for the coming years, not only this year, for Chinese investments here. As I mentioned,
 
-- energy sector  
-- manufacturing sector  
-- mining  
+- energy sector
+- manufacturing sector
+- mining
 
-are still very strong. We have companies here investing for a long time that have a very strong position in Brazil in the **energy sector**, manufacturing sector as well, but also mining. 
+are still very strong. We have companies here investing for a long time that have a very strong position in Brazil in the **energy sector**, manufacturing sector as well, but also mining.
 
-I believe mining is one of the most promising sectors because Brazil has a range of minerals that are key to China right now, especially when we consider this renewable movement in China, energy transition, and so on.  
+I believe mining is one of the most promising sectors because Brazil has a range of minerals that are key to China right now, especially when we consider this renewable movement in China, energy transition, and so on.
 
-We have:  
-``` 
-- copper, that is a very important mineral for China  
-- iron ore, which is one of the most important commodities that we export to China and that is also key to the energy transition industry  
-- niobium  
-- red earths  
+We have:
+```
+- copper, that is a very important mineral for China
+- iron ore, which is one of the most important commodities that we export to China and that is also key to the energy transition industry
+- niobium
+- red earths
 ```
 
 Still, we don't have a very developed industry on red earths here in Brazil. But anyway, I know that the Chinese are very, very interested in those minerals and they already have some ongoing investments in the mining sector. So it's probably one of the key areas for the future.
 Well, this report is **absolutely essential reading** if you want to understand one of the most important, not only **geopolitical**, but now **geoeconomic relationships** that **China** has anywhere in the world today. **Brazil** is a major, major player.
 
-The report, I only saw a **Portuguese version** of the report. Do you have an English report or is it just in Portuguese?  
+The report, I only saw a **Portuguese version** of the report. Do you have an English report or is it just in Portuguese?
 **Yeah, we're translating it right now.** So I believe next month, maybe we will be publishing it in English as well. But thank goodness for **ChatGPT**. I took the report, put it into ChatGPT, and it came back in English perfectly and with no hallucinations. And so it was very useful.
 
 So I will put a link to the **Portuguese version** of the report. Even if you don't speak Portuguese, put it into ChatGPT and let it do the translation for you. **Very, very important reading.** And again, if you understand these trends, you'll understand the politics behind them.
@@ -347,10 +347,10 @@ It does need your support, though. We have a team in:
 
 By the way, we are just about to launch in the Americas with our new editor based out of **Lima, Peru**. Very excited that we'll be doing it in **Spanish**. Unfortunately, Tulio, not yet in Portuguese, but hopefully one day we'll launch in Portuguese as well.
 
-Go to **ChinaGlobalSouth.com** for all the information. And if you'd like to subscribe, just go to  
-```  
-ChinaGlobalSouth.com/subscribe  
-```  
+Go to **ChinaGlobalSouth.com** for all the information. And if you'd like to subscribe, just go to
+```
+ChinaGlobalSouth.com/subscribe
+```
 And don't forget, if you are a student or a teacher, we give you **half off**. Email me, Eric, at **ChinaGlobalSouth.com**.
 
 So that'll do it for this edition of the show. On behalf of the entire team around the world, I want to thank you for watching this edition of the **China Global South podcast** and for listening as well. We'll be back again next week with another edition.

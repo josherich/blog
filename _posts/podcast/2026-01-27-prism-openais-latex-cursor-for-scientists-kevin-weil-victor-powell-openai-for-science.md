@@ -2,7 +2,7 @@
 layout: post
 title: "⚡️ Prism: OpenAI's LaTeX Cursor for Scientists — Kevin Weil & Victor Powell, OpenAI for Science"
 date: 2026-01-27 00:00:01
-categories: podcast untitled
+categories: podcast
 tags: [podcast_script]
 ---
 

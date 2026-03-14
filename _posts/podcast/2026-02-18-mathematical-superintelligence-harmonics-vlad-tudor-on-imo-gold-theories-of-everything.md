@@ -2,7 +2,7 @@
 layout: post
 title: "Mathematical Superintelligence: Harmonic's Vlad & Tudor on IMO Gold & Theories of Everything"
 date: 2026-02-18 00:00:01
-categories: podcast the-cognitive-revolution-ai-builders-researchers-and-live-player-analysis
+categories: podcast cognitive-revolution
 tags: [podcast_script]
 ---
 
@@ -77,81 +77,81 @@ If you're like me, you'll find this episode a useful opportunity to:
 - Improve your intuition for the nature of math
 - Get an instructive preview of what's to come as reinforcement learning continues to scale across the industry
 - Receive an inspiring challenge to keep thinking bigger and bolder about the nature and impact of superintelligence
-With that, I hope you enjoy my conversation with **Vlad Tenev** and **Tudor Achim**, co-founders of **Harmonic**.  
+With that, I hope you enjoy my conversation with **Vlad Tenev** and **Tudor Achim**, co-founders of **Harmonic**.
 
-**Vlad Tenev** and **Tudor Achim**, co-founders of **Harmonic**, makers of **Aristotle**, and winners with an asterisk of the **IMO gold in 2025**.  
+**Vlad Tenev** and **Tudor Achim**, co-founders of **Harmonic**, makers of **Aristotle**, and winners with an asterisk of the **IMO gold in 2025**.
 
-Welcome to the **Cognitive Revolution**.  
-*Thanks for having us.*  
-*Greetings and salutations.*  
-*Thank you.*  
+Welcome to the **Cognitive Revolution**.
+*Thanks for having us.*
+*Greetings and salutations.*
+*Thank you.*
 
-So this is going to be, I think, a fascinating conversation. It's probably going to be more **metaphysical** than most of our episodes, but also there's a lot of practicality because what you guys are doing certainly has aspirations to go beyond the pursuit of **mathematical superintelligence**.  
+So this is going to be, I think, a fascinating conversation. It's probably going to be more **metaphysical** than most of our episodes, but also there's a lot of practicality because what you guys are doing certainly has aspirations to go beyond the pursuit of **mathematical superintelligence**.
 
-Maybe just for starters, how do you guys understand what **math** is? That was something I was really wrestling with in preparing for this. And then, you know, that's obviously very metaphysical. To make that a little bit more practical, what would you say are the core **cognitive skills** that people that are good at math really develop and excel at? And how do those skills do when we look at the performance of like the **frontier large language models** that all of our listeners are familiar with today?  
+Maybe just for starters, how do you guys understand what **math** is? That was something I was really wrestling with in preparing for this. And then, you know, that's obviously very metaphysical. To make that a little bit more practical, what would you say are the core **cognitive skills** that people that are good at math really develop and excel at? And how do those skills do when we look at the performance of like the **frontier large language models** that all of our listeners are familiar with today?
 
-> "Yeah. Well, look, first, thanks for having us. It's really great to be here."  
+> "Yeah. Well, look, first, thanks for having us. It's really great to be here."
 
-You know, when you ask, *what is math? What is it useful for? What are the core cognitive skills?* it gets like one of the core theses of our company, which is that **mathematics is reasoning**.  
+You know, when you ask, *what is math? What is it useful for? What are the core cognitive skills?* it gets like one of the core theses of our company, which is that **mathematics is reasoning**.
 
-So a lot of people think of mathematics as this really esoteric thing. You know, you're thinking maybe **group theory**, stuff you've seen in movies like *Good Will Hunting*, but mathematics at its core is the process by which humans understand the world by breaking their understanding down into small sequences of **logical steps** that other people can understand and verify for themselves.  
+So a lot of people think of mathematics as this really esoteric thing. You know, you're thinking maybe **group theory**, stuff you've seen in movies like *Good Will Hunting*, but mathematics at its core is the process by which humans understand the world by breaking their understanding down into small sequences of **logical steps** that other people can understand and verify for themselves.
 
-So when you're solving a physics problem or doing your taxes or thinking about what happened at the beginning of the universe, ultimately you have to have an explanation that is  
+So when you're solving a physics problem or doing your taxes or thinking about what happened at the beginning of the universe, ultimately you have to have an explanation that is
 
-- self-consistent,  
-- that follows from other facts, and  
-- that your colleagues or other humans can check.  
+- self-consistent,
+- that follows from other facts, and
+- that your colleagues or other humans can check.
 
-And so when we talk about what it takes to be good at math, the question is what it does take to be good at **reasoning**. And so that's, again, that ability to break this down into steps.  
+And so when we talk about what it takes to be good at math, the question is what it does take to be good at **reasoning**. And so that's, again, that ability to break this down into steps.
 
-It turns out math is really useful for understanding the universe and building lots of engineering things, but ultimately it's just about reasoning.  
+It turns out math is really useful for understanding the universe and building lots of engineering things, but ultimately it's just about reasoning.
 
-I watched your podcast that you did with **Sequoia** maybe 16 months ago or so now. And I recall **Vlad's story** of like, basically,  
+I watched your podcast that you did with **Sequoia** maybe 16 months ago or so now. And I recall **Vlad's story** of like, basically,
 
-> "I thought that if I got good at math and I'd probably be good at other things and it sort of worked for me."  
+> "I thought that if I got good at math and I'd probably be good at other things and it sort of worked for me."
 
-So that's like one way to, in a very practical sense, unpack the idea that **math is reasoning**. It certainly seems to help people generalize to at least related domains and be really effective, for example, in entrepreneurship.  
+So that's like one way to, in a very practical sense, unpack the idea that **math is reasoning**. It certainly seems to help people generalize to at least related domains and be really effective, for example, in entrepreneurship.
 
-But I'm not entirely clear still on like, are you making a more almost **platonic** claim there? It seems like there's the very simple notion that like, okay, I should teach my kid a lot of math because then they'll be smart generally. And again, that works for humans.  
+But I'm not entirely clear still on like, are you making a more almost **platonic** claim there? It seems like there's the very simple notion that like, okay, I should teach my kid a lot of math because then they'll be smart generally. And again, that works for humans.
 
-But is there something that you see as like a more fundamental law of the universe, sort of correspondence between what we are doing in math and what we are doing in these other domains? Because it doesn't seem like we have the same sort of like verifiability in almost anything else.  
+But is there something that you see as like a more fundamental law of the universe, sort of correspondence between what we are doing in math and what we are doing in these other domains? Because it doesn't seem like we have the same sort of like verifiability in almost anything else.
 
-We do have it a little bit in **computer science**, but even in **physics**, right? We've got like still very fundamental questions about  
+We do have it a little bit in **computer science**, but even in **physics**, right? We've got like still very fundamental questions about
 
-- is the **paradigm** even right?  
-- what would it mean for it to be proven right?  
+- is the **paradigm** even right?
+- what would it mean for it to be proven right?
 
-> "I don't think that stuff is at all agreed upon."  
+> "I don't think that stuff is at all agreed upon."
 
-So maybe you guys throw up your hands at this mystery too, or maybe you feel like you have kind of an intuition for what the answer is.  
+So maybe you guys throw up your hands at this mystery too, or maybe you feel like you have kind of an intuition for what the answer is.
 
-> "Yeah, I can give you my perspective."  
+> "Yeah, I can give you my perspective."
 
-I got into math through **physics**. So when I first came to **Stanford** as an undergrad, I had read **Brian Greene's** *The Elegant Universe*, which was sort of like the first popular string theory book.  
+I got into math through **physics**. So when I first came to **Stanford** as an undergrad, I had read **Brian Greene's** *The Elegant Universe*, which was sort of like the first popular string theory book.
 
-And when I was a kid, one of the earliest memories, one of the first full English books that I read was *A Brief History of Time* by **Stephen Hawking**. So I've always been interested in kind of the big questions, right?  
+And when I was a kid, one of the earliest memories, one of the first full English books that I read was *A Brief History of Time* by **Stephen Hawking**. So I've always been interested in kind of the big questions, right?
 
-- What happened before the big bang?  
-- How did the laws of physics come about?  
-- Is there just like one law, one particle, one force that eventually as the universe cooled and expanded splintered into all the different forces we have today—like **gravity**, **electromagnetism**, **strong and weak force**?  
+- What happened before the big bang?
+- How did the laws of physics come about?
+- Is there just like one law, one particle, one force that eventually as the universe cooled and expanded splintered into all the different forces we have today—like **gravity**, **electromagnetism**, **strong and weak force**?
 
 Cause you know, back in the day, that was not obvious. You know, we thought electricity was separate from magnetism and it was just like a really big... I probably think one of the greatest achievements of science is figuring out that these two are actually **two sides of the same coin** really.
 And then, and then the big question is like, **well, what's going on with gravity?** Is it, is it the same? Right.
 
 And, in the middle of this, we found out that the **weak force** and the **electromagnetic force** were also splintered off of one **electro-weak force**. So it kind of feels like there was just one thing at the beginning and we have to understand what that thing is.
 
-And what I found when I became a physics major at **Stanford**, and I started asking all of these questions, eventually they'd send me over to the math department. And they're like,  
+And what I found when I became a physics major at **Stanford**, and I started asking all of these questions, eventually they'd send me over to the math department. And they're like,
 > "Well, in order to understand string theory, you have to understand all of these other things. Right. And if you want to understand general relativity, you've got to get into differential geometry."
 
 And so that's how I became a **pure math major** and ended up doing a **PhD**. The impetus was actually trying to understand the real world through physics.
 
 If you think about what's the usefulness of physics, I mean, all of the big inventions that humanity has that really push us forward are kind of like **physics inventions**, really. I mean, when you think about:
 
-- Flight  
-- Rocketry  
-- Computers  
-- Transistors  
-- **GPS** (obviously one of the main examples of why relativity is useful)  
+- Flight
+- Rocketry
+- Computers
+- Transistors
+- **GPS** (obviously one of the main examples of why relativity is useful)
 
 They're physics things.
 
@@ -161,11 +161,11 @@ You were asking, how does math work in other fields where things are not as prec
 
 So there is this physicist, **Eugene Wigner**, who wrote a famous essay called *the unreasonable effectiveness of mathematics*, which was commenting on a really interesting phenomenon.
 
-So Vlad mentioned **differential geometry** and **special relativity**. It turns out that when **Einstein** was creating that theory, he relied on these **thought experiments from the 19th century** around how to think about certain **manifolds** and their properties. 
+So Vlad mentioned **differential geometry** and **special relativity**. It turns out that when **Einstein** was creating that theory, he relied on these **thought experiments from the 19th century** around how to think about certain **manifolds** and their properties.
 
 And that was actually the key tool that we use to explain what special relativity is, and then develop it for general relativity.
 
-That's a **perfectly representative case** because those thought experiments in the 19th century were almost preposterous. It made no sense to think about them because  
+That's a **perfectly representative case** because those thought experiments in the 19th century were almost preposterous. It made no sense to think about them because
 > "How could you possibly apply these concepts to the real three dimensional world?"
 
 And then it turns out that it's very useful for understanding the **four dimensional world when you include time and curvature**.
@@ -176,19 +176,19 @@ If you consider **number theory** for a long time, that was really seen as an in
 
 So now essentially all of **human civilization has a digital economy**, which is based on this branch of math.
 
-So I think it's almost the wrong question to ask,  
+So I think it's almost the wrong question to ask,
 > "Well, I don't know, there's a lot of math out there. How is it useful?"
 
 The point is you just do the math and then eventually some of it, not all of it, will be more useful than you possibly could have imagined.
 
 So the investment in math is: it's not just to build a really smart system. It's to create a lot of new math that we can then figure out ways to apply later.
 
-One interesting thing that the conversation reminded me of when you first asked,  
+One interesting thing that the conversation reminded me of when you first asked,
 > "What is math? What does it look like?"
 
 I think one of the reasons we got excited about applying **AI to this domain** is there are lots of different things that mathematicians do.
 
-- Some of them are very creative, almost like **artists**. They may not be prolific, but they come up with something new once every five to ten years, and that can be an amazing accomplishment in the field. For example, **Gregory Perelman**.  
+- Some of them are very creative, almost like **artists**. They may not be prolific, but they come up with something new once every five to ten years, and that can be an amazing accomplishment in the field. For example, **Gregory Perelman**.
 - Others are just **machines**—they can read more papers and comprehend more papers per unit time than other people. What they're doing is basically synthesizing all the knowledge, figuring out all the tricks, and applying those tricks quickly to new domains. They’re kind of like reusing these things.
 
 And I think we're very excited about the prospect of AI accelerating the former. We think that'll happen.
@@ -311,7 +311,7 @@ So if we're okay getting into a bit of the details, it is a **dependently typed 
 
 So on the one hand, you have on one end of the spectrum, you have something like **JavaScript**, where you can check basically nothing. And then on the other end, you have **Lean**.
 
-But the really cool thing is you asked about **axioms**. So when **Aristotle** produces any output, it's produced as **annotated Lean code**.  
+But the really cool thing is you asked about **axioms**. So when **Aristotle** produces any output, it's produced as **annotated Lean code**.
 
 So there's the programming language **Lean**, we write **theorems**, we write **programs**, we **prove things**. And there's a lot of comments explaining to the person reading it what it's doing.
 
@@ -322,7 +322,7 @@ But when we talk about proving things, you end up relying on **three axioms**, i
   - One of them is something about **quotient soundness**
 - But the third one is the **axiom of choice**
 
-And just as an example to show what an axiom means: the **axiom of choice** — 
+And just as an example to show what an axiom means: the **axiom of choice** —
 
 > "It's not saying anything that would be controversial, it's saying if you have a non-empty set, it's possible to choose an element from it."
 
@@ -387,9 +387,9 @@ Yeah. And I think that the **open source software community** has really solved 
 
 So if you go on **GitHub**, one can simply open a **pull request** on some repository.
 
-- If it passes the tests and  
-- The author of the repository agrees to your style,  
-- That gets merged.  
+- If it passes the tests and
+- The author of the repository agrees to your style,
+- That gets merged.
 
 So now you've contributed.
 
@@ -405,8 +405,8 @@ And so I think math is going to start going the same way.
 
 Previously, mathematicians relied on their **social networks** to figure out:
 
-- Who tends to do the right thing  
-- Who tends to not make mistakes  
+- Who tends to do the right thing
+- Who tends to not make mistakes
 
 But with Lean, you can have a big math project, anybody can come and contribute a proof.
 
@@ -414,9 +414,9 @@ And if Lean accepts it, then it's right.
 
 If a lot of other mathematicians start to depend on that result, we're going to notice:
 
-- A lot of forks  
-- A lot of dependency graphs  
-- A lot of stars on it  
+- A lot of forks
+- A lot of dependency graphs
+- A lot of stars on it
 
 And so then you start to measure the prestige that way.
 
@@ -467,7 +467,7 @@ So let's say you have a proof that says: if I have **A**, and I know **if A then
 
 And the proof of that says:
 
-``` 
+```
 A is true,
 I have if A then B, which means B is true,
 And then I have the step B is true,
@@ -551,16 +551,16 @@ I think mathematics is certainly going to change fundamentally—like how it's d
 
 The great thing about our timing is **Harmonic** really started when both of these things matured to a level of capability where you could start doing interesting stuff.
 
-- Lean basically went from being essentially beta software, like not appropriate for real mission critical use case, which was version three, Lean three to Lean four.  
-- That was about the same month we launched the company.  
-- And also **GPT-4**, which you were starting to actually see glimmers of it being really, really good at synthesizing information and the starting points of reasoning, came out around the same time.  
+- Lean basically went from being essentially beta software, like not appropriate for real mission critical use case, which was version three, Lean three to Lean four.
+- That was about the same month we launched the company.
+- And also **GPT-4**, which you were starting to actually see glimmers of it being really, really good at synthesizing information and the starting points of reasoning, came out around the same time.
 
 I think both of these matured to the level where you can start putting them together and doing really cool things. And I think we were just the first to see that. That's how we came up with this concept of **mathematical superintelligence**, which really means the combination of formal verification and formal tools with artificial intelligence.
 
 Funny story, as I was using Aristotle a little bit to try to wrap my head around all of this, I don't have the sophistication to pose any really interesting problems.
 So one challenge that I gave it was to prove that **two plus two equals four**. And then I had to laugh when it came back, just citing something from **Mathlib** that was like, **"this is already proved in Mathlib"** for the, the theorem is literally like the *two plus two equals four* theorem. So I was like, it's done. And I was like, yeah, that's not exactly what I was looking for, but I guess I kind of got what I deserve there for asking it such a basic question.
 
-Did you use the, were you using the **web interface** or the **terminal UI**? I started by having cloud code installed the terminal and then was using that a little bit. And then somehow it tipped me off to the fact that there was a web interface. And so I, then I, after that I've moved over to the web interface. Yeah, that came to the last week and they're probably a little bit more appropriate for those types of questions. 
+Did you use the, were you using the **web interface** or the **terminal UI**? I started by having cloud code installed the terminal and then was using that a little bit. And then somehow it tipped me off to the fact that there was a web interface. And so I, then I, after that I've moved over to the web interface. Yeah, that came to the last week and they're probably a little bit more appropriate for those types of questions.
 
 I think we wanted to roll it out for on terminal, because I think it makes it a little bit more clear what the tool is great at. I mean, lots of things can answer *two plus two equals four*, but even I can answer that in the calculator.
 
@@ -568,10 +568,10 @@ Yeah.
 
 And I think, I think for a while we were talking about like, how do we describe this, this, like what **Aristotle** is? I mean, it's, it's kind of like an **amazing calculator** where you can imagine you could just talk to your calculator. So it has:
 
-- both the reliability, like, you know, if your calculator gives you an answer, it's correct  
-- but it's not very expressive at the same time  
+- both the reliability, like, you know, if your calculator gives you an answer, it's correct
+- but it's not very expressive at the same time
 
-You know, something like **ChatGPT** or **Claude** are very expressive, but sometimes you have to double check its work because it doesn't always, you know, it doesn't have the verification. But really the intent is to put those together. 
+You know, something like **ChatGPT** or **Claude** are very expressive, but sometimes you have to double check its work because it doesn't always, you know, it doesn't have the verification. But really the intent is to put those together.
 
 And it turns out that the things, the first things that people really want to be sure about and to verify are like more complicated things. So I think the, you probably found this out, but the complicated things I think is where you really start to have **aha moments** when you're using it.
 
@@ -581,13 +581,13 @@ So **Aristotle has three core parts**. I'll just kind of sketch them and then yo
 
 First, there is this **Monte Carlo tree search** type thing. I kind of think of that as sort of an **AlphaGo-like structure** where we are systematically exploring the space of moves. I guess that's where I got the chess analogy, right? Is that I kind of was making this equivalence between Aristotle, at least that part of Aristotle, and AlphaGo.
 
-And so it's kind of maybe I can make this move. And then there's this learned scoring function that's like, 
+And so it's kind of maybe I can make this move. And then there's this learned scoring function that's like,
 
 > "Okay, does that move seem promising? Does this path of, you know, does this branch of all possible moves that I could make, does it seem promising? Do I seem like I'm getting closer to my goal?"
 
 And with that, you can kind of grind things out, run deep tree search, right?
 
-The second part in some ways to me jumped out as even more interesting and kind of, I really want to dig into the metaphysics of it a bit, because this is the **lemma-based informal reasoning system**, which I take to be sort of saying, 
+The second part in some ways to me jumped out as even more interesting and kind of, I really want to dig into the metaphysics of it a bit, because this is the **lemma-based informal reasoning system**, which I take to be sort of saying,
 
 > "Okay, if I have some really big mountain to climb, and it's maybe so big that I can't just grind my way... it's maybe becomes impractical to grind my way through like all these small localized steps."
 
@@ -610,9 +610,9 @@ In some sense, it's grinding once you get low enough in the search tree because 
 
 And so when we combined it with the **informal reasoning system**, you could almost think of it as a form of **context management**, actually. So ultimately, you need to end up with a lean proof, and that's going to involve big steps and small steps. And it's helpful when you're focusing on the smaller steps to not have to remember the entire context of the bigger steps.
 
-And so it turns out the informal reasoning system itself actually makes enormous quantities of mistakes. So one should not think of it as, 
+And so it turns out the informal reasoning system itself actually makes enormous quantities of mistakes. So one should not think of it as,
 
-> "oh, it's a really smart human that's laying out the steps to base camp." 
+> "oh, it's a really smart human that's laying out the steps to base camp."
 
 It's more like a system that can propose lots of things that are wrong and don't have to be formalizable or even correct. And you kind of try to assemble things from that.
 
@@ -634,15 +634,15 @@ I think there's also a couple of other components that might seem simple but are
 
 Another funny anecdote, so that you're referring to what I discovered is **informal mode**, right? Where I can provide—I think real users would not do this—but you can provide **anything**, any natural language input, just something that the system will then try to prove.
 
-I asked it to prove **all is love**. And it came back and said, 
+I asked it to prove **all is love**. And it came back and said,
 
-> "this is a philosophical statement and outside the scope of the Lean formalizer's ability to prove." 
+> "this is a philosophical statement and outside the scope of the Lean formalizer's ability to prove."
 
-I also asked it to prove 
+I also asked it to prove
 
-> "Epstein did not kill himself." 
+> "Epstein did not kill himself."
 
-And it came back and said, 
+And it came back and said,
 
 > "this is a statement about current events. And again, it's sort of outside the Lean formalizer’s ability to prove."
 
@@ -664,7 +664,7 @@ I think one area that's really going to touch a lot of people's lives is it turn
 
 And it's kind of having the computer just run the program and check the output against what they expect. But that's what they do after they've written the code.
 
-It turns out that when engineers are writing code, they're thinking logically: 
+It turns out that when engineers are writing code, they're thinking logically:
 
 > "Okay, if I have this range in my input, I can think okay, as I go to this for loop at these if statements, it implies certain things about the output."
 
@@ -777,69 +777,69 @@ And I think we noticed that because when we rolled out **Aristotle**, you know, 
 And it's like, we're not going to run on all the Erdős problems. We're not going to do like computational learning theory, formalizations in house.
 
 So I think the amount of **cool things being done with it just explodes if you put it, if you make it generally available**.
-So I think **it's not only right from a business strategy standpoint, but also** like, I think that **the world that we built, assuming this path, is a better world that I would like to live in.**  
+So I think **it's not only right from a business strategy standpoint, but also** like, I think that **the world that we built, assuming this path, is a better world that I would like to live in.**
 
-So that speaks to **taste in terms of problem selection.**  
+So that speaks to **taste in terms of problem selection.**
 
-But I was also just thinking in terms of, as you're training the model, you've got the correctness signal, but maybe one sort of heuristic for **elegance would be like just brevity.**  
+But I was also just thinking in terms of, as you're training the model, you've got the correctness signal, but maybe one sort of heuristic for **elegance would be like just brevity.**
 
-Which is maybe one kind of way of trying to send an elegance-like signal through a deterministic mechanism. But I would be very interested to know if there is like a **panel of mathematicians** that you guys have reviewing solutions for elegance to try to make sure that this thing is not just a pure grinder long-term, but really has a more **eureka flavor** to it.  
+Which is maybe one kind of way of trying to send an elegance-like signal through a deterministic mechanism. But I would be very interested to know if there is like a **panel of mathematicians** that you guys have reviewing solutions for elegance to try to make sure that this thing is not just a pure grinder long-term, but really has a more **eureka flavor** to it.
 
-Well, brevity—if brevity is the definition of elegance—then our **two plus two equals four proof probably takes the cake**, right?  
-> "I can't get any shorter than that."  
+Well, brevity—if brevity is the definition of elegance—then our **two plus two equals four proof probably takes the cake**, right?
+> "I can't get any shorter than that."
 
-I would feel bad for any mathematician's job of us to compare AI proofs. That's certainly not the job I'd want.  
+I would feel bad for any mathematician's job of us to compare AI proofs. That's certainly not the job I'd want.
 
-So we, we have never. It's a big business these days across all domains:  
+So we, we have never. It's a big business these days across all domains:
 
-- Many billions spent on expert validation of AI outputs.  
+- Many billions spent on expert validation of AI outputs.
 
-Yeah, we have done essentially zero of that in the two years we've been around.  
+Yeah, we have done essentially zero of that in the two years we've been around.
 
-I think the metric we optimize for is the **net present value of future proofs** or computational costs of future proofs. And so that guards very naturally against certain phenomena.  
+I think the metric we optimize for is the **net present value of future proofs** or computational costs of future proofs. And so that guards very naturally against certain phenomena.
 
-When you're solving easy problems early on in reinforcement learning, you absolutely can solve them with grinding. So you can say,  
+When you're solving easy problems early on in reinforcement learning, you absolutely can solve them with grinding. So you can say,
 
-``` 
-Let me just do brute force. 
-```  
+```
+Let me just do brute force.
+```
 
-But you know that if you do that, it's going to cause issues later because you haven't learned how to do more complicated things.  
+But you know that if you do that, it's going to cause issues later because you haven't learned how to do more complicated things.
 
-In contrast, if you're given two proofs that are not grinding, but one is drastically longer and more inefficient than the other, you prefer the more efficient one.  
+In contrast, if you're given two proofs that are not grinding, but one is drastically longer and more inefficient than the other, you prefer the more efficient one.
 
-So there's a tension there because you can get more efficient by grinding, but that messes you up in the future. So it's a balance that our AI researchers strike based on their intuitions about what'll be helpful long-term.  
+So there's a tension there because you can get more efficient by grinding, but that messes you up in the future. So it's a balance that our AI researchers strike based on their intuitions about what'll be helpful long-term.
 
-But we have never had panels of mathematicians do testing on proofs or anything like that. Really, you want to give your system as few **priors** as possible and just run reinforcement learning at scale.  
+But we have never had panels of mathematicians do testing on proofs or anything like that. Really, you want to give your system as few **priors** as possible and just run reinforcement learning at scale.
 
-There's a famous essay called **The Bitter Lesson**, which I'm sure your viewers are familiar with. We really believe in that at **Harmonic.**  
+There's a famous essay called **The Bitter Lesson**, which I'm sure your viewers are familiar with. We really believe in that at **Harmonic.**
 
-To get to your question about how we started: sometimes we'll start from **pre-trained models.** Ultimately, you want to do whatever optimizes that **net present value of future cost of proof.** So pre-trained models are great for that.  
+To get to your question about how we started: sometimes we'll start from **pre-trained models.** Ultimately, you want to do whatever optimizes that **net present value of future cost of proof.** So pre-trained models are great for that.
 
-I think at some point you might ask the question,  
+I think at some point you might ask the question,
 
-> "Is that going to bias you too much towards how humans do math?"  
+> "Is that going to bias you too much towards how humans do math?"
 
-And so you want to mix in reasoning systems that are not trained from human knowledge, right? They have more entropy and more complementary knowledge.  
+And so you want to mix in reasoning systems that are not trained from human knowledge, right? They have more entropy and more complementary knowledge.
 
-That kind of thing we always play with, but it hasn't really been the living factor so far. I think that pre-trained models are a **great starting point.**  
+That kind of thing we always play with, but it hasn't really been the living factor so far. I think that pre-trained models are a **great starting point.**
 
-Cool. I guess one thing: **Goodfire** just announced today that they raised a bunch of money at a **unicorn valuation.** I was a very small-scale supporter of theirs, and it got me thinking.  
+Cool. I guess one thing: **Goodfire** just announced today that they raised a bunch of money at a **unicorn valuation.** I was a very small-scale supporter of theirs, and it got me thinking.
 
-This also connects to **Vlad's comment** where you said the system can sort of invent new theory.  
+This also connects to **Vlad's comment** where you said the system can sort of invent new theory.
 
-Obviously, one big thing people have said AIs can't do, or AIs can never do—which is always a dangerous position to take—is that they can't come up with **new abstractions.**  
+Obviously, one big thing people have said AIs can't do, or AIs can never do—which is always a dangerous position to take—is that they can't come up with **new abstractions.**
 
-Sure, they can learn from what we have done and what we've encoded into language, but will they ever come up with their own abstractions? I think that's not a very strong, increasingly hard position to defend.  
+Sure, they can learn from what we have done and what we've encoded into language, but will they ever come up with their own abstractions? I think that's not a very strong, increasingly hard position to defend.
 
-But what is so interesting with Goodfire is they're now starting to look at **model internals** and unlock new kinds of understanding based on looking at what the model has learned.  
+But what is so interesting with Goodfire is they're now starting to look at **model internals** and unlock new kinds of understanding based on looking at what the model has learned.
 
-The famous one they just put out is like **new markers of Alzheimer's that people didn't know about**, but the model was able to figure out, and they were able to figure out what the model had learned by looking internally.  
+The famous one they just put out is like **new markers of Alzheimer's that people didn't know about**, but the model was able to figure out, and they were able to figure out what the model had learned by looking internally.
 
-I'm kind of wondering:  
+I'm kind of wondering:
 
-- Have you guys done any interpretability work on your models?  
-- Do you think there is a different kind of **latent space** that you are tapping into?  
+- Have you guys done any interpretability work on your models?
+- Do you think there is a different kind of **latent space** that you are tapping into?
 - Do you see sort of **hybrids as part of the future?**
 Because one thing I could imagine happening is starting to stitch together a **mathematical superintelligence** with a more, kind of fuzzy, associative, understand-the-world superintelligence, perhaps like later in the training process to try to get the best of both worlds.
 
@@ -849,7 +849,7 @@ I think the... I don't know if you're as excited about that. **A safe HAL 9000**
 
 You know, to your question on **interpretability**, I think that interpretability is often used as a proxy for **trustworthiness**. So, a lot of the reason that people explore interpretability technology is that they can make sure that the system does the right thing or aligns with the user's intent.
 
-So, when it comes to trustworthiness, we made the explicit decision at the very beginning of the company to focus on **Lean**. By outputting our reasoning in a **formally verified way**, that is the most interpretable possible output. So, the computer can check it. If the human wants to understand how the proof works, they just keep hitting "go to definition." 
+So, when it comes to trustworthiness, we made the explicit decision at the very beginning of the company to focus on **Lean**. By outputting our reasoning in a **formally verified way**, that is the most interpretable possible output. So, the computer can check it. If the human wants to understand how the proof works, they just keep hitting "go to definition."
 
 It's almost like navigating through a code base. There's no more interpretable way to output math than in Lean, really. That's the maximal version.
 
@@ -859,7 +859,7 @@ I think down the road, we're very curious, how does it do math? How is it so sma
 
 Yeah. Okay. That's quite interesting.
 
-I do sort of feel like, I have this one kind of mental—mathematicians are famous for visualizing things—my kind of visualization of what is happening in a large model is sort of like **shrink-wrapping reality.** 
+I do sort of feel like, I have this one kind of mental—mathematicians are famous for visualizing things—my kind of visualization of what is happening in a large model is sort of like **shrink-wrapping reality.**
 
 Like, you've wrapped in plastic all of, you know, all internet data or all the kind of whatever domain it is that you're trying to learn at scale, and you're just sucking all the air out of it and gradually shrinking down to whatever, hopefully, is kind of the true structure.
 
@@ -869,9 +869,9 @@ I would expect it to be maybe a lot more interpretable internally than something
 
 I actually think that what these models are doing is interesting because they're smashing together all of the techniques that all mathematicians have done before.
 
-And so, while I haven't seen the spark of **superintelligence** yet where it's some breakthrough eureka idea that's incomprehensible, I'd say that if you push it in, learning how the models do things, you kind of ask it to solve more and more complex problems and just see, like, 
+And so, while I haven't seen the spark of **superintelligence** yet where it's some breakthrough eureka idea that's incomprehensible, I'd say that if you push it in, learning how the models do things, you kind of ask it to solve more and more complex problems and just see, like,
 
-- How did it pull together these three subfields of math in a way that no human has done before? 
+- How did it pull together these three subfields of math in a way that no human has done before?
 
 I think that'll be a lot more interpretable and comprehensible than trying to dig through the way it's structured—I might be wrong, but that's probably where I'd start to interpret how it does things.
 
@@ -981,41 +981,41 @@ So he broke the fourth wall conceptually, but the key thing to remember is that 
 So the point I was making earlier about math being reasoning is the point I'll appeal to now, which is to say that no matter what complicated theory somebody might come up with to explain how the universe works in the future,
 
 If it's going to be based on a series of **logical deductions** that can be explained to someone else and checked independently, that is itself a logic that can be encoded with **Lean** or other languages like Lean and then verified.
-So, again, the **axioms that Lean is based on are so minimal** and just expressing just the most basic possible common sense about how reasoning should happen, like, one thing might fall from another, or if two things look the same, they are the same.  
+So, again, the **axioms that Lean is based on are so minimal** and just expressing just the most basic possible common sense about how reasoning should happen, like, one thing might fall from another, or if two things look the same, they are the same.
 
-**That's the level of axiom we're talking about.** So I really don't think there's any conflict here. I think that one should just think about **formal reasoning as an especially detailed version of informal reasoning that a computer can check automatically**. There's no limitation to it. Sometimes it might be a little more verbose than you'd want, right? So you want to write tactics and things to cut down on that, but there's really no fundamental tension to turn into.  
+**That's the level of axiom we're talking about.** So I really don't think there's any conflict here. I think that one should just think about **formal reasoning as an especially detailed version of informal reasoning that a computer can check automatically**. There's no limitation to it. Sometimes it might be a little more verbose than you'd want, right? So you want to write tactics and things to cut down on that, but there's really no fundamental tension to turn into.
 
-And I think there, you also, you know, might be thinking about **Gödel's incompleteness**, like the fact that in any sort of axiomatic system, there's statements that are true and unprovable. And there's also statements that are undecidable, right? And independent. So there's sort of like a bunch of edge cases here, but I think it doesn't prevent us from making a lot of progress and proving actually the lion's share of useful things. I mean, there could be things that are unprovable but true that are very, very useful to know as well. But, yeah, no way to know unless you explore the frontiers.  
+And I think there, you also, you know, might be thinking about **Gödel's incompleteness**, like the fact that in any sort of axiomatic system, there's statements that are true and unprovable. And there's also statements that are undecidable, right? And independent. So there's sort of like a bunch of edge cases here, but I think it doesn't prevent us from making a lot of progress and proving actually the lion's share of useful things. I mean, there could be things that are unprovable but true that are very, very useful to know as well. But, yeah, no way to know unless you explore the frontiers.
 
-**Do you think there's always going to be a role for entropy of some sort in these systems?** I mean, I think **hallucinations are a key part of a reasoning system**. Hallucinations are what allow a model to explore something that has never been encoded by a human before.  
+**Do you think there's always going to be a role for entropy of some sort in these systems?** I mean, I think **hallucinations are a key part of a reasoning system**. Hallucinations are what allow a model to explore something that has never been encoded by a human before.
 
-So, you know, when we run Aristotle, whether it was at the IMO or noun, it makes a lot of mistakes. It tries a lot of paths that don't work. But that exploration is the very thing that lets you get to the right answer after enough attempts. So **entropy is crucial**. I think this whole notion of seeking fundamentally hallucination-free LMs doesn't really make much sense.  
+So, you know, when we run Aristotle, whether it was at the IMO or noun, it makes a lot of mistakes. It tries a lot of paths that don't work. But that exploration is the very thing that lets you get to the right answer after enough attempts. So **entropy is crucial**. I think this whole notion of seeking fundamentally hallucination-free LMs doesn't really make much sense.
 
-Now, of course, you want to pair them with a system like Aristotle that can verify things in 10. But, no, I think entropy hallucinations are a key part of the training process for models like this. You've got to be able to pose false statements in order to prove that they're false. Learn like humans. You know, you try a lot of room for humans. Some of the most creative humans are the ones that hallucinate the most.  
+Now, of course, you want to pair them with a system like Aristotle that can verify things in 10. But, no, I think entropy hallucinations are a key part of the training process for models like this. You've got to be able to pose false statements in order to prove that they're false. Learn like humans. You know, you try a lot of room for humans. Some of the most creative humans are the ones that hallucinate the most.
 
-**So what's kind of the latest progress on the path to superintelligence?** You said you, and I think this is true of all good frontier AI companies, whether, you know, at the application layer or the model layer or anything, any hybrid of those, you know, you're updating your systems frequently. It sounds like there's kind of a convergence of some sort going on between the tree search part and the informal lemma guesser that you described in the technical report. What can you tell us about kind of what the trends are right now?  
+**So what's kind of the latest progress on the path to superintelligence?** You said you, and I think this is true of all good frontier AI companies, whether, you know, at the application layer or the model layer or anything, any hybrid of those, you know, you're updating your systems frequently. It sounds like there's kind of a convergence of some sort going on between the tree search part and the informal lemma guesser that you described in the technical report. What can you tell us about kind of what the trends are right now?
 
-I think a lot of the—well, just to review the progress, right? So we started in 2023 and then in 2025 goal performance, the IMO, we topped out this **Verena benchmark** at the end of the year with our public API users started solving **Airdish problems**, right?  
+I think a lot of the—well, just to review the progress, right? So we started in 2023 and then in 2025 goal performance, the IMO, we topped out this **Verena benchmark** at the end of the year with our public API users started solving **Airdish problems**, right?
 
-- Which were unsolved for what, 30, 40 years.  
+- Which were unsolved for what, 30, 40 years.
 
-So I think there's a very clear trend, right? And, and capabilities. I think the phase transition I mentioned has also happened.  
+So I think there's a very clear trend, right? And, and capabilities. I think the phase transition I mentioned has also happened.
 
-So I think what's next for **harmonic and for the field at large** is, you know, a couple of things.  
+So I think what's next for **harmonic and for the field at large** is, you know, a couple of things.
 
-Well, we can expect **math live to grow**. So math live is the, think of it like the **Wikipedia for math that's computationally certified**. So as Aristotle makes it possible to auto formalize a lot of math, you can expect that users will start contributing a lot of pull requests to math live. And that makes it possible to solve more and more problems on top of that base.  
+Well, we can expect **math live to grow**. So math live is the, think of it like the **Wikipedia for math that's computationally certified**. So as Aristotle makes it possible to auto formalize a lot of math, you can expect that users will start contributing a lot of pull requests to math live. And that makes it possible to solve more and more problems on top of that base.
 
-I think when we look at how mathematicians are using our API, certainly people are starting to work on more important unsolved conjectures that a lot of people would care about.  
+I think when we look at how mathematicians are using our API, certainly people are starting to work on more important unsolved conjectures that a lot of people would care about.
 
-So you can kind of think about conjectures as like,  
+So you can kind of think about conjectures as like,
 
-> *"Okay, there's a conjecture that's technically been open, but nobody really cares about it."*  
+> *"Okay, there's a conjecture that's technically been open, but nobody really cares about it."*
 
-So it's not like people are trying all the time, but now you might have some conjectures that, yeah, like a mathematician might try it once or twice a year, just take a shot at it. Maybe a hundred mathematicians would.  
+So it's not like people are trying all the time, but now you might have some conjectures that, yeah, like a mathematician might try it once or twice a year, just take a shot at it. Maybe a hundred mathematicians would.
 
-And then eventually, but the **millennium prize problems** where, you know, any mathematician would be happy to spend years on it if they might be able to solve it. So I think what you can expect from Aristotle and other systems is, you know, more and more problems get picked off. So it becomes easier to use it extends to software, as I mentioned.  
+And then eventually, but the **millennium prize problems** where, you know, any mathematician would be happy to spend years on it if they might be able to solve it. So I think what you can expect from Aristotle and other systems is, you know, more and more problems get picked off. So it becomes easier to use it extends to software, as I mentioned.
 
-So we have users using it to check, say, **decretable software**, whether in Lean or other languages.  
+So we have users using it to check, say, **decretable software**, whether in Lean or other languages.
 
 And overall, if I had to pick out just one trend, it's really just that **formal reasoning goes more and more mainstream**.
 So as more stuff is produced with **AI**, I think you'll see complementarily more **formal reasoning** to kind of verify all of it.

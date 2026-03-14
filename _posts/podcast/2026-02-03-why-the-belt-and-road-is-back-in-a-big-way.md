@@ -2,7 +2,7 @@
 layout: post
 title: "Why the Belt and Road Is Back in a Big Way"
 date: 2026-02-03 00:00:01
-categories: podcast the-china-global-south-podcast
+categories: podcast
 tags: [podcast_script]
 ---
 
@@ -37,7 +37,7 @@ And now, really, this uptake in a still very volatile world, but with massive de
 
 So I think the largest one, also outside the BRI, is **$37 billion by TikTok in Brazil**. But we're also tracking outside BRI. So we're not just tracking BRI. We're reporting on BRI, but in all the massive engagements:
 
-- Nigeria: $20 billion for gas industrial park  
+- Nigeria: $20 billion for gas industrial park
 - Kazakhstan: $10+ billion for mining and metals related engagement
 
 And this $10+ billion engagement, we've not seen before. This is a new level of BRI engagement that I think is quite interesting to observe, and we'll see whether that continues over the years to come.
@@ -79,46 +79,46 @@ where Chinese companies potentially, either through a government-to-government c
 And it might come with some Chinese financing, but it also might just come with local financing. What's interesting for the Chinese construction companies is that a lot of these projects are very well-financed because you have the fossil fuel that in the end generates revenue. So you can be pretty sure that you're going to get paid back for the construction that you do.
 And that's different, for example, probably we're going to talk about it in **road infrastructure**, which is **public infrastructure**, where there's not such a strong revenue model. And therefore, the risks for the **Chinese construction companies** are much higher.
 
-Again, **fossil fuel**, very clear. You're going to sell the fossil fuel. You're going to make money. And then you can pay back the Chinese construction companies. And so it's a very lucrative business also for the Chinese.  
+Again, **fossil fuel**, very clear. You're going to sell the fossil fuel. You're going to make money. And then you can pay back the Chinese construction companies. And so it's a very lucrative business also for the Chinese.
 
 That seems to be one of the trends that you've been following over several years now: the types of infrastructure that the Chinese are financing and building that used to be railroads, roads, things that we would call **public goods**, are less prominent today as opposed to **telecommunications networks**, fossil fuels — things that the moment you turn on, **revenue starts coming in**.
 
 So that **debt sustainability issue** becomes paramount in what the Chinese are funding because, obviously, a lot of the countries where they're doing these activities are having **debt issues**. So they're looking for projects that are **revenue generating right from the start**. Is that a fair assessment?
 
-I think that's a very fair assessment.  
+I think that's a very fair assessment.
 
-So in 2019, the Chinese published the **debt sustainability guidelines**. That means for companies to evaluate whether they're going to give a loan or work with a country to build an infrastructure project and look at the country's profile, whether they are able to pay back the debt and whether they're actually exacerbating the debt issues of that country.  
+So in 2019, the Chinese published the **debt sustainability guidelines**. That means for companies to evaluate whether they're going to give a loan or work with a country to build an infrastructure project and look at the country's profile, whether they are able to pay back the debt and whether they're actually exacerbating the debt issues of that country.
 
-Since 2019, this **debt sustainability framework** exists, and so that was before **COVID**. Then we saw during COVID that a lot of the global South countries were subject to a lot of **sovereign debt issues**. That impacts Chinese construction companies quite severely because, in the end, it's the construction companies, if they took out loans for building, let's say, a **coal-fired power plant** or a **road project**, and whatever country — Pakistan, for example — does not pay back the loan or does not pay back the loan in time, who's going to be paying the loan?  
+Since 2019, this **debt sustainability framework** exists, and so that was before **COVID**. Then we saw during COVID that a lot of the global South countries were subject to a lot of **sovereign debt issues**. That impacts Chinese construction companies quite severely because, in the end, it's the construction companies, if they took out loans for building, let's say, a **coal-fired power plant** or a **road project**, and whatever country — Pakistan, for example — does not pay back the loan or does not pay back the loan in time, who's going to be paying the loan?
 
-And in the end, it is actually often the construction companies that have to shoulder some of the banks necessarily, but it's the construction companies that have to shoulder the risk.  
+And in the end, it is actually often the construction companies that have to shoulder some of the banks necessarily, but it's the construction companies that have to shoulder the risk.
 
-So there's a very clear **risk management necessity** to understand:  
-- Am I going to make my money?  
-- Am I going to earn my money back?  
-- Or is it too risky and I'm going to stay away from it?  
+So there's a very clear **risk management necessity** to understand:
+- Am I going to make my money?
+- Am I going to earn my money back?
+- Or is it too risky and I'm going to stay away from it?
 
-I was surprised that **Africa turned out to be the top destination last year for BRI engagement**, $61.2 billion, an increase of 283%, largely by this big project in **Nigeria** that you referenced, $24.6 billion.  
+I was surprised that **Africa turned out to be the top destination last year for BRI engagement**, $61.2 billion, an increase of 283%, largely by this big project in **Nigeria** that you referenced, $24.6 billion.
 
-Just to be clear, is that project in Nigeria:  
-- an MOU?  
-- a committed project with contract signed, money transferred, already building it?  
-- or is that something more aspirational?  
+Just to be clear, is that project in Nigeria:
+- an MOU?
+- a committed project with contract signed, money transferred, already building it?
+- or is that something more aspirational?
 
 Because sometimes it's not clear.
 
-It is so true, Eric. So we are trying our best in our data to distinguish **project-level commitments**. I think every database is running into the same issues. We don't track money. We track announcements of projects by two independent sources where possible, or a stock market announcement. So we try to be as rigorous with our methodology as possible.  
+It is so true, Eric. So we are trying our best in our data to distinguish **project-level commitments**. I think every database is running into the same issues. We don't track money. We track announcements of projects by two independent sources where possible, or a stock market announcement. So we try to be as rigorous with our methodology as possible.
 
-There are different levels of commitments that we track. This one is, I think, more than an MOU. It's agreed. We have the location. We have the amount. We have both sides' agreement.  
+There are different levels of commitments that we track. This one is, I think, more than an MOU. It's agreed. We have the location. We have the amount. We have both sides' agreement.
 
 In the end, I believe this project will change and will evolve. It's not kind of... The design phase is definitely not finished from what we can see. So there's a lot more work that needs to come to make this project actually real. But the commitment is quite explicit from both sides and confirmed. And so that's why we were willing to include it in the database.
 
 Yeah, the report also said that part of the reason for this surge in Chinese engagement in **Africa** was because of potentially, again, just a theory, **because of the lower U.S. tariffs** that African countries received traditionally through the **African Growth and Opportunity Act (AGOA)**, which is now in the process of being renewed through Congress.
 
-By the way, something very interesting on the renewal of the African Growth and Opportunity Act.  
+By the way, something very interesting on the renewal of the African Growth and Opportunity Act.
 
-- AGOA is making its way through Congress, but it's only going to set the tariffs back to the **Liberation Day tariffs**, not to zero tariffs. Very important distinction there.  
-- So really, **AGOA will not be a tariff-free entry into the United States**. It will be Liberation Day tariffs — so on April 2nd, whatever Donald Trump announced for those various tariffs.  
+- AGOA is making its way through Congress, but it's only going to set the tariffs back to the **Liberation Day tariffs**, not to zero tariffs. Very important distinction there.
+- So really, **AGOA will not be a tariff-free entry into the United States**. It will be Liberation Day tariffs — so on April 2nd, whatever Donald Trump announced for those various tariffs.
 - So it's not going to have the tariff advantage that a lot of regions had, or at least that Africa had, that other regions suffered.
 
 But you said that there might be some connection between lower U.S. tariffs and the surge of Chinese **BRI engagement**. Tell us a little bit more about that.

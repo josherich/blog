@@ -2,7 +2,7 @@
 layout: post
 title: "Cognition CEO Scott Wu on acquiring Windsurf, AI replacing engineers, and the Moneyball-ification of everything"
 date: 2025-08-27 00:00:01
-categories: podcast cheeky-pint
+categories: podcast
 tags: [podcast_script]
 ---
 

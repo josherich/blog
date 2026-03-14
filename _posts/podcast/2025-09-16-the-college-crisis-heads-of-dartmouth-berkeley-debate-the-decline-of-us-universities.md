@@ -2,7 +2,7 @@
 layout: post
 title: "The College Crisis: Heads of Dartmouth & Berkeley Debate the Decline of US Universities"
 date: 2025-09-16 00:00:01
-categories: podcast all-in-with-chamath-jason-sacks-friedberg
+categories: podcast all-in
 tags: [podcast_script]
 ---
 
@@ -34,11 +34,11 @@ You know, at the top level, if we think about how we sustainably provide the **f
 So, one way to think about that is:
 
 - On the research side, if there is less federal funding coming in over time — and I think that's a good bet.
-  
+
 - Can we **partner more with industry**?
-  
+
 - Are there other sources?
-  
+
 - Is there a way to gear philanthropy even more toward the kinds of research that we need to make sure we're doing?
 
 So we are thinking about what that bundle, that funding model looks like on the **research side and on the education side as well**.
@@ -74,55 +74,55 @@ And I also think that we've pushed too many people to think that college is the 
 There are different ways to be successful in this country.
 
 I certainly think there's a place for an amazing, elite education like Dartmouth **if we are teaching students how to think and not what to think**.
-But the idea that **everyone needs to go to a four-year college or university**, I think that's **outdated**.  
+But the idea that **everyone needs to go to a four-year college or university**, I think that's **outdated**.
 
-Let me ask you about **different degrees and loans and the risks** that you take. I mean, **$70,000 a year tuition**, but you're not on the hook for it. Students who take these loans **are on the hook for it** and their brains are not fully developed. Would you?  
+Let me ask you about **different degrees and loans and the risks** that you take. I mean, **$70,000 a year tuition**, but you're not on the hook for it. Students who take these loans **are on the hook for it** and their brains are not fully developed. Would you?
 
-I can confirm this, okay? Well, the **neuroscience data suggests that your front of the cortex isn't developed**. Yes, 25 years old. Boys a little bit later than girls, by the way. Right, and you can't.  
+I can confirm this, okay? Well, the **neuroscience data suggests that your front of the cortex isn't developed**. Yes, 25 years old. Boys a little bit later than girls, by the way. Right, and you can't.
 
-54. I did okay. I went to **Fordham**, I did okay.  
+54. I did okay. I went to **Fordham**, I did okay.
 
-The point I'm trying to make here is, shouldn't you, the university, be on the hook for these loans? And shouldn't you be responsible for the outcomes for these students?  
+The point I'm trying to make here is, shouldn't you, the university, be on the hook for these loans? And shouldn't you be responsible for the outcomes for these students?
 
-And would you be in support of having the loans and the amount of the loans match the desirability of the degree and its ability to monetize in the post-graduation? Or said differently, would you guys **underwrite the loans?**  
+And would you be in support of having the loans and the amount of the loans match the desirability of the degree and its ability to monetize in the post-graduation? Or said differently, would you guys **underwrite the loans?**
 
-> "Yeah."  
+> "Yeah."
 
-Look, I think we do at **Dartmouth** because we don't, our students are packaged without loans. They don't take out loans. And in fact, for a student in a middle-income family, lower and middle-income family, it's about **$5,000 a year to go to Dartmouth**. So we do underwrite in that way.  
+Look, I think we do at **Dartmouth** because we don't, our students are packaged without loans. They don't take out loans. And in fact, for a student in a middle-income family, lower and middle-income family, it's about **$5,000 a year to go to Dartmouth**. So we do underwrite in that way.
 
-Now, you asked the question about other institutions where students are coming out with **high debt and low ROI**. I think it is fair to ask what share of responsibility the institution should take. And I do think that that's part of the reforms that we need to think about in higher ed writ large.  
+Now, you asked the question about other institutions where students are coming out with **high debt and low ROI**. I think it is fair to ask what share of responsibility the institution should take. And I do think that that's part of the reforms that we need to think about in higher ed writ large.
 
-So you're in favor of it?  
+So you're in favor of it?
 
-> "I'm in favor of the institutions having some responsibility. But, and at Dartmouth, we take that responsibility very seriously."  
+> "I'm in favor of the institutions having some responsibility. But, and at Dartmouth, we take that responsibility very seriously."
 
-Do you think they should take responsibility? Should you take responsibility for the outcomes?  
+Do you think they should take responsibility? Should you take responsibility for the outcomes?
 
-Well, the word responsibility, I'm an economist, is a responsibility the financial liability at the end of the day? Or, as people have been saying, look, if we are not providing an economic pathway for our students on average at **Berkeley**, you're talking about Berkeley now or Dartmouth, you know, that people will stop coming and they will stop taking loans. So that **market mechanism is working pretty well as it is**. And we are producing really wonderful outcomes.  
+Well, the word responsibility, I'm an economist, is a responsibility the financial liability at the end of the day? Or, as people have been saying, look, if we are not providing an economic pathway for our students on average at **Berkeley**, you're talking about Berkeley now or Dartmouth, you know, that people will stop coming and they will stop taking loans. So that **market mechanism is working pretty well as it is**. And we are producing really wonderful outcomes.
 
-I think the earlier question about what about, you know, more than 1,000 higher ed institutions in this country, and I think there is pressure on the whole system. But we are certainly making sure we have a brand new program called **Social Sciences Career Readiness Internship Program**. And so we are launching lots of new things just to make sure that we are providing that kind of support.  
+I think the earlier question about what about, you know, more than 1,000 higher ed institutions in this country, and I think there is pressure on the whole system. But we are certainly making sure we have a brand new program called **Social Sciences Career Readiness Internship Program**. And so we are launching lots of new things just to make sure that we are providing that kind of support.
 
-I'd push back and say I don't think the market's working exceptionally well because I think students are coming out overburdened with loans without the kind of job prospects that we have responsibility for.  
+I'd push back and say I don't think the market's working exceptionally well because I think students are coming out overburdened with loans without the kind of job prospects that we have responsibility for.
 
-What would happen if we ended the federal student loan program?  
+What would happen if we ended the federal student loan program?
 
-Yeah, I mean, I think it's an interesting thing to think about. What I don't want to do is **throw the baby out with the bathwater**. And that there are student loan programs that are really helpful to some students in terms of being able to go to the school they want and to get the education they want.  
+Yeah, I mean, I think it's an interesting thing to think about. What I don't want to do is **throw the baby out with the bathwater**. And that there are student loan programs that are really helpful to some students in terms of being able to go to the school they want and to get the education they want.
 
-Is DEI the bathwater? Let me ask you guys actually a question. What is the correlation between **DEI and scholarship**? Is there one?  
+Is DEI the bathwater? Let me ask you guys actually a question. What is the correlation between **DEI and scholarship**? Is there one?
 
-I don't think having a **diversity of thought** and thinking about merit are mutually exclusive. I think that's a false dichotomy.  
+I don't think having a **diversity of thought** and thinking about merit are mutually exclusive. I think that's a false dichotomy.
 
-We were the first **Ivy League to bring the SAT back at Dartmouth** and many of our peers followed. And the reason is we looked at the data and what we found was that it was a great equalizer in finding students from lower income backgrounds and higher income backgrounds who are succeeding in something that's less actually susceptible to financial input like letters of rec and what you did for the summer.  
+We were the first **Ivy League to bring the SAT back at Dartmouth** and many of our peers followed. And the reason is we looked at the data and what we found was that it was a great equalizer in finding students from lower income backgrounds and higher income backgrounds who are succeeding in something that's less actually susceptible to financial input like letters of rec and what you did for the summer.
 
-And a better way for us to find lower income students who are excelling where they are but maybe don't have the prep or the background.  
+And a better way for us to find lower income students who are excelling where they are but maybe don't have the prep or the background.
 
-So I think it's a false dichotomy that there was no impact to the quality of the actual scholarship, what the professors taught, the language that was used, all this concept of microaggressions, all this stuff that got in the way of teaching math and science.  
+So I think it's a false dichotomy that there was no impact to the quality of the actual scholarship, what the professors taught, the language that was used, all this concept of microaggressions, all this stuff that got in the way of teaching math and science.
 
-You don't think that happened?  
+You don't think that happened?
 
-No, I think that we have to focus on our core subjects and merit, but I think the idea that I believe in diversity.  
+No, I think that we have to focus on our core subjects and merit, but I think the idea that I believe in diversity.
 
-I think we should have a **diversity of people at the table from lived experience to political ideology**. I think we have better outcomes if we can sit together and push at each other.  
+I think we should have a **diversity of people at the table from lived experience to political ideology**. I think we have better outcomes if we can sit together and push at each other.
 
 And I have conservative views on my campus and more liberal views on my campus. And I have students who come from veteran families and students who come from the middle of the country and students who come from the coast.
 Bringing people together with different perspectives, allowing them to push at each other, you get the best outcomes.
@@ -253,7 +253,7 @@ And, you know, we do think about that.
 
 What are we explaining to our kids in terms of?
 
-Or maybe the general question, what Jason is trying to say is, 
+Or maybe the general question, what Jason is trying to say is,
 
 > "What message does that give the broader American student and the broader American parent about what is actually happening in higher ed when a case like that gets litigated to the Supreme Court?"
 
@@ -323,7 +323,7 @@ At my inauguration two years ago, I just finished my second year, and I'm the **
 
 So tell us, like, did you watch the **Claudine Gay testimony**, and what did you think when you were watching that train wreck happen? Yeah, what was going on in the group chat? While it was hurtling in the Ivy group chat, as the train was hurtling into the brick wall.
 
-Look, I mean, I think we have a responsibility to be different kinds of campuses. And the testimony, I think, was an outcome of being a campus that wasn't protecting the people, wasn't inclusive, and wasn't calling balls and strikes when we need to. 
+Look, I mean, I think we have a responsibility to be different kinds of campuses. And the testimony, I think, was an outcome of being a campus that wasn't protecting the people, wasn't inclusive, and wasn't calling balls and strikes when we need to.
 
 And we've been very clear at **Dartmouth** that we value **free expression**, but _your free expression can't rob others_, which means no shouting speakers down and no taking over parts of space and declaring it for one ideology. That's not free expression. It's just **John Stuart Mill's philosophy of spheres of influence**. Just don't intersect with others.
 
@@ -335,10 +335,10 @@ Rich, isn't the, like, best part of **Berkeley** shouting over the speakers? I'm
 
 There's a difference between free speech, protest, and protest, and stopping speech, right? I think that's a really important distinction, and it's really important for leaders to be clear.
 
-- **Protest is fine**.  
-  - _I have protests outside my office all the time._  
-  - _I have students chalking messages._  
-  That's fine.  
+- **Protest is fine**.
+  - _I have protests outside my office all the time._
+  - _I have students chalking messages._
+  That's fine.
 
 But the problem is when one person's free speech takes precedence over another. And nobody's disagreeing with that. The heckler's veto is something we talk a lot about. We are coming down on people. It's not appropriate, right?
 
@@ -346,7 +346,7 @@ So, people are outspoken. People are, you know, that's part of Berkeley's tradit
 
 So, it's sort of like, look, we need parameters that help this to be as constructive as possible. But the John Stuart Mill marketplace for ideas, we're trying to keep it as open as we can. And that is something I'm just going to, I worry about.
 
-The idea for our faculty and our community, the idea that we're going into a world where there are acceptable questions and unacceptable questions.  
+The idea for our faculty and our community, the idea that we're going into a world where there are acceptable questions and unacceptable questions.
 
 > _That's a bad problem. That's a problem. That's 1984. That's a problem._
 
@@ -359,7 +359,7 @@ I mean, I think we really have to move backwards and not just think about the un
 Are they showing up basically just unprepared? A lot of them through **COVID** didn't have these skills. And we've seen this in different ways where you, at one point when we were in school, if you had a fight with someone, you'd have it face-to-face. Then it went to text messaging. Now it goes to you leaving a long voicemail on someone's voice memo and then not even engaging.
 
 And if anyone who has teenagers out there, when I tell my 14-year-old to pick up the phone and call someone, “what are you talking about?” You know, we have to get those muscles back. And a university setting, a college setting, is the place to do it. We're not just about knowledge transfer. We're about forming the identities of our future leaders.
-Well, to **Friedberg's point**, though, I just want to ask the point of question. I think it came out today, but **high schoolers are graduating woefully unprepared**. It's not just the skills of debate. This is fundamental **math, science, English**. They can't read. They can't add. 
+Well, to **Friedberg's point**, though, I just want to ask the point of question. I think it came out today, but **high schoolers are graduating woefully unprepared**. It's not just the skills of debate. This is fundamental **math, science, English**. They can't read. They can't add.
 
 What is happening in our **primary and secondary high school education system**? What is broken there that's delivering these kids to you so academically unprepared? I understand emotionally, but let's just first address the first part.
 
@@ -375,9 +375,9 @@ Yeah, I mean, it's a great question. I would say one thing is **making sure that
 
 What does good mean?
 
-- Competent and able to teach at different grade levels  
-- The ability to measure their outcome  
-- Hold students accountable and push them forward  
+- Competent and able to teach at different grade levels
+- The ability to measure their outcome
+- Hold students accountable and push them forward
 
 And my research before I became a college president, I studied performance under stress and anxiety. So it's been helpful the last few years. But one of my findings is around teachers, especially in lower grades, being really unprepared in terms of **math competency** and transferring that on to young students.
 
@@ -410,7 +410,7 @@ It is because this is exactly what we should be doing, we should be thinking, te
 Fair enough, but I predict AI will play an important role and I predict that the **teachers' unions are going to fight tooth and nail** from seeing AI show up and it's going to challenge our...
 The **ability to kind of provide this advantage for our students** and meanwhile, in other countries around the world, particularly looking across the **Pacific**, things are going to be very different than they are here.
 
-What is the conversation with the **teachers' unions** who are so politically connected, who can be so troublesome? We saw this recently with the **longshoremen's strike** that happened where they didn't want to have automation that would provide faster, lower costs, unloading and loading of the docks and so on. It made it really hard. 
+What is the conversation with the **teachers' unions** who are so politically connected, who can be so troublesome? We saw this recently with the **longshoremen's strike** that happened where they didn't want to have automation that would provide faster, lower costs, unloading and loading of the docks and so on. It made it really hard.
 
 What's going to happen with respect to the **teachers' unions** and their ability to kind of move through this accelerating transformation that's going to be underway?
 
@@ -440,12 +440,12 @@ What's on that small list of **uniquely human skills or attributes** that you mo
 
 I really do believe that the ability to:
 
-- listen and have a conversation  
-- speak face to face  
-- have eye contact  
-- have empathy  
-- understand that even if I don't agree with you, you are a human, we have these things together  
-- work towards some sort of positive democracy  
+- listen and have a conversation
+- speak face to face
+- have eye contact
+- have empathy
+- understand that even if I don't agree with you, you are a human, we have these things together
+- work towards some sort of positive democracy
 
 I would say is at the top of the list.
 
@@ -459,9 +459,9 @@ They're getting there.
 
 ---
 
-Yeah, look, there's no question. I was talking to an alum and somebody who's close, very senior, and I said, 
+Yeah, look, there's no question. I was talking to an alum and somebody who's close, very senior, and I said,
 
-> "What should be in our strategic plan?"  
+> "What should be in our strategic plan?"
 
 And he said,
 

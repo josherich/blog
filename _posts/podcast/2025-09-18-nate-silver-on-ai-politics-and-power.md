@@ -2,7 +2,7 @@
 layout: post
 title: "Nate Silver on AI, Politics, and Power"
 date: 2025-09-18 00:00:01
-categories: podcast chinatalk
+categories: podcast
 tags: [podcast_script]
 ---
 
@@ -13,71 +13,71 @@ tags: [podcast_script]
 
 Before we get going, I just want to say thanks, Nate. Writing on the internet is scary, and you've made it less scary. I think the sort of like getting to the point where I can just say things that I know are going to piss off, you know, administration officials and five trillion dollar companies takes a lot. Watching you do that over the years has been a good sort of **lodestar** for just not caring what powerful and rich people think and just kind of working towards the truth.
 
-I appreciate it, Jordan. I haven't met you before—we just learned that we're like about a seven-minute walk away from one another in **New York**. But I think the equilibrium is just like people in media are way too short-term focused and way too susceptible to peer pressure. 
+I appreciate it, Jordan. I haven't met you before—we just learned that we're like about a seven-minute walk away from one another in **New York**. But I think the equilibrium is just like people in media are way too short-term focused and way too susceptible to peer pressure.
 
 Kind of conversely, once you develop a reputation for:
 
 - Doing your reporting,
 - Doing your reading,
 - Doing your thinking,
-- Speaking from a place of knowledge and experience, 
+- Speaking from a place of knowledge and experience,
 
-but just not trying to sanitize things too much, I think you develop trust with your audience. You carve out more of a distinct niche or brand—if you want to use that overused term. 
+but just not trying to sanitize things too much, I think you develop trust with your audience. You carve out more of a distinct niche or brand—if you want to use that overused term.
 
 Yeah, I just think people are too afraid of honesty and differentiation. It's easy to say if you cover fields like electoral politics or sports that are popular and get a lot of audience and traffic—that much is true. I'm not doing investigative reporting here, but I do think that working hard, being the best version of yourself, and being an honest version of yourself is usually a smart strategy in the long run.
 
 Yeah, I mean it's something I think is even more difficult with **policy writing**. I'm closer to a think tank than I am a journalist. The vast majority of people who work in this field have their public comments either off the table because they work in the government or work in government relations for a big company. Even if you are at a think tank, you have to pay the bills somehow, and that basically means getting **corporate sponsorship** of your work. Which kind of, you know, in some insidious ways, for better or for worse, ends up tracking how you can talk about different stuff.
 
-So yeah, no—look. I mean, I find as a consumer, there are lots of issues including **China**. I've been to **Hong Kong** three times, never really been to mainland China except the **Beijing airport** once. But like, you know, China is among many issues where "gosh, I'm not quite sure who to believe or who to trust." 
+So yeah, no—look. I mean, I find as a consumer, there are lots of issues including **China**. I've been to **Hong Kong** three times, never really been to mainland China except the **Beijing airport** once. But like, you know, China is among many issues where "gosh, I'm not quite sure who to believe or who to trust."
 
-And I feel like I'd have to invest a lot of time in investigating who I can trust. That requires, at that point, you could almost write about it yourself. And there are a lot of issues like that. Or it's like, "gosh, I'm not sure there's any kind of trustworthy authority." 
+And I feel like I'd have to invest a lot of time in investigating who I can trust. That requires, at that point, you could almost write about it yourself. And there are a lot of issues like that. Or it's like, "gosh, I'm not sure there's any kind of trustworthy authority."
 
-I mean, kowtowing to **corporate power** is part of it. That's part of the beauty of having a **Substack model** where there's no advertising. But also, especially in diplomatic international relations, people are always calibrating what they say. 
+I mean, kowtowing to **corporate power** is part of it. That's part of the beauty of having a **Substack model** where there's no advertising. But also, especially in diplomatic international relations, people are always calibrating what they say.
 
-So a lot of the time, I guess I won't give an example and pick a fight, but the people who I think are smart commentators, you're always saying,  
+So a lot of the time, I guess I won't give an example and pick a fight, but the people who I think are smart commentators, you're always saying,
 
-> "Okay, if they're saying this, then what they really think must be that,"  
+> "Okay, if they're saying this, then what they really think must be that,"
 
 right? And 20 degrees to the left, 20 degrees to the right—and then it's just a lot more work than longer formats where you're able to communicate with more nuance, honesty, and subtlety.
 
-I mean, there's this recent micro-scandal—**Robert O'Brien**, former national security advisor, wrote an op-ed saying  
+I mean, there's this recent micro-scandal—**Robert O'Brien**, former national security advisor, wrote an op-ed saying
 
-> "we should sell lots of Nvidia chips to China."  
+> "we should sell lots of Nvidia chips to China."
 
 It comes out three days later that Nvidia is a client of his. That's the sort of thing where you can get away with it if it's in an 800-word piece. You can skate over it in that context.
 
-But once you get to the 3,000-word version of it, it's less "oh, here's a former national security advisor saying X," and more like, "Are the arguments convincing?" 
+But once you get to the 3,000-word version of it, it's less "oh, here's a former national security advisor saying X," and more like, "Are the arguments convincing?"
 
-And I don't know, it's tough. I'm never quite sure whether to say,  
+And I don't know, it's tough. I'm never quite sure whether to say,
 
-> "Okay, take everything *tabula rasa* and ignore who's making the argument, just assess the argument."  
+> "Okay, take everything *tabula rasa* and ignore who's making the argument, just assess the argument."
 
 The fact that people have long-term credibility and reputational issues—one of the things I do is play poker. In poker, the same action from a different player can be massively different things, and a lot of stuff is subtextual. A lot of stuff is deliberately ambiguous. One reason why I...
-**Think large language models like ChatGPT and Claude are interesting** because they understand that you can kind of *mathematize* language. In some ways, **language is a game** in the sense of **game theory**, and then it's strategic. What we say, exactly how we say it, and what's left unsaid is often powerful. A single word choice can matter a lot. 
+**Think large language models like ChatGPT and Claude are interesting** because they understand that you can kind of *mathematize* language. In some ways, **language is a game** in the sense of **game theory**, and then it's strategic. What we say, exactly how we say it, and what's left unsaid is often powerful. A single word choice can matter a lot.
 
 I mean, you probably think about it in a different context—like official statements by the **Chinese government** or whatever else. But yeah, no, let's stay on this though because this was actually one of my **mega brain takes**. I kind of want your response to it.
 
-We have **Nate Silver** at 11 years old wanting to be president, and now we've had 20 years of him thinking about analyzing presidents and presidential candidates and what they do. You don't necessarily have to believe in AGI and fast takeoff to think that, say 10, 20, 30 years down the road, a lot of the decisions that presidents and executives take today—an **AI will just strictly dominate what the human would do**. 
+We have **Nate Silver** at 11 years old wanting to be president, and now we've had 20 years of him thinking about analyzing presidents and presidential candidates and what they do. You don't necessarily have to believe in AGI and fast takeoff to think that, say 10, 20, 30 years down the road, a lot of the decisions that presidents and executives take today—an **AI will just strictly dominate what the human would do**.
 
-That may be the **Cerberus moment** of what the **Swedish prime minister** was saying a few days ago: 
+That may be the **Cerberus moment** of what the **Swedish prime minister** was saying a few days ago:
 
 > "Oh yeah, I ask ChatGPT all the time for advice. Just becomes like, no, you should just listen to the AI."
 
-So I don't know where you feel free to take that wherever you want, but I'm curious, sort of maybe to start with, or feel free to take that wherever you want, **if you want a place to start**:  
+So I don't know where you feel free to take that wherever you want, but I'm curious, sort of maybe to start with, or feel free to take that wherever you want, **if you want a place to start**:
 
-- What parts of the things that presidents and presidential candidates do  
+- What parts of the things that presidents and presidential candidates do
 - Do you think are going to be automated the fastest
 
 Presuming that we just let them ingest all of the data that your president or executive would be able to consume themselves.
 
 I mean, **look, AI in its current form might be an improvement over a lot of our government elected officials**, but that says a lot more about the officials than the AI necessarily.
 
-Yeah, look, I don't take for granted— and some people do, including people who know a lot about the subject— that we're going to achieve **superhuman general intelligence**. There are different valences between these terms that we can parse, if you want. 
+Yeah, look, I don't take for granted— and some people do, including people who know a lot about the subject— that we're going to achieve **superhuman general intelligence**. There are different valences between these terms that we can parse, if you want.
 
 But you know, some of the reasons that **AIs are large language models** (I should say) are good now is because:
 
 ```markdown
-a) they train on human data, and 
+a) they train on human data, and
 b) they get reinforcement learning with human feedback.
 ```
 
@@ -101,30 +101,30 @@ So look, I think there's a:
 
 Things like **international relations or politics are, I think, some of the more resistant domains toward AI solutions, quote unquote.**
 
-At the same time, I do think another risk is that you'll have people who view AIs as **oracular**. We've seen cases of people encouraged by ChatGPT to think they've developed some new scientific theorem or discovered a new law of physics. They're very smart at flattering you. 
+At the same time, I do think another risk is that you'll have people who view AIs as **oracular**. We've seen cases of people encouraged by ChatGPT to think they've developed some new scientific theorem or discovered a new law of physics. They're very smart at flattering you.
 
 One of the things I do is I build models, and sometimes a bad model is worse than no model, or you're kind of implicitly...
 **Mental model** and so like trusting an **all-knowing** and **all-powerful algorithm**, especially in the case where the situation is **dynamic**, right? The **laws of mathematics** don't change but like **international relations** and **politics** are always dynamic and maybe changing faster. Whether the **AIs** can adapt to new situations quickly is also an **open question**.
 
-Yeah, I mean if we're trying to bucket the types of things a **CEO**, a **president**, or a **senator** does, I mean we have some sort of personnel management like:  
-- Who am I going to **hire**?  
-- Who am I going to **fire**?  
+Yeah, I mean if we're trying to bucket the types of things a **CEO**, a **president**, or a **senator** does, I mean we have some sort of personnel management like:
+- Who am I going to **hire**?
+- Who am I going to **fire**?
 
-We have the outward-facing stuff of like:  
-- What do I say to this interviewer?  
-- How do I talk in the debate?  
+We have the outward-facing stuff of like:
+- What do I say to this interviewer?
+- How do I talk in the debate?
 
-And then we have these **decision points** where you have a memo and you could pick **A, B, or C**, and there are different sets of **trade-offs** where you could optimize for this thing or for that thing.  
+And then we have these **decision points** where you have a memo and you could pick **A, B, or C**, and there are different sets of **trade-offs** where you could optimize for this thing or for that thing.
 
 I don't think it's crazy to think that parts of those different buckets of things you need to do could have **AI radically improve**—even just to play out the different second and third order effects of whatever you're negotiating, like the next **budget bill** or something.
 
-For **discrete tasks**, yeah, AI can already be wonderful. Right now, I'm doing a little coding on a **National Football League (NFL) model**. It's late at night, I've been up a long time, had some wine at dinner, and I'm like,  
+For **discrete tasks**, yeah, AI can already be wonderful. Right now, I'm doing a little coding on a **National Football League (NFL) model**. It's late at night, I've been up a long time, had some wine at dinner, and I'm like,
 
 > "Okay Claude, how do you do this thing in the language I'm programming in?"
 
 The thing is a **discrete task** where I have enough experience with these models to expect a good answer, and enough domain knowledge where I can tell if it works or not. I'm not going to have some bad procedure that then chains into other bad procedures in a complicated model.
 
-Yeah, knowing... there’s been mixed evidence on how much more productive AI actually makes people. My stylized impression is that:  
+Yeah, knowing... there’s been mixed evidence on how much more productive AI actually makes people. My stylized impression is that:
 
 - It makes the **best people** even more productive.
 - It makes the people who are not that smart maybe worse.
@@ -143,9 +143,9 @@ People who sound a little partisan might say that **Donald Trump** found a way t
 
 I think probably New York City with eight million people is about as large an entity as you should have maybe one person in charge of, but we haven’t really developed other systems.
 
-If anything, maybe look at the more **dynamic places** in the world right now. You’d still say:  
-- The **U.S.**,  
-- **China**,  
+If anything, maybe look at the more **dynamic places** in the world right now. You’d still say:
+- The **U.S.**,
+- **China**,
 - And then probably the **Middle East.**
 
 They kind of **cheated**. The U.S. is increasingly less democratic, and the other two were not really democratic.
@@ -167,7 +167,7 @@ There are parts of **Rome** where if you go today in 2025, they don't really loo
 
 Slight non sequitur — my favorite dad book is called *Italian Education*. It's a memoir of a cranky British person who married an Italian woman. It's about raising their kid in sort of early 1990s Italy. The book features really fun, kind of new journalism style writing, but it's also a fascinating portrayal of Italy at a big transition moment where they're:
 
-- going from super Catholic to more modern  
+- going from super Catholic to more modern
 - shifting from very localized identities to conceiving of themselves as part of a **European project**
 
 I don't have great 2025 Italy takes, but it's interesting just to think about how much further or not further a country could have gone from that moment to today, especially looking at different parts of the world from 1994 to the present.
@@ -184,8 +184,8 @@ Whereas in the U.S., male life expectancies, even if you ignore **COVID**, haven
 
 We've been kind of playing the game on easy mode because:
 
-- The dollar is the world’s **reserve currency**  
-- The U.S. has the world’s biggest **military**  
+- The dollar is the world’s **reserve currency**
+- The U.S. has the world’s biggest **military**
 - The U.S. is, relatively speaking, a low-bar, relatively trustworthy player in international relations
 
 If we're throwing those things away, then it might have a big impact in the next year or so.
@@ -197,56 +197,56 @@ I don't have a good transition talking about **prediction markets**, but this ki
 You spent a lot of time thinking about **poker** and had this whole experiment in your book where you spent a year betting on basketball.
 
 The thing about basketball and poker is there's a lot of data and a lot of track record, which you can base your estimation on. You have to find your edge in very weird corners, but a lot of these markets on…
-**Polymarket** and **Kalshi** are very one-off, like right now is Trump going to put more sanctions on **Putin** in the next six weeks? Like, is there a regression you can run on that? Not really.  
+**Polymarket** and **Kalshi** are very one-off, like right now is Trump going to put more sanctions on **Putin** in the next six weeks? Like, is there a regression you can run on that? Not really.
 
-I don't know, it's just fascinating because these markets, they're so much more kind of **one-off and open-ended** than what you would see in the stock market or in sports betting. Look, I think — and I'm a consultant for Polymarket, so I do have a conflict of interest to disclose — yeah, I think sometimes the one-off events are not as good.  
+I don't know, it's just fascinating because these markets, they're so much more kind of **one-off and open-ended** than what you would see in the stock market or in sports betting. Look, I think — and I'm a consultant for Polymarket, so I do have a conflict of interest to disclose — yeah, I think sometimes the one-off events are not as good.
 
-One market where I thought Polymarket, Kalshi, whatever else did not do as well was the election of the new **Pope**, where pre-bost had like a very Pope Leo now had a very low chance of being selected.  
+One market where I thought Polymarket, Kalshi, whatever else did not do as well was the election of the new **Pope**, where pre-bost had like a very Pope Leo now had a very low chance of being selected.
 
-What happens there? On one hand, you have a papal election every 10 or 20 years; that's not like you have a lot of data. You have everybody leaks, but the **papal conclave does not leak** apparently, so there's not really any inside information. Then people apply the heuristics they might apply to other things, like when they have the smoke signals come out quickly, they're like,  
-> "Oh, it must be kind of like the most obvious name."  
+What happens there? On one hand, you have a papal election every 10 or 20 years; that's not like you have a lot of data. You have everybody leaks, but the **papal conclave does not leak** apparently, so there's not really any inside information. Then people apply the heuristics they might apply to other things, like when they have the smoke signals come out quickly, they're like,
+> "Oh, it must be kind of like the most obvious name."
 
-So the favorites went up — that wasn't true. People had no idea what was going on. So I think there are some limitations there versus things like elections, which are more regular, regularizable.  
+So the favorites went up — that wasn't true. People had no idea what was going on. So I think there are some limitations there versus things like elections, which are more regular, regularizable.
 
-At the same time, there is a skill in estimation, and it's one that poker players and sports bettors have. Maybe I'm making a real-time bet on an NFL game, and **Patrick Mahomes** gets injured, the quarterback of the **Kansas City Chiefs**, and I have to estimate what effect this has on the probability of the Chiefs winning.  
+At the same time, there is a skill in estimation, and it's one that poker players and sports bettors have. Maybe I'm making a real-time bet on an NFL game, and **Patrick Mahomes** gets injured, the quarterback of the **Kansas City Chiefs**, and I have to estimate what effect this has on the probability of the Chiefs winning.
 
-If you just do that a whole bunch, then you get better at it. You have to have domain knowledge; you have to be smart in different ways. And when I have consulted in the business world — not like kind of capital C consulting but people who are actually making bets — you realize that:  
+If you just do that a whole bunch, then you get better at it. You have to have domain knowledge; you have to be smart in different ways. And when I have consulted in the business world — not like kind of capital C consulting but people who are actually making bets — you realize that:
 
-- A good answer quickly  
-- An okay answer quickly  
+- A good answer quickly
+- An okay answer quickly
 
-often makes you money, whereas a perfect answer slowly doesn't.  
+often makes you money, whereas a perfect answer slowly doesn't.
 
-I think this is one reason we're learning that we've seen a shift of power away from academia toward for-profit corporations. You can say that's bad or good; I think we need both, frankly. But you have a profit motive, and you have an incentive to answer a question quickly.  
+I think this is one reason we're learning that we've seen a shift of power away from academia toward for-profit corporations. You can say that's bad or good; I think we need both, frankly. But you have a profit motive, and you have an incentive to answer a question quickly.
 
-In poker, the same thing applies. If I play a hand and I'm getting two to one from the pot, I need to have the best hand or make my draw one third of the time. Then you go back and run the numbers through a computer solver — they're called solvers — and:  
+In poker, the same thing applies. If I play a hand and I'm getting two to one from the pot, I need to have the best hand or make my draw one third of the time. Then you go back and run the numbers through a computer solver — they're called solvers — and:
 
-```  
-Actually, here I only had 31 percent equity when I needed 33 percent, so that was a big blunder.  
-```  
+```
+Actually, here I only had 31 percent equity when I needed 33 percent, so that was a big blunder.
+```
 
-For most people, 31 versus 33 is the same. But with training, you can estimate these things with uncanny precision. There's a lot of implicit learning that goes on, and it kind of becomes second nature.  
+For most people, 31 versus 33 is the same. But with training, you can estimate these things with uncanny precision. There's a lot of implicit learning that goes on, and it kind of becomes second nature.
 
-**Are you worried about insider trading with all this political betting?**  
+**Are you worried about insider trading with all this political betting?**
 
-There’s an aspect of: look, these are all **crypto** markets. You get on these markets with crypto, and there were markets like,  
-- Which way is **Suzanne Collins** going to vote?  
-- The tail outcomes for a legislative assistant in her office  
+There’s an aspect of: look, these are all **crypto** markets. You get on these markets with crypto, and there were markets like,
+- Which way is **Suzanne Collins** going to vote?
+- The tail outcomes for a legislative assistant in her office
 
-You can make 10 times your salary in a minute.  
+You can make 10 times your salary in a minute.
 
-What's your thinking on this?  
+What's your thinking on this?
 
-For sure, I think there are a couple of qualifications:  
+For sure, I think there are a couple of qualifications:
 
-- People on the inside often aren't as well informed as they think, or  
-- There are downsides to having an inside view and not an outside view; you might **drink the Kool-Aid**, so to speak, or be in a bubble.  
+- People on the inside often aren't as well informed as they think, or
+- There are downsides to having an inside view and not an outside view; you might **drink the Kool-Aid**, so to speak, or be in a bubble.
 
-We've seen, however, a lot of group chats where people talk about very, very sketchy trades and one-way bets being made in the stock market about what's going to happen with a trade deal.  
+We've seen, however, a lot of group chats where people talk about very, very sketchy trades and one-way bets being made in the stock market about what's going to happen with a trade deal.
 
-You can literally be the person who decides and be betting on the side of it.  
+You can literally be the person who decides and be betting on the side of it.
 
-If there are incentives to make money in a world of 8 billion people, many of whom are very competitive and most of whom have access to the internet, people are going to find a way to do it.  
+If there are incentives to make money in a world of 8 billion people, many of whom are very competitive and most of whom have access to the internet, people are going to find a way to do it.
 
 It's not just that whatever game theory equilibrium is a prediction of what occurs in the ideal world; it's what very much does happen. We've seen things like in the...
 In the **crypto space**, we've seen an increasing number of **crypto kidnappings**. Well, I mean, that's one of the consequences if people are worth vast amounts of wealth that isn't very secure. It's just going to happen until you up security or have better solutions or whatever else.
@@ -317,10 +317,10 @@ Look, today did any markets radically change here where maybe there's some massi
 
 Yeah, but it kind of also leads to this **gamified ecosystem** where, like as a poker player, sports bettor, or for that matter as someone who was a rapid news consumer, you're always kind of:
 
-- Always checking your email  
-- Always checking your phone  
-- Always checking Twitter  
-- Always checking the internet  
+- Always checking your email
+- Always checking your phone
+- Always checking Twitter
+- Always checking the internet
 
 And you're kind of always aware of like 15 things at once. It makes it hard to unplug. It makes a distinction between like **what is my work life and my real life** — where are those boundaries? I mean, I don't know.
 
@@ -339,64 +339,64 @@ Right, when Zoran Mandani won the Merrill primary by a larger margin than predic
 And it was, you know, midnight New York time, nine Vegas time. I just cranked through until 3 in the morning Vegas time, 6 in the morning New York time, and published what I thought was a pretty smart story on it. And so that kind of thing is important.
 
 Whereas the middle ground, the ground occupied by like magazines for example — right, not that places like **The Atlantic** have become...
-**Digital brands don't do great work, right?** But like, that's maybe the in-between where the turnaround is a little bit too slow to be the lead story in a very rapidly moving news cycle. **Maybe it's not quite foundational work either.**  
+**Digital brands don't do great work, right?** But like, that's maybe the in-between where the turnaround is a little bit too slow to be the lead story in a very rapidly moving news cycle. **Maybe it's not quite foundational work either.**
 
-I mean, I think **academia suffers from even more of this problem**, where the turnaround time to publish a paper is just too slow. You know what I mean? Versus me, I'll run a couple of regressions and then give it a good headline and make some pretty charts.  
+I mean, I think **academia suffers from even more of this problem**, where the turnaround time to publish a paper is just too slow. You know what I mean? Versus me, I'll run a couple of regressions and then give it a good headline and make some pretty charts.
 
-> "It'll be 90% as good as the academic paper in terms of the substantive work and like 150% better written because I'm writing for a popular audience and not journal editors."  
+> "It'll be 90% as good as the academic paper in terms of the substantive work and like 150% better written because I'm writing for a popular audience and not journal editors."
 
-And, you know, I think that's kind of that exchange of ideas that's what moves the world. It's fascinating to see these dynamics.  
+And, you know, I think that's kind of that exchange of ideas that's what moves the world. It's fascinating to see these dynamics.
 
-I mean, I don't know a lot about **Deep Seek**, for example, but it was interesting to see the kind of narrative shape in real time about just how **China is competitive in the short to medium term on large language models**. That was very interesting.  
+I mean, I don't know a lot about **Deep Seek**, for example, but it was interesting to see the kind of narrative shape in real time about just how **China is competitive in the short to medium term on large language models**. That was very interesting.
 
-Or to see with **Zoran winning the primary, probably the general election too, we'll see**, how much that's anchored the conversation in different ways and how like stylized, abstracted, modelized versions of the real world become more dominant. We're all model-building, right?  
+Or to see with **Zoran winning the primary, probably the general election too, we'll see**, how much that's anchored the conversation in different ways and how like stylized, abstracted, modelized versions of the real world become more dominant. We're all model-building, right?
 
-Even a friend of mine who's a **computational neuroscientist at University of Chicago** said,  
+Even a friend of mine who's a **computational neuroscientist at University of Chicago** said,
 
-> "Ultimately the brain is a predictive mechanism."  
+> "Ultimately the brain is a predictive mechanism."
 
-When you are driving or looking at the road ahead,  
+When you are driving or looking at the road ahead,
 
-> "It's not quite like you're seeing a literal real-time version of the landscape in front of you."  
+> "It's not quite like you're seeing a literal real-time version of the landscape in front of you."
 
-It's more of a stylized version where your brain is making assumptions and filling in blanks because it's more efficient processing. The message length can be shorter if you focus on the most important things.  
+It's more of a stylized version where your brain is making assumptions and filling in blanks because it's more efficient processing. The message length can be shorter if you focus on the most important things.
 
-You can notice this if you're in any type of altered state—whether drug-induced, under anesthesia, tired, or under extreme stress or fright—where you process things differently.  
+You can notice this if you're in any type of altered state—whether drug-induced, under anesthesia, tired, or under extreme stress or fright—where you process things differently.
 
-On a broader societal level, I think that's how it operates too. People are like,  
+On a broader societal level, I think that's how it operates too. People are like,
 
-- Using shortcuts to get things done because otherwise, they never accomplish anything.  
-- But taking shortcuts leads to blind spots.  
+- Using shortcuts to get things done because otherwise, they never accomplish anything.
+- But taking shortcuts leads to blind spots.
 
-I don't think that's really solvable. AI might scrape off some of the rough edges a little bit, but sometimes the rough edges are created by the market being efficient and dynamic. People key off others’ predictions and form a rapidly shifting consensus. So those dynamics will remain very interesting.  
+I don't think that's really solvable. AI might scrape off some of the rough edges a little bit, but sometimes the rough edges are created by the market being efficient and dynamic. People key off others’ predictions and form a rapidly shifting consensus. So those dynamics will remain very interesting.
 
-Yeah, it was sort of the **Deep Seek experience** that was surreal for me because this is a story on China and AI that I've been following for five or seven years, and all of a sudden, it is *the* story.  
+Yeah, it was sort of the **Deep Seek experience** that was surreal for me because this is a story on China and AI that I've been following for five or seven years, and all of a sudden, it is *the* story.
 
-I think our team hit it pretty well—we doubled our subscribers, great—but watching our little thing try to shape the broader narrative and suddenly all these journalists are like,  
+I think our team hit it pretty well—we doubled our subscribers, great—but watching our little thing try to shape the broader narrative and suddenly all these journalists are like,
 
-> "What's this company?"  
+> "What's this company?"
 
-And I'm like,  
+And I'm like,
 
-> "I've been writing about it for two years. Where have you guys been?"  
+> "I've been writing about it for two years. Where have you guys been?"
 
-I've never had one of my stories really become the main story. It can be an amazing feeling, by the way, where I mean, you talk about the great man theory, this is kind of an analog to it.  
+I've never had one of my stories really become the main story. It can be an amazing feeling, by the way, where I mean, you talk about the great man theory, this is kind of an analog to it.
 
-Early in a news cycle the way a story is covered is very important. One news outlet or journalist covering a story a different way can shape attitudes about it for weeks to come.  
+Early in a news cycle the way a story is covered is very important. One news outlet or journalist covering a story a different way can shape attitudes about it for weeks to come.
 
-It's partly why PR people are always like,  
+It's partly why PR people are always like,
 
-> "Don't say so much but be fast."  
+> "Don't say so much but be fast."
 
-You want to preempt things because that **founder effect can matter**.  
+You want to preempt things because that **founder effect can matter**.
 
-But you tell me, Jordan, so what did the mainstream media get wrong about the Deep Seek story if you're reading The New York Times, The Wall Street Journal, or whatever else?  
+But you tell me, Jordan, so what did the mainstream media get wrong about the Deep Seek story if you're reading The New York Times, The Wall Street Journal, or whatever else?
 
-Yeah, so there was this first narrative that it cost them six million dollars to train their model. That was illustrative. I went on Casey Newton and Hard Fork, and that's the first question they asked me.  
+Yeah, so there was this first narrative that it cost them six million dollars to train their model. That was illustrative. I went on Casey Newton and Hard Fork, and that's the first question they asked me.
 
-And I'd already written a few things, but I was like,  
+And I'd already written a few things, but I was like,
 
-> "No, that is not it. It did not cost six million dollars to make this model."  
+> "No, that is not it. It did not cost six million dollars to make this model."
 
 You need to hire the people, you need to run the compute...
 You need to have the **compute** you need to run a lot of experiments. Like, by the way, actually **all-in is probably more like half a billion dollars**.
@@ -464,9 +464,9 @@ For this NFL project, I'm researching every NFL game played back to the 1920s. I
 
 But like, you come across something and you're like, *"Why were there no games played that day?"* Oh, it's September 11th attacks or something like that. You encounter changes in real-world behavior and technological changes.
 
-So yeah, any statistical model sometimes can involve kind of extrapolation from first principles, but the most empirical ones are just saying:  
-```  
-We are extrapolating from history and making an assumption  
+So yeah, any statistical model sometimes can involve kind of extrapolation from first principles, but the most empirical ones are just saying:
+```
+We are extrapolating from history and making an assumption
 ```
 because it is a big assumption—that the trends that existed in the past will correctly extrapolate out to the future.
 
@@ -485,7 +485,7 @@ Why is **South Korea** as prosperous, or more than **Japan** today per capita, w
 These things seem like really high stakes, really important questions. Because they play out at longer time scales, they often don’t motivate people as much.
 
 But they seem vital and very important— even within...
-From what I understand, **AI companies are not really putting a lot of effort into thinking about what this looks like in five or ten years**, even though they tend to have longer time horizons than most. They are not seriously forecasting how the entire world will change if we do achieve **superintelligence**. 
+From what I understand, **AI companies are not really putting a lot of effort into thinking about what this looks like in five or ten years**, even though they tend to have longer time horizons than most. They are not seriously forecasting how the entire world will change if we do achieve **superintelligence**.
 
 I mean, they talk about it a lot—this is a popular subject on the **"In the Door Catch" podcast**—but that's probably substantively more important than what's in the daily news cycle. There's this myth of a software engineer who’s annoyed by something in the **Spotify app**, then joins Spotify for two weeks, fixes it, and quits.
 
@@ -516,20 +516,20 @@ Or the way you're presenting this really feels like being a kind of editor:
 
 So the notion of thinking big enough, come on — what cabinet secretary, what bureau...?
 
-**Zohran says:**  
-> *"I'll give you any job, Nate. What is it? How to have a good poker scene in New York?"*  
+**Zohran says:**
+> *"I'll give you any job, Nate. What is it? How to have a good poker scene in New York?"*
 
 And I might say:
 
 - We need poker rooms but not the rest of gaming.
 
-I guess I sort of agree with the **abundance critique** that New York takes way too long to build things.  
+I guess I sort of agree with the **abundance critique** that New York takes way too long to build things.
 
 At local government levels, there are often incremental improvements made in different ways. For example, some of the newest infrastructure projects like:
 
 - **LaGuardia airport**
 - Other airports
-- West Side development  
+- West Side development
 
 are all nice, they just took too long. We're too slow.
 
@@ -543,15 +543,15 @@ Think bigger: everything small, absolutely. Let's do barbell theory again with m
 
 Say **SPF** hits and you're just his advisor. You have billions of dollars to spend on causes, maybe not dumb stuff—where do you put your marginal
 
-``` 
+```
 10 billion dollars of philanthropy around politics?
 ```
 
 Let’s do it around politics, not just other stuff.
 
-I don’t think politics is a very effective use of money unless it is at the **local level**.  
+I don’t think politics is a very effective use of money unless it is at the **local level**.
 
-If you look at projects that were really successful in American history, one of the most successful is the **conservative movement's multi-decade effort to win control of the American court system**.  
+If you look at projects that were really successful in American history, one of the most successful is the **conservative movement's multi-decade effort to win control of the American court system**.
 
 The Supreme Court justices serve five times longer than presidents, on average, so this is ground-level, long-term work that is quite valuable.
 
@@ -586,7 +586,7 @@ So, I think there’s less political science in running campaigns than in a lot 
 
 Yeah, it's interesting because the big tactical decision that people are still talking about is:
 
-- Why didn’t she go on Rogan?  
+- Why didn’t she go on Rogan?
 
 Even if she did, it wouldn’t have gone well because she does not vibe with that, and it’s a sort of revealed preference of her not doing it.
 This sort of **open-ended media** doesn't fit her, so there is an aspect of like you can only **manchurian candidate** your candidate to go so far from their essence as a human being. I do think until we're electing **AI models**, people can still just get a sense for whether they like or dislike people, and that like is probably **two or three percent** in a national election just on its face.
@@ -595,7 +595,7 @@ When **former president, soon to be president Trump**, got shot—was it June or
 
 When **Biden had the worst debate in presidential history**, that moved the numbers by maybe two percent. They were two percent that mattered because he was already behind and then fell further behind. There are times when preferences are extremely plastic and times when they’re extremely sticky. Knowing which is which and which interventions are timed to which intervals is probably important.
 
-I've started interviewing a lot of these **Polymarket investors** or traders. It's remarkable to me that there are no funds or teams. I assume that’s just because these markets aren't liquid enough. But what would your dream team of skill sets look like if you were going to start the Polymarket hedge fund? 
+I've started interviewing a lot of these **Polymarket investors** or traders. It's remarkable to me that there are no funds or teams. I assume that’s just because these markets aren't liquid enough. But what would your dream team of skill sets look like if you were going to start the Polymarket hedge fund?
 
 - You probably want some **AI experts**.
 - You want macro experts.
@@ -605,7 +605,7 @@ I've started interviewing a lot of these **Polymarket investors** or traders. It
 - You want an AI expert.
 - You want an expert on **American politics**.
 
-I think on average the takes that Wall Street has about American politics are kind of primitive. You want someone who understands macroeconomics, inflation, and the debt. 
+I think on average the takes that Wall Street has about American politics are kind of primitive. You want someone who understands macroeconomics, inflation, and the debt.
 
 In terms of what banks, hedge funds and so forth are doing, different firms probably differ in their thoughts about reputational or enterprise risk to trading. Crypto can be a gray area, prediction markets can be some of a gray area. I suspect there’s probably more of it than you might assume.
 
@@ -621,7 +621,7 @@ There are **crypto hedge funds**. I’ve worked for a crypto hedge fund, and if 
 
 ---
 
-You interviewed a lot of really rich people for this book. Why do they all want to start podcasts, Nate? 
+You interviewed a lot of really rich people for this book. Why do they all want to start podcasts, Nate?
 
 They love hearing themselves talk. Remember, it's not just that they're rich. These are people mostly in **competitive fields**, a lot of them in **venture capital**, where they’ve had success and it goes to their head.
 
@@ -664,7 +664,7 @@ One tip I heard in poker recently is that:
 
 > "Everybody is the main character of their own poker story."
 
-If I got caught making a big bluff against the third party earlier in the hand and you’re sitting at the table not involved in the hand, Jordan, you might not even notice that — you might be on your phone. 
+If I got caught making a big bluff against the third party earlier in the hand and you’re sitting at the table not involved in the hand, Jordan, you might not even notice that — you might be on your phone.
 
 If you got bluffed by another player earlier and I’m not involved, that affects my surroundings against you more than what I did before because I’m not involved in your narrative, except to the extent I affect you.
 

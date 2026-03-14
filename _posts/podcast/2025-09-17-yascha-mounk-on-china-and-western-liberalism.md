@@ -2,7 +2,7 @@
 layout: post
 title: "Yascha Mounk on China and Western Liberalism"
 date: 2025-09-17 00:00:01
-categories: podcast sinica-podcast
+categories: podcast sinica
 tags: [podcast_script]
 ---
 

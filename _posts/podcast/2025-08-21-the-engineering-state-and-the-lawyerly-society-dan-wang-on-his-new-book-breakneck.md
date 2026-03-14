@@ -2,7 +2,7 @@
 layout: post
 title: "The Engineering State and the Lawyerly Society: Dan Wang on his new book Breakneck"
 date: 2025-08-21 00:00:01
-categories: podcast sinica-podcast
+categories: podcast sinica
 tags: [podcast_script]
 ---
 

@@ -2,78 +2,78 @@
 layout: post
 title: "Senator Eric Schmitt: Exposing the Biggest Censorship Scandal in US History"
 date: 2025-08-20 00:00:01
-categories: podcast all-in-with-chamath-jason-sacks-friedberg
+categories: podcast all-in
 tags: [podcast_script]
 ---
 
 
 [Senator Eric Schmitt: Exposing the Biggest Censorship Scandal in US History](https://dts.podtrac.com/redirect.mp3/traffic.libsyn.com/secure/allinchamathjason/ALLIN_INTV_Schmitt_Ch.mp3?dest-id=1928300)
 
-I put on a **jacket** because, you know, we're interviewing a **senator**, but I see that. It's **polo day**.  
+I put on a **jacket** because, you know, we're interviewing a **senator**, but I see that. It's **polo day**.
 
-**Senator Schmitt's pulled a Zelensky here.**  
-I did, but I told him I do have these stiff... I have these **stiff collar on the polo**, which is—  
-You look great.  
-It looks great.  
+**Senator Schmitt's pulled a Zelensky here.**
+I did, but I told him I do have these stiff... I have these **stiff collar on the polo**, which is—
+You look great.
+It looks great.
 
-And, you know, I lost the weight.  
-Thanks for noticing, Senator.  
-And I've been hitting the weights on, like, sacks. And so I am too trying to get the **gun show** going like you have achieved there.  
-I'm going all in.  
+And, you know, I lost the weight.
+Thanks for noticing, Senator.
+And I've been hitting the weights on, like, sacks. And so I am too trying to get the **gun show** going like you have achieved there.
+I'm going all in.
 
-All right, besties. I think that was another epic discussion. People love the interviews. I could hear him talk for hours.  
-Absolutely. We crushed your questions in a minute. We are giving people ground truth data to underwrite your own opinion.  
-What did you guys say?  
-That was fun. That was great. I'm going all in.  
+All right, besties. I think that was another epic discussion. People love the interviews. I could hear him talk for hours.
+Absolutely. We crushed your questions in a minute. We are giving people ground truth data to underwrite your own opinion.
+What did you guys say?
+That was fun. That was great. I'm going all in.
 
-All right, everybody. Welcome back to a very special interview.  
+All right, everybody. Welcome back to a very special interview.
 
-Yeah, you know, we're doing these interviews here with me, my amazing co-host and your czar of **crypto and AI**, the Rain Man himself, **David Sachs**.  
-David, how are you doing, brother? How's your summer wrapping up?  
-Good to be here. The summer ended way too soon. Way too soon. So sad. Isn't it? It's just like zip, zip, zip. I'm not ready for it to be over. Kids going back to school, all that.  
+Yeah, you know, we're doing these interviews here with me, my amazing co-host and your czar of **crypto and AI**, the Rain Man himself, **David Sachs**.
+David, how are you doing, brother? How's your summer wrapping up?
+Good to be here. The summer ended way too soon. Way too soon. So sad. Isn't it? It's just like zip, zip, zip. I'm not ready for it to be over. Kids going back to school, all that.
 
-And look, you're a civil servant now. You are working for the people and the people demand, you're a **public servant**.  
-Yes. And the people demand results.  
+And look, you're a civil servant now. You are working for the people and the people demand, you're a **public servant**.
+Yes. And the people demand results.
 
-And hey, we have another civil servant here.  
-David, why don't you introduce our guest today?  
+And hey, we have another civil servant here.
+David, why don't you introduce our guest today?
 
-This is **Senator Eric Schmitt from the state of Missouri**.  
-How did we meet?  
-It was through another former senator, now vice president, **J.D. Vance**, I believe.  
-That's right.  
-That's right. Yeah.  
+This is **Senator Eric Schmitt from the state of Missouri**.
+How did we meet?
+It was through another former senator, now vice president, **J.D. Vance**, I believe.
+That's right.
+That's right. Yeah.
 
-And you guys entered the Senate together at the same time.  
-We did and got to be very close and shared a lot of life experiences and our freshman group got pretty tight. We go to dinner once a month and try to keep that going now that he's even **VP**, which is a lot of fun. But yeah, we got introduced through him and have enjoyed getting to know you.  
+And you guys entered the Senate together at the same time.
+We did and got to be very close and shared a lot of life experiences and our freshman group got pretty tight. We go to dinner once a month and try to keep that going now that he's even **VP**, which is a lot of fun. But yeah, we got introduced through him and have enjoyed getting to know you.
 
-And you now have a new book called **The Last Line of Defense**, which is about your time in your previous job, which was as **attorney general of the state of Missouri**.  
+And you now have a new book called **The Last Line of Defense**, which is about your time in your previous job, which was as **attorney general of the state of Missouri**.
 
-And I remember talking about before I even knew you on the all in pod when we were dealing with **censorship** and talking about that issue, the **Twitter files**. This is back in, I don't know, this is like three or four years ago.  
-2022, I would say.  
-Yeah. Three years ago now. My time is moving.  
+And I remember talking about before I even knew you on the all in pod when we were dealing with **censorship** and talking about that issue, the **Twitter files**. This is back in, I don't know, this is like three or four years ago.
+2022, I would say.
+Yeah. Three years ago now. My time is moving.
 
-We talked about the case **Biden v. Missouri**, which you were the one who brought that case when you were attorney general. When I met you and then found that out, I knew that we had some views in common, let's say, about **free speech** and the need to avoid censorship.  
+We talked about the case **Biden v. Missouri**, which you were the one who brought that case when you were attorney general. When I met you and then found that out, I knew that we had some views in common, let's say, about **free speech** and the need to avoid censorship.
 
-And you went right at the, show me, don't tell me what your fancy speak, what's going on. You went directly to **discovery**. So maybe you could talk a little bit about the approach from the senator from the **show me state**.  
+And you went right at the, show me, don't tell me what your fancy speak, what's going on. You went directly to **discovery**. So maybe you could talk a little bit about the approach from the senator from the **show me state**.
 
-There were rumors and kind of this feeling people were being censored, but nobody knew exactly how it was occurring. So you had some intuition that if we do some discovery here, there's got to be something under the surface. Or had somebody leaked something to you? How did you know to go after this? I guess was my question.  
-Yeah.  
+There were rumors and kind of this feeling people were being censored, but nobody knew exactly how it was occurring. So you had some intuition that if we do some discovery here, there's got to be something under the surface. Or had somebody leaked something to you? How did you know to go after this? I guess was my question.
+Yeah.
 
-And one of the reasons I wrote the book was just to, you know, I think it's easy. The book starts with,  
-> "In November 2024, the fever broke."  
+And one of the reasons I wrote the book was just to, you know, I think it's easy. The book starts with,
+> "In November 2024, the fever broke."
 
-And so if you think about the four previous years, you know, this was a time of lockdowns and compulsory **COVID shots** and forced masking of five-year-olds. But also this vast **censorship enterprise** that existed that, in my view, was the greatest affront to the **First Amendment** we've ever seen in the history of our country.  
+And so if you think about the four previous years, you know, this was a time of lockdowns and compulsory **COVID shots** and forced masking of five-year-olds. But also this vast **censorship enterprise** that existed that, in my view, was the greatest affront to the **First Amendment** we've ever seen in the history of our country.
 
-And so if you go back in time, right, to in 2022, you had seen, to your point, Jason, you had seen sort of **Jen Psaki** at the podium talking about, hey, we're flagging this for Facebook. There were rumors of a **disinformation governance board** with the Mary Poppins herself, right? Talking about how this misinformation and disinformation, I think, right?  
-Right.  
-Wasn't that right? That they needed to flag this stuff and do something about it.  
+And so if you go back in time, right, to in 2022, you had seen, to your point, Jason, you had seen sort of **Jen Psaki** at the podium talking about, hey, we're flagging this for Facebook. There were rumors of a **disinformation governance board** with the Mary Poppins herself, right? Talking about how this misinformation and disinformation, I think, right?
+Right.
+Wasn't that right? That they needed to flag this stuff and do something about it.
 
-We knew that if they were willing to talk about that stuff so publicly, there had to be something much more beneath the surface.  
+We knew that if they were willing to talk about that stuff so publicly, there had to be something much more beneath the surface.
 
-So in **May of 2022**, when I was Attorney General of Missouri, we sued the **Biden administration** and sort of this leviathan of agencies that were working to censor American speech.  
+So in **May of 2022**, when I was Attorney General of Missouri, we sued the **Biden administration** and sort of this leviathan of agencies that were working to censor American speech.
 
-We filed the lawsuit and we knew that it would be, you know, highly scrutinized, be called sort of furthering conspiracy theories. But we knew that there was something there.  
+We filed the lawsuit and we knew that it would be, you know, highly scrutinized, be called sort of furthering conspiracy theories. But we knew that there was something there.
 
 And a really important strategic decision in the case was normally when you file a lawsuit like that, you immediately seek a temporary restraining order or preliminary injunction to—
 **Get the government or another party to stop what they're doing.** But we felt like we needed to get evidence first, right? We had the allegations in the complaint. So we sought **discovery** and the judge granted that discovery.
@@ -115,29 +115,29 @@ Yeah, they certainly would try to influence, of course. Certainly try, right.
 And of course we could be like, "Hey, is it possible in 50 different states with 50 different set of regulations, pretty hard to actually tip an election," as we've seen, right?
 
 If you look at that, if we steel man a foreign adversary, because this is the cover that they...
-They were seeking, **"Hey, we're doing this to protect America and democracy."**  
+They were seeking, **"Hey, we're doing this to protect America and democracy."**
 
 But the truth was, they were doing it for their own personal reasons and their affiliation with one particular party. If you just look at the percentage of people who are **Democrats at those companies**, it's like 80, 90, 95%. So I think we all agree on that.
 
-Is there a way for the **FBI, for the CIA, for our government** to say to **Twitter, to Facebook**,  
-- "Hey, you've got people here who are foreign adversaries."  
-- "They're doing something that is against the American public."  
-- "We need you to monitor this account and take them down."  
+Is there a way for the **FBI, for the CIA, for our government** to say to **Twitter, to Facebook**,
+- "Hey, you've got people here who are foreign adversaries."
+- "They're doing something that is against the American public."
+- "We need you to monitor this account and take them down."
 
 What would have been the proper channel as opposed to setting up a covert back channel where they kind of threatened them?
 
-One layer here that I've never heard anybody connect, but when I was listening to your **Tucker** interview, it just dawned on me. They also put **Lina Khan** in. 
+One layer here that I've never heard anybody connect, but when I was listening to your **Tucker** interview, it just dawned on me. They also put **Lina Khan** in.
 
-Now, **Zuckerberg** is a cutthroat business executive. He likes to buy companies. That's his thing. And **Twitter** was known for buying a lot of companies. So now you got **Lena Kahn** saying,  
-> "We're going to come down hard on you, not let you buy anything."  
+Now, **Zuckerberg** is a cutthroat business executive. He likes to buy companies. That's his thing. And **Twitter** was known for buying a lot of companies. So now you got **Lena Kahn** saying,
+> "We're going to come down hard on you, not let you buy anything."
 
-And at the same time, this other group from the **Biden administration** is saying,  
-> "Hey, take this stuff down."  
+And at the same time, this other group from the **Biden administration** is saying,
+> "Hey, take this stuff down."
 
 So they had two really big clubs to threaten these folks.
 
-But what would be the proper channels to say,  
-> "Hey, these things are stolen, right?"  
+But what would be the proper channels to say,
+> "Hey, these things are stolen, right?"
 
 Yeah. There's a difference between sort of making people aware versus the coercion that was happening under the threat of investigations or losing **Section 230** protections. That was our argument, which was this went beyond informing; this was about colluding and coercing, which of course then crosses the line of what the government can do, you know, as far as violating the **First Amendment**.
 
@@ -145,17 +145,17 @@ There's also, to your point, a couple of things that are happening at the same t
 
 The other thing that was happening with **Zuckerberg** in particular, you got to remember if you go back to **2016**, a lot of people blamed him. He didn't like **Trump**, they blamed him because they thought that somehow what was happening on Facebook contributed to his election and it shouldn't have happened.
 
-But then of course he then is part of the whole Zuckerberg movement in the lead up to 2020. Then he comes back around and **Biden's** in office. Then he's pressured, and he kind of, on the road on **Joe Rogan**, talks about the links at which they went to pressure him.  
+But then of course he then is part of the whole Zuckerberg movement in the lead up to 2020. Then he comes back around and **Biden's** in office. Then he's pressured, and he kind of, on the road on **Joe Rogan**, talks about the links at which they went to pressure him.
 
 And now it seems as though maybe he's been red-pilled again. I don't really know where that's at.
 
 No, no. I can tell you he's a **weathervane**. That's just how you know which way the wind's blowing. **Zuckerberg**. So yeah, it's out of expedience. Who he's behind is just the weathervane.
 
-But it's interesting, him as sort of this kind of, maybe that's the right word, of kind of how this was vacillating from one place to the next. But the point is,  
+But it's interesting, him as sort of this kind of, maybe that's the right word, of kind of how this was vacillating from one place to the next. But the point is,
 
-- If **Kamala** won, he would have been all in for Kamala. A hundred percent.  
-- He would have been at the inauguration for her.  
-- He would have donated to her.  
+- If **Kamala** won, he would have been all in for Kamala. A hundred percent.
+- He would have been at the inauguration for her.
+- He would have donated to her.
 
 Trust me, we know him. It's my opinion.
 
@@ -214,18 +214,18 @@ I have my own answers, but I'm curious in your answer.
 
 Yeah, I think you've got to get back to one of the **First Amendment principles**, which is it has to be **content neutral**. That's how I view it. Now, you can have protections. You know, there are certain **public safety protections** that are going to be in play. You could have protections against people, you know, sort of pedophilia that, you know, would violate terms of service.
 
-There is a role—  
-It would violate laws, right?  
-Correct.  
+There is a role—
+It would violate laws, right?
+Correct.
 
 Yeah. But I also think what's interesting is when you go back and look at this case, the **pressure on the platforms wasn't just about phrases**. They made them alter terms of service to actually meet what the desired outcomes that they wanted.
 
 And also, and David, you guys were, you saw this. Interestingly, the kind of how deep the rot really was, let's just take **Twitter for an example**.
 
-- **James Baker**, who's James Baker?  
-- James Baker was the **general counsel for the FBI during the Hunter Biden, or I'm sorry, the briefings during the Russiagate back then at the end of 2016**.  
-- He then, after a stint at some think tank, becomes the **general counsel at Twitter**.  
-- He was the one inside Twitter, we now know from the Twitter files, who was advocating to **censor the Hunter Biden laptop story**, even though he should have known, based on his time at the FBI, that the laptop was authentic, i.e. it was Hunter Biden's actual laptop.  
+- **James Baker**, who's James Baker?
+- James Baker was the **general counsel for the FBI during the Hunter Biden, or I'm sorry, the briefings during the Russiagate back then at the end of 2016**.
+- He then, after a stint at some think tank, becomes the **general counsel at Twitter**.
+- He was the one inside Twitter, we now know from the Twitter files, who was advocating to **censor the Hunter Biden laptop story**, even though he should have known, based on his time at the FBI, that the laptop was authentic, i.e. it was Hunter Biden's actual laptop.
 - And the grounds upon which that story was censored was that the laptop was **Russian disinformation**.
 
 This was the tried and true tactic for years, is that any speech that was inconvenient and that Democrats wanted to censor, they just called **Russian disinformation**, even though the Russians had nothing to do with that laptop.
@@ -234,14 +234,14 @@ And to dig even further into that, what's interesting is, so **Elvis Chan** is t
 
 **Yul Roth**, as you remember, who was like the integrity guy at Twitter, signs an affidavit with the FEC after a complaint was filed against Twitter, noting specifically that the **FBI was telling them that this could be a Hunter Biden**. So this wasn't just going to be some random hack and leak operation for the Russians. It was related specifically to Hunter Biden.
 
-Senator, in fairness, the Russians did hack Hillary Clinton's email. That was confirmed.  
-And we don't know that.  
+Senator, in fairness, the Russians did hack Hillary Clinton's email. That was confirmed.
+And we don't know that.
 Of course we do. The FBI confirmed it. Absolutely was confirmed. That's, I think that's all part of the hoax.
 
-Oh, okay. Well, let me give you a couple of reasons why I could see the New York Post—oh, I'm sorry. We could see the platform saying if the FBI calls and says, "is a Russian hack," and we've had a bunch of Russian hacks before, and the president said,  
+Oh, okay. Well, let me give you a couple of reasons why I could see the New York Post—oh, I'm sorry. We could see the platform saying if the FBI calls and says, "is a Russian hack," and we've had a bunch of Russian hacks before, and the president said,
 > "You should, hey, Russia, if you're listening, send me the emails."
 
-And you had Paul Manafort be indicted for having all these connections. You're like the last person who still believes in this Russiagate hoax.  
+And you had Paul Manafort be indicted for having all these connections. You're like the last person who still believes in this Russiagate hoax.
 No, no, let me finish my point, which is the **laptop was authentic, and the FBI knew it was authentic**. We'll get you a key point, David. Let me finish mine and you can give me the key point and tell me why I'm wrong.
 
 There was a bunch of noise around Russia. I think Russia did this on purpose to cause chaos here. I don't think they cared who got in. I think they just want chaos. That's my personal view. But if you were Twitter, and the FBI calls and says, "hey, this was hacked," and we have these previous instances of hacking that the FBI has confirmed and has told the world...
@@ -265,9 +265,9 @@ What was their reaction to it? In my view, they could have done three different 
 
 - Number one is they could have investigated the crimes that were suggested by the evidence on that laptop. They didn't do that.
 - Number two is they could have just sat on it, done nothing. They didn't do that.
-- They did number three, which is they basically began a campaign to suppress the contents of the laptop.  
+- They did number three, which is they basically began a campaign to suppress the contents of the laptop.
 
-How do they do that? **Elvis Chan**, representing the FBI, was engaged in weekly meetings with these social networks. Again, this is from the Twitter files. And Elvis Chan represented the intelligence community. One of the emails described his group as the **"belly button of the conduit"** between the social networks and the intelligence community.  
+How do they do that? **Elvis Chan**, representing the FBI, was engaged in weekly meetings with these social networks. Again, this is from the Twitter files. And Elvis Chan represented the intelligence community. One of the emails described his group as the **"belly button of the conduit"** between the social networks and the intelligence community.
 
 And remember, Elvis Chan had something like 80 FBI agents who are submitting takedown requests to Twitter and other social networks. So this is the scale of the censorship that was happening.
 
@@ -304,9 +304,9 @@ And so, you know, the **CDC, I mentioned the CDC. What were they doing?** The go
 
 And then we will work with social media companies effectively, right, to go do that.
 
-And so the **FBI was involved in this. CISA was involved with this. The CDC was involved with this.** And then, of course, when we had the opportunity to take **Anthony Fauci's deposition at NIH,** that was mind blowing. It's only the second time his deposition was taken. 
+And so the **FBI was involved in this. CISA was involved with this. The CDC was involved with this.** And then, of course, when we had the opportunity to take **Anthony Fauci's deposition at NIH,** that was mind blowing. It's only the second time his deposition was taken.
 
-We find out all the links that he went to to undermine people like, by the way, **Dr. Jay Bhattacharya,** who was a plaintiff in *Missouri versus Biden* with me, to undermine his efforts to say things like, 
+We find out all the links that he went to to undermine people like, by the way, **Dr. Jay Bhattacharya,** who was a plaintiff in *Missouri versus Biden* with me, to undermine his efforts to say things like,
 
 > "Well, natural immunity is kind of a thing still."
 
@@ -318,7 +318,7 @@ Like, that's really a big part of what this whole thing's about. And what you sa
 
 You know, I mean like,
 
-> "This couldn't happen here," 
+> "This couldn't happen here,"
 
 but it was happening here.
 
@@ -343,15 +343,15 @@ In other words, the whole idea they were tracking Russian accounts was just tota
 
 **Hamilton 68 created this dashboard** that supposedly showed this vast Russian influence campaign. It all ended up being nonsense.
 
-Well, and I think it's—  
-Totally created out of thin air. I think it speaks to—  
+Well, and I think it's—
+Totally created out of thin air. I think it speaks to—
 There's a long track record of the Russians hacking, including the **RNC**, recently. So, I do think you are painting a very one-sided picture here, Sachs. Maybe it's all bullshit.
 
 You think the Russians are not hacking foreign adversaries at all? You don't believe any of it?
 
 **Russia's got a lot of good hackers**, and I'm sure they have cyber operations and things like that. But again, that's a little different than saying that the Russians are heavily involved in our elections. I believe that that was largely a made-up story.
 
-Now, look, do I want to say that no Russian ever was involved in some sort of operation? I'm not going to say that. But we know **Hamilton 68 was total nonsense**. In fact, it was worse than that. 
+Now, look, do I want to say that no Russian ever was involved in some sort of operation? I'm not going to say that. But we know **Hamilton 68 was total nonsense**. In fact, it was worse than that.
 
 **It was a hoax, okay? It was a hoax.**
 
@@ -367,7 +367,7 @@ Obviously, the Russians have been hacking political organizations in the United 
 
 So you tell me where reality is between these two.
 
-The Chinese do it, too. There's no question.  
+The Chinese do it, too. There's no question.
 Yeah, Chinese are big on it, sure. Of course.
 
 But I think what separates this, though, was that now that we know what we know— I mean, actually, in the documents that were released by **Tulsi Gabbard**, the director of national intelligence, it was that **Hillary Clinton was the preferred candidate**.
@@ -504,14 +504,14 @@ I mean, again, in the book, I talk about how there's an emergency, real or perce
 Anyone that claimed that Russia didn't have, you know, that President Trump wasn't a Russian asset, was a traitor and a Putin lover.
 I mean, this stuff, it's kind of wild, honestly. But I think **we're on the other side of the fever dream**. And there does need to be some accountability now.
 
-This is your first term as **senator**, I believe.  
-**Yes.**  
-**Yeah.**  
-So I was elected in **2022**.  
+This is your first term as **senator**, I believe.
+**Yes.**
+**Yeah.**
+So I was elected in **2022**.
 **Yep.**
 
-I'm curious.  
-One, any great stock tips?  
+I'm curious.
+One, any great stock tips?
 Two, because you have to call the **Russiagate** now. We're just trying to get some inside information to trade on number two.
 
 Look, I think one of the reasons why the **Russiagate**—we can stop talking about Russiagate—but I think one of the reasons why it was so important, first of all, **it was effectively a coup against the president of the United States**, because these were executive branch officials who owe a duty of loyalty to the elected president. Instead, they were working to subvert and undermine him based on essentially lies and hoaxes and manufactured material.
@@ -520,34 +520,34 @@ I mean, that is basically the definition of a coup. So I think that is a **big d
 
 And actually, you heard this at the **Alaska summit**. I think that this whole Russiagate thing, which we now know is completely bogus, poisoned relations between the United States and Russia for years, because the media kept reporting this bogus idea that somehow Trump was a Russian asset and somehow they had interfered in our elections.
 
-And I think this helped create a very hostile relationship between the United States and Russia. Literally, **Russiagate led to Putin invading Ukraine**. It led to him crossing the border and murdering Ukraine. It led to a souring of the relationship.  
+And I think this helped create a very hostile relationship between the United States and Russia. Literally, **Russiagate led to Putin invading Ukraine**. It led to him crossing the border and murdering Ukraine. It led to a souring of the relationship.
 
-**And it doesn't justify his murderous campaign in Ukraine.** David, you would agree.  
-I'm not. That's not the argument I'm making.  
-I know. But I'm forcing you to agree that he invaded Ukraine and murdered people and he's a war criminal.  
+**And it doesn't justify his murderous campaign in Ukraine.** David, you would agree.
+I'm not. That's not the argument I'm making.
+I know. But I'm forcing you to agree that he invaded Ukraine and murdered people and he's a war criminal.
 
 And, you know, those are just facts as well, David. I'm sorry. I think those are cliches that basically attempt to strip that complicated war of all of its context so that we can achieve a peaceful solution to it. Obviously, Putin invaded the country, but the conflict there goes back 10 years. There's a long history to it. I'm not looking to rehash all of that.
 
 The point is, we could have worked out a resolution to this conflict maybe before it started if we didn't have hostile relationships with Russia. That's the point I'm trying to make.
 
-Senator, I'll give you the choice. I want to talk to you about just the **Senate in general** and then I wanted to talk a little in your experiences there. Or we could just go right into what's happening with this Russian peace deal and the status of that. Where would you like?  
-We can do both.  
+Senator, I'll give you the choice. I want to talk to you about just the **Senate in general** and then I wanted to talk a little in your experiences there. Or we could just go right into what's happening with this Russian peace deal and the status of that. Where would you like?
+We can do both.
 
 I think I was actually on a Sunday show yesterday and I consider myself firmly in the camp of being an **American realist**. I think that a lot of the people that are really critical of **President Trump's efforts right now have been wrong about foreign policy for a very, very long time**. Jake Sullivan included, right? Who presided over the disastrous withdrawal of **Afghanistan**, who basically on his watch, Russia invaded Ukraine.
 
-**What is their position, Senator?** What do you think their position is? Why are they so tweaked that he met with Putin, do you think?  
+**What is their position, Senator?** What do you think their position is? Why are they so tweaked that he met with Putin, do you think?
 I don't know because there is no plan. There's never been a plan. The only plan they ever had was that the United States taxpayer would continue to funnel over **$200 billion without a plan**. And I had a problem with that in my first couple of years. The Vice President Vance viewed the world kind of similarly with that in the same way.
 
 I think we ought to focus on our core national interests, the homeland. We have to figure out a way to pivot to **China**. We have to get our **NATO allies** to step up in a much more meaningful way.
 
-I think one of the great ironies of all this is that, you know, these European countries who are going to be in the White House, in the Oval Office today, they talk about Putin being this **existential threat**. Well, they sure don't act like it. They don't, you know, they don't really—  
-They don't spend like it, you mean.  
+I think one of the great ironies of all this is that, you know, these European countries who are going to be in the White House, in the Oval Office today, they talk about Putin being this **existential threat**. Well, they sure don't act like it. They don't, you know, they don't really—
+They don't spend like it, you mean.
 Correct.
 
 And by the way, if they spent what we spent on national defense, that would free up about **$300 billion** for us to focus actually on the **Indo-Pacific**, where **China now has a bigger navy than we have**. Not a better navy, but a bigger navy. They're in space for real.
 
-**Trump's biggest accomplishment is probably geopolitically getting NATO to spend what they're supposed to spend.**  
-Yeah?  
+**Trump's biggest accomplishment is probably geopolitically getting NATO to spend what they're supposed to spend.**
+Yeah?
 Yeah.
 
 I went over to, I was actually at the **Munich Security Conference**. I went over there. I'm a bit of a contrarian there, I guess.
@@ -659,8 +659,8 @@ And Trump sort of said that, too. He alluded to that. At some point, we're out. 
 
 I think, yeah. I think that's what this phase is all about, which is to give a legitimate **peace process** a chance. But the idea that we're going to be voting on — I mean, I wouldn't support it — more taxpayer aid to Ukraine for a war that doesn't seem to look like it's ever going to end and is a **blank check** is just unacceptable as a senator for a state in the United States of America.
 
-- It's just not now.  
-- President Trump has opened up avenues to make it clear to both parties that there's pressure that could be ramped up to try to bring this to a head.  
+- It's just not now.
+- President Trump has opened up avenues to make it clear to both parties that there's pressure that could be ramped up to try to bring this to a head.
 - I think that's where we're at.
 
 It's not going to all happen today. It's not going to happen tomorrow. But that's really what this diplomacy in this **TikTok age** that we live in is about. I think we think it's instant gratification, but diplomacy is difficult when you're dealing with other countries with their own national interests and their own inner dynamics.
@@ -675,11 +675,11 @@ What do you think, Sachs? You think we should walk away if we can't get this res
 
 Well, look, you're asking me what the president should do. I'm not on the foreign policy team. I'm not going to venture and wade into that. But is it a possibility? I'll just say this.
 
-- **Listen to what the Ukrainians want.**  
-- Zelensky's interests may not be the same as his people's, because as long as there's a war, there's no election.  
-- They've canceled democracy over there while the war is going on.  
-- As long as that is true, he stays in power.  
-- So he has incentives that may not be true for all of his people.  
+- **Listen to what the Ukrainians want.**
+- Zelensky's interests may not be the same as his people's, because as long as there's a war, there's no election.
+- They've canceled democracy over there while the war is going on.
+- As long as that is true, he stays in power.
+- So he has incentives that may not be true for all of his people.
 
 His people want a negotiated peace.
 
@@ -688,11 +688,11 @@ And you think if they give up the Donbass and whatever other regions are on the 
 Do you worry about that, Sachs? Do you worry that this is enabling his behavior, his worst demons?
 I don't think the **Russians have the intention to invade another country**, and they don't have the capability. Look at how much trouble they've had. We're now **three and a half years into the war**. They're definitely winning the war. But they've only conquered this **eastern part of Ukraine**. They haven't made it to the **Dnieper**.
 
-I don't even think they can conquer all of Ukraine, or at least it'd be extraordinarily difficult and resource-consuming. So I just think that this threat of **Putin conquering or attempting to invade all of Europe**, this is **threat inflation**. 
+I don't even think they can conquer all of Ukraine, or at least it'd be extraordinarily difficult and resource-consuming. So I just think that this threat of **Putin conquering or attempting to invade all of Europe**, this is **threat inflation**.
 
-That's my takeaway from a senator. It's like, 
+That's my takeaway from a senator. It's like,
 
-> "Putin couldn't even take Ukraine?" 
+> "Putin couldn't even take Ukraine?"
 
 I mean—agreed.
 
@@ -706,9 +706,9 @@ I don't know if this interview you were expecting, but—
 
 No, it's great.
 
-No, I talked to him before you came on, and I said, hey, 
+No, I talked to him before you came on, and I said, hey,
 
-> "Keep it not like a monoculture here, like, you know, Tucker and the senator were like high-fiving the whole interview," 
+> "Keep it not like a monoculture here, like, you know, Tucker and the senator were like high-fiving the whole interview,"
 
 but it was great. It was a great interview. It's a great Tucker classic. You need to have a little spice here to figure out. I love the debate.
 

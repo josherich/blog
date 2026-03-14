@@ -2,7 +2,7 @@
 layout: post
 title: "Trump's India Tariff Tirade: A Gift to Beijing? With Evan Feigenbaum"
 date: 2025-08-27 00:00:01
-categories: podcast sinica-podcast
+categories: podcast sinica
 tags: [podcast_script]
 ---
 
@@ -13,15 +13,15 @@ Nearly home. Isn't **home** where we all want to be? **Reba here for Realtor.com
 
 That's where **Realtor.com** comes in. With over **500,000 new real listings** straight from the pros every month, that's a lot of chances to find the place you've been dreaming of. Whether you're searching for:
 
-- a two-story mid-century with a pool  
-- a little extra space with a spa-inspired bathroom  
+- a two-story mid-century with a pool
+- a little extra space with a spa-inspired bathroom
 
 **Realtor.com can help you find it today.** So quit hitting that snooze button. Realtor.com isn't sleeping on finding your dream home, and neither should you.
 
-**Download the Realtor.com app today, because you're nearly home.**  
+**Download the Realtor.com app today, because you're nearly home.**
 *Make it real with Realtor.com.*
 
-> Pro's number one most trusted app based on August 2024 proprietary survey.  
+> Pro's number one most trusted app based on August 2024 proprietary survey.
 > Over 500,000 new listings every month based on average new for sale and rental listings, February 2024 through January 2025.
 
 ---
@@ -30,20 +30,20 @@ Ever notice that everyone always wants more of a good thing? More rewards, more 
 
 Join today to save:
 
-``` 
-- 10 cents per gallon on your first fill  
-- 20 cents on the second  
-- 30 cents on the third  
+```
+- 10 cents per gallon on your first fill
+- 20 cents on the second
+- 30 cents on the third
 ```
 
 Then enjoy everyday savings afterwards.
 
 Want more? Then head to **Shell** where members get more.
 
-> Offer valid from 4-21-25 through 10-31-25 at participating Shell locations.  
-> Offer must be redeemed within 60 days of registration.  
-> Limit 20 gallons.  
-> Restrictions apply.  
+> Offer valid from 4-21-25 through 10-31-25 at participating Shell locations.
+> Offer must be redeemed within 60 days of registration.
+> Limit 20 gallons.
+> Restrictions apply.
 > Visit fuelrewards.com/join25 for more information.
 
 ---
@@ -62,9 +62,9 @@ I am in the market for new institutional support. Please help out.
 
 Listeners, you can do your part by becoming a paying subscriber at **sinicapodcast.com**. You will enjoy there, in addition to the podcast:
 
-- the complete transcript of the show  
-- essays from me  
-- writings and podcasts from some of your favorite China-focused columnists and commentators  
+- the complete transcript of the show
+- essays from me
+- writings and podcasts from some of your favorite China-focused columnists and commentators
 - and of course the knowledge that you were helping me to do what I honestly believe is very important work
 
 So do check out the page, see all it's on offer, consider helping me out.
@@ -88,41 +88,41 @@ Evan, as you know, is **Vice President for Studies at the Carnegie Endowment for
 Evan has been coming on Sinica since our earliest days, and longtime listeners will remember how central he was to the bipartisan effort over the past 25 years to build trust and deepen ties between the **United States and India**.
 
 These days, though, Evan has been watching in disbelief and horror as President Trump, in his second go-around, seems intent on dismantling much of that hard-won progress.
-He's been especially sharp on **social media** about the ways **tariffs**, **sanctioned talk**, and **inflammatory rhetoric** are undoing the work that he and others labored so hard to achieve. 
+He's been especially sharp on **social media** about the ways **tariffs**, **sanctioned talk**, and **inflammatory rhetoric** are undoing the work that he and others labored so hard to achieve.
 
-Frankly, the main purpose of today's program may just be to let **Evan vent his understandable frustration**, and my questions are probably going to be a little superfluous. So with that, let me toss out a ball, then get out of the way. 
+Frankly, the main purpose of today's program may just be to let **Evan vent his understandable frustration**, and my questions are probably going to be a little superfluous. So with that, let me toss out a ball, then get out of the way.
 
-**Evan Feigenbaum**, welcome back to **Sinica**.  
-Thanks, man.  
+**Evan Feigenbaum**, welcome back to **Sinica**.
+Thanks, man.
 Thanks for having me.
 
-So the 25-year arc that I described—I mean, you've described this quarter century as a **bipartisan project** encompassing:  
+So the 25-year arc that I described—I mean, you've described this quarter century as a **bipartisan project** encompassing:
 
-- **civil nuclear cooperation**  
-- **defense**  
-- **trade**  
-- **tech**  
-- **higher education links**  
-- **regularized strategic dialogues**  
+- **civil nuclear cooperation**
+- **defense**
+- **trade**
+- **tech**
+- **higher education links**
+- **regularized strategic dialogues**
 
 You were very much a part of that effort in your time in government. What, in your view, were maybe the two or three **hinge points that built trust**, and which institutions or habits of cooperation proved, you know, the most resilient when politics grew rough on either side, and maybe, you know, still will be ballast in the relationship as Rocky has gotten?
 
 Well, first, isn't the whole thing ironic? I mean, we went into the **Trump administration** with everyone saying that we were going to have a **U.S.-China trade war** as the dominant geoeconomic theme, and somehow we've ended up with a **U.S.-India trade war instead of a U.S.-China trade war**. So it's ironic, but it's interesting because it's not the first time, obviously, that the **United States and India** have had a lot of turbulence in their relationship.
 
-In fact, for the entire **Cold War period**, that was pretty much the norm. So we went into the decade of the 2000s, the end of the Clinton administration, and then especially into the **George W. Bush administration** with a few obstacles that had historically characterized the relationship. So one was the overhang of the Cold War, because during the Cold War, the United States had expected countries basically to line up on one or the other side.  
+In fact, for the entire **Cold War period**, that was pretty much the norm. So we went into the decade of the 2000s, the end of the Clinton administration, and then especially into the **George W. Bush administration** with a few obstacles that had historically characterized the relationship. So one was the overhang of the Cold War, because during the Cold War, the United States had expected countries basically to line up on one or the other side.
 
-Sure. And while India was **non-aligned**, after 1971, India largely had leaned toward the Soviet side. But in any case, it certainly wasn't part of the American project in Asia more broadly.  
+Sure. And while India was **non-aligned**, after 1971, India largely had leaned toward the Soviet side. But in any case, it certainly wasn't part of the American project in Asia more broadly.
 
-Second, there was not a lot of economic content to the relationship.  
+Second, there was not a lot of economic content to the relationship.
 
-And then third, after India tested a nuclear weapon in the 1970s, the United States imposed a whole variety of **non-proliferation-related sanctions**.  
+And then third, after India tested a nuclear weapon in the 1970s, the United States imposed a whole variety of **non-proliferation-related sanctions**.
 
-And so we went into the decade of the 2000s basically with two of those three cleared away.  
+And so we went into the decade of the 2000s basically with two of those three cleared away.
 
-- The Cold War was gone.  
-- India's economic reform meant that we could build economic content into the relationship.  
+- The Cold War was gone.
+- India's economic reform meant that we could build economic content into the relationship.
 
-But then we had this **non-proliferation sanctions problem**. The Indian argument to the United States was:  
+But then we had this **non-proliferation sanctions problem**. The Indian argument to the United States was:
 
 > "You can't really have a strategic partnership with the country that's the number one target of your non-proliferation sanctions."
 
@@ -178,56 +178,56 @@ For one thing,
 - yet it's India that has the 25 percent Russian oil purchase tariff, and China has somehow been spared.
 
 More importantly, if you have the goal of shutting down Russia's commodity trade, then there's no particular reason why you would look only at oil. And if you switch the commodity of reference up from oil to, let's say, gas, then Europeans are still purchasing Russian gas. And if you switch it to chemicals and other products, the United States itself is still doing business with Russia.
-And so **Indians** look at that, particularly through the **political prism in Delhi**, and what they see is **India being singled out** in ways that are not being applied to other countries.  
+And so **Indians** look at that, particularly through the **political prism in Delhi**, and what they see is **India being singled out** in ways that are not being applied to other countries.
 
-So at minimum, it's viewed as **hypocritical**, but more, it's increasingly viewed as **targeting India**.  
+So at minimum, it's viewed as **hypocritical**, but more, it's increasingly viewed as **targeting India**.
 
-As an American, I look at that and I say that it doesn't make a lot of sense. It doesn't make sense strategically to just have trade disputes unravel everything else that's been achieved. But what's more, it's not a particularly principled approach either because of the way that it's being applied.  
+As an American, I look at that and I say that it doesn't make a lot of sense. It doesn't make sense strategically to just have trade disputes unravel everything else that's been achieved. But what's more, it's not a particularly principled approach either because of the way that it's being applied.
 
-You know, the president, if I can say that the president has:  
-- imposed tariffs on countries with which the United States has **trade deficits**, but also countries with which it has **trade surpluses**.  
-- imposed tariffs on countries with which the U.S. has **free trade agreements**, but also countries with which it does **not** have free trade agreements.  
-- imposed tariffs on countries with which he's reached agreements previously, like, for example, **South Korea** in his first term, and countries with which he has not.  
+You know, the president, if I can say that the president has:
+- imposed tariffs on countries with which the United States has **trade deficits**, but also countries with which it has **trade surpluses**.
+- imposed tariffs on countries with which the U.S. has **free trade agreements**, but also countries with which it does **not** have free trade agreements.
+- imposed tariffs on countries with which he's reached agreements previously, like, for example, **South Korea** in his first term, and countries with which he has not.
 
-And now, as with these **Russian oil purchase tariffs**, or more precisely **sanctions**, he's wielding tariffs as a **weapon on things that have nothing to do with trade policy at all**.  
+And now, as with these **Russian oil purchase tariffs**, or more precisely **sanctions**, he's wielding tariffs as a **weapon on things that have nothing to do with trade policy at all**.
 
-And he's even threatening **India and others with tariffs for membership in the BRICS group** because he doesn't like it.  
+And he's even threatening **India and others with tariffs for membership in the BRICS group** because he doesn't like it.
 
-And so it's very difficult if you're sitting in **Narendra Modi's shoes** to negotiate with someone that, at minimum, has no particular consistency or logic to the way they're wielding the instrument.  
+And so it's very difficult if you're sitting in **Narendra Modi's shoes** to negotiate with someone that, at minimum, has no particular consistency or logic to the way they're wielding the instrument.
 
-And as the **Europeans** and the **Koreans** and others have discovered, even when you reach a deal with President Trump, he's liable to walk away from the deal and start negotiating again. And so that's **not a good recipe for success in New Delhi**.  
+And as the **Europeans** and the **Koreans** and others have discovered, even when you reach a deal with President Trump, he's liable to walk away from the deal and start negotiating again. And so that's **not a good recipe for success in New Delhi**.
 
-Just on the **Russian oil purchases thing**, when he's been pushed on this, **Scott Bessent** has been talking about how it's not so much the oil purchases themselves, but the fact that before the Russian invasion of Ukraine, **India, and I checked this, India did buy very little oil from Russia**.  
+Just on the **Russian oil purchases thing**, when he's been pushed on this, **Scott Bessent** has been talking about how it's not so much the oil purchases themselves, but the fact that before the Russian invasion of Ukraine, **India, and I checked this, India did buy very little oil from Russia**.
 
-And the accusation is that he's just basically, you know, that India has taken advantage of Russia's desperation, bought a lot of oil from Russia, and is basically flipping that oil now for a profit on global markets.  
+And the accusation is that he's just basically, you know, that India has taken advantage of Russia's desperation, bought a lot of oil from Russia, and is basically flipping that oil now for a profit on global markets.
 
-Is there any truth to that accusation?  
+Is there any truth to that accusation?
 
-Well, I think the Indians think that strains credulity at several levels. For one thing, the predecessor administration, the **Biden administration**, actually encouraged India to buy Russian oil because they thought it would induce some **price stability** into global markets by not taking too much oil off the market at one time in a way that would produce global shocks.  
+Well, I think the Indians think that strains credulity at several levels. For one thing, the predecessor administration, the **Biden administration**, actually encouraged India to buy Russian oil because they thought it would induce some **price stability** into global markets by not taking too much oil off the market at one time in a way that would produce global shocks.
 
-So the Indians would argue that actually they thought they were doing what the United States wanted them to do, and that **Eric Garcetti**, who was President Biden's ambassador, and **Janet Yellen**, who was his treasury secretary, had actually encouraged them to do.  
+So the Indians would argue that actually they thought they were doing what the United States wanted them to do, and that **Eric Garcetti**, who was President Biden's ambassador, and **Janet Yellen**, who was his treasury secretary, had actually encouraged them to do.
 
-So yes, we've had a change of administration, but the policy and consistency can induce some whiplash.  
+So yes, we've had a change of administration, but the policy and consistency can induce some whiplash.
 
-I think it's also troubling from the Indian standpoint because, after all, the United States has been reaching out to Russia itself. There was a report in the press this week that **Exxon** has been holding some meetings about restarting operations in Russia.  
+I think it's also troubling from the Indian standpoint because, after all, the United States has been reaching out to Russia itself. There was a report in the press this week that **Exxon** has been holding some meetings about restarting operations in Russia.
 
-And if that's true, it just fuels and feeds the notion of **American hypocrisy in New Delhi**.  
+And if that's true, it just fuels and feeds the notion of **American hypocrisy in New Delhi**.
 
-And that notion of hypocrisy has basically become highly politicized, as I said, in ways that are unproductive.  
+And that notion of hypocrisy has basically become highly politicized, as I said, in ways that are unproductive.
 
-I don't think Mr. Bessent understands the political context in Delhi very well.  
+I don't think Mr. Bessent understands the political context in Delhi very well.
 
-Yeah.  
+Yeah.
 
-I mean, I think it's really important to understand the **domestic politics in India**. So maybe you can break that out a little bit and explain how this has played out in, you know, the **Indian democracy**.  
+I mean, I think it's really important to understand the **domestic politics in India**. So maybe you can break that out a little bit and explain how this has played out in, you know, the **Indian democracy**.
 
-I mean, Americans are not particularly self-reflective in general, but we tend to ignore the fact that other countries have politics, too.  
+I mean, Americans are not particularly self-reflective in general, but we tend to ignore the fact that other countries have politics, too.
 
-And when you filter this through the lens of **Indian domestic politics**, you can see why the **Indian public, the Indian media, the Indian opposition, but also many people within Prime Minister Modi's own party** are encouraging the government **not to knuckle under and show,** _quote unquote,_ **weakness in the face of American pressure**.  
+And when you filter this through the lens of **Indian domestic politics**, you can see why the **Indian public, the Indian media, the Indian opposition, but also many people within Prime Minister Modi's own party** are encouraging the government **not to knuckle under and show,** _quote unquote,_ **weakness in the face of American pressure**.
 
-They think that they essentially are being coerced by a country that is targeting India in ways that single it out for things that other countries themselves are doing.  
+They think that they essentially are being coerced by a country that is targeting India in ways that single it out for things that other countries themselves are doing.
 
-In the Russia case, penalizing them for a **longstanding relationship** that they've had for decades.  
+In the Russia case, penalizing them for a **longstanding relationship** that they've had for decades.
 
 You can argue that the context of the **Ukraine war** should change the way everybody thinks about their relationship with Russia. But we need to recognize that setting the bar at India junking its relationship with what it views as a **longstanding strategic partner** was **never going to happen**.
 And if you set the bar at **impossible**, you're not going to make a lot of progress. And so I think **relations with the United States have always been especially politicized in India**.
@@ -250,9 +250,9 @@ But I sense that, like, Trump understood that this was a moment where he could r
 
 I think it's an incredibly important point that a lot of the domestic issues that most seem to engage the **MAGA right** are things that touch India either directly or indirectly. So if you just run down the list of issues:
 
-- H-1B visas for tech workers  
-- Immigration policy  
-- Offshoring of manufacturing to not just China, but other countries in Asia  
+- H-1B visas for tech workers
+- Immigration policy
+- Offshoring of manufacturing to not just China, but other countries in Asia
 
 A lot of these issues actually touch **India very directly**. And so there's this unique synergy right now between issues that really seem to engage the MAGA base and issues that have touched the **US-India relationship** in ways that have really politicized this on the American side.
 
@@ -269,54 +269,54 @@ And by the way, if we're being cynical about it, some of that had to do with the
 It was another large continental Asian-sized country that was not an authoritarian political system. And somehow people came around to the idea that building up India was somehow existentially in the United States’ interest because it would build a **counterweight to China within Asia and more broadly**.
 Now, whether that was true or not, or whether that was based on a series of assumptions and presumptions that might or might not have been heroic, that's a different matter. **My point is what it produced in American politics was a lot of bipartisan agreement and consensus around building the relationship with India** at a time when there's not a lot of consensus on anything.
 
-So, you know, you had these two points of consensus:  
-- A lot of people just had a dim view of **China**  
-- A lot of people had a positive view of **India**, whether they were conservative Republicans or they were liberal and progressive Democrats  
+So, you know, you had these two points of consensus:
+- A lot of people just had a dim view of **China**
+- A lot of people had a positive view of **India**, whether they were conservative Republicans or they were liberal and progressive Democrats
 
 And somehow that's come unraveled. And there's interesting implications for China because this hypocrisy that we were talking about—**a lot of what people in New Delhi think they see is the United States actually improving its relationships with both Russia and China at a time when the administration is tanking the relationship with India in ways that don't seem to have moved the American body politic in quite the same way.**
 
-And so that gets to your question about **President Trump** because, I mean, I could easily see a place where just as a lot of people are rationalizing closer relations with Russia, people actually start to move the needle on relations with China in segments of the American political class that we would not have expected five or 10 years ago because they follow the president there.  
+And so that gets to your question about **President Trump** because, I mean, I could easily see a place where just as a lot of people are rationalizing closer relations with Russia, people actually start to move the needle on relations with China in segments of the American political class that we would not have expected five or 10 years ago because they follow the president there.
 
-It's an amazing switcheroo, which is what I meant earlier when I said,  
-> **"How did we get from a U.S.-China trade war to a U.S.-India trade war?"**  
+It's an amazing switcheroo, which is what I meant earlier when I said,
+> **"How did we get from a U.S.-China trade war to a U.S.-India trade war?"**
 
 It's crazy. And it's certainly not what was expected from this president at the beginning.
 
 Yeah. I've been talking quite a bit about how Trump is actually strangely moving, yeah, as you say, the sort of that once pretty solid bipartisan anti-China consensus now. It's interesting to see how it's happening. It's both on the left and on the right that we're seeing a change—part of it, you know, on the right, obviously, led by the idiosyncrasies of **Trump himself**.
 
-But, you know, 25 years of trust building, there's some residue. There's some ballast still in place, right? I mean, most tangibly, I think, you know, in the bureaucratic channels there and the defense dialogues, in technology cooperation. I mean, there are going to be a lot of elements of trust that are hard to rebuild in the U.S.-India relationship.  
+But, you know, 25 years of trust building, there's some residue. There's some ballast still in place, right? I mean, most tangibly, I think, you know, in the bureaucratic channels there and the defense dialogues, in technology cooperation. I mean, there are going to be a lot of elements of trust that are hard to rebuild in the U.S.-India relationship.
 
-But is there anything that could still be salvaged? Is there a foundation for, you know, a future administration to start rebuilding?  
+But is there anything that could still be salvaged? Is there a foundation for, you know, a future administration to start rebuilding?
 
-Yeah, sure. But I think there are three challenges.  
+Yeah, sure. But I think there are three challenges.
 
 The first is, it's fine to say that bureaucracies continue to move the ball downfield. But remember that this administration is essentially decimating large segments of the American bureaucracy. And that includes parts of the government that have been most responsible for building U.S. relations with **India**.
 
-The fastest growing areas of the U.S.-India relationship over the last decade are not just confined to defense and weapons sales. They also include a lot of areas of **technology collaboration and technology sharing**.  
+The fastest growing areas of the U.S.-India relationship over the last decade are not just confined to defense and weapons sales. They also include a lot of areas of **technology collaboration and technology sharing**.
 
-And in the face of a kind of new American **techno-nationalism** that wants to hold technology close and is somewhat skeptical of sharing it even with close allies, I think decimating that part of the bureaucracy makes it harder to just bank on bureaucratic initiative and inertia.  
+And in the face of a kind of new American **techno-nationalism** that wants to hold technology close and is somewhat skeptical of sharing it even with close allies, I think decimating that part of the bureaucracy makes it harder to just bank on bureaucratic initiative and inertia.
 
-The second thing is, the good news is there's a large ecosystem in the private sector of ties between American and Indian firms, funds, VCs, Silicon Valley and Bangalore and so on.  
+The second thing is, the good news is there's a large ecosystem in the private sector of ties between American and Indian firms, funds, VCs, Silicon Valley and Bangalore and so on.
 
-But as we've discovered in the U.S.-China relationship, that can be kind of a weak read in the face of political risk.  
+But as we've discovered in the U.S.-China relationship, that can be kind of a weak read in the face of political risk.
 
-I mean, the reality is, as you know:  
-- The **U.S. and China** were vastly more intertwined than the U.S. and India were at the corporate level,  
-- At the level of investment flows,  
-- And even at the societal level.  
+I mean, the reality is, as you know:
+- The **U.S. and China** were vastly more intertwined than the U.S. and India were at the corporate level,
+- At the level of investment flows,
+- And even at the societal level.
 
-There are a lot of Indian students in the United States, but there have been periods where there were far more **Chinese students** in the United States. And yet that came unraveled pretty quickly.  
+There are a lot of Indian students in the United States, but there have been periods where there were far more **Chinese students** in the United States. And yet that came unraveled pretty quickly.
 
-So political risk matters, and I don't think it's easy to just bank on societal connections as if the politics doesn't matter.  
+So political risk matters, and I don't think it's easy to just bank on societal connections as if the politics doesn't matter.
 
-And that brings me to the third point.   
+And that brings me to the third point.
 
-**James Baker**, who is a former Secretary of State who I really admire, wrote a memoir many years ago, and he titled it *The Politics of Diplomacy*. And part of why he titled it that way is that he argued in the book, as he always argued, that foreign policy ultimately had to be anchored in a pretty firm domestic political foundation.  
+**James Baker**, who is a former Secretary of State who I really admire, wrote a memoir many years ago, and he titled it *The Politics of Diplomacy*. And part of why he titled it that way is that he argued in the book, as he always argued, that foreign policy ultimately had to be anchored in a pretty firm domestic political foundation.
 
-And two of the lessons that I've learned in my career are that, generally speaking, in every country, **domestic politics always trumps foreign policy at the end of the day**.  
+And two of the lessons that I've learned in my career are that, generally speaking, in every country, **domestic politics always trumps foreign policy at the end of the day**.
 
 And second, foreign policy initiatives never fly if they aren't anchored domestically in a pretty strong firmament.
-And so everything we've been talking about, this **politicization of U.S.-India relations**, the fact that governments can be attacked by opponents domestically, what's happening in India with allusions to the government not being, _quote-unquote_, **weak**, or here with the MAGA right turning anti-India, those things are very debilitating because they make the political foundation of foreign policy kind of like **quicksand**. 
+And so everything we've been talking about, this **politicization of U.S.-India relations**, the fact that governments can be attacked by opponents domestically, what's happening in India with allusions to the government not being, _quote-unquote_, **weak**, or here with the MAGA right turning anti-India, those things are very debilitating because they make the political foundation of foreign policy kind of like **quicksand**.
 
 And once you end up there, it's very hard to drive forward just in the foreign policy domain.
 
@@ -388,46 +388,46 @@ You know, earlier, you brought up this idea of **signaling versus maybe strategy
 What steps do you see as mostly sort of **performative bargaining chips**, and which could actually lock in durable realignment at all? I mean, are there things like:
 
 - energy contracts or payments,
-- plumbing through BRICS,  
+- plumbing through BRICS,
 - development of deeper tech relationships
 
 that Washington maybe really ought to worry about more?
 
 Well, first, I think we need to separate Russia and China in **India's strategic thinking and foreign...**
-**Policy.** They have a very longstanding, and for some people in **India**, actually quite emotionally resonant relationship with **Russia** that the Ukraine invasion has really not shaken at all.  
+**Policy.** They have a very longstanding, and for some people in **India**, actually quite emotionally resonant relationship with **Russia** that the Ukraine invasion has really not shaken at all.
 
-So, **Mr. Doval**, the **National Security Advisor**, went to **Moscow**. **Mr. Jaishankar**, the **External Affairs Minister**, has been to Moscow recently. The timing of that might or might not have been pre-planned, but in any case, the signaling to **Washington**, particularly of the fact that **India's invited President Putin to visit India this year is unmistakable**, given the fact that the **United States has layered additional penalties on India that are directly related to purchasing oil from Russia**.  
+So, **Mr. Doval**, the **National Security Advisor**, went to **Moscow**. **Mr. Jaishankar**, the **External Affairs Minister**, has been to Moscow recently. The timing of that might or might not have been pre-planned, but in any case, the signaling to **Washington**, particularly of the fact that **India's invited President Putin to visit India this year is unmistakable**, given the fact that the **United States has layered additional penalties on India that are directly related to purchasing oil from Russia**.
 
-So that part is **strategic signaling**, but it's within the context of a relationship that the Indians were never going to junk. It's not just emotional for India with Russia. The Indians have had a broad geopolitical interest in trying to preserve the ability to poke some wedges between Russia and China, particularly as the **Russia-China relationship has become closer and ever closer**.  
+So that part is **strategic signaling**, but it's within the context of a relationship that the Indians were never going to junk. It's not just emotional for India with Russia. The Indians have had a broad geopolitical interest in trying to preserve the ability to poke some wedges between Russia and China, particularly as the **Russia-China relationship has become closer and ever closer**.
 
-I think there is a view in **Delhi** that there's the potential for **Russia-China collusion**, particularly in India's immediate strategic geography. The most resonant example of that is **Pakistan**, because China has a very unique and special relationship of its own with Pakistan.  
+I think there is a view in **Delhi** that there's the potential for **Russia-China collusion**, particularly in India's immediate strategic geography. The most resonant example of that is **Pakistan**, because China has a very unique and special relationship of its own with Pakistan.
 
-The Russians, who always lean heavily toward India, have been playing some footsie with **Islamabad** and even with **Ralpindi**, which is where the Pakistan military headquarters is located recently, that has unsettled a lot of people in India.  
+The Russians, who always lean heavily toward India, have been playing some footsie with **Islamabad** and even with **Ralpindi**, which is where the Pakistan military headquarters is located recently, that has unsettled a lot of people in India.
 
-Because the Indians worry about Russia-China collusion and also are trying to keep an eye on a potential Russian role in **Afghanistan** that they think could cause them some trouble, they are nervous and don't want to foreclose their options with Moscow. They don't think the Americans, to be blown about it, appreciate that sufficiently.  
+Because the Indians worry about Russia-China collusion and also are trying to keep an eye on a potential Russian role in **Afghanistan** that they think could cause them some trouble, they are nervous and don't want to foreclose their options with Moscow. They don't think the Americans, to be blown about it, appreciate that sufficiently.
 
-If you rewind a few years ago, you'll remember there was this **Russia-China joint statement** that famously had a line about a so-called **no-limits partnership**. A lot of that was nonsense because obviously every partnership has limits. And as we've seen with Russia and China, there are some limits to that.  
+If you rewind a few years ago, you'll remember there was this **Russia-China joint statement** that famously had a line about a so-called **no-limits partnership**. A lot of that was nonsense because obviously every partnership has limits. And as we've seen with Russia and China, there are some limits to that.
 
-We've talked about this on the podcast before, where, for example, the Chinese didn't want to get crosswise with American sanctions on Russia. But in that same joint statement, there was a line that really stuck out in New Delhi, which was about coordination between the two of them, **Moscow and Beijing**, in neighboring, or I think they called it **adjacent regions**. From an Indian perspective, that could mean **South Asia**.  
+We've talked about this on the podcast before, where, for example, the Chinese didn't want to get crosswise with American sanctions on Russia. But in that same joint statement, there was a line that really stuck out in New Delhi, which was about coordination between the two of them, **Moscow and Beijing**, in neighboring, or I think they called it **adjacent regions**. From an Indian perspective, that could mean **South Asia**.
 
-So there are some limits on the India-Russia relationship. India has been buying a lot of weapons from the United States to reduce its reliance on Russian weaponry. Russia can't just swap in as an export market. It's a small market for India compared to the United States. But that relationship includes both signaling and a lot of strategic substance.  
+So there are some limits on the India-Russia relationship. India has been buying a lot of weapons from the United States to reduce its reliance on Russian weaponry. Russia can't just swap in as an export market. It's a small market for India compared to the United States. But that relationship includes both signaling and a lot of strategic substance.
 
-The China relationship is different because none of the trust that was built up between India and Russia over many decades is there. In fact, it's entirely absent. Rather than trying to diversify your partnerships away from a relationship of trust, in the Chinese case, what you have is a relationship of **non-trust** in which they're looking for tactical opportunities that are entirely in their self-interest.  
+The China relationship is different because none of the trust that was built up between India and Russia over many decades is there. In fact, it's entirely absent. Rather than trying to diversify your partnerships away from a relationship of trust, in the Chinese case, what you have is a relationship of **non-trust** in which they're looking for tactical opportunities that are entirely in their self-interest.
 
-We've talked a little bit about Indian relations on its northern border, **Pakistan**. What about in the so-called **Indo-Pacific role** that it has? Will New Delhi ultimately hedge back toward Washington? Or do you think that there's maybe structural shift underway there?  
+We've talked a little bit about Indian relations on its northern border, **Pakistan**. What about in the so-called **Indo-Pacific role** that it has? Will New Delhi ultimately hedge back toward Washington? Or do you think that there's maybe structural shift underway there?
 
-I mean, maybe **Quad** isn't dead. It's hard to see how Trump's tariff salvo is exactly square with U.S. messaging on this so-called Quad.  
+I mean, maybe **Quad** isn't dead. It's hard to see how Trump's tariff salvo is exactly square with U.S. messaging on this so-called Quad.
 
-But how is India reading this weird, self-inflicted American incoherence on that front?  
+But how is India reading this weird, self-inflicted American incoherence on that front?
 
-Look, it's in India's strategic interest to have balances to China:  
+Look, it's in India's strategic interest to have balances to China:
 
-- First, for itself to be a balance to China, to make the Chinese think twice about potential force-on-force conflict on the border.  
-- It's in India's interest to see the United States create balances of power in the Indo-Pacific more broadly, and particularly in **Asia's maritime spaces**.  
+- First, for itself to be a balance to China, to make the Chinese think twice about potential force-on-force conflict on the border.
+- It's in India's interest to see the United States create balances of power in the Indo-Pacific more broadly, and particularly in **Asia's maritime spaces**.
 
-There's been plenty of Indian cheering for strong security partnerships between the United States, Japan, and others in the region.  
+There's been plenty of Indian cheering for strong security partnerships between the United States, Japan, and others in the region.
 
-I think the larger issue, though, is India's own trajectory in the rest of the Indo-Pacific, particularly in the **Pacific part of the Indo-Pacific**. There, they've absolutely tried to diversify their own partnerships.  
+I think the larger issue, though, is India's own trajectory in the rest of the Indo-Pacific, particularly in the **Pacific part of the Indo-Pacific**. There, they've absolutely tried to diversify their own partnerships.
 
 On this visit that **Prime Minister Modi** is going to make up to **China**, he's also going to be visiting **Japan**, I think, on the same trip. In fact, the **India-Japan relationship**, the **India-South Korea**...
 The **India-Vietnam relationship**, including in the **weapons sales space**, and some of India's relationships in **Southeast Asia** have come a long way. The problem is that the business of East Asia, at least, is business. And the backbone for **supply chain relationships**, **integrated manufacturing relationships** isn't really there, except at the state level for some states in southern India, states like **Tamil Nadu**, that do a lot of manufacturing.
@@ -445,7 +445,7 @@ That's a game that I think India hasn't played as well as it could have to ensur
 
 You mentioned the **Quad** and these broad security partnerships. The problem with those, which is the same problem with the **BRICS** and the **Shanghai Cooperation Organization (SCO)**, by the way, is that they've become largely **form for form's sake**, and they're chasing and groping for some meaningful function rather than function driving form.
 
-I mean, they have quad summits and ministerials, and they issue a lot of communiques. But over the last five to ten years, everybody's sitting around **Washington** and other capitals having conversations like, 
+I mean, they have quad summits and ministerials, and they issue a lot of communiques. But over the last five to ten years, everybody's sitting around **Washington** and other capitals having conversations like,
 
 > "Gee, what should we do next on a quad? Maybe we should have a vaccine initiative. Maybe we should have an infrastructure finance initiative. Maybe we should do this. Maybe we should do that."
 
@@ -455,7 +455,7 @@ If you think about how the **quad began**, it started at the end of 2004 after t
 
 So nine days. They didn't have a lot of summits. They didn't have fancy schmancy ministerials or issue a bunch of communiques. They did their job. And then, after they'd succeeded in the mission, they put themselves out of business.
 
-So **function drove form**. And now we have form groping around for function. I think that's why the quad hasn't quite cohered along with the ambitions that some people have for it to become some kind of punitive Asian NATO. 
+So **function drove form**. And now we have form groping around for function. I think that's why the quad hasn't quite cohered along with the ambitions that some people have for it to become some kind of punitive Asian NATO.
 
 I mean, that's just fantasy land. Wasn't the function supposed to be simply to *contain China*? Well, it's not clear to me that the non-American members of the quad are down with that program. So that's the problem.
 
@@ -471,7 +471,7 @@ If you flip to the other side of the equation, the U.S. has dodged a bullet on t
 
 And that's really the underlying question: **When does it become more functional in ways that challenge U.S. interests?**
 
-To go back to the question you asked me earlier, what's not performative that substantively could really challenge U.S. interests? It's when those groups start to cohere around some set of functions, like, for example, 
+To go back to the question you asked me earlier, what's not performative that substantively could really challenge U.S. interests? It's when those groups start to cohere around some set of functions, like, for example,
 
 ```markdown
 - Payment systems
@@ -517,7 +517,7 @@ But then also to hope that the **India-China relationship** doesn't improve too 
 For example, China has gotten dinged by an expanded **foreign direct investment screening mechanism** in 2020, which is now pretty extensive.
 **Investment from China** is much more heavily regulated by the **security regulator in India**. You've had an **app ban on Chinese apps** in the digital space that gets into **gaming, dating**—something like **300 apps**, including gaming, dating, photo, video sharing, all the things that are popular with young people. This actually led to an unwinding of **Chinese VC investments** in Indian startups.
 
-All of that, even things like **engineering procurement construction (EPC) contracts** that Chinese firms used to do in India, there's been a lot of unwinding of those EPC contracts. 
+All of that, even things like **engineering procurement construction (EPC) contracts** that Chinese firms used to do in India, there's been a lot of unwinding of those EPC contracts.
 
 So, the good news if you're sitting in **Washington** and you're a strategic type, working for **Pete Hegseth**, is that there are probably some limits on that. But we need to watch that space because I think when you combine the performative piece with the fact that the bar is not that high, if the Chinese wanted to be a little cagier about this and smarter with India politically, I wouldn't say the sky's the limit, but there's a lot of room for improvement with China that would unsettle Americans looking at **India's strategic trajectory**.
 
@@ -529,7 +529,7 @@ Let's move on now to the segment called **"Paying It Forward."** I'd love you to
 
 ---
 
-So there's a lot of people interested in China who are also interested in **Japan**. I think, particularly among Americans, when they think about Japan, it's like this **backward-looking, closed economy** that really is progressively less globalized than it used to be. 
+So there's a lot of people interested in China who are also interested in **Japan**. I think, particularly among Americans, when they think about Japan, it's like this **backward-looking, closed economy** that really is progressively less globalized than it used to be.
 
 A lot of that view is because the Washington strategic class looks at Japan entirely through the kind of **security prism** that we were just talking about when we were talking about the **Quad**.
 
@@ -541,7 +541,7 @@ If you think about whether Japan has models that can be exported and scaled arou
 
 Kenji's got this interesting stuff that he's writing about technology, innovation, and startups through two projects:
 
-- **Startup Japan**  
+- **Startup Japan**
 - **Innovative Japan, Global Japan**
 
 It really flips the script on a lot of the ways that we think about Japan, particularly as China specialists who think about China as global and multinational and Japan as the opposite.
@@ -552,7 +552,7 @@ It really flips the script on a lot of the ways that we think about Japan, parti
 
 **Marc Thiessen:** Yeah, absolutely. Or if you go to the Asia part of the Carnegie webpage, there's a whole build-out on the Japan stuff, the title of which is **Innovative Japan, Global Japan**, which in itself flies in the face of the idea of a non-innovative, hidebound, backward-looking, and very closed Japan.
 
-**Marc Thiessen:** Provincial, yeah.  
+**Marc Thiessen:** Provincial, yeah.
 
 **Marc Thiessen:** Yes, it's meant to be.
 
@@ -564,7 +564,7 @@ It really flips the script on a lot of the ways that we think about Japan, parti
 
 There's this view that countries like **Vietnam** that are deeply skeptical of China or have had a lot of conflicts with China—as we were just talking about with India, for example—somehow that historic mistrust makes the improvement in relations impossible. But actually, they've done some work on Vietnam lately that showcases two things that really fly in the face of conventional wisdom:
 
-1. While the US is the **external partner of choice** for Vietnam on security,  
+1. While the US is the **external partner of choice** for Vietnam on security,
 2. The **internal partner** for Vietnam is actually China, because Vietnam, like China, is ruled by a **communist party that now is run largely by cops and guys with a security** background.
 Background who love to crack down on dissent and love **surveillance equipment** and love a lot of the stuff that **China** is pushing. And so **Vietnam** and China actually are a lot more copacetic on **internal security** and at party-to-party level than I think that conventional debate presumes.
 

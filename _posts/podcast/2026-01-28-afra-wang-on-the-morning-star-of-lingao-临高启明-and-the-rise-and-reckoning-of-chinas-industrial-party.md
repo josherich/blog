@@ -2,7 +2,7 @@
 layout: post
 title: "Afra Wang on The Morning Star of Lingao (临高启明) and the Rise and Reckoning of China's Industrial Party"
 date: 2026-01-28 00:00:01
-categories: podcast sinica-podcast
+categories: podcast sinica
 tags: [podcast_script]
 ---
 

@@ -2,7 +2,7 @@
 layout: post
 title: "Long Live Context Engineering - with Jeff Huber of Chroma"
 date: 2025-08-19 00:00:01
-categories: podcast latent-space-the-ai-engineer-podcast
+categories: podcast latent-space
 tags: [podcast_script]
 ---
 
@@ -29,17 +29,17 @@ But I think the reason that **Chroma got started** is because we had worked for 
 
 It felt a lot more like **alchemy**.
 
-There's some good, like, **XKCD memes** about this guy standing on top of a giant steaming pile of garbage, and the other character asks, 
+There's some good, like, **XKCD memes** about this guy standing on top of a giant steaming pile of garbage, and the other character asks,
 
-> "This is your data system?" 
+> "This is your data system?"
 
-And he's like, 
+And he's like,
 
-> "Yes." 
+> "Yes."
 
-He's like, 
+He's like,
 
-> "How do you know if it's good? Or how do you make it better?" 
+> "How do you know if it's good? Or how do you make it better?"
 
 You just, like, stir the pot, and then, like, see if it gets any better. That just seemed intrinsically wrong. And this is back in, like, **2021, 2022** that we were having these conversations.
 
@@ -68,7 +68,7 @@ What we realized along the way was **search was really a key workload to how AI 
 
 That requires maniacal focus, and so that's really what we've been doing for the last few years.
 
-That was a long kind of rambling introduction, but maybe to sort of land the plane, if you ask people, what does **Chroma do today?** 
+That was a long kind of rambling introduction, but maybe to sort of land the plane, if you ask people, what does **Chroma do today?**
 
 We build a **retrieval engine for AI applications**. We're working on modern search infrastructure for AI, some version of that.
 
@@ -115,7 +115,7 @@ Can you maybe give people advice on, in the **AI space**, how to be patient as a
 
 There are different ways to build a startup. And so, you know, there are different schools of thought here.
 
-- One school of thought certainly is **"find signal and kind of follow the gradient descent of what people want,"** sort of lean startup style.  
+- One school of thought certainly is **"find signal and kind of follow the gradient descent of what people want,"** sort of lean startup style.
   My critique of that would be that if you follow that methodology, you will probably end up building a **dating app for middle schoolers**, because that just seems to be the lowest base take of what humans want to some degree. The slot machine would be the AI equivalent of that.
 
 - The other way to build a startup is to have a very strong view, presumably a **contrarian view**, or at least a view that seems like a secret. And then to just be **maniacally focused** on that thing.
@@ -142,8 +142,8 @@ Do you feel like that helps you bring people that are more aligned with the visi
 
 And maybe, yeah, any learning that you have from recruiting early on?
 
-The upstream version of **Conway's Law**:  
-> *"You ship your org chart, is you ship your culture."*  
+The upstream version of **Conway's Law**:
+> *"You ship your org chart, is you ship your culture."*
 
 Because I think your org chart is downstream of your company's culture.
 
@@ -168,28 +168,28 @@ We'll talk about standard foundation and all the other fun stuff towards the end
 I always want to put some headline numbers up front.
 So I'm just trying to do a better job of giving people the **brain dump** on what they should know about **Chroma**.
 
-- **Five million monthly downloads** is what I have on **PyPI**.  
-- And **21,000 GitHub stars**.  
+- **Five million monthly downloads** is what I have on **PyPI**.
+- And **21,000 GitHub stars**.
 
 Anything else people should know? Like, that's the typical sales call headline stuff.
 
-Yeah.  
-Yeah, **20,000 GitHub stars**.  
-**Five million plus monthly downloads**. I've looked at the number recently. I think it's over **60 or 70 million all-time downloads** now.  
+Yeah.
+Yeah, **20,000 GitHub stars**.
+**Five million plus monthly downloads**. I've looked at the number recently. I think it's over **60 or 70 million all-time downloads** now.
 
-For many years running, **Chroma's been the number one used project**.  
-Yeah.  
+For many years running, **Chroma's been the number one used project**.
+Yeah.
 Broadly, but also within communities like **LinkChain** and **Llama Index**.
 
-Okay, cool. Fair enough.  
+Okay, cool. Fair enough.
 Yeah, I think when you say **single-node Chroma**, I think you're describing the core difference between what **Chroma Cloud has been**. I think we're releasing this in line with your GA in **Chroma Cloud**.
 
 Yes. So, like, what should people know about **Chroma Cloud** and how you've developed this experience from the start? You mentioned **separation of storage and compute**. What is that?
 
-Yeah, 100 percent.  
-**Chroma's known for its developer experience**. I don't know that we were the first to do this. I think we were.  
+Yeah, 100 percent.
+**Chroma's known for its developer experience**. I don't know that we were the first to do this. I think we were.
 
-With Chroma, you just  
+With Chroma, you just
 
 ```bash
 pip install ChromaDB
@@ -197,12 +197,12 @@ pip install ChromaDB
 
 and then you can use it. It's just like in memory. I think it may be the first. You can persist. It could be the first database to ever be pip installable.
 
-Any SQLite wrapper is pip installable, technically, you know?  
+Any SQLite wrapper is pip installable, technically, you know?
 No, SQLite was not pip installable, even to that state, I don't think. You probably have a deeper dive knowledge of this. I'm just speculating myself.
 
-Yeah. So that led to a very seamless onboarding experience for new users, because you could just run a command and then you could use it.  
+Yeah. So that led to a very seamless onboarding experience for new users, because you could just run a command and then you could use it.
 
-We did all the work to make sure that regardless of the deployment target or architecture you were running it on, it would just work. In the early days, people did really good stuff, like run it on **Arduinos** and **PowerPC architectures**, really esoteric stuff.  
+We did all the work to make sure that regardless of the deployment target or architecture you were running it on, it would just work. In the early days, people did really good stuff, like run it on **Arduinos** and **PowerPC architectures**, really esoteric stuff.
 
 We would go the extra mile to make sure that it worked everywhere, and it just always worked. So that was **Chroma single node**.
 
@@ -210,31 +210,31 @@ Going back to the developer experience that we wanted in a cloud product, we fel
 
 So what that meant was having a version of the product where you don't have to be forced to think about:
 
-- How many nodes you want  
-- How to size those nodes  
-- Your sharding strategy  
-- Backup strategy  
-- Data tiering strategy  
+- How many nodes you want
+- How to size those nodes
+- Your sharding strategy
+- Backup strategy
+- Data tiering strategy
 
-Or I could go on.  
+Or I could go on.
 
 It just wasn't good enough. It needed to be:
 
-- **Zero config**  
-- **Zero knobs to tune**  
-- Always fast  
-- Very cost-effective  
-- Always fresh  
+- **Zero config**
+- **Zero knobs to tune**
+- Always fast
+- Very cost-effective
+- Always fresh
 
 Without you having to do or think about anything, regardless of how your traffic and data scale up and down.
 
-That was the motivating criteria.  
+That was the motivating criteria.
 
 It also had to be **usage-based billing**, which was really important because that's so fair. We only charge you for the minimal slice of compute that you use, nothing more — which not all serverless databases can claim. But it is true inside Chroma: we truly only charge you for the narrow slice you use.
 
 So that was the criteria we entered the design process with. De facto, you're also building a **serverless compute platform**.
 
-Yeah, you have to.  
+Yeah, you have to.
 No, exactly. That motivated the design of **Chroma Distributed**.
 
 **Chroma Distributed** is part of the same **monorepo**. That's open source, **Apache 2**. The control and data plane are both fully open source, Apache 2 licensed.
@@ -254,17 +254,17 @@ I think everybody now is talking about **context engineering**. Can you give the
 
 I think something that's incredibly important when a new market is emerging is **abstractions and the primitives** that you use to reason about that thing. And AI, I think, in part of its hype, has also had a lot of primitives and abstractions that have gotten thrown around and have led to a lot of developers not actually being able to think critically about:
 
-- What is this thing?  
-- How do I put it together?  
-- What problems can I solve?  
-- What matters?  
+- What is this thing?
+- How do I put it together?
+- What problems can I solve?
+- What matters?
 - Where should I spend my time?
 
-For example, the term **rag**, we never use the term rag. Like, I hate the term rag. Yeah, I killed the rag track partially because of your influence. Thank you. Thank you.  
+For example, the term **rag**, we never use the term rag. Like, I hate the term rag. Yeah, I killed the rag track partially because of your influence. Thank you. Thank you.
 
 A, it's just **retrieval**, first of all. Like, retrieval, abandoned generation are three concepts put together into one thing. Like, it's just really confusing. And, of course, rag got known now as he's branded as, like, you know, oh, you're just using single dense vector search, and that's what rag is. It's also dumb.
 
-I think one of the reasons I was really excited about the term, I mean, obviously, **AI engineering**, which you did a ton of work for. Like, context engineering is, in some ways, a subset of AI engineering. Like, what is it? It's a high-status job. 
+I think one of the reasons I was really excited about the term, I mean, obviously, **AI engineering**, which you did a ton of work for. Like, context engineering is, in some ways, a subset of AI engineering. Like, what is it? It's a high-status job.
 
 **Context engineering** is the job of figuring out what should be in the **context window** any given **LLM generation** step. And there's both an inner loop, which is setting up the infrastructure, you know, what should be in the context window this time. And there's the outer loop, which is how do you get better over time at filling the context window with only the relevant information.
 
@@ -278,7 +278,7 @@ Particularly, I would feel like a lot of pieces I've read, a lot of it focuses o
 
 No. I mean, there's interesting agent implications of, like, you know, agent learning. You know, can agents kind of learn from their interactions, which maybe are less relevant and, like, static sort of knowledge-based corpuses chat your documents, obviously.
 
-Then again, like, you know, I think you could make the argument that even, like, chat your document use cases, like, should get better with more interactions. I don't draw a distinction between agent and non-agent. I don't actually know what agent means still, but. Again, affirmatives, abstractions, words, they matter. I don't know. Like, **what does agent mean?** I don't know.  
+Then again, like, you know, I think you could make the argument that even, like, chat your document use cases, like, should get better with more interactions. I don't draw a distinction between agent and non-agent. I don't actually know what agent means still, but. Again, affirmatives, abstractions, words, they matter. I don't know. Like, **what does agent mean?** I don't know.
 
 Well, there's many definitions out there. Exactly. I've taken a stab. Most terms that can mean anything are just a vehicle for people's hopes and fears. Yeah. I think, you know, agent is the same thing. For sure.
 
@@ -288,10 +288,10 @@ One thing I definitely will call out for context engineering or context rot in g
 
 Yeah. Yeah. So, maybe to back up a little bit, the way that we came to work on this research was we were looking, actually, at **agent learning**. So, we were very curious, like, could you give agents access to, like, prior successes or prior failures? And if you did, would that help boost agent performance?
 
-So, we were specifically looking at a couple different data sets, 
+So, we were specifically looking at a couple different data sets,
 
 ```markdown
-- SuiteBench  
+- SuiteBench
 - Inclusive
 ```
 And we started seeing interesting patterns where, on sort of **multi-turn agent interactions** where you're giving it the whole conversation window, the **number of tokens explodes extremely quickly**.
@@ -439,9 +439,9 @@ And so using an LLM as a **re-ranker** and brute forcing from 300 down to 30, I'
 
 I've heard of people that are running models themselves that are getting like a penny per million input tokens. And like the output token cost is basically zero because it's like a, you know, the simplest.
 
-**These are dedicated re-ranker models, right? Not full LLMs.**  
-No, these are **LLMs**.  
-Oh, okay. They're just using LLMs as re-rankers.  
+**These are dedicated re-ranker models, right? Not full LLMs.**
+No, these are **LLMs**.
+Oh, okay. They're just using LLMs as re-rankers.
 Okay.
 
 And of course there are also dedicated re-ranker models that by definition are going to be so like cheaper because they're much smaller and faster because they're much smaller.
@@ -491,7 +491,7 @@ And so, yeah, I think that's how I sort of think about regex, indexing, and embe
 
 When you say that code embeddings are underrated, what do you think that is? Most people just take **generic embedding models** that are trained on the internet, and try to use them for code. It works okay for some use cases. But does it work great for all use cases? I don't know.
 
-Another way to think about these different primitives and what they're useful for is fundamentally that we're trying to find **signal**. 
+Another way to think about these different primitives and what they're useful for is fundamentally that we're trying to find **signal**.
 
 - **Text search** works really well.
 - **Lexical search**, text search, works really well when the person who's writing the query knows the data.
@@ -524,136 +524,136 @@ If you really invest in **trying to extract as much signal** and kind of pre-bre
 
 But also, just because we're here, it's worth saying:
 
-- People should be creating small **golden data sets** of what queries they want to work and what chunks should return.  
-- Then, they can quantitatively evaluate what matters.  
-- Maybe you don't need to do a lot of fancy stuff for your application.  
+- People should be creating small **golden data sets** of what queries they want to work and what chunks should return.
+- Then, they can quantitatively evaluate what matters.
+- Maybe you don't need to do a lot of fancy stuff for your application.
 - It's entirely possible that, again, just using **regex** or just using **vector search**, depending on the use case, that's maybe all you need.
 
-I guess, again, anybody who's claiming to know the answer, you should, the first thing you should ask is, 
+I guess, again, anybody who's claiming to know the answer, you should, the first thing you should ask is,
 
 > "Let me see your data."
 
 And then if they don't have any data, then you have your answer already.
 
-I'll give a plug to a talk that you gave at the conference, **how to look at your data.**  
-Yes, looking at your data is important, having golden data sets.  
+I'll give a plug to a talk that you gave at the conference, **how to look at your data.**
+Yes, looking at your data is important, having golden data sets.
 
 So these are all good practices that I feel like somebody should put into a little pamphlet, call it the **Ten Commandments of AI Engineering** or something.
 
-Okay, you might do that, yeah.  
+Okay, you might do that, yeah.
 **Thou shalt look at your data.**
 
 We're about to move on to memory, but I want us to sort of leave space for any other threads that you feel like you always want to get on a soapbox about.
 
-That's dangerous.  
+That's dangerous.
 That's a dangerous thing to ask.
 
-I have one to key off of, because I think I didn't know where to insert this in the conversation, but we're kind of skirting near it.  
+I have one to key off of, because I think I didn't know where to insert this in the conversation, but we're kind of skirting near it.
 That I'm trying to explore, which is, you know, I think you had this rant about **RA and G,** where the original transformer was sort of like an **encoder-decoder architecture.**
 
 Then **GPT** turns most transformers into **decoder-only,** but then we're also encoding with all the embedding models as **encoder-only models.**
 
-So in some sense, we sort of decoupled the transformer into:  
-1. First, we encode everything with the encoder-only model, put it into a vector database like **Chroma**.  
-2. And Chroma also does other stuff, but, you know.  
-3. Then we decode with the **LLMs.**  
+So in some sense, we sort of decoupled the transformer into:
+1. First, we encode everything with the encoder-only model, put it into a vector database like **Chroma**.
+2. And Chroma also does other stuff, but, you know.
+3. Then we decode with the **LLMs.**
 
-And I just think it's a very interesting meta-learning about the overall architecture.  
+And I just think it's a very interesting meta-learning about the overall architecture.
 Like, it is stepping out of just the model to models and system.
 
 And I'm curious if you have any reflections on that, or if you have any modifications to what I just said.
 
 I think there's some intuition there, which is, like, the way we do things today is very crude, and we'll feel very caveman in five or ten years.
 
-You know, why aren't we just, why are we going back to natural language?  
+You know, why aren't we just, why are we going back to natural language?
 Why aren't we just, like, passing the embeddings directly to the models who are just going to functionally re-put it into latent space, right?
 
 Yeah, they have a very thin **embedding layer,** yeah.
 
 So I think there are a few things that I think might be true about retrieval systems in the future.
 
-1. They just stay in **latent space.** They don't go back to natural language.  
+1. They just stay in **latent space.** They don't go back to natural language.
 2. Instead of doing, like, this is actually starting out to change, which is really exciting. But for the longest time, we've done **one retrieval per generation.**
 
 If you retrieve, and then you stream out a number of tokens, like, why are we not continually retrieving?
 
-Yeah.  
+Yeah.
 As we need to.
 
-Agentic reg.  
-Don't call it that.  
-Stop.  
+Agentic reg.
+Don't call it that.
+Stop.
 Stop.
 
-But there was a paper, or a paper in a GitHub that came out a few weeks ago.  
-I think it was called, unfortunately, **RAG are 1,** where they teach DeepSeek-R1, kind of give it the tool of how to retrieve.  
+But there was a paper, or a paper in a GitHub that came out a few weeks ago.
+I think it was called, unfortunately, **RAG are 1,** where they teach DeepSeek-R1, kind of give it the tool of how to retrieve.
 
 And so, kind of in its internal chain of thought, in its infinite times compute, it's actually searching.
 
-There's also **retrieval augmented language models.**  
-I think this is an older paper.  
+There's also **retrieval augmented language models.**
+I think this is an older paper.
 
 Yeah, there's a bunch of Realm and Retro, and it's kind of a long history here.
 
-So, I think that, you know, somehow not that popular.  
+So, I think that, you know, somehow not that popular.
 I don't know why. Somehow not that popular.
 
 Well, a lot of those have the problem where either the retriever or the language model has to be frozen, and then the corpus can't change, which most developers don't want to deal with in the developer experience around.
 
-I would say, like, we'd do it if the gains were that high, or the labs don't want you to do it.  
+I would say, like, we'd do it if the gains were that high, or the labs don't want you to do it.
 I don't know about that.
 
-Yeah.  
-Because the labs have a huge amount of influence.  
+Yeah.
+Because the labs have a huge amount of influence.
 The labs have a huge amount of influence.
 
-I think it's also just, like, you don't get points on the board by doing that well.  
-You're just like, no one cares.  
+I think it's also just, like, you don't get points on the board by doing that well.
+You're just like, no one cares.
 The status games don't reward you for solving their problem.
 
 So, yeah.
 
-So, broadly, continual retrieval, I think, will be interesting to see coming out of the scene, number one.  
+So, broadly, continual retrieval, I think, will be interesting to see coming out of the scene, number one.
 Number two, staying in a **latent space** will be very interesting.
-And then, yeah, there's some interesting stuff also about, kind of, like, **GPUs** and how you're, kind of, like, paging information into memory on **GPUs** that I think can be done, like, much more efficiently.  
+And then, yeah, there's some interesting stuff also about, kind of, like, **GPUs** and how you're, kind of, like, paging information into memory on **GPUs** that I think can be done, like, much more efficiently.
 
-And this is more, like, five or ten years in the future that we're kind of thinking about. But, yeah, I think when we look back and think that this was, like, **hilariously crude**, the way we do things today. Maybe, maybe not. You know, we're solving **IMO challenges with just language**. Yeah, it's great. I'm still a little working on the implications of that. Like, it's still a huge achievement. But also very different than how I thought we would do things.  
+And this is more, like, five or ten years in the future that we're kind of thinking about. But, yeah, I think when we look back and think that this was, like, **hilariously crude**, the way we do things today. Maybe, maybe not. You know, we're solving **IMO challenges with just language**. Yeah, it's great. I'm still a little working on the implications of that. Like, it's still a huge achievement. But also very different than how I thought we would do things.
 
-You said that **memory is the benefit of context engineering**. I think there's... You had a rant on Twitter about,  
-> "stop making memory for AI so complicated."  
+You said that **memory is the benefit of context engineering**. I think there's... You had a rant on Twitter about,
+> "stop making memory for AI so complicated."
 
-How do you think about memory? And what are, like, maybe the other benefits of **context engineering** that maybe we were not connecting together?  
+How do you think about memory? And what are, like, maybe the other benefits of **context engineering** that maybe we were not connecting together?
 
-I think **memory is a good term**. It is very legible to a wide population. Again, this is sort of just continuing the **anthropomorphization of LLMs**.  
+I think **memory is a good term**. It is very legible to a wide population. Again, this is sort of just continuing the **anthropomorphization of LLMs**.
 
-You know, we ourselves understand how we are, we as humans use memory. We're very good at, well, some of us are very good at using memory to learn how to do tasks. And then those learnings being, like, flexible to new environments.  
+You know, we ourselves understand how we are, we as humans use memory. We're very good at, well, some of us are very good at using memory to learn how to do tasks. And then those learnings being, like, flexible to new environments.
 
-And, you know, the idea of being able to, like, take an AI, sit down next to an AI, and then instruct it for 10 minutes or a few hours and kind of just, like, tell it what you want it to do. And it does something, and you say,  
-> "hey, I actually do this next time,"  
+And, you know, the idea of being able to, like, take an AI, sit down next to an AI, and then instruct it for 10 minutes or a few hours and kind of just, like, tell it what you want it to do. And it does something, and you say,
+> "hey, I actually do this next time,"
 
-the same that you would with a human. At the end of that 10 minutes, at the end of those few hours, the AI is able to do it now. And the same level of reliability that a human could do it, like, is an incredibly attractive and exciting vision. And I think that that will happen.  
+the same that you would with a human. At the end of that 10 minutes, at the end of those few hours, the AI is able to do it now. And the same level of reliability that a human could do it, like, is an incredibly attractive and exciting vision. And I think that that will happen.
 
-And I think that memory, again, is, like, the memory is the term that, like, everybody can understand. Like, we all understand, our moms all understand. And the benefits of memory are also very appealing and very attractive.  
+And I think that memory, again, is, like, the memory is the term that, like, everybody can understand. Like, we all understand, our moms all understand. And the benefits of memory are also very appealing and very attractive.
 
-But what is memory under the hood? It's still just **context engineering**, I think, which is the domain of how do you put the right information into the context window. And so, yeah, I think of memory as the benefit. Context engineering is the tool that gives you that benefit.  
+But what is memory under the hood? It's still just **context engineering**, I think, which is the domain of how do you put the right information into the context window. And so, yeah, I think of memory as the benefit. Context engineering is the tool that gives you that benefit.
 
-And there may be stuff as well. I mean, maybe there's some version of memory where it's, like, oh, you're actually, like, using RL to improve the model through data scene. And so, I'm not suggesting that, like, only changing the context is the only tool which, you know, gives you great performance on tasks. But I think it's a very important part.  
+And there may be stuff as well. I mean, maybe there's some version of memory where it's, like, oh, you're actually, like, using RL to improve the model through data scene. And so, I'm not suggesting that, like, only changing the context is the only tool which, you know, gives you great performance on tasks. But I think it's a very important part.
 
-Do you see a big difference between synthesizing the memory, which is, like, based on this conversation, what is the implicit preference? Yeah. That's one side. And then there's the other side, which is, based on this prompt, what are the memories that I should put in?  
+Do you see a big difference between synthesizing the memory, which is, like, based on this conversation, what is the implicit preference? Yeah. That's one side. And then there's the other side, which is, based on this prompt, what are the memories that I should put in?
 
-I think they will be all fed by the same data. So, the same feedback signals that tell you how to retrieve better will also tell you what to remember better. So, I don't think they're actually different problems. I think they're the same problem.  
+I think they will be all fed by the same data. So, the same feedback signals that tell you how to retrieve better will also tell you what to remember better. So, I don't think they're actually different problems. I think they're the same problem.
 
-To me, the thing I'm wrestling with a little more is just what are the structures of memory, if that makes sense. So, there's, like, obviously, all these analogies with, like, long-term memory, short-term memory, letters trying to coin something around sleep.  
+To me, the thing I'm wrestling with a little more is just what are the structures of memory, if that makes sense. So, there's, like, obviously, all these analogies with, like, long-term memory, short-term memory, letters trying to coin something around sleep.
 
-I do think that there definitely should be some sort of batch collection cycle, maybe sort of **garbage collection cycle** where it's, like, where the **LLM is sleeping**. But I don't know what makes sense. Like, we're making all these analogies based on what we think, how we think humans work.  
+I do think that there definitely should be some sort of batch collection cycle, maybe sort of **garbage collection cycle** where it's, like, where the **LLM is sleeping**. But I don't know what makes sense. Like, we're making all these analogies based on what we think, how we think humans work.
 
-Yeah. But maybe AI doesn't work the same way. Yeah. I'm curious about anything that you've seen that's working.  
+Yeah. But maybe AI doesn't work the same way. Yeah. I'm curious about anything that you've seen that's working.
 
-Yeah, I always, again, you know, as a through line of this conversation, I always get a little bit nervous when we start creating new concepts and new acronyms for things.  
+Yeah, I always, again, you know, as a through line of this conversation, I always get a little bit nervous when we start creating new concepts and new acronyms for things.
 
-And then, all of a sudden, there's, you know, info charts that are, like, here are the **10 types of memory**. And you're, like, why? These are actually, if you squint, the same thing. Like, do they have to be different, you know? Like, you have to blow the people's minds. No, I don't think you do. I don't know. You got to resist the slot machine. The slot and the sloth machine.  
+And then, all of a sudden, there's, you know, info charts that are, like, here are the **10 types of memory**. And you're, like, why? These are actually, if you squint, the same thing. Like, do they have to be different, you know? Like, you have to blow the people's minds. No, I don't think you do. I don't know. You got to resist the slot machine. The slot and the sloth machine.
 
-Has always been a useful concept in— even in **databases**. In databases on your computer, we all remember running **defrag** on our **Windows machines** in a 1098. And, you know, so, yeah, again. Some of us not old enough to do that. I am. Not at this table.  
+Has always been a useful concept in— even in **databases**. In databases on your computer, we all remember running **defrag** on our **Windows machines** in a 1098. And, you know, so, yeah, again. Some of us not old enough to do that. I am. Not at this table.
 
 And, yeah, so, obviously, **offline processing is helpful**. And I think that is also helpful in this case. And as we were talking about before, like, what is the goal of indexing?
 The goal of **indexing** is to trade **write-time performance** for **query-time performance**.
@@ -692,7 +692,7 @@ We sort of did a whole technical report and proved a strategy for doing that wel
 
 Yeah, I'll throw a plus one on that. I think as much attention as the **Context Rock paper** is getting, I feel like **generative benchmarking** was a bigger aha moment for me, just because I never came across the concept before. I think more people will apply it to their own personal situations.
 
-Whereas Context Rock is just generally, like, 
+Whereas Context Rock is just generally, like,
 
 > "Don't trust the models that much, but there's not much you can do about it, except do better context engineering."
 
@@ -755,8 +755,8 @@ I think increasingly modern society is **nihilist**. Nothing matters. It's a **a
 
 And to start things that like, they may not actually see complete in their lifetimes. Like it used to be commonplace that people would start projects that would take centuries to complete.
 
-- **Examples like the Sagrada Familia in Barcelona** come to mind, which I think was started like 300 years ago and is completing next year.  
-- I've seen it in construction, but I can't wait to see it completed as well.  
+- **Examples like the Sagrada Familia in Barcelona** come to mind, which I think was started like 300 years ago and is completing next year.
+- I've seen it in construction, but I can't wait to see it completed as well.
 - I'm sure the places are booked out already.
 
 Yeah. And so, you know, it's common. There are actually, you know, a lot of like **religions in Silicon Valley**. I think **AGI is also a religion**.
@@ -780,7 +780,7 @@ Anyway, I do think like you're one of the more prominent ones that I, that I kno
 
 I don't know. You know, people should believe in something bigger than themselves and build for planting trees under which they will not sit.
 
-> Am I mangling the quote?  
+> Am I mangling the quote?
 > Is that actually a biblical quote?
 
 I don't think it's a biblical quote, but I like that quote. That's a good one. So yeah. Plus one.
@@ -800,10 +800,10 @@ I think, I mean, it's cliche to describe **Patrick Collison** quotes, but he doe
 
 > "How you do one thing is how you do everything."
 
-I'm not sure this is a direct quote from him to be clear. This is more of just a broad aphorism, but like how you do one thing is how you do everything. And just ensuring that there's a consistent experience of what we're doing, where, like you said,  
-- if you come to our office, it feels intentional and thoughtful.  
-- if you go to our website, it feels intentional and thoughtful.  
-- if you use our API, it feels intentional and thoughtful.  
+I'm not sure this is a direct quote from him to be clear. This is more of just a broad aphorism, but like how you do one thing is how you do everything. And just ensuring that there's a consistent experience of what we're doing, where, like you said,
+- if you come to our office, it feels intentional and thoughtful.
+- if you go to our website, it feels intentional and thoughtful.
+- if you use our API, it feels intentional and thoughtful.
 - if you go through an interview process, it feels intentional and purposeful.
 
 I think that's so easy to lose. It's just so easy to lose that. And in some ways, the only way that you keep that is by insisting on that standard remain. And I think that that is like one of the main things that I can do really for the company, like as a leader. It's sort of cringe to say, but like you do kind of have to be like the curator of taste.
@@ -812,8 +812,8 @@ It's not that I have to stamp everything that goes out the door before it does, 
 
 And like, you know, they turn that up to 11 and then the brand becomes incoherent.
 
-- What does this thing mean?  
-- What do they stand for?  
+- What does this thing mean?
+- What do they stand for?
 
 Again, there's no longer a single voice.
 
@@ -835,7 +835,7 @@ When you say that, can you double click on low-level distributed systems? People
 
 Yeah. I mean, like that may be like a useful encapsulation of this is like, if you care deeply about things like:
 
-``` 
+```
 - Rust
 - deterministic simulation testing
 - raft

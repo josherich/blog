@@ -2,7 +2,7 @@
 layout: post
 title: "Solana’s Anatoly Yakovenko on Crypto's Next Era: Quantum, AI, and the Future of Money"
 date: 2025-09-18 00:00:01
-categories: podcast all-in-with-chamath-jason-sacks-friedberg
+categories: podcast all-in
 tags: [podcast_script]
 ---
 
@@ -44,9 +44,9 @@ When you were getting Solana off the ground, how much of it was a technical and 
 I think, you know, I can't speak for all founders, but, you know, I think founders are driven by kind of crazy vision. They have to be a little bit insane. So my insane vision is always this idea, like, imagine finance 20 to 50 years from now, the science fiction version of finance. What I imagine is:
 
 - A single giant **ledger**
-- A **single computer** for every market in the world  
-- Available in **Nairobi, New York, London, Singapore**  
-- All synchronized at the round-trip time of speed of light through fiber around the world or, you know, through **Elon satellites**  
+- A **single computer** for every market in the world
+- Available in **Nairobi, New York, London, Singapore**
+- All synchronized at the round-trip time of speed of light through fiber around the world or, you know, through **Elon satellites**
 
 That's 120 milliseconds. So a dollar can be in New York, London, Singapore, Nairobi in 120 milliseconds. So **velocity of money**, velocity of assets are as fast as physics allow.
 
@@ -60,8 +60,8 @@ Yeah. And that's fine.
 
 So I always felt that:
 
-- **Ethereum** being the world's **settlement layer**  
-- **Solana** is the world's **execution layer**  
+- **Ethereum** being the world's **settlement layer**
+- **Solana** is the world's **execution layer**
 
 And, you know, so far, so good. Execution is where all the money is made. So I think we're on the right track. And a fast execution engine can also do settlement. That's kind of a feature.
 
@@ -86,7 +86,7 @@ Of course, yeah. So we've talked to folks, I think, across the spectrum from ban
 
 And if we succeed, if the protocol is awesome and globally synchronous and super fast, NASDAQ would make more money by just running a Solana node and integrating with it more directly. So to me, it's ultimately a win-win.
 
-- We're never going to build an exchange that is onboarding U.S. institutionals and serving U.S. customers.  
+- We're never going to build an exchange that is onboarding U.S. institutionals and serving U.S. customers.
 - We want **NASDAQ** to do that and to run it on **Solana**, and that would be great.
 
 There's a common claim by the masses, meaning not everybody that's sort of all in on crypto, that it's still extremely complicated to understand. Even if it's just minting and burning or yield farming, you say it to just the normcore person and their eyes glaze over.
@@ -95,9 +95,9 @@ What's the turn in the abstraction of all of this stuff that makes crypto truly 
 
 I actually think that **the human brain has to change to adjust to it.** I agree with you. It's really complicated. But I landed in the States in 1992 from the USSR, effectively. And there's no way my parents could understand what a web link was. So whenever you have new technology, it just takes people a long time to adopt it and build a mental model for it. But now they do. They understand the web after years of using it.
 
-So I think as **stablecoins proliferate** to the back office in a lot of companies, people will figure out, 
+So I think as **stablecoins proliferate** to the back office in a lot of companies, people will figure out,
 
-> *"Oh, the secret key is actually really important. I need hardware. I need PKI. I need trusted displays."* 
+> *"Oh, the secret key is actually really important. I need hardware. I need PKI. I need trusted displays."*
 
 All of the security stuff. And they will build a mental model for cryptography, having true ownership over something that is globally transferable.
 
@@ -109,7 +109,7 @@ I think as long as we're **laser-focused on improving the product, making it fas
 
 Outside of finance, what do you think is the vertical that has the most promise over the next five years?
 
-- In crypto or in general?  
+- In crypto or in general?
 - Yeah, in crypto.
 Whether it's for **Solana** or any crypto project, where do you think people aren't putting enough attention?
 
@@ -147,7 +147,7 @@ And now the regulatory environment isn't here yet to clearly tie the success of 
 
 You need to remove a whole bunch of bottlenecks there, but the product exists. People watch that particular creator stream and go buy that coin.
 
-Once it actually looks like an investment thing that **Jason** would be like, 
+Once it actually looks like an investment thing that **Jason** would be like,
 
 > "okay, I have all legal protection to actually put money in here."
 
@@ -188,97 +188,97 @@ Our partner, **David Sachs**, launched a company a few years ago that was trying
 Tell us about what that movement is all about and what the utility is that is there if it works.
 
 So, people want **real-world assets on-chain** because there's demand for, in **DeFi**, for non-correlated assets.
-Like, if everything that is in **crypto**, all this innovation around **risk management in real-time between borrowers and lenders**, it's useless because if everything is a **meme coin**, everything is correlated, it will all crash at the same time.  
+Like, if everything that is in **crypto**, all this innovation around **risk management in real-time between borrowers and lenders**, it's useless because if everything is a **meme coin**, everything is correlated, it will all crash at the same time.
 
-There's **no hedging**. And the only free lunch in finance is **uncorrelated assets** if you have true hedging.  
+There's **no hedging**. And the only free lunch in finance is **uncorrelated assets** if you have true hedging.
 
-So, we need **real estate, bonds, insurance**, whatever have you that has **oil, exactly, commodities**, but, like, even **California fire insurance**. It would be awesome to put that on-chain because then people could actually buy insurance.  
+So, we need **real estate, bonds, insurance**, whatever have you that has **oil, exactly, commodities**, but, like, even **California fire insurance**. It would be awesome to put that on-chain because then people could actually buy insurance.
 
-All those assets, if they exist in this kind of **global, synchronized giant state machine environment**, can all be used together to reduce risk for the entire system because they're uncorrelated. And that's actually the only free lunch you can get in finance.  
+All those assets, if they exist in this kind of **global, synchronized giant state machine environment**, can all be used together to reduce risk for the entire system because they're uncorrelated. And that's actually the only free lunch you can get in finance.
 
-So, there's a lot of demand for them, and the technology is there to leverage them. Now, we just need kind of the **regulatory side to catch up**.  
-
----
-
-**Can I change tracks a little bit?** You're an engineer, you work in cryptography, have you visited quantum projects? What do you think is the state of development in quantum computing?  
-
-Everyone's got a different story, how much is kind of hype in marketing, how much is real, and what do you think is going to happen over what period of that?  
-
-**Honest answer**, I feel like **50/50 within five years, there is a quantum break**. There is a quantum breakthrough, and part of that is because of how fast AI…  
-
-**Just define breakthrough?**  
-
-Like… You can run short algorithm?  
-
-> "We should migrate Bitcoin to a quantum-resistant signature scheme."  
-
-This is my bet, and this is because we're just… so many technologies are converging right now, and this asymptotic rate AI and how fast it's accelerating going from a research paper to an implementation is astounding.  
-
-So, I would try to encourage folks to speed things up. My key for this is **Google and Apple adopt a quantum-resistant cryptographic stack**. This is the time to go migrate because now the consumer side of it is effectively solved, and you don't have to kind of…  
-
-So, you watch where Google's going?  
-
-Yeah. But, yeah, I would… I think the people… you should be worried if you're in the field, but for the general public, **quantum computing is such a massive unlock** in terms of how much we can process that it's going to be as big of a **wealth creator** if we pull it off as AI.  
-
-So, I think this is, to me, like, a lot of work, engineering work. We have the right people to do it, but, like, for everyone else, it should be, like, a huge opportunity.  
-
-But to your point, the reports on the breakthroughs on the **Willow project at Google** are driven by AI modeling and AI is unlocking a lot of the capabilities to make it real, which seems to be an accelerator. It's pretty powerful.  
+So, there's a lot of demand for them, and the technology is there to leverage them. Now, we just need kind of the **regulatory side to catch up**.
 
 ---
 
-**What's the intersection of all of that world of just AI in general and crypto?**  
+**Can I change tracks a little bit?** You're an engineer, you work in cryptography, have you visited quantum projects? What do you think is the state of development in quantum computing?
 
-This is a funny thing to ask because I feel like **AI is going to be everywhere, and crypto is going to be everywhere**, but where those lines cross is just really, really hard to pinpoint.  
+Everyone's got a different story, how much is kind of hype in marketing, how much is real, and what do you think is going to happen over what period of that?
 
-I don't want to say something lame like, 
+**Honest answer**, I feel like **50/50 within five years, there is a quantum break**. There is a quantum breakthrough, and part of that is because of how fast AI…
 
-> "Oh, we all have agents sending money around,"  
+**Just define breakthrough?**
 
-because that's kind of obvious. I mean, I think the first attempt was to kind of say maybe there are distributed networks of compute and maybe we can run distributed learning or distributed inference, but those projects really haven't taken off and really generated any momentum.  
+Like… You can run short algorithm?
 
-Yeah, not yet. And, again, because they're competing with a data center that is all co-located, that is funded with traditional finance and those things.  
+> "We should migrate Bitcoin to a quantum-resistant signature scheme."
 
-And, yeah, you can put those assets on chain, and that's a lot of ways how I think things are going to integrate.  
+This is my bet, and this is because we're just… so many technologies are converging right now, and this asymptotic rate AI and how fast it's accelerating going from a research paper to an implementation is astounding.
 
-Probably the most singularity bet we can make is you have an agent that is a creator that is like an ex-personality that you can interface with tokens and buy into and pay for the GPUs. That could be fun.  
+So, I would try to encourage folks to speed things up. My key for this is **Google and Apple adopt a quantum-resistant cryptographic stack**. This is the time to go migrate because now the consumer side of it is effectively solved, and you don't have to kind of…
+
+So, you watch where Google's going?
+
+Yeah. But, yeah, I would… I think the people… you should be worried if you're in the field, but for the general public, **quantum computing is such a massive unlock** in terms of how much we can process that it's going to be as big of a **wealth creator** if we pull it off as AI.
+
+So, I think this is, to me, like, a lot of work, engineering work. We have the right people to do it, but, like, for everyone else, it should be, like, a huge opportunity.
+
+But to your point, the reports on the breakthroughs on the **Willow project at Google** are driven by AI modeling and AI is unlocking a lot of the capabilities to make it real, which seems to be an accelerator. It's pretty powerful.
 
 ---
 
-**Bitcoin has turned out to be surprisingly resilient**, but now we're starting to see certain players, a corner of the market on large percentages of it, and that was never supposed to happen.  
+**What's the intersection of all of that world of just AI in general and crypto?**
 
-So if something like **MicroStrategy owns 6%**, that's actually maybe 50% more than that because there are so many **dead coins** out there.  
+This is a funny thing to ask because I feel like **AI is going to be everywhere, and crypto is going to be everywhere**, but where those lines cross is just really, really hard to pinpoint.
 
-Does that worry you, the centralization of Bitcoin, and does that mean there's an opportunity to start the game anew?  
+I don't want to say something lame like,
 
-I think **Bitcoin is resilient to these entities collapsing**. Now, it's not going to be without painful risk in terms of like people that own Bitcoin, but the thing is, it'll survive that. And all the properties of Bitcoin that people value will remain through that transition.  
+> "Oh, we all have agents sending money around,"
 
-So if you really value Bitcoin, you should see that as like an opportunity to own more of it.  
+because that's kind of obvious. I mean, I think the first attempt was to kind of say maybe there are distributed networks of compute and maybe we can run distributed learning or distributed inference, but those projects really haven't taken off and really generated any momentum.
 
-Even if somebody were to own 20% or 30%, it seems like there are people who actually have this intent.  
+Yeah, not yet. And, again, because they're competing with a data center that is all co-located, that is funded with traditional finance and those things.
 
-> "That's why I'm asking."  
+And, yeah, you can put those assets on chain, and that's a lot of ways how I think things are going to integrate.
+
+Probably the most singularity bet we can make is you have an agent that is a creator that is like an ex-personality that you can interface with tokens and buy into and pay for the GPUs. That could be fun.
+
+---
+
+**Bitcoin has turned out to be surprisingly resilient**, but now we're starting to see certain players, a corner of the market on large percentages of it, and that was never supposed to happen.
+
+So if something like **MicroStrategy owns 6%**, that's actually maybe 50% more than that because there are so many **dead coins** out there.
+
+Does that worry you, the centralization of Bitcoin, and does that mean there's an opportunity to start the game anew?
+
+I think **Bitcoin is resilient to these entities collapsing**. Now, it's not going to be without painful risk in terms of like people that own Bitcoin, but the thing is, it'll survive that. And all the properties of Bitcoin that people value will remain through that transition.
+
+So if you really value Bitcoin, you should see that as like an opportunity to own more of it.
+
+Even if somebody were to own 20% or 30%, it seems like there are people who actually have this intent.
+
+> "That's why I'm asking."
 
 Yeah.
 I think as long as it's an **an open global competition** to acquire **Bitcoin** and anyone can participate, and we don't end up in some kind of **regulated nightmare**, like you can't acquire gold or something like in the 70s, I think **Bitcoin would survive those kinds of shocks**.
 
 Is Bitcoin valuable enough now where it makes sense for, I guess, **North Korea does this**, but I was just going to generalize and say like **state-sponsored ways of either trying to penetrate it, hack it, take individual accounts**. It just seems like there's an **emergent trend here** of this.
 
-Its beauty is that it's the **simplest protocol you can build** because it is focused on just settlement. It's very easy to understand from an engineering point of view and proof of work is kind of a, I don't know, it is a brilliant—  
-**It's a masterpiece.**  
+Its beauty is that it's the **simplest protocol you can build** because it is focused on just settlement. It's very easy to understand from an engineering point of view and proof of work is kind of a, I don't know, it is a brilliant—
+**It's a masterpiece.**
 Yeah, it's a masterpiece in terms of like **elegance and simplicity** and it's very robust to, I think, all sorts of attacks.
 
 Now, that doesn't mean that you can't have an attack that could cause **rollback that's unexpected**, but I think it's extremely hard to pull off, very unlikely, and the internet is so super connected that it can automatically kind of respond and take action.
 
 I actually meant more just like, you know, **states targeting accounts that have large Bitcoin holdings** and trying to figure out who owns them and then just basically getting them to give them the coins. Yeah, those kind of **state-sponsored wrench attacks**.
 
-I think what we should do living in the West is really have **strong opinions about property rights and how important they are and how foundational they are to wealth creation in the West and America**.  
-I completely agree with this.  
-And this is our best defense.  
+I think what we should do living in the West is really have **strong opinions about property rights and how important they are and how foundational they are to wealth creation in the West and America**.
+I completely agree with this.
+And this is our best defense.
 I completely agree with this.
 
 And be **hyper-transparent who owns the coins** because then it's like you can't take away something that everybody knows you own. But when you try to hide your ownership of it, more likely it's easier for somebody to take it away. I think privacy is the right; it's somebody's right to be able to do that. But I think our best bet in wealth creation is actually defending these rights and defending the right of somebody to own Bitcoin if they want to.
 
-It's extraordinary that it hasn't been hacked with so much at stake. Maybe you could speak to it as just an architect herself. The reason it hasn't been hacked is because it's so simple. And, you know, as an engineer, you always strive for simplicity to achieve a certain outcome. You can't always achieve that.  
+It's extraordinary that it hasn't been hacked with so much at stake. Maybe you could speak to it as just an architect herself. The reason it hasn't been hacked is because it's so simple. And, you know, as an engineer, you always strive for simplicity to achieve a certain outcome. You can't always achieve that.
 
 **Solana is much more complicated** because the outcome we're striving is hyper-performance and it's just hard. Solana is much more complicated as a result of that. But Bitcoin is designed for a very simple settlement layer that is, I think, you know, **the coolest thing**.
 
@@ -288,8 +288,8 @@ There's been an enormous reanimation in the **ETH market recently**. Where do yo
 
 I'm honestly a huge fan of Ethereum. Like, I think **Vitalik** is an amazing person, amazing engineer, and has a very strong vision. It's very different from my vision for Solana and it's really cool to see those two play out.
 
-If I could predict what I do could cause a price change, I'd be a lot more successful.  
-Well, you've been pretty successful.  
+If I could predict what I do could cause a price change, I'd be a lot more successful.
+Well, you've been pretty successful.
 But, right, it's just really, really hard to attribute the work that you're doing.
 
 Okay, so look, your transaction network is quite liquid. It's going to become more and more as you have more validators, more clients, all that stuff.
@@ -312,17 +312,17 @@ So that's a yes, everybody. Everybody short the banks.
 
 No, no, no. Stop that. Stop that.
 
-I'm telling you to do this.  
-This is financial advice.  
+I'm telling you to do this.
+This is financial advice.
 
 Unless it doesn't work out. It stops.
 
 Thank you. Thank you so much.
 **Yeah.**
 
-It was an honor. Appreciate it.  
+It was an honor. Appreciate it.
 
-Thank you so much. Thank you.  
+Thank you so much. Thank you.
 
 **You're awesome, dude. Appreciate it.**
 

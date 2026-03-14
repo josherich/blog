@@ -2,83 +2,83 @@
 layout: post
 title: "Alphabet Inc."
 date: 2025-08-26 00:00:01
-categories: podcast acquired
+categories: podcast
 tags: [podcast_script]
 ---
 
 
 [Alphabet Inc.](https://media.transistor.fm/8296b628/7f670b87.mp3)
 
-Are you intentionally wearing a **black turtleneck** for this one?  
-No.  
+Are you intentionally wearing a **black turtleneck** for this one?
+No.
 
-It is actually going to be one of my **carve-outs**, though.  
-Yeah, amazing.  
+It is actually going to be one of my **carve-outs**, though.
+Yeah, amazing.
 
-What, you think I dress up like **Steve Jobs** for a Google episode?  
-Well, I thought because of the war between **Android** and...  
-I walk in and there's this smirk on your face.  
-All right, let's do it.  
+What, you think I dress up like **Steve Jobs** for a Google episode?
+Well, I thought because of the war between **Android** and...
+I walk in and there's this smirk on your face.
+All right, let's do it.
 
-Welcome to the **summer 2025 season of Acquired**, the podcast about great companies and the stories and playbooks behind them.  
-I'm **Ben Gilbert**.  
-I'm **David Rosenthal**.  
-And we are your hosts.  
+Welcome to the **summer 2025 season of Acquired**, the podcast about great companies and the stories and playbooks behind them.
+I'm **Ben Gilbert**.
+I'm **David Rosenthal**.
+And we are your hosts.
 
-In the late 1990s, **Google built the best search engine** for the rapidly growing internet. With a breakthrough search algorithm, low-cost servers based on commodity hardware, and the best business model of all time, **search ads**, they turned that search engine into a cash-gushing business and took it public in 2004.  
+In the late 1990s, **Google built the best search engine** for the rapidly growing internet. With a breakthrough search algorithm, low-cost servers based on commodity hardware, and the best business model of all time, **search ads**, they turned that search engine into a cash-gushing business and took it public in 2004.
 
-But then, curiously, they started doing some things that weren't related to search. They launched a breakthrough email service in your browser with **Gmail**. **Maps** that were far superior to the current state of the art. **Docs and spreadsheets** with real-time collaboration for the first time. Of course, **YouTube**, then **Android**, and their own web browser with **Chrome**.  
+But then, curiously, they started doing some things that weren't related to search. They launched a breakthrough email service in your browser with **Gmail**. **Maps** that were far superior to the current state of the art. **Docs and spreadsheets** with real-time collaboration for the first time. Of course, **YouTube**, then **Android**, and their own web browser with **Chrome**.
 
-Astonishingly, today, Google has **15 products with over half a billion users**. Seven of those have **over 2 billion users**. David, that is over **25% of humans** use seven of Google's products. Just unreal. Can't wait to tell all of these stories today.  
-Yes.  
+Astonishingly, today, Google has **15 products with over half a billion users**. Seven of those have **over 2 billion users**. David, that is over **25% of humans** use seven of Google's products. Just unreal. Can't wait to tell all of these stories today.
+Yes.
 
-And they've also launched some colossal failures.  
-- **Google Plus** to try to compete with Facebook  
-- **Google Wave**, **Buzz**, and about half a dozen messaging apps  
-- I don't know, maybe a dozen messaging apps over the years  
-- Hot air balloons to provide wireless internet  
-And of course...  
-- Google Glass  
-Can't forget about that one, unfortunately.  
+And they've also launched some colossal failures.
+- **Google Plus** to try to compete with Facebook
+- **Google Wave**, **Buzz**, and about half a dozen messaging apps
+- I don't know, maybe a dozen messaging apps over the years
+- Hot air balloons to provide wireless internet
+And of course...
+- Google Glass
+Can't forget about that one, unfortunately.
 
-So why did they do all this?  
+So why did they do all this?
 
-And as a business, Google was and still is the company that makes the vast majority of their money from **ads on search results on the web**. So today, we tell the story of Google as the **innovation factory of the 2000s**. Their reorganization into the parent company, **Alphabet**, and how all these different products cleverly serve different business purposes.  
+And as a business, Google was and still is the company that makes the vast majority of their money from **ads on search results on the web**. So today, we tell the story of Google as the **innovation factory of the 2000s**. Their reorganization into the parent company, **Alphabet**, and how all these different products cleverly serve different business purposes.
 
-And also, how it feeds into Google's original core mission, **to organize the world's information**.  
+And also, how it feeds into Google's original core mission, **to organize the world's information**.
 
-And we'll end this episode's story right at the dawn of the **AI era**.  
-Oh, you're giving away the end.  
-Oh, spoilers.  
-Sorry.  
+And we'll end this episode's story right at the dawn of the **AI era**.
+Oh, you're giving away the end.
+Oh, spoilers.
+Sorry.
 
-So is Google a search engine? Is it the platform company of the web era? Or is it an incubator that just happens to have struck gold with search and perhaps AI? Today, we dive in. Woop.  
+So is Google a search engine? Is it the platform company of the web era? Or is it an incubator that just happens to have struck gold with search and perhaps AI? Today, we dive in. Woop.
 
-Listeners, if you want to know every time an episode drops or get early hints at what the next episode will be, check out our **email list**. That's also where we share corrections and updates about previous episodes. And we are adding a new bonus. You get to help us vote on future episode topics. So the first poll is going out soon.  
+Listeners, if you want to know every time an episode drops or get early hints at what the next episode will be, check out our **email list**. That's also where we share corrections and updates about previous episodes. And we are adding a new bonus. You get to help us vote on future episode topics. So the first poll is going out soon.
 
-Sign up now at **acquired.fm/email**. Join the **Slack** if you want to come talk about this with us and the whole Acquired community: **acquired.fm/slack**.  
+Sign up now at **acquired.fm/email**. Join the **Slack** if you want to come talk about this with us and the whole Acquired community: **acquired.fm/slack**.
 
-Before we dive in, we want to briefly thank our presenting partner, **JPMorgan Payments**.  
-Yes, just like how we say every company has a story, every company's story is powered by payments. And JPMorgan Payments is a part of so many of their journeys from seed to IPO and beyond.  
+Before we dive in, we want to briefly thank our presenting partner, **JPMorgan Payments**.
+Yes, just like how we say every company has a story, every company's story is powered by payments. And JPMorgan Payments is a part of so many of their journeys from seed to IPO and beyond.
 
-So with that, this show is **not investment advice**. David and I may have investments in the companies we discuss. And this show is for informational and entertainment purposes only.  
+So with that, this show is **not investment advice**. David and I may have investments in the companies we discuss. And this show is for informational and entertainment purposes only.
 
-David, where are we starting this alphabet story?  
-I have a very, very fun beginning for you, Ben. I want to start with a quote from **Russ Hanneman**.  
-The fictional character?  
-Silicon Valley HBO show.  
-Oh, yeah. From the TV show. Awesome.  
+David, where are we starting this alphabet story?
+I have a very, very fun beginning for you, Ben. I want to start with a quote from **Russ Hanneman**.
+The fictional character?
+Silicon Valley HBO show.
+Oh, yeah. From the TV show. Awesome.
 
-And the quote is,  
-> "If you show revenue, people will ask how much, and it will never be enough. The company that was the 100Xer, the 1,000Xer, is suddenly the 2X dog. But if you have no revenue, you can say you're pre-revenue. You're a potential pure play. It's not about how much you earn. It's about what you're worth and who's worth the most."  
+And the quote is,
+> "If you show revenue, people will ask how much, and it will never be enough. The company that was the 100Xer, the 1,000Xer, is suddenly the 2X dog. But if you have no revenue, you can say you're pre-revenue. You're a potential pure play. It's not about how much you earn. It's about what you're worth and who's worth the most."
 
-Companies that lose money. Immortal words of wisdom for the technology world. God, that show is so good.  
+Companies that lose money. Immortal words of wisdom for the technology world. God, that show is so good.
 
-Why do I bring this up? Why do I start here? Why are you talking about this?  
+Why do I bring this up? Why do I start here? Why are you talking about this?
 
-Google is a **cash-gushing machine**. Revenue is obviously not the problem for Google. But what was the problem in 2004, 2005, 2006, was being viewed as, in Russ's terms, **pure play**.  
+Google is a **cash-gushing machine**. Revenue is obviously not the problem for Google. But what was the problem in 2004, 2005, 2006, was being viewed as, in Russ's terms, **pure play**.
 
-When Google went public in fall of 2004, the stock shot up, basically doubled in two months. Wall Street loved Google. **AdWords**, the search business model, everybody had to own shares. Google had cracked the code on monetizing the internet. The more people use the internet, the more they search, the more they search, the more money Google makes. Simple, easy, pure play, you might say.  
+When Google went public in fall of 2004, the stock shot up, basically doubled in two months. Wall Street loved Google. **AdWords**, the search business model, everybody had to own shares. Google had cracked the code on monetizing the internet. The more people use the internet, the more they search, the more they search, the more money Google makes. Simple, easy, pure play, you might say.
 Yep.
 That is until **Google announced fourth quarter 2005 earnings**. Full year 2005 revenue, **$6.1 billion**. That's almost double the 3.1 that it was in 2004, the first year it went public. But earnings are flat. Profitability is down.
 
@@ -104,8 +104,8 @@ Yes. But it sure sounded like a joke.
 
 Here's the announcement in 2004:
 
-> Entirely web-based email in your browser. You can log in and access it anywhere, on any device.  
-> Google Search is built in. You don't need to spend all this time sorting your mail into folders anymore.  
+> Entirely web-based email in your browser. You can log in and access it anywhere, on any device.
+> Google Search is built in. You don't need to spend all this time sorting your mail into folders anymore.
 > And **one gigabyte of storage free**. No need to delete your mail. No need to clean up your inbox. No need to do anything. Ever. And the whole thing is free.
 
 Yep. Of course, this sounds like a joke. This is too good to be true.
@@ -116,7 +116,7 @@ At the time, Hotmail, which, as you said, Microsoft owns, had **two megabytes of
 
 There's another great story in *The Plex* that **Stephen Levy** has. He's interviewing **Bill Gates** at the Newsweek headquarters office in New York shortly after Gmail comes out. And they started talking about Gmail, and Bill can't believe it. He's, like, offended by Gmail because he thinks that giving people all this storage is just wasteful.
 
-> "You're doing email wrong.  
+> "You're doing email wrong.
 > It's morally repugnant to leave all of this email sitting on the servers."
 
 I was thinking about it. Until Gmail, the paradigm for email: people treated it like regular physical mail. Sort it. You file away the important stuff. You throw out the pieces you don't need anymore. I mean, even freaking Bill Gates operates this way.
@@ -157,11 +157,11 @@ Yeah, 1996.
 Yes.
 
 So, Larry and Wayne Rosing, who is leading engineering, go and meet with each engineer individually to talk about ideas that they could work on.
-This tells you so much about **Google-ness**, but it also tells you a lot about the caliber of the **engineers they were hiring at the time**, where they would just approach them and say, 
+This tells you so much about **Google-ness**, but it also tells you a lot about the caliber of the **engineers they were hiring at the time**, where they would just approach them and say,
 
 > "What ideas are you thinking about? Here are some ideas we have. Can you just full stack, own this product entirely yourself?"
 
-And so, in **Paul's meeting**, they knew about his previous interest in email and web-based mail, and they sort of floated this amorphous idea to him. And that's where it comes from. 
+And so, in **Paul's meeting**, they knew about his previous interest in email and web-based mail, and they sort of floated this amorphous idea to him. And that's where it comes from.
 
 Ah, so **Larry and Wayne suggested it to him.** Interesting.
 
@@ -169,20 +169,20 @@ Okay, so here's some other stuff that **Paul said**.
 
 Part of the motivation was that they were looking to make something that would make **Google stickier**. So, you'd have sort of this ongoing relationship for if there was a next Google after Google, there was some reason why you would still have a relationship. Which, obviously, you know, Yahoo would have for many, many years, even though there was a next Yahoo after Yahoo in Google. We still get emails from people with **Yahoo mails**.
 
-Do you know how Paul found out about Google in 1989?  
-Ooh, no.  
-Slash dot.  
-Really?  
-Yeah.  
+Do you know how Paul found out about Google in 1989?
+Ooh, no.
+Slash dot.
+Really?
+Yeah.
 That's awesome. And then he sends an email to `jobs@google.com`. Unbelievable. Fitting that, you know, he gets hired with an email. Hey-oh.
 
-Okay. So, 2001, **Paul gets to work with encouragement from Larry and Wayne**. Do you know what the original seed of the code is?  
-Ooh, no.  
+Okay. So, 2001, **Paul gets to work with encouragement from Larry and Wayne**. Do you know what the original seed of the code is?
+Ooh, no.
 Go for it.
 
-**Google had just bought a company called Deja News**, their first acquisition. It was the corpus of all the old Usenet posts.  
-Oh, yeah.  
-And then this becomes **Google Groups**, right?  
+**Google had just bought a company called Deja News**, their first acquisition. It was the corpus of all the old Usenet posts.
+Oh, yeah.
+And then this becomes **Google Groups**, right?
 That's exactly right.
 
 Yeah, and Paul’s working on that. Part of that was a feature to do **real-time indexing of all the posts** that would allow you to search the whole corpus. So, Paul just applies that to his own personal inbox. The first instantiation of this is just a search box to search his personal Unix mail directory as if it is the old Usenet posts that they had just bought. That's the first version of **Gmail**. Amazing.
@@ -203,9 +203,9 @@ Yep. And for what the web was up until that point in time, you didn't really nee
 
 But you'd imagine for doing something like email on the web or any application on the web, you don't want the site to reload every time you open a new email or you create a draft or you move something around in folders. You might want to move from a website to a world of **web applications**.
 
-Yeah. But this is how Hotmail and Yahoo Mail worked. Every time you took an action, it reloaded the page. And so they were super slow. Yes. 
+Yeah. But this is how Hotmail and Yahoo Mail worked. Every time you took an action, it reloaded the page. And so they were super slow. Yes.
 
-And so Paul’s like, maybe I can use JavaScript to make this better. He's working on it. And he discovers a little known feature of JavaScript called the **XML HTTP request**, which lets a web page fetch automatically new XML data from a server without reloading the page. And Paul’s like, 
+And so Paul’s like, maybe I can use JavaScript to make this better. He's working on it. And he discovers a little known feature of JavaScript called the **XML HTTP request**, which lets a web page fetch automatically new XML data from a server without reloading the page. And Paul’s like,
 
 > "Oh my god, this is gold."
 
@@ -213,7 +213,7 @@ And this is the birth of **AJAX** — asynchronous JavaScript and XML.
 
 So David, I assumed you were going to go here. I thought that you'd get it all laid out. You've been letting me go. You've just been feeding me a rope the whole time.
 
-You trying to tell me that Gmail is the first AJAX application?  
+You trying to tell me that Gmail is the first AJAX application?
 Well, the first widely adopted around the world. That's fair to say.
 
 That sort of set the bar for what dynamic **Web 2.0**, you might say, websites could be.
@@ -223,10 +223,10 @@ When I worked for my high school, I could log in on any computer into my **Outlo
 
 Oh, not just for another mail client. It's so deeply ironic that this originated for a **Microsoft mail client**. Yes. We're going to get deep into that in just a minute here. Yes.
 
-So, I mean, when **Paul** discovers this, this is almost like **Google search all over again**, when people realize what you can do to create something that looks and feels and has all the functionality of an application that heretofore would have been a program that you installed on your personal computer. 
+So, I mean, when **Paul** discovers this, this is almost like **Google search all over again**, when people realize what you can do to create something that looks and feels and has all the functionality of an application that heretofore would have been a program that you installed on your personal computer.
 
-- A **.exe** or a **.app** on your Mac. 
-- That maybe you downloaded from the Internet, but more likely you went to a retail shop like **CompUSA** or something and installed it on your computer. 
+- A **.exe** or a **.app** on your Mac.
+- That maybe you downloaded from the Internet, but more likely you went to a retail shop like **CompUSA** or something and installed it on your computer.
 
 You can now just do this in a web browser? This is incredible. The **web is the platform of the future**. Yep.
 
@@ -234,7 +234,7 @@ So, Paul builds the prototype, shows it to **Larry and Sergey**. They're super j
 
 And it wasn't called this at the time, but it's **in the cloud**. You don't have to have your mail stored on your machine or a specific server. You can log in, access it anywhere, on any network, any device. All this stuff sounds so boring, but it was completely breakthrough.
 
-So, obviously, Larry and Sergey are jazzed, first because of just the incredible nature of this product. And Larry especially, he is a **product person**. And his view is, 
+So, obviously, Larry and Sergey are jazzed, first because of just the incredible nature of this product. And Larry especially, he is a **product person**. And his view is,
 
 > "If we can build a better product and it's on the web, then it's good for Google and we should do it."
 
@@ -448,9 +448,9 @@ And as we've seen from **Google**, the best products with the **stickiest user b
 
 **Marketplaces and platforms** can provide:
 
-- Payment acceptance  
-- Funds management and payouts  
-- Secure and compliant infrastructure  
+- Payment acceptance
+- Funds management and payouts
+- Secure and compliant infrastructure
 
 all without users ever leaving their ecosystem.
 
@@ -634,7 +634,7 @@ That's different now.
 
 But for the longest time, it was just:
 
-``` 
+```
 This is a part of the mission, so we're doing it and we'll figure out the business later.
 ```
 
@@ -744,7 +744,7 @@ Yep. And IT departments will buy it. And especially for productivity software, r
 And so if IT departments are buying the Microsoft **enterprise agreement**, they're getting everything.
 
 Good luck unseating Microsoft Office.
-And I'm not sure you could do this as an **independent business**, because think about how long **Google** went with these things before they were adopted by bigger companies. For the longest time, it was, 
+And I'm not sure you could do this as an **independent business**, because think about how long **Google** went with these things before they were adopted by bigger companies. For the longest time, it was,
 
 > "oh, a Google Doc, that's like a thing for either you use that for your personal life or maybe like a startup would use it."
 
@@ -768,7 +768,7 @@ Exactly.
 
 **Google**, though, that's fine. **Microsoft** can keep all the dollars. All we care about is people use the web.
 
-And in this instance, particularly with **Office** and productivity, really, this is about 
+And in this instance, particularly with **Office** and productivity, really, this is about
 
 > "putting the screws to Microsoft a little bit and distracting them."
 
@@ -823,10 +823,10 @@ Yeah, that's crazy.
 
 I didn't realize that. Pretty wild, right?
 
-But, to my point about the dollars, 
+But, to my point about the dollars,
 
 - Microsoft's productivity and business process segment, which is mostly Office, I think **LinkedIn** is now part of this too, last year generated over **$120 billion** in revenue.
-  
+
 - Google reports Workspace as part of the **cloud segment**. So, all of cloud, inclusive of their infrastructure as a service, all the AI infrastructure, all that, the whole cloud segment for Google last year did about **$50 billion** in revenue.
 
 Less than $50 billion.
@@ -1023,87 +1023,87 @@ In early 2005, three **PayPal employees**, part of the **PayPal mafia**, actuall
 Okay, Ben. I have two deep-cut **YouTube corporate history trivia** items for you.
 
 Number one, do you know what YouTube's **original tagline** was?
-The name of the company was **YouTube**. What was the tagline and the value prop?  
-I have no idea.  
-**Tune in, hook up.**  
-Really? It was a video dating service.  
-Oh, I think I did know that.  
+The name of the company was **YouTube**. What was the tagline and the value prop?
+I have no idea.
+**Tune in, hook up.**
+Really? It was a video dating service.
+Oh, I think I did know that.
 
-And they actually posted **Craigslist ads in the Bay Area** for attractive women to make videos to post as profiles on the site.  
-Unbelievable.  
-And they got, like, no responses, as you would expect.  
+And they actually posted **Craigslist ads in the Bay Area** for attractive women to make videos to post as profiles on the site.
+Unbelievable.
+And they got, like, no responses, as you would expect.
 
-Thank goodness for them and **Google**, though, because then they pivoted into a general-purpose video uploading site that anybody could upload anything that they made.  
-**YouTube**.  
-Okay, so that's trivia question number one.  
+Thank goodness for them and **Google**, though, because then they pivoted into a general-purpose video uploading site that anybody could upload anything that they made.
+**YouTube**.
+Okay, so that's trivia question number one.
 
-Okay.  
-Trivia question number two.  
+Okay.
+Trivia question number two.
 
-Do you know who **Chad Hurley**, Chad was the CEO, who Chad's father-in-law at the time was?  
-Oh, no, I have no idea.  
-**Jim Clark.**  
-Of SGI and Netscape?  
-Of Silicon Graphics and Netscape.  
-Jim Clark.  
-Wow.  
-Jim Clark.  
-Didn't know that.  
-Yeah.  
+Do you know who **Chad Hurley**, Chad was the CEO, who Chad's father-in-law at the time was?
+Oh, no, I have no idea.
+**Jim Clark.**
+Of SGI and Netscape?
+Of Silicon Graphics and Netscape.
+Jim Clark.
+Wow.
+Jim Clark.
+Didn't know that.
+Yeah.
 
-So not only were they part of the **PayPal team** and **PayPal mafia**, like, they had the best advisor of all time.  
-Wow. To navigate the **Silicon Valley ecosystem** and the internet ecosystem and Jim Clark.  
+So not only were they part of the **PayPal team** and **PayPal mafia**, like, they had the best advisor of all time.
+Wow. To navigate the **Silicon Valley ecosystem** and the internet ecosystem and Jim Clark.
 
-So the brilliance of YouTube, and it really was absolutely brilliant, was threefold.  
+So the brilliance of YouTube, and it really was absolutely brilliant, was threefold.
 
-- One, it was super easy for **anyone to upload a video**.  
-  So they had a killer **content acquisition model**. Anybody, anytime, anything. And as soon as the servers process it, we'll put it live. No copyright checks.  
-  Unlike **Google Video**, which would take one to two days. It's all about copyright checks. For humans to pour over it, make sure that it was all good and bless it, and then put it live, which of course won't scale in the **UGC era**.  
-  YouTube's just like, _"whatever, upload it."_  
+- One, it was super easy for **anyone to upload a video**.
+  So they had a killer **content acquisition model**. Anybody, anytime, anything. And as soon as the servers process it, we'll put it live. No copyright checks.
+  Unlike **Google Video**, which would take one to two days. It's all about copyright checks. For humans to pour over it, make sure that it was all good and bless it, and then put it live, which of course won't scale in the **UGC era**.
+  YouTube's just like, _"whatever, upload it."_
 
-- Two, super easy for anyone to **watch a video**. You need a really good viewer in the web app to view the videos. Google Video didn't have it at the beginning.  
-  So, killer **content consumption model**. Go to **youtube.com**, find something, or find a link.  
+- Two, super easy for anyone to **watch a video**. You need a really good viewer in the web app to view the videos. Google Video didn't have it at the beginning.
+  So, killer **content consumption model**. Go to **youtube.com**, find something, or find a link.
 
-- Number three, brilliant thing about YouTube, see a YouTube video embedded on another website.  
-  **Boom, you're watching the video.**  
-  Killer **growth and distribution model**.  
+- Number three, brilliant thing about YouTube, see a YouTube video embedded on another website.
+  **Boom, you're watching the video.**
+  Killer **growth and distribution model**.
 
-And also, YouTube, pretty much from the beginning, had great **search**. You can search YouTube and find videos that you're looking for.  
+And also, YouTube, pretty much from the beginning, had great **search**. You can search YouTube and find videos that you're looking for.
 
-Pretty quickly, YouTube became, and still is, Google talks about this all the time, the **second largest search engine on earth**, behind Google.  
-It's amazing. It's searches happening on YouTube. That happened quickly.  
-I always thought that was a more recent, last 10 years phenomenon.  
-I think that happened very quickly. YouTube traffic scaled so fast and so big.  
+Pretty quickly, YouTube became, and still is, Google talks about this all the time, the **second largest search engine on earth**, behind Google.
+It's amazing. It's searches happening on YouTube. That happened quickly.
+I always thought that was a more recent, last 10 years phenomenon.
+I think that happened very quickly. YouTube traffic scaled so fast and so big.
 
-So, you can see how YouTube here, not only are they the correct video platform for the web and just doing it much better than Google's doing it with Google Video. There's actually some version of the world where they might become a real competitor to Google's core business.  
+So, you can see how YouTube here, not only are they the correct video platform for the web and just doing it much better than Google's doing it with Google Video. There's actually some version of the world where they might become a real competitor to Google's core business.
 
-If all these searches are happening, they could add search for other things on YouTube, too.  
-Right.  
-I don't think they had any plans to do that, but it's the same rationale of **Mark Zuckerberg** saying, _"uh-oh, everyone's using WhatsApp for messaging."_  
-Whether or not they put in a social media feed stream, they always could. And so, it's really dangerous to me for them to be out there aggregating all the users and attention and habits when they always could do something like that.  
-Exactly.  
-Same dynamic.  
+If all these searches are happening, they could add search for other things on YouTube, too.
+Right.
+I don't think they had any plans to do that, but it's the same rationale of **Mark Zuckerberg** saying, _"uh-oh, everyone's using WhatsApp for messaging."_
+Whether or not they put in a social media feed stream, they always could. And so, it's really dangerous to me for them to be out there aggregating all the users and attention and habits when they always could do something like that.
+Exactly.
+Same dynamic.
 
-And whereas in the previous categories of apps that we talked about, Google had the advantage of uniquely being able to do it as Google in a way that startups couldn't, here it's a little bit the opposite.  
+And whereas in the previous categories of apps that we talked about, Google had the advantage of uniquely being able to do it as Google in a way that startups couldn't, here it's a little bit the opposite.
 
-YouTube, as a small startup, has the advantage of, "Oh, copyright, rules, laws, I don't know, we're just a platform, we're just a startup, anybody upload anything."  
-Google, by this point in time, is a public company. No way they could behave like this.  
+YouTube, as a small startup, has the advantage of, "Oh, copyright, rules, laws, I don't know, we're just a platform, we're just a startup, anybody upload anything."
+Google, by this point in time, is a public company. No way they could behave like this.
 
-Well, it's funny, they could, but they wouldn't. They actually could do it and stay in business, whereas YouTube can say, _"eh, whatever,"_ but then they're going to go out of business because they're going to get sued out of business.  
+Well, it's funny, they could, but they wouldn't. They actually could do it and stay in business, whereas YouTube can say, _"eh, whatever,"_ but then they're going to go out of business because they're going to get sued out of business.
 
-So, it's this really interesting sort of **catch-22** of, this is the way to start and get all the users because this is the best user experience.  
-And at the same time, it will not work as a resource-constrained small company. Once it is started, it needs to be part of Google.  
-Yes.  
-Obviously, we're going to get to that.  
+So, it's this really interesting sort of **catch-22** of, this is the way to start and get all the users because this is the best user experience.
+And at the same time, it will not work as a resource-constrained small company. Once it is started, it needs to be part of Google.
+Yes.
+Obviously, we're going to get to that.
 
-But in the beginning, though, oh my gosh.  
-I mean, the **embeds** were a beautiful distribution growth mechanic for YouTube, but people were just uploading copyrighted video that people could watch for free.  
+But in the beginning, though, oh my gosh.
+I mean, the **embeds** were a beautiful distribution growth mechanic for YouTube, but people were just uploading copyrighted video that people could watch for free.
 
-I mean, it's almost like Gmail.  
-It is so unbelievably compelling to a consumer when your friend tells you about YouTube or just sends you a link or you see an embed page of,  
-> _“Oh, I can go watch Lazy Sunday from Lonely Island and Saturday Night Live in my web browser anytime I want for free with no commercials.”_  
+I mean, it's almost like Gmail.
+It is so unbelievably compelling to a consumer when your friend tells you about YouTube or just sends you a link or you see an embed page of,
+> _“Oh, I can go watch Lazy Sunday from Lonely Island and Saturday Night Live in my web browser anytime I want for free with no commercials.”_
 
-Yes.  
+Yes.
 Yes, I want that.
 And in fact, when users started uploading **Lazy Sunday**, the **Lonely Island** skit from **Saturday Night Live** to **YouTube**, this is in that brief phase where YouTube was an ascendant startup and not yet part of Google, that one skit increased YouTube traffic by **83%**.
 
@@ -1129,7 +1129,7 @@ The one-time cost, but still expensive, is **encoding the video**. This might ev
 
 Two then are just big ongoing variable costs:
 
-- You have to **store all this video**  
+- You have to **store all this video**
 - The biggest of all, the **networking**. The **bandwidth** becomes extremely expensive and costs you every single time someone plays the video.
 
 Your biggest cost driver scales with **minutes watched**.
@@ -1170,7 +1170,7 @@ Yes, we heard in the research that after this deal, **Patrick Pichette**, I thin
 
 > "Never again, right? This was our biggest mistake."
 
-Said, 
+Said,
 
 > "Never again. This is the last stock deal that we ever do."
 
@@ -1221,15 +1221,15 @@ So kind of on the product side of things, early on, as you were saying, the way 
 
 Most sessions did not start on **YouTube.com**. So you weren't going to YouTube with the idea of, "They'll recommend something to me." And then even the people who did go to **YouTube.com** in this sort of four-year, five-year period after the acquisition, 90% of that traffic was there to search. And they just ignored anything that you recommended to them.
 
-I mean, it takes a long time,  
-- A, to build habits, and  
+I mean, it takes a long time,
+- A, to build habits, and
 - B, to build out the technology to make any sort of recommendation or browse or anything good.
 
 Yeah, first with related videos and then ultimately the feed.
 
 And just for a sense of scale, there was a report that estimated that **YouTube** that year in 2007 consumed as much bandwidth as the **entire internet did in the year 2000**. So just seven years before.
 
-I have an extremely similar stat from **Shishir**, which is, it's a later period. It's 2014, but it's apples to apples rather than comparing that 07 to 2000. He said in 2014, 
+I have an extremely similar stat from **Shishir**, which is, it's a later period. It's 2014, but it's apples to apples rather than comparing that 07 to 2000. He said in 2014,
 
 > "YouTube was 20% of the bits on the internet."
 
@@ -1239,7 +1239,7 @@ I mean, this stat, but especially your stat, illustrates just how much this thin
 
 Yeah.
 
-But the long-term play here, obviously, is the **Mary Meeker slide** of, yes, video, the reason that it gets consumed so much is 
+But the long-term play here, obviously, is the **Mary Meeker slide** of, yes, video, the reason that it gets consumed so much is
 
 > "this is what humans want."
 
@@ -1261,7 +1261,7 @@ Then in 2013 to 2015, that time period on the product side, that's when things r
 
 So, the North Star really became:
 
-- Users should go to **YouTube** to be entertained for **15 minutes**.  
+- Users should go to **YouTube** to be entertained for **15 minutes**.
 - It's our job to do whatever we need to do to make that true.
 
 And a few things really helped with this. One was the shift to **mobile**.
@@ -1283,7 +1283,7 @@ They also adjusted their core metric internally away from **views** and to **wat
 And **YouTube** was very early to the concept of **creator monetization**. For a long time, it was the only place on the internet where creators could make money. Share revenue with creators.
 
 And in our old episode, we sort of knocked them.
-We said, **look, this business has to give its first 50% off the top of any revenue it makes to the creator of the video**. That's a way worse business than, say, **Google search ads or Facebook**, who, you know, Facebook has influencers on their platforms, too, all the Meta platforms, Instagram. 
+We said, **look, this business has to give its first 50% off the top of any revenue it makes to the creator of the video**. That's a way worse business than, say, **Google search ads or Facebook**, who, you know, Facebook has influencers on their platforms, too, all the Meta platforms, Instagram.
 
 And their rev share, if it's anything, sure isn't 50%. It's probably closer to zero. And **YouTube right early on said, "you're a 50-ish percent partner,"** which takes you a decade longer to get profitable, but helps you build that base. This creates amazing incentives for people to build businesses and careers on this.
 
@@ -1293,11 +1293,11 @@ There's a little sleight of hand that you did there, David, which is that **peop
 
 Well, yes. So YouTube internally went back and forth for years on this. And I think we're sort of in this no man's land that we've landed today.
 
-Camp one is:  
+Camp one is:
 - "Hey, the way to make people most engaged is by getting them to follow creators and they curate the information sources they want."
 
-Camp two is:  
-- **"In algorithms we trust."**  
+Camp two is:
+- **"In algorithms we trust."**
 
 It turns out, camp two is actually correct, which is unfortunate. It's a messed up incentive. Most of the time, if you show someone something that they're subscribed to or you show someone something that the very smart computers have figured out, you will watch and then watch another video after that. Usually, **the algorithmic approach is right**.
 
@@ -1309,10 +1309,10 @@ Yes. But putting that aside, just the sheer concept of **anybody and everybody i
 
 It's pretty interesting because it kind of has these two business models in core Google land. They have the **AdWords business model** where they're the first party media site. Each search result page is a form of media, and they run ads on that. And then they keep approximately 100% of the revenue generated from that ad. The advertiser pays them, and they share some in the form of traffic acquisition costs that we'll talk about later, but it's largely a first party ad.
 
-And then they have this other form, **AdSense**, and the Google Content Network, when they show display ads on other people's websites, where they share like 70% of the revenue, most of the revenue, out to the...  
-- The publisher.  
-- Publisher.  
-- The content owner.  
+And then they have this other form, **AdSense**, and the Google Content Network, when they show display ads on other people's websites, where they share like 70% of the revenue, most of the revenue, out to the...
+- The publisher.
+- Publisher.
+- The content owner.
 
 Right, who actually is the reason why there's an ad there in the first place.
 
@@ -1422,121 +1422,121 @@ Google itself, not including YouTube, pretty much whiffed on social.
 Really, really strategically good for them that they own YouTube, isn't it, now that, you know, Meta and TikTok exist?
 
 Well, here's the crazy thing.
-They whiffed on **social**, and then what ended up happening... Was social became **YouTube**.  
-**Yes.**  
-**Yes.**  
+They whiffed on **social**, and then what ended up happening... Was social became **YouTube**.
+**Yes.**
+**Yes.**
 
-It's the craziest thing. We don't open apps anymore to look at what our friends are posting, a place where **Google has no presence**, but you open Meta's most important property with Instagram, and you look at Instagram's most used thing, **Reels**, or you look at **TikTok**.  
+It's the craziest thing. We don't open apps anymore to look at what our friends are posting, a place where **Google has no presence**, but you open Meta's most important property with Instagram, and you look at Instagram's most used thing, **Reels**, or you look at **TikTok**.
 
-And what do you see?  
-You see videos from people you don't know. I mean, it's crazy that the rest of social media, or almost like user-generated media, pivoted into **Google's space**.  
+And what do you see?
+You see videos from people you don't know. I mean, it's crazy that the rest of social media, or almost like user-generated media, pivoted into **Google's space**.
 
-Yeah, this was the big denouement to our Meta episode last fall was,  
-> "Hey, social networking, such as the conception of it existed in the mid-2000s and 2010s, is dead."  
+Yeah, this was the big denouement to our Meta episode last fall was,
+> "Hey, social networking, such as the conception of it existed in the mid-2000s and 2010s, is dead."
 
-It's gone. It bifurcated into **private messaging** and **public media**.  
+It's gone. It bifurcated into **private messaging** and **public media**.
 
-Yes. The sort of middle ground of a wide group of people you kind of know is effectively dead. It's close friends, and I don't really care where it came from, but it's entertaining.  
+Yes. The sort of middle ground of a wide group of people you kind of know is effectively dead. It's close friends, and I don't really care where it came from, but it's entertaining.
 
-Yep.  
+Yep.
 
-So you could do a **discounted cash flow** on this thing that I just gave you, this call it **$6 billion of investment** and now **$8 billion growing at 10% to 15% every year**. But there's additional strategic value too.  
+So you could do a **discounted cash flow** on this thing that I just gave you, this call it **$6 billion of investment** and now **$8 billion growing at 10% to 15% every year**. But there's additional strategic value too.
 
-In addition to this thing you just said, this becoming the winner in the **short-form era**, they have the largest corpus of video to train on for the **AI era**.  
+In addition to this thing you just said, this becoming the winner in the **short-form era**, they have the largest corpus of video to train on for the **AI era**.
 
-**Yeah. Let's go.**  
+**Yeah. Let's go.**
 
-So **MoffettNathanson** estimated that if this was publicly traded, it would be worth about **$500 billion as a standalone company**.  
+So **MoffettNathanson** estimated that if this was publicly traded, it would be worth about **$500 billion as a standalone company**.
 
-And even conservatively, if you sort of take media company comps and do a revenue multiple, and you discount all the strategic future value, it's still like **$200 billion**.  
+And even conservatively, if you sort of take media company comps and do a revenue multiple, and you discount all the strategic future value, it's still like **$200 billion**.
 
-So this is officially one of the **best acquisitions of all time**, and I am raising my grade from a **C to an A+**.  
+So this is officially one of the **best acquisitions of all time**, and I am raising my grade from a **C to an A+**.
 
-I am obviously right there with you. This is an **A+++**.  
+I am obviously right there with you. This is an **A+++**.
 
-Now, it's not really fair to say that it's like turning $6 billion into $500 billion. That initial $1.7 was largely **Google stock that they traded**. So that had real opportunity cost, but it's still ridiculous. Like I said earlier, a screaming deal either way.  
+Now, it's not really fair to say that it's like turning $6 billion into $500 billion. That initial $1.7 was largely **Google stock that they traded**. So that had real opportunity cost, but it's still ridiculous. Like I said earlier, a screaming deal either way.
 
-Yes.  
+Yes.
 
-All right. There we go. We have revised history, corrected the record.  
+All right. There we go. We have revised history, corrected the record.
 
-Yes.  
+Yes.
 
-All right. Well, for our next chapter, I motion that we go back closer to **Google's core business of advertising on the web**. And maybe also stay closer to **Acquired's original raison d'être** of discussing the greatest acquisitions of all time.  
+All right. Well, for our next chapter, I motion that we go back closer to **Google's core business of advertising on the web**. And maybe also stay closer to **Acquired's original raison d'être** of discussing the greatest acquisitions of all time.
 
-We may as well follow up **YouTube** with **DoubleClick**.  
+We may as well follow up **YouTube** with **DoubleClick**.
 
-But before we do that, it is time to talk about one of our favorite companies, **Statsig**.  
+But before we do that, it is time to talk about one of our favorite companies, **Statsig**.
 
-So on our first Google episode earlier this year, we talked about how great the **search business model** is and how once a company takes a lead, it's just hard for anybody else to catch up. But Google did something that kept them in the lead, using **data to relentlessly improve the search experience**.  
+So on our first Google episode earlier this year, we talked about how great the **search business model** is and how once a company takes a lead, it's just hard for anybody else to catch up. But Google did something that kept them in the lead, using **data to relentlessly improve the search experience**.
 
-Yep.  
+Yep.
 
-Google really was a **pioneer in the idea of a data-driven product culture**. They took this to the extreme, with a famous example where they tested 50 different shades of blue for their links on Google search result pages to find the optimal one.  
+Google really was a **pioneer in the idea of a data-driven product culture**. They took this to the extreme, with a famous example where they tested 50 different shades of blue for their links on Google search result pages to find the optimal one.
 
-They also famously leverage user data when people correct their queries to bootstrap the **did-you-mean autocorrect feature**. More recently, they even opted people into AI search via an **A-B test**.  
+They also famously leverage user data when people correct their queries to bootstrap the **did-you-mean autocorrect feature**. More recently, they even opted people into AI search via an **A-B test**.
 
-This obsession with testing helped Google find a thousand small product and business wins. It also helped Google scale its unique culture where its employees can quickly test and ship new products and features because they all have access to great tools.  
+This obsession with testing helped Google find a thousand small product and business wins. It also helped Google scale its unique culture where its employees can quickly test and ship new products and features because they all have access to great tools.
 
-But for a long time, smaller companies didn't have access to the same quality of tools that were available at places like Google. Now that's changed, thanks to **Statsig**.  
+But for a long time, smaller companies didn't have access to the same quality of tools that were available at places like Google. Now that's changed, thanks to **Statsig**.
 
-The smartest new companies like:  
-- OpenAI  
-- Figma  
-- Atlassian  
-- Brex  
-- Notion  
-- Anthropic  
-plus hundreds of startups that you see and use every day, are using Statsig to build a **bottoms-up data-driven product culture**.  
+The smartest new companies like:
+- OpenAI
+- Figma
+- Atlassian
+- Brex
+- Notion
+- Anthropic
+plus hundreds of startups that you see and use every day, are using Statsig to build a **bottoms-up data-driven product culture**.
 
-Statsig provides all the tools you need to make **data-driven product decisions in one place**:  
-```  
-- Advanced experimentation  
-- Feature flags  
-- Product analytics  
-- Session replays  
-- And more  
-```  
-all backed by a single set of product data.  
+Statsig provides all the tools you need to make **data-driven product decisions in one place**:
+```
+- Advanced experimentation
+- Feature flags
+- Product analytics
+- Session replays
+- And more
+```
+all backed by a single set of product data.
 
-And using Statsig isn't just about saving engineering time. It's about bringing that **Google-level continuous improvement culture** into your company.  
+And using Statsig isn't just about saving engineering time. It's about bringing that **Google-level continuous improvement culture** into your company.
 
-Rather than arguing about metric definitions or troubleshooting broken tools, your team can focus on shipping improvements.  
+Rather than arguing about metric definitions or troubleshooting broken tools, your team can focus on shipping improvements.
 
-And if you already have your own product data, Statsig is **warehouse-native**, so they can plug directly into your existing data in Snowflake or BigQuery, whatever.  
+And if you already have your own product data, Statsig is **warehouse-native**, so they can plug directly into your existing data in Snowflake or BigQuery, whatever.
 
-So if you're interested in giving your product team the same continuous improvement capabilities that keep Google search ahead, go to **Statsig.com/acquired**.  
+So if you're interested in giving your product team the same continuous improvement capabilities that keep Google search ahead, go to **Statsig.com/acquired**.
 
-That's **S-T-A-T-S-I-G dot com slash acquired**. They’ve got a generous free tier, a $50,000 startup program, and affordable enterprise plans. Just tell them that **Ben and David sent you**.  
+That's **S-T-A-T-S-I-G dot com slash acquired**. They’ve got a generous free tier, a $50,000 startup program, and affordable enterprise plans. Just tell them that **Ben and David sent you**.
 
 So, **DoubleClick**.
 Well, if **buying YouTube in October 2006 for $1.65 billion** was a lot, **Google decided to basically double that a few months later in April of 2007** when they bought **DoubleClick for $3.1 billion in cash**, this time, not stock. And this is on the **display ad side of the house**.
 
-So Google's got two advertising businesses at this point:  
-- There's **AdWords** when you search and you get the blue links that show up above the blue links.  
+So Google's got two advertising businesses at this point:
+- There's **AdWords** when you search and you get the blue links that show up above the blue links.
 - And then there's the off-property or the **Google network ads**.
 
 At this point in time, Google just is operating something called **AdSense**, which is this ad network that they've started.
 
-So, **DoubleClick actually has a fascinating company history before Google that I did not know.**  
-Yeah. Not a hot rising startup like YouTube that they bought for, you know, a couple billion dollars. Though it once was.  
+So, **DoubleClick actually has a fascinating company history before Google that I did not know.**
+Yeah. Not a hot rising startup like YouTube that they bought for, you know, a couple billion dollars. Though it once was.
 Yes.
 
 All right. So, here's the DoubleClick story. And a huge thank you. There's a new book that actually just came out by **Ari Paparo**. The book is called **Yield**.
 
-DoubleClick was originally founded in **1995**. So, before Google. Before Google. The founders were **Kevin O'Connor and Dwight Merriman**, and their headquarters were in **New York City**.  
+DoubleClick was originally founded in **1995**. So, before Google. Before Google. The founders were **Kevin O'Connor and Dwight Merriman**, and their headquarters were in **New York City**.
 
-The original idea was twofold:  
-1. Build software that could let advertisers serve ads across websites. This is called an **ad server**.  
-2. The network of websites and media, the advertisements. When people talk about **paid media**, it's the advertisements themselves that would run.  
+The original idea was twofold:
+1. Build software that could let advertisers serve ads across websites. This is called an **ad server**.
+2. The network of websites and media, the advertisements. When people talk about **paid media**, it's the advertisements themselves that would run.
 
-Over the next five years, they end up building and acquiring their way to being the **leading display ad network and ad server**. And they went public during this time, right?  
+Over the next five years, they end up building and acquiring their way to being the **leading display ad network and ad server**. And they went public during this time, right?
 Yep. **1998**. Shining success of the **dot-com industry**.
 
-However, **dot-com crash happens**.  
-70% of DoubleClick's customers not only churn, but go out of business. A huge amount of DoubleClick's advertisers were actually **VC-backed startups**. Brand dollars hadn't really spread to the web yet. Like we talked about, the digital advertising was so early and so nascent.  
+However, **dot-com crash happens**.
+70% of DoubleClick's customers not only churn, but go out of business. A huge amount of DoubleClick's advertisers were actually **VC-backed startups**. Brand dollars hadn't really spread to the web yet. Like we talked about, the digital advertising was so early and so nascent.
 
-Yeah. It was **pets.com** that was advertising on other dot-com properties.  
+Yeah. It was **pets.com** that was advertising on other dot-com properties.
 Exactly. And they're almost levered on the bubble is probably the right way to think about it. So, **easy come, easy go**.
 
 So, in **2002**, after they're sort of limping along for a while, they sell that ad network division off for under **$15 million** with an M. Wow. So, now all they've got left is the software, the sort of **ad server part of the business**.
@@ -1545,13 +1545,13 @@ So, flash forward to **2004**, they're this kind of sleepy, slow growth company 
 
 So, **Google actually took a meeting to look at it to see if they wanted to buy it**. They decided not to. And eventually, they sold it to private equity. Two different firms, **Hellman & Friedman** and **JMI Management**, bought it in **2005** for about a **billion dollars**. IPO day was double this final price tag that they would sell it to private equity for. And in many stories, this is kind of the end of the story. This is the start.
 
-Yeah. It's sort of crazy given the fact pattern that you just told us that two years later, **Google is going to buy this thing for $3 billion**.  
+Yeah. It's sort of crazy given the fact pattern that you just told us that two years later, **Google is going to buy this thing for $3 billion**.
 
-Yes. So, **David Rosenblatt becomes CEO**, and he has a very familiar name that all of you will probably recognize, who becomes—  
-Neil Mohan.  
-Yes. The head of product and strategy at the company, **Neil Mohan**. Neil, of course, is the CEO of **YouTube today**.  
+Yes. So, **David Rosenblatt becomes CEO**, and he has a very familiar name that all of you will probably recognize, who becomes—
+Neil Mohan.
+Yes. The head of product and strategy at the company, **Neil Mohan**. Neil, of course, is the CEO of **YouTube today**.
 
-Yep. So, from DoubleClick originally, many would argue the best thing that Google got in the DoubleClick acquisition. You could argue that.  
+Yep. So, from DoubleClick originally, many would argue the best thing that Google got in the DoubleClick acquisition. You could argue that.
 
 Now, here's the amazing thing. What happens under the private equity ownership is that they launch a completely different product, this new thing called an **ad exchange**, when the concept of an ad exchange is first invented. Remember, it was very straightforward before this. There was just an ad network and some software called an ad server.
 
@@ -1570,11 +1570,11 @@ That's basically what happened here. And as a **publisher**, when you start work
 
 Effectively, what happened is you sort of jumped in front of the ad networks. You almost **disintermediated them**. You're the lowest-level building block that everything else has to integrate with. And eventually, what started as this ad exchange that just became used for **Remnant** and **Unsold** ultimately becomes the primary way that digital media is bought on the biggest advertisers with the biggest publishers and all, of course, bought and sold through these big agencies.
 
-**Google** is running this little thing called **AdSense**. It's kind of for smaller publishers, and it's very DIY self-serve. It's almost like a techie utopian's version of how do you run ads on websites, whereas this ad exchange is, let's acknowledge all the complex realities that exist in all these business relationships, all these purchasing decisions, the way **Madison Avenue** has evolved from the **Mad Men** era to, you know, this moment in time in the early 2000s. 
+**Google** is running this little thing called **AdSense**. It's kind of for smaller publishers, and it's very DIY self-serve. It's almost like a techie utopian's version of how do you run ads on websites, whereas this ad exchange is, let's acknowledge all the complex realities that exist in all these business relationships, all these purchasing decisions, the way **Madison Avenue** has evolved from the **Mad Men** era to, you know, this moment in time in the early 2000s.
 
 And let's essentially construct **fat pipes for money to flow through all this**. And what I mean by that is:
 
-- Direct integrations into **ad agencies' financial systems**  
+- Direct integrations into **ad agencies' financial systems**
 - The **ad agencies control the budgets** for all the big brands and all the big dollars that are flowing.
 
 So if only Google had a way of unlocking and now participating in these deeply integrated money flows, Google had a few other problems. The way **DoubleClick** worked and performed a lot of really fancy stuff like **frequency capping** to make sure you don't see the same ad 46 times is **third-party cookies**. Google was philosophically opposed to using third-party cookies, so they couldn't do stuff like that. But DoubleClick could.
@@ -1585,7 +1585,7 @@ Yes, there's all sorts of things that make them not enterprise-grade here. So Go
 
 Yes.
 
-Well, that's sort of the story out there. The reality is, think back to how you started when I interjected and I said, 
+Well, that's sort of the story out there. The reality is, think back to how you started when I interjected and I said,
 
 > "Gosh, a lot of what DoubleClick is doing, it really sounds a lot like what Google is doing, right?"
 
@@ -1635,11 +1635,11 @@ So **Google** then submits their **LOI** for **$3.1 billion**. It includes a cla
 
 I'm going to read an excerpt from the book *Yield*:
 
-> The company's counsel, this is DoubleClick, checked her BlackBerry and held it up for **David Rosenblatt** to see.  
-> There was an incoming message from **Microsoft's corporate development team**. They were willing to match the offer for DoubleClick.  
-> The message included an email from **Steve Ballmer** saying that he opened the door for a much higher offer.  
-> Ballmer wrote that if the offer match was not acceptable, DoubleClick should simply mark up the paper to meet its needs and then sign it.  
-> And Microsoft would review and rapidly countersign to close the deal with minimal negotiation required.  
+> The company's counsel, this is DoubleClick, checked her BlackBerry and held it up for **David Rosenblatt** to see.
+> There was an incoming message from **Microsoft's corporate development team**. They were willing to match the offer for DoubleClick.
+> The message included an email from **Steve Ballmer** saying that he opened the door for a much higher offer.
+> Ballmer wrote that if the offer match was not acceptable, DoubleClick should simply mark up the paper to meet its needs and then sign it.
+> And Microsoft would review and rapidly countersign to close the deal with minimal negotiation required.
 > Without saying so, Ballmer was communicating, *"here's a blank check. Tell me what closes the deal."*
 
 Ultimately, a week goes by, and they're in this period where they can't really respond and are supposed to just proceed with Google. A day before the **LOI** is set to expire, the DoubleClick team gets an updated term sheet from Google.
@@ -1677,7 +1677,7 @@ You basically never heard Google executives get up on a stage inspiring people a
 > Yes, correct.
 
 And even fast forward today, unlike YouTube, it's not like this has become a world-dominating thing.
-Right. If you're in the **display ads world** or you're a **publisher**, this feels like a **huge deal**.  
+Right. If you're in the **display ads world** or you're a **publisher**, this feels like a **huge deal**.
 
 If you're **Google**, let's just look at the numbers today. **Google**, in total, in **2024**, made **$350 billion of revenue**. About **$200 billion** of that is from **Google Search**. About **$30 billion** of that is from **Google Network**. This falls under **Google Network**. Plenty of which existed before and would have existed anyway in **AdSense**, regardless.
 
@@ -1755,8 +1755,8 @@ They also got **Bill Koren** and **Rob Pike** from **Bell Labs**. You had **Xero
 
 And so, I think that's sort of how I would describe where a lot of the technical breakthroughs are really coming from, or at least the culture of technical breakthroughs. We talked about these incredible products, incredible innovations, development of the whole concept of a **web application**. But that was coming from these people that were coming into the company who were just, like you say, **generational talents**.
 
-Speaking of, that was very convenient for a couple things that they needed to start doing in 2008:  
-- Launching their own **web browser**  
+Speaking of, that was very convenient for a couple things that they needed to start doing in 2008:
+- Launching their own **web browser**
 - Shortly thereafter, launching their own **mobile operating system**
 
 It's astonishing that they did both of these things. In the **same year**. And this isn't like, oh, I'm going to start a browser the way that you can start a browser today. I mean, all these AI companies are launching browsers.
@@ -1789,8 +1789,8 @@ And they had actually been working on improving the state of browsers for years.
 
 The story of Chrome goes all the way back to **2001**. **Larry** and **Sergey** wanted to build a web browser in 2001 for this very reason that we've been talking about the whole episode.
 
-All of Google rested on...  
-_I didn't realize that._  
+All of Google rested on...
+_I didn't realize that._
 ...Internet Explorer.
 
 And also, I mean, it was Larry and Sergey. Of course, they wanted to build a web browser. It's the most Google thing. Why wouldn't we build our own web browser?
@@ -1805,8 +1805,8 @@ Eric.
 
 Yes.
 
-The actual quote from Eric at the time this is in *In the Plex* is:  
-> **"I don't want to moon the giant."**  
+The actual quote from Eric at the time this is in *In the Plex* is:
+> **"I don't want to moon the giant."**
 In 2001.
 
 It's a very Eric Schmidt quote. But that doesn't mean that Google isn't preparing for this.
@@ -1883,68 +1883,68 @@ Done.
 Right. And the thing that, of course, Microsoft would fail to realize with Bing is **you can't be second place in search**.
 
 Right. The most liquid auction will always win. And Google has already run away with the search ads auction liquidity.
-And so **traffic on Google searches will forever be worth more than traffic on the second place browser.**  
+And so **traffic on Google searches will forever be worth more than traffic on the second place browser.**
 Sure. Doesn't mean that that battle wouldn't be hugely damaging to **Google** if they didn't have their own **web browser**.
 
-So **2006**, they finally decide, okay, it's time to start work on **Chrome**.  
+So **2006**, they finally decide, okay, it's time to start work on **Chrome**.
 Yep. And also it's clear **web apps, JavaScript, Ajax**, very important thing. And **Internet Explorer** isn't keeping up with the technology.
 
-So there's two killer features, arguably maybe three, that they're going to bake into the **Google browser**.  
-Ooh, I've got six.  
-Oh.  
-So I'm curious which ones you don't think are important.  
-Okay. I'll go through my three and then I'll see what else you have to add.  
+So there's two killer features, arguably maybe three, that they're going to bake into the **Google browser**.
+Ooh, I've got six.
+Oh.
+So I'm curious which ones you don't think are important.
+Okay. I'll go through my three and then I'll see what else you have to add.
 Okay, great.
 
-Number one, most important, it is going to have a super fast, super modern, super performant **JavaScript virtual machine** called **V8**.  
+Number one, most important, it is going to have a super fast, super modern, super performant **JavaScript virtual machine** called **V8**.
 Yep. That is going to run big web apps fast and stably. We're the **Ajax company, baby.** We got to speed up the J. We are the Ajax company. That's right.
 
-Two, **web apps crashed a lot back in the day.** They don't so much anymore, but they used to crash a lot. And **Larry** has this quote when they're deciding that they should roll out Chrome. And he kind of explains,  
-> “We have found the web-based service delivery model to have significant advantages.”  
-You don't say.  
-> “But it also comes with its own set of challenges, primarily related to web browsers, which can be slow, unreliable, and unable to function offline.”  
+Two, **web apps crashed a lot back in the day.** They don't so much anymore, but they used to crash a lot. And **Larry** has this quote when they're deciding that they should roll out Chrome. And he kind of explains,
+> “We have found the web-based service delivery model to have significant advantages.”
+You don't say.
+> “But it also comes with its own set of challenges, primarily related to web browsers, which can be slow, unreliable, and unable to function offline.”
 
-There you go. And so, before **Chrome**, this is impossible to remember now, but if you had a tab or a window open and running a web app and that web app crashed, it took down your whole browser.  
-Yep. Everything that you had open, gone. Tabs were not their own processes. Nope.  
+There you go. And so, before **Chrome**, this is impossible to remember now, but if you had a tab or a window open and running a web app and that web app crashed, it took down your whole browser.
+Yep. Everything that you had open, gone. Tabs were not their own processes. Nope.
 
 So, each tab is going to be a **separate process** on your machine. So, if the web app running in one tab crashes, all it takes down is that one tab. And it made sense that before this, they weren't their own process because, one, tabs were kind of a new thing. But, two, web applications were websites. The notion of web applications was only really four-ish years old.
 
-So, those are my big two. I suspect one of yours is **WebKit**.  
-I'm not including WebKit here because that was an **Apple innovation**.  
-Yeah. That they borrowed. I'll let you talk about that in a sec. I don't have anything more to say on that.  
-It was the best rendering engine.  
+So, those are my big two. I suspect one of yours is **WebKit**.
+I'm not including WebKit here because that was an **Apple innovation**.
+Yeah. That they borrowed. I'll let you talk about that in a sec. I don't have anything more to say on that.
+It was the best rendering engine.
 Yes.
 
-So, let's say that's three, and then my sort of three and a half is the **design**. So, of course, the web browser ultimately comes to be called **Chrome**, which is ironic. Chrome is a reference to all the stuff in a web browser, the toolbars, the nav bar, et cetera, that take up space around the content.  
+So, let's say that's three, and then my sort of three and a half is the **design**. So, of course, the web browser ultimately comes to be called **Chrome**, which is ironic. Chrome is a reference to all the stuff in a web browser, the toolbars, the nav bar, et cetera, that take up space around the content.
 
-The idea with Chrome is, and the Google web browser is going to be, **minimal Chrome, as little as possible.**  
-It's just about the content. Let the web and the web apps shine.  
+The idea with Chrome is, and the Google web browser is going to be, **minimal Chrome, as little as possible.**
+It's just about the content. Let the web and the web apps shine.
 Yes.
 
-Okay. When you said UI, I thought you were going to say this. My fifth is the **Omnibox**.  
-Ah, yes. Originally, there was just the URL bar. And then, when **Search** became the killer app of the web, there's a second little input box that is for Search on the right side.  
+Okay. When you said UI, I thought you were going to say this. My fifth is the **Omnibox**.
+Ah, yes. Originally, there was just the URL bar. And then, when **Search** became the killer app of the web, there's a second little input box that is for Search on the right side.
 
-So, we had that awkward teenage years where browsers had the URL bar on the left and then the search on the right. And it's kind of clean to think about it on its own because now that we understand that that is sponsored, that I think for the longest time that was not in the public psyche, that whatever search engine appeared in that box in the right-hand corner was paying for that placement.  
+So, we had that awkward teenage years where browsers had the URL bar on the left and then the search on the right. And it's kind of clean to think about it on its own because now that we understand that that is sponsored, that I think for the longest time that was not in the public psyche, that whatever search engine appeared in that box in the right-hand corner was paying for that placement.
 
-That was sort of nice because you type in the URL bar and that's your organic typing. And then the other one is your  
-- I'm willing to give a kickback to Google, probably.  
-- But it could also be Bing, could be Yahoo, could be whoever.  
+That was sort of nice because you type in the URL bar and that's your organic typing. And then the other one is your
+- I'm willing to give a kickback to Google, probably.
+- But it could also be Bing, could be Yahoo, could be whoever.
 
-**Google**, correctly from a user experience perspective, but also, just think about their core business model, is like, the right design for web browsers is that **if you don't type in a URL, it should just search.** Just one bar. Why have two bars?  
+**Google**, correctly from a user experience perspective, but also, just think about their core business model, is like, the right design for web browsers is that **if you don't type in a URL, it should just search.** Just one bar. Why have two bars?
 
 Imagine that. Generating a whole bunch more page views on search results pages and a whole bunch more opportunities for our advertisers to reach your eyeballs. But I will say they were also correct from a user experience perspective.
 
-The fact that URLs ever leaked to the public is a mistake. That is letting an implementation detail of the technology. It's an accident of history that consumers type:  
+The fact that URLs ever leaked to the public is a mistake. That is letting an implementation detail of the technology. It's an accident of history that consumers type:
 ```
 HTTPS://
 ```
 
-Are you kidding me? Consumers never should have known the phrase **HTTP**. They should just type **New York Times**.  
+Are you kidding me? Consumers never should have known the phrase **HTTP**. They should just type **New York Times**.
 Yes. Which AOL tried to do. AOL keywords. Yeah.
 
 So this is effectively leaning into that idea. You can use this box for typing in URLs, but like, really what you use this box for is kicking off the **Google search**. So brilliantly aligned with their business model.
 
-All right. So that's what I got. What else do you have that's not on my list?  
+All right. So that's what I got. What else do you have that's not on my list?
 That's five. And then lastly, **sandboxing**.
 **Each tab is a sandboxed environment.** This prevented a ton of malware. This was like a big breakthrough in computer security where anything that was operating in that tab was in its own sandbox and couldn't be accessed maliciously.
 
@@ -2066,7 +2066,7 @@ Lay it on me.
 
 So they build their own government district around the park.
 
-Right. And they say, 
+Right. And they say,
 
 > "We make the rules here."
 
@@ -2076,7 +2076,7 @@ Yep.
 
 I've been reflecting a little bit on why basically from 1998 onward, **Google's biggest threat was Microsoft**. Microsoft, and not because of Bing, not because of building advertising, because of this kind of destabilizing thing.
 
-There's sort of a fine point on it, which is that spiritually, **Microsoft was the platform of the PC era**. 
+There's sort of a fine point on it, which is that spiritually, **Microsoft was the platform of the PC era**.
 
 And with this platform shift, it would be like very convenient to just be like,
 
@@ -2190,12 +2190,12 @@ But before we tell the **Android** story—before the Android story—now is a g
 
 Yes, we have talked throughout the season about Vercel becoming the infrastructure backbone for modern web and AI development—highly relevant to this episode, powering companies like:
 
-- PayPal  
-- Ramp  
-- Under Armour  
-- Notion  
-- Runway  
-- Cursor  
+- PayPal
+- Ramp
+- Under Armour
+- Notion
+- Runway
+- Cursor
 - and many more.
 
 Today, though, we want to spotlight **VZero**, which is **Vercel's AI app builder** that goes one step further and programs, designs, iterates, and deploys full stack web applications entirely for you.
@@ -2204,8 +2204,8 @@ Today, though, we want to spotlight **VZero**, which is **Vercel's AI app builde
 
 So a marketer can stand up a product landing page, or a small business can generate a homepage and a contact form, or a creator can spin up an independent content hub.
 
-Vercel loves to paraphrase the famous line from Pixar's **Ratatouille** that,  
-> "everybody can cook,"  
+Vercel loves to paraphrase the famous line from Pixar's **Ratatouille** that,
+> "everybody can cook,"
 
 which is an especially fun Easter egg for us since Pixar was our very first acquired episode.
 
@@ -2217,8 +2217,8 @@ So you go from prompt to full stack deployment with zero setup, using the same s
 
 It's the perfect example of Vercel being **customer zero** for their own products. They're using their own AI cloud to power their own AI products.
 
-So if you've got an idea that you want to launch, whether you're a seasoned developer or someone who's never written a line of code, go to  
-`Vercel.com/acquired`  
+So if you've got an idea that you want to launch, whether you're a seasoned developer or someone who's never written a line of code, go to
+`Vercel.com/acquired`
 that's **V-E-R-C-E-L dot com slash acquired**, and try it out. Build something real and just tell them that **Ben and David sent you**.
 
 All right, **Android**.
@@ -2227,17 +2227,17 @@ So, Google's office spaces are legendary. The first one, of course, being **Susa
 
 In between, Google had another office for a couple of years in downtown **Palo Alto** at **165 University Avenue**. It would also later be the office that **PayPal** was started in.
 
-"Oh, really?"  
+"Oh, really?"
 "Very lucky building, yeah."
 
 August 1999, when Google moved out of that office, do you know who moved in?
 
-Based on the direction this is going, is it danger?  
+Based on the direction this is going, is it danger?
 Yes, it is. Yes. **Danger**. The company started by **Andy Rubin**.
 
 And Andy, of course, had been an engineer at **Apple**, and then left Apple with a group of rebels.
 
-"I don't know, were they rebels?"  
+"I don't know, were they rebels?"
 
 That went to go start **General Magic**. General Magic, of course, legendary failed startup in Silicon Valley in the early 90s. Basically, it was trying to create the iPhone just 15 years too early.
 
@@ -2245,47 +2245,47 @@ After General Magic, after it falls apart, he starts **Danger**.
 
 Now, Andy's initial idea for Danger was he wanted to make a wireless version of the **QCAT scanner**.
 
-What is a QCAT scanner?  
+What is a QCAT scanner?
 This was a device that plugged into your computer that looked like a cat, but it scanned barcodes.
 
 And so Andy's idea was, okay, well, man, all this General Magic stuff we were trying to do, that was too far ahead. What if we think simpler and just make a wireless version of this to scan barcodes? Okay, not a big idea.
 
-His first employee at Danger, a guy named **Hiroshi Lockheimer**, convinces him that,  
+His first employee at Danger, a guy named **Hiroshi Lockheimer**, convinces him that,
 > "hey, actually, you know, a couple of years have gone by. Maybe we should revisit this General Magic stuff."
 
-Wait, Hiroshi was with him at Danger?  
-He was the first employee. I did not know that.  
+Wait, Hiroshi was with him at Danger?
+He was the first employee. I did not know that.
 Yep. Yes, he was. I mean, he, of course, is instrumental in the Android story later. I did not realize the two of them were at Danger together, too.
 
 I spoke to Hiroshi in research. He told me these stories. Great, great guy. Hiroshi led **Android** and **Chrome** at Google for many, many years and would be the authority on this.
 
-So Hiroshi's like,  
+So Hiroshi's like,
 > "hey, hey, maybe let's revisit this General Magic stuff."
-And that led to **Danger** building the **Sidekick** and launching it in partnership with **T-Mobile**. This thing was amazing. That thing was so sick. I was jealous of all my friends that had one. It was a **messaging-focused, sort of rich application cell phone**. 
+And that led to **Danger** building the **Sidekick** and launching it in partnership with **T-Mobile**. This thing was amazing. That thing was so sick. I was jealous of all my friends that had one. It was a **messaging-focused, sort of rich application cell phone**.
 
 I think it was, along with **BlackBerry's**, the first vision of a cell phone where the primary thing you do on it is not talk to somebody. **Is messaging.** These things were freaking awesome. They were really big with celebrities. I think it was a plot of an **Entourage** episode at some point in time.
 
-So they end up selling this company to **Microsoft**, right?  
+So they end up selling this company to **Microsoft**, right?
 Yes. Microsoft does end up acquiring the company, but not until **2008**, which is the same year that **Android launches**.
 
-**Andy** actually had left Danger in **2003** and started a new company, **Android**. Which, in the earliest days, it was kind of like an open-source competitor to effectively BlackBerry software.  
+**Andy** actually had left Danger in **2003** and started a new company, **Android**. Which, in the earliest days, it was kind of like an open-source competitor to effectively BlackBerry software.
 Yes.
 
-In its earliest, earliest days, the first version of Android, the company — remember I was talking about point-and-shoot cameras and digital cameras back in the YouTube section? — was actually to build a **cross-platform, open-source operating system for point-and-shoot digital cameras**.  
-Oh, wow.  
+In its earliest, earliest days, the first version of Android, the company — remember I was talking about point-and-shoot cameras and digital cameras back in the YouTube section? — was actually to build a **cross-platform, open-source operating system for point-and-shoot digital cameras**.
+Oh, wow.
 Yeah. That was **Andy’s vision**. It was like, "Oh, hey, these point-and-shoot devices, like hundreds of millions of consumers have them now. What if there were a powerful operating system? Could that be a Trojan horse to get an operating system?"
 
-You could sort of imagine it:  
-- If cameras became phones instead of phones becoming cameras, then yes.  
-- Yep. Exactly.  
+You could sort of imagine it:
+- If cameras became phones instead of phones becoming cameras, then yes.
+- Yep. Exactly.
 
-But pretty quickly, it does become clear that phones are going to become cameras. So, good thing is, though, the software they're writing still works just as well on phones. So, **Andy pivots the company** and has the delivery vector shift from cameras to smartphones.  
+But pretty quickly, it does become clear that phones are going to become cameras. So, good thing is, though, the software they're writing still works just as well on phones. So, **Andy pivots the company** and has the delivery vector shift from cameras to smartphones.
 
-At the time, the smartphone market, such that it existed — and it did exist — was led by:  
-- **BlackBerry**  
+At the time, the smartphone market, such that it existed — and it did exist — was led by:
+- **BlackBerry**
 - **Windows Mobile**
 
-Well, yeah, so here were the players:  
+Well, yeah, so here were the players:
 
 - Phone companies either were full stack, like **Apple and the iPhone today**, where they made the phone and the operating system. That was **Nokia**.
 - The big player in the smartphone market at least was **BlackBerry**, who made their own software, made their own devices, huge in the enterprise market.
@@ -2293,30 +2293,30 @@ Well, yeah, so here were the players:
   - From **Palm**, which made their own devices but also started selling the OS to other vendors.
   - Or the big player was **Microsoft** with **Windows Mobile**.
 
-So, and this was a licensed model. As we talked about in our Microsoft Part 2, this was:  
-```  
-You pay Microsoft single-digit dollars,  
-and you get an operating system,  
-and then you build the phone stuff on top of the operating system.  
+So, and this was a licensed model. As we talked about in our Microsoft Part 2, this was:
+```
+You pay Microsoft single-digit dollars,
+and you get an operating system,
+and then you build the phone stuff on top of the operating system.
 ```
 
 Exactly. This was a good business for Microsoft. Obviously, it wasn't as big as the desktop market, but you can totally understand why this is their strategy. We are the main desktop operating system provider. This is our business model there. Let's just do the same thing here. It seems to be working.
 
-And, as far as the phone manufacturers, the OEMs, and the carriers are concerned, things are also pretty good. These phones that they're making, they can't really do that much, but because of that, they don't actually cost that much to make. And the consumers, meanwhile, are paying through the nose for these things. 
+And, as far as the phone manufacturers, the OEMs, and the carriers are concerned, things are also pretty good. These phones that they're making, they can't really do that much, but because of that, they don't actually cost that much to make. And the consumers, meanwhile, are paying through the nose for these things.
 
-If you have a smartphone on a carrier contract, you're paying like $100 a month. And they don't consume that much data either, because they're not that capable. Everybody is fat and happy.  
+If you have a smartphone on a carrier contract, you're paying like $100 a month. And they don't consume that much data either, because they're not that capable. Everybody is fat and happy.
 Yeah.
 
 So, into this morass that also **Steve Jobs** is, of course, looking at the same thing and saying, "this sucks," enter **Andy and Android**.
 
 He goes around and he starts pitching the phone manufacturers and the carriers, "Hey, stop buying an operating system from Microsoft or from Palm. I'll give you a great one for free, and oh, by the way, it's going to be open source and there'll be third-party applications that can be written to it. And these devices will be super powerful."
 
-The ecosystem's like, **"no, I don't want this."**  
+The ecosystem's like, **"no, I don't want this."**
 
-- One, there's just no way in hell that **AT&T** or **Verizon** is going to work with a little rinky-dink startup that's valued at like $10 million and has eight employees. There's billions and billions of dollars at stake here.  
-- But the other part of it, too, I think the reason that the smartphone market had stagnated for so long was this: Everybody was happy. Right.  
+- One, there's just no way in hell that **AT&T** or **Verizon** is going to work with a little rinky-dink startup that's valued at like $10 million and has eight employees. There's billions and billions of dollars at stake here.
+- But the other part of it, too, I think the reason that the smartphone market had stagnated for so long was this: Everybody was happy. Right.
 
-It's a non-priority to upset the apple cart. Right. It's almost like a version of enterprise software in IT, right? The users don't like it, but the users aren't actually the customers here. It's the carriers who are the customers.  
+It's a non-priority to upset the apple cart. Right. It's almost like a version of enterprise software in IT, right? The users don't like it, but the users aren't actually the customers here. It's the carriers who are the customers.
 Yep.
 
 So **2005 rolls around**. Andy's now two years into the company with Android. He's managed to convince **HTC**, the Taiwanese manufacturer, to make a prototype with him. He's showing it to carriers.
@@ -2389,7 +2389,7 @@ So, they start work on Android as part of Google here in summer of 2005. And the
 - A prototype and a device that'll be more near-term to launch called the "sooner."
 - It's sort of the more BlackBerry-like device, not a touchscreen device.
 - Then, there was a longer-term, advanced research project codenamed the "Dream" for a touchscreen smartphone device.
-``` 
+```
 
 Summer of 2006, that next year, **Eric Schmidt** joins the Apple board. He sees how far along and how good the iPhone is.
 
@@ -2430,7 +2430,7 @@ It was a little bit pre-algorithm, but the thinking was there of we have to make
 
 Yes, yes. It still looked great, though. It fit in with that first iPhone, for sure. It totally did.
 
-Do you know who was the leader of the Google mobile teams that developed the backends for these apps?  
+Do you know who was the leader of the Google mobile teams that developed the backends for these apps?
 - **Vic Gundotra**.
 
 Really? Yes. That was his first job, I think, within Google. First or second job within Google. Vic is going to come back up here in a minute.
@@ -2457,7 +2457,7 @@ So, in **Walter Isaacson's book**, **Steve Jobs** says,
 
 > *"I'm going to destroy Android because it's a stolen product. I'm willing to go thermonuclear war on this."*
 
-He also says, 
+He also says,
 
 > *"I will spend my last dying breath if I need to, and I will spend every penny of Apple's $40 billion in the bank to right this wrong."*
 
@@ -2597,13 +2597,13 @@ To over **50% market share of smartphones**.
 
 But as great as the **iPhone** was, it did have a few weaknesses.
 
-- No copy-paste.  
-- No multitasking.  
-- Not very customizable.  
+- No copy-paste.
+- No multitasking.
+- Not very customizable.
 
 As mentioned before, it didn't multitask. I think we're still in the era of **you can't even change your wallpaper on the iPhone**. Pretty sure we are. I think it's still just the black background. You can't put your own apps on it from anywhere but the **App Store** even after it launches. A big knock at the time.
 
-People loved that it's a **touchscreen**, but people really wanted the **physical keyboards**. 
+People loved that it's a **touchscreen**, but people really wanted the **physical keyboards**.
 
 And the biggest problem with the iPhone, at least in the U.S., was that you could only get it on **AT&T**. And you could only get it with the **Edge network**. It was unusable.
 
@@ -2613,33 +2613,33 @@ So that brings us to **holiday 2009 and the Motorola Droid**. Changed everything
 
 It's sort of funny to say now, like, oh, the Motorola, like, the **Motorola Droid**. This changed everything. Yes.
 
-I mean, when we interviewed **Steve Ballmer** a couple of months ago, he brought it up. When the Droid launched, it was holiday 2009. And I think you and I were like, was it really that late? Wasn't it early? And he was like,  
+I mean, when we interviewed **Steve Ballmer** a couple of months ago, he brought it up. When the Droid launched, it was holiday 2009. And I think you and I were like, was it really that late? Wasn't it early? And he was like,
 > "Nope. Christmas 2009. I will never forget it. That is when Android won the market. This was the moment."
 
 And **Google was really willing to put their brand second**. Now, were they really putting their brand second? It's **Android versus Droid**. So very convenient.
 
 But, like, if you were to go survey the American public in 2009, 10, 11, 12, maybe even 13, and say:
 
-- Do you know about Android, the mobile operating system?  
-  **No.**  
-- Do you know about Droid?  
+- Do you know about Android, the mobile operating system?
+  **No.**
+- Do you know about Droid?
   **Oh, yeah. I have a Droid phone.**
 
-Well, and then there were a couple of years after that where it was like,  
-- Do you know about Google and Android?  
-  **Yeah, maybe.**  
-- Do you know about Samsung and Galaxy?  
-  **Oh, yeah. I know about that.**  
+Well, and then there were a couple of years after that where it was like,
+- Do you know about Google and Android?
+  **Yeah, maybe.**
+- Do you know about Samsung and Galaxy?
+  **Oh, yeah. I know about that.**
 Yeah, exactly. So we'll get into that in a sec.
 
-The **Droid**.  
+The **Droid**.
 **Droid does, baby.**
 
 **Verizon**, at this point, is getting pummeled by **AT&T**. It's been two years since the iPhone launch.
 
 AT&T isn't just stealing a lot of subscribers from Verizon because of the iPhone; they're stealing the **best subscribers**—the people that are willing to pay the most money for the biggest price data plans for smartphones.
 
-Verizon finally decides, like:  
+Verizon finally decides, like:
 > "We gotta change the game here. We gotta be able to compete with the iPhone. We're gonna go all in on Android. We're going to buy a device and make this our flagship smartphone, position it against the iPhone, and we're going to invest hugely behind this thing."
 
 So the device itself, the actual **Droid**, made by **Motorola**, was a great device. It had a big screen—for the time—a slide-out keyboard, a five-megapixel camera, a removable battery, all of these things the iPhone didn't have.
@@ -2648,10 +2648,10 @@ Probably the most important feature it had, though, the killer, killer app was o
 
 I didn't realize that.
 
-So before the Droid, there was this whole consumer electronics product category of dedicated GPS devices. People old enough to remember might recall:  
+So before the Droid, there was this whole consumer electronics product category of dedicated GPS devices. People old enough to remember might recall:
 
-- **TomToms**  
-- **Navteq**  
+- **TomToms**
+- **Navteq**
 - **Garmin**
 
 People would buy these devices, put them in their cars, and pay a monthly subscription fee for the service of the turn-by-turn navigation.
@@ -2660,7 +2660,7 @@ Overnight, this entire product category gets obsoleted, Sherlocked, gone. Becaus
 
 No more monthly fees. Just baked in your phone and the device you already have with you. Why on earth would anybody buy, let alone pay monthly, for a standalone GPS product again?
 
-And you know what doesn't have it? The iPhone. The Apple version of Google Maps, you had to manually advance the steps. So it would pull up the route, and then you could tap the button to be like,  
+And you know what doesn't have it? The iPhone. The Apple version of Google Maps, you had to manually advance the steps. So it would pull up the route, and then you could tap the button to be like,
 > "I've made this turn, now show me the next part of it."
 
 That's such a funny... you're exactly right. I remember that too. Not really what you want to do while you're driving.
@@ -2773,7 +2773,7 @@ Like, you just have the operating system, and it's great. Anyone can do that.
 
 But why wouldn't you want to have **our app store?** It's where all the apps are. And if you do that, then you get all the great Google services, all the apps.
 
-You get the native **Gmail** and the native **Maps** and all this great stuff we've written. And if you do that, then Google's the default search. 
+You get the native **Gmail** and the native **Maps** and all this great stuff we've written. And if you do that, then Google's the default search.
 
 > "We'll pay you for that. And then you make money."
 
@@ -2804,154 +2804,154 @@ So, then the other quick thing to mention on Android history.
 There was one interesting moment and tension with **Samsung**. In the early to mid-2010s, Samsung basically said,
 
 > "Oh, okay, the iPhone is the premium device. Android is this incredibly flexible platform. What if we just take Android and copy the iPhone with Android?"
-And they got really good at it. **And the Galaxy devices were just shipping in huge, huge numbers.**  
+And they got really good at it. **And the Galaxy devices were just shipping in huge, huge numbers.**
 
-And then **Samsung started stripping out Google services and putting their own Samsung services in on some of their devices.** That was a bridge too far for Google.  
+And then **Samsung started stripping out Google services and putting their own Samsung services in on some of their devices.** That was a bridge too far for Google.
 
-So, this is when **Google started the Pixel program.** Google had done the Nexus program, making their own hardware before. The Pixel, though, was and is a sort of **reference device** that, yeah, consumers could buy. But more so to show the rest of the OEM market, the non-Samsung market, *“hey, here are reference designs essentially for great premium devices, great cameras, all the features you want. Here, copy these.”*  
+So, this is when **Google started the Pixel program.** Google had done the Nexus program, making their own hardware before. The Pixel, though, was and is a sort of **reference device** that, yeah, consumers could buy. But more so to show the rest of the OEM market, the non-Samsung market, *“hey, here are reference designs essentially for great premium devices, great cameras, all the features you want. Here, copy these.”*
 
-It's the same thing as the **Microsoft Surface strategy**, why Bomber was so adamant.  
+It's the same thing as the **Microsoft Surface strategy**, why Bomber was so adamant.
 
-- We got to make a Surface.  
-- We got to show the OEMs how to do this.  
+- We got to make a Surface.
+- We got to show the OEMs how to do this.
 
-It's funny. So, I've been trying to think about what is the business of Android, **Google having Android versus Google not having Android.** And I tried to pull up the most credible numbers I possibly could.  
+It's funny. So, I've been trying to think about what is the business of Android, **Google having Android versus Google not having Android.** And I tried to pull up the most credible numbers I possibly could.
 
-There's basically two things that you just have to add together to create the value:  
-1. How much money they make from the **Play Store**, which has become significant, didn't used to be, but is now.  
-2. How much money are they saving by not having the searches originate from a platform that they don't own.  
+There's basically two things that you just have to add together to create the value:
+1. How much money they make from the **Play Store**, which has become significant, didn't used to be, but is now.
+2. How much money are they saving by not having the searches originate from a platform that they don't own.
 
-I used to think, oh, because it's Android, they don't have to pay money. They have to pay $20 billion to **Apple**. It's not zero. They do actually have to pay, like we talked about. David and I sort of figured out as we were going through the financial disclosures and stuff.  
+I used to think, oh, because it's Android, they don't have to pay money. They have to pay $20 billion to **Apple**. It's not zero. They do actually have to pay, like we talked about. David and I sort of figured out as we were going through the financial disclosures and stuff.
 
-They do pay the OEMs and they do pay the carriers. And the question is how much? Because once you can kind of figure out how much, then you can do a little bit of napkin math to figure out, okay, well, how much are they still saving by it not being Apple?  
+They do pay the OEMs and they do pay the carriers. And the question is how much? Because once you can kind of figure out how much, then you can do a little bit of napkin math to figure out, okay, well, how much are they still saving by it not being Apple?
 
-So, Google paid out last year, and I'm just using the current numbers to try to figure out what the splits have always been. They paid out last year **$55 billion in total traffic acquisition costs.**  
+So, Google paid out last year, and I'm just using the current numbers to try to figure out what the splits have always been. They paid out last year **$55 billion in total traffic acquisition costs.**
 
-Now, traffic acquisition costs are actually the sum of two different numbers from two different businesses because they love to obfuscate things:  
+Now, traffic acquisition costs are actually the sum of two different numbers from two different businesses because they love to obfuscate things:
 
-- One, it's what we're actually looking for, the acquisition of traffic to **Google search**.  
-- And the other component is money that we paid to publishers where our ads show up in the sort of double-click **AdSense** world.  
+- One, it's what we're actually looking for, the acquisition of traffic to **Google search**.
+- And the other component is money that we paid to publishers where our ads show up in the sort of double-click **AdSense** world.
 
-Now, we know that that averages about a 70-30 split, and we know that they made $30 billion last year gross in the Google network.  
+Now, we know that that averages about a 70-30 split, and we know that they made $30 billion last year gross in the Google network.
 
-So, you could say, okay, they probably paid out about $21 billion of that $55 billion in the AdSense double-click Google network world.  
+So, you could say, okay, they probably paid out about $21 billion of that $55 billion in the AdSense double-click Google network world.
 
-So, that backs our $55 billion down to $34 billion.  
+So, that backs our $55 billion down to $34 billion.
 
-Okay, that's $34 billion in actual traffic acquisition for Google search. And we know $20 was iPhone. Right, for Safari searches.  
+Okay, that's $34 billion in actual traffic acquisition for Google search. And we know $20 was iPhone. Right, for Safari searches.
 
 So, that means there's $14 billion that gets distributed to non-Apple traffic acquisition distribution partners, which in their annual report, they define as:
 
-- browser providers  
-- mobile carriers  
-- original equipment manufacturers (OEMs)  
-- software developers  
+- browser providers
+- mobile carriers
+- original equipment manufacturers (OEMs)
+- software developers
 
-It's basically **$14 billion to the Android mobile carriers and OEMs plus Firefox.**  
+It's basically **$14 billion to the Android mobile carriers and OEMs plus Firefox.**
 
-- Yep. What am I missing?  
-- I'm going to guess Firefox is less than a billion, call it, somewhere around half a billion-ish.  
-- Yeah. There's probably some version of the old portal deals that still exist.  
-- Properties on the web that have Google search baked into it.  
+- Yep. What am I missing?
+- I'm going to guess Firefox is less than a billion, call it, somewhere around half a billion-ish.
+- Yeah. There's probably some version of the old portal deals that still exist.
+- Properties on the web that have Google search baked into it.
 
-Okay, so let's cut $4 billion off for Firefox and the other web properties. And other. Yep.  
+Okay, so let's cut $4 billion off for Firefox and the other web properties. And other. Yep.
 
-Okay. So, **$10 billion going to the carriers and OEMs.**  
+Okay. So, **$10 billion going to the carriers and OEMs.**
 
-It's actually pretty significant, that $10 billion going to carriers and OEMs. It's half of what they're paying Apple.  
+It's actually pretty significant, that $10 billion going to carriers and OEMs. It's half of what they're paying Apple.
 
-Half of what they're paying Apple, but for many, many, many more devices. Right.  
+Half of what they're paying Apple, but for many, many, many more devices. Right.
 
-And so, clearly, the rev share to the carriers and OEMs is a much smaller percent than what they have to pay Apple. I'd guess a quarter?  
+And so, clearly, the rev share to the carriers and OEMs is a much smaller percent than what they have to pay Apple. I'd guess a quarter?
 
-Either way, I actually think, after walking all the way through it, **the bigger component of this is just de-risking their future.**  
+Either way, I actually think, after walking all the way through it, **the bigger component of this is just de-risking their future.**
 
-It's not how many billions. They don't care about giving $10 billion up for this.  
+It's not how many billions. They don't care about giving $10 billion up for this.
 
-Yeah. As we've been saying all episode, **Google is more than happy to pay traffic acquisition costs to any and everyone.** Yes.  
+Yeah. As we've been saying all episode, **Google is more than happy to pay traffic acquisition costs to any and everyone.** Yes.
 
-And so then, direct value that they make from the Play Store, it actually came out in a lawsuit.  
+And so then, direct value that they make from the Play Store, it actually came out in a lawsuit.
 
-In 2019, Play Store revenue was:  
-```  
-$11.2 billion total revenue  
-$8.5 billion gross profit  
-$7 billion operating income  
-```  
+In 2019, Play Store revenue was:
+```
+$11.2 billion total revenue
+$8.5 billion gross profit
+$7 billion operating income
+```
 
-Now, $7 billion, not nothing, but still a far cry from Google's core business of **ads from Search, Gmail, and Maps.**  
+Now, $7 billion, not nothing, but still a far cry from Google's core business of **ads from Search, Gmail, and Maps.**
 
-And that same year, the core business did almost $100 billion in revenue.  
+And that same year, the core business did almost $100 billion in revenue.
 
 So, something like $85 billion in gross profit is my best estimate, and around $30-ish billion in operating income.
-So, even though the **Play Store made $7 billion in 2019**, the important thing is that **Android is still primarily protecting the core search ads business** and making sure that traffic doesn't go elsewhere. This levered **Google's web business into the mobile era**.  
+So, even though the **Play Store made $7 billion in 2019**, the important thing is that **Android is still primarily protecting the core search ads business** and making sure that traffic doesn't go elsewhere. This levered **Google's web business into the mobile era**.
 
-**How amazing is that?**  
-Yeah, that's true. It probably generated several hundred billion dollars, profit dollars, that they may not have had those years otherwise.  
-Yep.  
+**How amazing is that?**
+Yeah, that's true. It probably generated several hundred billion dollars, profit dollars, that they may not have had those years otherwise.
+Yep.
 
-So, I guess what I'm saying is, obviously, **Android was a giant success**, and the biggest reason, even though they save, I don't know, **$10-15 billion a year** from not having to pay it to Apple, and even though they generate **$8 billion**, I'm sure at this point it's bigger, I don't know, **$10-15 billion a year**, really it's about just **protecting the core, not about saving costs**.  
-Yeah.  
+So, I guess what I'm saying is, obviously, **Android was a giant success**, and the biggest reason, even though they save, I don't know, **$10-15 billion a year** from not having to pay it to Apple, and even though they generate **$8 billion**, I'm sure at this point it's bigger, I don't know, **$10-15 billion a year**, really it's about just **protecting the core, not about saving costs**.
+Yeah.
 
-And this one, they almost missed it. They hadn't bought Android when they had, like, that window was closing fast. And **Microsoft did miss it**.  
-Fast, fast, fast.  
-Yep.  
+And this one, they almost missed it. They hadn't bought Android when they had, like, that window was closing fast. And **Microsoft did miss it**.
+Fast, fast, fast.
+Yep.
 
-And so, at some point, **Andy Rubin leaves, and Sundar actually takes over the combined teams**. So, our hero here, who is starting to gather more responsibilities, it was just the application clients, and then it was Chrome.  
+And so, at some point, **Andy Rubin leaves, and Sundar actually takes over the combined teams**. So, our hero here, who is starting to gather more responsibilities, it was just the application clients, and then it was Chrome.
 
-In 2013, it becomes **Chrome and Android**. And whenever you see Sundar on stage, he is very proud of **Google's two open platforms**.  
-Yep.  
+In 2013, it becomes **Chrome and Android**. And whenever you see Sundar on stage, he is very proud of **Google's two open platforms**.
+Yep.
 
-So, today, there are more than **3 billion active Android devices**. I think it's even higher than that now. It's just silly. There's like **7 billion people in the world** that are over 3 billion active Android phones.  
-Yes.  
+So, today, there are more than **3 billion active Android devices**. I think it's even higher than that now. It's just silly. There's like **7 billion people in the world** that are over 3 billion active Android phones.
+Yes.
 
-So, you're probably thinking, coming into this 2010-2011 era, they're really feeling themselves over there at Google. You know, we've jumped over some failures, but it's been **hit after hit after hit in a lot of these areas that really matter**.  
+So, you're probably thinking, coming into this 2010-2011 era, they're really feeling themselves over there at Google. You know, we've jumped over some failures, but it's been **hit after hit after hit in a lot of these areas that really matter**.
 
-Just like we talked about on the Microsoft episodes, it really doesn't matter when you fail and how many times you fail, even the size of your failures, if your hits are these giant, world-changing, platform-type tech businesses that endure for decades. And that's what they had on their hands.  
-Yep.  
+Just like we talked about on the Microsoft episodes, it really doesn't matter when you fail and how many times you fail, even the size of your failures, if your hits are these giant, world-changing, platform-type tech businesses that endure for decades. And that's what they had on their hands.
+Yep.
 
-And it sure looked at this time like there was another big technology category out there. Of social. That Google should be playing in of a similar size called social.  
-Yes.  
+And it sure looked at this time like there was another big technology category out there. Of social. That Google should be playing in of a similar size called social.
+Yes.
 
-And this is the **Google Plus story**. I'd say rest in peace, but I don't think anybody misses it.  
-Yeah.  
+And this is the **Google Plus story**. I'd say rest in peace, but I don't think anybody misses it.
+Yeah.
 
-All right. Well, I want to start this story the way that people expect us to start this story. And I have a little bit of a different take on it as we get partway in.  
-Great.  
+All right. Well, I want to start this story the way that people expect us to start this story. And I have a little bit of a different take on it as we get partway in.
+Great.
 
-So **Google had been interested in social for a long time**. They weren't blind to it.  
+So **Google had been interested in social for a long time**. They weren't blind to it.
 
-- In 2007, they tried to do **Open Social** and they basically failed at that because **Facebook didn't participate** and Facebook was social. So everything else combined didn't really matter.  
+- In 2007, they tried to do **Open Social** and they basically failed at that because **Facebook didn't participate** and Facebook was social. So everything else combined didn't really matter.
 
-Oh, you didn't start where I thought you were going to start. The craziest thing is that **Google had Facebook before Facebook**.  
+Oh, you didn't start where I thought you were going to start. The craziest thing is that **Google had Facebook before Facebook**.
 
-Orkut.  
-Yeah, that's true.  
-Which I think was like a 20% time project that then blew up in Brazil.  
-Yeah, totally. No, no, yeah.  
+Orkut.
+Yeah, that's true.
+Which I think was like a 20% time project that then blew up in Brazil.
+Yeah, totally. No, no, yeah.
 
-Okay. So there was a **Turkish engineer who worked for Google named Orkut Bukokhtin**, and his passion was social networking and Friendster was a thing at the time.  
+Okay. So there was a **Turkish engineer who worked for Google named Orkut Bukokhtin**, and his passion was social networking and Friendster was a thing at the time.
 
-And so January 2004, before Gmail, before the Google IPO, before Facebook launches on the Harvard campus, in his 20% time, he launches a social network within Google called **Orkut**.  
+And so January 2004, before Gmail, before the Google IPO, before Facebook launches on the Harvard campus, in his 20% time, he launches a social network within Google called **Orkut**.
 
-It didn't become that big in America, but it got at its peak, I think, **300 million users**. It was the biggest social network in Brazil, the biggest social network in India.  
-Wow.  
+It didn't become that big in America, but it got at its peak, I think, **300 million users**. It was the biggest social network in Brazil, the biggest social network in India.
+Wow.
 
-And Google was like, I don't know, it doesn't seem that important.  
+And Google was like, I don't know, it doesn't seem that important.
 
-All right, so **Open Social then in 2007**, **Google Wave in 2009**.  
+All right, so **Open Social then in 2007**, **Google Wave in 2009**.
 
-By the way, can we just pause and say 2009, this is like right after Chrome, right after Android. Google is a big place and Google is a siloed place at this point.  
+By the way, can we just pause and say 2009, this is like right after Chrome, right after Android. Google is a big place and Google is a siloed place at this point.
 
-I mean, it's kind of crazy that Android is happening over in this other building and there's this like fight with Apple. And that's the same time that they're doing Google Wave. Like, it's weird that this is all sort of concurrent. The company was focused in a lot of different directions. But it was so decentralized.  
-Yes.  
+I mean, it's kind of crazy that Android is happening over in this other building and there's this like fight with Apple. And that's the same time that they're doing Google Wave. Like, it's weird that this is all sort of concurrent. The company was focused in a lot of different directions. But it was so decentralized.
+Yes.
 
-And it actually worked. Well, it worked early. Yeah. It worked really well to get all the stuff off the ground.  
+And it actually worked. Well, it worked early. Yeah. It worked really well to get all the stuff off the ground.
 
-It was so interesting doing the research for this episode because so many of the people we talked to, even people who were leaders of a lot of these products, because Google was so decentralized and so siloed, they were focused on their thing on Android or Chrome or whatever.  
+It was so interesting doing the research for this episode because so many of the people we talked to, even people who were leaders of a lot of these products, because Google was so decentralized and so siloed, they were focused on their thing on Android or Chrome or whatever.
 
-And so we'd ask, you know, what was the overall strategy? What was the through line to all of this? And we kept getting answers of like,  
-> "Well, it was just Google-y. People worked on what they thought was cool and it was good for the web."  
+And so we'd ask, you know, what was the overall strategy? What was the through line to all of this? And we kept getting answers of like,
+> "Well, it was just Google-y. People worked on what they thought was cool and it was good for the web."
 
 And like, that is absolutely true.
 But there was this all overlay of this very, very thin layer of **strategy** that held the whole web together. I think that the strategy was pretty tight at the top level and they just didn't actually need to communicate it down very far. Most people that I talked to said,
@@ -2982,11 +2982,11 @@ I think it's a little bit more related to the **palace intrigue at Google** and 
 
 So if you zoom out and look at the company right now, it's pretty fragmented. It's got different **fiefdoms** with big personalities at the top of each of these fiefdoms.
 
-- Android  
-- Chrome  
-- Search  
-- YouTube  
-- Developer relations, trying to sort of will a Google platform into existence now  
+- Android
+- Chrome
+- Search
+- YouTube
+- Developer relations, trying to sort of will a Google platform into existence now
 
 Different products with kind of competing goals. Ultimately, they all help **Google's overarching mission**, but there's a lot of elbows starting to come out.
 
@@ -3053,75 +3053,75 @@ And so, yeah, you could see how this is an **existential threat**.
 You said,
 
 > "The traffic is growing."
-Like, **oh, my gosh, what if this becomes AOL all over again?**  
+Like, **oh, my gosh, what if this becomes AOL all over again?**
 
-Right. And that's the main thing. One tier down from that is **Facebook doesn't even allow other ad servers**. At least with AOL, we could do a deal with them and power their monetization. **Facebook just hired Sheryl Sandberg. They're doing this. They're doing it all in-house. Closed-loop system.** Yep.  
+Right. And that's the main thing. One tier down from that is **Facebook doesn't even allow other ad servers**. At least with AOL, we could do a deal with them and power their monetization. **Facebook just hired Sheryl Sandberg. They're doing this. They're doing it all in-house. Closed-loop system.** Yep.
 
-So, **Google Plus**. What was Google Plus and how did it get built?  
+So, **Google Plus**. What was Google Plus and how did it get built?
 
-So, it was a **one-year sprint** following this point, the 50 getting together. And it was built in a very, very **un-Google-y** way. It was not organic, David, like these passion projects you're talking about. It was instilled from on high down upon all of the products. It was not based on a core technical insight. It was not consensus-driven. It was **top-down, command-and-control style**, led by the person that you mentioned earlier, **Vic Gundotra**.  
+So, it was a **one-year sprint** following this point, the 50 getting together. And it was built in a very, very **un-Google-y** way. It was not organic, David, like these passion projects you're talking about. It was instilled from on high down upon all of the products. It was not based on a core technical insight. It was not consensus-driven. It was **top-down, command-and-control style**, led by the person that you mentioned earlier, **Vic Gundotra**.
 
-Now, who was **Vic Gundotra**? Vic was this interesting character. Like we said earlier, he had been leading Google's developer efforts in the pre-Android days. And he was sort of the front man. He was the **emcee at Google I/O**.  
+Now, who was **Vic Gundotra**? Vic was this interesting character. Like we said earlier, he had been leading Google's developer efforts in the pre-Android days. And he was sort of the front man. He was the **emcee at Google I/O**.
 
-Right. If you were looking for somebody to communicate and push down this new top-down vision across the company, he would be a logical choice.  
+Right. If you were looking for somebody to communicate and push down this new top-down vision across the company, he would be a logical choice.
 
-Yes. I don't know if he raised his hand. I don't know if Larry said,  
+Yes. I don't know if he raised his hand. I don't know if Larry said,
 
-> "Hey, I really think you should do this on our behalf."  
+> "Hey, I really think you should do this on our behalf."
 
-But what is definitely true is it became **Vic's thing**. And Eric and Larry and Sergey stepped back and let Vic run with it. And he was given an enormous amount of **institutional authority**.  
+But what is definitely true is it became **Vic's thing**. And Eric and Larry and Sergey stepped back and let Vic run with it. And he was given an enormous amount of **institutional authority**.
 
-And we should say, too, you alluded to this earlier. What was Google Plus? It wasn't just a social product in and of itself. It was **baked into all Google**. It was inserted into every other product that Google had.  
+And we should say, too, you alluded to this earlier. What was Google Plus? It wasn't just a social product in and of itself. It was **baked into all Google**. It was inserted into every other product that Google had.
 
-There's a quote from Vic to the press at the time about this, about what Google Plus is. He says,  
+There's a quote from Vic to the press at the time about this, about what Google Plus is. He says,
 
-> "This is the next generation of Google. It is Google plus one."  
+> "This is the next generation of Google. It is Google plus one."
 
-Oh, boy. Oh, boy. There's a lot of these really corny... I'm crazy even saying that. Oh, it gives me the heebie-jeebies.  
+Oh, boy. Oh, boy. There's a lot of these really corny... I'm crazy even saying that. Oh, it gives me the heebie-jeebies.
 
-So, yeah, it was a **Facebook-style thing**. But its goal, in addition to being a Facebook-style thing, was to leverage all of **Google's assets** and make all Google things **Google Plus things**.  
+So, yeah, it was a **Facebook-style thing**. But its goal, in addition to being a Facebook-style thing, was to leverage all of **Google's assets** and make all Google things **Google Plus things**.
 
-So they:  
-- Moved big headcounts out of each team and onto the Google Plus team  
-- Reached deep to integrate with these other products  
+So they:
+- Moved big headcounts out of each team and onto the Google Plus team
+- Reached deep to integrate with these other products
 
-And it's very clear who the boss was in all these negotiations. You had a clear mandate. Like, your job this half year, this year, is **do these Google Plus integrations**.  
+And it's very clear who the boss was in all these negotiations. You had a clear mandate. Like, your job this half year, this year, is **do these Google Plus integrations**.
 
-Yeah, your OKR, Google famously ran on OKRs, was now all about pluses.  
+Yeah, your OKR, Google famously ran on OKRs, was now all about pluses.
 
-And **Danny Crichton**, who would go on to become the managing editor at TechCrunch, at this point in time was a Google intern. And he wrote about it later. He said,  
+And **Danny Crichton**, who would go on to become the managing editor at TechCrunch, at this point in time was a Google intern. And he wrote about it later. He said,
 
-> "Due to this integration, much of it was forced. The culture around the company at Google had become deeply poisonous by the time I started. I still remember talking to one member of the Picasa team, who is at Google's photo repository that they bought, who told me to F off when I asked about integrating Google Plus into the product."  
+> "Due to this integration, much of it was forced. The culture around the company at Google had become deeply poisonous by the time I started. I still remember talking to one member of the Picasa team, who is at Google's photo repository that they bought, who told me to F off when I asked about integrating Google Plus into the product."
 
-He was hardly the only one. Company-wide bonuses were based on the success of Google Plus. They even went so far as to put little plus one buttons on mobile advertisements, like those little banner ads at the bottom.  
+He was hardly the only one. Company-wide bonuses were based on the success of Google Plus. They even went so far as to put little plus one buttons on mobile advertisements, like those little banner ads at the bottom.
 
-Yes, this is the best. Google had bought **AdMob**, and the mobile display ad units—you could plus one it. Who the hell wants to plus one an ad? I mean, this is like Facebook's like button, but Google Plus's version. And they're like,  
+Yes, this is the best. Google had bought **AdMob**, and the mobile display ad units—you could plus one it. Who the hell wants to plus one an ad? I mean, this is like Facebook's like button, but Google Plus's version. And they're like,
 
-> "Any Google thing should be plus one-able."  
+> "Any Google thing should be plus one-able."
 
-So they even reached into **YouTube comments**, and YouTube comments became **Google Plus posts**.  
+So they even reached into **YouTube comments**, and YouTube comments became **Google Plus posts**.
 
-Oof. I mean, they almost killed the golden goose. Right. They almost killed all of these golden gooses that they had.  
+Oof. I mean, they almost killed the golden goose. Right. They almost killed all of these golden gooses that they had.
 
-Yes.  
+Yes.
 
-And so Google Plus, from a product perspective, it wasn't just Facebook. They brought a lot of really interesting ideas:  
-- **Google Hangouts** came out of this  
-- **Google Photos** came out of this  
-- There were these things called **Sparks**  
+And so Google Plus, from a product perspective, it wasn't just Facebook. They brought a lot of really interesting ideas:
+- **Google Hangouts** came out of this
+- **Google Photos** came out of this
+- There were these things called **Sparks**
 
-I mean, they really rethought a lot of social networking. The issue is, nobody really wanted to rethink social networking. That was a Google priority to get people to use this, not a user-driven one. And they tried to essentially put **rocket fuel** on to scale something that really didn't have **product market fit**.  
+I mean, they really rethought a lot of social networking. The issue is, nobody really wanted to rethink social networking. That was a Google priority to get people to use this, not a user-driven one. And they tried to essentially put **rocket fuel** on to scale something that really didn't have **product market fit**.
 
-Well, I really think the key huge mistake with Google Plus, one of the huge mistakes with Google Plus was...  
+Well, I really think the key huge mistake with Google Plus, one of the huge mistakes with Google Plus was...
 
-You don't need a Facebook when there's already Facebook? Not even that. Facebook was already dying. **Mark Zuckerberg had already realized that the future of social was not what it looked like at this point in time.**  
+You don't need a Facebook when there's already Facebook? Not even that. Facebook was already dying. **Mark Zuckerberg had already realized that the future of social was not what it looked like at this point in time.**
 
-As Google is launching Google Plus...  
+As Google is launching Google Plus...
 
-- In **2011, June 2011**  
-- 2011, 2012, 2013  
+- In **2011, June 2011**
+- 2011, 2012, 2013
 
-These were the big years for Google Plus.  
+These were the big years for Google Plus.
 
 What is **Mark Zuckerberg** doing? He's buying **Instagram**. He's buying **WhatsApp**.
 And he's remaking, essentially, you know, **Facebook** into what **Meadow** would become of like, hey, what we used to think of as **social networking**.
@@ -3135,7 +3135,7 @@ And here's **Google**... launching, I kid you not, this is the craziest thing, *
 
 **Circles**. That's right. **Circles.**
 
-Which is, on its own, such a **computer science** way of thinking about it.  
+Which is, on its own, such a **computer science** way of thinking about it.
 "Oh, my friends are in sometimes overlapping, sometimes non-overlapping groups that I want to carefully label so that I can identify deterministically who I want to share what with."
 
 Right. Nobody wants to do that.
@@ -3232,14 +3232,14 @@ But interestingly, they didn't. And they've been fine. Right. Right, right. It w
 
 And ultimately, **Google wasn't a credible threat to Facebook and Facebook went in a different direction anyway.** Facebook went in a different direction. Yeah.
 
-So it's almost like the end of *Burn After Reading*. Have you ever seen that movie? No. I won't spoil anything. But the feeling you have at the end is you just watched all this crazy stuff happen and you're like, 
+So it's almost like the end of *Burn After Reading*. Have you ever seen that movie? No. I won't spoil anything. But the feeling you have at the end is you just watched all this crazy stuff happen and you're like,
 
 > "Whoa. Wait, did any of that matter?"
 
 That's how Google Plus feels to me. Yeah. Funny.
 
-Google Plus did have two great surviving products:  
-- **Hangouts**, which became **Meet**,  
+Google Plus did have two great surviving products:
+- **Hangouts**, which became **Meet**,
 - and **Photos**.
 
 Yep. Photos is a **billion user product today**. Wow. Huge.
@@ -3256,13 +3256,13 @@ Anyway, my snarky finish on all this is it's tempting to say **Google lost in so
 
 Yep.
 
-To put a bow on it, **Vic ends up leaving the company in 2014**. In 2019, they finally shut **Google Plus down**. There's a blog post about it. They cite like a big security breach as the reason. I'm like, 
+To put a bow on it, **Vic ends up leaving the company in 2014**. In 2019, they finally shut **Google Plus down**. There's a blog post about it. They cite like a big security breach as the reason. I'm like,
 
 > "Oh, no, we've discovered there's this huge security vulnerability. Thus, we need to shut down all of Google Plus."
 
 Dude, it's so bad.
 
-There's been 50 Google products that all sound kind of the same. They launched this one called **Currents** at one point, and when they shut Google Plus down, this is horrible:  
+There's been 50 Google products that all sound kind of the same. They launched this one called **Currents** at one point, and when they shut Google Plus down, this is horrible:
 
 Many people wrote like articles as posts on Google Plus, and they're just gone.
 
@@ -3286,13 +3286,13 @@ Yeah, they just spent all these years unifying it all. That's all Google. They b
 
 Yes. Google X they broke out. **Waymo is still part of X at this point in time, that would later spin out as now part of Alphabet on its own.**
 
-But the other bets, including an Alphabet—really quite clever, the nomenclature here—were:  
+But the other bets, including an Alphabet—really quite clever, the nomenclature here—were:
 
-- **Nest** that they had just acquired,  
-- **Google Fiber**,  
-- **Calico**, and  
-- **Verily**, their two health companies,  
-- **Google X Lab**,  
+- **Nest** that they had just acquired,
+- **Google Fiber**,
+- **Calico**, and
+- **Verily**, their two health companies,
+- **Google X Lab**,
 - and then **Google Ventures** and **Capital G**, the two investing entities that they had.
 
 So, you know, then really the question is like, *okay, well, why did they do this?* Why did Larry become CEO of Alphabet? Why did Sundar become CEO of Google?
@@ -3306,66 +3306,66 @@ Platforms that we've talked about the whole episode that have really driven the 
 Right.
 But these are the platforms that had **shoehorned Google into the mobile era** and protected it from its greatest existential threat. And just also **Sundar's personality**, I think, was a way to reunify the company and bring everybody back together. Definitely strikes me as a **peacemaker among big egos**. Yes. And that is where we are going to leave **Alphabet slash Google** for the moment.
 
-Ben, give us a sense of how big this company had gotten.  
+Ben, give us a sense of how big this company had gotten.
 
-So, at the end of 2015, it's gotten huge. It's **$75 billion in revenue**. $52 billion of that is **first-party sites**, Google websites, AdWords, Gmail, Maps. $15 billion, the smaller part, is over in **DoubleClick AdSense land**. And actually, that's pretty low margin revenue. So, again, the lion's share in Google websites.  
+So, at the end of 2015, it's gotten huge. It's **$75 billion in revenue**. $52 billion of that is **first-party sites**, Google websites, AdWords, Gmail, Maps. $15 billion, the smaller part, is over in **DoubleClick AdSense land**. And actually, that's pretty low margin revenue. So, again, the lion's share in Google websites.
 
-**YouTube is profitable at this point.** And their bottom line operating income, Google did about **$23 billion in operating income**. And their other bets at this point lost about **$3.5 billion**. Their other bets are extremely interesting and will be the focus of our next episode. But the big takeaway here, the business was still, in 2015, and essentially is still today, **search ads**.  
+**YouTube is profitable at this point.** And their bottom line operating income, Google did about **$23 billion in operating income**. And their other bets at this point lost about **$3.5 billion**. Their other bets are extremely interesting and will be the focus of our next episode. But the big takeaway here, the business was still, in 2015, and essentially is still today, **search ads**.
 
 > "Yep. And what so strikes me, listening to you say those numbers in 2015, A, they're huge. But also, Google is so much bigger today on these same businesses with this same business model."
 
-Right. There was another **5x scaling to go over the next 10 years**. Yes. It's crazy. Google, back then, was like **20% the size of Google now**. And nothing has basically changed when it comes to the business model and products. I mean, nothing's changed since 2002.  
+Right. There was another **5x scaling to go over the next 10 years**. Yes. It's crazy. Google, back then, was like **20% the size of Google now**. And nothing has basically changed when it comes to the business model and products. I mean, nothing's changed since 2002.
 
-Right. Well, I think this era, what we talked about in all the episodes, all the hits were stewarding that business. Yes. Through these sea changes. But nothing has changed about what the core business is. It just turned out that that seed of that search ads actually scaled to the biggest market in the world.  
+Right. Well, I think this era, what we talked about in all the episodes, all the hits were stewarding that business. Yes. Through these sea changes. But nothing has changed about what the core business is. It just turned out that that seed of that search ads actually scaled to the biggest market in the world.
 
-Yep.  
+Yep.
 
-All right. Just like the last episode with Gmail at the end, I've got one little coda, one little teaser for next time.  
+All right. Just like the last episode with Gmail at the end, I've got one little coda, one little teaser for next time.
 
-Great.  
+Great.
 
 Ben, what if I told you that between 2015 and 2016, so this next year, this next 12 months after the Alphabet transition, all of the following people were Google employees:
 
-- **Alex Krizhevsky of AlexNet**, dawn of machine learning AI  
-- His PhD advisor, **Jeff Hinton**, godfather of AI  
-- His collaborator on the AlexNet paper, **Ilya Sutskever**, founding scientist of OpenAI  
-- **Dario Amadei**, co-founder with his sister of Anthropic  
-- **Andre Karpathy**, until recently chief AI scientist at Tesla  
-- **Chris Ola**, **Noam Shazir**, **Ian Goodfellow**, and of course, the co-founders of **DeepMind**, which Google acquired in 2014:  
-  - **Demis Hassabis**  
-  - **Shane Legg**  
-  - **Mustafa Suleyman** (Mustafa runs AI at Microsoft today)  
-- **Andrew Ng** from Stanford  
-- **Quoc Le**  
-- **Oriol Vinyals**  
-- And oh yeah, in addition to all of those people, the authors of the **Transformer paper** because **Google invented the Transformer and published the paper in June of 2017**.  
+- **Alex Krizhevsky of AlexNet**, dawn of machine learning AI
+- His PhD advisor, **Jeff Hinton**, godfather of AI
+- His collaborator on the AlexNet paper, **Ilya Sutskever**, founding scientist of OpenAI
+- **Dario Amadei**, co-founder with his sister of Anthropic
+- **Andre Karpathy**, until recently chief AI scientist at Tesla
+- **Chris Ola**, **Noam Shazir**, **Ian Goodfellow**, and of course, the co-founders of **DeepMind**, which Google acquired in 2014:
+  - **Demis Hassabis**
+  - **Shane Legg**
+  - **Mustafa Suleyman** (Mustafa runs AI at Microsoft today)
+- **Andrew Ng** from Stanford
+- **Quoc Le**
+- **Oriol Vinyals**
+- And oh yeah, in addition to all of those people, the authors of the **Transformer paper** because **Google invented the Transformer and published the paper in June of 2017**.
 
-Right, which is the novel mechanism that all **LLMs today** from every big foundational model research lab is based on.  
+Right, which is the novel mechanism that all **LLMs today** from every big foundational model research lab is based on.
 
-When I was talking to folks in the research for this episode and AI came up, one of them said, you know, I have to remind people when I'm talking to partners out in the ecosystem that  
+When I was talking to folks in the research for this episode and AI came up, one of them said, you know, I have to remind people when I'm talking to partners out in the ecosystem that
 
-> "the T in chatGPT stands for Transformer and that we invented that."  
+> "the T in chatGPT stands for Transformer and that we invented that."
 
-Because it is also during this time while Ilya is working at Google that he poses the question to his research colleagues and the Google Brain team that is working on all of this:  
+Because it is also during this time while Ilya is working at Google that he poses the question to his research colleagues and the Google Brain team that is working on all of this:
 
-> "Gosh, what do you guys think if we just built one really, really, really big neural network and we set it loose with training data on the entire internet?"  
+> "Gosh, what do you guys think if we just built one really, really, really big neural network and we set it loose with training data on the entire internet?"
 
-Which, by the way, of course, we can do here at Google because, you know, thanks to the accommodation of the search index, we index the entire internet and all the products that we just talked about on this whole episode. We have all this data and all of this content out there. If we did that, do you think it would learn everything?  
+Which, by the way, of course, we can do here at Google because, you know, thanks to the accommodation of the search index, we index the entire internet and all the products that we just talked about on this whole episode. We have all this data and all of this content out there. If we did that, do you think it would learn everything?
 
-Well, David, that feels like quite the groundwork for the next episode. That feels like a story for next time. Yeah.  
+Well, David, that feels like quite the groundwork for the next episode. That feels like a story for next time. Yeah.
 
-But through that lens, there is another way to view everything that happens at Google during this 10-year period we just discussed, which is that they're just collecting all the access, all the information, and all the talent for AI. It's nuts.  
+But through that lens, there is another way to view everything that happens at Google during this 10-year period we just discussed, which is that they're just collecting all the access, all the information, and all the talent for AI. It's nuts.
 
-There's this whole other world of research who would be the people that would drive the next decade or five decades of change. And they basically had them all in one place at one time. They were all employees of Google.  
+There's this whole other world of research who would be the people that would drive the next decade or five decades of change. And they basically had them all in one place at one time. They were all employees of Google.
 
-So I want to end with one more quote, this time from **Larry Page**, all the way back in the year 2000. This is Larry talking in the year 2000:  
+So I want to end with one more quote, this time from **Larry Page**, all the way back in the year 2000. This is Larry talking in the year 2000:
 
 > "**Artificial intelligence would be the ultimate version of Google. So if we had the ultimate search engine, it would understand everything on the web. It would understand exactly what you wanted, and it would give you the right thing.**"
 That's obviously **artificial intelligence**. To be able to answer any question. Basically, because almost everything is on the web, right? We're nowhere near doing that now. However, we can get incrementally closer to that. And that is basically what we work on. And that's tremendously interesting from an intellectual standpoint.
 
 We have all this **data**. If you printed out our index, it would be 70 miles high now. We have all this computation. We have about **6,000 computers**. This is **25 years ago**. We have enough disk space to store like **100 copies of the whole web**. So you have a really interesting confluence of a lot of different things. A lot of computation. A lot of data that didn't used to be available.
 
-And from an engineering and scientific standpoint, building things that make use of this is a really interesting intellectual exercise. So I expect we'll be working on that for a while. Incredible. This is **25 years ago** that he said this. Amazing. 
+And from an engineering and scientific standpoint, building things that make use of this is a really interesting intellectual exercise. So I expect we'll be working on that for a while. Incredible. This is **25 years ago** that he said this. Amazing.
 
 All right. Should we do some analysis? Let's do some analysis. All right. Let's do **power**.
 
@@ -3379,7 +3379,7 @@ Great. I like that.
 
 So **counter-positioning** typically doesn't show up for incumbents, for large companies. This is the exception, though, with Google. Right, where you just look at their sort of new businesses. For example, in this episode, talking about **Android**, they massively counter-positioned against **Microsoft**, the less-than-free business. Less-than-free business model.
 
-I mean, this is the clearest example of counter-positioning I think that has ever existed. 
+I mean, this is the clearest example of counter-positioning I think that has ever existed.
 
 > "Oh, hey, my competitors require you to pay them. How about I pay you instead?"
 
@@ -3401,7 +3401,7 @@ Yes, everywhere. Not to mention, in the core business, too, in **search**, more 
 
 Yep.
 
-**Switching costs**. How about **Gmail**? 
+**Switching costs**. How about **Gmail**?
 
 > "Oh, I've got my last 20 years of email history in Gmail all stored for free."
 
@@ -3416,168 +3416,168 @@ Yep.
 But for users of Gmail. Oh. And several of the other products, like, enormous. For users all across the board, yeah. I won't leave YouTube at this point. The algorithm's dialed to my interests.
 
 Oh, yeah.
-That's a great point of **switching costs of the algorithm on YouTube**.  
+That's a great point of **switching costs of the algorithm on YouTube**.
 
-**Branding**, I think, in the heyday of **Google** that we're talking about in this episode, when they're launching all these incredible products, yes, these products, one, because they're incredible and because they were free, but also, like, there was such a **halo around the company**.  
+**Branding**, I think, in the heyday of **Google** that we're talking about in this episode, when they're launching all these incredible products, yes, these products, one, because they're incredible and because they were free, but also, like, there was such a **halo around the company**.
 
-Like, if there was a new **Google product**, I would be chomping at the bit to go try it.  
+Like, if there was a new **Google product**, I would be chomping at the bit to go try it.
 
-Yeah, that's super true. I remember I was desperate for **Google Wave** invites. The product completely failed, but I was completely dazzled by it, and I was desperate to get invite and access. The **Google name meant something**.  
+Yeah, that's super true. I remember I was desperate for **Google Wave** invites. The product completely failed, but I was completely dazzled by it, and I was desperate to get invite and access. The **Google name meant something**.
 
-Yep. And still does, by the way, which I think held them back in AI for a while. They know the **Google name means something**, so they are reticent to throw their name on it until they got kind of shoved off the cliff.  
+Yep. And still does, by the way, which I think held them back in AI for a while. They know the **Google name means something**, so they are reticent to throw their name on it until they got kind of shoved off the cliff.
 
-Yep. Cornered resource.  
+Yep. Cornered resource.
 
-Yes. Well, certainly heading into the **AI era** now.  
+Yes. Well, certainly heading into the **AI era** now.
 
-- **YouTube**, the YouTube catalog you can train on.  
-- All the data they have.  
+- **YouTube**, the YouTube catalog you can train on.
+- All the data they have.
 
-Yeah. It's funny. I was about to say their infrastructure, but I think that's actually a **scale economy**. They've built out the infrastructure they have so they can run all their products as cheaply as they can.  
+Yeah. It's funny. I was about to say their infrastructure, but I think that's actually a **scale economy**. They've built out the infrastructure they have so they can run all their products as cheaply as they can.
 
-Yep. I think the **infrastructure is also a process power**.  
+Yep. I think the **infrastructure is also a process power**.
 
-Yeah. In that, in the era we've been talking about, they could launch all these products on their infrastructure just way cheaper than anyone else.  
+Yeah. In that, in the era we've been talking about, they could launch all these products on their infrastructure just way cheaper than anyone else.
 
-You know what's a **corner resource**? They have built internal software and systems that is better than what is available outside of Google.  
+You know what's a **corner resource**? They have built internal software and systems that is better than what is available outside of Google.
 
-Hmm. Great point. A lot of the time they even create **open source projects** that are similar to their internal stuff, but they don't actually give away the internal stuff.  
+Hmm. Great point. A lot of the time they even create **open source projects** that are similar to their internal stuff, but they don't actually give away the internal stuff.
 
-Inside Google, they still run **Borg**. They run far less **Kubernetes** than they run **Borg**. And **Borg is part of the secret sauce**.  
+Inside Google, they still run **Borg**. They run far less **Kubernetes** than they run **Borg**. And **Borg is part of the secret sauce**.
 
-Yeah. When you talk to engineers who've left Google, they miss the infrastructure. So, **Google has it all**.  
+Yeah. When you talk to engineers who've left Google, they miss the infrastructure. So, **Google has it all**.
 
-Yeah, all of them. And we can name a lot more examples, but we've got to go.  
+Yeah, all of them. And we can name a lot more examples, but we've got to go.
 
-All right. Playbook.  
+All right. Playbook.
 
-All right. I tried to get most of them in as we were going in the story.  
+All right. I tried to get most of them in as we were going in the story.
 
-The first is that **Google really wanted to become a platform company**. And I was sort of noodling on, did they ever do this successfully? And, David, we sort of touched on this idea that they are advancing the platform of the web without owning the platform of the web.  
+The first is that **Google really wanted to become a platform company**. And I was sort of noodling on, did they ever do this successfully? And, David, we sort of touched on this idea that they are advancing the platform of the web without owning the platform of the web.
 
-So, if they didn't have **Android**, how would you answer the question, is Google a platform company?  
+So, if they didn't have **Android**, how would you answer the question, is Google a platform company?
 
-Yeah, yeah, yeah. I'd say it's sort of like a **shadow platform company**. It's like an **ecosystem company**.  
+Yeah, yeah, yeah. I'd say it's sort of like a **shadow platform company**. It's like an **ecosystem company**.
 
-Right. And even with **Android**, okay, great. They own the target development platform. Their money is still made elsewhere. It's not a **platform business**.  
+Right. And even with **Android**, okay, great. They own the target development platform. Their money is still made elsewhere. It's not a **platform business**.
 
-They may have a platform orientation as a company. They build a bunch of stuff for developers to build their applications on top of. But where their bread is buttered is really as an **advertising company**.  
+They may have a platform orientation as a company. They build a bunch of stuff for developers to build their applications on top of. But where their bread is buttered is really as an **advertising company**.
 
-It's important when push really comes to shove on big strategic decisions the company has to make. Like:  
+It's important when push really comes to shove on big strategic decisions the company has to make. Like:
 
-- Apple, pure play platform company.  
-- Microsoft, pure play platform company.  
+- Apple, pure play platform company.
+- Microsoft, pure play platform company.
 
-They either sell software or hardware, and then they need the platform around it to bolster their sales. **Google's very indirect**.  
+They either sell software or hardware, and then they need the platform around it to bolster their sales. **Google's very indirect**.
 
-Yep. All right, so that was one.  
+Yep. All right, so that was one.
 
-The other one is they make tons of **small acquisitions**. Famously, I mean, that run in the 2010s, aside from the big ones, from **YouTube, Android, DoubleClick, AdMob**, there was also what became:  
+The other one is they make tons of **small acquisitions**. Famously, I mean, that run in the 2010s, aside from the big ones, from **YouTube, Android, DoubleClick, AdMob**, there was also what became:
 
-- Google Groups  
-- Spreadsheets  
-- Docs  
-- Blogger  
+- Google Groups
+- Spreadsheets
+- Docs
+- Blogger
 
-They bought **Applied Semantics** with the patents and some of the tech for **AdSense**. They bought the technology for **Google Maps**. They bought **Urchin** for **Google Analytics**, **Dodgeball**, **FeedBurner**, **ReCAPTCHA**, **Slide**, **Jambool**, **Like.com**, **Widevine**, **AdMeld**, **Punchd**, **Zagat**, **Sparrow**, **Wavy**.  
+They bought **Applied Semantics** with the patents and some of the tech for **AdSense**. They bought the technology for **Google Maps**. They bought **Urchin** for **Google Analytics**, **Dodgeball**, **FeedBurner**, **ReCAPTCHA**, **Slide**, **Jambool**, **Like.com**, **Widevine**, **AdMeld**, **Punchd**, **Zagat**, **Sparrow**, **Wavy**.
 
-I mean, like, I could just keep going.  
+I mean, like, I could just keep going.
 
-Oh, yeah, there are **hundreds of companies they bought**.  
+Oh, yeah, there are **hundreds of companies they bought**.
 
-In talking to folks in the research, there was this amazing part of **Google culture** that also fit the strategy perfectly of helping the web and the rich web and web apps bloom.  
+In talking to folks in the research, there was this amazing part of **Google culture** that also fit the strategy perfectly of helping the web and the rich web and web apps bloom.
 
-> Come work at Google with these incredible people, meet your co-founders, go start a startup, leave Google. We will then reacquire you back into Google in a couple of years.  
+> Come work at Google with these incredible people, meet your co-founders, go start a startup, leave Google. We will then reacquire you back into Google in a couple of years.
 
-It happened dozens or hundreds of times. I remember seeing this happen from the outside and thought, **Google is nuts to let this happen**. But I realize now, no, this was all part of the strategy.  
+It happened dozens or hundreds of times. I remember seeing this happen from the outside and thought, **Google is nuts to let this happen**. But I realize now, no, this was all part of the strategy.
 
-Yeah. It's all good for the web. You can run very indirect, generous, long-term strategies like that with a money printer like **AdPrint's**.  
+Yeah. It's all good for the web. You can run very indirect, generous, long-term strategies like that with a money printer like **AdPrint's**.
 
-Yes. I know I keep coming back to that, but that is at the core of what drives everything.  
+Yes. I know I keep coming back to that, but that is at the core of what drives everything.
 
 This one's a little bit less playbook, but just an observation. I watched the **Google I.O. keynote with Glass**, and I watched a bunch of Glass content.
-I even, back in the day, at a **startup weekend**, launched a **Google Glass app**.  
+I even, back in the day, at a **startup weekend**, launched a **Google Glass app**.
 **Oh, nice.**
 
-So, after watching all this **Glass content**, and it's the butt of every joke now, **Meta Ray-Bans** and **Google Glass** are the same thing, feature-wise.  
-**Yep.**  
+So, after watching all this **Glass content**, and it's the butt of every joke now, **Meta Ray-Bans** and **Google Glass** are the same thing, feature-wise.
+**Yep.**
 
-The gestures on the side, the fact that it could take a photo. I mean, **Google Glass** was a little more advanced. It could run these very basic text-based apps.  
+The gestures on the side, the fact that it could take a photo. I mean, **Google Glass** was a little more advanced. It could run these very basic text-based apps.
 But, I'm sure when **Meta** launches their little hologram version of the glasses, that's going to be eerily similar.
 
-So, like, of course you could say,  
+So, like, of course you could say,
 > "oh, it's just timing."
 
-But here's the thing. **Google's made you look like a cyborg. Meta's is for normal people**, and there is no better metaphor for the cultural difference between **Facebook and Google** than this.  
+But here's the thing. **Google's made you look like a cyborg. Meta's is for normal people**, and there is no better metaphor for the cultural difference between **Facebook and Google** than this.
 
-- Google's a bunch of wacky academics who did not really understand why this would make the product fail.  
-- Facebook is founded on the idea that **you're trying to be cool**.  
+- Google's a bunch of wacky academics who did not really understand why this would make the product fail.
+- Facebook is founded on the idea that **you're trying to be cool**.
 
-**Yeah.** And went and did a partnership with **SLR Exotica** to get the tech into glasses that normal people wear.  
+**Yeah.** And went and did a partnership with **SLR Exotica** to get the tech into glasses that normal people wear.
 
 Yes. It was crazy watching these demos, because I'm like, these are the **Meta AR demos**. It just happens to have a cool factor versus not.
 
 And then my last one is this idea that they did figure out a way culturally to get people amped about just building great products. Figure out how to do something really hard from an engineering perspective that ends up being really useful and ship things that people love.
 
-It's not that you didn't have to think about a business model, but a lot of the time for many years after launching a product, you really didn't.  
+It's not that you didn't have to think about a business model, but a lot of the time for many years after launching a product, you really didn't.
 **Yep.**
 
-It's like we talked about earlier. There was this thin layer of really, really, really tight, really great strategy that was just like a few people at the top of the company. But below that, it was just **make a great product**.  
+It's like we talked about earlier. There was this thin layer of really, really, really tight, really great strategy that was just like a few people at the top of the company. But below that, it was just **make a great product**.
 
-**Yes.**  
+**Yes.**
 
-All right. I've got two for playbook, one that I'm going to make my quintessence.  
+All right. I've got two for playbook, one that I'm going to make my quintessence.
 
-I just want to underscore again, we said this in the Android chapter, but **Android was the mother of all wins**. It was so big to win with Android. Nobody stretches a business model across technology eras. Nobody. And **Google did it**.  
+I just want to underscore again, we said this in the Android chapter, but **Android was the mother of all wins**. It was so big to win with Android. Nobody stretches a business model across technology eras. Nobody. And **Google did it**.
 
-In a dominant way where they are the dominant company in the next era as well.  
+In a dominant way where they are the dominant company in the next era as well.
 **Yep.**
 
-It is the **Google version of Azure** from our Microsoft series. It absolves any and all sins. Not that there were many at Google. The only one was **Google+**.  
+It is the **Google version of Azure** from our Microsoft series. It absolves any and all sins. Not that there were many at Google. The only one was **Google+**.
 
-The only way it could have gone better is if instead of launching Android, they launched the **iPhone** and they also got the iPhone profits rather than just some small dollars that protected their core business.  
+The only way it could have gone better is if instead of launching Android, they launched the **iPhone** and they also got the iPhone profits rather than just some small dollars that protected their core business.
 **Yep. That was my playbook.**
 
-And then my quintessence is it is wild that this one company has **eight products with over a billion users** and started this era with just one search that didn't even have a billion users yet.  
+And then my quintessence is it is wild that this one company has **eight products with over a billion users** and started this era with just one search that didn't even have a billion users yet.
 
-But search, Android, Chrome, YouTube, Gmail, Maps, Drive, Photos. And then if you count the Play Store as separate from Android, which Google does—I think that's a bit of a stretch—but if you do, then they have **nine products with over a billion users**.  
+But search, Android, Chrome, YouTube, Gmail, Maps, Drive, Photos. And then if you count the Play Store as separate from Android, which Google does—I think that's a bit of a stretch—but if you do, then they have **nine products with over a billion users**.
 
-And just for context, **Meta is the next highest count of products** in one company with over a billion users. They have four:  
-- The Blue App  
-- WhatsApp  
-- Instagram  
-- Messenger  
+And just for context, **Meta is the next highest count of products** in one company with over a billion users. They have four:
+- The Blue App
+- WhatsApp
+- Instagram
+- Messenger
 
-Meta likes to claim they have five. They like to say that **Meta AI in aggregate has over a billion users embedded across all their products**.  
+Meta likes to claim they have five. They like to say that **Meta AI in aggregate has over a billion users embedded across all their products**.
 
-Yeah, but this whole super intelligence thing is an admission that the active users of Meta AI is a little stretchy. If the Play Store doesn't really count on its own, then **Meta AI for sure doesn't really count on its own**.  
+Yeah, but this whole super intelligence thing is an admission that the active users of Meta AI is a little stretchy. If the Play Store doesn't really count on its own, then **Meta AI for sure doesn't really count on its own**.
 
-So Meta has four. Apple, I think, only has three, maybe four.  
+So Meta has four. Apple, I think, only has three, maybe four.
 
-The three Apple has for sure are:  
-- iPhone  
-- iMessage  
-- Safari  
+The three Apple has for sure are:
+- iPhone
+- iMessage
+- Safari
 
-iPad, maybe. I don't think so. Mac, definitely not. I basically don't count any iPhone app because they all come for free when you get the phone.  
+iPad, maybe. I don't think so. Mac, definitely not. I basically don't count any iPhone app because they all come for free when you get the phone.
 
-Okay, so by your definition, Apple has one with iPhone.  
-I think Apple has one.  
+Okay, so by your definition, Apple has one with iPhone.
+I think Apple has one.
 Okay, all right.
 
-Let's take that same definition. How many of these came for free at Google?  
+Let's take that same definition. How many of these came for free at Google?
 
-- Google Search  
-- Android  
+- Google Search
+- Android
 
-Those are two completely different distribution channels. Chrome. Yep. I don't think any of these came for free. I mean, Google helped Chrome. No, yeah, these all independently have achieved billion-plus users. Gmail and Google Drive sort of advantage each other. So I think you can sort of subtract one of those out.  
+Those are two completely different distribution channels. Chrome. Yep. I don't think any of these came for free. I mean, Google helped Chrome. No, yeah, these all independently have achieved billion-plus users. Gmail and Google Drive sort of advantage each other. So I think you can sort of subtract one of those out.
 
-Yeah, but it's not to the extent that iMessage is default with an iPhone.  
-Right. Maps is advantaged by Android. They ship a whole lot of maps. So, but probably whatever the phone was would have a great Google Maps app.  
-**Yep. Okay. All right.** I buy it. Apple has one. Microsoft has two:  
+Yeah, but it's not to the extent that iMessage is default with an iPhone.
+Right. Maps is advantaged by Android. They ship a whole lot of maps. So, but probably whatever the phone was would have a great Google Maps app.
+**Yep. Okay. All right.** I buy it. Apple has one. Microsoft has two:
 
-- Windows  
-- LinkedIn  
+- Windows
+- LinkedIn
 
 Amazon doesn't have any billion user products. Google's got eight. Like, that's incredible. Call it seven or six. I think it's reasonable to subtract out. Okay, fine. But still, that's exactly right.
 **Whatever.** That's my point. **This is my quintessence.** This period at **Google** is a run like nobody's ever had.
@@ -3664,65 +3664,65 @@ My actual carve-out for the episode is when we were in **New York** for Radio Ci
 And we took the girls to the **Bluey experience** at the camp store in New York City. And it was awesome. Lived up to expectations. Lived up to the hype.
 
 They basically have recreated the **Bluey house** in this physical space in New York City. The house is almost a character in the show. And they have recreated it.
-And they just let you and your kids in to roam free in the house. Then you have a **magical moment at the end of the experience**.  
+And they just let you and your kids in to roam free in the house. Then you have a **magical moment at the end of the experience**.
 Ah. It was cool. **Highly, highly recommend if you're in the Bluey demographic and happen to be in New York.**
 
-Okay. What game console did you pick?  
-I bought the **Steam Deck**.  
-The Steam Deck. I bought the **Steam Deck**. And it's great.  
+Okay. What game console did you pick?
+I bought the **Steam Deck**.
+The Steam Deck. I bought the **Steam Deck**. And it's great.
 
-Although I haven't, truth be told, had much time to play it this past month with everything we've had going on at Radio City and then preparing this episode. But it's great.  
+Although I haven't, truth be told, had much time to play it this past month with everything we've had going on at Radio City and then preparing this episode. But it's great.
 
-How'd you pick? What was the ultimate?  
-It ultimately came down to as much as I desperately wanted my older daughter to be ready to play **Mario Kart** with me. She's just not.  
+How'd you pick? What was the ultimate?
+It ultimately came down to as much as I desperately wanted my older daughter to be ready to play **Mario Kart** with me. She's just not.
 
-And so if you're buying a console for just you to enjoy, you went with the Steam Deck.  
-Yeah. And I was like, I would probably enjoy the Steam Deck more.  
+And so if you're buying a console for just you to enjoy, you went with the Steam Deck.
+Yeah. And I was like, I would probably enjoy the Steam Deck more.
 
-Do you endorse it? Do you recommend it?  
-Yeah. What Valve has done with the Steam Deck, I didn't realize until buying it and using it, is **incredible**. They have abstracted a **PC gaming machine into a console experience**.  
+Do you endorse it? Do you recommend it?
+Yeah. What Valve has done with the Steam Deck, I didn't realize until buying it and using it, is **incredible**. They have abstracted a **PC gaming machine into a console experience**.
 
-So I've always liked PC type games, but I haven't been a PC gamer in many, many years. Because like, I'm not going to build a gaming machine. Or even you could just buy one, but like, I don't need another PC. Where am I going to put it? What am I going to do with it?  
+So I've always liked PC type games, but I haven't been a PC gamer in many, many years. Because like, I'm not going to build a gaming machine. Or even you could just buy one, but like, I don't need another PC. Where am I going to put it? What am I going to do with it?
 
-I want the console simplicity of just buy the damn thing, turn it on, buy the games, play them. Valve has created that in handheld form. It's awesome. You don't have to worry about any of the drivers or specs. It's really, really impressive.  
+I want the console simplicity of just buy the damn thing, turn it on, buy the games, play them. Valve has created that in handheld form. It's awesome. You don't have to worry about any of the drivers or specs. It's really, really impressive.
 
-All right. Good to know. So I will buy a **Switch 2** at some point, probably in the next year or so. But for now, Steam Deck.  
+All right. Good to know. So I will buy a **Switch 2** at some point, probably in the next year or so. But for now, Steam Deck.
 
-All right. What are your carve-outs? I've got three.  
-Oh, great.  
+All right. What are your carve-outs? I've got three.
+Oh, great.
 
-My first one, and I swear to God this is unrelated to their sponsorship, is **Claude**. Amazing. It's so great. It's so good. Using **AI** has completely changed the way that I prepare for these episodes now, and I cannot imagine going back.  
+My first one, and I swear to God this is unrelated to their sponsorship, is **Claude**. Amazing. It's so great. It's so good. Using **AI** has completely changed the way that I prepare for these episodes now, and I cannot imagine going back.
 
-> I hear AI is a thing. I hear AI is a thing.  
+> I hear AI is a thing. I hear AI is a thing.
 
-So that's the first one. I just find myself in it all day now.  
+So that's the first one. I just find myself in it all day now.
 
-Two is the **Sony RX100 VII**. So I recently bought a different camera, the **Fuji X100 VIi**, or the 6.  
-Yeah, that's what you had in New York. Yeah, and it's great. It's like the internet's favorite camera. It has these amazing film simulation color profiles.  
+Two is the **Sony RX100 VII**. So I recently bought a different camera, the **Fuji X100 VIi**, or the 6.
+Yeah, that's what you had in New York. Yeah, and it's great. It's like the internet's favorite camera. It has these amazing film simulation color profiles.
 
-It's like a camera, though. I carry it around my neck because it's like, it's a camera that you hold and use, and it's very fun shooting 35mm equivalent. It feels like I'm taking pictures the way that pictures were meant to be taken. It's not a full DSLR, but it is like a big thing.  
+It's like a camera, though. I carry it around my neck because it's like, it's a camera that you hold and use, and it's very fun shooting 35mm equivalent. It feels like I'm taking pictures the way that pictures were meant to be taken. It's not a full DSLR, but it is like a big thing.
 
-Exactly. It's a handheld, but I wouldn't call it a pocket camera.  
+Exactly. It's a handheld, but I wouldn't call it a pocket camera.
 
-Now, the funny thing is, the thing that I'm actually talking about as my carve-out is the Sony camera. Shiel Monat tweeted, actually this morning, I should have been preparing for this episode, and I was like replying to him on Twitter instead, that he's been considering getting this Sony or another point-and-shoot camera. And I just kind of remembered how much I love this camera.  
+Now, the funny thing is, the thing that I'm actually talking about as my carve-out is the Sony camera. Shiel Monat tweeted, actually this morning, I should have been preparing for this episode, and I was like replying to him on Twitter instead, that he's been considering getting this Sony or another point-and-shoot camera. And I just kind of remembered how much I love this camera.
 
-The **Sony RX100 VII** fits in my pocket. It's very small. It has a giant zoom lens for its size, and I was just looking at some of the pictures that I've taken with it. It's like the perfect thing to bring with a phone.  
+The **Sony RX100 VII** fits in my pocket. It's very small. It has a giant zoom lens for its size, and I was just looking at some of the pictures that I've taken with it. It's like the perfect thing to bring with a phone.
 
-Whenever I am space-constrained, which is usually, I mean, I just don't really want a camera around my neck. The perfect combo is bring a phone and bring the Sony.  
+Whenever I am space-constrained, which is usually, I mean, I just don't really want a camera around my neck. The perfect combo is bring a phone and bring the Sony.
 
-I am aware that it's not a full-frame camera. I am aware that it's not as photographer-y as my Fuji, but it is the most practical one for most things that I want to do. And for many, many shots, it is far superior to shooting on a camera phone.  
+I am aware that it's not a full-frame camera. I am aware that it's not as photographer-y as my Fuji, but it is the most practical one for most things that I want to do. And for many, many shots, it is far superior to shooting on a camera phone.
 
-So, I don't know. I just love it. It's a 2019 camera, and they really need to come out with one that has USB-C because it's annoying to charge. But other than that, it's just awesome. So, I highly recommend it.  
+So, I don't know. I just love it. It's a 2019 camera, and they really need to come out with one that has USB-C because it's annoying to charge. But other than that, it's just awesome. So, I highly recommend it.
 
-There you go. You're bringing it full circle on this episode. A **point-and-shoot camera**.  
+There you go. You're bringing it full circle on this episode. A **point-and-shoot camera**.
 
-A point-and-shoot camera, especially paired with – Lightroom has this great AI feature called **Denoise** that they launched and is now rolled out in production. It is incredible. Love it.  
+A point-and-shoot camera, especially paired with – Lightroom has this great AI feature called **Denoise** that they launched and is now rolled out in production. It is incredible. Love it.
 
-Then I have one more last one. A listener recently sent me – he started a clothing company called **Karasimi**, and it is an incredible garment. It is just this, like, really, really nice cashmere shirt.  
+Then I have one more last one. A listener recently sent me – he started a clothing company called **Karasimi**, and it is an incredible garment. It is just this, like, really, really nice cashmere shirt.
 
-I've been wearing it all recording. It's great on a cool day. It's great on a warm day. It's my current favorite shirt. And so, I wanted to thank the listener that sent it to me and say you have built a very – the prices are high. So, very nice clothing company, but just excellent products.  
+I've been wearing it all recording. It's great on a cool day. It's great on a warm day. It's my current favorite shirt. And so, I wanted to thank the listener that sent it to me and say you have built a very – the prices are high. So, very nice clothing company, but just excellent products.
 
-Well, I've been staring at you for the past seven and a half hours here, and I've been thinking the whole time,  
+Well, I've been staring at you for the past seven and a half hours here, and I've been thinking the whole time,
 > "God, Ben is looking good."
 My normal thing, if I could just wear it every day, is a **long-sleeved, dark crew neck**. Just, like, I don't have to think about it. You can look nice in it. It just goes with everything. It's, you know, the sort of **capsule wardrobe idea**. And this is the sort of finest version of that that I've worn. It's really great. **Karasimi**. Nice. All right.
 
@@ -3755,22 +3755,22 @@ And then, Ben, you had a bunch of folks who you spoke to as well.
 
 So, yeah, as always, I want to thank **Arvind Navaratnam from Worldly Partners** for his excellent write-up, which you can find linked in the show notes. And also,
 
-- **Paul Buchheit**, creator of Gmail  
-- **Bill Corrin**  
-- **Jonathan Rochelle**  
-- **Bradley Horowitz**  
-- **John Henke**  
-- **Ben Idelson**  
-- **Isar Lipkovitz**  
-- **Ben Liebald**  
+- **Paul Buchheit**, creator of Gmail
+- **Bill Corrin**
+- **Jonathan Rochelle**
+- **Bradley Horowitz**
+- **John Henke**
+- **Ben Idelson**
+- **Isar Lipkovitz**
+- **Ben Liebald**
 
 And that is in addition to, as always, the many folks who helped us whose names we can't say here, but know you are appreciated.
 
 Yes. And thanks to all of you for listening. Seriously.
 
-If you liked this episode and you're like, 
+If you liked this episode and you're like,
 
-> "Oh, wait, there's a Google episode before this?"  
+> "Oh, wait, there's a Google episode before this?"
 
 Most of you have probably listened. But if you have not, go check out our first episode on the **origin of Google** and the creation of the search engine and the search business.
 
@@ -3792,11 +3792,11 @@ With that, listeners, we'll see you next time. We'll see you next time.
 
 ---
 
-Who got the truth?  
-Is it you?  
-Is it you?  
-Is it you?  
-Who got the truth now?  
+Who got the truth?
+Is it you?
+Is it you?
+Is it you?
+Who got the truth now?
 Huh.
 
 <script>window.tocIndex = {

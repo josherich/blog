@@ -2,7 +2,7 @@
 layout: post
 title: "Robinhood CEO Vlad Tenev on tokenizing stocks, expanding access to private shares, fintech's future"
 date: 2025-09-15 00:00:01
-categories: podcast all-in-with-chamath-jason-sacks-friedberg
+categories: podcast all-in
 tags: [podcast_script]
 ---
 
@@ -13,108 +13,108 @@ I am **Vlad Tenev**, the founder of **Robinhood**. We're talking about Robinhood
 
 Vlad, your presence there speaks volumes. **Robinhood Gold**, which hit a record **3.5 million subscribers**. Most financial services get worse the more money you have. But we wanted to kind of invert that.
 
-Ladies and gentlemen, please welcome Robinhood CEO **Vlad Tenev**.  
-**My guy. Good to see you, brother.**  
-**Chamath, good to see you. Vlad, it's so great. You're the reason J-Cal's here.**  
+Ladies and gentlemen, please welcome Robinhood CEO **Vlad Tenev**.
+**My guy. Good to see you, brother.**
+**Chamath, good to see you. Vlad, it's so great. You're the reason J-Cal's here.**
 
 I mean, it is a great story. It's so true. J-Cal bumbles into eight shares of Robinhood. Vlad builds a **$100 billion company**. It's unbelievable.
 
-I mean, people know me for the Uber investment. It's a $4 or $5 million valuation, but there's—  
-When do I flip that?  
-Well, yeah, it's going to take a little more. I think you've got **20X left to go**, but—  
-Wait, was J-Cal the third or fourth investor in Robinhood?  
-It was a **$20 million valuation**, but it's a good story, I think, because you hadn't launched, and we're at Antonio's Nuthouse.  
+I mean, people know me for the Uber investment. It's a $4 or $5 million valuation, but there's—
+When do I flip that?
+Well, yeah, it's going to take a little more. I think you've got **20X left to go**, but—
+Wait, was J-Cal the third or fourth investor in Robinhood?
+It was a **$20 million valuation**, but it's a good story, I think, because you hadn't launched, and we're at Antonio's Nuthouse.
 
 I went for a drink with my friend Adeo. He brought his college roommate, **Elon**. We're hanging out at Antonio's Nuthouse in **Palo Alto**. Rest in peace, Antonio's. Keep dropping these names in one second here.
 
-So Vlad comes over, and Vlad and I knew each other a little bit, and Vlad pitches me on this idea, and he says, 
+So Vlad comes over, and Vlad and I knew each other a little bit, and Vlad pitches me on this idea, and he says,
 
 > "I'm a quant."
 
-I said,  
+I said,
 
 > "What's a quant?"
 
-He said,  
+He said,
 
 > "Quantitative analysis."
 
-I said,  
+I said,
 
 > "Yeah, I heard of it. Hit me with the idea."
 
-And then he goes,  
+And then he goes,
 
 > "Is that Elon Musk?"
 
-I said,  
+I said,
 
 > "Yeah. Just hit me with the idea. I know you've got a startup."
 
-He says,  
+He says,
 
 > "Well, I want to get this generation, these millennials, these Gen Zs, I want to get them to trade stocks."
 
-I said,  
+I said,
 
 > "Love it."
 
-He said,  
+He said,
 
 > "They don't care about getting a driver's license. They're still on their mom and dad's Netflix. You're going to try to get people who don't care about the future to trade stocks."
 
-He says,  
+He says,
 
 > "Yeah."
 
-I said,  
+I said,
 
 > "What's the business model?"
 
-He said,  
+He said,
 
 > "That's the best part. We're going to let them trade for free."
 
-So I said,  
+So I said,
 
 > "Okay, let me repeat this back to you, kid. You want to get a group of people who don't have any interest in the future to trade stocks, and then..."
 
-We have 30 seconds left.  
+We have 30 seconds left.
 
 > "You're going to make money."
 
-Thank you, Vlad. That's good. Bravo. I said,  
+Thank you, Vlad. That's good. Bravo. I said,
 
 > "I'm in."
 
-Okay. I'm in. Not only that, but he said,  
+Okay. I'm in. Not only that, but he said,
 
 > "This is probably the best idea you'll ever have."
 
-I did say that to him, too. I was like,  
+I did say that to him, too. I was like,
 
 > "This is the best idea. What if it works?"
 
-And here we are 10 years later. What's worked?  
+And here we are 10 years later. What's worked?
 
-And last week, you were out of the **S&P 500**.  
-I was.  
-Last week or yesterday?  
-Two days ago. It was Friday.  
+And last week, you were out of the **S&P 500**.
+I was.
+Last week or yesterday?
+Two days ago. It was Friday.
 
-I mean, what a huge accomplishment.  
-Thank you.  
+I mean, what a huge accomplishment.
+Thank you.
 
-I think it was because I rejected you for a job, right? You heard about that.  
-Well, this is a tale of two cities. I heard the stories.  
+I think it was because I rejected you for a job, right? You heard about that.
+Well, this is a tale of two cities. I heard the stories.
 
-Thank you guys for upgrading me, by the way. That's been the best part of being added to the S&P, going from just a Jason interview to the whole squad here.  
+Thank you guys for upgrading me, by the way. That's been the best part of being added to the S&P, going from just a Jason interview to the whole squad here.
 
-Well, we were doing the rehearsal yesterday, and everyone wanted to do the interview. So we said,  
+Well, we were doing the rehearsal yesterday, and everyone wanted to do the interview. So we said,
 
 > "Let's all do it together."
 
-Yeah, I said,  
+Yeah, I said,
 
 > "Why don't we all get in here?"
 
@@ -122,7 +122,7 @@ Can I, let's maybe start.
 
 So look, you've built an incredible business. There's a part of it that looks like the, you know, what comes after the **E-Trades** of the world, et cetera. But there's an enormous other part of your business, and there's all these emergent paths.
 
-I want to just start by double-clicking on something that you announced a few months ago in **France**. And maybe you want to talk us through it, what the goal was. You got a lot of support, but you got a lot of blowback as well. There were a lot of people that were like,  
+I want to just start by double-clicking on something that you announced a few months ago in **France**. And maybe you want to talk us through it, what the goal was. You got a lot of support, but you got a lot of blowback as well. There were a lot of people that were like,
 
 > "Wow, this is a little too disruptive."
 
@@ -141,7 +141,7 @@ So how do you do it? How did you enable that? It's actually very similar to **st
 
 So if you're a stablecoin issuer, and it's a little bit oversimplifying, but you can think of it as:
 
-``` 
+```
 - We keep some dollars or treasuries in a bucket over here.
 - We mint and burn tokens against that bucket, but back at one to one.
 - The tokens can actually trade publicly on a variety of blockchains.
@@ -210,7 +210,7 @@ Let's start with **public securities**. I think that's the easy case, because wi
 
 So what we could get right away with **tokenized public securities** is like you were saying, a
 
-- 24/7 global marketplace  
+- 24/7 global marketplace
 - instantaneous blockchain-based settlement.
 
 And that could be really exciting. There's no reason why trading has to be on this like nine-to-five exchange with all this. You know, we could enable stocks to trade as easily as you transfer a stable coin.
@@ -223,9 +223,9 @@ But I think the place to start that would be really exciting would just be like,
 
 Yeah, it's certainly easier technologically. I mean, we've made both available to some extent in the EU. I think private could be more meaningful long term. And I'll tell you why I think so.
 
-So if you look at the technologies that are transforming society right now and that we feel so optimistic about over the next five years, it's 
+So if you look at the technologies that are transforming society right now and that we feel so optimistic about over the next five years, it's
 
-- **AI**  
+- **AI**
 - and to some extent, space exploration.
 
 And I think with AI in particular, there's a lot of fear right now. I mean, you talk to a random person on the street, more than half the time, they're a little bit nervous about what AI is going to do to them.
@@ -238,8 +238,8 @@ Yeah, because I worry about the status quo. I mean, these AI companies in partic
 
 Because if you look at **Cathie Wood's presentation**, you know, you're talking about
 
-- negative inflation,  
-- high GDP growth rates,  
+- negative inflation,
+- high GDP growth rates,
 - giant productivity improvements.
 
 I don't think you're going to get there without some significant labor force disruption.
@@ -285,9 +285,9 @@ Yeah. But yeah, we're continuing to look at all angles, but I think **some clari
 
 Because this is the whole value of like, sorry, Chamath, but like **futures markets and prediction markets** is you can effectively create a synthetic on some underlying without actually having ownership or a secured interest in the underlying or delivery of the commodity.
 
-You could basically just say, 
+You could basically just say,
 
-> "When this thing goes public, it's above 20 bucks a share, below 20 bucks a share on some number of days after," 
+> "When this thing goes public, it's above 20 bucks a share, below 20 bucks a share on some number of days after,"
 
 something like that.
 
@@ -314,7 +314,7 @@ And your responsibility as a platform that is giving that access. If you're the 
 
 And I remember with the options and people being able to short, you came up with an incredibly elegant solution.
 
-When you try to short something, 
+When you try to short something,
 
 > you give people a test, give them education in that moment before they do it.
 
@@ -380,32 +380,32 @@ You're issuing a credit card, **Coinbase has a credit card**, **SoFi has a feder
 Everybody's competing with everybody.
 Tell us the scope of where you think **Robinhood** goes in the next four or five years, and what the **financial landscape and infrastructure** looks like. The visas, the MasterCards, the JP Morgans, what roles do these companies play as you guys just become more and more ambitious and girthy and big and market cap and all that stuff?
 
-Yeah, I think the industry goes through periods of **consolidation and then divergence**. I think Robinhood has a unique advantage, which is that our customers put an increasing amount of their dollars into Robinhood. 
+Yeah, I think the industry goes through periods of **consolidation and then divergence**. I think Robinhood has a unique advantage, which is that our customers put an increasing amount of their dollars into Robinhood.
 
-So what we're thinking about, and it became pretty clear to us as soon as we rolled out our second product, we kind of saw what happened: **customers spent more time on Robinhood**, the two products help each other.  
+So what we're thinking about, and it became pretty clear to us as soon as we rolled out our second product, we kind of saw what happened: **customers spent more time on Robinhood**, the two products help each other.
 
 So for example, with **retirement**, we noticed the big question was, "well, if we launch retirement, is it going to cannibalize the core brokerage business?" But what we saw was the opposite. If someone opens up a retirement account, they tend to actually increase the amount they put in their individual account.
 
-And we saw that again with the **credit card**. If they're a credit card primary user, top of wallet, they actually put more money into Robinhood.  
+And we saw that again with the **credit card**. If they're a credit card primary user, top of wallet, they actually put more money into Robinhood.
 
-So then that gets us to a future where we ask ourselves:  
-- Can we be your **comprehensive financial platform**?  
-- Can you put your **direct deposit** into Robinhood?  
-- Can you put **all of your money** into Robinhood?  
-- Can you get to **gold subscriber premium status** as soon as possible?  
+So then that gets us to a future where we ask ourselves:
+- Can we be your **comprehensive financial platform**?
+- Can you put your **direct deposit** into Robinhood?
+- Can you put **all of your money** into Robinhood?
+- Can you get to **gold subscriber premium status** as soon as possible?
 - And then can we get **all of your family members onto Robinhood as well and your kids**?
 
-So, yeah, I don't think anyone's really thinking about it from that angle. But I think that there's going to be **over 130 trillion** that changes hands from **silent generation and baby boomers to younger people**. 
+So, yeah, I don't think anyone's really thinking about it from that angle. But I think that there's going to be **over 130 trillion** that changes hands from **silent generation and baby boomers to younger people**.
 
 And I think Robinhood is actually very well positioned to be one of the, if not the **number one primary institution** that benefits from that transfer. We've got over a **quarter trillion assets on the platform** already, which seems like a big number, but it's actually just a drop in the bucket compared to what's going to happen.
 
 How do you see the **JP Morgans, MasterCards, and Visas**? How do they compete with an elegant product with hundreds of millions of users that just, you know, the product velocity that you have, the risk you're willing to take?
 
-Yeah, I mean, I think that if you think about an **incumbent**, they have certain benefits. They're like very muscular from a **regulatory standpoint**, like they know how to deal with regulators, they've got global scale, they've got tens, hundreds of millions of customers, lots of assets.  
+Yeah, I mean, I think that if you think about an **incumbent**, they have certain benefits. They're like very muscular from a **regulatory standpoint**, like they know how to deal with regulators, they've got global scale, they've got tens, hundreds of millions of customers, lots of assets.
 
-But the disadvantage is that they're sometimes **slow to adopt new technologies**. They don't have the best engineering teams, they can't move very fast, and they can't hire the best talent.  
+But the disadvantage is that they're sometimes **slow to adopt new technologies**. They don't have the best engineering teams, they can't move very fast, and they can't hire the best talent.
 
-And so I think that we don't have those downsides. We have **great talent**, we move really quickly, we use the best technology. We haven't been super acquisitive historically, even though we're doing more. And that prevents us from being bogged down by these like massive integration things that take multiple years.  
+And so I think that we don't have those downsides. We have **great talent**, we move really quickly, we use the best technology. We haven't been super acquisitive historically, even though we're doing more. And that prevents us from being bogged down by these like massive integration things that take multiple years.
 
 And so it's a question of, can we get the benefits of scale while also maintaining the **nimbleness of a technology startup?**
 
@@ -413,11 +413,11 @@ Do you want to give the audience, before we run out of time, maybe last question
 
 Oh, yeah. And the goal of that and why you decided to fund that sort of outside the scope of Robinhood?
 
-Yeah, so he's talking about **Harmonic**, which is a company that I started two years ago, and I'm chairman of, and completely separate from Robinhood. Basically, the goal there is to build what we call **mathematical super intelligence**.  
+Yeah, so he's talking about **Harmonic**, which is a company that I started two years ago, and I'm chairman of, and completely separate from Robinhood. Basically, the goal there is to build what we call **mathematical super intelligence**.
 
 So this is **mathematical reasoning** that is exceeding the capability of any individual human researcher. And we had a pretty cool result a couple of weeks ago where we announced **gold medal level performance at the International Math Olympiad**, which is the biggest mathematics competition in the world.
 
-And I think to my knowledge, 
+And I think to my knowledge,
 > "we're the only formal model."
 
 You're the only formal one that got IMO gold, yeah.

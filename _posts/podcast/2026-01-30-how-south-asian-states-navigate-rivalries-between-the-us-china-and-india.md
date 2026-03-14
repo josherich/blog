@@ -2,7 +2,7 @@
 layout: post
 title: "How South Asian States Navigate Rivalries Between the U.S., China, and India"
 date: 2026-01-30 00:00:01
-categories: podcast the-china-global-south-podcast
+categories: podcast
 tags: [podcast_script]
 ---
 
@@ -127,11 +127,11 @@ Against **white protesters in places like Minneapolis** and killings now of **wh
 
 As much as I'd like to continue that line of our conversation, I want to get back to the report that you guys worked on last year. Now, it focused on **three countries in particular: Bangladesh, Nepal, and Sri Lanka**. You also had some insights included in it from **Bhutan and Maldives** as well.
 
-Sagar, let's talk a little bit about the understanding that a lot of countries have where we hear the top line, which is they don't want to take sides between the various powers. And as you pointed out, in Nepal, **we cannot make this only about the U.S. and China**. Obviously, **India plays a very important role**. 
+Sagar, let's talk a little bit about the understanding that a lot of countries have where we hear the top line, which is they don't want to take sides between the various powers. And as you pointed out, in Nepal, **we cannot make this only about the U.S. and China**. Obviously, **India plays a very important role**.
 
 You also wrote in the report that they don't follow the textbook strategies for hedging because there's the impact of domestic politics, there's regime survival, all sorts of other factors. Let's start at the high level about how these three countries in particular are managing these rivalries and what we should take away from it.
 
-What we are essentially bringing out in that paper is that, look, countries are—it’s difficult to say countries are rational actors because countries are only as rational as their ruling establishments are rational, right? And it’s like what you see in the U.S. right now. 
+What we are essentially bringing out in that paper is that, look, countries are—it’s difficult to say countries are rational actors because countries are only as rational as their ruling establishments are rational, right? And it’s like what you see in the U.S. right now.
 
 Like you can't call the **U.S. behaving rationally or irrationally**. It's more like **Trump and his coterie behaving rationally and irrationally**. So that happens in smaller states too.
 
@@ -181,7 +181,7 @@ Can you speak a little bit to the imbalances that exist in these great power riv
 
 When you're sitting in **Nepal** and you're relying on India, you're up to the whims of what happens in **New Delhi**, and that's it. Like the vaccine during COVID. I mean, I think it's not just the vaccines, right?
 
-- **Sagar** will speak about the **2015 blockade of the border between India and Nepal**, which had serious implications on Nepal's economy and fuel access. 
+- **Sagar** will speak about the **2015 blockade of the border between India and Nepal**, which had serious implications on Nepal's economy and fuel access.
 - Then it's actually very often, like I said, **India's high-handedness in moments of crisis for other countries** very often has also pushed them to seek alternative options as they should.
 
 And I think would be a rational policy choice for any government in that moment to diversify options.
@@ -194,17 +194,17 @@ The lesson I think for countries like India is that, you know, also the geograph
 
 So there's a lot of pressure on local governments, on countries in the region to provide for their young voting elites and middle class a lifestyle that they aspire to. And the question is:
 
-- Where is that going to come from?  
-- Where will the jobs come from?  
-- Where will the market come from?  
-- Where will the goods be sold?  
+- Where is that going to come from?
+- Where will the jobs come from?
+- Where will the market come from?
+- Where will the goods be sold?
 
 And India, unfortunately, has done a terrible job of opening up its markets to its neighbors. And so they will look for markets elsewhere. They will look to send their labor elsewhere because India, I mean, the region is famously called one of the **least integrated regions in the world**, right?
 
-- Trade is very hard.  
-- Transit is really hard.  
-- Making a phone call is very hard.  
-- Getting visas is really hard.  
+- Trade is very hard.
+- Transit is really hard.
+- Making a phone call is very hard.
+- Getting visas is really hard.
 
 So unlike **ASEAN**, which is quite a well, you know, really well-functioning, to some extent, regional unit and political bloc, mobility is really hard in South Asia. You know, **people can't even visit relatives across the border**.
 
@@ -253,37 +253,37 @@ So a few years ago, the government of, I think it was **Mohamed Yameen**, had in
 So I think also you have this flip-flop very often between competing opposition political parties where, you know, one is openly **pro-China**, while they're in government, they'll bring in Chinese investment, that the person in opposition will be like,
 
 > "No, no, China out, India in."
-And when they come into power, they bring **India in**.  
+And when they come into power, they bring **India in**.
 
-And of course, a recent president of the **Maldives** came into power on a very **anti-Indian stance**. He wanted India's defense support to the Maldives. We had some troops stationed there for them to leave. He came into power, the troops left, and then the following year, he came to India seeking investment.  
+And of course, a recent president of the **Maldives** came into power on a very **anti-Indian stance**. He wanted India's defense support to the Maldives. We had some troops stationed there for them to leave. He came into power, the troops left, and then the following year, he came to India seeking investment.
 
-So also a lot of these decisions are **politically expedient** and demonstrate certain **optics to your domestic constituency**, which is also important. So **verity is very important to small states**. The optics of being seen as being **neutral, non-aligned, not pro-one party or one power or the other** is actually strategically very important to them.  
+So also a lot of these decisions are **politically expedient** and demonstrate certain **optics to your domestic constituency**, which is also important. So **verity is very important to small states**. The optics of being seen as being **neutral, non-aligned, not pro-one party or one power or the other** is actually strategically very important to them.
 
-So I think to the point around **infrastructure**, I just want to make one point, which is, I think it goes without saying that, if you go to **Sri Lanka**, for example, **China has built the most amazing fall-in highways**.  
+So I think to the point around **infrastructure**, I just want to make one point, which is, I think it goes without saying that, if you go to **Sri Lanka**, for example, **China has built the most amazing fall-in highways**.
 
-- The feedback from the ground is China comes in with its own engineers, its own equipment, but they deliver the goods in record time very efficiently.  
-- And it's built to last, whereas sometimes India's own track record of delivering these large infrastructure projects is not as good on the ground because of bureaucratic inefficiencies or maybe some issues in terms of contracting, etc.  
+- The feedback from the ground is China comes in with its own engineers, its own equipment, but they deliver the goods in record time very efficiently.
+- And it's built to last, whereas sometimes India's own track record of delivering these large infrastructure projects is not as good on the ground because of bureaucratic inefficiencies or maybe some issues in terms of contracting, etc.
 
-So I think **India needs to do better if it hopes to compete with China**. But it is in many ways **it can't because of the scale, the sheer proficiency with which China has been building roads and infrastructure around the world**. **Africa is a good example**: I had a friend who was posted in Sierra Leone, six-lane highway in like a couple of months. It's very impressive.  
+So I think **India needs to do better if it hopes to compete with China**. But it is in many ways **it can't because of the scale, the sheer proficiency with which China has been building roads and infrastructure around the world**. **Africa is a good example**: I had a friend who was posted in Sierra Leone, six-lane highway in like a couple of months. It's very impressive.
 
-I'd like to close our discussion looking forward a little bit. You wrote this report back in October of last year. And again, the world has **changed dramatically since October**. We see a breakdown of the international system and also of the institutions themselves. The **United States has all but quit the United Nations**. The **United Nations is doing significant layoffs now of its staff**.  
+I'd like to close our discussion looking forward a little bit. You wrote this report back in October of last year. And again, the world has **changed dramatically since October**. We see a breakdown of the international system and also of the institutions themselves. The **United States has all but quit the United Nations**. The **United Nations is doing significant layoffs now of its staff**.
 
-What does it mean for these kinds of countries when the institutions and the systems that have been in place for 70, 80 years are not there anymore? It's obviously a risk, but is it also an opportunity?  
+What does it mean for these kinds of countries when the institutions and the systems that have been in place for 70, 80 years are not there anymore? It's obviously a risk, but is it also an opportunity?
 
-So for the **small states**, it's a risk. It's a risk because the number one issue comes from the fact that small states as such **couldn't or never did have much of a voice in actually making these rules in the rules-based order**. But anything that promises to treat everybody equally is always good when you are a **geopolitically weak actor**.  
+So for the **small states**, it's a risk. It's a risk because the number one issue comes from the fact that small states as such **couldn't or never did have much of a voice in actually making these rules in the rules-based order**. But anything that promises to treat everybody equally is always good when you are a **geopolitically weak actor**.
 
-And so there is a natural leaning towards a **rules-based system in small states**. And that being shaken is a serious problem. Because now the middle powers jostle. In the sense that when the Canadian prime minister spoke about it, it sounded good. But then there is **internal competition between the middle powers**.  
+And so there is a natural leaning towards a **rules-based system in small states**. And that being shaken is a serious problem. Because now the middle powers jostle. In the sense that when the Canadian prime minister spoke about it, it sounded good. But then there is **internal competition between the middle powers**.
 
-- In the 1990s, both **China and India** were considered middle powers.  
-- **China is in a different place today**. That's a different story.  
-- The India-China competition was felt by these smaller states, even them.  
-- And now you have Europe coming in and so on and so forth.  
+- In the 1990s, both **China and India** were considered middle powers.
+- **China is in a different place today**. That's a different story.
+- The India-China competition was felt by these smaller states, even them.
+- And now you have Europe coming in and so on and so forth.
 
-So there'll be a lot of jostling. And then the smaller states have a more **heightened risk of being squished in one direction or the other**.  
+So there'll be a lot of jostling. And then the smaller states have a more **heightened risk of being squished in one direction or the other**.
 
-The third thing about the upheavals that we've seen is this whole jeopardy on **development financing stream**. America withdrew lock, stock, and barrel. Europe, because of its own war in the backyard and failing economies and now that it has an issue with tariffs with the U.S., its biggest trading partner, the European outlook economically isn't good.  
+The third thing about the upheavals that we've seen is this whole jeopardy on **development financing stream**. America withdrew lock, stock, and barrel. Europe, because of its own war in the backyard and failing economies and now that it has an issue with tariffs with the U.S., its biggest trading partner, the European outlook economically isn't good.
 
-So whatever they were able to do through **EU or at a bilateral level, particularly U.K., Germany, France**—France in Africa, others elsewhere—that development financing stream is also in some ways being compromised. And then now the latest news is **Japan is being shaky**. Japanese bonds being as cheap as they were, borrowing from Japan was a great advantage for very many developing countries in Asia where Japan has some degree of focus:  
+So whatever they were able to do through **EU or at a bilateral level, particularly U.K., Germany, France**—France in Africa, others elsewhere—that development financing stream is also in some ways being compromised. And then now the latest news is **Japan is being shaky**. Japanese bonds being as cheap as they were, borrowing from Japan was a great advantage for very many developing countries in Asia where Japan has some degree of focus:
 
 ```markdown
 - India has borrowed heavily.
@@ -292,7 +292,7 @@ So whatever they were able to do through **EU or at a bilateral level, particula
 - Bangladesh has borrowed heavily.
 ```
 
-That's because the **interest rates were so low**. Now the Japanese interest rates are growing very rapidly high.  
+That's because the **interest rates were so low**. Now the Japanese interest rates are growing very rapidly high.
 
 Because of all of these changes, it’s like just because the dominoes started falling from the U.S., it has sort of taken the whole world in a sweep. And so all of those development prospects, financing and so on and so forth **has become a problem for smaller states**.
 **Mandakini, what do you think?**
@@ -301,7 +301,7 @@ I think it's, you know, it's sort of like you may, we all may have known that th
 
 I mean, for a large country like **India**, yes, certainly it's a concern. You never know whether the tariffs will go up or down tomorrow, what Trump will tweet about overnight.
 
-And I think for small states, the **existential anxiety** will probably be even more. And I think one underestimates the power of a single vote in the **UN**, right? So even a small island state, like a small like **Nauru** or **Kiribati** or one small little island in the Caribbean, that vote really mattered in the UN. 
+And I think for small states, the **existential anxiety** will probably be even more. And I think one underestimates the power of a single vote in the **UN**, right? So even a small island state, like a small like **Nauru** or **Kiribati** or one small little island in the Caribbean, that vote really mattered in the UN.
 
 So if the devaluation of that UN vote, I think is significant. Equally, the fact that, you know, the UN has been passing all these resolutions on whether it's Ukraine or on Gaza, and none of them have been backed. You know, if a country like Ukraine or, you know, a large political, a big political conflict like Gaza, no one is going to come, essentially, the message is:
 
@@ -320,7 +320,7 @@ It's a player, but not in the same way. It doesn't have that kind of military ca
 - Who are our friends and who are our allies?
 - What kind of new alignments do we need to be thinking about?
 
-I think we'll see the rise of more **minilaterals** or **trilaterals**, you know, triumph groups of two or three countries trying to come together. But as **Sagar said, you know, economics matters**, and they will be looking at how do they shore up their economy so that you don't see the kind of domestic political upheaval you've seen in **Bangladesh, Sri Lanka and Nepal**, right? 
+I think we'll see the rise of more **minilaterals** or **trilaterals**, you know, triumph groups of two or three countries trying to come together. But as **Sagar said, you know, economics matters**, and they will be looking at how do they shore up their economy so that you don't see the kind of domestic political upheaval you've seen in **Bangladesh, Sri Lanka and Nepal**, right?
 
 So it's going to be a very tough balancing act and also maintaining your own **strategic integrity** as a country, you know?
 
@@ -343,8 +343,8 @@ Now, again, they wrote it last year. The new world is even more new this year. A
 
 Thank you both for taking your time today to share some of your insights. We really appreciate it.
 
-> Thank you so much.  
-> Thank you, Eric.  
+> Thank you so much.
+> Thank you, Eric.
 > Thanks, Eric.
 
 And we want to thank everybody for joining us today for another episode of the show. We'll be back again next week with another edition. And we hope that in the meantime, you'll check out everything that the team at **CGSP** is doing around the world in French and Spanish and English.

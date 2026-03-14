@@ -2,7 +2,7 @@
 layout: post
 title: "China's Place in the New Post-American International Order"
 date: 2026-01-23 00:00:01
-categories: podcast the-china-global-south-podcast
+categories: podcast
 tags: [podcast_script]
 ---
 
@@ -15,28 +15,28 @@ Hello, and welcome to this special joint edition of the **China Global South pod
 
 Good afternoon.
 
-Kobus, you and I are both old enough to remember some of the great speeches of the 20th century. I distinctly remember sitting in front of the television, watching **Ronald Reagan** in front of the **Brandenburg Gate** saying,  
-> "Mr. Gorbachev, tear down this wall."  
+Kobus, you and I are both old enough to remember some of the great speeches of the 20th century. I distinctly remember sitting in front of the television, watching **Ronald Reagan** in front of the **Brandenburg Gate** saying,
+> "Mr. Gorbachev, tear down this wall."
 
-That was one of those speeches that just, you remember where you were when it happened. I believe this week was also going to be one of those speeches when **Canadian Prime Minister Mark Carney** spoke at the **Davos Forum in Switzerland** and just said what a lot of people have been wanting leaders to say and finally contested the United States and called out the United States.  
+That was one of those speeches that just, you remember where you were when it happened. I believe this week was also going to be one of those speeches when **Canadian Prime Minister Mark Carney** spoke at the **Davos Forum in Switzerland** and just said what a lot of people have been wanting leaders to say and finally contested the United States and called out the United States.
 
-And Kobus, you have been saying for a long time that the **rules-based international order died in Gaza**. If it wasn't dead in Gaza, it was killed in **Caracas, Venezuela**. We are now in the **post-American order** and I want to play a little bit from Mark Carney's speech and that will set up our conversation today about China and where China fits into all of this.  
+And Kobus, you have been saying for a long time that the **rules-based international order died in Gaza**. If it wasn't dead in Gaza, it was killed in **Caracas, Venezuela**. We are now in the **post-American order** and I want to play a little bit from Mark Carney's speech and that will set up our conversation today about China and where China fits into all of this.
 
 The soundbite is a little bit long, but because this is such a seminal speech and it's so important, I just want to make sure that I get your reaction to it on some of these details. Let's listen now to Canadian Prime Minister **Mark Carney**.
 
 ---
 
-For decades, countries like Canada prospered under what we called the **rules-based international order**. We joined its institutions, we praised its principles, we benefited from its predictability. And because of that, we could pursue values-based foreign policies under its protection.  
+For decades, countries like Canada prospered under what we called the **rules-based international order**. We joined its institutions, we praised its principles, we benefited from its predictability. And because of that, we could pursue values-based foreign policies under its protection.
 
-We knew the story of the international rules-based order was partially false. That the strongest would exempt themselves when convenient, that trade rules were enforced asymmetrically. And we knew that international law applied with varying rigor depending on the identity of the accused or the victim.  
+We knew the story of the international rules-based order was partially false. That the strongest would exempt themselves when convenient, that trade rules were enforced asymmetrically. And we knew that international law applied with varying rigor depending on the identity of the accused or the victim.
 
-This fiction was useful. And American hegemony in particular helped provide public goods, open sea lanes, a stable financial system, collective security, and support for frameworks for resolving disputes. We participated in the rituals. And we largely avoided calling out the gaps between rhetoric and reality.  
+This fiction was useful. And American hegemony in particular helped provide public goods, open sea lanes, a stable financial system, collective security, and support for frameworks for resolving disputes. We participated in the rituals. And we largely avoided calling out the gaps between rhetoric and reality.
 
-This bargain no longer works. Let me be direct. We are in the midst of a **rupture**, not a transition. Over the past two decades, a series of crises in finance, health, energy, and geopolitics have laid bare the risks of extreme global integration. But more recently, great powers have begun using economic integration as weapons.  
+This bargain no longer works. Let me be direct. We are in the midst of a **rupture**, not a transition. Over the past two decades, a series of crises in finance, health, energy, and geopolitics have laid bare the risks of extreme global integration. But more recently, great powers have begun using economic integration as weapons.
 
-- Tariffs as leverage  
-- Financial infrastructure as coercion  
-- Supply chains as vulnerabilities to be exploited  
+- Tariffs as leverage
+- Financial infrastructure as coercion
+- Supply chains as vulnerabilities to be exploited
 
 You cannot live within the lie of mutual benefit through integration when integration becomes the source of your subordination.
 
@@ -44,55 +44,55 @@ You cannot live within the lie of mutual benefit through integration when integr
 
 Kobus, there we have it. A rupture and references to **subordination**. Very important, though, that he mentioned **great powers, plural**, when he talked about supply chain abuse and whatnot. So, clearly a reference also to **China** there. What was your take from Carney's speech?
 
-As you said, it was definitely very surprising to hear. Particularly, as you say, different people have called the rules-based order kind of over or dead, for a long time. But it kind of lived in ghost form in places like **Europe and Canada**, where people may have increasingly had real concerns about how the actual function of power was in that, but then the vocabulary itself remains so powerful.  
+As you said, it was definitely very surprising to hear. Particularly, as you say, different people have called the rules-based order kind of over or dead, for a long time. But it kind of lived in ghost form in places like **Europe and Canada**, where people may have increasingly had real concerns about how the actual function of power was in that, but then the vocabulary itself remains so powerful.
 
 So, this is definitely, it's a break in optics, I think, more than necessarily that bigger break in substance, because we don't really know what a lot of this is going to mean yet. But the break in optics is very significant, because, as he says, you see, optics is essentially what was keeping it together.
 
-Well, I was struck by this, a little bit down in the speech, he said, to help solve global problems, we're pursuing **variable geometry**. In other words, different coalitions for different issues based on common values and interests.  
+Well, I was struck by this, a little bit down in the speech, he said, to help solve global problems, we're pursuing **variable geometry**. In other words, different coalitions for different issues based on common values and interests.
 
 And the ones that he mentioned were mostly with fellow, what he called **middle powers**, which we know don't necessarily include a country like **Indonesia**, but kind of include European countries. And those were...
-The ones that he was mostly name-checking, except for a few kind of specific, like trade relationships with **Asian countries**. And then the kind of interesting, possible link with **TPP, a Trans-Pacific Partnership**. But what I'm looking for now, following this speech, is whether any of this goes past the equator, kind of like, because from a lot of the framing of it, it left me wondering a little bit whether this really breaks out of that **global north cage**.  
+The ones that he was mostly name-checking, except for a few kind of specific, like trade relationships with **Asian countries**. And then the kind of interesting, possible link with **TPP, a Trans-Pacific Partnership**. But what I'm looking for now, following this speech, is whether any of this goes past the equator, kind of like, because from a lot of the framing of it, it left me wondering a little bit whether this really breaks out of that **global north cage**.
 
 Kind of whether that paradigm gets questioned at all, or whether we're essentially looking at an attempt to shore up **G7 solidarities**, but trying to make it work without the US. So that's some of the questions it left me with.
 
 ---
 
-Well, if you've been following the speeches of **Carney** over the past couple of weeks, this speech this week in **Davos** may not have come as a surprise. We heard some similar rhetoric when he was in **Beijing** last week, and also articulated a line that really stuck with me:  
+Well, if you've been following the speeches of **Carney** over the past couple of weeks, this speech this week in **Davos** may not have come as a surprise. We heard some similar rhetoric when he was in **Beijing** last week, and also articulated a line that really stuck with me:
 > "This is not the world that we want, but this is the world effectively that we have."
 
-It's this **practical realism** that he says he is now practicing for Canada. I have a feeling that other middle powers —  
-- Australia  
-- South Korea  
-- Japan  
-- European countries  
+It's this **practical realism** that he says he is now practicing for Canada. I have a feeling that other middle powers —
+- Australia
+- South Korea
+- Japan
+- European countries
 
-— are going to take some inspiration from what he said.  
+— are going to take some inspiration from what he said.
 
-But it raises the big question now of what **China's role** is in all of this. This was the first time that a **Canadian prime minister** had gone back to China in almost a decade. They want to sell a lot more oil, they want to sell canola, they're going to now be trading in cars a lot more. So the world is changing in front of us.  
+But it raises the big question now of what **China's role** is in all of this. This was the first time that a **Canadian prime minister** had gone back to China in almost a decade. They want to sell a lot more oil, they want to sell canola, they're going to now be trading in cars a lot more. So the world is changing in front of us.
 
-Again, what is going to be the role of China in this new world? The timing for our discussion today couldn't be better, because we have somebody who I've been admiring for a long time and who wrote a fantastic article in **Foreign Affairs**.  
+Again, what is going to be the role of China in this new world? The timing for our discussion today couldn't be better, because we have somebody who I've been admiring for a long time and who wrote a fantastic article in **Foreign Affairs**.
 
-**Liu Zhongyuan, also known as Zoe**, is the author of *China's Long Economic War: How Beijing Builds Leverage for Indefinite Competition*. That is the article in Foreign Affairs, which I’m going to put in the show notes.  
+**Liu Zhongyuan, also known as Zoe**, is the author of *China's Long Economic War: How Beijing Builds Leverage for Indefinite Competition*. That is the article in Foreign Affairs, which I’m going to put in the show notes.
 
-Zoe is the **Maurice R. Greenberg Senior Fellow for China Studies at the Council on Foreign Relations** and a **Senior Research Scholar at the Institute for Global Politics at Columbia University**. A very good morning to you from New York, Zoe.  
-
----
-
-**Zoe**: Thank you so much for having me. And Kobus, it's great to see you again.  
-
-It's wonderful to have you on the show. Again, the timing just couldn't be better, given the ideas you laid out in the article.  
-
-Before we dive into China's role specifically, I also want to get your reflection on Carney's speech and this moment that we're in — the rupture of the rules-based international order, as Carney put it. Something that's been building over the past year, or maybe the past 10 years, but here we are now in uncharted territory.  
+Zoe is the **Maurice R. Greenberg Senior Fellow for China Studies at the Council on Foreign Relations** and a **Senior Research Scholar at the Institute for Global Politics at Columbia University**. A very good morning to you from New York, Zoe.
 
 ---
 
-**Zoe**: Eric, thank you for somehow connecting my article, linking some of my analysis with Prime Minister Mark Carney's speech. I really appreciate your shout out of my article.  
+**Zoe**: Thank you so much for having me. And Kobus, it's great to see you again.
 
-The bit that you played really stuck with me yesterday as I was watching his speech. I actually watched it on YouTube several times. And in addition to the part that you played, there was also a line that stuck with me, which was when he talked about what Canada is going to do. He described it as:  
+It's wonderful to have you on the show. Again, the timing just couldn't be better, given the ideas you laid out in the article.
 
-> "Canada believed in the strength of values. But going forward, Canada is also going to build and believe in the value of strength."  
+Before we dive into China's role specifically, I also want to get your reflection on Carney's speech and this moment that we're in — the rupture of the rules-based international order, as Carney put it. Something that's been building over the past year, or maybe the past 10 years, but here we are now in uncharted territory.
 
-I think your description of it as **pragmatic realism** is perhaps a moment of truth, despite no country being willing to be part of this reckoning.  
+---
+
+**Zoe**: Eric, thank you for somehow connecting my article, linking some of my analysis with Prime Minister Mark Carney's speech. I really appreciate your shout out of my article.
+
+The bit that you played really stuck with me yesterday as I was watching his speech. I actually watched it on YouTube several times. And in addition to the part that you played, there was also a line that stuck with me, which was when he talked about what Canada is going to do. He described it as:
+
+> "Canada believed in the strength of values. But going forward, Canada is also going to build and believe in the value of strength."
+
+I think your description of it as **pragmatic realism** is perhaps a moment of truth, despite no country being willing to be part of this reckoning.
 
 I cannot agree more with the analysis that **Trump probably did not start this**, and this is not necessarily the first moment when we are facing a global transformation. But describing it as a **rupture** definitely highlighted a sense of urgency and a paradigm shift, if that makes sense.
 
@@ -241,13 +241,13 @@ So from that perspective, I'd say,
 
 So, you know, there's all of the **vice premier**, for example, and **President Xi Jinping** himself have been committing China to become more **consumption-led**, and to increase the rates of consumption within China. From your perspective, how will that actually work? And how do you think that may shape this kind of tricky relationship that you, I think you lay out very, very well in your article? You know, this situation, this kind of paradox — paradox where China is incredibly successful at one does, but that doesn't really buy its trust. You know, it remains very, very powerful, and very respected, but not necessarily close, warm alliances with other countries.
 
-Like, the reason I'm linking this to consumption is, it strikes me that the **US**, having been such a strong consumption power over such a long time, combined with the US's power to pump out images of itself, positioned the US as a kind of an **avatar of modernity**, right? In the 1930s, for example, the **Hollywood movies** that flowed out of the US showed certain high levels of consumption of certain commodities, like kitchen appliances or cars. 
+Like, the reason I'm linking this to consumption is, it strikes me that the **US**, having been such a strong consumption power over such a long time, combined with the US's power to pump out images of itself, positioned the US as a kind of an **avatar of modernity**, right? In the 1930s, for example, the **Hollywood movies** that flowed out of the US showed certain high levels of consumption of certain commodities, like kitchen appliances or cars.
 
 In the process, they set a template for what 20th century consumption looked like but also set the US as this kind of norm setter, or setting of standards of what kind of modern consumption, what consumption, what would modernity through consumption look like?
 
 But it seems to me that China — the first question I think I'm asking is:
 
-- **What does a highly consuming China look like?**  
+- **What does a highly consuming China look like?**
 - **What is that kind of effect on the rest of the world?**
 
 But then also, China has a very specific, very different way of pumping out images of itself and of its daily life within China into the rest of the world. So I was wondering if you foresee that it would have a similar kind of effect as the kind of visualization of consumption had for the United States in the past.
@@ -319,7 +319,7 @@ Can you expand on that?
 The reason I wanted to emphasize **credibility**, and especially I wanted to emphasize the **debt trap** as a case, I'll start with the puzzle that I have had for a long time. Over the past few years, there have been a lot of discussions about the **Chinese government intentionally doing something to achieve strategic interest.**
 They intentionally lend to countries that they know have **no capacity to pay**, and with the idea that they can somehow **capture their commodities or strategic asset**.
 
-And there is also the **overcapacity argument**. Some European leaders even made the statement saying that **China intentionally produces overcapacity so that they can flood the global market**. Argument like this make me wonder. 
+And there is also the **overcapacity argument**. Some European leaders even made the statement saying that **China intentionally produces overcapacity so that they can flood the global market**. Argument like this make me wonder.
 
 We know multiple things can be true simultaneously, even though they're seemingly in conflict with each other. But if we believe the Chinese government and Chinese leaders and the **CCP** are assuming that they are so far headed, they think in 100 years. No leader wanted to do bad business and run their country down persistently across 100 years. Their economy is going to go down. Like why would you intentionally do something that is going to eventually hurt you more than hurting others?
 
@@ -352,7 +352,7 @@ They never thought about the chance of regime change. They never thought about t
 
 So as a result, you ended up having this **debt trap narrative stuck**. It really speaks to China's **unproven track record and the broader credibility deficit**. And the debt trap is just one example.
 
-You know, you have concerns about the Chinese overseas investment in ports, like American military folks would be, or strategic studies people, oftentimes concerned about, 
+You know, you have concerns about the Chinese overseas investment in ports, like American military folks would be, or strategic studies people, oftentimes concerned about,
 
 - "Well, is China going to build all these ports around the world and they have ownership?"
 - "Is this the clue that they are going to build a global network of naval bases?"
@@ -409,7 +409,7 @@ This is why China wants to fundamentally guard itself ideologically and identity
 You only focus on doing business, growing your economy. And as long as we can trade, find ways to trade, that's good enough.
 
 As long as you and I can both grow our economies, and that's probably as good.
-And this also fits into **China's**, perhaps the **party's pledge of ending China's century of humiliation**, especially being emphasized by **President Xi Jinping** many times. The idea is to **restore China's great place in the international system**. And I think this resonates with a lot of members of the **global South**. A lot of countries were proud Asian civilizations from **Egypt to Iran to India**. 
+And this also fits into **China's**, perhaps the **party's pledge of ending China's century of humiliation**, especially being emphasized by **President Xi Jinping** many times. The idea is to **restore China's great place in the international system**. And I think this resonates with a lot of members of the **global South**. A lot of countries were proud Asian civilizations from **Egypt to Iran to India**.
 
 So from that perspective, I'd say claiming itself as a member of the global South gives China a sense of **moral obligation to practice foreign policy agenda**. And even sometimes being perceived as assertive because it can legitimize its assertiveness or sometimes even aggressiveness. It can recast this as, you know, it's a victim of being abused by the West trying to reassert itself.
 
@@ -427,7 +427,7 @@ Kobus, when we were in **Indonesia last week** and speaking with various stakeho
 
 But opportunity is a **conditional relationship**. If the opportunity goes away, then people will look elsewhere. And I think this speaks to the **credibility gap** that Zoe was talking about in her article. And I think it's absolutely true.
 
-Now, I can hear the China supporters out there saying the reason why there's a credibility gap is because the **United States government spent years and millions of dollars with propaganda to undermine the Chinese**. The Indians as well, the Indians as well, and Indian media, and these narratives have just taken off. 
+Now, I can hear the China supporters out there saying the reason why there's a credibility gap is because the **United States government spent years and millions of dollars with propaganda to undermine the Chinese**. The Indians as well, the Indians as well, and Indian media, and these narratives have just taken off.
 
 So don't blame the Chinese, blame **Western media and Indian media** for that.
 
@@ -499,7 +499,7 @@ And just in the time that I've been overseas, which is now 20 years, I have neve
 
 So, here we are in this new world where the **United States is entirely distrusted**. It has burned, just with a match, lit on fire, billions of dollars and decades of effort to build up soft power.
 
-And I don't know if you have **President Gavin Newsom in 2028** and he says, like Joe Biden did, 
+And I don't know if you have **President Gavin Newsom in 2028** and he says, like Joe Biden did,
 
 > "We're back."
 
@@ -562,25 +562,25 @@ And the amazing work that **Jiro is doing in tracking the cobalt supply chain**,
 the most comprehensive map on the **Chinese nickel supply chain in Indonesia**.
 
 So, so many cool things, but **we need your help**.
-**We need your support.**  
+**We need your support.**
 
-If you would like to support us, go to **ChinaGlobalSouth.com/subscribe**. That will give you full access to everything on the website and also the amazing newsletter that the team puts together every day that goes out to dozens of governments, universities, businesses, and stakeholders around the world.  
+If you would like to support us, go to **ChinaGlobalSouth.com/subscribe**. That will give you full access to everything on the website and also the amazing newsletter that the team puts together every day that goes out to dozens of governments, universities, businesses, and stakeholders around the world.
 
-And people love it, and so we want you to love it as well.  
+And people love it, and so we want you to love it as well.
 
-If you are a **student or a teacher**, we have a deal for you. Just email me, **eric@ChinaGlobalSouth.com**, and I will send you the links for a half-off discount.  
+If you are a **student or a teacher**, we have a deal for you. Just email me, **eric@ChinaGlobalSouth.com**, and I will send you the links for a half-off discount.
 
-So that'll do it for this edition. We're going to call this a **special edition**. It's a **bonus edition** of both the **China in Africa podcast** and the **China Global South podcast**. We're putting it on **both feeds**.  
+So that'll do it for this edition. We're going to call this a **special edition**. It's a **bonus edition** of both the **China in Africa podcast** and the **China Global South podcast**. We're putting it on **both feeds**.
 
-We'll be back again later this week with another edition of the podcast, and we've got so many more videos and everything coming up. So stay tuned, and thank you so much for listening and for watching.  
+We'll be back again later this week with another edition of the podcast, and we've got so many more videos and everything coming up. So stay tuned, and thank you so much for listening and for watching.
 
-The discussion continues online. Follow the **China Global South project** on:  
+The discussion continues online. Follow the **China Global South project** on:
 
-- **Blue Sky**  
-- **X at ChinaGSProject**  
-- **YouTube at China Global South**  
+- **Blue Sky**
+- **X at ChinaGSProject**
+- **YouTube at China Global South**
 
-Share your thoughts on today's show or head over to our website at **ChinaGlobalSouth.com**, where you can subscribe to receive full access to more than **5,000 articles and podcasts**.  
+Share your thoughts on today's show or head over to our website at **ChinaGlobalSouth.com**, where you can subscribe to receive full access to more than **5,000 articles and podcasts**.
 
 Once again, that's **ChinaGlobalSouth.com**.
 

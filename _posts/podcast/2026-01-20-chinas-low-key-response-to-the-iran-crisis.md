@@ -2,7 +2,7 @@
 layout: post
 title: "China's Low-Key Response to the Iran Crisis"
 date: 2026-01-20 00:00:01
-categories: podcast the-china-global-south-podcast
+categories: podcast
 tags: [podcast_script]
 ---
 
@@ -28,8 +28,8 @@ But it's interesting because the **Chinese reaction**—you would never know tha
 So to find out why there's been such a divergence between Venezuela and Gaza earlier and now Iran, we have our old friend back on the show, one of the leading **China-Iran scholars in the world**, **William Figueroa**, who is an assistant professor at the **University of Groningen in the Netherlands** and really, again, one of the great go-to people on this issue.
 
 Bill published a fascinating article on CGSP:
-> *As Iran faces its gravest crisis in decades, China stays on the sidelines*  
-where he breaks down the Chinese response to the crisis in Iran.  
+> *As Iran faces its gravest crisis in decades, China stays on the sidelines*
+where he breaks down the Chinese response to the crisis in Iran.
 
 We are thrilled to have you back on the show, Bill. Great to speak with you. Happy New Year.
 
@@ -46,71 +46,71 @@ But also that in terms of the state response, we're definitely seeing something 
 So, if you have any Iranian friends, definitely reach out to them and see how they're doing. This is also just one of those difficult moments, especially when you see the sort of heroic scenes of Iranians who, this protest in particular, as you said, started very much growing out of spontaneous protests from merchants who are protesting against recent news that was released against the price of inflation.
 
 And even the international context, when you talk to people who are in the protest, many of them were very disconnected from the discourse outside the country.
-So I think it's also really important to remember going into this discussion, **how much of this is driven by what Iranians are doing**, how much **Iranians are suffering** and also the domestic problems they have inherent within **Iran**.  
+So I think it's also really important to remember going into this discussion, **how much of this is driven by what Iranians are doing**, how much **Iranians are suffering** and also the domestic problems they have inherent within **Iran**.
 
-Right.  
+Right.
 
-OK, so before we get to the **China** part of this, are there similarities to these protests than to those that we saw in other **Gen Z riots**, say, in **Indonesia**, **Nepal**, **Manila** and also in **Nairobi**, where young people in particular were frustrated with corruption?  
+OK, so before we get to the **China** part of this, are there similarities to these protests than to those that we saw in other **Gen Z riots**, say, in **Indonesia**, **Nepal**, **Manila** and also in **Nairobi**, where young people in particular were frustrated with corruption?
 
-They were frustrated with:  
-- the lack of services  
-- the cost of living  
-- and that the governments aren't doing more to make their lives better.  
+They were frustrated with:
+- the lack of services
+- the cost of living
+- and that the governments aren't doing more to make their lives better.
 
-Yeah, I think that this is kind of underlying all of the frustrations across social classes in **Iran** right now. I had an Iranian friend say to me that in so many words that even people in his life who had very comfortable lives up till this point are suddenly very much wondering about their future.  
+Yeah, I think that this is kind of underlying all of the frustrations across social classes in **Iran** right now. I had an Iranian friend say to me that in so many words that even people in his life who had very comfortable lives up till this point are suddenly very much wondering about their future.
 
-They talk a lot in Iran about **poor millionaires**, basically people who had enough money to build these great lives for themselves, but in the current situation don't even have enough money to put, you know, new rims or new wheels on their fancy cars to go for a drive around the country.  
+They talk a lot in Iran about **poor millionaires**, basically people who had enough money to build these great lives for themselves, but in the current situation don't even have enough money to put, you know, new rims or new wheels on their fancy cars to go for a drive around the country.
 
-Right. So this is kind of the wider mood across the board.  
+Right. So this is kind of the wider mood across the board.
 
-So this is getting, as I mentioned, a lot of people in conservative media and **MAGA circles in Washington** excited that there is the prospect that the regime, the **Ayatollahs** in particular, are in jeopardy of collapsing.  
+So this is getting, as I mentioned, a lot of people in conservative media and **MAGA circles in Washington** excited that there is the prospect that the regime, the **Ayatollahs** in particular, are in jeopardy of collapsing.
 
-And again, something similar is also happening in **Havana** as well, where again, the cutoff of the **Venezuelan oil** is prompting an economic crisis there.  
+And again, something similar is also happening in **Havana** as well, where again, the cutoff of the **Venezuelan oil** is prompting an economic crisis there.
 
-So when we take that into account, a lot of people have said that **China is Iran's lifeline**. It buys something around **80 to 90 percent of its oil**. So the relationship between China and Iran is very close.  
+So when we take that into account, a lot of people have said that **China is Iran's lifeline**. It buys something around **80 to 90 percent of its oil**. So the relationship between China and Iran is very close.
 
-**Iran**, as you've pointed out, is much less important to China than China is to Iran.  
+**Iran**, as you've pointed out, is much less important to China than China is to Iran.
 
-But let's get an understanding before we dive into the reactions. What is the nature of the **China-Iran relationship** as you see it?  
+But let's get an understanding before we dive into the reactions. What is the nature of the **China-Iran relationship** as you see it?
 
-Well, first of all, yeah, as you said, there are these kind of more serious questions now about the survival of the Iranian government.  
+Well, first of all, yeah, as you said, there are these kind of more serious questions now about the survival of the Iranian government.
 
-I think just to put my cards on the table, based on what we've seen now, it seems like things are moving more towards its back to the status quo. So for me, obviously, no one knows what the next couple of weeks or months can hold, but it looks like the repression has been successful in quieting the protests for now.  
+I think just to put my cards on the table, based on what we've seen now, it seems like things are moving more towards its back to the status quo. So for me, obviously, no one knows what the next couple of weeks or months can hold, but it looks like the repression has been successful in quieting the protests for now.
 
-So to me, that question is a little less up in the air than it felt a couple, you know, last week.  
+So to me, that question is a little less up in the air than it felt a couple, you know, last week.
 
-But there are two points you brought up that I think are worth discussing before we dive into that.  
+But there are two points you brought up that I think are worth discussing before we dive into that.
 
-Sure.  
+Sure.
 
-And I'll take care of the first one because the one about **Iran-China relations** kind of naturally flows into the second question.  
+And I'll take care of the first one because the one about **Iran-China relations** kind of naturally flows into the second question.
 
-So on the topic of oil, where does China get its oil from? Oil from **Venezuela**, oil from **Iran**?  
+So on the topic of oil, where does China get its oil from? Oil from **Venezuela**, oil from **Iran**?
 
-You know, there's been a lot of talk, as I'm sure you know, of this idea that, as you said earlier, that by cutting off the oil from Venezuela and potentially from Iran, if what **Trump** had said had actually materialized into some sort of intervention or the government actually collapsed and that this is somehow, you know, a kind of whatever it is these days, “19 D chess move” against China.  
+You know, there's been a lot of talk, as I'm sure you know, of this idea that, as you said earlier, that by cutting off the oil from Venezuela and potentially from Iran, if what **Trump** had said had actually materialized into some sort of intervention or the government actually collapsed and that this is somehow, you know, a kind of whatever it is these days, “19 D chess move” against China.
 
-I would push back against that analysis a little bit, first of all, because, you know, as you said, the numbers might look impressive:  
-- 13, 14 percent of oil coming from Iran and  
-- 4 percent, of course, coming from Venezuela.  
+I would push back against that analysis a little bit, first of all, because, you know, as you said, the numbers might look impressive:
+- 13, 14 percent of oil coming from Iran and
+- 4 percent, of course, coming from Venezuela.
 
-You put it together. It's a lot. But China gets oil from so many other places.  
+You put it together. It's a lot. But China gets oil from so many other places.
 
-**Russia** is its number one supplier. Other major suppliers include:  
-- **Saudi Arabia**  
-- **Iraq**  
-- **Brazil**  
+**Russia** is its number one supplier. Other major suppliers include:
+- **Saudi Arabia**
+- **Iraq**
+- **Brazil**
 
-all of which are absolutely going to keep the oil flowing.  
+all of which are absolutely going to keep the oil flowing.
 
-So would it hurt financially? Maybe a little bit. But I think it's not that difficult to make up for. China has oil coming from all over the world these days, including potentially new partnerships like—and we can get into this later if you'd like to—what's going on in **Canada**, Canada also being an oil producer.  
+So would it hurt financially? Maybe a little bit. But I think it's not that difficult to make up for. China has oil coming from all over the world these days, including potentially new partnerships like—and we can get into this later if you'd like to—what's going on in **Canada**, Canada also being an oil producer.
 
-Yeah, no, I do want to bring that up as well.  
+Yeah, no, I do want to bring that up as well.
 
-And just to note that there's an estimated **60 to 90 million barrels of oil** right now sitting off the coast of **Malaysia** and in the **South China Sea** that have not been able to make it up to China.  
+And just to note that there's an estimated **60 to 90 million barrels of oil** right now sitting off the coast of **Malaysia** and in the **South China Sea** that have not been able to make it up to China.
 
-This is purportedly some of the **Russian sanctioned oil** and some of the **Iranian sanctioned oil** that is part of the black market kind of laundering that happens as the sanctions have clamped down on it.  
+This is purportedly some of the **Russian sanctioned oil** and some of the **Iranian sanctioned oil** that is part of the black market kind of laundering that happens as the sanctions have clamped down on it.
 
-The point is that there are pools and pockets of big supplies of oil out there, as you pointed out, that **China can turn to to compensate for the 16 to 18 percent**.  
+The point is that there are pools and pockets of big supplies of oil out there, as you pointed out, that **China can turn to to compensate for the 16 to 18 percent**.
 
 And as you pointed out, **Mark Carney**, the prime minister of **Canada**, just got back from **Beijing**.
 He's in the **Middle East** right now, interestingly, but he there signed deals for **energy** and the Canadians do not want to be as reliant on the **United States**. So this is a situation of **Donald Trump's making**. And Canada may become a rather large energy supplier to the Chinese, again, potentially offsetting some of this Venezuelan and Iranian crew that may be cut off.
@@ -123,7 +123,7 @@ Yeah. So as you said, there is this question, first of all, of even if — even 
 
 More importantly, they might even be thinking:
 
-> "You're going to cut off the oil from Iran? Good luck," 
+> "You're going to cut off the oil from Iran? Good luck,"
 
 because about **20 years of sanctions** have been unable to do that so far.
 
@@ -135,8 +135,8 @@ Yes, exactly. So, you know, **Iran's not Venezuela**.
 
 Venezuela, you know, it's more local, right? Venezuela is not really, in my opinion, ultimately about China. It's partially about China, but it's ultimately about **Latin America**, **Cuba**, you know, the Trump corollary, as he likes to call it, although I'm loathe to use that word.
 
-In a word, **China and the U.S. are actually operating very similarly in their foreign policy right now** in that respect:  
-- Aggressive maneuvers and assertions of their own rights and claims in their own neighborhood  
+In a word, **China and the U.S. are actually operating very similarly in their foreign policy right now** in that respect:
+- Aggressive maneuvers and assertions of their own rights and claims in their own neighborhood
 - A much more light touch when it comes to the rest of the world.
 
 So that brings me then to the **China-Iran relationship** and **China's reaction to all of this**.
@@ -151,7 +151,7 @@ Yeah, in the simplest terms, they signed an upgraded sort of **MOU**, a strategi
 
 There were no enforcement mechanisms. There were no specific proposals. There was no China and Iran will cooperate based on these banks. It was just:
 
-- "We’ll increase economic cooperation."  
+- "We’ll increase economic cooperation."
 - "We will enhance security cooperation," between, you know, sharing information about terrorism, these kinds of things.
 
 The $400 billion price tag came from some anonymously sourced news articles in **Petroleum Economist**, which is an **oil industry magazine** that got picked up by **The New York Times** and has been endlessly repeated since then.
@@ -165,7 +165,7 @@ So we're not anywhere on track to get to that level of investment.
 And also, I should say that if we somehow were, that would account for more than half of the amount of money that China puts into the entire world as investments every year.
 
 So obviously, that's not going to go to Iran.
-And even I should say that, like right now, the amount of **investment, cumulative investment that Iran and China have had since then**, it stands at a couple of billion. 
+And even I should say that, like right now, the amount of **investment, cumulative investment that Iran and China have had since then**, it stands at a couple of billion.
 
 By contrast, all of the surrounding countries from **Iraq to the various Gulf states** have cumulative investments of China in the tens of millions or higher or planned in the near future.
 
@@ -297,41 +297,41 @@ So you've raised your own expectations, and then China doesn't meet them, and ev
 Yeah, that's a **strategic decision** on their part.
 
 Very quickly before we go, just, you know, you talk about kind of misreading the situation.
-One of the things that I've been saying for the past couple of weeks since this happened, when a lot of people have said that what happened in **Venezuela** was a strategic failure of the **Chinese**, and I think that's being carried now over into **Iran** as well.  
+One of the things that I've been saying for the past couple of weeks since this happened, when a lot of people have said that what happened in **Venezuela** was a strategic failure of the **Chinese**, and I think that's being carried now over into **Iran** as well.
 
-I always remind people that the **Americans** rolled into **Baghdad** in **2003** super fast. And remember those, you know, we took Baghdad in three weeks or four weeks, and then, of course, we have the famous **"mission accomplished"** on the aircraft carrier with **George W. Bush**.  
+I always remind people that the **Americans** rolled into **Baghdad** in **2003** super fast. And remember those, you know, we took Baghdad in three weeks or four weeks, and then, of course, we have the famous **"mission accomplished"** on the aircraft carrier with **George W. Bush**.
 
-Let's remind everybody that today **China is the number one buyer of Iraqi oil**. So this is a long game, and so to make any bold declarations about Iran or Venezuela or any of these very fast-moving situations I think is highly premature.  
+Let's remind everybody that today **China is the number one buyer of Iraqi oil**. So this is a long game, and so to make any bold declarations about Iran or Venezuela or any of these very fast-moving situations I think is highly premature.
 
-One last question, and I'm throwing you a curveball here, so if you want to kind of deflect it, that's fine. But while all of this was going on, **China's special envoy for the Middle East, Zhai Jun**, made an interesting stop in **Jerusalem** and met with the **Israeli Foreign Minister**, the Israeli foreign minister.  
+One last question, and I'm throwing you a curveball here, so if you want to kind of deflect it, that's fine. But while all of this was going on, **China's special envoy for the Middle East, Zhai Jun**, made an interesting stop in **Jerusalem** and met with the **Israeli Foreign Minister**, the Israeli foreign minister.
 
-This is very interesting because it overlaps with the response or the muted response, you know, in Iran. What do you make of that? And a lot of people have said that **Israel**, in some respects, at least strategically, is more important to the Chinese in the long run than even Iran is, given the great power dynamics with the **U.S.**  
+This is very interesting because it overlaps with the response or the muted response, you know, in Iran. What do you make of that? And a lot of people have said that **Israel**, in some respects, at least strategically, is more important to the Chinese in the long run than even Iran is, given the great power dynamics with the **U.S.**
 
-Yeah, I think that's definitely true. It's always been the case, in my view, that while China calculated that it was strategically advantageous to be as loud and as involved in an ineffective way, you know, their shuttle diplomacy didn't end up much. But they were there, and they were making serious proposals to mediate in **Gaza**.  
+Yeah, I think that's definitely true. It's always been the case, in my view, that while China calculated that it was strategically advantageous to be as loud and as involved in an ineffective way, you know, their shuttle diplomacy didn't end up much. But they were there, and they were making serious proposals to mediate in **Gaza**.
 
-Despite all of that, you know, their economic relationship with Israel did not change. They are still, I mean, not substantially. There is still a big economic partner. They have investments that have been walked back, have largely been under U.S. pressure or under new security concerns from within the Israeli government, within the army. But largely, you know, that relationship is on the rocks diplomatically, but not really fundamentally changed.  
+Despite all of that, you know, their economic relationship with Israel did not change. They are still, I mean, not substantially. There is still a big economic partner. They have investments that have been walked back, have largely been under U.S. pressure or under new security concerns from within the Israeli government, within the army. But largely, you know, that relationship is on the rocks diplomatically, but not really fundamentally changed.
 
-And Israel has always been an important part of **China's strategy in the Middle East**, not just because of something to do with their bilateral relationship, which is valuable to China as a kind of a way to a lot of, for example, a lot of Chinese companies do **R&D in Israel**. For various reasons, but also because their primary strength in the Middle East, as in elsewhere, is their connections to many different partners that could pretend that otherwise might have difficulty talking to one another.  
+And Israel has always been an important part of **China's strategy in the Middle East**, not just because of something to do with their bilateral relationship, which is valuable to China as a kind of a way to a lot of, for example, a lot of Chinese companies do **R&D in Israel**. For various reasons, but also because their primary strength in the Middle East, as in elsewhere, is their connections to many different partners that could pretend that otherwise might have difficulty talking to one another.
 
-The big difference here is that Israel is always much closer to the **United States**, and so in any situation like in Gaza, where they have the choice between Chinese mediation and U.S. mediation, they're obviously going to go to U.S. and then box the Chinese out.  
+The big difference here is that Israel is always much closer to the **United States**, and so in any situation like in Gaza, where they have the choice between Chinese mediation and U.S. mediation, they're obviously going to go to U.S. and then box the Chinese out.
 
-So that's one fundamental limit on China's relationship with **Israel** and also with any other country that's very close to the **U.S.**  
+So that's one fundamental limit on China's relationship with **Israel** and also with any other country that's very close to the **U.S.**
 
-But yes, I would agree with you, and I would emphasize that, you know, this is I think we're seeing that now that the war has kind of ended, we're going into this phase of discussing reconstruction. **China's trying to salvage the damage** from what's happened, and I think that probably Israeli politicians will be more than happy to hear from them.  
+But yes, I would agree with you, and I would emphasize that, you know, this is I think we're seeing that now that the war has kind of ended, we're going into this phase of discussing reconstruction. **China's trying to salvage the damage** from what's happened, and I think that probably Israeli politicians will be more than happy to hear from them.
 
-And if I could add just one last bit in the interest of, you know, this kind of things that people aren't necessarily thinking about enough. One thing I have seen is with thinking about all this discussion of, like, is China doing enough? Where's China's military hardware? One question that people aren't asking enough is **what has China done already?**  
+And if I could add just one last bit in the interest of, you know, this kind of things that people aren't necessarily thinking about enough. One thing I have seen is with thinking about all this discussion of, like, is China doing enough? Where's China's military hardware? One question that people aren't asking enough is **what has China done already?**
 
-And one thing that China, I kind of alluded to this in the article that I posted for you guys, is that one thing it's done is sold a lot of **surveillance technology** and **drones technology to Iran**.  
+And one thing that China, I kind of alluded to this in the article that I posted for you guys, is that one thing it's done is sold a lot of **surveillance technology** and **drones technology to Iran**.
 
-To put it in a nutshell, the technological sophistication of the repression that we saw in Iran that I alluded to earlier is one of the things that's new about this situation and has been getting more and more draconian and effective and technologically sophisticated over the last decade, largely with the help of **Chinese firms and Chinese technology**, Chinese even training kits on how to use the technology that has been sold to them.  
+To put it in a nutshell, the technological sophistication of the repression that we saw in Iran that I alluded to earlier is one of the things that's new about this situation and has been getting more and more draconian and effective and technologically sophisticated over the last decade, largely with the help of **Chinese firms and Chinese technology**, Chinese even training kits on how to use the technology that has been sold to them.
 
-So if the Iranian government, and it's increasingly looking like it will, survives, you know, what's going on now, it will be in no small part because China already helped them behind the scenes in a quiet way.  
+So if the Iranian government, and it's increasingly looking like it will, survives, you know, what's going on now, it will be in no small part because China already helped them behind the scenes in a quiet way.
 
-So it's not a bit player in that sense. And I also really want to emphasize that this isn't just China.  
+So it's not a bit player in that sense. And I also really want to emphasize that this isn't just China.
 
-Where did China get its **surveillance empire technology** from?  
+Where did China get its **surveillance empire technology** from?
 
-- The **United States tech companies**  
+- The **United States tech companies**
 - European tech companies.
 So this is a **transnational issue** where there's a **global supply chain of draconian surveillance technology** that makes its way to both **democratic regimes and the most despotic regimes in the world**.
 

@@ -2,7 +2,7 @@
 layout: post
 title: "China, China, China. Breaking Down China's Tech Surge | BG2 w/ Bill Gurley and Brad Gerstner"
 date: 2025-08-28 00:00:01
-categories: podcast bg2pod-with-brad-gerstner-and-bill-gurley
+categories: podcast
 tags: [podcast_script]
 ---
 

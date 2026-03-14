@@ -2,7 +2,7 @@
 layout: post
 title: "Inside OpenAI Enterprise: Forward Deployed Engineering, GPT-5, and More | BG2 Guest Interview"
 date: 2025-09-11 00:00:01
-categories: podcast bg2pod-with-brad-gerstner-and-bill-gurley
+categories: podcast
 tags: [podcast_script]
 ---
 
@@ -115,7 +115,7 @@ An emerging product line for us in the platform is our **enterprise products** �
 
 Maybe to double down, I think **B2B** is actually quite core to the **OpenAI mission**.
 
-What we mean by distributing **AGI benefits** is,  
+What we mean by distributing **AGI benefits** is,
 > "I want to live in a world where there are 10x more medicines going out every year. I want to live in a world where education, public service, civil service are increasingly optimized for everyone."
 
 There are a large category of use cases that only go through **B2B**, frankly, unless you enable the enterprises.
@@ -168,7 +168,7 @@ It sounds super natural, human-sounding, with good latency and quality. That was
 
 ---
 
-Just on that, a follow-up question:  
+Just on that, a follow-up question:
 
 We have **text models**, **voice models**, maybe even **video models** someday deployed at T-Mobile.
 
@@ -176,7 +176,7 @@ What above or adjacent to the models might we have helped T-Mobile with?
 
 ---
 
-There is a term we're using:  
+There is a term we're using:
 
 The first is to put yourself in the shoes of an **enterprise buyer**.
 
@@ -198,81 +198,81 @@ We now have **forward deployed engineers** who help us quite a bit.
 
 **Forward deployed engineers** — borrowed the term from Palantir.
 
-Were you FDs at Palantir?  
-> "I was not an FD. I was on what they called the dev side—that is, self-engineering."  
+Were you FDs at Palantir?
+> "I was not an FD. I was on what they called the dev side—that is, self-engineering."
 > "I was also only an intern at Palantir."
-But, yeah, it's a **great term.** I think it accurately describes what we're asking folks to do, which is, like, **embed very deeply with customers.**  
+But, yeah, it's a **great term.** I think it accurately describes what we're asking folks to do, which is, like, **embed very deeply with customers.**
 
-Yeah. And, honestly, like, **build things specific to their systems.** They're deployed onto these customers.  
+Yeah. And, honestly, like, **build things specific to their systems.** They're deployed onto these customers.
 
-But, yeah, we are, obviously, growing and hiring that team quite a bit because they've been very effective, like, on **T-Mobile.** Four years of my life.  
+But, yeah, we are, obviously, growing and hiring that team quite a bit because they've been very effective, like, on **T-Mobile.** Four years of my life.
 
-Yeah. Yeah, **forward deployed.** But go ahead.  
+Yeah. Yeah, **forward deployed.** But go ahead.
 
-So, forward deployed engineering. Forward deployed engineers. And the sort of, like, systems and, like, integrations they're doing is, you know, first, like, you know, you have to orchestrate those models.  
+So, forward deployed engineering. Forward deployed engineers. And the sort of, like, systems and, like, integrations they're doing is, you know, first, like, you know, you have to orchestrate those models.
 
-Like, those models are not just, you know, those models, like, know nothing about, like, you know, the **CRM,** like, you know, and, like, what's going on. And so, you have to plug the model to, like, many, many tools.  
+Like, those models are not just, you know, those models, like, know nothing about, like, you know, the **CRM,** like, you know, and, like, what's going on. And so, you have to plug the model to, like, many, many tools.
 
-Many of those, like, tools, like, in the enterprise do not even have, like, **APIs or clean interfaces,** right? It's the first time they're being exposed, like, you know, to a third-party system.  
+Many of those, like, tools, like, in the enterprise do not even have, like, **APIs or clean interfaces,** right? It's the first time they're being exposed, like, you know, to a third-party system.
 
-And so, there is a lot of, you know, standing up, like, **API gateways,** like, tools connecting. Then you have to essentially, like, define what good looks like, you know?  
+And so, there is a lot of, you know, standing up, like, **API gateways,** like, tools connecting. Then you have to essentially, like, define what good looks like, you know?
 
-Again, like, it's a pretty new exercise for everyone. Like, you know, defining, like, a **golden set of evals** is, you know, easier than it sounds. Harder than it sounds.  
+Again, like, it's a pretty new exercise for everyone. Like, you know, defining, like, a **golden set of evals** is, you know, easier than it sounds. Harder than it sounds.
 
-Yeah. And so, we've been spending, like, a bunch of time with them. **Evals are important. Evals are super important.** Especially, like, **audio evals.** I know audio evals are, like, extra hard to grade and get right.  
+Yeah. And so, we've been spending, like, a bunch of time with them. **Evals are important. Evals are super important.** Especially, like, **audio evals.** I know audio evals are, like, extra hard to grade and get right.
 
-Right. But, like, the bulk of the use case here is actually audio.  
+Right. But, like, the bulk of the use case here is actually audio.
 
-Right, right. And we have, like, I don't know, a five-minute, like, call transcript.  
+Right, right. And we have, like, I don't know, a five-minute, like, call transcript.
 
-**How do you actually know that the right thing happened?** It's a pretty tough problem.  
+**How do you actually know that the right thing happened?** It's a pretty tough problem.
 
-Yeah, it's pretty tough. And then, you know, actually nailing down, like, the **quality of the customer experience,** like, you know, until it feels unnatural.  
+Yeah, it's pretty tough. And then, you know, actually nailing down, like, the **quality of the customer experience,** like, you know, until it feels unnatural.
 
-And here, **latency and interruptions are really, like, you know, important part.**  
+And here, **latency and interruptions are really, like, you know, important part.**
 
-We shipped in GA an API, a **real-time API.** I think it was last week.  
+We shipped in GA an API, a **real-time API.** I think it was last week.
 
-That's right. A couple of weeks.  
+That's right. A couple of weeks.
 
-Yeah. It was just last week, I think. Last week. Which is, like, a **beautiful work of engineering.** You know, there was a really cracked team behind the scenes.  
+Yeah. It was just last week, I think. Last week. Which is, like, a **beautiful work of engineering.** You know, there was a really cracked team behind the scenes.
 
-Yeah, yeah, yeah. Which basically allows us, like, to get, like, the most, like, natural sounding, like, you know, voice experience without having, like, these weird interruptions on your leg where you can feel that essentially the thing is off.  
+Yeah, yeah, yeah. Which basically allows us, like, to get, like, the most, like, natural sounding, like, you know, voice experience without having, like, these weird interruptions on your leg where you can feel that essentially the thing is off.
 
-Mm-hmm. So, yeah. Cobbling all that together, you know, and you get, like, you know, a **really good experience.**  
+Mm-hmm. So, yeah. Cobbling all that together, you know, and you get, like, you know, a **really good experience.**
 
-Yeah. Yeah, that's a lot more than just models.  
+Yeah. Yeah, that's a lot more than just models.
 
-Yeah. Yeah, I was gonna say, one actually really great thing that I think we've gotten from the **T-Mobile experience** is actually working with them to improve our models themselves.  
+Yeah. Yeah, I was gonna say, one actually really great thing that I think we've gotten from the **T-Mobile experience** is actually working with them to improve our models themselves.
 
-So, for example, the last real-time, the real-time GA last week, we obviously released a new snapshot of the GA snapshot.  
+So, for example, the last real-time, the real-time GA last week, we obviously released a new snapshot of the GA snapshot.
 
-And a lot of the improvements that we actually got into the model came out of, you know, the learnings that we have from **T-Mobile.**  
+And a lot of the improvements that we actually got into the model came out of, you know, the learnings that we have from **T-Mobile.**
 
-It brings in a lot of other change from other customers, but because we were so deeply embedded into T-Mobile and we were able to understand **what good looks like for them,** we were able to bring that to some of our models.  
+It brings in a lot of other change from other customers, but because we were so deeply embedded into T-Mobile and we were able to understand **what good looks like for them,** we were able to bring that to some of our models.
 
-That makes sense. So, this is a **large customer** with tens of millions of users, if not hundreds of millions, and the before and after is on the support side, both tech support internally and then their customer support.  
+That makes sense. So, this is a **large customer** with tens of millions of users, if not hundreds of millions, and the before and after is on the support side, both tech support internally and then their customer support.
 
-Yeah. Makes sense.  
+Yeah. Makes sense.
 
-Yeah. Is there another one that you guys can share?  
+Yeah. Is there another one that you guys can share?
 
-I like a lot **Amgen.** Amgen, the healthcare business.  
+I like a lot **Amgen.** Amgen, the healthcare business.
 
-Amgen, yeah. So, we are working quite a bit with healthcare companies. **Amgen** is one of the leading, like, healthcare companies. We specialize into drugs for cancer or, like, you know, inflammatory diseases.  
+Amgen, yeah. So, we are working quite a bit with healthcare companies. **Amgen** is one of the leading, like, healthcare companies. We specialize into drugs for cancer or, like, you know, inflammatory diseases.
 
-They're based out of **LA.** And we've been working, essentially, with Amgen to essentially speed up, like, the drug, like, development and, like, commercialization process.  
+They're based out of **LA.** And we've been working, essentially, with Amgen to essentially speed up, like, the drug, like, development and, like, commercialization process.
 
-Wow. So, you know, the sort of the **North Star is, like, pretty bold.**  
+Wow. So, you know, the sort of the **North Star is, like, pretty bold.**
 
-And it's really interesting, like, when you, similarly, like, you know, we embedded, like, pretty deeply with Amgen to understand what are their needs.  
+And it's really interesting, like, when you, similarly, like, you know, we embedded, like, pretty deeply with Amgen to understand what are their needs.
 
-And it's really interesting, like, when I look at those healthcare companies, I feel like there are two big buckets of needs:  
+And it's really interesting, like, when I look at those healthcare companies, I feel like there are two big buckets of needs:
 
-- One is, like, pure **R&D.**  
-  - It's, like, you know, you're seeing, like, a massive amount of data and, like, you have super smart scientists who are trying to, you know, combine, test out things, you know. So, that's one bucket.  
+- One is, like, pure **R&D.**
+  - It's, like, you know, you're seeing, like, a massive amount of data and, like, you have super smart scientists who are trying to, you know, combine, test out things, you know. So, that's one bucket.
 
-- A second bucket is, like, you know, much more, like, you know, **common across other industries.**  
+- A second bucket is, like, you know, much more, like, you know, **common across other industries.**
   - It's, like, pure, like, you know, admin, **document authoring, document reviewing work.**
 Which is, by the time your **R&D team** has essentially locked the recipe of a medication, getting that medication to market is a ton of work. You have to submit to various **regulatory bodies** and get a ton of reviews.
 
@@ -315,7 +315,7 @@ This involved:
 - Installing and running the model on their hardware and networking stack
 ```
 
-It was fascinating because we literally had to bring the weights of the model physically into their facility — 
+It was fascinating because we literally had to bring the weights of the model physically into their facility —
 
 > "A briefcase."
 
@@ -351,17 +351,17 @@ Yeah.
 
 So, okay, I'm going to pattern match. What I've seen being a clear leading indicator of success:
 
-- Number one is the interesting combination of **top-down buy-in** and enabling a very clear group of a **tiger team**, essentially.  
-- At the enterprise, this is sometimes a mix of OpenAI and enterprise employees.  
-- Typically, you take, for example, **T-Mobile**, the top leadership was extremely committed — **it's a priority**.  
+- Number one is the interesting combination of **top-down buy-in** and enabling a very clear group of a **tiger team**, essentially.
+- At the enterprise, this is sometimes a mix of OpenAI and enterprise employees.
+- Typically, you take, for example, **T-Mobile**, the top leadership was extremely committed — **it's a priority**.
 - But then letting the team organize and be like, "Okay, if you want to start small, start small," and then you can scale it up, essentially.
 
 So, that would be part number one: **top-down buy-in and a bottom-up tiger team**.
 
 A tiger team is made up of a mix of:
 
-- technical skills  
-- people who just have the **organizational knowledge**, the **institutional knowledge**  
+- technical skills
+- people who just have the **organizational knowledge**, the **institutional knowledge**
 
 It's really funny, like in the enterprise, for example in customer support, what we found is that the vast majority of the knowledge is **in people's heads**.
 
@@ -434,7 +434,7 @@ Longer.
 
 That's right.
 
-Like, I remember back in **2014**, it was kind of like the advent of this. And everyone was like, 
+Like, I remember back in **2014**, it was kind of like the advent of this. And everyone was like,
 
 > "Oh, it's happening in, like, five years."
 
@@ -540,8 +540,8 @@ Yeah.
 
 It's not completely unlimited.
 
-- You have roads.  
-- Roads exist.  
+- You have roads.
+- Roads exist.
 - They're pretty standardized.
 
 Yeah.
@@ -555,38 +555,38 @@ Yeah.
 Whereas, AI agents are just kind of **dropped in the middle of nowhere**.
 
 Mm-hm.
-And they kind of have to feel around for them.  
+And they kind of have to feel around for them.
 **Mm-hm.**
 
-And I actually think, you know, going off of what **Olivia** just said, too, my hunch is some of the enterprise deployments that don't actually work out likely don't have the **scaffolding** or **infrastructure** for these agents to interact with as well.  
+And I actually think, you know, going off of what **Olivia** just said, too, my hunch is some of the enterprise deployments that don't actually work out likely don't have the **scaffolding** or **infrastructure** for these agents to interact with as well.
 **Mm-hm.**
 
-A lot of the really successful deployments that we've made, a lot of what our FDs end up doing with some of these customers is to create almost like a **platform** or some type of scaffolding, connectors, organizing the data so that the models have something that they can interact with in a more standardized way.  
+A lot of the really successful deployments that we've made, a lot of what our FDs end up doing with some of these customers is to create almost like a **platform** or some type of scaffolding, connectors, organizing the data so that the models have something that they can interact with in a more standardized way.
 **Mm-hm.**
 
-And so my sense is **self-driving cars** actually have had this in some degree with roads over the last, you know, over the course of their deployment. But I actually think it's still very early in the **AI agents** space.  
+And so my sense is **self-driving cars** actually have had this in some degree with roads over the last, you know, over the course of their deployment. But I actually think it's still very early in the **AI agents** space.
 **Mm-hm.**
 
-And I would not be surprised if a lot of these, a lot of enterprises, a lot of companies just don't really have the scaffolding ready. So if you drop an AI agent in there,  
-**Yeah.**  
-It kind of doesn't really know what to do.  
-**Yeah.**  
+And I would not be surprised if a lot of these, a lot of enterprises, a lot of companies just don't really have the scaffolding ready. So if you drop an AI agent in there,
+**Yeah.**
+It kind of doesn't really know what to do.
+**Yeah.**
 And its impact will be limited.
 
-And so I think once this scaffolding gets built out across some of these companies, I think the deployment will also speed up.  
+And so I think once this scaffolding gets built out across some of these companies, I think the deployment will also speed up.
 **Mm-hm.**
 
-But again, to our point earlier, I think there's no slowdown.  
-**Yeah.**  
-There's no, you know, things are still moving very fast.  
-That's great.  
+But again, to our point earlier, I think there's no slowdown.
+**Yeah.**
+There's no, you know, things are still moving very fast.
+That's great.
 
-Well, you know, I've thought about autonomy as a **three-part thing**. You've got the whole structure. You've got **perception**. You've got the reasoning, the brain. And then you've got the, call it the scaffolding, the last mile of making things work.  
+Well, you know, I've thought about autonomy as a **three-part thing**. You've got the whole structure. You've got **perception**. You've got the reasoning, the brain. And then you've got the, call it the scaffolding, the last mile of making things work.
 
-Maybe we can dive into the second part, which is the reasoning, which is the juice that you guys are building with **GPT-5** most recently.  
+Maybe we can dive into the second part, which is the reasoning, which is the juice that you guys are building with **GPT-5** most recently.
 
-**Huge endeavor. Congrats.**   
-The first time you guys have launched a full system, not a model or a set of models, but a full system. Talk about that.  
+**Huge endeavor. Congrats.**
+The first time you guys have launched a full system, not a model or a set of models, but a full system. Talk about that.
 
 I mean, the full arc of that development. What was your focus? I mean, honestly, the benchmarks all seem so saturated. Like, clearly, it was more than just benchmarks that you were focused on. And so what was the North Star? Like, tell us about **GPT-5, soup to nuts**.
 
@@ -598,95 +598,95 @@ On the behavior of the model, I think it's the first model, like, large model re
 
 And often, like, you know, it's not about, like, you know, having a model which is way more intelligent, a model which is faster, a model that better, like, follows instruction, a model that is more likely to say no, you know, when, you know, he doesn't know about something.
 
-And so that, like, super close, like, you know, customer feedback loop on GPT-5 was pretty impressive to see.  
+And so that, like, super close, like, you know, customer feedback loop on GPT-5 was pretty impressive to see.
 
-And I think, like, all the love that GPT-5 has been getting, like, you know, in the past, like, couple of weeks, I think people are starting to feel that, essentially.  
-**Yeah.**  
-The builders.  
+And I think, like, all the love that GPT-5 has been getting, like, you know, in the past, like, couple of weeks, I think people are starting to feel that, essentially.
+**Yeah.**
+The builders.
 
-And once you see it, like, it's really hard, essentially, to come back to a model which is, like, extremely intelligent, but, you know, an exclusively, like, academic, essentially way.  
+And once you see it, like, it's really hard, essentially, to come back to a model which is, like, extremely intelligent, but, you know, an exclusively, like, academic, essentially way.
 **Yeah.**
 
 Are there trade-offs that you made as you were going through it? Like, maybe what are the hardest trade-offs you made as you were building GPT-5?
 
-I should think a very clear trade-off, which I honestly think we are still iterating on, is the trade-off between the reasoning tokens and how long it thinks versus performance.  
+I should think a very clear trade-off, which I honestly think we are still iterating on, is the trade-off between the reasoning tokens and how long it thinks versus performance.
 **Yeah.**
 
-And, honestly, this is something that I think we've been working on with our customers since the launch of the reasoning models, which is these models are so, so smart, especially if you give it all this, like, thinking time.  
+And, honestly, this is something that I think we've been working on with our customers since the launch of the reasoning models, which is these models are so, so smart, especially if you give it all this, like, thinking time.
 **Mm-hmm.**
 
-I think the feedback I've been seeing around GPT-5 **Pro** has been pretty crazy, too.  
+I think the feedback I've been seeing around GPT-5 **Pro** has been pretty crazy, too.
 **Yeah.**
 
-It's just, like, you know, these unsolved problems. **Andre had a great tweet last night.**  
-**Yeah, yeah, I saw that Sam retweeted it.**  
+It's just, like, you know, these unsolved problems. **Andre had a great tweet last night.**
+**Yeah, yeah, I saw that Sam retweeted it.**
 
 But, like, these, like, unsolved problems that none of the other models could handle. You throw out a GPT-5 Pro and it just, like, one-shots it is pretty crazy.
 
-But the trade-off here is you're waiting for 10 minutes.  
-**Yeah, yeah, yeah.**  
-It's quite a long time.  
+But the trade-off here is you're waiting for 10 minutes.
+**Yeah, yeah, yeah.**
+It's quite a long time.
 
-And so these things just get, like, so smart with more inference time.  
+And so these things just get, like, so smart with more inference time.
 **Mm-hmm.**
-But on the **product builder on the API side** for some of these **business use cases**, I think it's pretty tough to manage that trade-off.  
+But on the **product builder on the API side** for some of these **business use cases**, I think it's pretty tough to manage that trade-off.
 
-And for us, it's been difficult to figure out where we want to fall on that spectrum. So we've had to make some trade-offs on how much of the model think versus how intelligent it should get.  
+And for us, it's been difficult to figure out where we want to fall on that spectrum. So we've had to make some trade-offs on how much of the model think versus how intelligent it should get.
 
-Because as a product builder, there's a **latency**—there's a real **latency trade-off** that you have to deal with. Your user might not be happy waiting 10 minutes for the best answer in the world. It might be more okay with the substandard answer and no wait at all.  
+Because as a product builder, there's a **latency**—there's a real **latency trade-off** that you have to deal with. Your user might not be happy waiting 10 minutes for the best answer in the world. It might be more okay with the substandard answer and no wait at all.
 
-I mean, even between **GPT-5 and GPT-5 thinking**, I have to toggle it now because sometimes I'm so impatient, I just want it ASAP.  
+I mean, even between **GPT-5 and GPT-5 thinking**, I have to toggle it now because sometimes I'm so impatient, I just want it ASAP.
 
-> *"I think there's an ability to skip, right?"*  
-> *"Yeah, that's right. Where it's like, I'm impatient, I just want the more simple answer."*  
+> *"I think there's an ability to skip, right?"*
+> *"Yeah, that's right. Where it's like, I'm impatient, I just want the more simple answer."*
 
-Well, four weeks in, **GPT-5**, how's the feedback?  
+Well, four weeks in, **GPT-5**, how's the feedback?
 
-I think feedback has been very positive, especially on the **platform side**, which has been really great to see. A lot of the things that **Olivia** mentioned have come up in feedback from customers.  
+I think feedback has been very positive, especially on the **platform side**, which has been really great to see. A lot of the things that **Olivia** mentioned have come up in feedback from customers.
 
-The model is extremely good at coding, extremely good at reasoning through different tasks. Especially for coding use cases, when it thinks for a while, it'll usually solve problems that no other models can solve. So I think that's been a big positive point of feedback.  
+The model is extremely good at coding, extremely good at reasoning through different tasks. Especially for coding use cases, when it thinks for a while, it'll usually solve problems that no other models can solve. So I think that's been a big positive point of feedback.
 
-The kind of **robustness** and the **reduction in hallucinations** has been a really big positive feedback.  
+The kind of **robustness** and the **reduction in hallucinations** has been a really big positive feedback.
 
-I think there's an eval that showed that hallucinations basically went to zero for a lot of this. It's not perfect—there's still a lot of work to be done, but that's a big one.  
+I think there's an eval that showed that hallucinations basically went to zero for a lot of this. It's not perfect—there's still a lot of work to be done, but that's a big one.
 
-I think because of the reasoning in there too, it just makes the model more likely to say no, less likely to hallucinate answers. So that's been something that people have really liked as well.  
+I think because of the reasoning in there too, it just makes the model more likely to say no, less likely to hallucinate answers. So that's been something that people have really liked as well.
 
-Other bit of feedback has been around **instruction following**. So it's really good at instruction following. This almost bleeds into the constructive feedback that we're working on, where it's so good at instruction following that people need to tweak their prompts or it's almost too literal.  
+Other bit of feedback has been around **instruction following**. So it's really good at instruction following. This almost bleeds into the constructive feedback that we're working on, where it's so good at instruction following that people need to tweak their prompts or it's almost too literal.
 
-> *"That one is an interesting trade-off, actually."*  
+> *"That one is an interesting trade-off, actually."*
 
-Because when you ask developers what they want, like, they want the model to follow instructions, of course. But once you have a model that is extremely literal, essentially it forces you to express extremely clearly what you want. Otherwise, the model may go sideways.  
+Because when you ask developers what they want, like, they want the model to follow instructions, of course. But once you have a model that is extremely literal, essentially it forces you to express extremely clearly what you want. Otherwise, the model may go sideways.
 
-And so that's one of the interesting feedback points. It's almost like the **monkey paw** where developers and platform customers ask for better instruction following. So they're like, yes, we'll give you really good instruction following, but it follows it almost to a T.  
+And so that's one of the interesting feedback points. It's almost like the **monkey paw** where developers and platform customers ask for better instruction following. So they're like, yes, we'll give you really good instruction following, but it follows it almost to a T.
 
-It's obviously something the team is actually working through.  
+It's obviously something the team is actually working through.
 
-I think a good example of this is some customers would have these prompts. I remember when we were testing **GPT-5**, one of the negative feedbacks we got was the model was too concise.  
+I think a good example of this is some customers would have these prompts. I remember when we were testing **GPT-5**, one of the negative feedbacks we got was the model was too concise.
 
-> *"We were like, what's going on? Why is the model so concise?"*  
+> *"We were like, what's going on? Why is the model so concise?"*
 
-Interesting. We then realized it was because they were using their old prompts from other models. With other models, you have to really beg the model to be concise—there are like ten lines of:  
+Interesting. We then realized it was because they were using their old prompts from other models. With other models, you have to really beg the model to be concise—there are like ten lines of:
 
-``` 
-be concise, 
-really be concise, 
+```
+be concise,
+really be concise,
 also keep your answer short
 ```
 
-It turns out when you give that to GPT-5, it's like, "Oh my gosh, this person really wants it to be concise." So their response would be one sentence, which is too terse.  
+It turns out when you give that to GPT-5, it's like, "Oh my gosh, this person really wants it to be concise." So their response would be one sentence, which is too terse.
 
-Just by removing the extra prompts around being concise, the model behaved in a much better way and much closer to what they actually wanted.  
+Just by removing the extra prompts around being concise, the model behaved in a much better way and much closer to what they actually wanted.
 
-Turns out writing the right prompt is still important. Prompt engineering is still very, very important.  
+Turns out writing the right prompt is still important. Prompt engineering is still very, very important.
 
-On constructive feedback for GPT-5, there's actually been a good amount as well, which we're all working through. One of them that I'm really excited for the next snapshot to come out to fix is **code quality**.  
+On constructive feedback for GPT-5, there's actually been a good amount as well, which we're all working through. One of them that I'm really excited for the next snapshot to come out to fix is **code quality**.
 
-Specifically:  
-- Small code paradigms or idioms that they might use  
-- Feedback around the types of code and the patterns in which it was using  
+Specifically:
+- Small code paradigms or idioms that they might use
+- Feedback around the types of code and the patterns in which it was using
 
-I think we're working through those as well.  
+I think we're working through those as well.
 
 Then the other bit of feedback, which we've already made good progress on internally, is around the **trade-off of the reasoning tokens and thinking, and latency around intelligence**.
 I think especially for the **simpler problems**, you don't usually need a lot of thinking. The thinking should ideally be a little bit more **dynamic**. And, of course, we're always trying to squeeze as much reasoning and performance into as little reasoning tokens as possible.
@@ -859,7 +859,7 @@ So, without further ado, we're going to jump into my favorite section, which is 
 
 Okay, let's start with **Altimeter's favorite game**, which is a **long short game**.
 
-- Pick a business, an idea, a startup that you're **long**  
+- Pick a business, an idea, a startup that you're **long**
 - And the same **short** that you would bet against that there's more hype than there's reality.
 
 Whoever's ready to go first, long short.
@@ -877,10 +877,10 @@ Very near and dear to my heart. I play a lot of video games, and so I watch a lo
 So, concretely, what I mean are things like:
 
 - **League of Legends**
-- All of the games that **Riot Games** puts out  
-- They actually have their own professional leagues  
-- They have professional tournaments, believe it or not  
-- They rent out **stadiums** now  
+- All of the games that **Riot Games** puts out
+- They actually have their own professional leagues
+- They have professional tournaments, believe it or not
+- They rent out **stadiums** now
 
 But I just think if you look at the youth and younger kids and where their time is going, it's predominantly towards these things. They spend a lot of time on video games. They watch more eSports than soccer, basketball, etc.
 
@@ -1003,22 +1003,22 @@ Gotcha.
 
 Exactly, yeah.
 
-Yeah, it's almost like, over the last 20, 30 years, these pharma or biotech companies have basically, if you look at the work that they're doing, only a small amount of it is actual **research**.  
+Yeah, it's almost like, over the last 20, 30 years, these pharma or biotech companies have basically, if you look at the work that they're doing, only a small amount of it is actual **research**.
 
-And so much of it ends up being **admin** and documents and things like that. That area is just so **ripe for something to happen with AI**. And I think that's what we're seeing with **Amgen** and some of these other customers.  
+And so much of it ends up being **admin** and documents and things like that. That area is just so **ripe for something to happen with AI**. And I think that's what we're seeing with **Amgen** and some of these other customers.
 
 Exactly.
 
-And it's also not what they want to do. I think it's good that we have some regulations there, obviously, but it just means that they have reams and reams of things to kind of go through.  
+And it's also not what they want to do. I think it's good that we have some regulations there, obviously, but it just means that they have reams and reams of things to kind of go through.
 
-So, when you have a technology that's able to really help bring down the cost of something like that, I think it'll just tear right through it.  
+So, when you have a technology that's able to really help bring down the cost of something like that, I think it'll just tear right through it.
 
-And I think once **governments** and institutions realize that it is probably one of the biggest **bottlenecks to human progress**, right?  
+And I think once **governments** and institutions realize that it is probably one of the biggest **bottlenecks to human progress**, right?
 
-You step back in the past decade, how many true breakthrough drugs have there been?  
+You step back in the past decade, how many true breakthrough drugs have there been?
 
-- Not that many.  
-- Imagine how life would be different if you doubled that rate.  
+- Not that many.
+- Imagine how life would be different if you doubled that rate.
 
 So once you realize what it takes, my hunch is that we're going to see quite a bit of momentum in that space.
 
@@ -1026,7 +1026,7 @@ Wow. All right. Lots of homework there as well.
 
 Yeah.
 
-Next one.  
+Next one.
 
 **Favorite underrated AI tool, other than ChatGPT, maybe?**
 
@@ -1042,7 +1042,7 @@ Two votes for Granola.
 
 There is something, yeah.
 
-Hey, what about **ChatGPT record**?  
+Hey, what about **ChatGPT record**?
 
 I like ChatGPT record as well, but there are some features of Granola which I think are really done well. Like the whole integration with your **Google Calendar** is excellent.
 
@@ -1216,8 +1216,8 @@ Maybe there's equivalent or maybe there's even more.
 
 Of course more, shall we?
 
-- More of me.  
-- More of me specifically.  
+- More of me.
+- More of me specifically.
 - Way more of you.
 
 That's right.
@@ -1245,8 +1245,8 @@ Yeah.
 And so I expect that we'll see way more:
 
 ```markdown
-- A sort of reconfiguration of people's job and skill set  
-- Way more people coding  
+- A sort of reconfiguration of people's job and skill set
+- Way more people coding
 - Product managers coding more and more, for instance
 ```
 
@@ -1265,243 +1265,243 @@ You know, classic PM thing.
 Yeah, yeah, yeah.
 
 You write five pages.
-Like, my product does that, et cetera. And, you know, **PMs have been basically coding prototypes**.  
+Like, my product does that, et cetera. And, you know, **PMs have been basically coding prototypes**.
 
-And one, it's pretty fast with **GPT-5** and, like, **Codex**. Yeah, just a couple hours, I think. Freaking fast. Yeah.  
+And one, it's pretty fast with **GPT-5** and, like, **Codex**. Yeah, just a couple hours, I think. Freaking fast. Yeah.
 
-And then, like, it sort of conveys, like, so much more information than a document. Yeah, yeah, yeah, yeah. Like, you get a feel, essentially, for the feature, like, is it right or not?  
+And then, like, it sort of conveys, like, so much more information than a document. Yeah, yeah, yeah, yeah. Like, you get a feel, essentially, for the feature, like, is it right or not?
 
-So, yeah, I expect that sort of, you know, behavior we're going to see more and more. Yeah. Instead of writing English, you can actually now write the actual thing you want. Yeah. Yeah, yeah, yeah. And, yeah, that's amazing.  
+So, yeah, I expect that sort of, you know, behavior we're going to see more and more. Yeah. Instead of writing English, you can actually now write the actual thing you want. Yeah. Yeah, yeah, yeah. And, yeah, that's amazing.
 
-**Advice for high school students who are just starting out their career.** My advice is, I don't know, maybe it's evergreen. Like, prioritize **critical thinking** above anything else.  
+**Advice for high school students who are just starting out their career.** My advice is, I don't know, maybe it's evergreen. Like, prioritize **critical thinking** above anything else.
 
-If you go in a field which requires, like, extremely high critical thinking, like, you know, skills. I don't know, **math, physics, or, you know, maybe philosophy** in that bucket. You will be fine regardless.  
+If you go in a field which requires, like, extremely high critical thinking, like, you know, skills. I don't know, **math, physics, or, you know, maybe philosophy** in that bucket. You will be fine regardless.
 
-If you go in a field that sort of turns down that thing. And, again, it gets back to, like, memorization, like, you know, pattern matching. I think you will probably be less future-proof. Yeah.  
+If you go in a field that sort of turns down that thing. And, again, it gets back to, like, memorization, like, you know, pattern matching. I think you will probably be less future-proof. Yeah.
 
-So, what's a good way to sharpen critical thinking? Use **ChatGPT** and have it test you. That's true.  
+So, what's a good way to sharpen critical thinking? Use **ChatGPT** and have it test you. That's true.
 
-I think, like, you know, a **world-class tutor** who essentially knows how to put the bar, like, 20% of what you can do all the time, you know, is actually probably, like, a really good way to do it. Yeah. Nice.  
+I think, like, you know, a **world-class tutor** who essentially knows how to put the bar, like, 20% of what you can do all the time, you know, is actually probably, like, a really good way to do it. Yeah. Nice.
 
-**Anything from you, sir?**  
+**Anything from you, sir?**
 
-Mine is -- I think it's just -- I think we're actually in such an interesting, like, unique time period where the, like, younger --  
+Mine is -- I think it's just -- I think we're actually in such an interesting, like, unique time period where the, like, younger --
 
-So, like, maybe this is a more general advice for not just, like, high school students, but just, like, the younger generation, maybe even, like, college students.  
+So, like, maybe this is a more general advice for not just, like, high school students, but just, like, the younger generation, maybe even, like, college students.
 
-It's, like -- I think the advice would be 
+It's, like -- I think the advice would be
 
-> "don't underestimate how much of an advantage you have relative to the rest of the world right now because of how AI-native you might be."  
+> "don't underestimate how much of an advantage you have relative to the rest of the world right now because of how AI-native you might be."
 
-Interesting. Or how, like, you know, in the weeds of the tools you are. Interesting.  
+Interesting. Or how, like, you know, in the weeds of the tools you are. Interesting.
 
-My hunch is, like, **high schoolers, college students, when they come into the workplace**, they're going to have actually a huge leg-up on how to use AI tools, how to actually transform the workplace.  
+My hunch is, like, **high schoolers, college students, when they come into the workplace**, they're going to have actually a huge leg-up on how to use AI tools, how to actually transform the workplace.
 
-And my push for, like, some of the younger, I guess, high school students is:  
+And my push for, like, some of the younger, I guess, high school students is:
 
-- One, like, just really immerse yourself in this thing. Yeah.  
-- And then, two, just, like, really take advantage of the fact that you're in a unique time where, like, no one else in the workforce really understands these tools as deeply probably as you do.  
+- One, like, just really immerse yourself in this thing. Yeah.
+- And then, two, just, like, really take advantage of the fact that you're in a unique time where, like, no one else in the workforce really understands these tools as deeply probably as you do.
 
-A good example of this is actually we had our **first intern class recently at OpenAI**, a lot of software interns. And some of them were just, like, the most incredible cursor power users I've, like, ever seen.  
+A good example of this is actually we had our **first intern class recently at OpenAI**, a lot of software interns. And some of them were just, like, the most incredible cursor power users I've, like, ever seen.
 
-Interesting. People are so productive. Yeah. I was shocked in a good way. Yeah. Yeah.  
+Interesting. People are so productive. Yeah. I was shocked in a good way. Yeah. Yeah.
 
-I was like, yeah, I know we can get good interns, but, like, I don't know if they'd be, like, this good. Yeah.  
+I was like, yeah, I know we can get good interns, but, like, I don't know if they'd be, like, this good. Yeah.
 
-And I think part of it is, like, they've grown up using these tools, for better or worse, in college. Yeah.  
+And I think part of it is, like, they've grown up using these tools, for better or worse, in college. Yeah.
 
-But I think the meta-level point is they're so, like, **AI-native**. And even, like, I don't know, me and Olivia, we're, like, kind of AI-native. Yeah. We work at OpenAI.  
+But I think the meta-level point is they're so, like, **AI-native**. And even, like, I don't know, me and Olivia, we're, like, kind of AI-native. Yeah. We work at OpenAI.
 
-But, like, we haven't, like, been steeped in this. Yeah. And kind of grown up in this. So, the advice here would just be, like, yeah, leverage that.  
+But, like, we haven't, like, been steeped in this. Yeah. And kind of grown up in this. So, the advice here would just be, like, yeah, leverage that.
 
-Like, you know, don't be afraid to kind of, like, go in and spread this knowledge and take advantage of it in the workplace. Because it is a pretty big advantage for them. Yeah.  
+Like, you know, don't be afraid to kind of, like, go in and spread this knowledge and take advantage of it in the workplace. Because it is a pretty big advantage for them. Yeah.
 
-I can't remember who said this to us at Balancer. But every intern class was just getting faster, smarter, like laptops. Like, smarter every generation.  
+I can't remember who said this to us at Balancer. But every intern class was just getting faster, smarter, like laptops. Like, smarter every generation.
 
-**You sure it didn't peak in 2013?** You know, when I was an intern? That's right. That's right. That's a weird spy. That's summer 2013, yeah. Two guys like you. That's right. Two outliers. That's right. That's right. That's right. Yeah.  
+**You sure it didn't peak in 2013?** You know, when I was an intern? That's right. That's right. That's a weird spy. That's summer 2013, yeah. Two guys like you. That's right. Two outliers. That's right. That's right. That's right. Yeah.
 
-Well, lots happened. You know, lots happened since you guys joined OpenAI, right? What, three years, almost three years.  
+Well, lots happened. You know, lots happened since you guys joined OpenAI, right? What, three years, almost three years.
 
-In your OpenAI journey, what has been the **rose moment, your favorite moment**? The **bud moment** where you're, like, most excited about something but still opportunity ahead? And the **thorn**, toughest moment of your three-year journey?  
+In your OpenAI journey, what has been the **rose moment, your favorite moment**? The **bud moment** where you're, like, most excited about something but still opportunity ahead? And the **thorn**, toughest moment of your three-year journey?
 
-The thorn is easy for me. What we call the **blip**, which is, you know, the coup of the board. Like, that was a really tough moment. Yeah.  
+The thorn is easy for me. What we call the **blip**, which is, you know, the coup of the board. Like, that was a really tough moment. Yeah.
 
-It's funny because, you know, after the fact, it's actually reunited quite a bit, the company. Yeah. Like, there was a feeling. OpenAI had a pretty strong culture before.  
+It's funny because, you know, after the fact, it's actually reunited quite a bit, the company. Yeah. Like, there was a feeling. OpenAI had a pretty strong culture before.
 
-But, you know, there was a feeling of, like, camaraderie, essentially, that was even stronger. Yeah. But, you know, sure, like, tough on the day off.  
+But, you know, there was a feeling of, like, camaraderie, essentially, that was even stronger. Yeah. But, you know, sure, like, tough on the day off.
 
 It's very rare to see that anti-fragility. Yeah. Yeah. Yeah.
-Yeah.  
-Yeah.  
-Yeah.  
+Yeah.
+Yeah.
+Yeah.
 
-But I feel like when **OpenAI got stronger, OpenAI came back**.  
+But I feel like when **OpenAI got stronger, OpenAI came back**.
 
-It's a good point. I feel it made OpenAI stronger for real now.  
-Yeah.  
+It's a good point. I feel it made OpenAI stronger for real now.
+Yeah.
 
-Essentially, when I look after the fact—  
-Yeah, yeah, yeah.  
+Essentially, when I look after the fact—
+Yeah, yeah, yeah.
 
-When I look at, you know, other, like, you know, news and departures or, you know, whatever, like, you know, bad news, essentially,  
-I feel the company has built, like, you know, a **thicker skin**.  
+When I look at, you know, other, like, you know, news and departures or, you know, whatever, like, you know, bad news, essentially,
+I feel the company has built, like, you know, a **thicker skin**.
 
-Yeah.  
+Yeah.
 
-And, you know, an ability to, like, recover, like, way quicker.  
-Yeah.  
+And, you know, an ability to, like, recover, like, way quicker.
+Yeah.
 
-I think it's definitely right. Part of it, too, I think, is also just the **culture**.  
+I think it's definitely right. Part of it, too, I think, is also just the **culture**.
 
-I also think this is why it was such a low point for a lot of people.  
-So many people just at OpenAI care so deeply about what we're doing, which is why they work so hard.  
+I also think this is why it was such a low point for a lot of people.
+So many people just at OpenAI care so deeply about what we're doing, which is why they work so hard.
 
-Yeah.  
+Yeah.
 
-You just care a lot about the work.  
-It almost feels like your **life's work**.  
+You just care a lot about the work.
+It almost feels like your **life's work**.
 
-Yeah.  
+Yeah.
 
-Like, it's a very audacious machine and thing that you're doing.  
-Yeah, yeah.  
+Like, it's a very audacious machine and thing that you're doing.
+Yeah, yeah.
 
-Which is why I think the blip was, like, so tough on a lot of people.  
-But also is what I think helped bring people back together and why we were able to hold together and get that thick skin as well.  
+Which is why I think the blip was, like, so tough on a lot of people.
+But also is what I think helped bring people back together and why we were able to hold together and get that thick skin as well.
 
-Yeah.  
+Yeah.
 
-I have a separate worst moment, which was the **big outage** that we had in December of last year, if you remember.  
+I have a separate worst moment, which was the **big outage** that we had in December of last year, if you remember.
 
-Yeah, you remember.  
+Yeah, you remember.
 
-I do.  
-It was, like, a multi-hour outage.  
+I do.
+It was, like, a multi-hour outage.
 
-Really highlights to us how essential of almost, like, a utility the **API** was.  
+Really highlights to us how essential of almost, like, a utility the **API** was.
 
-So the background is I think we had, like, a three, four-hour outage sometime in November or December of last year.  
+So the background is I think we had, like, a three, four-hour outage sometime in November or December of last year.
 
-Yeah.  
+Yeah.
 
-Really brutal, pure sub-zero.  
-No one could hit **ChatGPT**.  
-No one could hit the APIs.  
-It was really rough.  
+Really brutal, pure sub-zero.
+No one could hit **ChatGPT**.
+No one could hit the APIs.
+It was really rough.
 
-That was just really tough just from a, like, you know, **customer trust perspective**.  
+That was just really tough just from a, like, you know, **customer trust perspective**.
 
-I remember we, like, talked to a lot of our customers to kind of, like, post-mortem them on what happened and kind of our plan moving forward.  
+I remember we, like, talked to a lot of our customers to kind of, like, post-mortem them on what happened and kind of our plan moving forward.
 
-Thankfully, we haven't had anything close to that since then.  
-And I've been actually really happy with all the investments we've made in **reliability** over the last six months.  
+Thankfully, we haven't had anything close to that since then.
+And I've been actually really happy with all the investments we've made in **reliability** over the last six months.
 
-But in that moment, I think it was really tough.  
+But in that moment, I think it was really tough.
 
-Yeah.  
+Yeah.
 
-On the happy side, like, on the roses, I think I have two of them.  
+On the happy side, like, on the roses, I think I have two of them.
 
-The first one would be **GPT-5 was really good**.  
-The sprint up to GPT-5, I think really showed the best of OpenAI:  
-- Having cutting edge **science research**  
-- Extreme **customer focus**  
-- Extreme infrastructure and inference talent  
+The first one would be **GPT-5 was really good**.
+The sprint up to GPT-5, I think really showed the best of OpenAI:
+- Having cutting edge **science research**
+- Extreme **customer focus**
+- Extreme infrastructure and inference talent
 
-And the fact that we were able to ship such a big model and scale it to many, many, many, many tokens per minute, like almost immediately, I think speaks to it.  
+And the fact that we were able to ship such a big model and scale it to many, many, many, many tokens per minute, like almost immediately, I think speaks to it.
 
-So that one I really—  
+So that one I really—
 
-With no outages.  
+With no outages.
 
-With no outages.  
+With no outages.
 
-Yeah, really good reliability.  
+Yeah, really good reliability.
 
-I remember when we shipped **GPT-4 Turbo** like a year ago, a year and a half ago,  
-we were terrified by the influence of traffic.  
+I remember when we shipped **GPT-4 Turbo** like a year ago, a year and a half ago,
+we were terrified by the influence of traffic.
 
-And I feel we've really gotten much better at shipping those massive updates.  
+And I feel we've really gotten much better at shipping those massive updates.
 
-The second rose happy moment for me would be the **first dev day** was really fun.  
+The second rose happy moment for me would be the **first dev day** was really fun.
 
-Yeah.  
+Yeah.
 
-It felt like a **coming of age**.  
-Like OpenAI, like we are embracing that we have a huge community of developers.  
-We are going to ship models, new products.  
+It felt like a **coming of age**.
+Like OpenAI, like we are embracing that we have a huge community of developers.
+We are going to ship models, new products.
 
-And I remember basically seeing all my favorite people, OpenAI or not, essentially nerding out on:  
-> "What are you building? What's coming up next?"  
+And I remember basically seeing all my favorite people, OpenAI or not, essentially nerding out on:
+> "What are you building? What's coming up next?"
 
-It felt really like a special moment in time.  
+It felt really like a special moment in time.
 
-That was actually going to be mine as well.  
+That was actually going to be mine as well.
 
-So I'll just piggyback off of that, which is the very first **dev day, 2023, November**.  
+So I'll just piggyback off of that, which is the very first **dev day, 2023, November**.
 
-I remember it.  
+I remember it.
 
-Obviously, a lot of good things have happened since then.  
+Obviously, a lot of good things have happened since then.
 
-I don't know why.  
+I don't know why.
 
-For me, it was a very memorable moment, which was, one, it was actually quite a rush up to dev day.  
+For me, it was a very memorable moment, which was, one, it was actually quite a rush up to dev day.
 
-We shipped a lot.  
+We shipped a lot.
 
-So our team was just really, really sprinting.  
+So our team was just really, really sprinting.
 
-So it was like this high stress environment kind of going up.  
+So it was like this high stress environment kind of going up.
 
-To add to that, of course, because we're OpenAI, we did a live demo on **Sam's keynote** of all the stuff that we shipped.  
+To add to that, of course, because we're OpenAI, we did a live demo on **Sam's keynote** of all the stuff that we shipped.
 
-And I just remember being in the back of the audience, sitting with the team and waiting for the demo to happen.  
+And I just remember being in the back of the audience, sitting with the team and waiting for the demo to happen.
 
-Once it finished happening, we all just let out a huge sigh of relief.  
+Once it finished happening, we all just let out a huge sigh of relief.
 
-We were like,  
-> "Oh my god, thank you."  
+We were like,
+> "Oh my god, thank you."
 
-And so there's just a lot of build up to it.  
+And so there's just a lot of build up to it.
 
-For me, the most memorable thing was I remember right after dev day, all the demos worked well, all the talks worked well.  
+For me, the most memorable thing was I remember right after dev day, all the demos worked well, all the talks worked well.
 
-We had the after party, and then I was just in a way mode driving home at night with the music playing.  
+We had the after party, and then I was just in a way mode driving home at night with the music playing.
 
-It was just such a great end to the dev day.  
+It was just such a great end to the dev day.
 
-That was what I remember.  
+That was what I remember.
 
-That was my rose for the last year.  
+That was my rose for the last year.
 
-Love it.  
+Love it.
 
-That's awesome.  
+That's awesome.
 
-I assume you guys are, but please tell me if you're **AGI-pilled**, yes or no.  
+I assume you guys are, but please tell me if you're **AGI-pilled**, yes or no.
 
-And if so, what was the moment that got you there?  
-What was your **aha moment**?  
+And if so, what was the moment that got you there?
+What was your **aha moment**?
 
-When did you feel the **AGI**?  
+When did you feel the **AGI**?
 
-I think I'm AGI-pilled.  
+I think I'm AGI-pilled.
 
-I think I'm AGI-pilled.  
+I think I'm AGI-pilled.
 
-You're definitely AGI-pilled.  
+You're definitely AGI-pilled.
 
-I am?  
+I am?
 
-Okay.  
+Okay.
 
-I've had a couple of them.  
+I've had a couple of them.
 
-The first one was the realization in **2023** that I would never need to code manually like ever, ever again.  
+The first one was the realization in **2023** that I would never need to code manually like ever, ever again.
 
-I'm not the best coder, frankly.  
-I chose my job for a reason.  
+I'm not the best coder, frankly.
+I chose my job for a reason.
 
 Yeah.
 But realizing that what I thought was a given—that we humans would have to write basically **machine language forever**—is actually not a given.
@@ -1524,17 +1524,17 @@ I think there are two. And for me, yeah, I think I actually get more shocked fro
 
 For me, I think they actually line up with two, like, general breakthroughs.
 
-- The first one was right when I joined the company in **September 2022**.  
-- It was pre-TiGPT, two months ago.  
-- But at the time, **GPT-4** already existed internally.  
-- I think we were trying to figure out how to deploy.  
-- I think **Nick Turley** talked about this a lot early as **ChatGPT**.  
+- The first one was right when I joined the company in **September 2022**.
+- It was pre-TiGPT, two months ago.
+- But at the time, **GPT-4** already existed internally.
+- I think we were trying to figure out how to deploy.
+- I think **Nick Turley** talked about this a lot early as **ChatGPT**.
 
 But it was the first time I talked to **GPT-4**, and it was like going from nothing to GPT-4 was just the most mind-blowing experience for me.
 
 I think for the rest of the world, maybe going from nothing to **GPT-3.5** in chat was maybe the big one, and then going from 3.5 to 4. But for me, and I think for a lot of maybe some other people who joined around that time, going from nothing to, or not nothing, but like what was publicly available at the time, going from that to GPT-4 was just incredible.
 
-Like, I just remember asking, throwing so many things out. I was like, 
+Like, I just remember asking, throwing so many things out. I was like,
 
 > "There's no way this thing is going to be able to give an intelligible answer."
 
@@ -1542,11 +1542,11 @@ And it just like knocks it out of the park. It was absolutely incredible.
 
 **GPT-4 was insane.**
 
-I remember GPT-4 came out when I was interviewing with **OpenAI**, and I was still on the phone, 
+I remember GPT-4 came out when I was interviewing with **OpenAI**, and I was still on the phone,
 
 > "Should I join? Should I join?"
 
-I saw that thing, I was like, 
+I saw that thing, I was like,
 
 > "Okay, I'm in. I'm in, guys. There is no way I can work on anything else at that point."
 
@@ -1558,7 +1558,7 @@ I actually think the purest representation of that for me was **deep research** 
 
 That was pretty, pretty crazy.
 
-I don't remember the exact query that I threw at it, but I just remember like, I feel like the field AGI moments for me are like, 
+I don't remember the exact query that I threw at it, but I just remember like, I feel like the field AGI moments for me are like,
 
 > "I'll throw something at the model that I was like, there's no way this thing will be able to get."
 

@@ -2,7 +2,7 @@
 layout: post
 title: "Greg Brockman on OpenAI's Road to AGI"
 date: 2025-08-15 00:00:01
-categories: podcast latent-space-the-ai-engineer-podcast
+categories: podcast latent-space
 tags: [podcast_script]
 ---
 
@@ -11,10 +11,10 @@ tags: [podcast_script]
 
 Hey everyone, welcome to the **Latent Space podcast**. This is **Alessio**, founder of **Generalist**, and I'm joined by **Swyx**, founder of **Smol AI**. Hello, hello. And we are so excited to have **Greg Brockman** join us.
 
-**Welcome.**  
+**Welcome.**
 Thank you for having us. Excited to be here. You need no introduction, so I was like mentally going to introduce you, but I’ll just get right to it. Congrats on **GPT-5**, **GPT-OSS**, like all the stuff that's going on in **OpenAI**. Where are you going to get to all that? It's really good to have you here. How does it feel? Last week was like a whole **maelstrom of releases**.
 
-**Wild.**  
+**Wild.**
 It was absolutely wild to get so many things out in one week. But yeah, so we've released our **open source models**, which are models that we've been working on for some time. I think really pack in a bunch of the advances that we've been making at **OpenAI** into a very small form factor, very accessible, now being used by, you know, there's been millions of downloads of that just over the past couple days.
 
 We also released **GPT-5**, again, something we've been working on for a very long time. And so just having these out in the world and really having done that release process is something that I'm just really proud of the team for doing.
@@ -25,13 +25,13 @@ But you started originally the reasoning team with **Ilya** at **OpenAI**. So ma
 
 Well, I'd say that after we trained **GPT-4**, we had a model that you could talk to. And I remember doing the very first, we did the post training. We actually did an instruction following post train on it. So it was really just a data set that was, here's a query. Here's what the model completion should be.
 
-And I remember that we were like,  
-> "Well, what happens if you just follow up with another query?"  
+And I remember that we were like,
+> "Well, what happens if you just follow up with another query?"
 
 And it actually was able to then have a response that took into context the whole previous chain of question and answer. And you realize this thing can **do chat**, right? It can actually talk to you. It can actually use, leverage all of this information, even though it wasn't trained to do it.
 
-I remember we had this question, we had a research meeting with a bunch of people, you know, **Jakob, Ilya, Wojciech**, others. And the question was,  
-> "Why is this not AGI?"  
+I remember we had this question, we had a research meeting with a bunch of people, you know, **Jakob, Ilya, Wojciech**, others. And the question was,
+> "Why is this not AGI?"
 
 This model clearly is not AGI, but it's really hard to describe why, right? It's like able to answer any question you put in front of it. And okay, it's not quite reliable. It makes mistakes. It falls off the rails. Okay, that's a real gap.
 
@@ -39,17 +39,17 @@ So, what do we need to do to close that gap? And the most obvious thing you need
 
 And this is not a new idea to us, right? If you rewind to even **2017**, we were working on **Dota**, which was all reinforcement learning, no behavioral cloning from human demonstrations or anything. It was just from a randomly initialized neural net, you'd get these amazingly complicated, very sophisticated, very correct behaviors.
 
-And it's like,  
-> "That's the reliability we wanted from our language models."  
+And it's like,
+> "That's the reliability we wanted from our language models."
 
 So really the moment we trained GPT-4, we knew that we needed to get to the **reasoning paradigm**. And it was just a question of how.
 
 So we had like 10 ideas, a bunch of different hypotheses about what might work. And people really set out to go and try to make it be reality. And so it was really the labor of many people at OpenAI across many years.
 
-I think the way that this progress in this field works is you need to have conviction on a direction. The first 10 things you try will fail. And most of the things on that list of 10 did not succeed, but we made one of them work. And I think that's the real key: 
+I think the way that this progress in this field works is you need to have conviction on a direction. The first 10 things you try will fail. And most of the things on that list of 10 did not succeed, but we made one of them work. And I think that's the real key:
 
-- We just keep pushing and pushing  
-- You get little signs of life  
+- We just keep pushing and pushing
+- You get little signs of life
 - You keep growing from there
 
 And so now **Jerry** runs our reinforcement learning team and has made really great strides there.
@@ -73,8 +73,8 @@ It's something that's very thoughtful. It's something that's important. And **re
 
 And so somehow the model's observations, also normalized by contact with reality or somehow selected by contact with reality, get fed back into the machine. And that is, I think, something that we're starting to get very good at learning from. The scale required is very different, right?
 
-- If you look at **pre-training**, your 10 examples of something don't go anywhere.  
-- You're talking hundreds of thousands of any little type of behavior.  
+- If you look at **pre-training**, your 10 examples of something don't go anywhere.
+- You're talking hundreds of thousands of any little type of behavior.
 - And then that's what you learn from, which is totally, totally unlike how humans learn.
 
 Again, I think, if you think about, recapitulate all of evolution and also think about your 20 years worth of developmental history, there's a lot of just observing the world that happens. There are lots of bits of information that kind of flow through your senses.
@@ -115,13 +115,13 @@ I'll just say, we will find ways to realize it.
 Please give us.
 
 But I mean it kind of seriously, the way that this works, if you rewind to something like **Dota**, we set out to develop new reinforcement learning algorithms.
-Because it was very clear to everyone that **reinforcement learning**, the algorithms that existed at the time, **did not scale**. Everyone knew it. And I remember **Jakob and Shimon** saying, 
+Because it was very clear to everyone that **reinforcement learning**, the algorithms that existed at the time, **did not scale**. Everyone knew it. And I remember **Jakob and Shimon** saying,
 
 > "Why do we believe that? Has anyone actually tested it?"
 
 No one had actually really tried to scale up just plain old-fashioned **PPO**.
 
-And so they're like, well, that's the baseline. We got to do it. I remember you come back to the office every week, they double the number of cores, and suddenly the agent, the true scale was going **up and to the right**. 
+And so they're like, well, that's the baseline. We got to do it. I remember you come back to the office every week, they double the number of cores, and suddenly the agent, the true scale was going **up and to the right**.
 
 It's like, okay, you just got to keep pushing it until you hit the wall. And clearly, we'll hit the wall, and then we can go and do the actual interesting stuff. And we never hit the wall.
 
@@ -146,7 +146,7 @@ In some ways, I think of compute as this refining process. Ultimately,
 start with energy → turns into compute → turns into intelligence
 ```
 
-And it's almost crystallizing that compute into potential energy that can be converted into the model doing something useful. It's a really beautiful thing, right? 
+And it's almost crystallizing that compute into potential energy that can be converted into the model doing something useful. It's a really beautiful thing, right?
 
 It's like the **compute as this fundamental driver**, this fundamental fuel of intelligence. It sort of shapes a neural net, it sort of outputs a program. And, of course, the nice thing about that program is you can run it many, many times.
 
@@ -164,7 +164,7 @@ Well, we have pretty good evidence on things like the **IMO models actually also
 
 Yeah, I mean, I think we did talk about some of the details. There's a little bit of difference in the harness. But the harness is not the gold, literally, right? It's like the actual underlying models.
 
-There's no training there that we did specifically. This ended up being just a side project of a few people who were like, 
+There's no training there that we did specifically. This ended up being just a side project of a few people who were like,
 
 > "Oh, we may as well do IOI."
 
@@ -227,58 +227,58 @@ Yeah, it's a **100 trillion synapses**, which kind of corresponds to the **weigh
 Yeah. And so there's some sort of equivalence there. Yeah. And so we're starting to get to the right numbers. Let me just say that.
 
 And then just on a biological basis, you know, this is an opportunity I didn't get to ask you last time on what you learned from **Arc Institute**. You know, you had a sabbatical there. I'm curious if that informs anything that you do at **OpenAI** now.
-Well, the thing I found most remarkable about working on **DNA neural nets** is that **they're exactly the same**.  
-**Yeah. Right.** It's just, you replace human language. It's even like a simpler vocab.  
-**It is. Yeah. Yeah.** You've got **four letters**.  
+Well, the thing I found most remarkable about working on **DNA neural nets** is that **they're exactly the same**.
+**Yeah. Right.** It's just, you replace human language. It's even like a simpler vocab.
+**It is. Yeah. Yeah.** You've got **four letters**.
 
-But don't you tokenize at a higher level?  
-I mean, you can, but actually the way that we approached it was, we just did.  
+But don't you tokenize at a higher level?
+I mean, you can, but actually the way that we approached it was, we just did.
 
-- Character level?  
-- Character level.  
-- No way.  
-- Yeah. Why not?  
+- Character level?
+- Character level.
+- No way.
+- Yeah. Why not?
 
-I want, you know, I guess there's no reason. I don't know. There's only four.  
-Right, right, right.  
+I want, you know, I guess there's no reason. I don't know. There's only four.
+Right, right, right.
 
-And this to me is, I think, the core, like one of the interesting things about **human language** is we understand the semantics, right? We kind of understand what it means, what the structure is. It's very easy for us to observe. We kind of have a sense of when you look at a tokenization scheme, you have a sense of did you capture like all of the words in a reasonable way and all this stuff.  
+And this to me is, I think, the core, like one of the interesting things about **human language** is we understand the semantics, right? We kind of understand what it means, what the structure is. It's very easy for us to observe. We kind of have a sense of when you look at a tokenization scheme, you have a sense of did you capture like all of the words in a reasonable way and all this stuff.
 
-**Biology, it's an alien language.** And the thing that's very interesting is that, you know, for humans, it's an alien language. But if you look at a neural net, why should human language be any more natural to a neural net than biological language? And the answer is **they're not**, right? That actually these things are both—  
+**Biology, it's an alien language.** And the thing that's very interesting is that, you know, for humans, it's an alien language. But if you look at a neural net, why should human language be any more natural to a neural net than biological language? And the answer is **they're not**, right? That actually these things are both—
 
-- Literally the same hardware.  
+- Literally the same hardware.
 
-Exactly, and so one of the amazing hypotheses is that it's like, well, these neural nets, they can learn human language just fine, and so they ought to be able to learn biological language just fine. And we really see the same kinds of results, right?  
+Exactly, and so one of the amazing hypotheses is that it's like, well, these neural nets, they can learn human language just fine, and so they ought to be able to learn biological language just fine. And we really see the same kinds of results, right?
 
-It's like I'd say that maybe the neural net we produced, you know, it's a **40B neural net trained on like 13 trillion base pairs** or something like that. The results to me felt like **GPT-1 may be starting to be GPT-2 level**, right? It's like accessible and applicable to downstream tasks across a wide range of biological applications.  
+It's like I'd say that maybe the neural net we produced, you know, it's a **40B neural net trained on like 13 trillion base pairs** or something like that. The results to me felt like **GPT-1 may be starting to be GPT-2 level**, right? It's like accessible and applicable to downstream tasks across a wide range of biological applications.
 
-Not yet a **GPT-3 or GPT-4, not a GPT-5 for sure**, right? We're not able to solve super hard problems in these domains just yet. But we've got compute. We've got the right techniques and algorithms. Now we need to scale. We need to think about long context.  
+Not yet a **GPT-3 or GPT-4, not a GPT-5 for sure**, right? We're not able to solve super hard problems in these domains just yet. But we've got compute. We've got the right techniques and algorithms. Now we need to scale. We need to think about long context.
 
-There's different ways that the biological systems stress the models relative to language sequences, like a language sequence of a billion tokens doesn't really exist, but it does in your DNA, right? You've got like **4 billion base pairs** or something like that.  
+There's different ways that the biological systems stress the models relative to language sequences, like a language sequence of a billion tokens doesn't really exist, but it does in your DNA, right? You've got like **4 billion base pairs** or something like that.
 
-And so, you know, you kind of have some sort of different emphasis, but fundamentally, it's the same problem you need to solve.  
+And so, you know, you kind of have some sort of different emphasis, but fundamentally, it's the same problem you need to solve.
 
-Is there an application that you're most excited about, like **drug discovery** or obviously, I think everyone goes to drug discovery, but maybe some intermediate thing before that that is reachable and very impactful?  
+Is there an application that you're most excited about, like **drug discovery** or obviously, I think everyone goes to drug discovery, but maybe some intermediate thing before that that is reachable and very impactful?
 
-Well, I mean, on a personal level, so my wife, we've talked about this, you know, I've talked about this publicly before, has a genetic condition called **Ehlers-Danlos Syndrome**. It's something that until very recently, I think we're starting to see genetic markers for it, but it's been kind of unknown exactly what causes it, where it comes from.  
+Well, I mean, on a personal level, so my wife, we've talked about this, you know, I've talked about this publicly before, has a genetic condition called **Ehlers-Danlos Syndrome**. It's something that until very recently, I think we're starting to see genetic markers for it, but it's been kind of unknown exactly what causes it, where it comes from.
 
-And that is something where, if you have better tools for understanding biology, you should be able to identify the markers for lots of different diseases. And so that's just like one example of the kinds of applications of the promise that exist within these neural nets.  
+And that is something where, if you have better tools for understanding biology, you should be able to identify the markers for lots of different diseases. And so that's just like one example of the kinds of applications of the promise that exist within these neural nets.
 
-How would you characterize the beginning of the **GPT-5 era**?  
+How would you characterize the beginning of the **GPT-5 era**?
 
-Yeah, if I think about 3, 4, 5 as the major versions, I think:  
-- 3 is very text-based, kind of like **RLHF** really getting started.  
-- 4 is multimodality and all these different low latency, long thinking, o3.  
+Yeah, if I think about 3, 4, 5 as the major versions, I think:
+- 3 is very text-based, kind of like **RLHF** really getting started.
+- 4 is multimodality and all these different low latency, long thinking, o3.
 
-What's going to be the 5 flagship thing? Obviously, the year of **agents**, right? That's the meme. But is there something else that comes to mind that people should think about?  
+What's going to be the 5 flagship thing? Obviously, the year of **agents**, right? That's the meme. But is there something else that comes to mind that people should think about?
 
-Okay, with 5, now we unlock X. Yeah, I think it's smart. I think that the intelligence of these models is starting to be just almost indescribable, right? There's still limitations. There's still ways in which they fail.  
+Okay, with 5, now we unlock X. Yeah, I think it's smart. I think that the intelligence of these models is starting to be just almost indescribable, right? There's still limitations. There's still ways in which they fail.
 
-But it really is the case that for extremely hard domains, like look at the **IMO results**, right? So you can take a model that's been trained on this reasoning paradigm, and it's able to write proofs that is at the level of the best humans, right?  
+But it really is the case that for extremely hard domains, like look at the **IMO results**, right? So you can take a model that's been trained on this reasoning paradigm, and it's able to write proofs that is at the level of the best humans, right?
 
-And it's like in this specific domain, there's limitations, et cetera, et cetera. We haven't proven like an unproven theorem, any of that stuff, but it's real. It's like it's undeniable at this point that these models are able to perform great intellectual feats. And I think that's new, right?  
+And it's like in this specific domain, there's limitations, et cetera, et cetera. We haven't proven like an unproven theorem, any of that stuff, but it's real. It's like it's undeniable at this point that these models are able to perform great intellectual feats. And I think that's new, right?
 
-**GPT-4, I think, was much more – it was kind of capable and commercially useful across a wide range of applications. But the ideas that it produced were not very deep**, right? The problems it would solve, it was not very reliable at.  
+**GPT-4, I think, was much more – it was kind of capable and commercially useful across a wide range of applications. But the ideas that it produced were not very deep**, right? The problems it would solve, it was not very reliable at.
 
 And I remember for GPT-3 actually trying to teach it how to do even basic stuff, right?
 That like we kind of realized, **hey, you could do this few-shot prompting**. So you kind of showed a few examples of something, and then I'll basically kind of do that task. And so I was like, okay, can I just teach this thing to sort a list? And I gave it like seven numbers to sort. It didn't sort it. I was like, okay.
@@ -287,13 +287,13 @@ Then I tried to write a whole script of like **I'm a teacher teaching you how to
 
 By the way, it does have access to **Python tool** as well. So you know what I'm saying about that. But the point is that the **intellectual leaps** that these models are capable of assisting humans in is something that we're just starting to see. We started to see it with **O3**. And you can see professional mathematicians starting to kick the tires on **GPT-5**.
 
-We've seen physicists starting to kick the tires on **GPT-5** and say that like, 
+We've seen physicists starting to kick the tires on **GPT-5** and say that like,
 
 > "this thing was able to get – this model was able to re-derive an insight that took me many months' worth of research to produce."
 
 And that's the kind of thing where it's like you realize this will speed you up so fast, right? I remember doing my own math research back in high school and at the beginning of college. And I'd spend just like so long just trying to manipulate these objects in my head and think about connections between things.
 
-If I had a partner that I could actually talk to about this who would actually spend the time to deeply understand what I'm thinking about and produce new insights off of what I'm suggesting, that would have just sped me up so much. It would have been so much more fun, right? Because you don't just like kind of get caught in this loop of just sort of thinking about it off on your own and thinking, you're like, 
+If I had a partner that I could actually talk to about this who would actually spend the time to deeply understand what I'm thinking about and produce new insights off of what I'm suggesting, that would have just sped me up so much. It would have been so much more fun, right? Because you don't just like kind of get caught in this loop of just sort of thinking about it off on your own and thinking, you're like,
 
 > "wait, I already thought this thought two weeks ago."
 
@@ -303,7 +303,7 @@ And so I think that there's just something new about pushing forward the **intel
 
 **Do you think people are limited by the difficulty of the problems that they work on?**
 
-I think like, you know, for me in **Cursor** and in **Codex**, it feels clear that the model is better when I give it hard tasks. I feel like a lot of people post screenshots on **X** and it's like, 
+I think like, you know, for me in **Cursor** and in **Codex**, it feels clear that the model is better when I give it hard tasks. I feel like a lot of people post screenshots on **X** and it's like,
 
 > "oh, GPT-5 is not that much better."
 
@@ -315,7 +315,7 @@ Obviously, you're one of the best coders in the world, so game recognizes game. 
 
 ---
 
-Yeah. So there definitely is a saturation on certain tasks, right? 
+Yeah. So there definitely is a saturation on certain tasks, right?
 
 - If you're just going to chit-chat and say, hello, how are you? There's only so many things you can say.
 - If you're going to say, here's the remount of hypothesis solution, please. Okay, yeah, there's like a broad range of intelligence that will be desirable there.
@@ -333,72 +333,72 @@ And so a lot of what we've been focusing on is saying not just how do we push th
 ---
 
 **What are suggestions on a more practical level that you have on getting the potential energy out of this model?**
-So part of it is adding, you know, the **linter**, the **type checker**, the task to have it **self-loop**.  
+So part of it is adding, you know, the **linter**, the **type checker**, the task to have it **self-loop**.
 
-Any other meta that developers should think about?  
+Any other meta that developers should think about?
 
-How do you use the models?  
+How do you use the models?
 
-Well, the number one thing that I've observed is that there is a real skill in extracting the most from these models. And it requires this **tenacity**, right, of really trying to almost understand the shape of the model's skills and weaknesses.  
+Well, the number one thing that I've observed is that there is a real skill in extracting the most from these models. And it requires this **tenacity**, right, of really trying to almost understand the shape of the model's skills and weaknesses.
 
-And so you test it, right? You test it with something small. You get a little feedback. You test it a little bit higher. Try to give it some bigger tasks. Try to see if it can work in a certain way.  
+And so you test it, right? You test it with something small. You get a little feedback. You test it a little bit higher. Try to give it some bigger tasks. Try to see if it can work in a certain way.
 
-And I think that people usually have their library of different prompts, right? So I definitely have my library of prompts that I've built up since the **GPT-4** days. Like, I remember in advance of GPT-4 starting to gather up a couple of, like, okay, I wonder if I'll be able to do this.  
+And I think that people usually have their library of different prompts, right? So I definitely have my library of prompts that I've built up since the **GPT-4** days. Like, I remember in advance of GPT-4 starting to gather up a couple of, like, okay, I wonder if I'll be able to do this.
 
-You know, you have some sort of query that, importantly, you want queries that could have a range of different answers that don't have any one specific right thing.  
+You know, you have some sort of query that, importantly, you want queries that could have a range of different answers that don't have any one specific right thing.
 
-So, for example, on **creative writing**, I've liked to ask for a mashup of **Lord of the Rings** and **startups**, right? Just try to push together two different topics and see what you get.  
+So, for example, on **creative writing**, I've liked to ask for a mashup of **Lord of the Rings** and **startups**, right? Just try to push together two different topics and see what you get.
 
-In terms of actually testing the model and pushing it, I think that I do a lot of trying to think about, okay, like, how do you, first of all, break up tasks and have something that's **self-contained** that you can let the model run with?  
+In terms of actually testing the model and pushing it, I think that I do a lot of trying to think about, okay, like, how do you, first of all, break up tasks and have something that's **self-contained** that you can let the model run with?
 
-Because you don't want to just have one instance of the model operating. You want to have multiple, right? You want to be a manager of not an agent, but of **agents**, right?  
+Because you don't want to just have one instance of the model operating. You want to have multiple, right? You want to be a manager of not an agent, but of **agents**, right?
 
-And so that you need to, first of all, think about how your **code base** is structured, but then actually go and try to push the model to say, "Can you actually operate it on these multiple different pieces of your code base?"  
+And so that you need to, first of all, think about how your **code base** is structured, but then actually go and try to push the model to say, "Can you actually operate it on these multiple different pieces of your code base?"
 
-I think that people love doing **front-end vibe testing**. **GPT-5** is very good at front-end, it turns out. But, of course, that's not what most developers spend their time doing. And so it's important not to overfit to that.  
+I think that people love doing **front-end vibe testing**. **GPT-5** is very good at front-end, it turns out. But, of course, that's not what most developers spend their time doing. And so it's important not to overfit to that.
 
-But I think that maybe just getting a feel for the model and kind of starting to become in tune with its strengths and weaknesses and viewing it almost as an extension of yourself.  
+But I think that maybe just getting a feel for the model and kind of starting to become in tune with its strengths and weaknesses and viewing it almost as an extension of yourself.
 
-And often another thing I'll do is just be kicking off tasks to the model that are sort of not on the critical path while I'm thinking about some super hard thing that the model, for whatever reason, I don't want it operating on.  
+And often another thing I'll do is just be kicking off tasks to the model that are sort of not on the critical path while I'm thinking about some super hard thing that the model, for whatever reason, I don't want it operating on.
 
-And so I'm just constantly getting information back on just like, "Okay, was it able to do a thing?" Or it's just like low risk if it makes a mistake, because I don't feel like I had to sit around waiting for five minutes and then get no return.  
+And so I'm just constantly getting information back on just like, "Okay, was it able to do a thing?" Or it's just like low risk if it makes a mistake, because I don't feel like I had to sit around waiting for five minutes and then get no return.
 
-You've always mentioned, I think, that the roadmap for **Codex** and **OpenAI's coding capabilities**, since we're there, is that the background sort of **suite agents** sort of merge with the **IDE agents**.  
+You've always mentioned, I think, that the roadmap for **Codex** and **OpenAI's coding capabilities**, since we're there, is that the background sort of **suite agents** sort of merge with the **IDE agents**.
 
-How’s your thinking involved there?  
+How’s your thinking involved there?
 
-Like, is it just as simple as, like, the IDE can call the background APIs and the background APIs can sort of export to the IDE? What's a deeper connection than that?  
+Like, is it just as simple as, like, the IDE can call the background APIs and the background APIs can sort of export to the IDE? What's a deeper connection than that?
 
-I tend to think about **AI productization** by analogy to a co-worker.  
+I tend to think about **AI productization** by analogy to a co-worker.
 
-What do you want out of a co-worker who's a great programmer, right?  
+What do you want out of a co-worker who's a great programmer, right?
 
-- You don't slack them.  
-- Yeah, exactly. So you want to slack them, but sometimes you're like,  
+- You don't slack them.
+- Yeah, exactly. So you want to slack them, but sometimes you're like,
 
-> "Hey, I kind of need help with this thing. Can you come over and look over my shoulder?"  
+> "Hey, I kind of need help with this thing. Can you come over and look over my shoulder?"
 
-- And like,  
+- And like,
 
-> "Hey, can you take the keyboard?"  
+> "Hey, can you take the keyboard?"
 
-Exactly. So you want the **pair form factor**. You also want the **remote async form factor**.  
+Exactly. So you want the **pair form factor**. You also want the **remote async form factor**.
 
-And you want it to be one entity that has **knowledge and memory** across all of this. You don't want it to be a junior programmer who shows up every day being like,  
+And you want it to be one entity that has **knowledge and memory** across all of this. You don't want it to be a junior programmer who shows up every day being like,
 
-> "Okay, I forgot everything. Can you remind me how to SSH into the whatever?"  
+> "Okay, I forgot everything. Can you remind me how to SSH into the whatever?"
 
-So I think all of that has to happen, right? That you need AIs that have access to your **infrastructure** in a **trustworthy** way, a way that you can **audit**.  
+So I think all of that has to happen, right? That you need AIs that have access to your **infrastructure** in a **trustworthy** way, a way that you can **audit**.
 
-Like one thing that is different about these models is that they're fine being **micromanaged**.  
+Like one thing that is different about these models is that they're fine being **micromanaged**.
 
-Turns out humans don't like that very much, right? If you look at every single command that they're running and you demand reports on everything they did, probably you're not going to retain that person.  
+Turns out humans don't like that very much, right? If you look at every single command that they're running and you demand reports on everything they did, probably you're not going to retain that person.
 
-But the models are perfectly happy too. And so that's an affordance that's like well worth thinking about and changing the interfaces to take maximum advantage of.  
+But the models are perfectly happy too. And so that's an affordance that's like well worth thinking about and changing the interfaces to take maximum advantage of.
 
-At the same time, yeah, you really want the seamless blending between a model that's able to do a bunch of work on its remote machine, doesn't mess up my local state, fully sandboxed, fully observable.  
+At the same time, yeah, you really want the seamless blending between a model that's able to do a bunch of work on its remote machine, doesn't mess up my local state, fully sandboxed, fully observable.
 
-And then sometimes can be like,  
+And then sometimes can be like,
 
 > "Okay, I'm ready to run something locally."
 And that depending on what that is and depending on how **sandboxable** it is, that you can do one-off approvals, you could give it full delegated access.
@@ -413,7 +413,7 @@ You mentioning approvals gives me a chance to spotlight my friend **Fuad**, who 
 
 The way we think about **agent robustness** is through **defense in depth**. There's a layer of the **model itself**. We publish techniques like **instruction hierarchy**.
 
-And so with instruction hierarchy, you sort of indicate that, 
+And so with instruction hierarchy, you sort of indicate that,
 
 > "hey, this message is from the system. This message is from the developer. This message is from the user"
 
@@ -501,16 +501,16 @@ Then we move models in a different direction.
 Keep iterating to get something more useful and aligned with human values.
 ```
 
-How do you do that when the RL rewards are kind of tied to things the humans maybe don't prefer? 
+How do you do that when the RL rewards are kind of tied to things the humans maybe don't prefer?
 
-In my experience, it's been like try-catch. The models like to write try-catch so it doesn't fail. 
+In my experience, it's been like try-catch. The models like to write try-catch so it doesn't fail.
 
 Do we need just a lot of preference data that shows them they shouldn't do that? Is there something in the RL environments that we're going to change to make that less desirable? I'm trying to figure out where we go from here.
 Yeah, I think that the way that you decide or the way that you figure out where do **interventions** go is very multifaceted and it's very specific to the **behavior**, right?
 
 There are some things like the model's knowledge of different **libraries** and things like that that's kind of baked in from the early days. But you can also teach the model that, hey, don't rely on your previous knowledge. Like go and look up the most up-to-date **docs**. And that's something you can kind of put at a higher level.
 
-And then something like overusing **try-catch**, that's something you can actually prompt the model for, right? And that's something where when we train it in **reinforcement learning**, you can provide rewards saying like, 
+And then something like overusing **try-catch**, that's something you can actually prompt the model for, right? And that's something where when we train it in **reinforcement learning**, you can provide rewards saying like,
 
 > "Ah, don't go in this direction."
 
@@ -520,7 +520,7 @@ It's very easy, like we kind of have this whole stack now that's built up around
 
 It's really trying to think about in order to get them to be able to operate according to different preferences and values, we just need to show that to them during training. And they are able to sort of generalize to different preferences and values that we didn't actually train against. And that's something that we've seen very consistently across different model generations.
 
-I was just envisioning this meme of like, 
+I was just envisioning this meme of like,
 
 > "Oh, my model doesn't generalize."
 
@@ -565,17 +565,17 @@ No, I mean, I think honestly all of it is fairly what you'd expect.
 
 Yeah. And I think that the core message in my mind is that at **OpenAI**, there are many things we've done right. **Naming is not one of those**. Having a simple surface for users to understand how to use it, not necessarily one either.
 
-If you look at all the different models that we've had, how are you supposed to know which one to use? I remember my wife was using 4.0 at one point. I was like, 
+If you look at all the different models that we've had, how are you supposed to know which one to use? I remember my wife was using 4.0 at one point. I was like,
 
 > "No, you need to use 0.3."
 
-And she's like, 
+And she's like,
 
 > "Wait, but why is 0.3 better than 4.0?"
 
-Well, ship 0.4, then you have 4.0.4. There you go. 
+Well, ship 0.4, then you have 4.0.4. There you go.
 
-And so, yeah, so, okay. We clearly needed to do a **reset**, right? A reset on complexity. And I think that us internalizing that complexity rather than pushing it to the user—that is really important. 
+And so, yeah, so, okay. We clearly needed to do a **reset**, right? A reset on complexity. And I think that us internalizing that complexity rather than pushing it to the user—that is really important.
 
 And so I think this is a first step. And I think we've heard loud and clear from the community about the places where they weren't ready, that we were not delivering on that simplicity for people. That it should just be, it's always better to go with our choice of it rather than the manual selection. And we're not quite there yet.
 
@@ -622,9 +622,9 @@ Yeah. Can't think about it.
 And it's going low.
 It's not even, it's like from **10,000 to like $1,000**. It's going to like pennies.
 
-For the **GPT-5 release**, I did this article called **self-improving coding agents**. So I basically asked **GPT-5**, _"can you build tools for yourselves to be a better coding agent?"_ And this is a sweet answer task. Then it does the task. It kind of fills in some ways. 
+For the **GPT-5 release**, I did this article called **self-improving coding agents**. So I basically asked **GPT-5**, _"can you build tools for yourselves to be a better coding agent?"_ And this is a sweet answer task. Then it does the task. It kind of fills in some ways.
 
-Then I ask it, _"can you improve the tools for yourself and kind of do this loop?"_ What I found is like the models don't really like to use these new tools that they build for themselves. They basically respond saying, 
+Then I ask it, _"can you improve the tools for yourself and kind of do this loop?"_ What I found is like the models don't really like to use these new tools that they build for themselves. They basically respond saying,
 
 > _"You know, I can just do it. I don't really need the tool."_
 
@@ -662,7 +662,7 @@ What can we say about the device? You raised it. I don't want to get Greg in tro
 
 It's going to be great.
 
-Okay, and then another political—I don't know if it's political or not. You know, there's a lot of **open models coming out from China**. 
+Okay, and then another political—I don't know if it's political or not. You know, there's a lot of **open models coming out from China**.
 
 Why is it important for there to be **American open source**?
 Another thing at a very practical level that we've thought about with **open source models** is that people building on our **open source model** are kind of building on our **tech stack**, right? If you are relying on us to help improve the model, that you're relying on us to get the next breakthrough, then that means that you actually really have a dependence in both a way that's good for our business, but I think it's also good for the country, right?
@@ -691,16 +691,16 @@ And then there's parts of the job that become much harder because it requires, l
 
 And so, I think we're not at the point yet where we really see changes in how you structure a team because these tools exist. I think we're at a point where it is, like, an extreme high priority to get these models to be used in all domains that they possibly could be and to think about how you do that well and responsibly and think about what the guardrails should be and that that happens in a very practical way.
 
-And so, I think a lot of what I'm seeing is, like, we're in an **early adopter phase** that's starting to transition to a **mainstream phase**. And the productivity impacts of people being able to do more means we actually want more people, right? 
+And so, I think a lot of what I'm seeing is, like, we're in an **early adopter phase** that's starting to transition to a **mainstream phase**. And the productivity impacts of people being able to do more means we actually want more people, right?
 
 It's like we are so limited by the ability to produce software, so limited by the ability of our team to actually clean up tech debt and go and refactor things. And if we have tools that make that 10x easier, we're going to be able to do 100x more things. And so, I think that there's this incredible opportunity that is entailed by these models not being a real driver of just do the same stuff more efficiently, but be able to do way more. And that that is, I think, the overall goal.
 
-How have you changed the team's work to fit the **LLMs** better? Is there a different way in which you track issues? Is there a different way in which you structure a codebase? 
+How have you changed the team's work to fit the **LLMs** better? Is there a different way in which you track issues? Is there a different way in which you structure a codebase?
 
 So, I think we're still at the early edge of this. But the thing I've seen be most successful is that you really build code bases around the strengths and weaknesses of these models. And so, what that means is
 
-- More self-contained units  
-- Very good unit tests that run super quickly  
+- More self-contained units
+- Very good unit tests that run super quickly
 - Good documentation that explains what this module is for
 And if you do that and you kind of leave the details to the **model**, it works really well.
 
@@ -724,8 +724,8 @@ I mean, I think that the thing at the end of the day that is new is that we are 
 
 It's like at some point, the dollars that go into these **data centers** start to be an abstraction:
 
-``` 
-What is $50 billion? 
+```
+What is $50 billion?
 What is $100 billion?
 ```
 
