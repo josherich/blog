@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Afra Wang on "The Morning Star of Lingao" (临高启明) and the Rise and Reckoning of China's "Industrial Party""
+title: "Afra Wang on The Morning Star of Lingao (临高启明) and the Rise and Reckoning of China's Industrial Party"
 date: 2026-01-28 00:00:01
 categories: podcast sinica-podcast
 tags: [podcast_script]
@@ -75,10 +75,10 @@ If you haven't read that yet, click the link, read the piece. It's one of actual
 
 This isn't just going to be a conversation about time travel sci-fi — though that would be a lot of fun — but actually about:
 
-- Interpretations of history  
-- Emotion  
-- The national story  
-- Power  
+- Interpretations of history
+- Emotion
+- The national story
+- Power
 
 About how a country explains to itself **why it fell behind**.
 and what it thinks **salvation looks like.**
@@ -312,7 +312,7 @@ I think when you talk about the industrial party, you need to sort of dial your 
 
 Instead of staying in the old train to take an overnight train to go to Beijing, you can actually spend only three hours to go to Beijing now.
 
-**Beijing as a cosmopolitan city**, in my mind back then as a high schooler, it's so close by to me, I can just go there. I was so excited and then the story burst out about the terrible **train wreck in Wenzhou**. 
+**Beijing as a cosmopolitan city**, in my mind back then as a high schooler, it's so close by to me, I can just go there. I was so excited and then the story burst out about the terrible **train wreck in Wenzhou**.
 
 - 50 people died.
 
@@ -320,7 +320,7 @@ I remember there was a huge debate online about who was guilty, right? Like, whe
 
 Yeah, so I remember back then, all the public intellectuals were still active, their other accounts are still not banned. So a lot of people online writing lengthy articles or posting online about the liability of the authority that didn't have a proper monitoring system.
 
-And so basically, the thing is because a certain signal was missed, two high-speed rail trains basically crashed face-to-face. It was basically a **pure human mistake**. It was because a certain message didn't send to the other side, so the tragedy happened. It was pure human mistake. 
+And so basically, the thing is because a certain signal was missed, two high-speed rail trains basically crashed face-to-face. It was basically a **pure human mistake**. It was because a certain message didn't send to the other side, so the tragedy happened. It was pure human mistake.
 
 But anyways, I remember so many people writing about it online and there's this one piece basically crying for **China to slow down**. And it was like,
 
@@ -363,31 +363,31 @@ So a wormhole opens to 1628 from our present, or from the present of the time yo
 So how does the alternate timeline then unfold? What kind of society do these guys end up building in **Hainan**? How different does it end up looking from our own history? How much do they change history in this project, in the book?
 
 Yes, so okay. So reading this book is very interesting because the plot evolves as the people who write the story evolve. So like, and also a lot of the writers would write themselves in.
-The story features a **captain**—like a **captain of the ship** that would transport the **500 time travelers back to the Ming dynasty**. The captain himself, his real name and real-life nickname, became known as **Captain** as well. At a certain point, the boundaries between **past and present**, **fictional and reality**, kind of blurred. 
+The story features a **captain**—like a **captain of the ship** that would transport the **500 time travelers back to the Ming dynasty**. The captain himself, his real name and real-life nickname, became known as **Captain** as well. At a certain point, the boundaries between **past and present**, **fictional and reality**, kind of blurred.
 
-The same happens with **Ma Qian Zu** himself. He is one of the main people in the novel. So, it’s **Qian Zu and Qian Zu**—they almost spell the same in Pinyin, but one is **Ma Qian Zu** and the other implies humbleness. **Ma Qianzu** means you stand next to the horse to serve, but fictional Ma Qianzu is arrogant. You are Qianzu: you can see a thousand miles away. **Zu means seeing**. 
+The same happens with **Ma Qian Zu** himself. He is one of the main people in the novel. So, it’s **Qian Zu and Qian Zu**—they almost spell the same in Pinyin, but one is **Ma Qian Zu** and the other implies humbleness. **Ma Qianzu** means you stand next to the horse to serve, but fictional Ma Qianzu is arrogant. You are Qianzu: you can see a thousand miles away. **Zu means seeing**.
 
-I think things like this are very interesting. The basic premise starts from a simple thought experiment: **what if you can travel back to the Ming dynasty with modern knowledge and equipment?** People started writing about it without character building or discussion. The first 30 chapters are all about people getting together to think about what equipment they should bring to the Ming dynasty. 
+I think things like this are very interesting. The basic premise starts from a simple thought experiment: **what if you can travel back to the Ming dynasty with modern knowledge and equipment?** People started writing about it without character building or discussion. The first 30 chapters are all about people getting together to think about what equipment they should bring to the Ming dynasty.
 
 You will see this laborious preparation list, almost like the list a very organized person writes when packing for a long trip. People spend 30 chapters to prepare for this list.
 
 Then, around chapter 37, people finally get together to board the ship that will take them to **Ling Gao**. You also see this immense obsession with details:
 
-- How to keep the ship safe from **Ming dynasty coastal guards**  
-- What kind of soil Ling Gao county had 400 years ago  
-- The geography: was it a deep-water pier, deep-water port, or shallow-water port?  
-- Transporting heavy materials  
-- Details about geology and soil chemistry  
-- Natural resources available in Ling Gao back then  
-- Ming dynasty guards present in Hainan  
-- Risks of Japanese pirate attacks  
+- How to keep the ship safe from **Ming dynasty coastal guards**
+- What kind of soil Ling Gao county had 400 years ago
+- The geography: was it a deep-water pier, deep-water port, or shallow-water port?
+- Transporting heavy materials
+- Details about geology and soil chemistry
+- Natural resources available in Ling Gao back then
+- Ming dynasty guards present in Hainan
+- Risks of Japanese pirate attacks
 
 They conduct serious, detailed risk assessments. It’s really first principles thinking—almost like an **action manual**. If you really had a wormhole to travel to the Ming dynasty, you could simply follow it.
 
 This is because a lot of the knowledge is factual. Professional people research and fact-check it themselves and each other in a peer review process ensuring scientific accuracy. People are thinking about how to bootstrap an *industrial revolution* on this island—what do we need?
 
-- People  
-- Resources  
+- People
+- Resources
 
 But, let's get to my question: **how far do they take it?** Are we talking decades of institutional development, or does it mostly stay in an early building and consolidation phase? Do they change history profoundly? Do we even know what history looks like now as a result of the changes they make?
 
@@ -395,15 +395,15 @@ The story kind of progresses as the current time progresses, I would say. Everyt
 
 Because the story has been written for about 20 years, a lot has changed:
 
-- Female servants start earning for their own workers  
-- Stories about certain political reforms  
-- People leave the Linggao Island to travel to the mainland and interact with Ming officials  
+- Female servants start earning for their own workers
+- Stories about certain political reforms
+- People leave the Linggao Island to travel to the mainland and interact with Ming officials
 
 There are also plots, like some fanfic, which are not part of the main story:
 
-- People travel from Linggao County to North America  
-- They colonize North America, specifically the area of today’s **Boston**  
-- They see huge opportunities in the New World and decide to colonize the East Coast  
+- People travel from Linggao County to North America
+- They colonize North America, specifically the area of today’s **Boston**
+- They see huge opportunities in the New World and decide to colonize the East Coast
 
 There is also a story plot that diverges from the main story that...
 **people ended up colonizing Australia**, and they formed a huge sort of empire, almost like a **British empire**. In the 19th century, they forged a huge **Linggao Australian empire** across Australia, New Zealand, and Southeast Asia. The north part would be like **Linggao county**, like **Hainan** and **Taiwan**. Yeah, so like crazy stuff, really crazy stuff.
@@ -412,9 +412,9 @@ But what really strikes me about this, as you've described it, is this is an **a
 
 There's this like obsessive attention to getting the tech tree right, like:
 
-- What materials come first  
-- Which tools unlock different forms of production  
-- How you get the logistics and the energy systems  
+- What materials come first
+- Which tools unlock different forms of production
+- How you get the logistics and the energy systems
 
 It's just like precise accumulation step by step, as you've described. But alongside that, there's also, I guess, as you talked about in your piece, this kind of **unglamorous work of building institutions** that can sustain these capabilities over time.
 
@@ -465,7 +465,7 @@ I agree. I agree. I think this, we should memorize that **engineering and indust
 
 I think this is part of the message the **Ling Gao Qiming Morning Star** of Ling Gao has been sort of projecting. And it reminds me of—so there's a scholar whose name is **Wang Xiaodong**, you're probably familiar with, yeah, of course, who wrote, I think in 2009, *China is Unhappy*. I remember it was a big intellectual sensation.
 
-Like he is the one who coined the term **industrial party**. So in this article that he coined the term industrial party, he stated very clearly that—I actually want to read this—he stated really clearly that: 
+Like he is the one who coined the term **industrial party**. So in this article that he coined the term industrial party, he stated very clearly that—I actually want to read this—he stated really clearly that:
 
 > "We must never envy the finance Hollywood, the Grammys, and NBA of the West. We would rather forge iron and smelt copper and let the Americans sing and dance for us because forging iron and smelting copper is the true—this is where true power lies."
 
@@ -492,49 +492,49 @@ And, but I want to get to this **gendered layer** here that feels really importa
 
 You're somebody who identifies as a **feminist** and you work very fluently across technical and cultural domains. How do you read that **gendered dimension** to that, who gets to imagine the future in these narratives?
 
-I think first of all **Ling Gao Qiming itself** is a piece of **historical record** because I think the collective writing process peaked maybe during **2011 to 2015**, and this is the internet before **China's feministic awakening**. So I would say certain **feministic consciousness** hasn't arrived in China yet.  
+I think first of all **Ling Gao Qiming itself** is a piece of **historical record** because I think the collective writing process peaked maybe during **2011 to 2015**, and this is the internet before **China's feministic awakening**. So I would say certain **feministic consciousness** hasn't arrived in China yet.
 
 So Ling Gao Qiming is in a sense a product of its time — a **pre-feminist cultural product** — and people just really don't have a lot of tools or instruments or frameworks to criticize it.
 
-Just like a lot of women writers would participate in writing, they would probably feel extremely uncomfortable but they couldn't name why they feel uncomfortable. But now, retrospectively looking at this text, looking at these primary sources, it is very much **misogynistic**.  
+Just like a lot of women writers would participate in writing, they would probably feel extremely uncomfortable but they couldn't name why they feel uncomfortable. But now, retrospectively looking at this text, looking at these primary sources, it is very much **misogynistic**.
 
 It's just like how much **Liu Zixing's Three-Body Problem** feels extremely misogynistic when you're reading in Chinese.
 
-I mean **Ken Liu** did a great job in removing a lot of the poorly written female parts, it's still in there, yeah, yeah. But you know like there's definitely some plots in Liu Zixing's work that would be like:  
+I mean **Ken Liu** did a great job in removing a lot of the poorly written female parts, it's still in there, yeah, yeah. But you know like there's definitely some plots in Liu Zixing's work that would be like:
 
-> *"Oh, you're a woman but how can you listen to **Bach**, this German composer, like because **Bach** is such a representation of rationality, a rational music. How can women appreciate this beautiful, high class, high broad rational music?"*  
+> *"Oh, you're a woman but how can you listen to **Bach**, this German composer, like because **Bach** is such a representation of rationality, a rational music. How can women appreciate this beautiful, high class, high broad rational music?"*
 
-You know, such plots permit Lin Gao and the first 500 pioneers — like a very small group of them are women, predominantly men. And I think the made revolution is the part which is really fascinating because Lin Gao basically operates in the **semi-military structure** where the resource needs to be centrally planned and allocated to people.  
+You know, such plots permit Lin Gao and the first 500 pioneers — like a very small group of them are women, predominantly men. And I think the made revolution is the part which is really fascinating because Lin Gao basically operates in the **semi-military structure** where the resource needs to be centrally planned and allocated to people.
 
 It is a **techno-authoritarian society** where it's also a little bit like **plutocracy**. I would say people who possess the most engineering knowledge have a better social status.
 
-So at the time, there is this distribution of:  
+So at the time, there is this distribution of:
 
-- female domestic servants  
-- some low status engineers  
+- female domestic servants
+- some low status engineers
 - some laborers who didn't get female servants.
 
 These people are very unhappy. I mean, they're all fictional plots by the way, and those plots are the **incels of Linggao** — the single people from Linggao.
 
 In the sense of domestic servants are also, you know, **sex slaves**, which is not being explicitly said but later you will see this Linggao society operating as a semi-feudal but techno-authoritarian style political structure.
 
-Later, they recognize that:  
+Later, they recognize that:
 
-- *"Oh, you kind of need to give your female servants better hygiene."*  
-- *"You need to give them better training in different things."*  
-- *"You need to teach them how to read and write."*  
-- *"You give them time discipline."*  
+- *"Oh, you kind of need to give your female servants better hygiene."*
+- *"You need to give them better training in different things."*
+- *"You need to teach them how to read and write."*
+- *"You give them time discipline."*
 
 This is all part of the **modernization process**.
 
-China's modernization success depends on **female workers in the factory**, so Linggao is like:  
+China's modernization success depends on **female workers in the factory**, so Linggao is like:
 
 > *"Okay, if we're rational enough to truly industrialize Hainan, to truly industrialize Ming dynasty, we shall truly give the female servants proper treatment, so we can properly..."*
 
 So it's basically all rational, not like:
 
-- *"Oh, we love women."*  
-- *"We want to respect them."*  
+- *"Oh, we love women."*
+- *"We want to respect them."*
 
 It's not moral—it's rational.
 
@@ -547,27 +547,27 @@ So let me shift a little way away from Linggao here.
 I do want to bring it back in frame but this book **Breakneck**, by **Dan Wong**, which is one of the most talked about books of 2025. Dan, of course, as you know, describes **China as an engineering state**.
 
 I mean, listening to you talk about Linggao and the **industrial party**, that phrase starts to feel less like an abstraction and more like an actual lived...
-**Worldview, right?** Does that framing resonate with how you understand what **Linggao** is imagining, or does it miss something important? 
+**Worldview, right?** Does that framing resonate with how you understand what **Linggao** is imagining, or does it miss something important?
 
 You have this **book club** where you have been talking about, reflecting on **Chinese language discussions** of *Breakneck*. You know, it's called *What?* Reading *Breakneck* in China.
 
 Yeah, reading *Breakneck* from China.
 
-Right, right. 
+Right, right.
 
-One thing that struck me in your book club reflections—I'll link to that because you've written about it on your Substack—is that **Chinese language discussions about that book seemed less surprised** by that framing than English language ones. 
+One thing that struck me in your book club reflections—I'll link to that because you've written about it on your Substack—is that **Chinese language discussions about that book seemed less surprised** by that framing than English language ones.
 
 So, I mean, did the idea of an **engineering state** feel like any kind of a revelation to Chinese readers, or more like seeing something familiar finally given a name?
 
 I really appreciate **Dan's framing**. I think Dan's framing is at least to better capture certain reality in **China**. I honestly think the **democratic versus autocratic binary** is not helpful anymore. Like, if you look at the **US**, what's democratic about the US, right?
 
-I know a few Chinese, China-focused scholars who used to study the authoritarian regime of China and now all sort of pivot to study the US authoritarian term. 
+I know a few Chinese, China-focused scholars who used to study the authoritarian regime of China and now all sort of pivot to study the US authoritarian term.
 
 You know, I honestly think **Dan's framework can somehow better explain the reality** and better get to the point. It's really helpful, it's really instrumentally helpful.
 
-And then, according to Dan, he tends to be playful with this framework. He's like not 100% serious about it, doesn't want to challenge the status quo of democracy versus autocracy. But yeah, I'm going to borrow that cop-out from him. 
+And then, according to Dan, he tends to be playful with this framework. He's like not 100% serious about it, doesn't want to challenge the status quo of democracy versus autocracy. But yeah, I'm going to borrow that cop-out from him.
 
-I'm just being playful here, I'm not really—it's a way to not commit completely, right? I mean, that playful is—it doesn't have like, you know, we have generations of scholars studying authoritarian systems, right? But like in a sense, I don't think Dan wants to challenge that. 
+I'm just being playful here, I'm not really—it's a way to not commit completely, right? I mean, that playful is—it doesn't have like, you know, we have generations of scholars studying authoritarian systems, right? But like in a sense, I don't think Dan wants to challenge that.
 
 I think he comes up with this framework just to better explain today's China and today's US.
 
@@ -585,8 +585,8 @@ So, Dan Wong's book, do you feel like it hits differently between **English and 
 
 A lot of people are overly obsessed with if China is a real engineering state. For example, they would argue:
 
-- If the Chinese authority are engineering minded, why would they do stupid things like **zero COVID**, right?  
-- Because zero COVID is essentially a **political power test**.  
+- If the Chinese authority are engineering minded, why would they do stupid things like **zero COVID**, right?
+- Because zero COVID is essentially a **political power test**.
 - It is an **obedience test** — it’s really about whether the officials are following the ultimate order from the overlord instead of rationally thinking about what COVID is and how should we deal with it.
 
 So a lot of the **Chinese language readers who are living in China would be dissatisfied with Dan's engineering state verdict**, because they would argue like, you know:
@@ -600,7 +600,7 @@ Yet, in our conversation, it sounds like the **industrial party worldview**—th
 
 ---
 
-I don't think the **industrial party logic** has lost its grip in China. I'm pretty sure a lot of the industrial policy decision makers still very much adhere to the industrial party logic: 
+I don't think the **industrial party logic** has lost its grip in China. I'm pretty sure a lot of the industrial policy decision makers still very much adhere to the industrial party logic:
 
 - "This development has solved everything, so let's just keep building, building, building."
 
@@ -610,13 +610,13 @@ But the intellectuals who were part of the industrial party movement in the earl
 
 This brings us to the irony where the industrial party people, the engineers themselves, are very smart and aware of certain societal issues like:
 
-- The slow burn of the **Chinese real estate collapse**  
-- Demographics  
-- The 996 work culture  
-- Care work  
-- The housing crisis  
-- Youth unemployment  
-- Meaning itself  
+- The slow burn of the **Chinese real estate collapse**
+- Demographics
+- The 996 work culture
+- Care work
+- The housing crisis
+- Youth unemployment
+- Meaning itself
 
 These issues don't necessarily yield to the logic of industrialism.
 
@@ -630,15 +630,15 @@ I wonder if this is a personal evolution or symptomatic of a broader shift in di
 
 **Mai Tienzo** himself definitely took some hits in life to realize that his youth was starry-eyed and innocent about many things. It's called growing up. A lot of people I know had that kind of super faith in technology early on, and anything that didn’t surrender to the hard logic of mathematics and engineering was just worthless. They'd ask, "Why bother reading novels? You should be reading that kind of thing."
 
-People grow up, right? 
+People grow up, right?
 
 ---
 
 It's really funny because within the crypto community, I also met a lot of rational engineers—people who hang out in the **rationalist forum** community. I see them growing up as well, starting to learn that:
 
-- **Culture is upstream of engineering, product, implementation**  
-- Culture is upstream of institution  
-- You can only understand culture to actually change society  
+- **Culture is upstream of engineering, product, implementation**
+- Culture is upstream of institution
+- You can only understand culture to actually change society
 
 I see them also sort of grow out of this obsessive, almost purity phase.
 
@@ -649,8 +649,8 @@ A lot about the **child supply**, and he speaks out about **local government deb
 
 Yeah, let's go for one final question just to wrap this all up about what **Lingao** tells us about **China** today. If someone wants to understand contemporary China—not the politics necessarily, or the policies, or the political imagination—what should they take away from the Lingao phenomenon? What does it tell us about how China thinks about:
 
-- time  
-- failure  
+- time
+- failure
 - the future
 
 What's your big bottom line takeaway?
@@ -674,7 +674,7 @@ But this woman also has mad skills. I mean, she crafts, she does, she's a good a
 She embodies, on the one hand, both what they don't like and what they very desperately need.
 
 Oh yeah, I think if I were a **Lingao** writer, if I were part of the **Engineering Party**, I would salute **Li Ziqi** because if I were them, I would meticulously break down the amount of planning for her to do in order to create.
-A seamlessly **beautiful video** like that—if I were an **industrial party member**, I would appreciate the **engineering part** of her production. I would be like,  
+A seamlessly **beautiful video** like that—if I were an **industrial party member**, I would appreciate the **engineering part** of her production. I would be like,
 
 > "Oh my god, it's because you did so much invisible infrastructural production work."
 
@@ -688,47 +688,47 @@ It's become—it's not just ideology, it's more like infrastructure, right? The 
 
 But let's move on and talk about this segment that I call **paying it forward**. If you've got a young colleague or a friend or somebody whose work you want to call attention to, now is the time to do.
 
-I think one thing I need to shout out is—I mentioned in a piece that there's no English translation for **Lingo**, which is not true. So, two months ago, obviously a group of people took it as a passion project and translated the canonical version into English and made it a website.  
+I think one thing I need to shout out is—I mentioned in a piece that there's no English translation for **Lingo**, which is not true. So, two months ago, obviously a group of people took it as a passion project and translated the canonical version into English and made it a website.
 
 - I can link the website.
 - I can send you the link.
 - You can link to the show notes.
 
-They also basically have a GitHub commit about the tools they use to translate the piece. They use the **GMLI 2.5** to translate everything.  
+They also basically have a GitHub commit about the tools they use to translate the piece. They use the **GMLI 2.5** to translate everything.
 
 Yeah, I'm just really glad that people are spending effort systematically translating **Lingo** into English, so I would recommend reading that. I think that's the first recommendation.
 
 Second is, unfortunately, if you're not a Chinese language speaker or don't listen to Chinese, you won't get the great content. **Baihua** is this **podcast incubator** actually started by my friend **Izzy**. We're all like sort of the founding members of Baihua, and we're trying to incubate more Chinese language podcasts.
 
-One of the podcasts I really like and really appreciate is called **Xin Xin Renlei**. I can also send the link.  
+One of the podcasts I really like and really appreciate is called **Xin Xin Renlei**. I can also send the link.
 
 > "Please do."
 
-**Xin Xin Renlei** is a podcast hosted by three tech journalists who are also, like me, really bilingual and understand the tech world on both sides. They find some very interesting niche topics to discuss. For example, they would talk about:  
+**Xin Xin Renlei** is a podcast hosted by three tech journalists who are also, like me, really bilingual and understand the tech world on both sides. They find some very interesting niche topics to discuss. For example, they would talk about:
 
-- Elon Musk's imagery evolution in China  
-- Burning Man and Burning Man's evolution—how Burning Man is perceived by different generations  
-- Their obsession with web novels  
-- AI  
+- Elon Musk's imagery evolution in China
+- Burning Man and Burning Man's evolution—how Burning Man is perceived by different generations
+- Their obsession with web novels
+- AI
 
-Yeah, so highly recommend **Xin Xin Renlei**. The English name is **Pixels Perfect**.  
+Yeah, so highly recommend **Xin Xin Renlei**. The English name is **Pixels Perfect**.
 
 **Pixels Perfect, Xin Xin, Xin Xin, Xin Xin.**
 
 Okay, well excellent, excellent—that's fantastic. Now, I don't know whether that was your paying it forward recommendation or your actual recommendation recommendation. I distinguish between them, but did you have a book or something that you wanted to recommend?
 
-Yes, I actually read voraciously. I do have a lot of books I would recommend. One would be, I think, it's edited and written by **Carrie Brown**. It's called  
+Yes, I actually read voraciously. I do have a lot of books I would recommend. One would be, I think, it's edited and written by **Carrie Brown**. It's called
 
 ```plaintext
 China from European's Eyes: 100 Years of History
 ```
 
-I think that book, to me, is—  
+I think that book, to me, is—
 
 You know, like we always talk about how **China** is the foil and mural for the **West's imagination**, and people's obsession about China—the way people project China as a beacon for technological advancement today—is actually a sense of **otherness**, right? Like other in China.
 
 So this book illustrated that this phenomenon is not new. It has been existing for 800 years. You know, many European intellectuals have been portraying China as the otherness projection—like it's elderly, alien, different—but it...
-It could be either really **beautiful** or really **ugly**. It could be **elderly powerful** or elderly powerless. The reason why **China couldn't develop modern technology and modern systems**, **Hegel** would argue, was because the **Chinese language**, the characters, are so laid back. 
+It could be either really **beautiful** or really **ugly**. It could be **elderly powerful** or elderly powerless. The reason why **China couldn't develop modern technology and modern systems**, **Hegel** would argue, was because the **Chinese language**, the characters, are so laid back.
 
 Basically, **Cary Brown**, as a historian, compiled **16 or 18 permanent European intellectuals** on their takes of China. So the people from like **Voltaire to Hegel**. Yeah, so I think it's a fascinating intellectual genealogy. I would recommend it.
 
@@ -742,7 +742,7 @@ Yeah, we know each other socially as well, and I am going to have her on the sho
 
 Related to your recommendation of **Cary Brown**, just to remind people, I recommended this book ages ago. But it's a very similar approach, although it's not just China; it's all of Asia. It's **Jürgen Osterhammel's** book ***Unfabling the East: The Enlightenment's Encounter with Asia***, which is something that I haven't recommended before, and yeah, it's absolutely great.
 
-My recommendation for this week actually has something in common with that. It's **Tami Mansari**, who I've recommended another of his books before. He's an Afghan American writer and journalist, and he wrote a book called ***Destiny Disrupted: A History of the World Through Islamic Eyes***. 
+My recommendation for this week actually has something in common with that. It's **Tami Mansari**, who I've recommended another of his books before. He's an Afghan American writer and journalist, and he wrote a book called ***Destiny Disrupted: A History of the World Through Islamic Eyes***.
 
 It's a real deep dive into the history of **Islam** as understood by Muslims themselves, from the time of the prophet in the 7th century all the way up to September 11th, viewed through the eyes of Muslims themselves. I think it's a very useful exercise in building **cognitive empathy** and understanding the **Islamic worldview**—not that there's one single monolithic worldview, but it's a great book.
 
@@ -761,7 +761,7 @@ I don't know, I think something fascinating about this guy, I really like him. Y
 
 All right, hey, well thank you so much, what an enjoyable conversation. I think we could go on recommending books to one another for several more hours, but we will call a stop to it.
 
-I look forward to meeting you in person one day. I'm going to be in **England at the end of the month of February**, but I don't know if you'll be around. I think so.  
+I look forward to meeting you in person one day. I'm going to be in **England at the end of the month of February**, but I don't know if you'll be around. I think so.
 
 **If it's London, yeah, I'll be around.** Yeah, it's such a fun recording of a podcast with you.
 

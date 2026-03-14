@@ -1,52 +1,43 @@
 .site {
-  font-size: 18px;
+  font-size: 17px;
   text-align: left;
-  max-width: 1080px;
+  max-width: 740px;
   margin: 0 auto;
-  line-height: 1.5em;
-  padding: 10px 20px;
-  position: relative;
+  line-height: 1.6;
+  padding: 20px;
 }
 
 .site .header a {
-  font-weight: bold;
   text-decoration: none;
+  color: #333;
+}
+.site .header a:hover {
+  color: #000;
 }
 .site .header .hlink {
-  margin-left: 20px;
+  margin-right: 12px;
+  font-size: 0.85em;
 }
 
 .site .header h1.title {
   display: inline-block;
-  margin-bottom: 2em;
+  margin-bottom: 1em;
 }
 
 .site .header h1.title a {
-  color: #a00;
-}
-
-.site .header h1.title a:hover {
-  color: #000;
-}
-
-.site .header a.extra {
-  color: #aaa;
-  margin-left: 1em;
-}
-
-.site .header a.extra:hover {
-  color: #000;
+  color: #333;
 }
 
 .site .meta {
-  color: #aaa;
+  color: #999;
 }
 
 .site .footer {
   font-size: 80%;
-  color: #666;
-  border-top: 4px solid #eee;
-  margin-top: 2em;
+  color: #999;
+  border-top: 1px solid #ddd;
+  margin-top: 3em;
+  padding-top: 1em;
   overflow: hidden;
 }
 
@@ -56,7 +47,7 @@
 }
 
 .site .footer .contact a {
-  color: #8085C1;
+  color: #0366d6;
 }
 
 .site .footer .rss {
@@ -76,7 +67,7 @@
 }
 
 a.selected {
-  color: #a00;
+  font-weight: bold;
 }
 
 .drawings-img-mid {
@@ -88,23 +79,12 @@ a.selected {
   overflow: hidden;
 }
 
-@media only screen
-  and (min-device-width: 812px) {
-  .post-page {
-    padding: 10px 30px;
-    box-shadow: 0 0 6px 4px #eee;
-    border-radius: 3px;
-  }
-}
-
-@media only screen
-  and (min-device-width: 320px)
-  and (max-device-width: 812px) {
+@media only screen and (max-width: 600px) {
   .site {
     padding: 10px;
     .header .hlink, .header h1.title {
-      font-size: 1em;
-      margin: 0.5em 0 0.5em;
+      font-size: 0.9em;
+      margin: 0.5em 0;
       margin-right: 0.5em;
     }
     ul.posts {
@@ -124,14 +104,12 @@ a.selected {
       margin: 0;
       margin-bottom: .5em;
       line-height: 1.25em;
-
     }
     video {
       width: 100% !important;
     }
     .post {
-      font-size: 14px;
+      font-size: 15px;
     }
   }
-
 }
