@@ -155,7 +155,7 @@ Before we do that, let's get into **Emily Bronte** herself, because critics used
 So Tabby, you've done a bit of digging, haven't you, into **Emily Bronte's** life?
 
 In large part, because of that thing, the kind of the myth, I kind of wanted to see how much reality there was to it. So Emily, she's the fifth of six **Bronte** children. And she's born in **Thornton** in **Bradford** in **July 1818**. And then when she's, I think, almost two, they moved
-To a place called **Hayworth** in the **Pennines**. And her father, **Patrick**, is the local curate.
+To a place called **Haworth** in the **Pennines**. And her father, **Patrick**, is the local curate.
 
 And then she's struck by the first of these three kind of early tragedies that will darken her early life, because her mother **Maria** dies of cancer when **Emily**'s about three. And then she and her older sisters, including **Charlotte Bronte** of **Jane Eyre** fame, they're sent to this school for clergymen's daughters, when she's not yet six, and they're treated really, really badly. And this school is actually the inspiration for **Lowood** in **Jane Eyre**, the kind of terrible school where it all starts.
 
@@ -176,7 +176,7 @@ So for instance, a local woman told **Elizabeth Gaskell** when she was looking i
 
 You don't like cards or Scrabble? No. See, I don't actually like Scrabble. It's so forced. It's like the forced fun of it. Can we not just... Would you never play any form of game? Yeah, well, I'm press-ganged into it, because you don't want to be... Well, all those people who were thinking about inviting you to their house to play **Cluedo** are now changing their minds.
 
-So because of this, because of their reluctance to sign up to annoying, boring, forced games, the siblings do become very, very close, unnaturally close, perhaps. They create these fantasy worlds, don't they? This is very you, actually. Is it **Glass Town** and **Angrier**? Yes, **Glass Town** and **Angrier**, yeah. And the really funny thing about it is, it's not quite, kind of Lord of the Rings, because they have little soldiers in them, like they have the Duke of Wellington in them. And actually, it's very telling about how exposed these children actually were to the wider world, how much they didn't live under a rock in Yorkshire, because they're kind of set all over the world.
+So because of this, because of their reluctance to sign up to annoying, boring, forced games, the siblings do become very, very close, unnaturally close, perhaps. They create these fantasy worlds, don't they? This is very you, actually. Is it **Glass Town** and **Angria**? Yes, **Glass Town** and **Angria**, yeah. And the really funny thing about it is, it's not quite, kind of Lord of the Rings, because they have little soldiers in them, like they have the Duke of Wellington in them. And actually, it's very telling about how exposed these children actually were to the wider world, how much they didn't live under a rock in Yorkshire, because they're kind of set all over the world.
 
 It's in the **Pacific**, isn't it? The **Pacific**, exactly, exactly.
 
