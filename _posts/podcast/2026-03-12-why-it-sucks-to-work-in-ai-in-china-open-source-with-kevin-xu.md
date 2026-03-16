@@ -28,19 +28,19 @@ the amount of compute you have access to to do your super cool research is an or
 
 The level of business pressure that you are under is high, but the upside is just also an order of magnitude or two more positive for you as an individual contributor, as a founder, as someone playing in the broader ecosystem.
 
-If you're in the West, in contrast, the Chinese new entrance to the field, the Drupus and Minimaxes and even DeepSeeks of the world have not had anything remotely close to the type of success that **OpenAI**, **Anthropic**, or even the sort of tier two AI startups that have been founded over the past few years have been able to deliver.
+If you're in the West, in contrast, the Chinese new entrance to the field, the 01.AIs and Minimaxes and even DeepSeeks of the world have not had anything remotely close to the type of success that **OpenAI**, **Anthropic**, or even the sort of tier two AI startups that have been founded over the past few years have been able to deliver.
 
 So the pressure is enormous.
 
 It's kind of indefinite because you haven't, even though you are making the best models in your country, it's not that's transforming into revenue in the tens of millions of dollars.
 
-Kevin, we should get into the **Alibaba** firing resignation of **Lin Zhiyang** too then, since you mentioned the "cushy job at Alibaba", which really only lasts about a couple of quarters.
+Kevin, we should get into the **Alibaba** firing resignation of **Lin Junyang** too then, since you mentioned the "cushy job at Alibaba", which really only lasts about a couple of quarters.
 
 I think that has been dealt to **China tech** in general, probably as soon as export control and tech sanctions and then China's own crackdown became the norm that everybody in China has to operate in.
 
 And AI doesn't change that AI probably accentuates a lot of those challenges as far as lower ceiling, but also less resources with just about as much expectation for the output and the traction and the metrics.
 
-And I think the latest personnel change over at **Alibaba**'s **Quen team**, this just happened a few days ago, is the latest manifestation.
+And I think the latest personnel change over at **Alibaba**'s **Qwen team**, this just happened a few days ago, is the latest manifestation.
 
 I think **China tech** or **China AI**, maybe, especially in the **open source** world, has maybe enjoyed quite a year of, I wouldn't say euphoria, but at least a lot of really welcomed and perhaps long overdue traction, attention, not just from within China, but all over the world.
 
@@ -76,7 +76,7 @@ And all the toxicity of the **China** label as a brand for, a quarter, a quarter
 
 And so there is a very practical reason to open sourcing everything, despite the economics being initially not that great, because it's one of the few vectors where you can break out of your market, your whole market into different markets.
 
-Yeah, let's do a little compare and contrast between **China tech** crackdown and what we just saw with **Anthropic** and the **Department of War**, because I think that kind of underlines another difference in the sort of ambition that you can have as a founder in this world.
+Yeah, let's do a little compare and contrast between **China tech** crackdown and what we just saw with **Anthropic** and the **Department of Defense**, because I think that kind of underlines another difference in the sort of ambition that you can have as a founder in this world.
 
 I mean, **Dario** wants to shape the future trajectory of humankind.
 
@@ -85,11 +85,11 @@ And kind of the idea that first, I think a **Chinese founder** could be that kin
 
 And then the, look, we talk about America has military civil fusion as well on certain dimensions, but the idea of a Chinese lab saying no in a dramatic and public way like this would just not happen.
 
-People have learned that lesson: this is not the way to sort of have what would have been the equivalent of **Dario** writing that memo and it coming out in the public? It would just be someone crashes out on **Peng Yuchen** and it gets screenshotted and sent to things.
+People have learned that lesson: this is not the way to sort of have what would have been the equivalent of **Dario** writing that memo and it coming out in the public? It would just be someone crashes out on **WeChat Moments** and it gets screenshotted and sent to things.
 
-And then three days later, all their social media disappears and they're probably gone somewhere and maybe not coming back, ever, or at least for a good while, which is kind of what famously happens with **Johnny Ming** and the crackdown on some of the bike dance products, which weren't even trying to reshape the face of the society's relationship.
+And then three days later, all their social media disappears and they're probably gone somewhere and maybe not coming back, ever, or at least for a good while, which is kind of what famously happens with **Zhang Yiming** and the crackdown on some of the ByteDance products, which weren't even trying to reshape the face of the society's relationship.
 
-> Just low brow humor was what **Johnny Ming**'s initial wire that got tripped.
+> Just low brow humor was what **Zhang Yiming**'s initial wire that got tripped.
 
 They just had fights and nudity and that's all it, that's all it took. Not saying no to doing autonomous weapons.
 
@@ -110,12 +110,12 @@ Because everybody learned from open source in the universities, no one buys a pr
 
 And now they're expressing it in different ways. And it's funny, you mentioned that as another vector, right? To express their own identity, not just as a way to go abroad from a business perspective.
 
-The first generation of founders, this is like the **John Yiming** generation of founders. There are several people who also work in open source world and databases as well. They're very liberal. They've all had traces on Weibo of expressions and opinions expressed about the state of their country that has nothing to do with the technology that they're building. And now all of that has disappeared, right?
+The first generation of founders, this is like the **Zhang Yiming** generation of founders. There are several people who also work in open source world and databases as well. They're very liberal. They've all had traces on Weibo of expressions and opinions expressed about the state of their country that has nothing to do with the technology that they're building. And now all of that has disappeared, right?
 
 And I think the newer generation of AI founders, one thing I paid a lot of close attention to is not so much the fact that they open source anything at all, but the way they are doing it is increasingly more sophisticated and more exposed to different ways that Western communities are being built.
 
-One example that I cited is **Moonshot's founder**, **Yang Zhilin**, who in their shop makes a **Kimmy** series of models. And it's really interesting to see him coming out of his engineer shell and engage with the Reddit community during one of **Kimmy**'s launches directly to talk with the community. It's very **Sam Altman**-like as far as how exposed and accessible he is, right? To whoever wants to talk about **Kimmy** or give him crap about **Kimmy**. You have to have a pretty strong, thick skin, but also a good sense of humor to do Reddit really well. That is the kind of thing that the previous generation of founders, the **Zhang Yimin** generation, hasn't quite cracked.
-But **Yang Zhilin**'s generation, I think, is cracking right now. He also did this, direct-to-camera release of **Kimmy 2.5**, I think, which is very different from a lot of how **Chinese** models or Chinese products in general are being released. **Manus** did similar things for their product as well. All these things built on top of what I wrote in my piece, which is two decades plus of **open source** history that evolved from taking and consuming and just using free software for their own needs. And there's still a lot of that going on and not enough giving back, unfortunately. But over time, the maturity has really evolved as far as contributing, but also engaging with a wider community to actually take in feedback, to prioritize feedback, letting people vote on certain elements of the roadmap, which is super, super common in the open source world. And the Chinese founders who engage in that world are frankly not that different.
+One example that I cited is **Moonshot's founder**, **Yang Zhilin**, who in their shop makes a **Kimi** series of models. And it's really interesting to see him coming out of his engineer shell and engage with the Reddit community during one of **Kimi**'s launches directly to talk with the community. It's very **Sam Altman**-like as far as how exposed and accessible he is, right? To whoever wants to talk about **Kimi** or give him crap about **Kimi**. You have to have a pretty strong, thick skin, but also a good sense of humor to do Reddit really well. That is the kind of thing that the previous generation of founders, the **Zhang Yiming** generation, hasn't quite cracked.
+But **Yang Zhilin**'s generation, I think, is cracking right now. He also did this, direct-to-camera release of **Kimi k2.5**, I think, which is very different from a lot of how **Chinese** models or Chinese products in general are being released. **Manus** did similar things for their product as well. All these things built on top of what I wrote in my piece, which is two decades plus of **open source** history that evolved from taking and consuming and just using free software for their own needs. And there's still a lot of that going on and not enough giving back, unfortunately. But over time, the maturity has really evolved as far as contributing, but also engaging with a wider community to actually take in feedback, to prioritize feedback, letting people vote on certain elements of the roadmap, which is super, super common in the open source world. And the Chinese founders who engage in that world are frankly not that different.
 
 > So, in my view, those are the most, quote, Western part, the most, quote, Western portion of the Chinese tech community.
 
@@ -134,7 +134,7 @@ So with that context in mind, the latest generation of AI labs from China, at th
 
 where buying software is just not as scrutinized, where you can really scale that model, right? So they really don't have a good option. It's a very tough hand dealt when you're a tech founder in China trying to make technology products to be sold and make a big company out of it.
 
-And **open source** is this vector where you can at least get people to try yourself without, again, the toxicity I said, and kind of see it on the merit. And the playbook of packaging open source things to commercial software that you will subscribe to or pay for, that playbook has been played quite a few times in the **U.S.** market, especially in the cloud, the hyperscalers, packaging open source databases to be consumed on **AWS**. And most of the Chinese vendors and companies have really internalized how that playbook is run as well, which is why, if you want to turn it to present day, why **Kimi** and **Minimax** and now **Tencent Cloud** and every other cloud under the sun in China is packaging **OpenClaw** almost immediately as a hosted solution to be consumed by the masses or whatnot.
+And **open source** is this vector where you can at least get people to try yourself without, again, the toxicity I said, and kind of see it on the merit. And the playbook of packaging open source things to commercial software that you will subscribe to or pay for, that playbook has been played quite a few times in the **U.S.** market, especially in the cloud, the hyperscalers, packaging open source databases to be consumed on **AWS**. And most of the Chinese vendors and companies have really internalized how that playbook is run as well, which is why, if you want to turn it to present day, why **Kimi** and **Minimax** and now **Tencent Cloud** and every other cloud under the sun in China is packaging **Llama** almost immediately as a hosted solution to be consumed by the masses or whatnot.
 > "And that's just a very simple **open source to commercial playbook**."
 
 And it's more surprising to me that less U.S. players are doing that. We can speculate on why. But that playbook is very well run and well internalized on the **Chinese ecosystem**.
@@ -165,7 +165,7 @@ I think the consumer landscape in China is always a bit more—you can call it v
 
 So I think the fight is there, but again, the market is just walled off. If you make the best Chinese speaking or the best chatbot, whatever consumer app for the Chinese market, the way you can really go abroad with that is hard, not impossible. **TikTok** has shown some ability to scale beyond that. If you find some commonality or common denominator to scale, right?
 
-But as far as who's up, who's down, obviously **Doobao** from **ByteDance** seems to be the one. It's a chat GPT equivalent as far as the consumer level of both awareness, but also usage. **Alibaba** is actually quite behind, even though there might be nominally number two with whatever, the Quinn branded chat app that they're releasing just very recently.
+But as far as who's up, who's down, obviously **Doubao** from **ByteDance** seems to be the one. It's a ChatGPT equivalent as far as the consumer level of both awareness, but also usage. **Alibaba** is actually quite behind, even though there might be nominally number two with whatever, the Qwen branded chat app that they're releasing just very recently.
 
 Another reason why maybe they're much more commercially focused is because they're losing that market share. While the cloud infrastructure B2B side is still going to be a very tough business for them to grow both domestically and abroad.
 
@@ -177,7 +177,7 @@ One of the interesting things about how this is going to evolve is we've recentl
 - **Anthropic**
 - **ByteDance**
 - **Alibaba**
-- **Doobao**
+- **Doubao**
 - **Jack Ma**
 - **Kevin**
 "And if there are any two companies in the world that are going to figure out how to kind of get that sort of **chat bot shopping experience**, right?"
@@ -257,7 +257,7 @@ I think it's admirable, but admorbidity only gets you so far when it comes to ma
 And, you know, we'll see how that goes.
 
 And yeah, I don't know if you want to talk about the whole Alibaba fiasco.
-I think it's TBD where that's going. But again, it's just another episode, I think, of the whole difficult. Yeah, let's do it. Well, let's just, I mean, just to, just to kind of level set: **10 cent market cap, $600 billion**. **Alibaba market cap is somewhere around that is 325 billion dollars.** So those firms have been at it a long time.
+I think it's TBD where that's going. But again, it's just another episode, I think, of the whole difficult. Yeah, let's do it. Well, let's just, I mean, just to, just to kind of level set: **Tencent market cap, $600 billion**. **Alibaba market cap is somewhere around that is 325 billion dollars.** So those firms have been at it a long time.
 
 If they were, I mean, the closest, the closest comps are in the multi trillion dollar range in the **U.S.** and little **OpenAI** and **Anthropic** have already, or on the, or on pace to surpass. Both of them having existed for three and let's say 10 years, but we don't really count the opening after 10 years.
 
@@ -294,21 +294,21 @@ For some number, they're both around 40, 45, 45 billion USD, which is, again, a 
 
 Oh yeah, **Alibaba** implosion. We did a little bit of it earlier. "Why don't you, why don't you close the circle on that one, Kevin?"
 
-I think for those of you who haven't caught the news, there was a pretty public resignation of one of the tech leaders of the **Quinn** model team, **Lin Juyang**.
+I think for those of you who haven't caught the news, there was a pretty public resignation of one of the tech leaders of the **Qwen** model team, **Lin Junyang**.
 
 And he also has quite the big reputation within **Alibaba** for being the youngest P10 engineer, P10 being a very high senior engineering level that you don't reach in your early thirties, right? I think it's roughly where he is right now. It has open AI. **Sam** got fired by how it played out a little bit on Twitter. Of course, while China is actually asleep, which is super fascinating. Then a few other people also resigned. There was an all-hands meeting that happened with the CEO of **Alibaba**, who was also the CEO of **Alibaba Cloud**, **Eddie Wu**, to address the whole situation.
 
 I wrote a little bit about it on the interconnected newsletter, but I think how this translates into financial results is TBD. I do think this is both somewhat idiosyncratic to **Alibaba**'s corporate culture, which is they're very kind of anti sort of God figure, at least in the ranking files.
 
-And I think Lin probably got to that level of celebrity, especially in the Western world as the only person or the most accessible and visible person that anybody from the West who interacts with the **Quinn** team. You basically talk to him and that he's very good at being accessible, very helpful, generally a very good open source evangelist, not to mention really technical person as well.
+And I think Lin probably got to that level of celebrity, especially in the Western world as the only person or the most accessible and visible person that anybody from the West who interacts with the **Qwen** team. You basically talk to him and that he's very good at being accessible, very helpful, generally a very good open source evangelist, not to mention really technical person as well.
 
-So nothing against him whatsoever. But my way of thinking about the situation is the old **JFK** line, which is that is no longer about what **Alibaba** can do for **Quinn** is about what **Quinn** can do. For **Alibaba**. And I think that that is the strategic shift that we're going to see as far as where can **Quinn** plug in to lift up the rest of the entire **Alibaba** ecosystem when it comes to shopping, consumer app, obviously the cloud. And I think **Quinn** probably vastly exceeded its expectation as well from the way it started.
+So nothing against him whatsoever. But my way of thinking about the situation is the old **JFK** line, which is that is no longer about what **Alibaba** can do for **Qwen** is about what **Qwen** can do. For **Alibaba**. And I think that that is the strategic shift that we're going to see as far as where can **Qwen** plug in to lift up the rest of the entire **Alibaba** ecosystem when it comes to shopping, consumer app, obviously the cloud. And I think **Qwen** probably vastly exceeded its expectation as well from the way it started.
 
 I cannot believe the whole team is only about 100 people before the whole personnel change happened. It's sort of a you're a victim of your own success in a lot of ways. And then the top just comes in and sort of grabs it.
 
 Here's an interesting comp: **Mira** leaves **open AI**, brings 10 of her best friends, gets to raise $2 billion at a $12 billion valuation, has basically done. Has published nothing a year later, gets one megawatt of compute, signs a deal with **Jensen**, and is now raising at a $50 billion valuation.
 
-If you take the **Quinn** team and bring them outside and put the hat out to the Chinese domestic ecosystem.
+If you take the **Qwen** team and bring them outside and put the hat out to the Chinese domestic ecosystem.
 
 So you don't want to do a Manus and I guess they kind of already are in Singapore. Maybe it's a slightly different thing, but Kevin, why don't you play out the two paths?
 
@@ -317,16 +317,16 @@ So you don't want to do a Manus and I guess they kind of already are in Singapor
 
 Or else let's do the global thing, but as a not Chinese company.
 
-You mean if the crew that left **Quinn** wants to do their version of the thinking machine as a startup or as a **Neolab**, that's the new term. It's a **Neolab**. If they want to, what are the pathways for **Neolab** success? If you have the street cred and track record of the **Quinn** team, but you want to make it on your own today?
+You mean if the crew that left **Qwen** wants to do their version of the thinking machine as a startup or as a **Neolab**, that's the new term. It's a **Neolab**. If they want to, what are the pathways for **Neolab** success? If you have the street cred and track record of the **Qwen** team, but you want to make it on your own today?
 
 > "I literally have no answer for what could be the successful outcome of a Neolab."
 
 It's so crazy. We see the new **Yang LeCun Neolab** raising a billion dollars right off the bat as well. But that's a $3 billion valuation. I feel like you could probably pull off domestically in China. You might get enough people to take a flyer on you for that, but not at the thinking labs. No, not at all.
-I think the **Drupal Minimax** exit story or the going public story is probably the best comp for any investor looking at persuading the **Quinn**, where is it?
+I think the **01.AI / MiniMax** exit story or the going public story is probably the best comp for any investor looking at persuading the **Qwen**, where is it?
 
 I want to think of a **Fairchild**, the trader is, I don't know how many left the traders for five to start their own **Neolab** in China. That's probably your best get alcohol from a financial perspective, right? But I think having that reputation that he has garnered could give you a really big jumpstart. And this is probably the last check that anybody, at least within **China**, but maybe even globally will write into a **Neolab**.
 
-I don't think there's a good **Neolab** story at the **Yang Lecun** level, at the **Miriam Marati** level that could really garner both that much money, that much attention with relatively little to have shown for up to this point. And I think the **Quinn** team actually was going to have a **Singapore** team as well. That was one of the things that was maybe on the table that got shelved because of this personnel change.
+I don't think there's a good **Neolab** story at the **Yann LeCun** level, at the **Mira Murati** level that could really garner both that much money, that much attention with relatively little to have shown for up to this point. And I think the **Qwen** team actually was going to have a **Singapore** team as well. That was one of the things that was maybe on the table that got shelved because of this personnel change.
 
 So my best guess is that they're going to decant to **Singapore** and do **Manus 2.0**, but even cleaner, and see how that goes.
 
@@ -361,18 +361,18 @@ But felt like he gained a few a few popularity points with the whole **Pentagon 
 - Within China, within China.
 - Certainly in the **United States**, I think he's garnering quite a bit of **domestic goodwill**.
 
-You can just see it from the **CLAA** download chart. It's finally at number one after being at, what, number 17 for ever.
+You can just see it from the **Claude** download chart. It's finally at number one after being at, what, number 17 for ever.
 
-Well, everybody I know, not to say that's indicative for a big sample size, who is part of the Chinese ecosystem. They love using **CLAA**. Most of them are engineers, who I know. They love CLAA code. They love the product that's coming out of **Anthropik**. I think that is a good way to understand the practicality of people who work in the tech world or the business world in China. Is that, from an ideological perspective, you probably don't like what the guy who made the product said about your country or what you do, or whatnot. But a good product is a good product and I'll still use it, and it's still very, very popular.
+Well, everybody I know, not to say that's indicative for a big sample size, who is part of the Chinese ecosystem. They love using **Claude**. Most of them are engineers, who I know. They love Claude code. They love the product that's coming out of **Anthropic**. I think that is a good way to understand the practicality of people who work in the tech world or the business world in China. Is that, from an ideological perspective, you probably don't like what the guy who made the product said about your country or what you do, or whatnot. But a good product is a good product and I'll still use it, and it's still very, very popular.
 
-And it's, I don't even know how that usage falls in an **Anthropik** financial statement. Do they even have a revenue line that says **PRC** on it? Because they're definitely getting usage. I just don't know how that actually works from an account, a receivable, or accounting perspective.
+And it's, I don't even know how that usage falls in an **Anthropic** financial statement. Do they even have a revenue line that says **PRC** on it? Because they're definitely getting usage. I just don't know how that actually works from an account, a receivable, or accounting perspective.
 
 Well, it's all **Asia Pacific**. It's all coming through **Japan and Korea**, right?
 
 What's funny is they've really tried not to, they had this whole blog post saying
 > "we're going to try to really shut down all the, all the accounts."
 
-And both, both opening eye and **Anthropik** have since published reports saying, we caught some Chinese state hackers slipping, revealing that they were trying to find exploits or whatnot using our models instead of domestic or open source ones. But I don't know, it's hard to regulate this sort of thing.
+And both, both OpenAI and **Anthropic** have since published reports saying, we caught some Chinese state hackers slipping, revealing that they were trying to find exploits or whatnot using our models instead of domestic or open source ones. But I don't know, it's hard to regulate this sort of thing.
 
 **VPNs** can be really good. The thing about VPNs is at a certain point, if it's really that important, you can just control someone's computer who's in Japan. How are they going to know? I guess, are they going to ban everyone who's using simplified Chinese to use their models? I don't necessarily think so. And if you're not going to do that, then to a certain extent, especially with individual users, where there's a will, when there's a will, there's a way.
 
@@ -424,7 +424,7 @@ If you work at a large organization, reach out. you get a big bulk subscription 
       "section_level": 2
     },
     {
-      "index_sentences": "Yeah, let's do a little compare and contrast between China tech crackdown and what we just saw with Anthropic and the Department of War, because I think that kind of underlines another difference in the sort of ambition that you can have as a founder in this world.",
+      "index_sentences": "Yeah, let's do a little compare and contrast between China tech crackdown and what we just saw with Anthropic and the Department of Defense, because I think that kind of underlines another difference in the sort of ambition that you can have as a founder in this world.",
       "section_title": "Comparing China's Tech Crackdown and Western Ambition",
       "section_level": 1
     },
@@ -469,7 +469,7 @@ If you work at a large organization, reach out. you get a big bulk subscription 
       "section_level": 1
     },
     {
-      "index_sentences": "But as far as who's up, who's down, obviously Doobao from ByteDance seems to be the one.",
+      "index_sentences": "But as far as who's up, who's down, obviously Doubao from ByteDance seems to be the one.",
       "section_title": "Key Players and Market Share",
       "section_level": 2
     },
@@ -558,14 +558,14 @@ window.faq = {
       "index_of_source": "I wanted to articulate one thing, which is that open source as a strategy to expand is likely one of the best, if not the only avenue in which a lot of Chinese entrepreneurs, tech entrepreneurs have at their disposal these days to really go beyond their own border."
     },
     {
-      "question": "What was the broader significance of Lin Juyang's public resignation from Alibaba's Quinn model team?",
-      "answer": "Lin Juyang's resignation, as a highly reputable and visible tech leader, signifies a strategic shift for Alibaba's AI efforts, moving from what Alibaba can do for Quinn to what Quinn can do for Alibaba. It suggests that the team, a \"victim of its own success,\" is being refocused to integrate into the broader Alibaba ecosystem (shopping, consumer apps, cloud) rather than operating as an independent, high-profile entity.",
-      "index_of_source": "But my way of thinking about the situation is the old JFK line, which is that is no longer about what Alibaba can do for Quinn is about what Quinn can do."
+      "question": "What was the broader significance of Lin Junyang's public resignation from Alibaba's Qwen model team?",
+      "answer": "Lin Junyang's resignation, as a highly reputable and visible tech leader, signifies a strategic shift for Alibaba's AI efforts, moving from what Alibaba can do for Qwen to what Qwen can do for Alibaba. It suggests that the team, a \"victim of its own success,\" is being refocused to integrate into the broader Alibaba ecosystem (shopping, consumer apps, cloud) rather than operating as an independent, high-profile entity.",
+      "index_of_source": "But my way of thinking about the situation is the old JFK line, which is that is no longer about what Alibaba can do for Qwen is about what Qwen can do."
     },
     {
       "question": "Why has the \"open source to commercial playbook\" been more successfully internalized and executed within the Chinese tech ecosystem compared to the US?",
-      "answer": "The Chinese ecosystem, particularly its cloud providers like Kimi, Minimax, and Tencent Cloud, has quickly adopted the strategy of packaging open source solutions into hosted, commercial offerings (e.g., OpenClaw). This playbook, involving subscriptions and paid services built on open source, is less common in the US, where \"less U.S. players are doing that,\" possibly due to different market dynamics and preferences.",
-      "index_of_source": "And most of the Chinese vendors and companies have really internalized how that playbook is run as well, which is why, if you want to turn it to present day, why Kimi and Minimax and now Tencent Cloud and every other cloud under the sun in China is packaging OpenClaw almost immediately as a hosted solution to be consumed by the masses or whatnot."
+      "answer": "The Chinese ecosystem, particularly its cloud providers like Kimi, Minimax, and Tencent Cloud, has quickly adopted the strategy of packaging open source solutions into hosted, commercial offerings (e.g., Llama). This playbook, involving subscriptions and paid services built on open source, is less common in the US, where \"less U.S. players are doing that,\" possibly due to different market dynamics and preferences.",
+      "index_of_source": "And most of the Chinese vendors and companies have really internalized how that playbook is run as well, which is why, if you want to turn it to present day, why Kimi and Minimax and now Tencent Cloud and every other cloud under the sun in China is packaging Llama almost immediately as a hosted solution to be consumed by the masses or whatnot."
     },
     {
       "question": "How does the consumer AI market in China diverge from the enterprise AI market in the West regarding business models and revenue generation?",
@@ -574,7 +574,7 @@ window.faq = {
     },
     {
       "question": "How did Anthropic's reputation in China experience a \"fascinating swing\" despite initial controversy?",
-      "answer": "Initially, Anthropic faced criticism in China for a report claiming Chinese firms were distilling their models, leading to \"everyone hating on them.\" However, their public stance against working with the Department of War a week later caused a shift, with Chinese tech users appreciating Dario's actions as \"standing up for humanity\" and continuing to widely use Anthropic's products like CLAA for its quality.",
+      "answer": "Initially, Anthropic faced criticism in China for a report claiming Chinese firms were distilling their models, leading to \"everyone hating on them.\" However, their public stance against working with the Department of Defense a week later caused a shift, with Chinese tech users appreciating Dario's actions as \"standing up for humanity\" and continuing to widely use Anthropic's products like Claude for its quality.",
       "index_of_source": "We had this fan, we had this fascinating swing with on the one hand, everyone was hating on them because they released that report saying that all the Chinese firms had been doing distillation of their models."
     },
     {
@@ -583,8 +583,8 @@ window.faq = {
       "index_of_source": "You have less money, more competition. It's more intense. Upside is lower. Kind of political walls are way tighter closing in."
     },
     {
-      "question": "What are the potential pathways for a highly reputable \"Neolab\" team, such as the one that left Alibaba's Quinn, to achieve success if they choose to start independently today, especially outside China?",
-      "answer": "A team like the one from Quinn, with significant street cred, might struggle to find a clear path to independent success as a \"Neolab,\" especially at the valuation levels seen in the West. While they might secure some domestic funding in China, the most likely pathway if they want global reach and to avoid China-adjacent risks (like export controls) is to relocate to a place like Singapore, potentially operating as \"Manus 2.0.\" Their success would then depend heavily on the leader's ability to transition from a tech lead to a CEO and commercialize their open source commitment.",
+      "question": "What are the potential pathways for a highly reputable \"Neolab\" team, such as the one that left Alibaba's Qwen, to achieve success if they choose to start independently today, especially outside China?",
+      "answer": "A team like the one from Qwen, with significant street cred, might struggle to find a clear path to independent success as a \"Neolab,\" especially at the valuation levels seen in the West. While they might secure some domestic funding in China, the most likely pathway if they want global reach and to avoid China-adjacent risks (like export controls) is to relocate to a place like Singapore, potentially operating as \"Manus 2.0.\" Their success would then depend heavily on the leader's ability to transition from a tech lead to a CEO and commercialize their open source commitment.",
       "index_of_source": "So my best guess is that they're going to decant to Singapore and do Manus 2.0, but even cleaner, and see how that goes."
     }
   ]
