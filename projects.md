@@ -8,7 +8,11 @@ title: Projects
 </script>
 
 <div class="project-list">
-  <div class='codie'><a href='https://codie.mindynode.com'>Codie</a> is an open implementation of vibe coding tools like <a href='https://lovable.dev'>Lovable.dev</a> and <a href='https://replit.com/ai'>Replit Agent</a></div>
+  <!-- <div class='codie'><a href='https://codie.mindynode.com'>Codie</a> is an open implementation of vibe coding tools like <a href='https://lovable.dev'>Lovable.dev</a> and <a href='https://replit.com/ai'>Replit Agent</a></div> -->
+
+  <div class='gin'><a href='https://gin.mindynode.com'>Gin</a> is a tiny github implementation.</div>
+
+  <div class='tiny-pool'><a href='https://github.com/josherich/tiny-pool'>Tiny Pool</a> is a tiny implementation of 8 ball that supports realistic physics and online game.</div>
 
   <div class='npm-dominator-tree'><a href='/dominator-tree'>NPM Dominator Tree</a> is a tool to get insights of your npm dependencies using <a href='https://en.wikipedia.org/wiki/Dominator_(graph_theory)'>Dominator Tree</a></div>
 
