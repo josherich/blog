@@ -33,7 +33,7 @@ Before we get into today's episode, I just have a small message for listeners. T
 
 Now let's get into it.
 
-Hey everyone, welcome to the **Latent Space Podcast**. This is **Alasio**, founder of Kernel Labs, and I'm joined by **Swix**, editor of Latent Space. Hello, and we're in **A16Z** with A, Mark and Jason. Welcome.
+Hey everyone, welcome to the **Latent Space Podcast**. This is **Alessio**, founder of Kernel Labs, and I'm joined by **Swyx**, editor of Latent Space. Hello, and we're in **A16Z** with A, Mark and Jason. Welcome.
 
 Yes. Yes. A and what? Half of 16? Half of the one. A1. Exactly.
 
@@ -106,7 +106,7 @@ We're just like, all right, if, if, **Linus Torvalds** is saying that the AI cod
 
 Right. It's just that, cause that's, that's the hardest, in many ways, that's the hardest example. And now everything else is going to be a derivative of that.
 
-And then on top of that, we just got the **agent breakthrough** with open claw, which is fantastic, which is amazing and incredibly powerful. And then we just got the auto research, the self-improvement, we're now into the **self-improvement breakthrough**.
+And then on top of that, we just got the **agent breakthrough** with OpenClaw, which is fantastic, which is amazing and incredibly powerful. And then we just got the auto research, the self-improvement, we're now into the **self-improvement breakthrough**.
 
 And so the, so the way I think about it is we've had four fundamental breakthroughs and functionality, **LLMs**, reasoning, agents, and then now **RSI**, and they're all actually working.
 
@@ -171,7 +171,7 @@ One of my early hits was modeling the lifespan of the **H100** and **H200** and 
 
 How important is **open source AI** and **edge inference** in a world in which you have three years of supply crunch? Do you think, if you fast forward five years, how do you think about inference in the data center versus at the edge?
 
-Well, I think open source is very important for a bunch of reasons. I think edge inference is very important for a bunch of reasons. I think just practically speaking, if we're going to have fundamental construct supply crunches for the next, if you just project forward demand over the next three years, relative to supply, one of the dismaying predictions you can do is what's going to happen to the cost of inference in the core over the next three years. And it may rise dramatically. So what is, and then is the big model companies are subsidizing heavily right now. And so what's the average person's per day, per month token costs, three years from now to do all the things that they want to do. I have friends today who are paying a thousand dollars a day for open clock for claw tokens to run open claw. So, okay, $30,000 a month. And by the way, those friends have a thousand more ideas of the things that they want their claw to do. So you could imagine there's latent demand of up to, I don't know, five or $10,000 a day of tokens for a fully deployed personal agent. And obviously consumers can't pay that. But it gives you a sense of the future scope of demand. So even if there's a 10 X improvement in price performance, that's still, it goes to a hundred dollars a day, which is still way beyond what people can pay. So there's just going to be ferocious demand. By the way, the **agent** thing, the other interesting thing is I think the agent thing. Up until now, a lot of the constraints have been **GPU** constraints. I think the agent thing now also translates into **CPU and memory** constraints. CPU and memory. And so the entire chip ecosystem is just going to get with the network constraints. That will be the killer. That's all bottlenecked and potentially for years. And so I think that Brad, and I think it's actually possible. I mean, generally inference costs are going to keep coming down, but I think the rate of decline may level out here for a bit because of these supply constraints. And then at some point, maybe the labs stop subsidizing so much and that again will be an issue. And so there's just going to be so much more demand for inference than can be satisfied kind of with the centralized model. And then, you know, the dramatic innovations that have happened in the **Apple Silicon** to be able to do inferences. It's quite amazing. A level of effort being put, the open source guys are putting incredible effort into getting this recurring pattern where the big model will never run on a PC PC. And then six months later, it runs on a PC, right? It's amazing. And there's very smart people working on that. So there's all that. And then there's also other motivators, which is just, okay, how much trust are the big centralized model providers building in the market versus, at least for, in certain cases,
+Well, I think open source is very important for a bunch of reasons. I think edge inference is very important for a bunch of reasons. I think just practically speaking, if we're going to have fundamental construct supply crunches for the next, if you just project forward demand over the next three years, relative to supply, one of the dismaying predictions you can do is what's going to happen to the cost of inference in the core over the next three years. And it may rise dramatically. So what is, and then is the big model companies are subsidizing heavily right now. And so what's the average person's per day, per month token costs, three years from now to do all the things that they want to do. I have friends today who are paying a thousand dollars a day for OpenClaw tokens to run OpenClaw. So, okay, $30,000 a month. And by the way, those friends have a thousand more ideas of the things that they want their Claw to do. So you could imagine there's latent demand of up to, I don't know, five or $10,000 a day of tokens for a fully deployed personal agent. And obviously consumers can't pay that. But it gives you a sense of the future scope of demand. So even if there's a 10 X improvement in price performance, that's still, it goes to a hundred dollars a day, which is still way beyond what people can pay. So there's just going to be ferocious demand. By the way, the **agent** thing, the other interesting thing is I think the agent thing. Up until now, a lot of the constraints have been **GPU** constraints. I think the agent thing now also translates into **CPU and memory** constraints. CPU and memory. And so the entire chip ecosystem is just going to get with the network constraints. That will be the killer. That's all bottlenecked and potentially for years. And so I think that Brad, and I think it's actually possible. I mean, generally inference costs are going to keep coming down, but I think the rate of decline may level out here for a bit because of these supply constraints. And then at some point, maybe the labs stop subsidizing so much and that again will be an issue. And so there's just going to be so much more demand for inference than can be satisfied kind of with the centralized model. And then, you know, the dramatic innovations that have happened in the **Apple Silicon** to be able to do inferences. It's quite amazing. A level of effort being put, the open source guys are putting incredible effort into getting this recurring pattern where the big model will never run on a PC. And then six months later, it runs on a PC, right? It's amazing. And there's very smart people working on that. So there's all that. And then there's also other motivators, which is just, okay, how much trust are the big centralized model providers building in the market versus, at least for, in certain cases,
 With some people for certain use cases, people being "I'm not willing to just turn everything over." So there's all the **trust issues**. By the way, there's also just straight up **price optimization**. There's many uses of **AI** where you don't need **Einstein** in the cloud. You just need a **smart local model**.
 
 There's also performance issues where you want your **doorknob** to have an AI model in it to be able to do access control. Obviously everything with a chip is going to have an AI model in it. And a lot of those are going to be local. And so, yeah, I think you're going to have wearable devices. You don't want to do a complete round trip. You want whatever your smart devices are to be super low latency.
@@ -186,27 +186,27 @@ And so they wanted to kill it. So at least we have a government now that actuall
 
 My read is the **Chinese** companies have a very specific reason to do open source, which is they don't fundamentally think they can sell commercial AI outside of China right now, or at least specifically not in the **U.S.** for a combination of reasons. And so they kind of view open source AI as a bit of a loss leader against basically domestic paid services and then kind of ancillary products; they're very excited about it.
 
-By the way, I think it's great. I think it's great that they're doing it. I think **deep seek** was a gift to the world. I think the great thing about **open source** is the impact of open source has felt two ways:
+By the way, I think it's great. I think it's great that they're doing it. I think **DeepSeek** was a gift to the world. I think the great thing about **open source** is the impact of open source has felt two ways:
 
 - One is you get the software for free
 - the other is you get to learn how it works
 
 And so the paper and the code.
 
-For example, I thought this was amazing. So **OpenAI** comes out with a one and it's an amazing technical breakthrough and it's absolutely fantastic. But of course they don't explain how it works in detail. And then of course they hide the reasoning traces. And then everybody's like, okay, this is great. But who's going to be able to replicate this? Are other people going to be able to do this? Is there a secret sauce in there?
+For example, I thought this was amazing. So **OpenAI** comes out with o1 and it's an amazing technical breakthrough and it's absolutely fantastic. But of course they don't explain how it works in detail. And then of course they hide the reasoning traces. And then everybody's like, okay, this is great. But who's going to be able to replicate this? Are other people going to be able to do this? Is there a secret sauce in there?
 
-And then our one comes out and there's the code and there's the paper. And now the whole world knows how to do it. And then three months later, every other AI model is adding reasoning. And so you get this kind of double: even if the Chinese models themselves are not the models that get used, the education that's taken place to the rest of the world, the information diffusion, is incredibly powerful. So that happens.
+And then R1 comes out and there's the code and there's the paper. And now the whole world knows how to do it. And then three months later, every other AI model is adding reasoning. And so you get this kind of double: even if the Chinese models themselves are not the models that get used, the education that's taken place to the rest of the world, the information diffusion, is incredibly powerful. So that happens.
 
-And then I don't know, we'll see. There are a bunch of American open source AI model companies. I mean, look, there's going to be tremendous competition among the primary model companies. Depending on how you count, there's like four or five big co model companies now that are kind of neck and neck in different ways. And then obviously both **X** and then **meta** where I'm involved are both have huge attempts to kind of leapfrog underway. And then you've got a whole fleet of startups, new companies, including a whole bunch that we're back in that are trying to come out with different approaches.
+And then I don't know, we'll see. There are a bunch of American open source AI model companies. I mean, look, there's going to be tremendous competition among the primary model companies. Depending on how you count, there's like four or five big co model companies now that are kind of neck and neck in different ways. And then obviously both **X** and then **Meta** where I'm involved are both have huge attempts to kind of leapfrog underway. And then you've got a whole fleet of startups, new companies, including a whole bunch that we're back in that are trying to come out with different approaches.
 And then you've got whatever it is. I don't know how, how many, how many main line foundation model companies are there in **China** at this point? It's probably six.
 
 > "It's five tigers is what they call it."
 
-Quinn is in questionable because there's change in leadership. Right. Yeah. But that does that include, that includes moonshot. Yes. Okay. Yeah.
+Qwen is in questionable because there's change in leadership. Right. Yeah. But that does that include, that includes Moonshot. Yes. Okay. Yeah.
 
-- Deep seek
-- Z AI
-- Quinn 01
+- DeepSeek
+- 01.AI
+- Qwen
 - **ByteDance**
 
 And then you'd say, **ByteDance** would be the next year, but they weren't as prominent. They weren't have a, but now, yeah. But they're at least, see, see dance is very inspiring and presumably they have more stuff coming in **Tencent** probably has more stuff coming and so forth.
@@ -221,7 +221,7 @@ Well, I was gonna say, well, exactly. And then you got **NVIDIA** and then, and 
 
 Yeah. Yeah. Narrative violation to European projects. **NVIDIA**. I'm hosting my Europe conference soon. And I got both of them. They got us. They got us. Okay. Well, wait a minute. Where was Peter? So where was Steinberger when he did **Austria**? Yeah. Yeah. He was in **Vienna**. Oh, he was in **Vienna**. And then where is he now? He's moving to **SF**. Okay. Okay. All right. Okay. There we go. And then, yeah, the pie guy, right. The pie guys are European. Yeah. They're buddies in **Austria**. Mario is also there. Right. And are they, yeah, they haven't announced yet any sort of change, changed or have they? No, they have a company there. Okay. Okay. Okay. Good.
 
-Good. Anyways, I think pie and open claw, very important software things. And I just wanted you to just go off on what do you think? Yeah. So I think in the combination of the two of them, I think is one of the 10 most important software. Open claw got all the attention, but right. Talk about pie. Pie is kind of the, yeah, pie is kind of the architectural breakthrough for those of us who are older. There was this whole thing that was very important in the world of software, basically from 1970 to, I don't know, it still is very important, but like 19 from 1970 through to like basically the creation of **Linux**, which is basically this, this thing we used to call the **Unix** mindset. So, because there were all these different, you know, theories, there are all these different operating systems and mainframes and then, you know, all these windows and Mac and all these things. And then there was this, but kind of behind it all was this idea of kind of the **Unix** mindset.
+Good. Anyways, I think Pi and OpenClaw, very important software things. And I just wanted you to just go off on what do you think? Yeah. So I think in the combination of the two of them, I think is one of the 10 most important software. OpenClaw got all the attention, but right. Talk about Pi. Pi is kind of the, yeah, Pi is kind of the architectural breakthrough for those of us who are older. There was this whole thing that was very important in the world of software, basically from 1970 to, I don't know, it still is very important, but like 19 from 1970 through to like basically the creation of **Linux**, which is basically this, this thing we used to call the **Unix** mindset. So, because there were all these different, you know, theories, there are all these different operating systems and mainframes and then, you know, all these windows and Mac and all these things. And then there was this, but kind of behind it all was this idea of kind of the **Unix** mindset.
 
 And the **Unix** mindset was this thing where basically you don't have these, like, in the old days, the operating system that made the computer industry really work in the 1960s was this thing called `OS 360`, which was this big operating system that **IBM** developed that was supposed to basically run everything. And it was this giant monolithic architecture in the sky. It was like a, you know, it was like a giant castle of software. And by the way, it worked really well and they were very successful with it, but it was this huge castle in the sky, but it was this thing, it was almost unapproachable, which is, you had to be kind of inside **IBM** or very close to **IBM**. And you had to really understand every aspect of the system worked.
 
@@ -274,20 +274,20 @@ And so your **agent** basically is at the end of the day, it's just, it's just i
 
 So one is it, it's, it can migrate itself. Right. And so you can instruct your **agent**, migrate yourself to a different runtime environment, migrate yourself to a different file system, migrate yourself to a different, we swap out the language model, your **agent** will do all that stuff for you. And then there's the final thing, which is just amazing, which is the **agent** actually has full **introspection** and actually, it actually knows about its own **files** and it can rewrite its own **files**. Right.
 
-> "Oh, I have my open claw, do whatever, connect to my eight sleep bed. And it gives me better advice than sleep."
+> "Oh, I have my OpenClaw, do whatever, connect to my eight sleep bed. And it gives me better advice than sleep."
 
 Which by the way, is basically no widely deployed software system in history where the thing that you're using actually has full introspective knowledge of how it itself works and is able to modify itself like that, there've been toy systems that have had that, but there, there's never been a widely deployed system that has that capability. And then that leads you to the capability that just completely blew my mind when I wrapped my head around it, which is you can tell the **agent** to add new functions and features to itself. And it can do that. Right. Extend yourself, extend yourself, give yourself a new capability. Right.
 
-And so, and so literally it's just like, you run into somebody at a party and they're "Oh, I have my open claw, do whatever, connect to my eight sleep bed. And it gives me better advice than sleep." And you go home at night and you tell your **claw** or if they're at the party, by the way, you tell your **claw**, "Oh, add this capability to yourself." And your **claw** will say, "Oh, okay, no problem." And it'll go out on the internet and it'll figure out whatever it needs. And then it'll go out to cloud code or whatever it'll write, whatever it needs. And then the next thing, you know, it has this new capability.
+And so, and so literally it's just like, you run into somebody at a party and they're "Oh, I have my OpenClaw, do whatever, connect to my eight sleep bed. And it gives me better advice than sleep." And you go home at night and you tell your **Claw** or if they're at the party, by the way, you tell your **Claw**, "Oh, add this capability to yourself." And your **Claw** will say, "Oh, okay, no problem." And it'll go out on the internet and it'll figure out whatever it needs. And then it'll go out to cloud code or whatever it'll write, whatever it needs. And then the next thing, you know, it has this new capability.
 
 And so you don't even have to, you can have it upgrade itself without even having to do anything other than tell it that you want it to do that. And so anyway, so the combination of all this is just, I mean, this is just like a massive, incredible, I mean, it's just incredible. If I were, if I were 18, this is what I would be spending all of my time on. This is such an incredible conceptual breakthrough.
 
 And again, people are going to look at it and they already get this response. People are going to look at it. They're going to say, "Oh, well, where's the breakthrough? Cause these, the, all of these components were already known before," but this is the key. The key to the breakthrough was by using all these components that were known before you get all of the underlying capability of this buried in there. And so all, and so for example, computer use, all of a sudden just kind of falls trivial, trivial. Of course, it's going to be able to use your computer. It has full access to the **shell**. Right. And then you just, you give it access to a browser and then you've got the computer in the browser and often away it goes. And then you've got all the abilities of the browser also.
 
-And so, and so the capability unlock here is profound. My friends who are deepest into this are having their **claw** do a thousand things in their lives. They have new ideas every day. They're constantly throwing new challenges. It's the thing. And by the way, it's early and you know,
+And so, and so the capability unlock here is profound. My friends who are deepest into this are having their **Claw** do a thousand things in their lives. They have new ideas every day. They're constantly throwing new challenges. It's the thing. And by the way, it's early and you know,
 These are prototypes and there's, as you guys know, there's security issues. And so there's a bunch of stuff to be ironed out, but the unlock of capability is just incredible. And I have absolutely no doubt that everybody in the world is going to, is going to have at least an **agent like this**, if not an entire **family of agents**, and we're going to be living in a world where I think it's almost inevitable now that this is the way people are going to use computers.
 
-I was going to say for someone who is deeply familiar with **social networks**, the next step is your claw talking to my claw, posting on **claw Facebook**, posting their jobs on **claw LinkedIn** and close to posting their tweets on **claw XAI or whatever**. I do think that that is how we, we get into some danger there in terms of **alignment** and whether or not we want these things to, to, to run.
+I was going to say for someone who is deeply familiar with **social networks**, the next step is your Claw talking to my Claw, posting on **Claw Facebook**, posting their jobs on **Claw LinkedIn** and Claws posting their tweets on **Claw XAI or whatever**. I do think that that is how we, we get into some danger there in terms of **alignment** and whether or not we want these things to, to, to run.
 
 You guys never rent a, rent a human.com. Yeah. I mean, it's Fiverr, it's test. Sure. Of course. **mechanical Turk**. But flipped. Right. The agent hiring the people, which of course is going to happen. It's obviously going to happen.
 
@@ -390,7 +390,7 @@ It was a **402, 402 payment required**.
 
 We have a chance now. I don't think we're going to figure it out. I don't know. What's your take? Oh, I think we will. Yeah. No, now I think it's going to happen for sure. Yeah. Yeah. And there's two reasons it's going to happen for sure.
 
-One is we actually have internet native money now in the form of **stable coins**, stable coins and **crypto**. And this is, I think this is the grand unification basically of **AI** and **crypto** is what's about to happen now. I think **AI** is the crypto killer app, I think is where this is really going to come out. And then the other is, it's just, I mean, it's just, I think it's now obvious. It's obviously **AI** agents are going to need money and it's already happening, right? If you've got a, if you've got a claw and you want it to buy things for you, you have to give it money in some form. I would say the adoption is probably 0.1% if that, but yeah. Oh, today. Yeah, yeah, yeah. But think forward. It's, where is it going? Forward thinking.
+One is we actually have internet native money now in the form of **stable coins**, stable coins and **crypto**. And this is, I think this is the grand unification basically of **AI** and **crypto** is what's about to happen now. I think **AI** is the crypto killer app, I think is where this is really going to come out. And then the other is, it's just, I mean, it's just, I think it's now obvious. It's obviously **AI** agents are going to need money and it's already happening, right? If you've got a, if you've got a Claw and you want it to buy things for you, you have to give it money in some form. I would say the adoption is probably 0.1% if that, but yeah. Oh, today. Yeah, yeah, yeah. But think forward. It's, where is it going? Forward thinking.
 
 The ultimate principle of everything and everything that I think we do is the **William Gibson** quote, which is the
 
@@ -398,7 +398,7 @@ The ultimate principle of everything and everything that I think we do is the **
 
 It isn't, it isn't distributed yet.
 
-My friends who are the most aggressive users of, of, of, of **open claw** just have given their claws, bank accounts, credit cards. And, and, and, and, and, and not only have they done it, it's obvious that they needed to do it because it's obvious that they needed to be able to spend money on their, it's just completely obvious. And so, and again, so the number of people who have done that today to your point is like, I don't know, probably 5,000 or something, but that's how these things start. Actually, I mean, since you keep mentioning. And by the way, open claw, by the way, if you don't give it a bank account, it's just going to break into your account. It's going to break into your bank account anyway and take your money. So you, you might, you might as well do it. You might as well do it.
+My friends who are the most aggressive users of, of, of, of **OpenClaw** just have given their Claws, bank accounts, credit cards. And, and, and, and, and, and not only have they done it, it's obvious that they needed to do it because it's obvious that they needed to be able to spend money on their, it's just completely obvious. And so, and again, so the number of people who have done that today to your point is like, I don't know, probably 5,000 or something, but that's how these things start. Actually, I mean, since you keep mentioning. And by the way, OpenClaw, by the way, if you don't give it a bank account, it's just going to break into your account. It's going to break into your bank account anyway and take your money. So you, you might, you might as well do it. You might as well do it.
 
 By the way, I really love, I got to tell you, I really love the phenomenon. I love the **YOLO**. I'm not doing it myself to be clear, but I love the people that are just like, what is it? Skip, skip, skip, dangerously, which by the way, it's a **Facebook** thing. "Okay." Because in **Facebook**, they have this culture to name the thing dangerous so that you are aware when you enable the flag that you are opting into a dangerous thing. Okay, good. And they brought it into **OpenAI**. And of course, that makes it enticing. **Sam** runs **Codex** with skip permissions on his laptop. Yes. A hundred percent.
 
@@ -407,12 +407,12 @@ And so I think the way to actually see the future is to find the people who are 
 - Ben Franklin out with trying to get lightning to strike his balloon and seeing if he gets electrocuted.
 - Jonas Salk with the polio vaccine injecting it.
 
-Yes. So, yes, I think we should have like a glory, we should have like flags and like we should have like monuments to the people that just let open clobber on their lives. More anecdotes. I was like, what are the craziest or interesting things that people listening to this should go up, go home and do? I mean, this is, this is, this is the extreme thing is just the straight **YOLO**. Just, yeah, turn, turn your life. That's a general capability. Yeah. Yeah.
+Yes. So, yes, I think we should have like a glory, we should have like flags and like we should have like monuments to the people that just let OpenClaw run on their lives. More anecdotes. I was like, what are the craziest or interesting things that people listening to this should go up, go home and do? I mean, this is, this is, this is the extreme thing is just the straight **YOLO**. Just, yeah, turn, turn your life. That's a general capability. Yeah. Yeah.
 
-Like a specific story that was like, wow. And everyone in the group chat just lit up. I mean, tons of, there's already tons of health, there's the health dashboard stuff is just, it's just absolutely, absolutely amazing. The number of stories on, I'm trying to just don't want to violate people's, obviously personal. But, one of the things open clouds are really good at is hacking into all this stuff in your land. It's really good. So, internet of things, AKA **internet of shit**, super insecure, but great. Discoverable. Discoverable.
-**Open claw** is happy to scan your network, identify all the things.
+Like a specific story that was like, wow. And everyone in the group chat just lit up. I mean, tons of, there's already tons of health, there's the health dashboard stuff is just, it's just absolutely, absolutely amazing. The number of stories on, I'm trying to just don't want to violate people's, obviously personal. But, one of the things OpenClaw instances are really good at is hacking into all this stuff in your land. It's really good. So, internet of things, AKA **internet of shit**, super insecure, but great. Discoverable. Discoverable.
+**OpenClaw** is happy to scan your network, identify all the things.
 
-And then my friends most aggressive at this are having **open claw** take over everything in their house.
+And then my friends most aggressive at this are having **OpenClaw** take over everything in their house.
 
 Yeah.
 
@@ -420,7 +420,7 @@ Yeah.
 - It takes over their access control systems.
 - It takes over their webcams.
 
-I have a friend whose **claw** watches him sleep. Put a webcam in your bedroom; put the claw in a loop.
+I have a friend whose **Claw** watches him sleep. Put a webcam in your bedroom; put the Claw in a loop.
 
 I have it wake up frequently and have it watch it and just tell him, > "watch me sleep."
 
@@ -442,32 +442,32 @@ But that **LLM** capability is not at all connected to the control system. So yo
 
 Jagged intelligence. Talk about jagged. And now, obviously what's going to happen in the future is they're going to connect together, but right now it's not that useful.
 
-And so I have a friend who has one of these who had his **claw** basically hack in and rewrite the code, write new firmware for the **Unitree** robot. And now it's an actual pet dog for his kids.
+And so I have a friend who has one of these who had his **Claw** basically hack in and rewrite the code, write new firmware for the **Unitree** robot. And now it's an actual pet dog for his kids.
 
 You should do that before, after the motion.
 
 Yeah. It's good. You said it's completely different. He said it's a complete transformation.
 
-And whenever there's an issue in the thing, now the **claw** just rewrites the code. You go, does the code. And so it kind of goes to your thing here.
+And whenever there's an issue in the thing, now the **Claw** just rewrites the code. You go, does the code. And so it kind of goes to your thing here.
 
 So all of a sudden, this is why we want to think about **AI coding**. **AI coding** is not just writing new apps. It's also going in and rewriting all the old stuff that should have worked that never worked.
 
 I think the **internet of shit** is basically over. I think everything, there's a potential here where all these devices in your house that have been basically marginal or basically dumb might all get really smart.
 
 Now you have to decide if there are horror movies in which this is the premise. And so you have to decide if you want this, but this is the first time I can say with confidence I now know how you could actually have a **smart home** with 30 different kinds of things with chips and internet access where it actually all makes sense. It all works together and it's all coherent in the whole thing.
-> And to have that unlock without a human being having to go do any of that work.  
-> I'm waiting for a story, **Mark**.  
-> I can't let you open that **fridge door**.  
-> Exactly.  
-> Yes.  
-> Because you're not supposed to eat right now.  
-> I have all of, yes, I have every thread of health information, and I know you think you're doing dah, dah, dah, I don't think you can do this, but this is a real, are you really sure?  
-> And you told me last night, you really don't want me to let you do this.  
-> So, I'm sorry, but the **fridge door** is locked.  
-> Open the **fridge doors**.  
-> Exactly.  
-> And by the way, I know you're supposed to be studying for a test.  
-> So why don't we, why don't you go when you can pass the test?  
+> And to have that unlock without a human being having to go do any of that work.
+> I'm waiting for a story, **Mark**.
+> I can't let you open that **fridge door**.
+> Exactly.
+> Yes.
+> Because you're not supposed to eat right now.
+> I have all of, yes, I have every thread of health information, and I know you think you're doing dah, dah, dah, I don't think you can do this, but this is a real, are you really sure?
+> And you told me last night, you really don't want me to let you do this.
+> So, I'm sorry, but the **fridge door** is locked.
+> Open the **fridge door**.
+> Exactly.
+> And by the way, I know you're supposed to be studying for a test.
+> So why don't we, why don't you go when you can pass the test?
 > I will open the **fridge door** for you.  
 > Final protocol.  
 > And then we can wrap up a **proof of human**.  
@@ -665,7 +665,7 @@ Yes. Yes. Could not be more exciting. Yeah. Really. Thank you, Mark. You guys. A
       "section_level": 2
     },
     {
-      "index_sentences": "I think pie and open claw, very important software things.",
+      "index_sentences": "I think Pi and OpenClaw, very important software things.",
       "section_title": "Pi and OpenClaw: A New Software Architecture",
       "section_level": 1
     },
