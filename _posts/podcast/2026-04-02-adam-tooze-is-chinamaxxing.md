@@ -31,13 +31,13 @@ I think that the surprising thing was by telling a clear story and really being 
 
 The **three-row Lexus TX**. Because everyone should feel like the center of the universe. **Experience amazing at your Lexus dealer.**
 
-**Welcome to the Cynica Podcast.** Weekly discussion of current affairs in China. In this program, we look at books, ideas, new research, intellectual currents, and cultural trends that can help us better understand what's happening in China's politics, foreign relations, economics, and society.
+**Welcome to the Sinica Podcast.** Weekly discussion of current affairs in China. In this program, we look at books, ideas, new research, intellectual currents, and cultural trends that can help us better understand what's happening in China's politics, foreign relations, economics, and society.
 
-Join me each week for in-depth conversations that shed more light and bring less heat to how we think and talk about China. I'm **Kaiser Guo** coming to you this week from my home in **Beijing**.
+Join me each week for in-depth conversations that shed more light and bring less heat to how we think and talk about China. I'm **Kaiser Kuo** coming to you this week from my home in **Beijing**.
 
-**Cynica** is supported this year by the **Center for East Asian Studies at the University of Wisconsin-Madison**, a national resource center for the study of East Asia.
+**Sinica** is supported this year by the **Center for East Asian Studies at the University of Wisconsin-Madison**, a national resource center for the study of East Asia.
 
-- The Cynica Podcast is and will remain free.  
+- The Sinica Podcast is and will remain free.  
 - But if you work for an organization that believes in what I'm doing with the podcast and with the newsletter, please consider lending your support.  
 - I'm still looking for new institutional support. The lines are open. You can reach me at cynicapod at gmail.com.
 
@@ -47,11 +47,11 @@ Last summer, the last time I caught up with **Adam Tooze**, it was in the mounta
 
 We also talked about Europe's increasingly fraught relationship with China and about what it means to think seriously about China in a world defined less by any single crisis than by the collision of many.
 
-Well, **Adam** is back in **China** and in **Beijing** for the recently concluded China Development Forum, and I am delighted to welcome him both back to Beijing and to **Cynica**.
+Well, **Adam** is back in **China** and in **Beijing** for the recently concluded China Development Forum, and I am delighted to welcome him both back to Beijing and to **Sinica**.
 
 **Adam Tooze**, of course, is an economic historian at **Columbia**, where he directs the European Institute there. He's the author of several indispensable books, the force behind the must-read chart book newsletter, and the co-host of the podcast Ones and Twos. He has just finished the manuscript of a new book on the **energy transition** in which, naturally, **China** figures very centrally, and unavoidably so, right?
 
-> Adam, welcome back to Beijing. Welcome back to Cynica, man.  
+> Adam, welcome back to Beijing. Welcome back to Sinica, man.  
 > Great to be here.
 
 Adam, let me start with something a little lighter. Since we last spoke in **Shaxi**, how's your Chinese coming? I know you're still diligently taking lessons, you were telling me.
@@ -146,7 +146,7 @@ And so the lack of macroeconomic progress on this score shouldn't necessarily le
 I think their conception of a **beautiful China**, a good Chinese life, the **Chinese miracle or dream**, emphatically includes all-round comprehensive improvement in the standard of living broadly defined.  
 And in a city like **Beijing**, you see just how far they've come. It's truly dramatic in terms of everything, most obviously from air pollution to inner-city improvements.
 
-We, **Ching and I**, went for a walk last night along this inner-city canal.  
+We, **Ching and I** (my wife and I), went for a walk last night along this inner-city canal.  
 You were telling me that 10 years ago it was a sewer.  
 And now it's an extremely attractive urban space with a beautiful stretch of water and wonderfully, functionally, intelligently landscaped places for Chinese families to do what Chinese families do on a hot summer's day, which is sit out and there's benches and ample sitting equipment, places for people to sit.  
 They're not worried about homeless people encamping there because there aren't any homeless people who are going to encamp there.  
@@ -346,7 +346,7 @@ So it peaked 1990, then there were the massive crashing cuts, no shock therapy, 
 
 So it was huge cuts, then a new peak, and then from 2015 they shut down more coal capacity and steel producing capacity than America has in operation in China between 2015 and the early 2020s.
 
-And there's no question that all of the classic coal mining areas, **Shashi**, are going to be shut down.
+And there's no question that all of the classic coal mining areas, **Shanxi**, are going to be shut down.
 
 And there's **830,000 jobs** there.
 
@@ -354,7 +354,7 @@ And does that mean **China**'s not going to use coal anymore?
 
 No, because **Inner Mongolia** is a robotized insanity of — I've not seen it with my own eyes, but I've seen the pictures.
 
-They — in Shashi — it takes 80 — I'm sure they're dudes — 83 dudes to mine a million tons of coal a year.
+They — in Shanxi — it takes 80 — I'm sure they're dudes — 83 dudes to mine a million tons of coal a year.
 
 Wow.
 So you can supply a billion tons of coal for **China** with about a workforce of **85,000 people**.  
@@ -928,19 +928,19 @@ So typical of modern China, right? Yeah, yeah. This is a discourse that you coul
 It's beautifully shot. It's quite well acted. It's really, they've upped their game considerably. That just the studios that are putting out new television shows, they're, they've really improved. I'm either having Deja Vu or I've actually recommended this show before recently and I forgot, but it was the thing that came to mind. My wife's been watching it and I, I'm now going to start the series again from the beginning properly so that I, I, I really catch the whole thing. But I was also really impressed at how well they portrayed the Tibetan characters and there's none of the usual sort of condescension. They're very humanely drawn.
 
 Adam, thank you, man. It's a pleasure. As always. Yeah. I look forward to the next time. Yeah. Yeah. Well, hopefully we'll, it won't be too long. I'm really eager to read the book.
-You've been listening to the **Seneca podcast**.
+You've been listening to the **Sinica podcast**.
 
-The show is produced, recorded, engineered, edited, and mastered by me, **Kaiser Guo**.
+The show is produced, recorded, engineered, edited, and mastered by me, **Kaiser Kuo**.
 
-Support the show through **Substack** at **Seneca podcast.com** where there is a growing offering of terrific original China related writing and audio.
+Support the show through **Substack** at **Sinica podcast.com** where there is a growing offering of terrific original China related writing and audio.
 
-Email me at Seneca pod at gmail.com if you've had ideas and how I can do the show better.
+Email me at Sinica pod at gmail.com if you've had ideas and how I can do the show better.
 
 Don't forget to leave a review on **Apple Podcasts**.
 
 Enormous gratitude to the **University of Wisconsin, Madison's Center for East Asian Studies** for supporting the show again this year.
 
-Huge thanks to my guest, **Adam Tunes**.
+Huge thanks to my guest, **Adam Tooze**.
 
 Thanks for listening and we'll see you next week. Take care.
 
