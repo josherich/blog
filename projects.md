@@ -10,6 +10,8 @@ title: Projects
 <div class="project-list">
   <!-- <div class='codie'><a href='https://codie.mindynode.com'>Codie</a> is an open implementation of vibe coding tools like <a href='https://lovable.dev'>Lovable.dev</a> and <a href='https://replit.com/ai'>Replit Agent</a></div> -->
 
+  <div class='pdf-reflow'><a href='https://josherich.github.io/pdf-reflow/'>PDF Reflow</a> is a tool to reflow PDFs to be more mobile-friendly.</div>
+
   <div class='gin'><a href='https://gin.mindynode.com'>Gin</a> is a tiny github implementation.</div>
 
   <div class='tiny-pool'><a href='https://github.com/josherich/tiny-pool'>Tiny Pool</a> is a tiny implementation of 8 ball that supports realistic physics and online game.</div>
