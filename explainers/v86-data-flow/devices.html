@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>v86 — Hardware Devices</title>
+<style>
+:root {
+  --bg: #0d1117; --bg2: #161b22; --bg3: #21262d; --border: #30363d;
+  --text: #f0f6fc; --text2: #8b949e;
+  --blue: #58a6ff; --green: #3fb950; --purple: #bc8cff;
+  --orange: #ffa657; --red: #ff7b72; --yellow: #d29922;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 15px; line-height: 1.6; }
+nav { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 10px 16px; position: sticky; top: 0; z-index: 100; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+nav::-webkit-scrollbar { display: none; }
+nav a { color: var(--text2); text-decoration: none; padding: 5px 10px; border-radius: 6px; font-size: 13px; white-space: nowrap; transition: all 0.15s; }
+nav a:hover { color: var(--text); background: var(--bg3); }
+nav a.active { color: var(--orange); background: rgba(255,166,87,0.1); }
+
+header { padding: 36px 20px 20px; max-width: 720px; margin: 0 auto; }
+header h1 { font-size: clamp(20px, 4vw, 34px); font-weight: 700; }
+header h1 span { color: var(--orange); }
+header p { color: var(--text2); margin-top: 8px; }
+
+.main { max-width: 960px; margin: 0 auto; padding: 0 16px 60px; }
+h2 { font-size: 18px; font-weight: 600; margin: 32px 0 16px; }
+h2 .accent { color: var(--orange); }
+code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; padding: 2px 6px; color: var(--orange); }
+
+.info-box { border-radius: 8px; padding: 14px 16px; margin-bottom: 16px; font-size: 13px; }
+.info-box.orange { background: rgba(255,166,87,0.08); border: 1px solid rgba(255,166,87,0.2); }
+.info-box.blue   { background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.2); }
+.info-box strong { color: var(--text); }
+.info-box p { color: var(--text2); margin-top: 4px; }
+
+/* Device cards */
+.device-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.device-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.device-card:hover { border-color: var(--orange); transform: translateY(-1px); }
+.device-card.expanded { border-color: var(--orange); }
+.dc-header {
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.dc-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+.dc-title { font-size: 14px; font-weight: 600; }
+.dc-file { font-size: 11px; color: var(--text2); font-family: monospace; margin-top: 1px; }
+.dc-badges { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 3px;
+}
+.badge-port   { background: rgba(88,166,255,0.15); color: var(--blue); }
+.badge-irq    { background: rgba(255,123,114,0.15); color: var(--red); }
+.badge-dma    { background: rgba(63,185,80,0.15);   color: var(--green); }
+.badge-pci    { background: rgba(188,140,255,0.15); color: var(--purple); }
+.badge-bus    { background: rgba(210,153,34,0.15);  color: var(--yellow); }
+
+.dc-body {
+  display: none;
+  padding: 0 16px 16px;
+  font-size: 13px;
+  color: var(--text2);
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+.device-card.expanded .dc-body { display: block; }
+.dc-body p { margin-bottom: 8px; }
+.dc-body strong { color: var(--text); }
+
+/* Init order */
+.init-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+.init-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.init-item:last-child { border-bottom: none; }
+.init-num {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  color: var(--orange);
+}
+.init-name { font-weight: 500; }
+.init-why { font-size: 11px; color: var(--text2); margin-left: auto; text-align: right; }
+
+/* IRQ routing table */
+.irq-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 32px; }
+.irq-table th { background: var(--bg3); color: var(--text2); font-size: 12px; font-weight: 600; padding: 7px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+.irq-table td { padding: 7px 12px; border-bottom: 1px solid var(--border); }
+.irq-table tr:last-child td { border-bottom: none; }
+.irq-table tr:hover td { background: var(--bg2); }
+.irq-table td:first-child { font-family: monospace; color: var(--red); font-weight: 700; width: 60px; }
+.irq-table td:nth-child(2) { width: 80px; font-family: monospace; font-size: 12px; color: var(--text2); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">Overview</a>
+  <a href="cpu.html">CPU &amp; JIT</a>
+  <a href="memory.html">Memory</a>
+  <a href="io.html">I/O Bus</a>
+  <a href="devices.html" class="active">Devices</a>
+  <a href="bus.html">Event Bus</a>
+</nav>
+
+<header>
+  <h1>Hardware <span>Devices</span></h1>
+  <p>Every emulated peripheral — how it works, what ports it owns, and how it fits into the PC hardware stack.</p>
+</header>
+
+<div class="main">
+
+  <div class="info-box orange">
+    <strong>All devices are JavaScript</strong>
+    <p>Device controllers live entirely in JavaScript (<code>src/*.js</code>). They register handlers on the I/O bus and respond to WASM callbacks. Device state (registers, FIFOs, buffers) is stored in JS objects. Interrupt signals are sent back to the WASM CPU via <code>cpu.device_raise_irq(n)</code>.</p>
+  </div>
+
+  <h2>Device <span class="accent">Cards</span></h2>
+  <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">Click any card to expand details.</p>
+
+  <div class="device-grid">
+
+    <div class="device-card" onclick="toggleCard(this)">
+      <div class="dc-header">
+        <div class="dc-icon">🔔</div>
+        <div>
+          <div class="dc-title">PIC — 8259A Interrupt Controller</div>
+          <div class="dc-file">src/rust/cpu/pic.rs</div>
+          <div class="dc-badges">
+            <span class="badge badge-port">0x20-3F (M)</span>
+            <span class="badge badge-port">0xA0-BF (S)</span>
+          </div>
+        </div>
+      </div>
+      <div class="dc-body">
+        <p>Two cascaded 8259A PICs manage the 16 hardware interrupt lines (IRQ0–15). Master PIC at 0x20 handles IRQ0–7; Slave PIC at 0xA0 handles IRQ8–15 (cascaded via IRQ2).</p>
+        <p><strong>Flow:</strong> Device calls <code>cpu.device_raise_irq(n)</code> → PIC checks mask register → if not masked, signals CPU → CPU checks IF flag → dispatches to IDT[vector].</p>
+        <p>Software sends EOI (End of Interrupt, 0x20) to dismiss the IRQ after handling. Non-specific EOI clears the highest-priority ISR bit.</p>
+      </div>
+    </div>
+
+    <div class="device-card" onclick="toggleCard(this)">
+      <div class="dc-header">
+        <div class="dc-icon">⏱</div>
+        <div>
+          <div class="dc-title">PIT — 8254 Programmable Timer</div>
+          <div class="dc-file">src/pit.js</div>
+          <div class="dc-badges">
+            <span class="badge badge-port">0x40–0x43</span>
+            <span class="badge badge-irq">IRQ 0</span>
+          </div>
+        </div>
+      </div>
+      <div class="dc-body">
+        <p>Three independent countdown channels clocked at 1.193182 MHz. <strong>Channel 0</strong> drives IRQ0 (system tick); <strong>Channel 2</strong> drives the PC speaker pitch.</p>
+        <p>The BIOS programs channel 0 to mode 3 (square wave) at ~18.2 Hz. Linux reprograms it to a higher rate for better timer resolution. Modern OSes use HPET/APIC timer instead.</p>
+        <p><strong>Speaker:</strong> Port 0x61 bit 0 gates channel 2 output to the speaker. The speaker adapter listens for <code>"pcspeaker-update"</code> bus messages.</p>
+      </div>
+    </div>
+
+    <div class="device-card" onclick="toggleCard(this)">
+      <div class="dc-header">
+        <div class="dc-icon">🕐</div>
+        <div>
+          <div class="dc-title">RTC — Real-Time Clock / CMOS</div>
+          <div class="dc-file">src/rtc.js</div>
+          <div class="dc-badges">
+            <span class="badge badge-port">0x70–0x71</span>
+            <span class="badge badge-irq">IRQ 8</span>
+          </div>
+        </div>
+      </div>
+      <div class="dc-body">
+        <p>Indexed CMOS register set accessed via port 0x70 (index) and 0x71 (data). Stores time, date, and machine configuration that persists across reboots.</p>
+        <p>Key CMOS fields v86 pre-fills: base memory size, extended memory size, boot order (disk/CDROM), floppy drive type, hard disk geometry, equipment flags.</p>
+        <p>Status register C contains IRQ8 interrupt flags: periodic interrupt (PIE), alarm interrupt (AIE), update-ended interrupt (UIE). Linux uses periodic interrupts for scheduling.</p>
+      </div>
+    </div>
+
+    <div class="device-card" onclick="toggleCard(this)">
+      <div class="dc-header">
+        <div class="dc-icon">💾</div>
+        <div>
+          <div class="dc-title">DMA — 8237A Controller</div>
+          <div class="dc-file">src/dma.js</div>
+          <div class="dc-badges">
+            <span class="badge badge-port">0x00–0x1F</span>
+            <span class="badge badge-port">0x80–0x8F</span>
+            <span class="badge badge-port">0xC0–0xDF</span>
+          </div>
+        </div>
+      </div>
+      <div class="dc-body">
+        <p>Two cascaded 8237A DMA controllers (8 channels total). DMA transfers data between device FIFOs and guest RAM without CPU involvement.</p>
+        <p><strong>Channel allocation:</strong> Ch0=free, Ch1=SB16 8-bit, Ch2=Floppy, Ch3=SB16 16-bit alt, Ch4=cascade, Ch5–7=16-bit ISA.</p>
+        <p>Page registers (0x80–0x8F) extend the 16-bit DMA address to 20 bits. Device calls <code>dma.do_read()</code> which copies data from guest RAM into the device buffer, then triggers the device callback.</p>
+      </div>
+    </div>
+
+    <div class="device-card" onclick="toggleCard(this)">
+      <div class="dc-header">
+        <div class="dc-icon">🖥</div>
+        <div>
+          <div class="dc-title">VGA / SVGA — Graphics Card</div>
+          <div class="dc-file">src/vga.js (83 KB)</div>
+          <div class="dc-badges">
+            <span class="badge badge-port">0x3C0–0x3DF</span>
+            <span class="badge badge-pci">PCI</span>
+            <span class="badge badge-bus">screen-fill-buffer</span>
+          </div>
+        </div>
+      </div>
+      <div class="dc-body">
+        <p>The largest device — emulates a Bochs VBE SVGA-compatible card. Supports VGA text mode (80×25, 25 colors), CGA graphics mode (320×200 or 640×480), and SVGA modes up to 1280×1024 via Bochs VBE extensions (ports 0x1CE/0x1CF).</p>
+        <p><strong>Text mode:</strong> Reads character+attribute bytes from MMIO at 0xB8000, renders font glyphs into a pixel buffer, sends to screen adapter.</p>
+        <p><strong>SVGA mode:</strong> Guest writes pixels directly to linear framebuffer at 0xE0000000. VGA marks dirty rows; next tick flushes changed scanlines via bus message.</p>
+        <p><strong>MMIO regions:</strong> 0xA0000–0xBFFFF (planar), 0xE0000000+ (linear framebuffer), PCI BAR for VBE registers.</p>
+      </div>
+    </div>
+
+    <div class="device-card" onclick="toggleCard(this)">
+      <div class="dc-header">
+        <div class="dc-icon">⌨️</div>
+        <div>
+          <div class="dc-title">PS/2 Controller — 8042</div>
+          <div class="dc-file">src/ps2.js</div>
+          <div class="dc-badges">
+            <span class="badge badge-port">0x60, 0x64</span>
+            <span class="badge badge-irq">IRQ 1 (KB)</span>
+            <span class="badge badge-irq">IRQ 12 (Mouse)</span>
+            <span class="badge badge-bus">keyboard-code</span>
+          </div>
+        </div>
+      </div>
+      <div class="dc-body">
+        <p>Emulates the Intel 8042 microcontroller that bridges the CPU to keyboard and mouse. Maintains separate output FIFOs for keyboard and mouse data.</p>
+        <p>Keyboard scancodes arrive via bus message <code>"keyboard-code"</code>. The PS/2 device enqueues the scancode and raises IRQ1. Guest reads the byte from port 0x60.</p>
+        <p>Mouse packets are 3 bytes (button state + X delta + Y delta), delivered one byte at a time. IRQ12 fires after each byte. Mouse data arrives via bus messages <code>"mouse-delta"</code> and <code>"mouse-click"</code>.</p>
+        <p>Command 0xA9 (test aux port), 0xAD/0xAE (disable/enable keyboard), 0xD4 (write to mouse) are implemented for OS compatibility.</p>
+      </div>
+    </div>
+
+    <div class="device-card" onclick="toggleCard(this)">
+      <div class="dc-header">
+        <div class="dc-icon">📻</div>
+        <div>
+          <div class="dc-title">UART — Serial Ports (16550A)</div>
+          <div class="dc-file">src/uart.js</div>
+          <div class="dc-badges">
+            <span class="badge badge-port">0x3F8 COM1</span>
+            <span class="badge badge-port">0x2F8 COM2</span>
+            <span class="badge badge-irq">IRQ 4/3</span>
+            <span class="badge badge-bus">serial-write</span>
+          </div>
+        </div>
+      </div>
+      <div class="dc-body">
+        <p>Up to 4 UART 16550A serial controllers. Each has a 16-byte RX/TX FIFO. The divisor latch sets baud rate (typical: 115200 baud = divisor 1).</p>
+        <p>Linux commonly uses COM1 as a serial console. Output bytes go to the serial adapter via bus and appear in a terminal. Input from the terminal is queued in the RX FIFO and triggers UART interrupts.</p>
+        <p>UART0 (COM1) is always enabled. UART1–3 are created only if enabled in v86 settings. Virtio console can replace UART for better throughput.</p>
+      </div>
+    </div>
+
+    <div class="device-card" onclick="toggleCard(this)">
+      <div class="dc-header">
+        <div class="dc-icon">💿</div>
+        <div>
+          <div class="dc-title">IDE Controller</div>
+          <div class="dc-file">src/ide.js (97 KB)</div>
+          <div class="dc-badges">
+            <span class="badge badge-port">0x1F0 Primary</span>
+            <span class="badge badge-port">0x170 Secondary</span>
+            <span class="badge badge-irq">IRQ 14/15</span>
+            <span class="badge badge-pci">PCI</span>
+          </div>
+        </div>
+      </div>
+      <div class="dc-body">
+        <p>PCI IDE controller with two channels (primary/secondary), each supporting master and slave devices. Primary master = hard disk (hda), secondary master = CD-ROM.</p>
+        <p>Hard disk: ATA PIO transfers for small reads, DMA for large blocks. Disk images are JS ArrayBuffers. Async I/O reads in chunks and signals completion via IRQ14.</p>
+        <p>CD-ROM: ATAPI protocol (ATA Packet Interface). PACKET command (0xA0) sends a 12-byte CDB. Supports READ(10), REQUEST SENSE, INQUIRY, MODE SENSE, START/STOP UNIT. ISO 9660 image support built-in.</p>
+        <p>Disk state (dirty sectors) can be persisted to IndexedDB via the buffer abstraction layer (<code>src/buffer.js</code>).</p>
+      </div>
+    </div>
+
+    <div class="device-card" onclick="toggleCard(this)">
+      <div class="dc-header">
+        <div class="dc-icon">💾</div>
+        <div>
+          <div class="dc-title">Floppy Controller — 8272A</div>
+          <div class="dc-file">src/floppy.js (53 KB)</div>
+          <div class="dc-badges">
+            <span class="badge badge-port">0x3F0–0x3F7</span>
+            <span class="badge badge-irq">IRQ 6</span>
+            <span class="badge badge-dma">DMA 2</span>
+          </div>
+        </div>
+      </div>
+      <div class="dc-body">
+        <p>Intel 8272A Floppy Disk Controller emulation. Supports two drives (fda/fdb), standard 1.44 MB geometry: 80 tracks, 2 heads, 18 sectors/track, 512 bytes/sector.</p>
+        <p>Command sequence: write command bytes to port 0x3F5, wait for interrupt, read result bytes. BIOS uses INT 13h to abstract floppy access.</p>
+        <p>DMA channel 2 transfers data. The BIOS typically reads the boot sector (track 0, head 0, sector 1) first during the boot sequence.</p>
+      </div>
+    </div>
+
+    <div class="device-card" onclick="toggleCard(this)">
+      <div class="dc-header">
+        <div class="dc-icon">🔊</div>
+        <div>
+          <div class="dc-title">SoundBlaster 16</div>
+          <div class="dc-file">src/sb16.js (51 KB)</div>
+          <div class="dc-badges">
+            <span class="badge badge-port">0x220–0x233</span>
+            <span class="badge badge-irq">IRQ 5</span>
+            <span class="badge badge-dma">DMA 1/5</span>
+            <span class="badge badge-bus">speaker</span>
+          </div>
+        </div>
+      </div>
+      <div class="dc-body">
+        <p>Creative SoundBlaster 16 ISA audio card. DSP version 4.x. Supports 8-bit and 16-bit PCM playback and recording via DMA transfer. Mixer chip at 0x224 controls volume, channel balance, and source selection.</p>
+        <p>Playback flow: guest programs DMA address/length, writes PLAY DMA command to DSP → DMA reads audio samples from guest RAM → samples sent to Web Audio API via speaker bus adapter → IRQ5 fires when buffer exhausted.</p>
+        <p>Also emulates OPL2/OPL3 FM synthesis chip (Yamaha YM3812) at 0x388 for MIDI-quality music synthesis used by DOS games.</p>
+      </div>
+    </div>
+
+    <div class="device-card" onclick="toggleCard(this)">
+      <div class="dc-header">
+        <div class="dc-icon">🌐</div>
+        <div>
+          <div class="dc-title">NE2000 Ethernet Card</div>
+          <div class="dc-file">src/ne2k.js</div>
+          <div class="dc-badges">
+            <span class="badge badge-port">0x280–0x29F</span>
+            <span class="badge badge-irq">IRQ 9</span>
+            <span class="badge badge-bus">network-send/receive</span>
+          </div>
+        </div>
+      </div>
+      <div class="dc-body">
+        <p>ISA NE2000-compatible Ethernet adapter using the NS DP8390 controller. Implements register pages 0 and 1 for command, transmit, receive, and interrupt management.</p>
+        <p>Outgoing packets: guest writes frame to NIC ring buffer → <code>network-send</code> bus message → network adapter sends to relay or fetch backend.</p>
+        <p>Incoming packets: network adapter fires <code>network-receive</code> → NIC copies frame into ring buffer → raises IRQ9 → guest's driver reads the frame.</p>
+        <p>MAC address is configurable. Can be replaced by Virtio-net for better performance and simpler guest driver requirements.</p>
+      </div>
+    </div>
+
+    <div class="device-card" onclick="toggleCard(this)">
+      <div class="dc-header">
+        <div class="dc-icon">⚡</div>
+        <div>
+          <div class="dc-title">Virtio Devices</div>
+          <div class="dc-file">src/virtio.js, virtio_net.js, virtio_9p.js…</div>
+          <div class="dc-badges">
+            <span class="badge badge-pci">PCI</span>
+            <span class="badge badge-bus">network / 9P / console</span>
+          </div>
+        </div>
+      </div>
+      <div class="dc-body">
+        <p>Paravirtualized devices using the Virtio standard (PCI transport). Much more efficient than emulating legacy hardware — the guest driver knows it's in a VM and cooperates.</p>
+        <p><strong>virtio-net:</strong> Network card replacement. Virtqueue-based packet I/O. Requires virtio-net driver (standard in Linux since 2.6.25).</p>
+        <p><strong>virtio-9p:</strong> Filesystem passthrough via the 9P protocol. Maps a JS filesystem (backed by <code>lib/9p.js</code>) into the guest. Linux mounts it with <code>mount -t 9p</code>.</p>
+        <p><strong>virtio-console:</strong> High-performance serial console replacement. Shares virtqueues with the serial adapter.</p>
+        <p><strong>virtio-balloon:</strong> Memory pressure signaling — allows the host to reclaim guest memory pages.</p>
+      </div>
+    </div>
+
+    <div class="device-card" onclick="toggleCard(this)">
+      <div class="dc-header">
+        <div class="dc-icon">🔧</div>
+        <div>
+          <div class="dc-title">PCI Bus</div>
+          <div class="dc-file">src/pci.js</div>
+          <div class="dc-badges">
+            <span class="badge badge-port">0xCF8–0xCFF</span>
+          </div>
+        </div>
+      </div>
+      <div class="dc-body">
+        <p>PCI configuration space — 256 "slots" (bus 0, devices 0–31, functions 0–7). Each device has a 256-byte config space with standard header: vendor ID (0x0), device ID (0x2), command (0x4), status (0x6), class code (0x8), BARs (0x10–0x24), IRQ line (0x3C), IRQ pin (0x3D).</p>
+        <p>Access via CONFIG_ADDRESS (0xCF8) and CONFIG_DATA (0xCFC). Writing a 1 to a BAR causes the device to return its required size on the next read — used by BIOS to assign addresses.</p>
+        <p>v86 devices that use PCI: VGA, IDE, NE2000 (optional), all Virtio devices.</p>
+      </div>
+    </div>
+
+    <div class="device-card" onclick="toggleCard(this)">
+      <div class="dc-header">
+        <div class="dc-icon">⚙️</div>
+        <div>
+          <div class="dc-title">ACPI</div>
+          <div class="dc-file">src/acpi.js</div>
+          <div class="dc-badges">
+            <span class="badge badge-pci">PCI</span>
+            <span class="badge badge-port">0xB000+ (PM)</span>
+          </div>
+        </div>
+      </div>
+      <div class="dc-body">
+        <p>Basic ACPI power management support. Implements the ACPI timer (PMTMR at 0xB008) — a 24-bit counter running at 3.579545 MHz, used by Linux for high-resolution timing when HPET is unavailable.</p>
+        <p>ACPI tables (RSDT, FADT, MADT, HPET) are provided by SeaBIOS in the BIOS ROM and describe the hardware topology to the OS.</p>
+        <p>Shutdown via ACPI: guest writes 0x2000 to PM1a_CNT register (SLP_TYP=5, SLP_EN=1) → v86 stops the main loop.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Init order -->
+  <h2>Initialization <span class="accent">Order</span></h2>
+  <div class="info-box blue">
+    <strong>Order matters</strong>
+    <p>Devices are created in a specific order in <code>cpu.init()</code> because some depend on others already existing (e.g. DMA must exist before Floppy, PCI before Virtio).</p>
+  </div>
+  <div class="init-list">
+    <div class="init-item"><div class="init-num">1</div><div class="init-name">PCI Bus</div><div class="init-why">must exist before any PCI device</div></div>
+    <div class="init-item"><div class="init-num">2</div><div class="init-name">RTC + fill CMOS</div><div class="init-why">BIOS reads CMOS early in POST</div></div>
+    <div class="init-item"><div class="init-num">3</div><div class="init-name">DMA Controller</div><div class="init-why">floppy and SB16 need DMA channels</div></div>
+    <div class="init-item"><div class="init-num">4</div><div class="init-name">VGA</div><div class="init-why">BIOS needs VGA for early video output</div></div>
+    <div class="init-item"><div class="init-num">5</div><div class="init-name">PS/2 Controller</div><div class="init-why">keyboard before anything tries to read input</div></div>
+    <div class="init-item"><div class="init-num">6</div><div class="init-name">UART / Serial</div><div class="init-why">serial console available from first BIOS output</div></div>
+    <div class="init-item"><div class="init-num">7</div><div class="init-name">Floppy Controller</div><div class="init-why">needs DMA (step 3) already registered</div></div>
+    <div class="init-item"><div class="init-num">8</div><div class="init-name">IDE Controller</div><div class="init-why">disk required for boot sector read</div></div>
+    <div class="init-item"><div class="init-num">9</div><div class="init-name">PIT Timer</div><div class="init-why">started late to avoid premature IRQ0</div></div>
+    <div class="init-item"><div class="init-num">10</div><div class="init-name">SoundBlaster 16</div><div class="init-why">optional; needs DMA</div></div>
+    <div class="init-item"><div class="init-num">11</div><div class="init-name">Network (NE2000 or Virtio)</div><div class="init-why">needs PCI if Virtio</div></div>
+    <div class="init-item"><div class="init-num">12</div><div class="init-name">Virtio 9P, Console, Balloon</div><div class="init-why">all need PCI; 9P needs bus connected</div></div>
+    <div class="init-item"><div class="init-num">13</div><div class="init-name">ACPI</div><div class="init-why">PCI device; provides PMTMR for timing</div></div>
+  </div>
+
+  <!-- IRQ routing -->
+  <h2>IRQ <span class="accent">Routing</span></h2>
+  <div style="overflow-x:auto">
+  <table class="irq-table">
+    <thead><tr><th>IRQ</th><th>Vector</th><th>Device</th><th>Trigger condition</th></tr></thead>
+    <tbody>
+      <tr><td>IRQ 0</td><td>0x08</td><td>PIT Channel 0</td><td>Countdown reaches zero (~18.2 Hz or programmed rate)</td></tr>
+      <tr><td>IRQ 1</td><td>0x09</td><td>PS/2 Keyboard</td><td>Scancode enqueued from keyboard FIFO</td></tr>
+      <tr><td>IRQ 2</td><td>0x0A</td><td>PIC cascade</td><td>Cascade line from slave PIC (not maskable directly)</td></tr>
+      <tr><td>IRQ 3</td><td>0x0B</td><td>COM2 UART</td><td>TX empty, RX data ready, or line status change</td></tr>
+      <tr><td>IRQ 4</td><td>0x0C</td><td>COM1 UART</td><td>TX empty, RX data ready, or line status change</td></tr>
+      <tr><td>IRQ 5</td><td>0x0D</td><td>SoundBlaster 16</td><td>DMA buffer half/full, or DSP command completion</td></tr>
+      <tr><td>IRQ 6</td><td>0x0E</td><td>Floppy FDC</td><td>Command completion (seek done, transfer done)</td></tr>
+      <tr><td>IRQ 7</td><td>0x0F</td><td>LPT1 (unused)</td><td>Parallel port — not used in v86</td></tr>
+      <tr><td>IRQ 8</td><td>0x70</td><td>RTC</td><td>Periodic interrupt (configurable rate) or alarm</td></tr>
+      <tr><td>IRQ 9</td><td>0x71</td><td>NE2000 / free</td><td>Packet received or transmitted</td></tr>
+      <tr><td>IRQ 10</td><td>0x72</td><td>free / Virtio</td><td>PCI device interrupt (shared)</td></tr>
+      <tr><td>IRQ 11</td><td>0x73</td><td>free / Virtio</td><td>PCI device interrupt (shared)</td></tr>
+      <tr><td>IRQ 12</td><td>0x74</td><td>PS/2 Mouse</td><td>Mouse packet byte ready</td></tr>
+      <tr><td>IRQ 13</td><td>0x75</td><td>FPU / coprocessor</td><td>FPU error (rarely used with x87 exceptions)</td></tr>
+      <tr><td>IRQ 14</td><td>0x76</td><td>IDE Primary</td><td>Disk read/write or ATAPI command complete</td></tr>
+      <tr><td>IRQ 15</td><td>0x77</td><td>IDE Secondary</td><td>CD-ROM read or ATAPI command complete</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+</div>
+
+<script>
+function toggleCard(card) {
+  const wasExpanded = card.classList.contains('expanded');
+  document.querySelectorAll('.device-card').forEach(c => c.classList.remove('expanded'));
+  if (!wasExpanded) {
+    card.classList.add('expanded');
+    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+</script>
+</body>
+</html>

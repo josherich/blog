@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenCode — Prompt Data Flow</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1f2937;
+    --border: #30363d;
+    --accent: #58a6ff;
+    --accent2: #3fb950;
+    --accent3: #f78166;
+    --accent4: #d2a8ff;
+    --accent5: #ffa657;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --highlight: #2d333b;
+    --glow: rgba(88, 166, 255, 0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  header {
+    padding: 24px 20px 16px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(88,166,255,0.05) 0%, transparent 100%);
+  }
+
+  header h1 {
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+
+  header p {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-top: 6px;
+  }
+
+  .tap-hint {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 8px;
+    opacity: 0.7;
+  }
+
+  /* ── Flow Container ── */
+  .flow {
+    padding: 20px 16px 40px;
+    max-width: 680px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  /* vertical connector */
+  .connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4px 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .connector-line {
+    width: 2px;
+    height: 28px;
+    background: var(--border);
+    position: relative;
+  }
+
+  .connector-arrow {
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid var(--border);
+  }
+
+  /* ── Step Card ── */
+  .step {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+    overflow: hidden;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+  }
+
+  .step:active { transform: scale(0.985); }
+
+  .step.open,
+  .step:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent), 0 4px 24px var(--glow);
+  }
+
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+  }
+
+  .step-badge {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .step-meta {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .step-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .step-subtitle {
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .step-chevron {
+    color: var(--muted);
+    font-size: 0.75rem;
+    transition: transform 0.25s;
+    flex-shrink: 0;
+  }
+
+  .step.open .step-chevron { transform: rotate(180deg); }
+
+  /* ── Detail Panel ── */
+  .step-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .step.open .step-body { max-height: 1200px; }
+
+  .step-body-inner {
+    padding: 0 16px 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .step-desc {
+    font-size: 0.82rem;
+    color: #c9d1d9;
+    line-height: 1.6;
+    margin: 12px 0 10px;
+  }
+
+  a.file-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px 8px;
+    font-size: 0.7rem;
+    font-family: 'SF Mono', Consolas, monospace;
+    color: var(--accent4);
+    margin: 3px 3px 3px 0;
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+
+  a.file-tag:hover {
+    border-color: var(--accent4);
+    background: rgba(210,168,255,0.08);
+  }
+
+  .func-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(63,185,80,0.08);
+    border: 1px solid rgba(63,185,80,0.3);
+    border-radius: 6px;
+    padding: 3px 8px;
+    font-size: 0.7rem;
+    font-family: 'SF Mono', Consolas, monospace;
+    color: var(--accent2);
+    margin: 3px 3px 3px 0;
+  }
+
+  .tags-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 8px;
+    gap: 0;
+  }
+
+  .tags-label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-top: 10px;
+    margin-bottom: 4px;
+  }
+
+  code.inline {
+    font-family: 'SF Mono', Consolas, monospace;
+    font-size: 0.78rem;
+    background: var(--highlight);
+    border-radius: 4px;
+    padding: 1px 5px;
+    color: var(--accent5);
+  }
+
+  .code-block {
+    background: var(--highlight);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-top: 10px;
+    font-family: 'SF Mono', Consolas, monospace;
+    font-size: 0.72rem;
+    line-height: 1.7;
+    overflow-x: auto;
+    white-space: pre;
+    color: #c9d1d9;
+  }
+
+  .code-block .kw { color: var(--accent); }
+  .code-block .fn { color: var(--accent2); }
+  .code-block .str { color: var(--accent5); }
+  .code-block .cmt { color: var(--muted); font-style: italic; }
+  .code-block .type { color: var(--accent4); }
+
+  /* ── Layer indicator strip ── */
+  .step-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 3px;
+    border-radius: 12px 0 0 12px;
+  }
+
+  /* ── Mini legend ── */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 12px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── Data structure chips ── */
+  .data-flow-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.68rem;
+    font-family: 'SF Mono', Consolas, monospace;
+    background: rgba(210,168,255,0.08);
+    border: 1px solid rgba(210,168,255,0.3);
+    border-radius: 20px;
+    padding: 2px 8px;
+    color: var(--accent4);
+    margin: 2px;
+  }
+
+  .data-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    margin-top: 6px;
+  }
+
+  footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--muted);
+    font-size: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+
+  @media (min-width: 500px) {
+    .step-title { font-size: 0.95rem; }
+    .step-subtitle { font-size: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>OpenCode — Prompt Data Flow</h1>
+  <p>What happens from the moment you press Enter to the response on screen</p>
+  <p class="tap-hint">Tap any step to expand details ↓</p>
+</header>
+
+<div class="flow">
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#58a6ff"></div>Frontend (app)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#3fb950"></div>SDK / HTTP</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#ffa657"></div>Server (opencode)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#d2a8ff"></div>LLM / Tools</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f78166"></div>Response stream</div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="step" id="step-1" onclick="toggle(1)">
+    <div class="step-layer" style="background:#58a6ff"></div>
+    <div class="step-header">
+      <div class="step-badge" style="background:rgba(88,166,255,0.12); font-size:1.2rem;">⌨️</div>
+      <div class="step-meta">
+        <div class="step-title">1 · User types &amp; submits prompt</div>
+        <div class="step-subtitle">packages/app — PromptInput component</div>
+      </div>
+      <div class="step-chevron">▼</div>
+    </div>
+    <div class="step-body">
+      <div class="step-body-inner">
+        <p class="step-desc">
+          The user types in a <strong>contenteditable div</strong>. On Enter (or send button), <code class="inline">handleKeyDown()</code> fires.
+          The DOM is parsed by <code class="inline">parseFromDOM()</code> into a typed <code class="inline">Prompt</code> object — extracting text, @-mentions, image attachments, and agent references.
+        </p>
+        <p class="tags-label">Files</p>
+        <div class="tags-row">
+          <a class="file-tag" href="https://github.com/anomalyco/opencode/blob/4b1b722e986bdfbc5d7ea7f4146ee92e44625d39/packages/app/src/components/prompt-input.tsx#L869" onclick="event.stopPropagation()">📄 packages/app/src/components/prompt-input.tsx</a>
+          <a class="file-tag" href="https://github.com/anomalyco/opencode/blob/4b1b722e986bdfbc5d7ea7f4146ee92e44625d39/packages/app/src/components/prompt-input/submit.ts#L204" onclick="event.stopPropagation()">📄 packages/app/src/components/prompt-input/submit.ts</a>
+        </div>
+        <p class="tags-label">Key functions</p>
+        <div class="tags-row">
+          <span class="func-tag">handleInput() :869</span>
+          <span class="func-tag">handleKeyDown() :1121</span>
+          <span class="func-tag">parseFromDOM() :787</span>
+        </div>
+        <div class="code-block"><span class="cmt">// prompt-input.tsx – simplified</span>
+<span class="kw">const</span> <span class="fn">handleKeyDown</span> = (e) => {
+  <span class="kw">if</span> (e.key === <span class="str">"Enter"</span> && !e.shiftKey) {
+    e.preventDefault()
+    <span class="fn">handleSubmit</span>()   <span class="cmt">// → submit.ts</span>
+  }
+}
+</div>
+        <p class="tags-label">Data produced</p>
+        <div class="data-row">
+          <span class="data-flow-badge">Prompt { text, parts[] }</span>
+          <span class="data-flow-badge">ImageAttachmentPart?</span>
+          <span class="data-flow-badge">FileAttachmentPart?</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+
+  <!-- STEP 2 -->
+  <div class="step" id="step-2" onclick="toggle(2)">
+    <div class="step-layer" style="background:#58a6ff"></div>
+    <div class="step-header">
+      <div class="step-badge" style="background:rgba(88,166,255,0.12); font-size:1.2rem;">📦</div>
+      <div class="step-meta">
+        <div class="step-title">2 · Context assembly &amp; optimistic UI</div>
+        <div class="step-subtitle">packages/app — submit.ts</div>
+      </div>
+      <div class="step-chevron">▼</div>
+    </div>
+    <div class="step-body">
+      <div class="step-body-inner">
+        <p class="step-desc">
+          <code class="inline">createPromptSubmit()</code> calls <code class="inline">buildRequestParts()</code> to assemble all content parts.
+          An <strong>optimistic message</strong> is inserted immediately into local state — this is why the user sees their message before any server round-trip.
+          Then it calls <code class="inline">sendFollowupDraft()</code> which delegates to the SDK.
+        </p>
+        <p class="tags-label">Files</p>
+        <div class="tags-row">
+          <a class="file-tag" href="https://github.com/anomalyco/opencode/blob/4b1b722e986bdfbc5d7ea7f4146ee92e44625d39/packages/app/src/components/prompt-input/submit.ts#L204" onclick="event.stopPropagation()">📄 packages/app/src/components/prompt-input/submit.ts</a>
+          <a class="file-tag" href="https://github.com/anomalyco/opencode/blob/4b1b722e986bdfbc5d7ea7f4146ee92e44625d39/packages/app/src/context/local.tsx" onclick="event.stopPropagation()">📄 packages/app/src/context/local.tsx</a>
+        </div>
+        <p class="tags-label">Key functions</p>
+        <div class="tags-row">
+          <span class="func-tag">createPromptSubmit() :204</span>
+          <span class="func-tag">buildRequestParts() :107</span>
+          <span class="func-tag">sendFollowupDraft() :155</span>
+        </div>
+        <div class="code-block"><span class="cmt">// submit.ts – simplified</span>
+<span class="kw">const</span> parts = <span class="fn">buildRequestParts</span>(prompt, attachments)
+<span class="cmt">// show message immediately in UI</span>
+dispatch({ type: <span class="str">"optimistic_message"</span>, parts })
+<span class="cmt">// fire HTTP request</span>
+<span class="fn">client.session.promptAsync</span>(sessionID, { parts })
+</div>
+        <div class="data-row">
+          <span class="data-flow-badge">RequestPart[]</span>
+          <span class="data-flow-badge">optimistic UserMessage</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+
+  <!-- STEP 3 -->
+  <div class="step" id="step-3" onclick="toggle(3)">
+    <div class="step-layer" style="background:#3fb950"></div>
+    <div class="step-header">
+      <div class="step-badge" style="background:rgba(63,185,80,0.12); font-size:1.2rem;">🌐</div>
+      <div class="step-meta">
+        <div class="step-title">3 · HTTP POST to local server</div>
+        <div class="step-subtitle">packages/sdk → POST /api/session/:id/prompt</div>
+      </div>
+      <div class="step-chevron">▼</div>
+    </div>
+    <div class="step-body">
+      <div class="step-body-inner">
+        <p class="step-desc">
+          The typed SDK client (<code class="inline">createOpencodeClient()</code>) serialises the request and sends a
+          <strong>POST</strong> to the local HTTP server running at a Unix socket / localhost.
+          The header <code class="inline">x-opencode-directory</code> carries the workspace path so the server knows which project is active.
+        </p>
+        <p class="tags-label">Files</p>
+        <div class="tags-row">
+          <a class="file-tag" href="https://github.com/anomalyco/opencode/blob/4b1b722e986bdfbc5d7ea7f4146ee92e44625d39/packages/sdk/js/src/v2/client.ts#L47" onclick="event.stopPropagation()">📄 packages/sdk/js/src/v2/client.ts</a>
+        </div>
+        <p class="tags-label">Key functions</p>
+        <div class="tags-row">
+          <span class="func-tag">createOpencodeClient() :47</span>
+          <span class="func-tag">promptAsync() :90</span>
+        </div>
+        <div class="code-block"><span class="cmt">// client.ts</span>
+<span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(
+  <span class="str">`/api/session/${sessionID}/prompt`</span>,
+  {
+    method: <span class="str">"POST"</span>,
+    headers: { <span class="str">"x-opencode-directory"</span>: cwd },
+    body: <span class="fn">JSON.stringify</span>({ parts })
+  }
+)
+</div>
+        <div class="data-row">
+          <span class="data-flow-badge">JSON body: { parts, delivery? }</span>
+          <span class="data-flow-badge">header: x-opencode-directory</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+
+  <!-- STEP 4 -->
+  <div class="step" id="step-4" onclick="toggle(4)">
+    <div class="step-layer" style="background:#ffa657"></div>
+    <div class="step-header">
+      <div class="step-badge" style="background:rgba(255,166,87,0.12); font-size:1.2rem;">🛤️</div>
+      <div class="step-meta">
+        <div class="step-title">4 · Route handler &amp; session lookup</div>
+        <div class="step-subtitle">packages/opencode — HTTP API routes</div>
+      </div>
+      <div class="step-chevron">▼</div>
+    </div>
+    <div class="step-body">
+      <div class="step-body-inner">
+        <p class="step-desc">
+          The opencode server validates the request schema, resolves the session by ID, and
+          calls <code class="inline">Session.prompt()</code>.
+          The route also applies permission settings attached to the request payload (e.g. "allow file writes without asking").
+        </p>
+        <p class="tags-label">Files</p>
+        <div class="tags-row">
+          <a class="file-tag" href="https://github.com/anomalyco/opencode/blob/4b1b722e986bdfbc5d7ea7f4146ee92e44625d39/packages/opencode/src/server/routes/instance/httpapi/groups/v2/session.ts#L62" onclick="event.stopPropagation()">📄 packages/opencode/src/server/routes/.../v2/session.ts</a>
+          <a class="file-tag" href="https://github.com/anomalyco/opencode/blob/4b1b722e986bdfbc5d7ea7f4146ee92e44625d39/packages/opencode/src/v2/session.ts#L315" onclick="event.stopPropagation()">📄 packages/opencode/src/v2/session.ts</a>
+        </div>
+        <p class="tags-label">Key functions</p>
+        <div class="tags-row">
+          <span class="func-tag">route POST :62</span>
+          <span class="func-tag">Session.prompt() :315</span>
+        </div>
+        <div class="code-block"><span class="cmt">// session.ts (server)</span>
+<span class="kw">app</span>.post(<span class="str">"/api/session/:sessionID/prompt"</span>, <span class="kw">async</span> (c) => {
+  <span class="kw">const</span> body = <span class="kw">await</span> c.req.<span class="fn">json</span>()
+  <span class="kw">const</span> session = <span class="kw">await</span> <span class="fn">getSession</span>(c.req.param(<span class="str">"sessionID"</span>))
+  <span class="kw">return</span> <span class="fn">Session.prompt</span>(session, body)
+})
+</div>
+        <div class="data-row">
+          <span class="data-flow-badge">Session object</span>
+          <span class="data-flow-badge">validated Prompt</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+
+  <!-- STEP 5 -->
+  <div class="step" id="step-5" onclick="toggle(5)">
+    <div class="step-layer" style="background:#ffa657"></div>
+    <div class="step-header">
+      <div class="step-badge" style="background:rgba(255,166,87,0.12); font-size:1.2rem;">💬</div>
+      <div class="step-meta">
+        <div class="step-title">5 · User message persisted, loop starts</div>
+        <div class="step-subtitle">packages/opencode — session/prompt.ts</div>
+      </div>
+      <div class="step-chevron">▼</div>
+    </div>
+    <div class="step-body">
+      <div class="step-body-inner">
+        <p class="step-desc">
+          <code class="inline">createUserMessage()</code> stores the user turn in the SQLite database and emits a
+          <code class="inline">session.message.created</code> event.
+          Then <code class="inline">runLoop()</code> starts the agentic loop — it will keep running until the LLM returns with no pending tool calls.
+        </p>
+        <p class="tags-label">Files</p>
+        <div class="tags-row">
+          <a class="file-tag" href="https://github.com/anomalyco/opencode/blob/4b1b722e986bdfbc5d7ea7f4146ee92e44625d39/packages/opencode/src/session/prompt.ts#L1210" onclick="event.stopPropagation()">📄 packages/opencode/src/session/prompt.ts</a>
+        </div>
+        <p class="tags-label">Key functions</p>
+        <div class="tags-row">
+          <span class="func-tag">prompt() :1210</span>
+          <span class="func-tag">createUserMessage() :1215</span>
+          <span class="func-tag">runLoop() :1239</span>
+        </div>
+        <div class="code-block"><span class="cmt">// prompt.ts – simplified</span>
+<span class="kw">async function</span> <span class="fn">prompt</span>(session, input) {
+  <span class="kw">const</span> msg = <span class="kw">await</span> <span class="fn">createUserMessage</span>(session, input)
+  <span class="fn">emit</span>(<span class="str">"session.message.created"</span>, msg)
+  <span class="kw">await</span> <span class="fn">runLoop</span>(session) <span class="cmt">// ← agentic loop</span>
+}
+</div>
+        <div class="data-row">
+          <span class="data-flow-badge">UserMessage persisted in SQLite</span>
+          <span class="data-flow-badge">event: message.created</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+
+  <!-- STEP 6 -->
+  <div class="step" id="step-6" onclick="toggle(6)">
+    <div class="step-layer" style="background:#d2a8ff"></div>
+    <div class="step-header">
+      <div class="step-badge" style="background:rgba(210,168,255,0.12); font-size:1.2rem;">🤖</div>
+      <div class="step-meta">
+        <div class="step-title">6 · LLM request prepared &amp; streamed</div>
+        <div class="step-subtitle">packages/opencode — session/llm.ts + processor.ts</div>
+      </div>
+      <div class="step-chevron">▼</div>
+    </div>
+    <div class="step-body">
+      <div class="step-body-inner">
+        <p class="step-desc">
+          <code class="inline">LLM.stream()</code> calls <code class="inline">LLMRequestPrep.prepare()</code> to build the full messages array with
+          system prompt, conversation history, and tool definitions.
+          The <strong>AI SDK</strong>'s <code class="inline">streamText()</code> then opens an SSE/streaming connection to the provider (Anthropic, OpenAI, etc.).
+          Events flow back as a typed <code class="inline">Stream&lt;LLMEvent&gt;</code>.
+        </p>
+        <p class="tags-label">Files</p>
+        <div class="tags-row">
+          <a class="file-tag" href="https://github.com/anomalyco/opencode/blob/4b1b722e986bdfbc5d7ea7f4146ee92e44625d39/packages/opencode/src/session/llm.ts#L53" onclick="event.stopPropagation()">📄 packages/opencode/src/session/llm.ts</a>
+          <a class="file-tag" href="https://github.com/anomalyco/opencode/blob/4b1b722e986bdfbc5d7ea7f4146ee92e44625d39/packages/opencode/src/session/processor.ts#L105" onclick="event.stopPropagation()">📄 packages/opencode/src/session/processor.ts</a>
+        </div>
+        <p class="tags-label">Key functions</p>
+        <div class="tags-row">
+          <span class="func-tag">LLM.stream() :53</span>
+          <span class="func-tag">LLM.run() :81</span>
+          <span class="func-tag">LLMRequestPrep.prepare() :106</span>
+          <span class="func-tag">streamText()</span>
+        </div>
+        <div class="code-block"><span class="cmt">// llm.ts – simplified</span>
+<span class="kw">async function</span>* <span class="fn">stream</span>(messages, tools, model) {
+  <span class="kw">const</span> req = <span class="fn">LLMRequestPrep.prepare</span>(messages, tools)
+  <span class="kw">const</span> result = <span class="kw">await</span> <span class="fn">streamText</span>({
+    model,
+    messages: req.messages,
+    tools: req.tools,
+  })
+  <span class="kw">for await</span> (<span class="kw">const</span> delta <span class="kw">of</span> result.fullStream) {
+    <span class="kw">yield</span> delta   <span class="cmt">// → processor.ts</span>
+  }
+}
+</div>
+        <div class="data-row">
+          <span class="data-flow-badge">messages[] (full history)</span>
+          <span class="data-flow-badge">tool definitions[]</span>
+          <span class="data-flow-badge">Stream&lt;LLMEvent&gt;</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+
+  <!-- STEP 7 -->
+  <div class="step" id="step-7" onclick="toggle(7)">
+    <div class="step-layer" style="background:#d2a8ff"></div>
+    <div class="step-header">
+      <div class="step-badge" style="background:rgba(210,168,255,0.12); font-size:1.2rem;">🔧</div>
+      <div class="step-meta">
+        <div class="step-title">7 · Tool calls detected &amp; executed</div>
+        <div class="step-subtitle">packages/opencode — processor.ts (agentic loop)</div>
+      </div>
+      <div class="step-chevron">▼</div>
+    </div>
+    <div class="step-body">
+      <div class="step-body-inner">
+        <p class="step-desc">
+          The processor consumes each stream event. When a <strong>tool call</strong> arrives, it:
+          <br>1. Persists the <code class="inline">ToolPart</code> to the database
+          <br>2. Emits a live event so the UI shows "running tool…"
+          <br>3. Executes the tool (read file, run shell cmd, search codebase…)
+          <br>4. Appends the tool result and re-enters the loop — the LLM sees the result on the next turn.
+          The loop continues until the LLM emits a final text response with no pending tool calls.
+        </p>
+        <p class="tags-label">Files</p>
+        <div class="tags-row">
+          <a class="file-tag" href="https://github.com/anomalyco/opencode/blob/4b1b722e986bdfbc5d7ea7f4146ee92e44625d39/packages/opencode/src/session/processor.ts#L105" onclick="event.stopPropagation()">📄 packages/opencode/src/session/processor.ts</a>
+        </div>
+        <p class="tags-label">Key functions</p>
+        <div class="tags-row">
+          <span class="func-tag">processor.create() :105</span>
+          <span class="func-tag">process() :52</span>
+        </div>
+        <div class="code-block"><span class="cmt">// processor.ts – simplified</span>
+<span class="kw">for await</span> (<span class="kw">const</span> event <span class="kw">of</span> llmStream) {
+  <span class="kw">if</span> (event.type === <span class="str">"text-delta"</span>)
+    <span class="fn">appendTextPart</span>(event.textDelta)
+  <span class="kw">else if</span> (event.type === <span class="str">"tool-call"</span>) {
+    <span class="fn">persistToolPart</span>(event)
+    <span class="fn">emit</span>(<span class="str">"tool.running"</span>, event.toolName)
+    <span class="kw">const</span> result = <span class="kw">await</span> <span class="fn">runTool</span>(event)
+    <span class="fn">appendToolResult</span>(result)
+    <span class="kw">continue</span>  <span class="cmt">// re-enter loop</span>
+  }
+}
+</div>
+        <div class="data-row">
+          <span class="data-flow-badge">ToolPart persisted</span>
+          <span class="data-flow-badge">tool result → next turn</span>
+          <span class="data-flow-badge">event: tool.running</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+
+  <!-- STEP 8 -->
+  <div class="step" id="step-8" onclick="toggle(8)">
+    <div class="step-layer" style="background:#f78166"></div>
+    <div class="step-header">
+      <div class="step-badge" style="background:rgba(247,129,102,0.12); font-size:1.2rem;">📡</div>
+      <div class="step-meta">
+        <div class="step-title">8 · Events streamed back to frontend</div>
+        <div class="step-subtitle">packages/app — global-sync.tsx + event-reducer.ts</div>
+      </div>
+      <div class="step-chevron">▼</div>
+    </div>
+    <div class="step-body">
+      <div class="step-body-inner">
+        <p class="step-desc">
+          The app maintains a persistent <strong>SSE event stream</strong> (<code class="inline">globalSDK.event.start()</code>).
+          As the server emits events (<code class="inline">session.message.updated</code>, <code class="inline">message.part.added</code>, …),
+          the <code class="inline">event-reducer.ts</code> merges them into the React context store — no polling needed.
+          Text deltas update in real-time as the LLM streams tokens.
+        </p>
+        <p class="tags-label">Files</p>
+        <div class="tags-row">
+          <a class="file-tag" href="https://github.com/anomalyco/opencode/blob/4b1b722e986bdfbc5d7ea7f4146ee92e44625d39/packages/app/src/context/global-sync.tsx#L402" onclick="event.stopPropagation()">📄 packages/app/src/context/global-sync.tsx</a>
+          <a class="file-tag" href="https://github.com/anomalyco/opencode/blob/4b1b722e986bdfbc5d7ea7f4146ee92e44625d39/packages/app/src/context/directory-sync.ts" onclick="event.stopPropagation()">📄 packages/app/src/context/directory-sync.ts</a>
+          <a class="file-tag" href="https://github.com/anomalyco/opencode/blob/4b1b722e986bdfbc5d7ea7f4146ee92e44625d39/packages/app/src/context/global-sync/event-reducer.ts#L93" onclick="event.stopPropagation()">📄 packages/app/src/context/global-sync/event-reducer.ts</a>
+        </div>
+        <p class="tags-label">Key functions</p>
+        <div class="tags-row">
+          <span class="func-tag">event.start() :402</span>
+          <span class="func-tag">applyDirectoryEvent() :93</span>
+        </div>
+        <div class="code-block"><span class="cmt">// global-sync.tsx</span>
+<span class="kw">const</span> stream = <span class="fn">globalSDK.event.start</span>()
+<span class="kw">for await</span> (<span class="kw">const</span> event <span class="kw">of</span> stream) {
+  dispatch(<span class="fn">applyDirectoryEvent</span>(state, event))
+}
+<span class="cmt">// UI re-renders automatically via React context</span>
+</div>
+        <div class="data-row">
+          <span class="data-flow-badge">SSE event stream</span>
+          <span class="data-flow-badge">React context update</span>
+          <span class="data-flow-badge">text-delta → live tokens</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector"><div class="connector-line"></div><div class="connector-arrow"></div></div>
+
+  <!-- STEP 9 -->
+  <div class="step" id="step-9" onclick="toggle(9)">
+    <div class="step-layer" style="background:#58a6ff"></div>
+    <div class="step-header">
+      <div class="step-badge" style="background:rgba(88,166,255,0.12); font-size:1.2rem;">🖥️</div>
+      <div class="step-meta">
+        <div class="step-title">9 · Message rendered in timeline</div>
+        <div class="step-subtitle">packages/app — message-timeline.tsx</div>
+      </div>
+      <div class="step-chevron">▼</div>
+    </div>
+    <div class="step-body">
+      <div class="step-body-inner">
+        <p class="step-desc">
+          <code class="inline">MessageTimeline</code> reads <code class="inline">sync.data.message[sessionID]</code> from the store.
+          It uses a <strong>virtualizer</strong> for performance (only renders visible messages).
+          Each message is decomposed into <em>parts</em>: text (Markdown), tool calls with status badges, file diffs, reasoning blocks, and images.
+          As the LLM streams, each text-delta appends tokens live — the user sees the response grow word-by-word.
+        </p>
+        <p class="tags-label">Files</p>
+        <div class="tags-row">
+          <a class="file-tag" href="https://github.com/anomalyco/opencode/blob/4b1b722e986bdfbc5d7ea7f4146ee92e44625d39/packages/app/src/pages/session/message-timeline.tsx" onclick="event.stopPropagation()">📄 packages/app/src/pages/session/message-timeline.tsx</a>
+        </div>
+        <p class="tags-label">Rendered part types</p>
+        <div class="tags-row">
+          <span class="func-tag">TextPart (markdown)</span>
+          <span class="func-tag">ToolPart (call + result)</span>
+          <span class="func-tag">FilePart (diff)</span>
+          <span class="func-tag">ReasoningPart</span>
+          <span class="func-tag">ImagePart</span>
+        </div>
+        <div class="code-block"><span class="cmt">// message-timeline.tsx</span>
+<span class="kw">const</span> messages = sync.data.message[sessionID]
+<span class="kw">return</span> (
+  &lt;<span class="type">Virtualizer</span> items={messages}&gt;
+    {(msg) =&gt; msg.parts.<span class="fn">map</span>((part) =&gt;
+      &lt;<span class="type">MessagePart</span> part={part} /&gt;
+    )}
+  &lt;/<span class="type">Virtualizer</span>&gt;
+)
+</div>
+        <div class="data-row">
+          <span class="data-flow-badge">virtualized list</span>
+          <span class="data-flow-badge">live streaming tokens</span>
+          <span class="data-flow-badge">tool status badges</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  opencode · prompt data flow · generated by Claude Code
+</footer>
+
+<script>
+  const openSteps = new Set();
+
+  function toggle(n) {
+    const el = document.getElementById('step-' + n);
+    if (openSteps.has(n)) {
+      openSteps.delete(n);
+      el.classList.remove('open');
+    } else {
+      openSteps.add(n);
+      el.classList.add('open');
+    }
+  }
+
+  toggle(1);
+</script>
+</body>
+</html>

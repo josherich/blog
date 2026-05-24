@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>v86 — CPU &amp; JIT Engine</title>
+<style>
+:root {
+  --bg: #0d1117; --bg2: #161b22; --bg3: #21262d; --border: #30363d;
+  --text: #f0f6fc; --text2: #8b949e;
+  --blue: #58a6ff; --green: #3fb950; --purple: #bc8cff;
+  --orange: #ffa657; --red: #ff7b72; --yellow: #d29922;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 15px; line-height: 1.6; }
+nav { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 10px 16px; position: sticky; top: 0; z-index: 100; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+nav::-webkit-scrollbar { display: none; }
+nav a { color: var(--text2); text-decoration: none; padding: 5px 10px; border-radius: 6px; font-size: 13px; white-space: nowrap; transition: all 0.15s; }
+nav a:hover { color: var(--text); background: var(--bg3); }
+nav a.active { color: var(--purple); background: rgba(188,140,255,0.1); }
+
+header { padding: 36px 20px 20px; max-width: 720px; margin: 0 auto; }
+header h1 { font-size: clamp(20px, 4vw, 34px); font-weight: 700; }
+header h1 span { color: var(--purple); }
+header p { color: var(--text2); margin-top: 8px; }
+
+.main { max-width: 960px; margin: 0 auto; padding: 0 16px 60px; }
+
+h2 { font-size: 18px; font-weight: 600; margin: 32px 0 16px; }
+h2 .accent { color: var(--purple); }
+
+/* Pipeline */
+.pipeline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  align-items: center;
+  margin-bottom: 32px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+.pipe-stage {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  min-width: 130px;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+}
+.pipe-stage:hover { border-color: var(--purple); background: var(--bg3); }
+.pipe-stage.active { border-color: var(--purple); background: rgba(188,140,255,0.1); }
+.pipe-stage .ps-icon { font-size: 20px; margin-bottom: 4px; }
+.pipe-stage .ps-name { font-size: 13px; font-weight: 600; }
+.pipe-stage .ps-sub { font-size: 11px; color: var(--text2); margin-top: 2px; }
+.pipe-arrow { font-size: 18px; color: var(--border); padding: 0 6px; flex-shrink: 0; }
+@media (max-width: 600px) {
+  .pipeline { flex-direction: column; align-items: stretch; }
+  .pipe-arrow { transform: rotate(90deg); text-align: center; }
+}
+
+/* Stage detail panel */
+.stage-detail {
+  background: var(--bg2);
+  border: 1px solid var(--purple);
+  border-radius: 10px;
+  padding: 18px;
+  margin-bottom: 32px;
+  display: none;
+}
+.stage-detail.visible { display: block; }
+.stage-detail h3 { font-size: 15px; font-weight: 600; color: var(--purple); margin-bottom: 10px; }
+.stage-detail p { font-size: 14px; color: var(--text2); margin-bottom: 8px; }
+code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; padding: 2px 6px; color: var(--orange); }
+
+/* JIT diagram */
+.jit-diagram {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 32px;
+}
+@media (max-width: 600px) {
+  .jit-diagram { grid-template-columns: 1fr; }
+  .jit-arrow-col { display: none; }
+}
+.jit-box {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+}
+.jit-box h4 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+.jit-box.input h4 { color: var(--blue); }
+.jit-box.output h4 { color: var(--green); }
+.jit-arrow-col { text-align: center; font-size: 24px; color: var(--text2); }
+.jit-item { font-size: 13px; color: var(--text2); padding: 3px 0; }
+.jit-item code { font-size: 12px; }
+
+/* WASM bridge table */
+.bridge-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-bottom: 32px;
+}
+.bridge-table th { background: var(--bg3); color: var(--text2); font-weight: 600; padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+.bridge-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.bridge-table tr:last-child td { border-bottom: none; }
+.bridge-table tr:hover td { background: var(--bg2); }
+.dir { display: inline-block; font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 3px; letter-spacing: 0.5px; }
+.dir-in  { background: rgba(63,185,80,0.15); color: var(--green); }
+.dir-out { background: rgba(88,166,255,0.15); color: var(--blue); }
+
+/* Register grid */
+.reg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px;
+  margin-bottom: 32px;
+}
+.reg-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+.reg-name { font-size: 13px; font-weight: 700; color: var(--orange); }
+.reg-alias { font-size: 11px; color: var(--text2); margin-top: 1px; }
+.reg-offset { font-size: 10px; color: var(--border); margin-top: 4px; border-top: 1px solid var(--border); padding-top: 4px; }
+
+/* Execution loop animation */
+.loop-anim {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 32px;
+  font-size: 13px;
+}
+.loop-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.3s;
+}
+.loop-step:last-child { border-bottom: none; }
+.loop-step.lit { background: rgba(188,140,255,0.08); border-radius: 6px; padding-left: 8px; }
+.ls-arrow { color: var(--purple); font-size: 14px; margin-top: 1px; flex-shrink: 0; }
+.ls-body strong { color: var(--text); font-size: 13px; }
+.ls-body span { color: var(--text2); font-size: 12px; }
+.tick-btn {
+  background: rgba(188,140,255,0.15);
+  border: 1px solid rgba(188,140,255,0.3);
+  color: var(--purple);
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition: all 0.15s;
+}
+.tick-btn:hover { background: rgba(188,140,255,0.25); }
+
+/* Info boxes */
+.info-box {
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  font-size: 13px;
+}
+.info-box.purple { background: rgba(188,140,255,0.08); border: 1px solid rgba(188,140,255,0.2); }
+.info-box.blue   { background: rgba(88,166,255,0.08);  border: 1px solid rgba(88,166,255,0.2);  }
+.info-box.green  { background: rgba(63,185,80,0.08);   border: 1px solid rgba(63,185,80,0.2);   }
+.info-box strong { color: var(--text); }
+.info-box p { color: var(--text2); margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">Overview</a>
+  <a href="cpu.html" class="active">CPU &amp; JIT</a>
+  <a href="memory.html">Memory</a>
+  <a href="io.html">I/O Bus</a>
+  <a href="devices.html">Devices</a>
+  <a href="bus.html">Event Bus</a>
+</nav>
+
+<header>
+  <h1>CPU &amp; <span>JIT Engine</span></h1>
+  <p>How v86 executes x86 instructions — from the main loop in JavaScript down to JIT-compiled WebAssembly functions.</p>
+</header>
+
+<div class="main">
+
+  <h2>Execution <span class="accent">Pipeline</span></h2>
+  <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">Click any stage to see details.</p>
+
+  <div class="pipeline">
+    <div class="pipe-stage" onclick="showStage('tick')">
+      <div class="ps-icon">⏱</div>
+      <div class="ps-name">Timer Tick</div>
+      <div class="ps-sub">JS schedules next run</div>
+    </div>
+    <div class="pipe-arrow">›</div>
+    <div class="pipe-stage" onclick="showStage('main-loop')">
+      <div class="ps-icon">🔁</div>
+      <div class="ps-name">WASM Main Loop</div>
+      <div class="ps-sub">cpu.main_loop()</div>
+    </div>
+    <div class="pipe-arrow">›</div>
+    <div class="pipe-stage" onclick="showStage('jit-check')">
+      <div class="ps-icon">⚡</div>
+      <div class="ps-name">JIT Cache?</div>
+      <div class="ps-sub">Is block compiled?</div>
+    </div>
+    <div class="pipe-arrow">›</div>
+    <div class="pipe-stage" onclick="showStage('execute')">
+      <div class="ps-icon">💨</div>
+      <div class="ps-name">Execute</div>
+      <div class="ps-sub">JIT or interpreter</div>
+    </div>
+    <div class="pipe-arrow">›</div>
+    <div class="pipe-stage" onclick="showStage('io-check')">
+      <div class="ps-icon">🔌</div>
+      <div class="ps-name">I/O Access?</div>
+      <div class="ps-sub">port in/out or MMIO</div>
+    </div>
+    <div class="pipe-arrow">›</div>
+    <div class="pipe-stage" onclick="showStage('irq')">
+      <div class="ps-icon">🔔</div>
+      <div class="ps-name">Interrupts</div>
+      <div class="ps-sub">PIC → IDT dispatch</div>
+    </div>
+  </div>
+
+  <div id="stage-detail" class="stage-detail">
+    <h3 id="sd-title"></h3>
+    <div id="sd-body"></div>
+  </div>
+
+  <!-- Execution loop walkthrough -->
+  <h2>Main <span class="accent">Loop</span> Walkthrough</h2>
+  <div class="loop-anim">
+    <button class="tick-btn" onclick="advanceTick()">▶ Step through loop</button>
+    <div id="loop-steps">
+      <div class="loop-step" data-step="0">
+        <span class="ls-arrow">→</span>
+        <div class="ls-body"><strong>next_tick(delay)</strong> <br><span>JS schedules the next tick via <code>setTimeout</code> / <code>requestAnimationFrame</code>.</span></div>
+      </div>
+      <div class="loop-step" data-step="1">
+        <span class="ls-arrow">→</span>
+        <div class="ls-body"><strong>do_tick() called</strong><br><span>JS resumes from the browser event loop and calls into WASM.</span></div>
+      </div>
+      <div class="loop-step" data-step="2">
+        <span class="ls-arrow">→</span>
+        <div class="ls-body"><strong>cpu.main_loop() [WASM]</strong><br><span>Runs for a fixed number of cycles or until a timer fires. Tight inner loop in Rust-compiled WASM.</span></div>
+      </div>
+      <div class="loop-step" data-step="3">
+        <span class="ls-arrow">→</span>
+        <div class="ls-body"><strong>Instruction fetch</strong><br><span>Reads EIP → translates virtual address → fetches bytes from WASM linear memory (guest RAM).</span></div>
+      </div>
+      <div class="loop-step" data-step="4">
+        <span class="ls-arrow">→</span>
+        <div class="ls-body"><strong>JIT hit?</strong><br><span>Looks up EIP (physical) in the JIT hash table. If a compiled function exists, jump-calls it directly.</span></div>
+      </div>
+      <div class="loop-step" data-step="5">
+        <span class="ls-arrow">→</span>
+        <div class="ls-body"><strong>Execute (JIT or interpret)</strong><br><span>JIT function runs natively; interpreter decodes prefix, opcode, ModRM, SIB, displacement, immediate bytes.</span></div>
+      </div>
+      <div class="loop-step" data-step="6">
+        <span class="ls-arrow">→</span>
+        <div class="ls-body"><strong>I/O side-effect?</strong><br><span>If <code>IN/OUT</code> or MMIO access: WASM calls JS import (e.g. <code>io_port_write8</code>) → device handler runs → returns.</span></div>
+      </div>
+      <div class="loop-step" data-step="7">
+        <span class="ls-arrow">→</span>
+        <div class="ls-body"><strong>Hardware timers</strong><br><span><code>run_hardware_timers()</code> updates PIT, RTC, APIC timer — may raise IRQs.</span></div>
+      </div>
+      <div class="loop-step" data-step="8">
+        <span class="ls-arrow">→</span>
+        <div class="ls-body"><strong>Interrupt check</strong><br><span>If IRQ pending and IF flag set: fetch IDT entry, push CS:EIP, load handler vector, dispatch.</span></div>
+      </div>
+      <div class="loop-step" data-step="9">
+        <span class="ls-arrow">↺</span>
+        <div class="ls-body"><strong>Loop or yield</strong><br><span>If time budget spent: return to JS, schedule next tick. Otherwise loop back to step 3.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JIT compilation -->
+  <h2>JIT <span class="accent">Compilation</span> Pipeline</h2>
+
+  <div class="info-box purple">
+    <strong>How it works</strong>
+    <p>When the WASM interpreter executes an x86 basic block frequently enough, the JIT compiler kicks in and translates that block to a native WebAssembly function. Future executions jump directly to this compiled function, bypassing the decode loop entirely.</p>
+  </div>
+
+  <div class="jit-diagram">
+    <div class="jit-box input">
+      <h4>Input: x86 Binary</h4>
+      <div class="jit-item">• EIP = 0x7C00 (e.g. boot sector)</div>
+      <div class="jit-item">• Raw bytes: <code>FA 31 C0 8E D0…</code></div>
+      <div class="jit-item">• ModRM, SIB, displacement</div>
+      <div class="jit-item">• REP/LOCK prefixes</div>
+      <div class="jit-item">• 16/32-bit mixed mode</div>
+    </div>
+    <div class="jit-arrow-col">⟹</div>
+    <div class="jit-box output">
+      <h4>Output: WASM Function</h4>
+      <div class="jit-item">• <code>WebAssembly.Function</code></div>
+      <div class="jit-item">• Stored in <code>WebAssembly.Table</code></div>
+      <div class="jit-item">• Direct register ↔ WASM local mapping</div>
+      <div class="jit-item">• Inlined flag computation</div>
+      <div class="jit-item">• No decode overhead</div>
+    </div>
+  </div>
+
+  <div class="jit-diagram" style="margin-bottom:12px;">
+    <div class="jit-box" style="grid-column: 1/-1; border-color: rgba(188,140,255,0.3);">
+      <h4 style="color:var(--purple); margin-bottom:12px;">Compilation Steps (jit.rs → codegen.rs)</h4>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;">
+        <div><div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:4px;">1. ENTRY DETECTION</div><div class="jit-item">Tracks basic block entry points. After N interpreter runs, marks block for JIT.</div></div>
+        <div><div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:4px;">2. CFG ANALYSIS</div><div class="jit-item">control_flow.rs maps branches, calls, returns to identify block boundaries.</div></div>
+        <div><div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:4px;">3. CODE GENERATION</div><div class="jit-item">jit_instructions.rs emits WASM bytecode for each x86 instruction.</div></div>
+        <div><div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:4px;">4. FINALIZATION</div><div class="jit-item">JS <code>codegen_finalize()</code> callback compiles WASM bytes via <code>WebAssembly.compile()</code>.</div></div>
+        <div><div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:4px;">5. TABLE INSTALL</div><div class="jit-item">Function stored in WASM indirect table. EIP→table-index mapping cached.</div></div>
+        <div><div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:4px;">6. INVALIDATION</div><div class="jit-item">If guest writes to a JIT-compiled page, <code>jit_clear_func()</code> removes the cached function.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WASM bridge -->
+  <h2>WASM ↔ JavaScript <span class="accent">Bridge</span></h2>
+  <div class="info-box blue">
+    <strong>Import/Export boundary</strong>
+    <p>The WASM module imports JavaScript functions for all device I/O. Every <code>IN/OUT</code> instruction or MMIO access crosses this boundary. The WASM runtime suspends, JavaScript runs, then WASM resumes with the result.</p>
+  </div>
+
+  <div style="overflow-x:auto;">
+  <table class="bridge-table">
+    <thead><tr><th>Function</th><th>Dir</th><th>Called when</th></tr></thead>
+    <tbody>
+      <tr><td><code>io_port_read8/16/32(addr)</code></td><td><span class="dir dir-out">WASM→JS</span></td><td>Guest executes <code>IN AL, dx</code> etc. JS dispatches to device handler.</td></tr>
+      <tr><td><code>io_port_write8/16/32(addr, val)</code></td><td><span class="dir dir-out">WASM→JS</span></td><td>Guest executes <code>OUT dx, AL</code> etc. JS dispatches to device handler.</td></tr>
+      <tr><td><code>mmap_read8/32(addr)</code></td><td><span class="dir dir-out">WASM→JS</span></td><td>Guest accesses MMIO region (VGA, APIC, Virtio queues).</td></tr>
+      <tr><td><code>mmap_write8/16/32/64/128(addr,…)</code></td><td><span class="dir dir-out">WASM→JS</span></td><td>Guest writes to MMIO region (VGA framebuffer, device registers).</td></tr>
+      <tr><td><code>run_hardware_timers(acpi_timer, now)</code></td><td><span class="dir dir-out">WASM→JS</span></td><td>Called each main loop iteration to advance PIT, RTC, APIC timers.</td></tr>
+      <tr><td><code>codegen_finalize(idx, start, flags, ptr, len)</code></td><td><span class="dir dir-out">WASM→JS</span></td><td>JIT asks JS to compile WASM bytes and install function in table.</td></tr>
+      <tr><td><code>jit_clear_func(idx)</code></td><td><span class="dir dir-out">WASM→JS</span></td><td>Self-modifying code: invalidates cached JIT function for an address.</td></tr>
+      <tr><td><code>cpu_exception_hook(n)</code></td><td><span class="dir dir-out">WASM→JS</span></td><td>CPU exception fired (e.g. #GP, #PF). JS can log or break.</td></tr>
+      <tr><td><code>microtick()</code></td><td><span class="dir dir-out">WASM→JS</span></td><td>Returns <code>performance.now()</code> for timer calibration.</td></tr>
+      <tr><td><code>device_raise_irq(irq)</code></td><td><span class="dir dir-in">JS→WASM</span></td><td>JS device signals interrupt to CPU (e.g. PS/2 raises IRQ1 after key press).</td></tr>
+      <tr><td><code>device_lower_irq(irq)</code></td><td><span class="dir dir-in">JS→WASM</span></td><td>JS device de-asserts interrupt line.</td></tr>
+      <tr><td><code>cpu.main_loop()</code></td><td><span class="dir dir-in">JS→WASM</span></td><td>JS calls WASM to execute instructions for one time slice.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <!-- Registers -->
+  <h2>x86 <span class="accent">Registers</span> in WASM Memory</h2>
+  <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">All registers live at fixed byte offsets in WASM linear memory. Both Rust and JavaScript can access them via typed array views.</p>
+
+  <div class="reg-grid">
+    <div class="reg-card"><div class="reg-name">EAX</div><div class="reg-alias">AX / AH / AL</div><div class="reg-offset">mem[64] — accumulator</div></div>
+    <div class="reg-card"><div class="reg-name">ECX</div><div class="reg-alias">CX / CH / CL</div><div class="reg-offset">mem[68] — counter</div></div>
+    <div class="reg-card"><div class="reg-name">EDX</div><div class="reg-alias">DX / DH / DL</div><div class="reg-offset">mem[72] — data/I/O</div></div>
+    <div class="reg-card"><div class="reg-name">EBX</div><div class="reg-alias">BX / BH / BL</div><div class="reg-offset">mem[76] — base</div></div>
+    <div class="reg-card"><div class="reg-name">ESP</div><div class="reg-alias">SP</div><div class="reg-offset">mem[80] — stack ptr</div></div>
+    <div class="reg-card"><div class="reg-name">EBP</div><div class="reg-alias">BP</div><div class="reg-offset">mem[84] — base ptr</div></div>
+    <div class="reg-card"><div class="reg-name">ESI</div><div class="reg-alias">SI</div><div class="reg-offset">mem[88] — source idx</div></div>
+    <div class="reg-card"><div class="reg-name">EDI</div><div class="reg-alias">DI</div><div class="reg-offset">mem[92] — dest idx</div></div>
+    <div class="reg-card"><div class="reg-name">EIP</div><div class="reg-alias">instruction ptr</div><div class="reg-offset">mem[556]</div></div>
+    <div class="reg-card"><div class="reg-name">EFLAGS</div><div class="reg-alias">CF ZF SF OF PF AF</div><div class="reg-offset">mem[120] — lazy eval</div></div>
+    <div class="reg-card"><div class="reg-name">CS/DS/SS</div><div class="reg-alias">segment selectors</div><div class="reg-offset">mem[668..] — sreg[8]</div></div>
+    <div class="reg-card"><div class="reg-name">CR0/CR4</div><div class="reg-alias">control registers</div><div class="reg-offset">protected mode, paging</div></div>
+    <div class="reg-card" style="border-color:rgba(188,140,255,0.2)"><div class="reg-name" style="color:var(--purple)">XMM0–7</div><div class="reg-alias">128-bit SSE regs</div><div class="reg-offset">mem[832..] — 8 × 16B</div></div>
+    <div class="reg-card" style="border-color:rgba(255,166,87,0.2)"><div class="reg-name" style="color:var(--orange)">ST(0)–ST(7)</div><div class="reg-alias">FPU 80-bit stack</div><div class="reg-offset">mem[1152..] — 8 × 10B</div></div>
+  </div>
+
+  <div class="info-box green">
+    <strong>Lazy flags</strong>
+    <p>EFLAGS are computed lazily. Rather than recalculating all 6 condition flags after every ALU operation, v86 stores the operands (<code>last_op1</code>, <code>last_op2</code>, <code>last_result</code>) and recomputes only the flags actually tested by the next branch or <code>PUSHF</code>.</p>
+  </div>
+
+</div>
+
+<script>
+const stageDetails = {
+  tick: {
+    title: 'Timer Tick — src/browser/main.js',
+    body: `<p>JavaScript drives the main loop via <code>setTimeout</code> or <code>requestAnimationFrame</code>. The tick interval is determined by the next hardware timer event (PIT, RTC, APIC).</p>
+    <p>When the emulator is running, <code>next_tick(time_to_next_event)</code> schedules the next call. This lets the browser remain responsive between ticks.</p>
+    <p>If the guest halts (<code>HLT</code> instruction), the CPU signals <code>"cpu-event-halt"</code> via the bus and JS suspends ticking until an IRQ arrives.</p>`
+  },
+  'main-loop': {
+    title: 'WASM Main Loop — src/rust/cpu/cpu.rs',
+    body: `<p>The inner loop runs entirely in WASM, executing x86 instructions one at a time. It loops until a configured cycle budget is exhausted or a timer event fires.</p>
+    <p>The cycle budget prevents monopolizing the JS thread — the browser event loop (input, rendering) gets time between ticks.</p>
+    <p>Key function: <code>cpu_run()</code> in Rust → compiled to WASM → exported as <code>cpu.main_loop()</code> in JS.</p>`
+  },
+  'jit-check': {
+    title: 'JIT Cache Lookup — src/rust/jit.rs',
+    body: `<p>Before interpreting, the CPU looks up the current physical EIP in a hash table of compiled WASM functions.</p>
+    <p>On a <strong>hit</strong>: calls the cached WASM function directly via <code>WebAssembly.Table</code> indirect call. Zero decode overhead.</p>
+    <p>On a <strong>miss</strong>: interprets. Also increments a "hot" counter for this EIP. After enough hits, the block is queued for JIT compilation.</p>`
+  },
+  execute: {
+    title: 'Execute — JIT vs Interpreter',
+    body: `<p><strong>JIT path</strong>: the compiled WASM function runs natively. It reads/writes registers via fixed WASM memory offsets. No opcode dispatch table — every instruction is inlined.</p>
+    <p><strong>Interpreter path</strong> (<code>src/rust/cpu/instructions.rs</code>): reads prefix bytes, opcode, optional 0F escape, ModRM, SIB, displacement, immediate. Dispatches to a per-opcode handler function.</p>
+    <p>Both paths call WASM imports for I/O port accesses and MMIO.</p>`
+  },
+  'io-check': {
+    title: 'I/O Access — WASM → JS callback',
+    body: `<p>When the CPU executes <code>IN</code> or <code>OUT</code>, WASM suspends and calls the imported JavaScript function <code>io_port_read8/write8(addr)</code>.</p>
+    <p>JS looks up the handler in the I/O bus array, calls the device's read/write function, and returns the result. WASM resumes with the returned value in the appropriate register.</p>
+    <p>MMIO works similarly via <code>mmap_read/write</code> for memory-mapped device registers.</p>`
+  },
+  irq: {
+    title: 'Interrupt Handling',
+    body: `<p>After each instruction, if the IF (interrupt enable) flag is set and a hardware IRQ is pending: the CPU reads the interrupt vector from the PIC (8259A), fetches the IDT entry, pushes CS:EIP:FLAGS, and jumps to the handler.</p>
+    <p>Software interrupts (<code>INT n</code>) use the IDT directly. Exceptions (divide-by-zero, page fault, etc.) take priority over hardware IRQs.</p>
+    <p>Devices call <code>cpu.device_raise_irq(n)</code> from JavaScript to signal IRQs to the WASM CPU.</p>`
+  }
+};
+
+function showStage(key) {
+  const d = stageDetails[key];
+  document.querySelectorAll('.pipe-stage').forEach(el => el.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  const box = document.getElementById('stage-detail');
+  document.getElementById('sd-title').textContent = d.title;
+  document.getElementById('sd-body').innerHTML = d.body;
+  box.classList.add('visible');
+  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+let currentTick = -1;
+function advanceTick() {
+  const steps = document.querySelectorAll('.loop-step');
+  steps.forEach(el => el.classList.remove('lit'));
+  currentTick = (currentTick + 1) % steps.length;
+  steps[currentTick].classList.add('lit');
+  steps[currentTick].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+</script>
+</body>
+</html>

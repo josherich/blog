@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>v86 — Event Bus</title>
+<style>
+:root {
+  --bg: #0d1117; --bg2: #161b22; --bg3: #21262d; --border: #30363d;
+  --text: #f0f6fc; --text2: #8b949e;
+  --blue: #58a6ff; --green: #3fb950; --purple: #bc8cff;
+  --orange: #ffa657; --red: #ff7b72; --yellow: #d29922;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 15px; line-height: 1.6; }
+nav { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 10px 16px; position: sticky; top: 0; z-index: 100; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+nav::-webkit-scrollbar { display: none; }
+nav a { color: var(--text2); text-decoration: none; padding: 5px 10px; border-radius: 6px; font-size: 13px; white-space: nowrap; transition: all 0.15s; }
+nav a:hover { color: var(--text); background: var(--bg3); }
+nav a.active { color: var(--yellow); background: rgba(210,153,34,0.1); }
+
+header { padding: 36px 20px 20px; max-width: 720px; margin: 0 auto; }
+header h1 { font-size: clamp(20px, 4vw, 34px); font-weight: 700; }
+header h1 span { color: var(--yellow); }
+header p { color: var(--text2); margin-top: 8px; }
+
+.main { max-width: 960px; margin: 0 auto; padding: 0 16px 60px; }
+h2 { font-size: 18px; font-weight: 600; margin: 32px 0 16px; }
+h2 .accent { color: var(--yellow); }
+code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; padding: 2px 6px; color: var(--orange); }
+
+.info-box { border-radius: 8px; padding: 14px 16px; margin-bottom: 16px; font-size: 13px; }
+.info-box.yellow { background: rgba(210,153,34,0.08); border: 1px solid rgba(210,153,34,0.2); }
+.info-box.blue   { background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.2); }
+.info-box.green  { background: rgba(63,185,80,0.08); border: 1px solid rgba(63,185,80,0.2); }
+.info-box strong { color: var(--text); }
+.info-box p { color: var(--text2); margin-top: 4px; }
+
+/* Bus diagram */
+.bus-diagram {
+  display: grid;
+  grid-template-columns: 1fr 80px 1fr;
+  gap: 12px;
+  align-items: start;
+  margin-bottom: 32px;
+}
+@media (max-width: 600px) {
+  .bus-diagram { grid-template-columns: 1fr; }
+  .bus-center { display: none; }
+}
+.bus-col h3 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; padding: 0 2px; }
+.bus-col.left h3 { color: var(--blue); }
+.bus-col.right h3 { color: var(--green); }
+
+.bus-node {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.bus-node:hover { border-color: var(--yellow); }
+.bus-node.selected { border-color: var(--yellow); background: rgba(210,153,34,0.08); }
+.bus-col.left .bus-node { border-left: 3px solid rgba(88,166,255,0.4); }
+.bus-col.right .bus-node { border-right: 3px solid rgba(63,185,80,0.4); }
+.bn-name { font-weight: 500; }
+.bn-sub { font-size: 11px; color: var(--text2); margin-top: 2px; }
+
+.bus-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 28px;
+  gap: 4px;
+}
+.bus-core {
+  width: 60px;
+  background: rgba(210,153,34,0.1);
+  border: 1px solid rgba(210,153,34,0.3);
+  border-radius: 8px;
+  padding: 8px 4px;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--yellow);
+  letter-spacing: 0.5px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bus-line {
+  width: 2px;
+  height: 20px;
+  background: rgba(210,153,34,0.3);
+  position: relative;
+  overflow: hidden;
+}
+.bus-packet {
+  position: absolute;
+  left: -1px;
+  width: 4px;
+  height: 5px;
+  border-radius: 2px;
+  background: var(--yellow);
+  animation: bus-flow 2s linear infinite;
+}
+@keyframes bus-flow {
+  from { top: -5px; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  to { top: 100%; opacity: 0; }
+}
+
+/* Message catalog */
+.msg-section { margin-bottom: 32px; }
+.msg-tabs { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+.tab-btn { padding: 6px 14px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg2); color: var(--text2); font-size: 13px; cursor: pointer; transition: all 0.15s; }
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { background: var(--bg3); color: var(--text); border-color: var(--yellow); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+.msg-list { display: flex; flex-direction: column; gap: 8px; }
+.msg-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.msg-card:hover { border-color: var(--yellow); }
+.msg-card.open { border-color: var(--yellow); }
+.msg-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+}
+.msg-name { font-family: monospace; font-size: 13px; color: var(--orange); font-weight: 600; }
+.msg-from { font-size: 11px; }
+.msg-arrow { margin-left: auto; font-size: 14px; color: var(--text2); transition: transform 0.2s; }
+.msg-card.open .msg-arrow { transform: rotate(90deg); }
+.msg-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); padding-top: 12px; }
+.msg-card.open .msg-body { display: block; }
+.msg-body p { font-size: 13px; color: var(--text2); margin-bottom: 8px; }
+.msg-body strong { color: var(--text); }
+.msg-body pre {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-family: monospace;
+  font-size: 12px;
+  color: var(--green);
+  overflow-x: auto;
+  margin-top: 8px;
+}
+.dir-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 3px;
+}
+.dir-in  { background: rgba(88,166,255,0.15); color: var(--blue); }
+.dir-out { background: rgba(63,185,80,0.15); color: var(--green); }
+
+/* Live bus simulation */
+.sim-panel {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+.sim-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+}
+.sim-header h3 { font-size: 14px; font-weight: 600; }
+.sim-controls { display: flex; gap: 8px; }
+.sim-btn {
+  padding: 5px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  color: var(--text);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.sim-btn:hover { background: var(--border); }
+.sim-btn.active { background: rgba(63,185,80,0.15); border-color: var(--green); color: var(--green); }
+.sim-log {
+  height: 200px;
+  overflow-y: auto;
+  padding: 10px 16px;
+  font-family: monospace;
+  font-size: 12px;
+}
+.sim-entry {
+  padding: 3px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+.sim-entry:last-child { border-bottom: none; }
+.sim-time { color: var(--text2); white-space: nowrap; font-size: 11px; }
+.sim-msg { color: var(--orange); }
+.sim-data { color: var(--text2); font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sim-entry.from-adapter .sim-msg { color: var(--blue); }
+.sim-entry.from-emulator .sim-msg { color: var(--green); }
+
+/* Source code snippet */
+.code-block {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-family: monospace;
+  font-size: 12px;
+  overflow-x: auto;
+  margin-bottom: 16px;
+  line-height: 1.7;
+}
+.kw { color: var(--purple); }
+.fn { color: var(--blue); }
+.str { color: var(--green); }
+.cm { color: var(--text2); font-style: italic; }
+.num { color: var(--orange); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">Overview</a>
+  <a href="cpu.html">CPU &amp; JIT</a>
+  <a href="memory.html">Memory</a>
+  <a href="io.html">I/O Bus</a>
+  <a href="devices.html">Devices</a>
+  <a href="bus.html" class="active">Event Bus</a>
+</nav>
+
+<header>
+  <h1>Event <span>Bus</span></h1>
+  <p>The BusConnector pub/sub system that decouples browser adapters (keyboard, screen, network) from the emulator's device controllers.</p>
+</header>
+
+<div class="main">
+
+  <div class="info-box yellow">
+    <strong>Why a bus?</strong>
+    <p>v86 keeps browser APIs (keyboard events, canvas rendering, WebSocket) completely separate from device emulation logic. The BusConnector acts as a message broker — adapters send events in, devices respond and send data out. Neither side knows about the other's implementation.</p>
+  </div>
+
+  <!-- Architecture diagram -->
+  <h2>Bus <span class="accent">Architecture</span></h2>
+
+  <div class="bus-diagram">
+    <div class="bus-col left">
+      <h3>Browser Adapters</h3>
+      <div class="bus-node" onclick="selectNode(this,'keyboard-adapter')"><div class="bn-name">Keyboard Adapter</div><div class="bn-sub">keyboard.js — DOM keydown/keyup</div></div>
+      <div class="bus-node" onclick="selectNode(this,'mouse-adapter')"><div class="bn-name">Mouse Adapter</div><div class="bn-sub">mouse.js — Pointer Lock API</div></div>
+      <div class="bus-node" onclick="selectNode(this,'screen-adapter')"><div class="bn-name">Screen Adapter</div><div class="bn-sub">screen.js — &lt;canvas&gt; putImageData</div></div>
+      <div class="bus-node" onclick="selectNode(this,'speaker-adapter')"><div class="bn-name">Speaker Adapter</div><div class="bn-sub">speaker.js — Web Audio API</div></div>
+      <div class="bus-node" onclick="selectNode(this,'network-adapter')"><div class="bn-name">Network Adapter</div><div class="bn-sub">network.js — WebSocket relay</div></div>
+      <div class="bus-node" onclick="selectNode(this,'serial-adapter')"><div class="bn-name">Serial Adapter</div><div class="bn-sub">serial.js — &lt;textarea&gt; / xterm.js</div></div>
+    </div>
+
+    <div class="bus-center">
+      <div class="bus-line"><div class="bus-packet" style="animation-delay:0s"></div></div>
+      <div class="bus-core">BUS</div>
+      <div class="bus-line"><div class="bus-packet" style="animation-delay:1s;animation-direction:reverse"></div></div>
+    </div>
+
+    <div class="bus-col right">
+      <h3>Emulator Devices</h3>
+      <div class="bus-node" onclick="selectNode(this,'ps2-device')"><div class="bn-name">PS/2 Controller</div><div class="bn-sub">ps2.js — keyboard + mouse FIFO</div></div>
+      <div class="bus-node" onclick="selectNode(this,'vga-device')"><div class="bn-name">VGA Device</div><div class="bn-sub">vga.js — pixel buffer rendering</div></div>
+      <div class="bus-node" onclick="selectNode(this,'pit-device')"><div class="bn-name">PIT + PC Speaker</div><div class="bn-sub">pit.js — timer + audio tone</div></div>
+      <div class="bus-node" onclick="selectNode(this,'ne2k-device')"><div class="bn-name">NE2000 / Virtio-net</div><div class="bn-sub">ne2k.js — Ethernet frames</div></div>
+      <div class="bus-node" onclick="selectNode(this,'uart-device')"><div class="bn-name">UART / Virtio-console</div><div class="bn-sub">uart.js — serial byte stream</div></div>
+      <div class="bus-node" onclick="selectNode(this,'v86-control')"><div class="bn-name">v86 Emulator Control</div><div class="bn-sub">main.js — lifecycle events</div></div>
+    </div>
+  </div>
+
+  <!-- Node detail -->
+  <div id="node-detail" style="display:none;background:var(--bg2);border:1px solid var(--yellow);border-radius:10px;padding:18px;margin-bottom:32px;">
+    <h3 id="nd-title" style="font-size:15px;font-weight:600;color:var(--yellow);margin-bottom:10px;"></h3>
+    <div id="nd-body"></div>
+  </div>
+
+  <!-- Message catalog -->
+  <h2>Message <span class="accent">Catalog</span></h2>
+  <div class="msg-tabs">
+    <button class="tab-btn active" onclick="switchTab('tab-in')">Adapter → Emulator</button>
+    <button class="tab-btn" onclick="switchTab('tab-out')">Emulator → Adapter</button>
+    <button class="tab-btn" onclick="switchTab('tab-lifecycle')">Lifecycle</button>
+  </div>
+
+  <div id="tab-in" class="tab-content active">
+    <div class="msg-list">
+
+      <div class="msg-card" onclick="toggleMsg(this)">
+        <div class="msg-header">
+          <span class="dir-badge dir-in">→ Emulator</span>
+          <span class="msg-name">"keyboard-code"</span>
+          <span class="msg-from">keyboard.js</span>
+          <span class="msg-arrow">›</span>
+        </div>
+        <div class="msg-body">
+          <p><strong>Sender:</strong> Keyboard adapter on <code>keydown</code>/<code>keyup</code> DOM events.</p>
+          <p><strong>Receiver:</strong> PS/2 controller — queues byte in keyboard FIFO, raises IRQ1.</p>
+          <p><strong>Data:</strong> A single integer — PC scan code set 2 byte. E0-prefix extended keys send two messages (0xE0, then the key code). Key release sends 0xF0 then the code.</p>
+          <pre>bus.send("keyboard-code", 0x1C);  // 'A' pressed
+bus.send("keyboard-code", 0xF0);  // release prefix
+bus.send("keyboard-code", 0x1C);  // 'A' released</pre>
+        </div>
+      </div>
+
+      <div class="msg-card" onclick="toggleMsg(this)">
+        <div class="msg-header">
+          <span class="dir-badge dir-in">→ Emulator</span>
+          <span class="msg-name">"mouse-delta"</span>
+          <span class="msg-from">mouse.js</span>
+          <span class="msg-arrow">›</span>
+        </div>
+        <div class="msg-body">
+          <p><strong>Sender:</strong> Mouse adapter on <code>mousemove</code> (with Pointer Lock) or <code>pointermove</code>.</p>
+          <p><strong>Receiver:</strong> PS/2 controller — constructs 3-byte mouse packet (flags, dx, dy), queues it, raises IRQ12.</p>
+          <p><strong>Data:</strong> Array <code>[dx, dy, dz]</code> — relative pixel movement. Clamped to -255..255 per packet.</p>
+          <pre>bus.send("mouse-delta", [dx, dy, dz]);</pre>
+        </div>
+      </div>
+
+      <div class="msg-card" onclick="toggleMsg(this)">
+        <div class="msg-header">
+          <span class="dir-badge dir-in">→ Emulator</span>
+          <span class="msg-name">"mouse-click"</span>
+          <span class="msg-from">mouse.js</span>
+          <span class="msg-arrow">›</span>
+        </div>
+        <div class="msg-body">
+          <p><strong>Sender:</strong> Mouse adapter on <code>mousedown</code>/<code>mouseup</code> events.</p>
+          <p><strong>Receiver:</strong> PS/2 — updates button state bits in the next mouse packet's flag byte.</p>
+          <pre>bus.send("mouse-click", [left_btn, middle_btn, right_btn]);
+// e.g. left pressed: [1, 0, 0]</pre>
+        </div>
+      </div>
+
+      <div class="msg-card" onclick="toggleMsg(this)">
+        <div class="msg-header">
+          <span class="dir-badge dir-in">→ Emulator</span>
+          <span class="msg-name">"network-send"</span>
+          <span class="msg-from">ne2k.js / virtio_net.js</span>
+          <span class="msg-arrow">›</span>
+        </div>
+        <div class="msg-body">
+          <p><strong>Sender:</strong> NE2000 or Virtio-net device — called internally when guest transmits a frame.</p>
+          <p><strong>Receiver:</strong> Network adapter — forwards raw Ethernet frame to WebSocket relay server, fetch API, or local loop.</p>
+          <pre>bus.send("network-send", new Uint8Array(ethernet_frame));</pre>
+        </div>
+      </div>
+
+      <div class="msg-card" onclick="toggleMsg(this)">
+        <div class="msg-header">
+          <span class="dir-badge dir-in">→ Emulator</span>
+          <span class="msg-name">"serial0-input" … "serial3-input"</span>
+          <span class="msg-from">serial.js</span>
+          <span class="msg-arrow">›</span>
+        </div>
+        <div class="msg-body">
+          <p><strong>Sender:</strong> Serial adapter — when user types in the terminal UI.</p>
+          <p><strong>Receiver:</strong> UART device — pushes byte into RX FIFO, raises IRQ if interrupts enabled.</p>
+          <pre>bus.send("serial0-input", char_code);  // e.g. 0x0D for Enter</pre>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="tab-out" class="tab-content">
+    <div class="msg-list">
+
+      <div class="msg-card" onclick="toggleMsg(this)">
+        <div class="msg-header">
+          <span class="dir-badge dir-out">← Adapter</span>
+          <span class="msg-name">"screen-fill-buffer"</span>
+          <span class="msg-from">vga.js</span>
+          <span class="msg-arrow">›</span>
+        </div>
+        <div class="msg-body">
+          <p><strong>Sender:</strong> VGA device — sent every timer tick when dirty scanlines exist.</p>
+          <p><strong>Receiver:</strong> Screen adapter — blits pixel data to canvas using <code>putImageData()</code>.</p>
+          <p><strong>Data:</strong> Object with dirty region and pixel buffer reference.</p>
+          <pre>{
+  dirty_x: 0, dirty_y: 0,
+  dirty_w: 640, dirty_h: 16,   // changed rows
+  buffer: Uint8Array,           // RGBA pixels
+  image_data: ImageData         // pre-built ImageData object
+}</pre>
+        </div>
+      </div>
+
+      <div class="msg-card" onclick="toggleMsg(this)">
+        <div class="msg-header">
+          <span class="dir-badge dir-out">← Adapter</span>
+          <span class="msg-name">"screen-set-mode"</span>
+          <span class="msg-from">vga.js</span>
+          <span class="msg-arrow">›</span>
+        </div>
+        <div class="msg-body">
+          <p><strong>Sender:</strong> VGA device — when guest changes display mode (text↔graphics, resolution change).</p>
+          <p><strong>Receiver:</strong> Screen adapter — resizes canvas, switches rendering logic.</p>
+          <pre>bus.send("screen-set-mode", is_graphical_mode);
+// true = pixel buffer mode, false = text mode</pre>
+        </div>
+      </div>
+
+      <div class="msg-card" onclick="toggleMsg(this)">
+        <div class="msg-header">
+          <span class="dir-badge dir-out">← Adapter</span>
+          <span class="msg-name">"pcspeaker-enable" / "pcspeaker-disable"</span>
+          <span class="msg-from">pit.js (via port 0x61)</span>
+          <span class="msg-arrow">›</span>
+        </div>
+        <div class="msg-body">
+          <p><strong>Sender:</strong> PIT device — when guest sets/clears port 0x61 bit 0 (speaker gate) and bit 1 (PIT ch2 gate).</p>
+          <p><strong>Receiver:</strong> Speaker adapter — starts or stops the Web Audio oscillator node.</p>
+        </div>
+      </div>
+
+      <div class="msg-card" onclick="toggleMsg(this)">
+        <div class="msg-header">
+          <span class="dir-badge dir-out">← Adapter</span>
+          <span class="msg-name">"pcspeaker-update"</span>
+          <span class="msg-from">pit.js</span>
+          <span class="msg-arrow">›</span>
+        </div>
+        <div class="msg-body">
+          <p><strong>Sender:</strong> PIT device — when channel 2 counter is reprogrammed (changes tone frequency).</p>
+          <p><strong>Receiver:</strong> Speaker adapter — updates the oscillator frequency.</p>
+          <pre>bus.send("pcspeaker-update", [pit_mode, frequency_hz]);</pre>
+        </div>
+      </div>
+
+      <div class="msg-card" onclick="toggleMsg(this)">
+        <div class="msg-header">
+          <span class="dir-badge dir-out">← Adapter</span>
+          <span class="msg-name">"network-receive"</span>
+          <span class="msg-from">network.js (adapter → emulator)</span>
+          <span class="msg-arrow">›</span>
+        </div>
+        <div class="msg-body">
+          <p><strong>Sender:</strong> Network adapter — when a packet arrives from the relay server or fetch response.</p>
+          <p><strong>Receiver:</strong> NE2000/Virtio-net device — copies frame into RX ring buffer, raises interrupt.</p>
+          <pre>bus.send("network-receive", new Uint8Array(ethernet_frame));</pre>
+        </div>
+      </div>
+
+      <div class="msg-card" onclick="toggleMsg(this)">
+        <div class="msg-header">
+          <span class="dir-badge dir-out">← Adapter</span>
+          <span class="msg-name">"serial0-output" … "serial3-output"</span>
+          <span class="msg-from">uart.js</span>
+          <span class="msg-arrow">›</span>
+        </div>
+        <div class="msg-body">
+          <p><strong>Sender:</strong> UART device — when TX FIFO byte is ready to be transmitted.</p>
+          <p><strong>Receiver:</strong> Serial adapter — appends character to terminal output buffer.</p>
+          <pre>bus.send("serial0-output", char_code);  // e.g. 0x41 = 'A'</pre>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="tab-lifecycle" class="tab-content">
+    <div class="msg-list">
+
+      <div class="msg-card" onclick="toggleMsg(this)">
+        <div class="msg-header">
+          <span class="dir-badge dir-out">← Adapter</span>
+          <span class="msg-name">"emulator-ready"</span>
+          <span class="msg-from">main.js</span>
+          <span class="msg-arrow">›</span>
+        </div>
+        <div class="msg-body">
+          <p>Fired when <code>cpu.init()</code> completes — all devices initialized, BIOS loaded, CMOS filled. The emulator is ready to start but has not yet begun executing.</p>
+          <p>Application code (starter.js) listens for this to call <code>emulator.run()</code>.</p>
+        </div>
+      </div>
+
+      <div class="msg-card" onclick="toggleMsg(this)">
+        <div class="msg-header">
+          <span class="dir-badge dir-out">← Adapter</span>
+          <span class="msg-name">"emulator-started"</span>
+          <span class="msg-from">main.js</span>
+          <span class="msg-arrow">›</span>
+        </div>
+        <div class="msg-body">
+          <p>Fired when <code>run()</code> is called — the main loop begins ticking. Guest CPU is now executing instructions.</p>
+        </div>
+      </div>
+
+      <div class="msg-card" onclick="toggleMsg(this)">
+        <div class="msg-header">
+          <span class="dir-badge dir-out">← Adapter</span>
+          <span class="msg-name">"emulator-stopped"</span>
+          <span class="msg-from">main.js</span>
+          <span class="msg-arrow">›</span>
+        </div>
+        <div class="msg-body">
+          <p>Fired when <code>stop()</code> is called or the guest issues an ACPI shutdown. Main loop halts; guest memory is preserved.</p>
+        </div>
+      </div>
+
+      <div class="msg-card" onclick="toggleMsg(this)">
+        <div class="msg-header">
+          <span class="dir-badge dir-in">→ Emulator</span>
+          <span class="msg-name">"cpu-event-halt"</span>
+          <span class="msg-from">main.js (from WASM callback)</span>
+          <span class="msg-arrow">›</span>
+        </div>
+        <div class="msg-body">
+          <p>Fired by the WASM import <code>cpu_event_halt()</code> when the guest executes a <code>HLT</code> instruction. JS suspends ticking until an IRQ wakes the CPU.</p>
+        </div>
+      </div>
+
+      <div class="msg-card" onclick="toggleMsg(this)">
+        <div class="msg-header">
+          <span class="dir-badge dir-out">← Adapter</span>
+          <span class="msg-name">"download-progress" / "download-error"</span>
+          <span class="msg-from">starter.js</span>
+          <span class="msg-arrow">›</span>
+        </div>
+        <div class="msg-body">
+          <p>Fired during async file loading (BIOS, disk images). Application can display a progress bar. <code>download-error</code> fires if a fetch fails.</p>
+          <pre>bus.send("download-progress", {
+  file_name: "linux.iso",
+  loaded: 4194304,
+  total: 671088640
+});</pre>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bus source code -->
+  <h2>Bus <span class="accent">Implementation</span></h2>
+  <div class="info-box green">
+    <strong>Paired connectors</strong>
+    <p><code>Bus.create()</code> returns two linked <code>BusConnector</code> objects. Messages sent on one appear as received on the other — there's no global singleton. This lets the emulator and adapters evolve independently.</p>
+  </div>
+
+  <div class="code-block"><span class="cm">// src/bus.js — simplified</span>
+<span class="kw">function</span> <span class="fn">BusConnector</span>() {
+    <span class="kw">this</span>.listeners = {};  <span class="cm">// { event_name: [{fn, this_value}] }</span>
+    <span class="kw">this</span>.pair = <span class="kw">null</span>;
+}
+
+<span class="fn">BusConnector</span>.prototype.<span class="fn">register</span> = <span class="kw">function</span>(name, fn, this_val) {
+    (<span class="kw">this</span>.listeners[name] ||= []).push({ fn, <span class="kw">this</span>: this_val });
+};
+
+<span class="fn">BusConnector</span>.prototype.<span class="fn">send</span> = <span class="kw">function</span>(name, data) {
+    <span class="kw">const</span> listeners = <span class="kw">this</span>.pair.listeners[name] || [];
+    <span class="kw">for</span> (<span class="kw">const</span> l <span class="kw">of</span> listeners) l.fn.call(l.<span class="kw">this</span>, data);
+};
+
+<span class="fn">Bus</span>.<span class="fn">create</span> = <span class="kw">function</span>() {
+    <span class="kw">const</span> a = <span class="kw">new</span> <span class="fn">BusConnector</span>(), b = <span class="kw">new</span> <span class="fn">BusConnector</span>();
+    a.pair = b; b.pair = a;
+    <span class="kw">return</span> [a, b];  <span class="cm">// [adapter_bus, emulator_bus]</span>
+};</div>
+
+  <!-- Simulated bus log -->
+  <h2>Simulated <span class="accent">Bus Activity</span></h2>
+  <div class="sim-panel">
+    <div class="sim-header">
+      <h3>Bus Message Log</h3>
+      <div class="sim-controls">
+        <button class="sim-btn" id="sim-toggle" onclick="toggleSim()">▶ Start</button>
+        <button class="sim-btn" onclick="clearLog()">✕ Clear</button>
+      </div>
+    </div>
+    <div class="sim-log" id="sim-log">
+      <div style="color:var(--text2);font-size:12px;padding:8px 0;">Press Start to simulate bus activity…</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const nodeDetails = {
+  'keyboard-adapter': { title: 'Keyboard Adapter (src/browser/keyboard.js)', body: `<p>Listens for browser <code>keydown</code>/<code>keyup</code> events on the canvas element. Converts DOM key codes to PC scan code set 2 bytes using a lookup table.</p><p>Extended keys (arrows, function keys, numpad) send an 0xE0 escape prefix followed by the key code. Releases send 0xF0 then the code. Ctrl+Alt+Del sends the 3-key combo sequence.</p><p>Sends: <code>"keyboard-code"</code>` },
+  'mouse-adapter': { title: 'Mouse Adapter (src/browser/mouse.js)', body: `<p>Two operating modes: <strong>absolute</strong> (tracks cursor position relative to canvas) and <strong>relative</strong> (uses Pointer Lock API for captured mouse in games/VMs).</p><p>Relative mode calls <code>canvas.requestPointerLock()</code> on click. Subsequent <code>mousemove</code> events provide <code>movementX/Y</code> delta values.</p><p>Sends: <code>"mouse-delta"</code>, <code>"mouse-click"</code>` },
+  'screen-adapter': { title: 'Screen Adapter (src/browser/screen.js)', body: `<p>Receives pixel data from the VGA device and renders it to an HTML <code>&lt;canvas&gt;</code>. Two rendering paths:</p><p><strong>Graphics mode</strong>: Uses <code>ctx.putImageData(imageData, x, y)</code> to blit changed scanlines. The VGA device pre-builds the <code>ImageData</code> object for efficiency.</p><p><strong>Text mode</strong>: Reads character+attribute bytes, looks up font glyphs in the VGA BIOS font, renders them as colored pixels.</p><p>Listens for: <code>"screen-fill-buffer"</code>, <code>"screen-set-mode"</code>` },
+  'speaker-adapter': { title: 'Speaker Adapter (src/browser/speaker.js)', body: `<p>Drives a Web Audio API <code>OscillatorNode</code> for PC speaker tones (connected to PIT channel 2). When the guest programs the PIT frequency and enables the speaker gate, the oscillator starts at the requested frequency.</p><p>Also handles SoundBlaster 16 DMA audio — receives raw PCM samples and plays them via an <code>AudioBufferSourceNode</code>.</p><p>Listens for: <code>"pcspeaker-enable"</code>, <code>"pcspeaker-disable"</code>, <code>"pcspeaker-update"</code>` },
+  'network-adapter': { title: 'Network Adapter (src/browser/network.js)', body: `<p>Three backends: <strong>WebSocket</strong> (connects to a relay server that bridges to the real internet), <strong>fetch</strong> (tunnels HTTP requests, limited protocol), <strong>fake</strong> (local echo for testing).</p><p>Sends: <code>"network-receive"</code> for incoming frames. Listens for: <code>"network-send"</code> for outgoing frames.</p>` },
+  'serial-adapter': { title: 'Serial Adapter (src/browser/serial.js)', body: `<p>Connects UART serial ports to a browser UI. Output bytes go to a <code>&lt;textarea&gt;</code> or an xterm.js terminal. Keyboard input in the terminal sends bytes back via <code>"serial0-input"</code>.</p><p>Very useful for Linux VMs configured with a serial console (<code>console=ttyS0</code>) — all boot output appears immediately without needing VGA emulation.</p>` },
+  'ps2-device': { title: 'PS/2 Device (src/ps2.js)', body: `<p>Receives keyboard scancodes via <code>"keyboard-code"</code> bus messages, queues them in a 16-byte FIFO, then raises IRQ1. When the guest reads port 0x60, the next byte is dequeued.</p><p>Mouse packets are built from <code>"mouse-delta"</code> and <code>"mouse-click"</code> messages into 3-byte PS/2 mouse packets. IRQ12 fires after each byte.</p>` },
+  'vga-device': { title: 'VGA Device (src/vga.js)', body: `<p>On every render tick (driven by the timer loop), checks if any video memory was dirtied since last render. If so, re-renders the changed scanlines and sends them via <code>"screen-fill-buffer"</code>.</p><p>In text mode: reads character codes from MMIO, fetches font glyphs from BIOS ROM, composites with foreground/background colors. In graphics mode: sends raw pixel buffer slices.</p>` },
+  'pit-device': { title: 'PIT Device (src/pit.js)', body: `<p>PIT channel 2 is wired to the PC speaker. When the guest programs a frequency (writes to port 0x42) and enables the gate (port 0x61 bits 0+1), the PIT sends <code>"pcspeaker-update"</code> with the computed frequency in Hz.</p>` },
+  'ne2k-device': { title: 'NE2000 Device (src/ne2k.js)', body: `<p>When the guest transmits a packet (writes TRANSMIT command), the NE2000 copies the frame from the ring buffer and calls <code>bus.send("network-send", frame)</code>. Incoming frames arrive via <code>"network-receive"</code> listener.</p>` },
+  'uart-device': { title: 'UART Device (src/uart.js)', body: `<p>When the guest writes a byte to the TX register (port 0x3F8 with DLAB=0), the UART appends it to the TX FIFO and sends <code>"serial0-output"</code>. Bytes arriving via <code>"serial0-input"</code> are queued in the RX FIFO and trigger an interrupt if UART interrupts are enabled.</p>` },
+  'v86-control': { title: 'v86 Lifecycle Control (src/browser/main.js)', body: `<p>Sends lifecycle events: <code>"emulator-ready"</code> after init, <code>"emulator-started"</code> on run, <code>"emulator-stopped"</code> on stop. Also receives <code>"download-progress"</code> events during async file loading and broadcasts them to the application.</p>` }
+};
+
+function selectNode(el, key) {
+  document.querySelectorAll('.bus-node').forEach(n => n.classList.remove('selected'));
+  el.classList.add('selected');
+  const d = nodeDetails[key];
+  if (!d) return;
+  const box = document.getElementById('node-detail');
+  document.getElementById('nd-title').textContent = d.title;
+  document.getElementById('nd-body').innerHTML = `<p style="font-size:13px;color:var(--text2)">${d.body}</p>`;
+  box.style.display = 'block';
+  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function toggleMsg(card) {
+  const wasOpen = card.classList.contains('open');
+  document.querySelectorAll('.msg-card').forEach(c => c.classList.remove('open'));
+  if (!wasOpen) card.classList.add('open');
+}
+
+function switchTab(id) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// Bus simulation
+let simRunning = false;
+let simInterval = null;
+let simTime = 0;
+
+const simMessages = [
+  { cls: 'from-adapter', msg: '"keyboard-code"', data: '0x1C  (A pressed)' },
+  { cls: 'from-emulator', msg: '"screen-fill-buffer"', data: '{dirty_y:0, dirty_h:16, ...}' },
+  { cls: 'from-adapter', msg: '"mouse-delta"', data: '[3, -1, 0]' },
+  { cls: 'from-emulator', msg: '"screen-fill-buffer"', data: '{dirty_y:0, dirty_h:400, ...}' },
+  { cls: 'from-adapter', msg: '"keyboard-code"', data: '0xF0  (release prefix)' },
+  { cls: 'from-adapter', msg: '"keyboard-code"', data: '0x1C  (A released)' },
+  { cls: 'from-emulator', msg: '"pcspeaker-enable"', data: '' },
+  { cls: 'from-emulator', msg: '"pcspeaker-update"', data: '[3, 440]  (440 Hz)' },
+  { cls: 'from-adapter', msg: '"network-send"', data: 'Uint8Array(60)' },
+  { cls: 'from-emulator', msg: '"network-receive"', data: 'Uint8Array(74)' },
+  { cls: 'from-emulator', msg: '"serial0-output"', data: '0x24  ($)' },
+  { cls: 'from-emulator', msg: '"pcspeaker-disable"', data: '' },
+  { cls: 'from-adapter', msg: '"mouse-click"', data: '[1, 0, 0]  (left down)' },
+  { cls: 'from-emulator', msg: '"screen-fill-buffer"', data: '{dirty_y:120, dirty_h:8, ...}' },
+];
+
+let msgIdx = 0;
+
+function addLogEntry(entry) {
+  const log = document.getElementById('sim-log');
+  const div = document.createElement('div');
+  div.className = `sim-entry ${entry.cls}`;
+  const t = (simTime / 1000).toFixed(3);
+  div.innerHTML = `<span class="sim-time">${t}s</span><span class="sim-msg">${entry.msg}</span><span class="sim-data">${entry.data}</span>`;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+  simTime += 50 + Math.random() * 150;
+}
+
+function toggleSim() {
+  const btn = document.getElementById('sim-toggle');
+  if (simRunning) {
+    clearInterval(simInterval);
+    simRunning = false;
+    btn.textContent = '▶ Start';
+    btn.classList.remove('active');
+  } else {
+    simRunning = true;
+    btn.textContent = '⏸ Pause';
+    btn.classList.add('active');
+    const log = document.getElementById('sim-log');
+    if (log.children.length === 1 && log.children[0].tagName === 'DIV') log.innerHTML = '';
+    simInterval = setInterval(() => {
+      addLogEntry(simMessages[msgIdx % simMessages.length]);
+      msgIdx++;
+    }, 600);
+  }
+}
+
+function clearLog() {
+  clearInterval(simInterval);
+  simRunning = false;
+  document.getElementById('sim-toggle').textContent = '▶ Start';
+  document.getElementById('sim-toggle').classList.remove('active');
+  document.getElementById('sim-log').innerHTML = '<div style="color:var(--text2);font-size:12px;padding:8px 0;">Press Start to simulate bus activity…</div>';
+  simTime = 0;
+  msgIdx = 0;
+}
+</script>
+</body>
+</html>

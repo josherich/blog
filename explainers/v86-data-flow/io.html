@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>v86 — I/O Port Bus</title>
+<style>
+:root {
+  --bg: #0d1117; --bg2: #161b22; --bg3: #21262d; --border: #30363d;
+  --text: #f0f6fc; --text2: #8b949e;
+  --blue: #58a6ff; --green: #3fb950; --purple: #bc8cff;
+  --orange: #ffa657; --red: #ff7b72; --yellow: #d29922;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 15px; line-height: 1.6; }
+nav { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 10px 16px; position: sticky; top: 0; z-index: 100; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+nav::-webkit-scrollbar { display: none; }
+nav a { color: var(--text2); text-decoration: none; padding: 5px 10px; border-radius: 6px; font-size: 13px; white-space: nowrap; transition: all 0.15s; }
+nav a:hover { color: var(--text); background: var(--bg3); }
+nav a.active { color: var(--green); background: rgba(63,185,80,0.1); }
+
+header { padding: 36px 20px 20px; max-width: 720px; margin: 0 auto; }
+header h1 { font-size: clamp(20px, 4vw, 34px); font-weight: 700; }
+header h1 span { color: var(--green); }
+header p { color: var(--text2); margin-top: 8px; }
+
+.main { max-width: 960px; margin: 0 auto; padding: 0 16px 60px; }
+h2 { font-size: 18px; font-weight: 600; margin: 32px 0 16px; }
+h2 .accent { color: var(--green); }
+code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; padding: 2px 6px; color: var(--orange); }
+
+.info-box { border-radius: 8px; padding: 14px 16px; margin-bottom: 16px; font-size: 13px; }
+.info-box.green  { background: rgba(63,185,80,0.08); border: 1px solid rgba(63,185,80,0.2); }
+.info-box.blue   { background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.2); }
+.info-box.purple { background: rgba(188,140,255,0.08); border: 1px solid rgba(188,140,255,0.2); }
+.info-box strong { color: var(--text); }
+.info-box p { color: var(--text2); margin-top: 4px; }
+
+/* Port map visual */
+.port-map {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+.port-map-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--bg3);
+  font-size: 11px;
+  color: var(--text2);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+}
+.port-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.port-row:last-child { border-bottom: none; }
+.port-row:hover { background: var(--bg3); }
+.port-row.selected { background: var(--bg3); }
+.port-bar-wrap { width: 120px; flex-shrink: 0; height: 18px; background: var(--bg3); border-radius: 3px; overflow: hidden; position: relative; }
+@media (max-width: 500px) { .port-bar-wrap { width: 60px; } }
+.port-bar { height: 100%; border-radius: 3px; }
+.port-range { font-family: monospace; font-size: 11px; color: var(--text2); width: 140px; flex-shrink: 0; }
+@media (max-width: 500px) { .port-range { width: 100px; font-size: 10px; } }
+.port-name { font-size: 13px; font-weight: 500; }
+.port-irq { font-size: 11px; color: var(--text2); margin-left: auto; white-space: nowrap; }
+
+/* Port detail panel */
+.port-detail {
+  background: var(--bg2);
+  border: 1px solid var(--green);
+  border-radius: 10px;
+  padding: 18px;
+  margin-bottom: 32px;
+  display: none;
+}
+.port-detail.visible { display: block; }
+.port-detail h3 { font-size: 15px; font-weight: 600; color: var(--green); margin-bottom: 10px; }
+.port-detail p { font-size: 13px; color: var(--text2); margin-bottom: 8px; }
+
+/* Data flow */
+.flow-anim {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+.flow-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.flow-row:last-child { border-bottom: none; }
+.flow-left { text-align: right; color: var(--text2); }
+.flow-mid { text-align: center; font-size: 16px; }
+.flow-right { color: var(--text); }
+.flow-row.wasm .flow-mid { color: var(--purple); }
+.flow-row.js .flow-mid { color: var(--green); }
+.flow-row.dev .flow-mid { color: var(--orange); }
+.flow-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; display: block; }
+
+/* Register breakdown table */
+.reg-breakdown {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-bottom: 32px;
+}
+.reg-breakdown th { background: var(--bg3); color: var(--text2); font-weight: 600; padding: 7px 12px; text-align: left; border-bottom: 1px solid var(--border); font-size: 12px; }
+.reg-breakdown td { padding: 7px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.reg-breakdown tr:hover td { background: var(--bg2); }
+.reg-breakdown td:first-child { font-family: monospace; color: var(--orange); white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">Overview</a>
+  <a href="cpu.html">CPU &amp; JIT</a>
+  <a href="memory.html">Memory</a>
+  <a href="io.html" class="active">I/O Bus</a>
+  <a href="devices.html">Devices</a>
+  <a href="bus.html">Event Bus</a>
+</nav>
+
+<header>
+  <h1>I/O Port <span>Bus</span></h1>
+  <p>All 65 536 ISA I/O ports — how devices register handlers and how the WASM CPU dispatches reads and writes.</p>
+</header>
+
+<div class="main">
+
+  <div class="info-box green">
+    <strong>ISA I/O space</strong>
+    <p>x86 has a separate 16-bit I/O address space (ports 0x0000–0xFFFF) accessed with <code>IN</code> and <code>OUT</code> instructions. v86 implements this as a flat array of 65 536 handler records in <code>src/io.js</code>. When WASM executes <code>IN AL, DX</code>, it calls the JS import <code>io_port_read8(DX)</code> → JS dispatches to the registered device handler.</p>
+  </div>
+
+  <!-- Read/write flow -->
+  <h2>Read/Write <span class="accent">Dispatch Flow</span></h2>
+
+  <div class="flow-anim">
+    <div class="flow-row wasm">
+      <div class="flow-left"><span class="flow-label">WASM</span>Guest executes <code>IN AL, 0x60</code></div>
+      <div class="flow-mid">⟱</div>
+      <div class="flow-right">CPU encodes port 0x60, size=1 (byte)</div>
+    </div>
+    <div class="flow-row wasm">
+      <div class="flow-left"><span class="flow-label">WASM → JS</span>Calls imported function</div>
+      <div class="flow-mid">⟱</div>
+      <div class="flow-right"><code>io_port_read8(0x60)</code> — crosses WASM/JS boundary</div>
+    </div>
+    <div class="flow-row js">
+      <div class="flow-left"><span class="flow-label">io.js</span>Looks up port handler</div>
+      <div class="flow-mid">⟱</div>
+      <div class="flow-right"><code>io_port_map[0x60].read8</code> — registered by PS/2 device at init</div>
+    </div>
+    <div class="flow-row dev">
+      <div class="flow-left"><span class="flow-label">ps2.js</span>Device handler runs</div>
+      <div class="flow-mid">⟱</div>
+      <div class="flow-right">Dequeues next scancode from keyboard FIFO, returns byte value</div>
+    </div>
+    <div class="flow-row js">
+      <div class="flow-left"><span class="flow-label">JS → WASM</span>Returns to WASM</div>
+      <div class="flow-mid">⟰</div>
+      <div class="flow-right">Return value (e.g. <code>0x1C</code> = "A" pressed) placed in AL register</div>
+    </div>
+  </div>
+
+  <!-- Port map -->
+  <h2>Port <span class="accent">Assignment Map</span></h2>
+  <p style="color:var(--text2);font-size:13px;margin-bottom:12px;">Click any row for details about that port range.</p>
+
+  <div class="port-map">
+    <div class="port-map-header">
+      <span>Port Range</span><span>Device</span><span style="text-align:right">IRQ / Note</span>
+    </div>
+
+    <div class="port-row" onclick="showPort('dma1')">
+      <div class="port-bar-wrap"><div class="port-bar" style="width:5%;background:#58a6ff;"></div></div>
+      <div class="port-range">0x0000–0x001F</div>
+      <div class="port-name">DMA Controller 1</div>
+      <div class="port-irq">ch 0–3</div>
+    </div>
+    <div class="port-row" onclick="showPort('pic1')">
+      <div class="port-bar-wrap"><div class="port-bar" style="width:5%;background:#ff7b72;"></div></div>
+      <div class="port-range">0x0020–0x003F</div>
+      <div class="port-name">PIC 1 (8259A)</div>
+      <div class="port-irq">master</div>
+    </div>
+    <div class="port-row" onclick="showPort('pit')">
+      <div class="port-bar-wrap"><div class="port-bar" style="width:5%;background:#ffa657;"></div></div>
+      <div class="port-range">0x0040–0x0047</div>
+      <div class="port-name">PIT Timer (8254)</div>
+      <div class="port-irq">IRQ 0</div>
+    </div>
+    <div class="port-row" onclick="showPort('ps2')">
+      <div class="port-bar-wrap"><div class="port-bar" style="width:5%;background:#3fb950;"></div></div>
+      <div class="port-range">0x0060, 0x0064</div>
+      <div class="port-name">PS/2 Controller (8042)</div>
+      <div class="port-irq">IRQ 1, 12</div>
+    </div>
+    <div class="port-row" onclick="showPort('a20')">
+      <div class="port-bar-wrap"><div class="port-bar" style="width:3%;background:#8b949e;"></div></div>
+      <div class="port-range">0x0061</div>
+      <div class="port-name">A20 Gate / PC Speaker</div>
+      <div class="port-irq">sys ctrl</div>
+    </div>
+    <div class="port-row" onclick="showPort('rtc')">
+      <div class="port-bar-wrap"><div class="port-bar" style="width:4%;background:#d29922;"></div></div>
+      <div class="port-range">0x0070–0x0071</div>
+      <div class="port-name">RTC / CMOS</div>
+      <div class="port-irq">IRQ 8</div>
+    </div>
+    <div class="port-row" onclick="showPort('dma-page')">
+      <div class="port-bar-wrap"><div class="port-bar" style="width:5%;background:#58a6ff;"></div></div>
+      <div class="port-range">0x0080–0x008F</div>
+      <div class="port-name">DMA Page Registers</div>
+      <div class="port-irq">ch 0–7</div>
+    </div>
+    <div class="port-row" onclick="showPort('pic2')">
+      <div class="port-bar-wrap"><div class="port-bar" style="width:5%;background:#ff7b72;"></div></div>
+      <div class="port-range">0x00A0–0x00BF</div>
+      <div class="port-name">PIC 2 (8259A)</div>
+      <div class="port-irq">slave</div>
+    </div>
+    <div class="port-row" onclick="showPort('dma2')">
+      <div class="port-bar-wrap"><div class="port-bar" style="width:5%;background:#58a6ff;"></div></div>
+      <div class="port-range">0x00C0–0x00DF</div>
+      <div class="port-name">DMA Controller 2</div>
+      <div class="port-irq">ch 4–7</div>
+    </div>
+    <div class="port-row" onclick="showPort('ide2')">
+      <div class="port-bar-wrap"><div class="port-bar" style="width:10%;background:#bc8cff;"></div></div>
+      <div class="port-range">0x0170–0x0177, 0x0376</div>
+      <div class="port-name">IDE Secondary</div>
+      <div class="port-irq">IRQ 15</div>
+    </div>
+    <div class="port-row" onclick="showPort('ide1')">
+      <div class="port-bar-wrap"><div class="port-bar" style="width:10%;background:#bc8cff;"></div></div>
+      <div class="port-range">0x01F0–0x01F7, 0x03F6</div>
+      <div class="port-name">IDE Primary</div>
+      <div class="port-irq">IRQ 14</div>
+    </div>
+    <div class="port-row" onclick="showPort('sb16')">
+      <div class="port-bar-wrap"><div class="port-bar" style="width:15%;background:#ffa657;"></div></div>
+      <div class="port-range">0x0220–0x0233</div>
+      <div class="port-name">SoundBlaster 16</div>
+      <div class="port-irq">IRQ 5</div>
+    </div>
+    <div class="port-row" onclick="showPort('ne2k')">
+      <div class="port-bar-wrap"><div class="port-bar" style="width:15%;background:#3fb950;"></div></div>
+      <div class="port-range">0x0280–0x029F</div>
+      <div class="port-name">NE2000 Network Card</div>
+      <div class="port-irq">IRQ 9</div>
+    </div>
+    <div class="port-row" onclick="showPort('com2')">
+      <div class="port-bar-wrap"><div class="port-bar" style="width:15%;background:#d29922;"></div></div>
+      <div class="port-range">0x02F8–0x02FF</div>
+      <div class="port-name">UART COM2</div>
+      <div class="port-irq">IRQ 3</div>
+    </div>
+    <div class="port-row" onclick="showPort('vga')">
+      <div class="port-bar-wrap"><div class="port-bar" style="width:100%;background:#d29922;"></div></div>
+      <div class="port-range">0x03C0–0x03DF</div>
+      <div class="port-name">VGA Registers</div>
+      <div class="port-irq">—</div>
+    </div>
+    <div class="port-row" onclick="showPort('floppy')">
+      <div class="port-bar-wrap"><div class="port-bar" style="width:70%;background:#ffa657;"></div></div>
+      <div class="port-range">0x03F0–0x03F7</div>
+      <div class="port-name">Floppy Controller</div>
+      <div class="port-irq">IRQ 6</div>
+    </div>
+    <div class="port-row" onclick="showPort('com1')">
+      <div class="port-bar-wrap"><div class="port-bar" style="width:70%;background:#d29922;"></div></div>
+      <div class="port-range">0x03F8–0x03FF</div>
+      <div class="port-name">UART COM1</div>
+      <div class="port-irq">IRQ 4</div>
+    </div>
+    <div class="port-row" onclick="showPort('pci')">
+      <div class="port-bar-wrap"><div class="port-bar" style="width:100%;background:#bc8cff;"></div></div>
+      <div class="port-range">0x0CF8–0x0CFF</div>
+      <div class="port-name">PCI Configuration</div>
+      <div class="port-irq">—</div>
+    </div>
+    <div class="port-row" onclick="showPort('virtio')">
+      <div class="port-bar-wrap"><div class="port-bar" style="width:100%;background:#bc8cff;"></div></div>
+      <div class="port-range">0xE000–0xE0FF (var)</div>
+      <div class="port-name">Virtio I/O Port BAR</div>
+      <div class="port-irq">PCI IRQ</div>
+    </div>
+  </div>
+
+  <div id="port-detail" class="port-detail">
+    <h3 id="pd-title"></h3>
+    <div id="pd-body"></div>
+  </div>
+
+  <!-- Port record structure -->
+  <h2>Port Handler <span class="accent">Record</span></h2>
+  <div class="info-box blue">
+    <strong>Per-port handler record</strong>
+    <p>Each of the 65 536 ports has a record with up to 6 functions (read8, read16, read32, write8, write16, write32) plus a device back-reference. Unregistered ports have null handlers and return 0xFF on reads.</p>
+  </div>
+
+  <div style="overflow-x:auto">
+  <table class="reg-breakdown">
+    <thead><tr><th>Function</th><th>Called when</th><th>Typical return</th></tr></thead>
+    <tbody>
+      <tr><td>read8(port)</td><td>Guest: <code>IN AL, port</code></td><td>8-bit device register value</td></tr>
+      <tr><td>read16(port)</td><td>Guest: <code>IN AX, port</code></td><td>16-bit value (or two 8-bit reads chained)</td></tr>
+      <tr><td>read32(port)</td><td>Guest: <code>IN EAX, port</code></td><td>32-bit value (PCI config data etc.)</td></tr>
+      <tr><td>write8(port, val)</td><td>Guest: <code>OUT port, AL</code></td><td>—</td></tr>
+      <tr><td>write16(port, val)</td><td>Guest: <code>OUT port, AX</code></td><td>—</td></tr>
+      <tr><td>write32(port, val)</td><td>Guest: <code>OUT port, EAX</code></td><td>—</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <!-- VGA port breakdown -->
+  <h2>VGA Port <span class="accent">Breakdown</span> (0x03C0–0x03DF)</h2>
+  <p style="color:var(--text2);font-size:13px;margin-bottom:12px;">VGA has the most complex port layout — 14 registers spread across a 32-byte window.</p>
+
+  <div style="overflow-x:auto">
+  <table class="reg-breakdown">
+    <thead><tr><th>Port</th><th>Name</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td>0x3C0</td><td>AC Index+Data</td><td>Attribute Controller: write index, then data alternately. Controls color palette, overscan, display mode.</td></tr>
+      <tr><td>0x3C2</td><td>Misc Output (W) / Input Status 0 (R)</td><td>Clock select, sync polarity, page select (write); feature bits, CRT interrupt (read).</td></tr>
+      <tr><td>0x3C4</td><td>Sequencer Index</td><td>Selects sequencer register: reset, clocking mode, map mask, character map, memory mode.</td></tr>
+      <tr><td>0x3C5</td><td>Sequencer Data</td><td>Reads/writes the selected sequencer register.</td></tr>
+      <tr><td>0x3C6</td><td>DAC PEL Mask</td><td>Masks bits passed to palette DAC (normally 0xFF).</td></tr>
+      <tr><td>0x3C7</td><td>DAC State / DAC Read Index</td><td>Read: DAC state. Write: set read index for DAC palette reads.</td></tr>
+      <tr><td>0x3C8</td><td>DAC Write Index</td><td>Select DAC palette entry to write (0–255).</td></tr>
+      <tr><td>0x3C9</td><td>DAC Data</td><td>Read/write R,G,B bytes for selected palette entry (6 bits each, 0–63).</td></tr>
+      <tr><td>0x3CA</td><td>Feature Control (R)</td><td>Reads back the feature control register.</td></tr>
+      <tr><td>0x3CC</td><td>Misc Output (R)</td><td>Reads back the miscellaneous output register.</td></tr>
+      <tr><td>0x3CE</td><td>GC Index</td><td>Graphics Controller index: set/reset, enable S/R, color compare, rotate, read map, mode, misc, color don't care, bitmask.</td></tr>
+      <tr><td>0x3CF</td><td>GC Data</td><td>Read/write selected Graphics Controller register.</td></tr>
+      <tr><td>0x3D4</td><td>CRTC Index</td><td>CRT Controller: selects from 25 registers (htotal, hdisplay end, cursor, start/end, vretrace, etc.).</td></tr>
+      <tr><td>0x3D5</td><td>CRTC Data</td><td>Read/write selected CRTC register.</td></tr>
+      <tr><td>0x3DA</td><td>Input Status 1</td><td>Vertical retrace and display enable bits. Also resets AC flip-flop for attribute controller access.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+</div>
+
+<script>
+const portDetails = {
+  dma1: { title: 'DMA Controller 1 (0x0000–0x001F)', body: `<p>Intel 8237A DMA controller for 8-bit transfers. Controls channels 0–3. Channel 2 is dedicated to the floppy controller; channel 1 to SoundBlaster 16 audio.</p><p>Registers: base address (ch×2), count (ch×2+1), command (0x08), status (0x08 R), request (0x09), single mask (0x0A), mode (0x0B), clear flip-flop (0x0C), master reset (0x0D), mask all (0x0F).</p>` },
+  pic1: { title: 'PIC 1 (0x0020–0x003F) — Master 8259A', body: `<p>The master Programmable Interrupt Controller manages IRQs 0–7: timer (IRQ0), keyboard (IRQ1), cascade from PIC2 (IRQ2), COM2 (IRQ3), COM1 (IRQ4), LPT2 (IRQ5), floppy (IRQ6), LPT1 (IRQ7).</p><p>0x0020: ICW1/OCW2/OCW3 (write) / IRR or ISR (read). 0x0021: ICW2–4 / IMR (interrupt mask register).</p>` },
+  pit: { title: 'PIT Timer 8254 (0x0040–0x0047)', body: `<p>Three independent countdown channels. <strong>Ch0</strong> (0x40): generates IRQ0 at ~18.2 Hz (or reprogrammed rate). <strong>Ch2</strong> (0x42): PC speaker frequency. <strong>Control</strong> (0x43): mode/command register selects channel, access mode, operating mode, BCD.</p><p>Modes: interrupt on terminal count (0), programmable one-shot (1), rate generator (2), square wave (3), software/hardware triggered strobe (4/5).</p>` },
+  ps2: { title: 'PS/2 Controller 8042 (0x60, 0x64)', body: `<p><strong>0x60</strong>: Data port — read scancode from keyboard FIFO or mouse packet byte; write goes to last addressed device.</p><p><strong>0x64</strong>: Read = status byte (IBF, OBF, SYSFLAG, CMD, KEYB, TIMEOUT, PARITY). Write = command byte (set config, disable/enable ports, read/write config, interface test, send mouse commands).</p>` },
+  a20: { title: 'A20 Gate / System Control (0x61)', body: `<p>Port 0x61 is the PC speaker and A20 control register. Bit 1: A20 gate enable (1=allow A20 line; 0=wrap at 1 MB). Bit 0: PC speaker gate (enable/disable PIT channel 2 output to speaker). Bits 4–5: memory refresh (not emulated).</p>` },
+  rtc: { title: 'RTC / CMOS (0x70–0x71)', body: `<p>0x70: CMOS index register. Write the register address here (bit 7 = NMI mask). 0x71: data register — read/write the selected CMOS byte.</p><p>Key CMOS registers: 0x00=seconds, 0x02=minutes, 0x04=hours, 0x06=day of week, 0x07=date, 0x08=month, 0x09=year, 0x0A=status A (update-in-progress, divider), 0x0B=status B (24h mode, BCD/binary, DST, PIE), 0x0C=status C (interrupt flags), 0x0D=status D (valid RAM/time).</p><p>CMOS also holds POST configuration: base memory (0x15-0x16), extended memory (0x17-0x18), boot drives, floppy type.</p>` },
+  'dma-page': { title: 'DMA Page Registers (0x80–0x8F)', body: `<p>Extend the 8-bit DMA address to 20 bits for ISA memory access above 64 KB. Each channel has a page register: 0x81=ch2, 0x82=ch3, 0x83=ch1, 0x87=ch0, 0x89=ch6, 0x8A=ch7, 0x8B=ch5, 0x8F=ch4.</p>` },
+  pic2: { title: 'PIC 2 (0x00A0–0x00BF) — Slave 8259A', body: `<p>Cascaded via IRQ2 on PIC1. Manages IRQs 8–15: RTC (IRQ8), free (IRQ9/NE2000), free, free, PS/2 mouse (IRQ12), FPU (IRQ13), IDE primary (IRQ14), IDE secondary (IRQ15).</p>` },
+  dma2: { title: 'DMA Controller 2 (0x00C0–0x00DF)', body: `<p>Second 8237A for 16-bit transfers. Controls channels 4–7. Channel 4 cascades from DMA1. Channels 5–7 available for 16-bit ISA devices. Address registers are 16-bit (×2 port spacing).</p>` },
+  ide1: { title: 'IDE Primary (0x01F0–0x01F7, 0x03F6)', body: `<p>0x1F0: Data register (16/32-bit read/write for PIO mode). 0x1F1: Error/Features. 0x1F2: Sector count. 0x1F3–0x1F5: LBA bits 0–23 (or CHS cylinder/head/sector). 0x1F6: Drive/head select + LBA mode bit. 0x1F7: Status (read) / Command (write). 0x3F6: Device control / Alternate status.</p><p>Key commands: 0x20=READ SECTORS, 0x30=WRITE SECTORS, 0xEC=IDENTIFY, 0xC8=READ DMA, 0xCA=WRITE DMA.</p>` },
+  ide2: { title: 'IDE Secondary (0x0170–0x0177, 0x0376)', body: `<p>Identical layout to primary. Usually hosts the CD-ROM drive (ATAPI: PACKET command 0xA0, IDENTIFY PACKET DEVICE 0xA1). IRQ15 signals completion.</p>` },
+  sb16: { title: 'SoundBlaster 16 (0x0220–0x0233)', body: `<p>0x220: Reset (write 1, then 0 to reset DSP). 0x222: FM music port. 0x224: Mixer index. 0x225: Mixer data. 0x226: DSP reset. 0x22A: DSP read data. 0x22C: DSP write (command/data). 0x22E: DSP read buffer status. DSP commands: 0x10=direct 8-bit output, 0xB0=16-bit DMA, 0xC0=8-bit DMA, 0xD0=halt DMA, 0xDA=exit 16-bit DMA, 0xE1=DSP version.</p>` },
+  ne2k: { title: 'NE2000 (0x0280–0x029F)', body: `<p>NE2000-compatible ISA Ethernet using the DP8390 NIC controller. Page 0 registers: command, CLDA, PSTART, PSTOP, BNRY, TPSR, TBCR, ISR, RSAR, RCSR, RSR, CNTR. Page 1: PAR (MAC address), current. Remote DMA I/O at 0x10 relative to base. Reset port at 0x1F.</p>` },
+  com1: { title: 'UART COM1 (0x03F8–0x03FF)', body: `<p>16550A UART. 0x3F8: RBR/THR (receive/transmit data). 0x3F9: IER (interrupt enable). 0x3FA: IIR (interrupt ID, read) / FCR (FIFO control, write). 0x3FB: LCR (line control: data bits, parity, stop bits). 0x3FC: MCR (modem control: DTR, RTS, OUT1, OUT2, loopback). 0x3FD: LSR (line status: DR, OE, PE, FE, BI, THRE, TEMT). 0x3FE: MSR (modem status). With DLAB=1 in LCR: 0x3F8/0x3F9 = baud divisor low/high.</p>` },
+  com2: { title: 'UART COM2 (0x02F8–0x02FF)', body: `<p>Same layout as COM1 (see above). IRQ3. Used for secondary serial device or Virtio console passthrough.</p>` },
+  vga: { title: 'VGA Registers (0x03C0–0x03DF)', body: `<p>See the VGA Port Breakdown table below. Multiple indexed register banks: Attribute Controller, Sequencer, Graphics Controller, CRT Controller, plus direct ports for DAC palette, misc output, and status reads.</p>` },
+  floppy: { title: 'Floppy Controller FDC (0x03F0–0x03F7)', body: `<p>0x3F0: Status A (read). 0x3F1: Status B (read). 0x3F2: Digital Output Register — motor enable, drive select, DMA enable, reset. 0x3F4: Main Status Register (read) — command busy, drive busy, DIO, RQM. 0x3F5: Data FIFO — read/write command bytes and results. 0x3F7: Digital Input Register (read) / Config Control (write).</p><p>Commands: READ DATA (0x46), WRITE DATA (0x45), SEEK (0x0F), RECALIBRATE (0x07), SENSE INTERRUPT (0x08), SPECIFY (0x03).</p>` },
+  pci: { title: 'PCI Configuration (0x0CF8–0x0CFF)', body: `<p>0xCF8: CONFIG_ADDRESS — write 32-bit value: [31]=enable, [23:16]=bus, [15:11]=device, [10:8]=function, [7:2]=register, [1:0]=0. 0xCFC: CONFIG_DATA — read/write the PCI config register selected by CONFIG_ADDRESS.</p><p>The BIOS uses this to enumerate PCI devices (vendor/device ID at offset 0), assign resources (BARs at 0x10–0x24), and configure IRQ routing (0x3C=interrupt line, 0x3D=interrupt pin).</p>` },
+  virtio: { title: 'Virtio I/O Port BAR', body: `<p>Virtio legacy devices expose an I/O BAR assigned by the BIOS during PCI enumeration. At the base: device feature bits, guest feature bits, queue address, queue size, queue select, queue notify, device status, ISR status.</p><p>The guest OS driver writes the queue's physical page address, then writes to queue notify to kick the virtual device to process queued descriptors.</p>` }
+};
+
+function showPort(key) {
+  document.querySelectorAll('.port-row').forEach(el => el.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  const d = portDetails[key];
+  if (!d) return;
+  const box = document.getElementById('port-detail');
+  document.getElementById('pd-title').textContent = d.title;
+  document.getElementById('pd-body').innerHTML = d.body;
+  box.classList.add('visible');
+  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+</script>
+</body>
+</html>

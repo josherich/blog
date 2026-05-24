@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MicroQuickJS — Data Flow</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #21262d;
+    --border: #30363d;
+    --accent: #58a6ff;
+    --accent2: #3fb950;
+    --accent3: #f0883e;
+    --accent4: #bc8cff;
+    --accent5: #ff7b72;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --tag-int: #3fb950;
+    --tag-ptr: #58a6ff;
+    --tag-special: #bc8cff;
+    --tag-float: #f0883e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 15px;
+  }
+
+  header {
+    background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 16px 20px;
+    text-align: center;
+  }
+
+  header h1 {
+    font-size: clamp(1.4rem, 5vw, 2rem);
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+  }
+
+  header p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 6px;
+  }
+
+  .badge {
+    display: inline-block;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2px 10px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin: 4px 3px 0;
+  }
+
+  /* Flow navigation */
+  .flow-nav {
+    display: flex;
+    overflow-x: auto;
+    gap: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .flow-nav::-webkit-scrollbar { display: none; }
+
+  .flow-nav-item {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 14px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  .flow-nav-item .nav-icon { font-size: 1.2rem; margin-bottom: 3px; }
+  .flow-nav-item.active { border-bottom-color: var(--accent); color: var(--text); }
+  .flow-nav-item:hover { color: var(--text); background: var(--surface2); }
+
+  .arrow-sep {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    color: var(--border);
+    font-size: 0.9rem;
+    padding: 0 2px;
+  }
+
+  /* Main content */
+  main { max-width: 720px; margin: 0 auto; padding: 0 0 60px; }
+
+  .stage {
+    display: none;
+    padding: 20px 16px;
+    animation: fadeIn 0.25s ease;
+  }
+  .stage.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .stage-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .stage-number {
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #0d1117;
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .stage-title { font-size: 1.2rem; font-weight: 700; }
+  .stage-subtitle { color: var(--text-muted); font-size: 0.85rem; margin-top: 2px; }
+
+  /* Code blocks */
+  pre {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    font-family: 'SF Mono', 'Fira Code', Cascadia, monospace;
+    margin: 12px 0;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  code { font-family: 'SF Mono', 'Fira Code', Cascadia, monospace; font-size: 0.85em; }
+  p code, li code {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 5px;
+    color: var(--accent3);
+  }
+
+  .kw { color: #ff7b72; }
+  .fn { color: #d2a8ff; }
+  .str { color: #a5d6ff; }
+  .num { color: #79c0ff; }
+  .cmt { color: #8b949e; font-style: italic; }
+  .type { color: #ffa657; }
+
+  /* Info cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 12px 0;
+  }
+
+  .card-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  .card.accent-green { border-left: 3px solid var(--accent2); }
+  .card.accent-blue  { border-left: 3px solid var(--accent); }
+  .card.accent-orange{ border-left: 3px solid var(--accent3); }
+  .card.accent-purple{ border-left: 3px solid var(--accent4); }
+  .card.accent-red   { border-left: 3px solid var(--accent5); }
+
+  ul { padding-left: 18px; }
+  li { margin: 6px 0; color: var(--text-muted); font-size: 0.9rem; }
+  li strong { color: var(--text); }
+
+  /* Flow diagram */
+  .flow-diagram {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 16px 0;
+  }
+
+  .flow-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: all 0.18s;
+    position: relative;
+  }
+
+  .flow-box:hover, .flow-box.expanded {
+    border-color: var(--accent);
+    background: var(--surface2);
+  }
+
+  .flow-box-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 0.92rem;
+  }
+
+  .flow-box-icon { font-size: 1.1rem; }
+  .flow-box-desc { color: var(--text-muted); font-size: 0.8rem; margin-top: 3px; }
+
+  .flow-box-detail {
+    display: none;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+  .flow-box.expanded .flow-box-detail { display: block; }
+
+  .flow-arrow {
+    text-align: center;
+    color: var(--accent);
+    font-size: 1.2rem;
+    line-height: 1;
+    padding: 4px 0;
+  }
+
+  /* JSValue visualizer */
+  .jsvalue-viz {
+    margin: 16px 0;
+  }
+
+  .jsvalue-bits {
+    display: flex;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    font-family: 'SF Mono', monospace;
+    font-size: 0.75rem;
+    margin-bottom: 6px;
+  }
+
+  .bit-group {
+    flex: 1;
+    padding: 8px 6px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    min-width: 0;
+  }
+
+  .bit-group:hover { opacity: 0.85; }
+
+  .bit-label { font-size: 0.65rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bit-value { font-size: 0.78rem; font-weight: 700; letter-spacing: 1px; }
+
+  .bg-int     { background: #1a3a1a; color: var(--tag-int); }
+  .bg-ptr     { background: #1a2a3a; color: var(--tag-ptr); }
+  .bg-special { background: #2a1a3a; color: var(--tag-special); }
+  .bg-float   { background: #3a2a1a; color: var(--tag-float); }
+  .bg-tag     { background: #2a2a2a; color: var(--text); }
+
+  .jsvalue-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .jsvalue-btn {
+    padding: 5px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    cursor: pointer;
+    font-family: monospace;
+    transition: all 0.15s;
+  }
+  .jsvalue-btn.active, .jsvalue-btn:hover {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+
+  .jsvalue-desc {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 0.83rem;
+    color: var(--text-muted);
+    min-height: 50px;
+  }
+
+  /* Memory layout */
+  .memory-layout {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 12px 0;
+    font-size: 0.8rem;
+    font-family: monospace;
+  }
+
+  .mem-header {
+    background: var(--surface2);
+    padding: 6px 12px;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .mem-row {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+    cursor: default;
+  }
+  .mem-row:last-child { border-bottom: none; }
+  .mem-row:hover { background: var(--surface2); }
+
+  .mem-addr { width: 80px; padding: 7px 12px; color: var(--text-muted); flex: 0 0 auto; }
+  .mem-data { flex: 1; padding: 7px 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mem-label { width: 100px; padding: 7px 12px; text-align: right; color: var(--text-muted); font-size: 0.72rem; flex: 0 0 auto; }
+
+  .mem-gc     { background: rgba(63, 185, 80, 0.08); }
+  .mem-obj    { background: rgba(88, 166, 255, 0.08); }
+  .mem-str    { background: rgba(188, 140, 255, 0.08); }
+  .mem-free   { background: rgba(139, 148, 158, 0.06); }
+
+  /* Stack visualizer */
+  .stack-container {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 12px 0;
+  }
+
+  .stack-header {
+    background: var(--surface2);
+    padding: 8px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stack-title { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
+  .stack-controls { display: flex; gap: 6px; }
+
+  .btn-sm {
+    padding: 4px 10px;
+    border-radius: 5px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-sm:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-sm:disabled { opacity: 0.4; cursor: default; }
+
+  .stack-body {
+    padding: 8px;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 4px;
+  }
+
+  .stack-frame {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 6px 10px;
+    font-family: monospace;
+    font-size: 0.82rem;
+    animation: slideUp 0.2s ease;
+    transition: all 0.2s;
+  }
+
+  .stack-frame.top-frame { border-color: var(--accent); background: rgba(88,166,255,0.08); }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .stack-frame-sp { width: 32px; text-align: right; color: var(--text-muted); font-size: 0.72rem; }
+  .stack-frame-val { flex: 1; color: var(--text); }
+  .stack-frame-type { font-size: 0.72rem; color: var(--text-muted); }
+
+  .stack-opcode {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-size: 0.83rem;
+  }
+
+  .op-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 0;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 5px 6px;
+    transition: background 0.1s;
+  }
+  .op-row:hover { background: var(--surface2); }
+  .op-row.current { background: rgba(88,166,255,0.12); border-left: 2px solid var(--accent); }
+
+  .op-idx { width: 28px; text-align: right; color: var(--text-muted); font-size: 0.72rem; font-family: monospace; }
+  .op-name { font-family: monospace; font-weight: 600; color: var(--accent); min-width: 100px; }
+  .op-arg  { font-family: monospace; color: var(--accent3); }
+  .op-effect { font-size: 0.72rem; color: var(--text-muted); margin-left: auto; white-space: nowrap; }
+
+  /* GC diagram */
+  .gc-diagram {
+    display: grid;
+    grid-template-columns: 1fr 40px 1fr;
+    gap: 8px;
+    margin: 14px 0;
+    align-items: start;
+  }
+
+  .gc-heap {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .gc-heap-title {
+    background: var(--surface2);
+    padding: 6px 10px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .gc-cell {
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.75rem;
+    font-family: monospace;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: default;
+    transition: background 0.15s;
+  }
+  .gc-cell:last-child { border-bottom: none; }
+  .gc-cell:hover { background: var(--surface2); }
+
+  .gc-mark { width: 10px; height: 10px; border-radius: 50%; flex: 0 0 auto; }
+  .gc-mark.marked   { background: var(--accent2); }
+  .gc-mark.unmarked { background: var(--border); }
+  .gc-mark.free     { background: transparent; border: 1px dashed var(--border); }
+
+  .gc-arrows {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding-top: 28px;
+  }
+
+  .gc-phase-btn {
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: block;
+    margin: 8px auto;
+    font-family: inherit;
+  }
+  .gc-phase-btn:hover, .gc-phase-btn.active { border-color: var(--accent2); color: var(--accent2); }
+
+  .gc-status {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin: 8px 0;
+    min-height: 20px;
+  }
+
+  /* Pill tags */
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+  .tag {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid currentColor;
+  }
+
+  /* Separator */
+  .sep { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+  /* Responsive adjustments */
+  @media (max-width: 480px) {
+    .gc-diagram { grid-template-columns: 1fr 28px 1fr; }
+    .mem-label { display: none; }
+    .op-effect { display: none; }
+  }
+
+  /* Footer nav */
+  .stage-nav {
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+    margin-top: 28px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .nav-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+    font-family: inherit;
+  }
+  .nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .nav-btn:disabled { opacity: 0.35; cursor: default; }
+
+  /* Highlight box */
+  .highlight {
+    background: rgba(88,166,255,0.07);
+    border: 1px solid rgba(88,166,255,0.25);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin: 12px 0;
+    font-size: 0.88rem;
+  }
+  .highlight strong { color: var(--accent); }
+
+  /* Tooltip */
+  [data-tip] { position: relative; cursor: help; }
+  [data-tip]:hover::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: #fff;
+    padding: 5px 9px;
+    border-radius: 5px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    z-index: 100;
+    pointer-events: none;
+  }
+
+  /* Pipeline summary bar */
+  .pipeline {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 2px 0 8px;
+  }
+  .pipeline::-webkit-scrollbar { display: none; }
+
+  .pipe-step {
+    flex: 0 0 auto;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--text-muted);
+  }
+  .pipe-step:hover { border-color: var(--accent); color: var(--text); }
+  .pipe-step.current { border-color: var(--accent); background: rgba(88,166,255,0.1); color: var(--accent); }
+
+  .pipe-arrow { color: var(--border); padding: 0 4px; font-size: 0.9rem; flex: 0 0 auto; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>MicroQuickJS — Data Flow</h1>
+  <p>An interactive walkthrough of how JS source becomes execution</p>
+  <div style="margin-top:10px">
+    <span class="badge">~10 KB RAM</span>
+    <span class="badge">~100 KB ROM</span>
+    <span class="badge">ES5 subset</span>
+    <span class="badge">embedded systems</span>
+  </div>
+</header>
+
+<!-- Stage navigation tabs -->
+<nav class="flow-nav" id="flowNav">
+  <div class="flow-nav-item active" data-stage="0"><span class="nav-icon">📋</span>Overview</div>
+  <div class="arrow-sep">›</div>
+  <div class="flow-nav-item" data-stage="1"><span class="nav-icon">🔧</span>Init</div>
+  <div class="arrow-sep">›</div>
+  <div class="flow-nav-item" data-stage="2"><span class="nav-icon">📝</span>Parse</div>
+  <div class="arrow-sep">›</div>
+  <div class="flow-nav-item" data-stage="3"><span class="nav-icon">💾</span>Bytecode</div>
+  <div class="arrow-sep">›</div>
+  <div class="flow-nav-item" data-stage="4"><span class="nav-icon">⚙️</span>VM</div>
+  <div class="arrow-sep">›</div>
+  <div class="flow-nav-item" data-stage="5"><span class="nav-icon">🗑️</span>GC</div>
+  <div class="arrow-sep">›</div>
+  <div class="flow-nav-item" data-stage="6"><span class="nav-icon">🔗</span>C API</div>
+</nav>
+
+<main>
+
+<!-- ═══════════════════════════════════════════ STAGE 0: OVERVIEW -->
+<div class="stage active" id="stage-0">
+  <div class="stage-header">
+    <div class="stage-number">0</div>
+    <div>
+      <div class="stage-title">How MicroQuickJS Works</div>
+      <div class="stage-subtitle">Click any stage below to explore it in detail</div>
+    </div>
+  </div>
+
+  <div class="pipeline">
+    <div class="pipe-step" onclick="goToStage(1)">1. JS_NewContext</div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step" onclick="goToStage(2)">2. JS_Parse</div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step" onclick="goToStage(3)">3. Bytecode</div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step" onclick="goToStage(4)">4. JS_Run (VM)</div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step" onclick="goToStage(5)">5. GC</div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step" onclick="goToStage(6)">6. C API</div>
+  </div>
+
+  <div class="flow-diagram">
+
+    <div class="flow-box" onclick="toggleBox(this)">
+      <div class="flow-box-label"><span class="flow-box-icon">📝</span> JS Source Code</div>
+      <div class="flow-box-desc">Text: <code>var x = 1 + 2;</code></div>
+      <div class="flow-box-detail">
+        The engine accepts raw JavaScript source as a UTF-8 string. Only a strict ES5 subset is supported — no <code>with</code>, no holey arrays, no direct eval. Tap <strong>Parse</strong> stage to see how it's compiled.
+      </div>
+    </div>
+
+    <div class="flow-arrow">↓ <code>JS_NewContext()</code></div>
+
+    <div class="flow-box" onclick="toggleBox(this)">
+      <div class="flow-box-label"><span class="flow-box-icon">🧠</span> JSContext + Memory Buffer</div>
+      <div class="flow-box-desc">A single flat buffer: <code>uint8_t mem_buf[8192]</code></div>
+      <div class="flow-box-detail">
+        No <code>malloc()</code>. The caller provides a fixed-size buffer. The engine, GC, object heap, and atom table all live inside it. The stdlib is in ROM — zero RAM cost to instantiate.
+      </div>
+    </div>
+
+    <div class="flow-arrow">↓ <code>JS_Parse()</code></div>
+
+    <div class="flow-box" onclick="toggleBox(this)">
+      <div class="flow-box-label"><span class="flow-box-icon">🔄</span> One-Pass Compilation</div>
+      <div class="flow-box-desc">No AST. Bounded C-stack. Direct bytecode emission.</div>
+      <div class="flow-box-detail">
+        Unlike QuickJS (which builds an AST and runs multiple optimization passes), MicroQuickJS emits bytecode in a single pass. The parser avoids recursion, keeping C-stack usage bounded — important on embedded systems with small stacks.
+      </div>
+    </div>
+
+    <div class="flow-arrow">↓</div>
+
+    <div class="flow-box" onclick="toggleBox(this)">
+      <div class="flow-box-label"><span class="flow-box-icon">📦</span> Bytecode Object (JSValue)</div>
+      <div class="flow-box-desc">A tagged pointer to the compiled function object</div>
+      <div class="flow-box-detail">
+        <code>JS_Parse()</code> returns a <code>JSValue</code> pointing to the top-level function. It can be saved to a <code>.bin</code> file with <code>JS_PrepareBytecode()</code>, or executed immediately.
+      </div>
+    </div>
+
+    <div class="flow-arrow">↓ <code>JS_Run()</code> or save to ROM</div>
+
+    <div class="flow-box" onclick="toggleBox(this)">
+      <div class="flow-box-label"><span class="flow-box-icon">⚙️</span> Stack-Based VM</div>
+      <div class="flow-box-desc">Executes opcodes. JS stack ≠ C stack.</div>
+      <div class="flow-box-detail">
+        The VM maintains its own value stack in the heap. Each opcode pops and pushes <code>JSValue</code> words. The C call stack is not consumed by JS frames — crucial for deeply nested JS on embedded MCUs.
+      </div>
+    </div>
+
+    <div class="flow-arrow">↓ GC on each allocation</div>
+
+    <div class="flow-box" onclick="toggleBox(this)">
+      <div class="flow-box-label"><span class="flow-box-icon">🗑️</span> Tracing + Compacting GC</div>
+      <div class="flow-box-desc">Objects can move. Use JSGCRef to root values.</div>
+      <div class="flow-box-detail">
+        Unlike QuickJS's reference counting, MicroQuickJS uses a tracing GC with compaction. This eliminates fragmentation and keeps objects small (no refcount field). The tradeoff: pointers can change, so C code must use <code>JSGCRef</code> instead of raw <code>JSValue</code>.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="stage-nav">
+    <button class="nav-btn" disabled>← Prev</button>
+    <button class="nav-btn" onclick="goToStage(1)">Context Init →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ STAGE 1: INIT -->
+<div class="stage" id="stage-1">
+  <div class="stage-header">
+    <div class="stage-number" style="background:var(--accent2)">1</div>
+    <div>
+      <div class="stage-title">Context Initialization</div>
+      <div class="stage-subtitle">The engine lives entirely in a caller-supplied buffer</div>
+    </div>
+  </div>
+
+  <pre><span class="type">uint8_t</span> mem_buf[<span class="num">65536</span>];   <span class="cmt">// 64 KB is plenty</span>
+<span class="type">JSContext</span> *ctx;
+
+ctx = <span class="fn">JS_NewContext</span>(mem_buf, <span class="kw">sizeof</span>(mem_buf), &amp;js_stdlib);
+<span class="fn">JS_SetLogFunc</span>(ctx, js_log_func);   <span class="cmt">// optional logging hook</span>
+
+<span class="cmt">// ... do work ...</span>
+
+<span class="fn">JS_FreeContext</span>(ctx);   <span class="cmt">// only needed to run C finalizers</span>
+<span class="kw">free</span>(mem_buf);         <span class="cmt">// or just let it go out of scope</span></pre>
+
+  <div class="memory-layout">
+    <div class="mem-header">
+      <span>Memory layout inside mem_buf</span>
+      <span>64 KB example</span>
+    </div>
+    <div class="mem-row">
+      <div class="mem-addr">0x0000</div>
+      <div class="mem-data" style="color:var(--accent)">JSContext header &amp; GC metadata</div>
+      <div class="mem-label">~128 bytes</div>
+    </div>
+    <div class="mem-row">
+      <div class="mem-addr">0x0080</div>
+      <div class="mem-data" style="color:var(--accent3)">Atom table (interned strings)</div>
+      <div class="mem-label">variable</div>
+    </div>
+    <div class="mem-row mem-obj">
+      <div class="mem-addr">↓</div>
+      <div class="mem-data" style="color:var(--accent4)">JS objects &amp; arrays (heap grows →)</div>
+      <div class="mem-label">dynamic</div>
+    </div>
+    <div class="mem-row mem-free">
+      <div class="mem-addr">···</div>
+      <div class="mem-data" style="color:var(--text-muted)">free space</div>
+      <div class="mem-label"></div>
+    </div>
+    <div class="mem-row">
+      <div class="mem-addr">0xFFFF</div>
+      <div class="mem-data" style="color:var(--accent2)">VM value stack (grows ←)</div>
+      <div class="mem-label">variable</div>
+    </div>
+  </div>
+
+  <div class="card accent-green">
+    <div class="card-title">stdlib is in ROM</div>
+    The <code>&amp;js_stdlib</code> argument is a pointer to a read-only C structure generated at compile time by <code>mquickjs_build.c</code>. Instantiation allocates almost no RAM — only a handful of objects need to be created in the heap.
+  </div>
+
+  <div class="card accent-orange">
+    <div class="card-title">No malloc / free / printf</div>
+    MicroQuickJS has <strong>zero dependency</strong> on the C standard library heap. The engine uses only the buffer you provide. This makes it safe for bare-metal MCUs without an OS.
+  </div>
+
+  <div class="highlight">
+    <strong>Minimum footprint:</strong> <code>JS_NewContext(buf, 10240, ...)</code> — 10 KB is enough to run many programs, including the Mandelbrot demo.
+  </div>
+
+  <div class="stage-nav">
+    <button class="nav-btn" onclick="goToStage(0)">← Overview</button>
+    <button class="nav-btn" onclick="goToStage(2)">Parsing →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ STAGE 2: PARSE -->
+<div class="stage" id="stage-2">
+  <div class="stage-header">
+    <div class="stage-number" style="background:var(--accent3)">2</div>
+    <div>
+      <div class="stage-title">Parsing &amp; Compilation</div>
+      <div class="stage-subtitle">One pass. No AST. Bounded stack.</div>
+    </div>
+  </div>
+
+  <pre><span class="cmt">// Parse JS source → bytecode object</span>
+<span class="type">JSValue</span> bytecode = <span class="fn">JS_Parse</span>(ctx,
+    <span class="str">"var x = 1 + 2; print(x);"</span>,
+    <span class="num">25</span>,          <span class="cmt">// length</span>
+    <span class="str">"script.js"</span>, <span class="cmt">// filename (for error messages)</span>
+    <span class="num">0</span>            <span class="cmt">// flags</span>
+);
+
+<span class="kw">if</span> (<span class="fn">JS_IsException</span>(bytecode)) {
+    <span class="cmt">// syntax error — dump and exit</span>
+    <span class="type">JSValue</span> err = <span class="fn">JS_GetException</span>(ctx);
+    <span class="fn">JS_PrintValueF</span>(ctx, err, JS_DUMP_LONG);
+}</pre>
+
+  <div class="flow-diagram">
+    <div class="flow-box" onclick="toggleBox(this)">
+      <div class="flow-box-label">🔤 Lexer (tokenizer)</div>
+      <div class="flow-box-desc">Converts UTF-8 text to a stream of tokens</div>
+      <div class="flow-box-detail">
+        Tokens: keywords (<code>var</code>, <code>if</code>, …), identifiers, literals, operators. String keys are <strong>interned as atoms</strong> — each unique string gets a small integer ID. This makes property lookup O(1) with integer comparison.
+      </div>
+    </div>
+    <div class="flow-arrow">↓ tokens</div>
+    <div class="flow-box" onclick="toggleBox(this)">
+      <div class="flow-box-label">🌲 Parser (non-recursive)</div>
+      <div class="flow-box-desc">Parses expressions and statements; avoids C-stack recursion</div>
+      <div class="flow-box-detail">
+        QuickJS uses a recursive descent parser that consumes C stack. MicroQuickJS rewrites this to be iterative — it keeps an explicit operator stack. This bounds C-stack depth to a fixed small amount regardless of JS nesting depth.
+      </div>
+    </div>
+    <div class="flow-arrow">↓ emit instructions</div>
+    <div class="flow-box" onclick="toggleBox(this)">
+      <div class="flow-box-label">⚡ Code Generator</div>
+      <div class="flow-box-desc">Emits bytecode directly — no intermediate AST</div>
+      <div class="flow-box-detail">
+        While QuickJS builds a full AST and then runs multiple optimization passes, MicroQuickJS emits bytecode inline as it parses. Small local optimizations (constant folding, branch peephole) are applied on the fly. The result: less RAM during compilation.
+      </div>
+    </div>
+    <div class="flow-arrow">↓ compress line info</div>
+    <div class="flow-box" onclick="toggleBox(this)">
+      <div class="flow-box-label">📐 Exp-Golomb line/column encoding</div>
+      <div class="flow-box-desc">Compressed debug info uses only a few bytes per instruction</div>
+      <div class="flow-box-detail">
+        Line and column numbers are stored as deltas using <a href="https://en.wikipedia.org/wiki/Exponential-Golomb_coding" style="color:var(--accent)">exponential-Golomb codes</a>. Pass <code>--no-column</code> to strip column info and save a few more bytes.
+      </div>
+    </div>
+  </div>
+
+  <div class="card accent-blue">
+    <div class="card-title">Atom table — string interning</div>
+    <ul>
+      <li><strong>Every property key</strong> (like <code>"x"</code>, <code>"length"</code>) is interned to a small integer atom.</li>
+      <li>Atoms are stored in the same memory buffer — no separate hash map.</li>
+      <li>Bytecode references atoms through an <strong>indirect table</strong>, so the bytecode stays relocatable.</li>
+    </ul>
+  </div>
+
+  <div class="highlight">
+    <strong>Try it mentally:</strong> <code>var x = 1 + 2;</code> becomes roughly:
+    <pre style="margin-top:8px"><span class="num">push_value</span>  1
+<span class="num">push_value</span>  2
+<span class="num">add</span>
+<span class="num">put_loc</span>     0   <span class="cmt">; local slot for 'x'</span></pre>
+  </div>
+
+  <div class="stage-nav">
+    <button class="nav-btn" onclick="goToStage(1)">← Init</button>
+    <button class="nav-btn" onclick="goToStage(3)">Bytecode →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ STAGE 3: BYTECODE -->
+<div class="stage" id="stage-3">
+  <div class="stage-header">
+    <div class="stage-number" style="background:var(--accent4)">3</div>
+    <div>
+      <div class="stage-title">Bytecode</div>
+      <div class="stage-subtitle">Save to ROM / file, or run immediately</div>
+    </div>
+  </div>
+
+  <div class="card accent-purple">
+    <div class="card-title">Two paths after JS_Parse()</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;">
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;font-size:0.83rem;">
+        <div style="color:var(--accent);font-weight:600;margin-bottom:6px">▶ Run directly</div>
+        <code>JS_Run(ctx, bytecode)</code>
+        <div style="color:var(--text-muted);margin-top:6px">Fastest path. Bytecode stays in heap.</div>
+      </div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;font-size:0.83rem;">
+        <div style="color:var(--accent4);font-weight:600;margin-bottom:6px">💾 Save to .bin</div>
+        <code>JS_PrepareBytecode()</code>
+        <div style="color:var(--text-muted);margin-top:6px">Serialize → flash → load from ROM</div>
+      </div>
+    </div>
+  </div>
+
+  <pre><span class="cmt">// Compile and save:</span>
+./mqjs -o mandelbrot.bin tests/mandelbrot.js
+
+<span class="cmt">// Run saved bytecode:</span>
+./mqjs -b mandelbrot.bin
+
+<span class="cmt">// C API equivalent:</span>
+<span class="fn">JS_IsBytecode</span>(buf, buf_len);      <span class="cmt">// detect .bin files</span>
+<span class="fn">JS_RelocateBytecode</span>(ctx, buf, len); <span class="cmt">// patch addresses</span>
+<span class="type">JSValue</span> fn = <span class="fn">JS_LoadBytecode</span>(ctx, buf);
+<span class="fn">JS_Run</span>(ctx, fn);</pre>
+
+  <div class="card accent-orange">
+    <div class="card-title">Bytecode file format</div>
+    <ul>
+      <li><strong>JSBytecodeHeader</strong> — magic, version, word size, atom count</li>
+      <li><strong>Atom table</strong> — all interned strings</li>
+      <li><strong>Function objects</strong> — opcodes, constants, closures (recursive)</li>
+      <li>Endian and word-size aware: use <code>-m32</code> to cross-compile 64→32 bit</li>
+    </ul>
+  </div>
+
+  <div class="highlight">
+    <strong>ROM execution:</strong> After <code>JS_RelocateBytecode2(ctx, hdr, data, len, 0, FALSE)</code> patches all addresses to zero-based, the <code>.bin</code> can be flashed into MCU flash memory and executed without copying to RAM.
+  </div>
+
+  <div class="card accent-red">
+    <div class="card-title">Security warning</div>
+    Bytecode is <strong>not validated</strong> before execution. Only load bytecode from trusted sources — malformed bytecode can crash or compromise the VM.
+  </div>
+
+  <div class="stage-nav">
+    <button class="nav-btn" onclick="goToStage(2)">← Parse</button>
+    <button class="nav-btn" onclick="goToStage(4)">VM Execution →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ STAGE 4: VM -->
+<div class="stage" id="stage-4">
+  <div class="stage-header">
+    <div class="stage-number" style="background:var(--accent5)">4</div>
+    <div>
+      <div class="stage-title">VM Execution</div>
+      <div class="stage-subtitle">Stack machine. JSValue = one CPU word.</div>
+    </div>
+  </div>
+
+  <!-- JSValue visualizer -->
+  <div class="card accent-blue">
+    <div class="card-title">JSValue bit layout — tap to explore</div>
+    <div class="jsvalue-selector" id="jsvButtons">
+      <button class="jsvalue-btn active" onclick="showJSValue('int')">42 (int)</button>
+      <button class="jsvalue-btn" onclick="showJSValue('ptr')">Object *</button>
+      <button class="jsvalue-btn" onclick="showJSValue('null')">null</button>
+      <button class="jsvalue-btn" onclick="showJSValue('undef')">undefined</button>
+      <button class="jsvalue-btn" onclick="showJSValue('bool')">true</button>
+      <button class="jsvalue-btn" onclick="showJSValue('float')">3.14 (64-bit)</button>
+    </div>
+
+    <div class="jsvalue-viz">
+      <div class="jsvalue-bits" id="jsvBits"><!-- filled by JS --></div>
+      <div class="jsvalue-desc" id="jsvDesc"></div>
+    </div>
+  </div>
+
+  <!-- Stack simulator -->
+  <div class="card accent-orange">
+    <div class="card-title">Stack simulation — <code>var x = 1 + 2; print(x);</code></div>
+    <div class="stack-container">
+      <div class="stack-header">
+        <span class="stack-title">Value Stack (top → bottom)</span>
+        <div class="stack-controls">
+          <button class="btn-sm" id="stepBack" onclick="stackStep(-1)" disabled>◀ Prev</button>
+          <button class="btn-sm" id="stepFwd"  onclick="stackStep(1)">Next ▶</button>
+        </div>
+      </div>
+      <div class="stack-body" id="stackBody">
+        <div class="stack-frame" style="opacity:0.4;border-style:dashed;justify-content:center;color:var(--text-muted)">stack empty</div>
+      </div>
+    </div>
+
+    <div class="stack-opcode">
+      <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:6px">BYTECODE</div>
+      <div id="opcodeList"></div>
+    </div>
+
+    <div id="stackExplain" style="margin-top:10px;font-size:0.83rem;color:var(--text-muted);min-height:30px;"></div>
+  </div>
+
+  <div class="card accent-green">
+    <div class="card-title">Key VM properties</div>
+    <ul>
+      <li><strong>No CPU stack usage for JS frames</strong> — the JS value stack lives in the heap buffer. Deep JS recursion won't overflow the MCU's C stack.</li>
+      <li><strong>JS_StackCheck(ctx, n)</strong> — must be called before pushing <em>n</em> values; triggers GC if needed and returns an error if out of memory.</li>
+      <li><strong>call / call_method / call_constructor</strong> — arguments and function are pushed on the value stack before calling.</li>
+    </ul>
+  </div>
+
+  <div class="stage-nav">
+    <button class="nav-btn" onclick="goToStage(3)">← Bytecode</button>
+    <button class="nav-btn" onclick="goToStage(5)">GC →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ STAGE 5: GC -->
+<div class="stage" id="stage-5">
+  <div class="stage-header">
+    <div class="stage-number" style="background:#e3b341">5</div>
+    <div>
+      <div class="stage-title">Tracing + Compacting GC</div>
+      <div class="stage-subtitle">Objects can move. Root them with JSGCRef.</div>
+    </div>
+  </div>
+
+  <div class="highlight">
+    <strong>Unlike QuickJS</strong> (reference counting), MicroQuickJS uses a <em>tracing GC</em> that periodically scans all live objects and compacts them. No per-object refcount field → smaller objects. No cycles problem.
+  </div>
+
+  <!-- GC phase demo -->
+  <div class="card accent-green">
+    <div class="card-title">GC phases — tap to step through</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+      <button class="gc-phase-btn active" id="gcBtn0" onclick="setGCPhase(0)">Before GC</button>
+      <button class="gc-phase-btn" id="gcBtn1" onclick="setGCPhase(1)">Mark</button>
+      <button class="gc-phase-btn" id="gcBtn2" onclick="setGCPhase(2)">Sweep</button>
+      <button class="gc-phase-btn" id="gcBtn3" onclick="setGCPhase(3)">Compact</button>
+    </div>
+    <div class="gc-status" id="gcStatus">Objects allocated. Some are unreachable (red).</div>
+    <div class="gc-diagram">
+      <div class="gc-heap" id="gcBefore"></div>
+      <div class="gc-arrows">
+        <span style="font-size:1.2rem;color:var(--border)">→</span>
+      </div>
+      <div class="gc-heap" id="gcAfter"></div>
+    </div>
+  </div>
+
+  <pre><span class="cmt">// JSGCRef roots a JSValue across GC/allocation</span>
+<span class="type">JSGCRef</span> obj_ref;
+<span class="type">JSValue</span> *obj = <span class="fn">JS_PushGCRef</span>(ctx, &amp;obj_ref);
+
+*obj = <span class="fn">JS_NewObject</span>(ctx);       <span class="cmt">// may trigger GC</span>
+<span class="kw">if</span> (<span class="fn">JS_IsException</span>(*obj)) <span class="kw">goto</span> fail;
+
+<span class="fn">JS_SetPropertyStr</span>(ctx, *obj, <span class="str">"x"</span>, <span class="fn">JS_NewInt32</span>(ctx, <span class="num">42</span>));
+<span class="cmt">// *obj still valid: JSGCRef was updated when obj moved</span>
+
+<span class="fn">JS_PopGCRef</span>(ctx, &amp;obj_ref);  <span class="cmt">// unroot when done</span></pre>
+
+  <div class="card accent-red">
+    <div class="card-title">The golden rule of MicroQuickJS C code</div>
+    <ul>
+      <li>Never store a <code>JSValue</code> in a C local between two API calls that might allocate.</li>
+      <li>Use <code>JS_PushGCRef</code> (stack-based, O(1)) or <code>JS_AddGCRef</code> (list-based, any order) to keep a pointer that the GC will update.</li>
+      <li>On PC, compile with <code>-DDEBUG_GC</code> — it forces objects to move on every allocation, catching stale JSValues immediately.</li>
+    </ul>
+  </div>
+
+  <div class="card accent-purple">
+    <div class="card-title">No JS_FreeValue()</div>
+    Unlike QuickJS, you never need to call <code>JS_FreeValue()</code>. The GC owns all memory. <code>JS_FreeContext()</code> is only needed to run C finalizers (e.g., to <code>free()</code> opaque C data you allocated).
+  </div>
+
+  <div class="stage-nav">
+    <button class="nav-btn" onclick="goToStage(4)">← VM</button>
+    <button class="nav-btn" onclick="goToStage(6)">C API →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ STAGE 6: C API -->
+<div class="stage" id="stage-6">
+  <div class="stage-header">
+    <div class="stage-number" style="background:var(--accent)">6</div>
+    <div>
+      <div class="stage-title">C API — Extending the Engine</div>
+      <div class="stage-subtitle">Custom classes, C functions, opaque data</div>
+    </div>
+  </div>
+
+  <div class="flow-diagram">
+    <div class="flow-box" onclick="toggleBox(this)">
+      <div class="flow-box-label">🏗️ Define a C class</div>
+      <div class="flow-box-desc"><code>JS_CLASS_USER + N</code> — your custom object type</div>
+      <div class="flow-box-detail">
+        <pre style="margin:0"><span class="kw">#define</span> JS_CLASS_RECTANGLE (JS_CLASS_USER + 0)
+
+<span class="kw">typedef struct</span> { <span class="type">int</span> x, y; } RectangleData;</pre>
+        Each user class has a unique class ID. Objects created with <code>JS_NewObjectClassUser(ctx, CLASS_ID)</code> hold an opaque <code>void *</code> that you manage.
+      </div>
+    </div>
+    <div class="flow-arrow">↓ register constructor + methods</div>
+    <div class="flow-box" onclick="toggleBox(this)">
+      <div class="flow-box-label">🔌 Register C functions</div>
+      <div class="flow-box-desc">Via <code>JSCFunctionDef</code> table in <code>JSStdLib</code></div>
+      <div class="flow-box-detail">
+        <pre style="margin:0"><span class="type">JSValue</span> js_rect_get_x(<span class="type">JSContext</span> *ctx,
+    <span class="type">JSValue</span> *this_val, <span class="type">int</span> argc, <span class="type">JSValue</span> *argv)
+{
+    <span class="type">RectangleData</span> *d = <span class="fn">JS_GetOpaque</span>(ctx, *this_val);
+    <span class="kw">return</span> <span class="fn">JS_NewInt32</span>(ctx, d-&gt;x);
+}</pre>
+      </div>
+    </div>
+    <div class="flow-arrow">↓ provide finalizer</div>
+    <div class="flow-box" onclick="toggleBox(this)">
+      <div class="flow-box-label">🧹 Finalizer callback</div>
+      <div class="flow-box-desc">Called when GC collects the object</div>
+      <div class="flow-box-detail">
+        <pre style="margin:0"><span class="kw">static void</span> js_rect_finalizer(
+    <span class="type">JSContext</span> *ctx, <span class="kw">void</span> *opaque)
+{
+    <span class="kw">free</span>((<span class="type">RectangleData</span> *)opaque);
+}
+<span class="cmt">// No JS functions can be called from here</span></pre>
+        The finalizer frees C-side resources. It must not call any JS API functions.
+      </div>
+    </div>
+    <div class="flow-arrow">↓ call JS from C</div>
+    <div class="flow-box" onclick="toggleBox(this)">
+      <div class="flow-box-label">📞 Call a JS function from C</div>
+      <div class="flow-box-desc">Push args and function, then JS_Call()</div>
+      <div class="flow-box-detail">
+        <pre style="margin:0"><span class="fn">JS_StackCheck</span>(ctx, 3);    <span class="cmt">// need 3 slots</span>
+<span class="fn">JS_PushArg</span>(ctx, argv[1]); <span class="cmt">// arg</span>
+<span class="fn">JS_PushArg</span>(ctx, argv[0]); <span class="cmt">// function</span>
+<span class="fn">JS_PushArg</span>(ctx, JS_NULL); <span class="cmt">// this</span>
+<span class="type">JSValue</span> ret = <span class="fn">JS_Call</span>(ctx, 1); <span class="cmt">// 1 arg</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="card accent-blue">
+    <div class="card-title">C closures — passing parameters to C functions</div>
+    <pre style="margin:0;font-size:0.8rem"><span class="cmt">// Register a C function that carries a JSValue parameter:</span>
+<span class="kw">return</span> <span class="fn">JS_NewCFunctionParams</span>(ctx, JS_CFUNCTION_MY_FUNC, params);
+
+<span class="cmt">// The C handler receives it as the last argument:</span>
+<span class="type">JSValue</span> my_handler(<span class="type">JSContext</span> *ctx, <span class="type">JSValue</span> *this_val,
+    <span class="type">int</span> argc, <span class="type">JSValue</span> *argv, <span class="type">JSValue</span> params) { ... }</pre>
+    This lets you bind configuration into a function without a separate object.
+  </div>
+
+  <div class="card accent-green">
+    <div class="card-title">Full example flow</div>
+    <div class="pipeline">
+      <div class="pipe-step">Define RectangleData</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">js_rectangle_constructor</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">JS_SetOpaque</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">JS_GetOpaque in getter</div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">finalizer calls free()</div>
+    </div>
+    See <a href="example.c" style="color:var(--accent)">example.c</a> for the full working implementation including <code>Rectangle</code> and <code>FilledRectangle</code>.
+  </div>
+
+  <div class="highlight">
+    <strong>Tip:</strong> C functions are stored as a <em>single JSValue</em> word (not a full object) when they have no extra properties — no overhead for the hundreds of stdlib functions.
+  </div>
+
+  <div class="stage-nav">
+    <button class="nav-btn" onclick="goToStage(5)">← GC</button>
+    <button class="nav-btn" onclick="goToStage(0)">↩ Overview</button>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ─── Stage navigation ───────────────────────────────────────────────
+const stageCount = 7;
+let currentStage = 0;
+
+function goToStage(n) {
+  document.querySelectorAll('.stage').forEach((el, i) => {
+    el.classList.toggle('active', i === n);
+  });
+  document.querySelectorAll('.flow-nav-item').forEach((el, i) => {
+    el.classList.toggle('active', i === n);
+  });
+  document.querySelectorAll('.pipe-step').forEach((el, i) => {
+    el.classList.toggle('current', i === n - 1);
+  });
+  currentStage = n;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (n === 4) initVM();
+  if (n === 5) initGC();
+}
+
+document.querySelectorAll('.flow-nav-item').forEach((el) => {
+  el.addEventListener('click', () => goToStage(+el.dataset.stage));
+});
+
+function toggleBox(el) {
+  el.classList.toggle('expanded');
+}
+
+// ─── JSValue visualizer ─────────────────────────────────────────────
+const JSValues = {
+  int: {
+    groups: [
+      { bits: '0111 1111 1 0000 0 01', label: 'value (31-bit)', cls: 'bg-int' },
+      { bits: '0', label: 'tag=INT', cls: 'bg-tag' },
+    ],
+    desc: '<strong style="color:var(--tag-int)">Integer</strong>: Bit 0 is 0. The upper 31 bits are the signed integer value, left-shifted by 1. Range: −2³⁰ to 2³⁰−1. Example: 42 → stored as <code>42 << 1 = 0x54</code>. Zero allocation cost.'
+  },
+  ptr: {
+    groups: [
+      { bits: 'PPPPPPPP PPPPPPPP PPPPPPPP PPPPPP', label: 'pointer (aligned)', cls: 'bg-ptr' },
+      { bits: '01', label: 'tag=PTR', cls: 'bg-tag' },
+    ],
+    desc: '<strong style="color:var(--tag-ptr)">Pointer</strong>: Bits [1:0] = 01. Points to a JS object in the heap. Because objects are word-aligned, the low bits are always 0 and can be used as a tag. <em>Warning: the address can change after any allocation — use JSGCRef to root it.</em>'
+  },
+  null: {
+    groups: [
+      { bits: '00000 00000000 00000000 0000', label: 'value=0', cls: 'bg-special' },
+      { bits: '000 11', label: 'tag=SPECIAL|NULL', cls: 'bg-tag' },
+    ],
+    desc: '<strong style="color:var(--tag-special)">null</strong>: A special constant with tag=11 (SPECIAL) and sub-tag NULL. The entire word is the constant <code>JS_NULL</code> = <code>(JS_TAG_NULL | (0 << 5))</code>.'
+  },
+  undef: {
+    groups: [
+      { bits: '00010 00000000 00000000 0000', label: 'value=2', cls: 'bg-special' },
+      { bits: '000 11', label: 'tag=SPECIAL|UNDEF', cls: 'bg-tag' },
+    ],
+    desc: '<strong style="color:var(--tag-special)">undefined</strong>: Same layout as null, but sub-tag is UNDEFINED. <code>JS_UNDEFINED = (JS_TAG_UNDEFINED | (0 << 5))</code>.'
+  },
+  bool: {
+    groups: [
+      { bits: '00001 00000000 00000000 0000', label: 'value=1 (true)', cls: 'bg-special' },
+      { bits: '000 11', label: 'tag=SPECIAL|BOOL', cls: 'bg-tag' },
+    ],
+    desc: '<strong style="color:var(--tag-special)">true/false</strong>: Tag=SPECIAL, sub-tag=BOOL. The value field is 1 for true, 0 for false. <code>JS_TRUE = JS_VALUE_MAKE_SPECIAL(JS_TAG_BOOL, 1)</code>.'
+  },
+  float: {
+    groups: [
+      { bits: 'EEEEEEEE MMMMMMMM MMMMMMMM MM', label: '58-bit short float', cls: 'bg-float' },
+      { bits: '1 01', label: 'tag=SHORT_FLOAT', cls: 'bg-tag' },
+    ],
+    desc: '<strong style="color:var(--tag-float)">Short Float (64-bit CPUs only)</strong>: On 64-bit CPUs, a float with a small exponent (abs(exp) ≤ 15) is stored inline in 58 bits — no allocation. Larger floats become a heap-allocated double.'
+  }
+};
+
+function showJSValue(type) {
+  const jsv = JSValues[type];
+  const bits = document.getElementById('jsvBits');
+  const desc = document.getElementById('jsvDesc');
+  document.querySelectorAll('.jsvalue-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+
+  bits.innerHTML = jsv.groups.map(g =>
+    `<div class="bit-group ${g.cls}">
+      <div class="bit-label">${g.label}</div>
+      <div class="bit-value">${g.bits}</div>
+    </div>`
+  ).join('');
+  desc.innerHTML = jsv.desc;
+}
+
+// ─── VM Stack Simulator ─────────────────────────────────────────────
+const opcodeSteps = [
+  { op: 'push_value', arg: '1',    stack: [],                         explain: 'Start: stack is empty.' },
+  { op: 'push_value', arg: '1',    stack: [['1', 'INT']],             explain: 'push_value 1 → push the integer 1 onto the stack.' },
+  { op: 'push_value', arg: '2',    stack: [['1','INT'],['2','INT']],   explain: 'push_value 2 → push the integer 2.' },
+  { op: 'add',        arg: '',     stack: [['3','INT']],              explain: 'add → pop 1 and 2, push their sum 3.' },
+  { op: 'put_loc',    arg: '0',    stack: [],                         explain: 'put_loc 0 → pop 3 and store it in local variable x (slot 0).' },
+  { op: 'get_field',  arg: '"print"', stack: [['print()','FUNC']],    explain: 'get_field "print" → look up "print" on the global object, push the function.' },
+  { op: 'push_const', arg: 'null', stack: [['print()','FUNC'],['null','SPECIAL']], explain: 'push_const null → push null as "this" for the call.' },
+  { op: 'get_loc',    arg: '0',    stack: [['print()','FUNC'],['null','SPEC'],['3','INT']], explain: 'get_loc 0 → read local variable x (value 3) and push it.' },
+  { op: 'call_method',arg: '1',   stack: [['undefined','SPECIAL']],  explain: 'call_method 1 → call print(3). Stack becomes [undefined] (return value).' },
+  { op: 'drop',       arg: '',     stack: [],                         explain: 'drop → discard the return value. Execution complete.' },
+];
+
+let stackStep_ = 0;
+
+function initVM() {
+  if (document.getElementById('opcodeList').children.length > 0) return;
+  renderStack(0);
+  const list = document.getElementById('opcodeList');
+  list.innerHTML = '';
+  opcodeSteps.forEach((step, i) => {
+    const row = document.createElement('div');
+    row.className = 'op-row';
+    row.id = `op-${i}`;
+    row.innerHTML = `<span class="op-idx">${i}</span><span class="op-name">${step.op}</span><span class="op-arg">${step.arg}</span>`;
+    list.appendChild(row);
+  });
+  updateOpHighlight(0);
+}
+
+function renderStack(stepIdx) {
+  const body = document.getElementById('stackBody');
+  const step = opcodeSteps[stepIdx];
+  const frames = step.stack;
+  body.innerHTML = '';
+  if (frames.length === 0) {
+    body.innerHTML = '<div class="stack-frame" style="opacity:0.4;border-style:dashed;justify-content:center;color:var(--text-muted)">stack empty</div>';
+  } else {
+    frames.forEach((f, i) => {
+      const div = document.createElement('div');
+      div.className = 'stack-frame' + (i === frames.length - 1 ? ' top-frame' : '');
+      div.innerHTML = `<span class="stack-frame-sp">sp-${frames.length - 1 - i}</span><span class="stack-frame-val">${f[0]}</span><span class="stack-frame-type">${f[1]}</span>`;
+      body.appendChild(div);
+    });
+  }
+  document.getElementById('stackExplain').textContent = step.explain;
+}
+
+function updateOpHighlight(stepIdx) {
+  document.querySelectorAll('.op-row').forEach((el, i) => {
+    el.classList.toggle('current', i === stepIdx);
+  });
+}
+
+function stackStep(dir) {
+  stackStep_ = Math.max(0, Math.min(opcodeSteps.length - 1, stackStep_ + dir));
+  renderStack(stackStep_);
+  updateOpHighlight(stackStep_);
+  document.getElementById('stepBack').disabled = stackStep_ === 0;
+  document.getElementById('stepFwd').disabled = stackStep_ === opcodeSteps.length - 1;
+}
+
+// ─── GC Visualizer ──────────────────────────────────────────────────
+const gcPhases = [
+  {
+    status: 'Heap before GC: objects A–F allocated. A and C are referenced (live). B, D, E, F are unreachable.',
+    before: [
+      { label:'A: Object', color:'live' },
+      { label:'B: String', color:'dead' },
+      { label:'C: Array',  color:'live' },
+      { label:'D: Object', color:'dead' },
+      { label:'E: Object', color:'dead' },
+      { label:'F: Number', color:'dead' },
+    ],
+    after: [
+      { label:'A: Object', color:'live' },
+      { label:'B: String', color:'dead' },
+      { label:'C: Array',  color:'live' },
+      { label:'D: Object', color:'dead' },
+      { label:'E: Object', color:'dead' },
+      { label:'F: Number', color:'dead' },
+    ],
+    beforeTitle: 'Heap (before)',
+    afterTitle: 'Heap (before)',
+  },
+  {
+    status: 'Mark phase: GC traces from roots (JSGCRef, value stack). Reachable objects are marked green.',
+    before: [
+      { label:'A: Object', color:'live',   marked: true },
+      { label:'B: String', color:'dead',   marked: false },
+      { label:'C: Array',  color:'live',   marked: true },
+      { label:'D: Object', color:'dead',   marked: false },
+      { label:'E: Object', color:'dead',   marked: false },
+      { label:'F: Number', color:'dead',   marked: false },
+    ],
+    after: [
+      { label:'A ✓ marked', color:'live' },
+      { label:'B   unmarked', color:'dead' },
+      { label:'C ✓ marked', color:'live' },
+      { label:'D   unmarked', color:'dead' },
+      { label:'E   unmarked', color:'dead' },
+      { label:'F   unmarked', color:'dead' },
+    ],
+    beforeTitle: 'Before mark',
+    afterTitle: 'After mark',
+  },
+  {
+    status: 'Sweep phase: unmarked objects are reclaimed. Their slots become free.',
+    before: [
+      { label:'A: Object', color:'live' },
+      { label:'B: String', color:'dead' },
+      { label:'C: Array',  color:'live' },
+      { label:'D: Object', color:'dead' },
+      { label:'E: Object', color:'dead' },
+      { label:'F: Number', color:'dead' },
+    ],
+    after: [
+      { label:'A: Object', color:'live' },
+      { label:'— free —',  color:'free' },
+      { label:'C: Array',  color:'live' },
+      { label:'— free —',  color:'free' },
+      { label:'— free —',  color:'free' },
+      { label:'— free —',  color:'free' },
+    ],
+    beforeTitle: 'Marked heap',
+    afterTitle: 'After sweep',
+  },
+  {
+    status: 'Compact phase: live objects slide down, filling gaps. Addresses change — JSGCRef pointers are updated automatically.',
+    before: [
+      { label:'A: Object', color:'live' },
+      { label:'— free —',  color:'free' },
+      { label:'C: Array',  color:'live' },
+      { label:'— free —',  color:'free' },
+      { label:'— free —',  color:'free' },
+      { label:'— free —',  color:'free' },
+    ],
+    after: [
+      { label:'A: Object', color:'live' },
+      { label:'C: Array',  color:'live' },
+      { label:'— free —',  color:'free' },
+      { label:'— free —',  color:'free' },
+      { label:'— free —',  color:'free' },
+      { label:'— free —',  color:'free' },
+    ],
+    beforeTitle: 'After sweep',
+    afterTitle: 'After compact ✓',
+  },
+];
+
+let gcPhase = 0;
+
+function initGC() {
+  renderGC(0);
+}
+
+function setGCPhase(n) {
+  gcPhase = n;
+  document.querySelectorAll('.gc-phase-btn').forEach((b, i) => {
+    b.classList.toggle('active', i === n);
+  });
+  renderGC(n);
+}
+
+function gcCellColor(color) {
+  if (color === 'live') return '#1a3a1a';
+  if (color === 'dead') return 'rgba(255,123,114,0.12)';
+  return 'rgba(139,148,158,0.06)';
+}
+function gcCellTextColor(color) {
+  if (color === 'live') return 'var(--tag-int)';
+  if (color === 'dead') return 'var(--accent5)';
+  return 'var(--text-muted)';
+}
+function gcMarkClass(color) {
+  if (color === 'live') return 'marked';
+  if (color === 'free') return 'free';
+  return 'unmarked';
+}
+
+function renderGC(n) {
+  const phase = gcPhases[n];
+  document.getElementById('gcStatus').textContent = phase.status;
+
+  function renderHeap(id, cells, title) {
+    const el = document.getElementById(id);
+    el.innerHTML = `<div class="gc-heap-title">${title}</div>`;
+    cells.forEach(c => {
+      const row = document.createElement('div');
+      row.className = 'gc-cell';
+      row.style.background = gcCellColor(c.color);
+      row.style.color = gcCellTextColor(c.color);
+      row.innerHTML = `<div class="gc-mark ${gcMarkClass(c.color)}"></div>${c.label}`;
+      el.appendChild(row);
+    });
+  }
+
+  renderHeap('gcBefore', phase.before, phase.beforeTitle);
+  renderHeap('gcAfter',  phase.after,  phase.afterTitle);
+}
+
+// ─── Init ────────────────────────────────────────────────────────────
+// Show first JSValue immediately on load
+document.addEventListener('DOMContentLoaded', () => {
+  // Trigger initial JSValue display when VM stage is first visited
+  // (avoids running DOM ops on elements not yet rendered)
+});
+
+// Make showJSValue work without real event (initial load)
+function initJSValue() {
+  const jsv = JSValues['int'];
+  const bits = document.getElementById('jsvBits');
+  const desc = document.getElementById('jsvDesc');
+  if (!bits) return;
+  bits.innerHTML = jsv.groups.map(g =>
+    `<div class="bit-group ${g.cls}">
+      <div class="bit-label">${g.label}</div>
+      <div class="bit-value">${g.bits}</div>
+    </div>`
+  ).join('');
+  desc.innerHTML = jsv.desc;
+}
+
+// Override showJSValue to not rely on event.target for initial call
+const _showJSValue = showJSValue;
+window.showJSValue = function(type) {
+  const jsv = JSValues[type];
+  const bits = document.getElementById('jsvBits');
+  const desc = document.getElementById('jsvDesc');
+  document.querySelectorAll('.jsvalue-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.toLowerCase().includes(type) || (type==='int'&&b.textContent.includes('42')) || (type==='ptr'&&b.textContent.includes('Object')) || (type==='null'&&b.textContent.includes('null')) || (type==='undef'&&b.textContent.includes('undef')) || (type==='bool'&&b.textContent.includes('true')) || (type==='float'&&b.textContent.includes('3.14')));
+  });
+  bits.innerHTML = jsv.groups.map(g =>
+    `<div class="bit-group ${g.cls}">
+      <div class="bit-label">${g.label}</div>
+      <div class="bit-value">${g.bits}</div>
+    </div>`
+  ).join('');
+  desc.innerHTML = jsv.desc;
+};
+
+// Patch goToStage to also init JSValue
+const _goToStage = goToStage;
+window.goToStage = function(n) {
+  _goToStage(n);
+  if (n === 4) {
+    requestAnimationFrame(initJSValue);
+    requestAnimationFrame(initVM);
+  }
+  if (n === 5) {
+    requestAnimationFrame(initGC);
+  }
+};
+</script>
+
+</body>
+</html>

@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>v86 — Architecture Overview</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --bg2: #161b22;
+  --bg3: #21262d;
+  --border: #30363d;
+  --text: #f0f6fc;
+  --text2: #8b949e;
+  --blue: #58a6ff;
+  --green: #3fb950;
+  --purple: #bc8cff;
+  --orange: #ffa657;
+  --red: #ff7b72;
+  --yellow: #d29922;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+nav {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+nav::-webkit-scrollbar { display: none; }
+nav a {
+  color: var(--text2);
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+nav a:hover { color: var(--text); background: var(--bg3); }
+nav a.active { color: var(--blue); background: rgba(88,166,255,0.1); }
+
+header {
+  text-align: center;
+  padding: 40px 20px 24px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+header h1 { font-size: clamp(22px, 5vw, 38px); font-weight: 700; letter-spacing: -0.5px; }
+header h1 .v86 { color: var(--blue); }
+header p { color: var(--text2); margin-top: 10px; font-size: 15px; }
+
+.main { max-width: 960px; margin: 0 auto; padding: 0 16px 60px; }
+
+/* Architecture diagram */
+.arch { display: flex; flex-direction: column; gap: 0; margin-bottom: 40px; }
+
+.layer {
+  border-radius: 12px;
+  padding: 16px;
+  position: relative;
+  cursor: pointer;
+  transition: filter 0.2s;
+}
+.layer:hover { filter: brightness(1.05); }
+.layer-browser { background: rgba(88,166,255,0.05); border: 1px solid rgba(88,166,255,0.25); }
+.layer-js      { background: rgba(63,185,80,0.05);  border: 1px solid rgba(63,185,80,0.25);  }
+.layer-wasm    { background: rgba(188,140,255,0.05);border: 1px solid rgba(188,140,255,0.25);}
+
+.layer-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.layer-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.layer-browser .layer-tag { background: rgba(88,166,255,0.15); color: var(--blue); }
+.layer-js .layer-tag      { background: rgba(63,185,80,0.15);  color: var(--green); }
+.layer-wasm .layer-tag    { background: rgba(188,140,255,0.15);color: var(--purple); }
+
+.layer-desc { font-size: 12px; color: var(--text2); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1px solid transparent;
+}
+.chip:hover { transform: translateY(-1px); filter: brightness(1.2); }
+.layer-browser .chip { background: rgba(88,166,255,0.12); color: var(--blue); border-color: rgba(88,166,255,0.2); }
+.layer-js .chip      { background: rgba(63,185,80,0.12);  color: var(--green); border-color: rgba(63,185,80,0.2); }
+.layer-wasm .chip    { background: rgba(188,140,255,0.12);color: var(--purple); border-color: rgba(188,140,255,0.2); }
+
+/* Connection between layers */
+.conn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+  gap: 12px;
+  position: relative;
+}
+.conn-line {
+  width: 2px;
+  height: 36px;
+  background: var(--border);
+  border-radius: 1px;
+  position: relative;
+  overflow: hidden;
+}
+.conn-label { font-size: 11px; color: var(--text2); white-space: nowrap; }
+.packet {
+  position: absolute;
+  left: -1px;
+  width: 4px;
+  border-radius: 2px;
+  animation: fall 2s linear infinite;
+}
+.packet.up { animation-direction: reverse; }
+@keyframes fall {
+  from { top: -6px; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  to   { top: 100%; opacity: 0; }
+}
+
+/* Data flow panel */
+.flow-section { margin-bottom: 40px; }
+.flow-section h2 { font-size: 18px; font-weight: 600; margin-bottom: 16px; }
+.flow-tabs { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+.tab-btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  color: var(--text2);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.tab-btn:hover { color: var(--text); border-color: var(--text2); }
+.tab-btn.active { background: var(--bg3); color: var(--text); border-color: var(--blue); }
+
+.flow-content { display: none; }
+.flow-content.active { display: block; }
+
+.flow-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.flow-step {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  position: relative;
+}
+.flow-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 34px;
+  bottom: -14px;
+  width: 2px;
+  background: var(--border);
+}
+.step-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+  border: 2px solid;
+}
+.flow-step.browser .step-num { border-color: var(--blue); color: var(--blue); background: rgba(88,166,255,0.1); }
+.flow-step.js .step-num      { border-color: var(--green); color: var(--green); background: rgba(63,185,80,0.1); }
+.flow-step.wasm .step-num    { border-color: var(--purple); color: var(--purple); background: rgba(188,140,255,0.1); }
+.flow-step.device .step-num  { border-color: var(--orange); color: var(--orange); background: rgba(255,166,87,0.1); }
+
+.step-body { padding-top: 4px; padding-bottom: 16px; }
+.step-body strong { font-size: 14px; display: block; }
+.step-body span { font-size: 13px; color: var(--text2); }
+.step-body code {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 11px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 6px;
+  color: var(--orange);
+}
+
+/* Component cards */
+.cards-section h2 { font-size: 18px; font-weight: 600; margin-bottom: 16px; }
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px;
+  text-decoration: none;
+  color: var(--text);
+  display: block;
+  transition: all 0.15s;
+}
+.card:hover { border-color: var(--text2); transform: translateY(-2px); background: var(--bg3); }
+.card-icon { font-size: 22px; margin-bottom: 8px; }
+.card h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+.card p { font-size: 13px; color: var(--text2); line-height: 1.5; }
+.card .tag {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+/* Detail popover */
+#detail-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 200;
+  align-items: flex-end;
+  justify-content: center;
+}
+#detail-overlay.open { display: flex; }
+#detail-box {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px 16px 0 0;
+  padding: 24px 20px;
+  width: 100%;
+  max-width: 540px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+@media (min-width: 600px) {
+  #detail-overlay { align-items: center; }
+  #detail-box { border-radius: 16px; max-height: 80vh; }
+}
+#detail-box h3 { font-size: 17px; margin-bottom: 10px; }
+#detail-box p  { font-size: 14px; color: var(--text2); margin-bottom: 8px; }
+#detail-box .close-btn {
+  float: right;
+  background: var(--bg3);
+  border: none;
+  color: var(--text2);
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+#detail-box .close-btn:hover { color: var(--text); }
+
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-right: 6px;
+  margin-bottom: 4px;
+}
+.badge-blue   { background: rgba(88,166,255,0.15);  color: var(--blue); }
+.badge-green  { background: rgba(63,185,80,0.15);   color: var(--green); }
+.badge-purple { background: rgba(188,140,255,0.15); color: var(--purple); }
+.badge-orange { background: rgba(255,166,87,0.15);  color: var(--orange); }
+
+section.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+  margin-bottom: 40px;
+}
+.stat-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  text-align: center;
+}
+.stat-val { font-size: 22px; font-weight: 700; }
+.stat-lbl { font-size: 11px; color: var(--text2); margin-top: 2px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="active">Overview</a>
+  <a href="cpu.html">CPU &amp; JIT</a>
+  <a href="memory.html">Memory</a>
+  <a href="io.html">I/O Bus</a>
+  <a href="devices.html">Devices</a>
+  <a href="bus.html">Event Bus</a>
+</nav>
+
+<header>
+  <h1><span class="v86">v86</span> Architecture Explorer</h1>
+  <p>An interactive guide to how v86 emulates an x86 PC entirely in the browser using WebAssembly.</p>
+</header>
+
+<div class="main">
+
+  <!-- Stats row -->
+  <section class="stats">
+    <div class="stat-card"><div class="stat-val" style="color:var(--blue)">Rust</div><div class="stat-lbl">JIT &amp; CPU core</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--green)">JS</div><div class="stat-lbl">Device controllers</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--purple)">4 GB</div><div class="stat-lbl">Linear WASM memory</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--orange)">65 536</div><div class="stat-lbl">I/O ports</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--red)">14+</div><div class="stat-lbl">Emulated devices</div></div>
+  </section>
+
+  <!-- Architecture diagram -->
+  <div class="arch" style="margin-bottom:40px;">
+
+    <!-- Browser layer -->
+    <div class="layer layer-browser" onclick="showDetail('browser')">
+      <div class="layer-header">
+        <span class="layer-tag">Browser Layer</span>
+        <span class="layer-desc">User-facing adapters — bridge between browser APIs and emulator</span>
+      </div>
+      <div class="chips">
+        <span class="chip" onclick="event.stopPropagation();showDetail('keyboard')">Keyboard</span>
+        <span class="chip" onclick="event.stopPropagation();showDetail('mouse')">Mouse</span>
+        <span class="chip" onclick="event.stopPropagation();showDetail('screen')">Screen</span>
+        <span class="chip" onclick="event.stopPropagation();showDetail('audio')">Audio</span>
+        <span class="chip" onclick="event.stopPropagation();showDetail('network-adapter')">Network</span>
+        <span class="chip" onclick="event.stopPropagation();showDetail('serial-adapter')">Serial</span>
+        <span class="chip" onclick="event.stopPropagation();showDetail('v86-api')">V86 API</span>
+      </div>
+    </div>
+
+    <!-- Connection: Browser ↔ JS core via event bus -->
+    <div class="conn">
+      <div class="conn-line">
+        <div class="packet" style="height:6px;background:var(--blue);animation-delay:0s;animation-duration:2s;"></div>
+        <div class="packet up" style="height:6px;background:var(--green);animation-delay:1s;animation-duration:2s;"></div>
+      </div>
+      <span class="conn-label">Event Bus &nbsp;(<code style="font-family:monospace;font-size:11px;color:var(--orange);">bus.js</code>)</span>
+      <div class="conn-line">
+        <div class="packet" style="height:6px;background:var(--blue);animation-delay:0.7s;animation-duration:2.5s;"></div>
+        <div class="packet up" style="height:6px;background:var(--green);animation-delay:1.5s;animation-duration:2s;"></div>
+      </div>
+    </div>
+
+    <!-- JavaScript core layer -->
+    <div class="layer layer-js" onclick="showDetail('js-core')">
+      <div class="layer-header">
+        <span class="layer-tag">JavaScript Core</span>
+        <span class="layer-desc">Device models, I/O dispatch, CPU wrapper — all device state lives here</span>
+      </div>
+      <div class="chips">
+        <span class="chip" onclick="event.stopPropagation();showDetail('cpu-js')">CPU (cpu.js)</span>
+        <span class="chip" onclick="event.stopPropagation();showDetail('io-bus')">I/O Bus</span>
+        <span class="chip" onclick="event.stopPropagation();showDetail('pci')">PCI</span>
+        <span class="chip" onclick="event.stopPropagation();showDetail('vga-dev')">VGA</span>
+        <span class="chip" onclick="event.stopPropagation();showDetail('ide')">IDE</span>
+        <span class="chip" onclick="event.stopPropagation();showDetail('ps2')">PS/2</span>
+        <span class="chip" onclick="event.stopPropagation();showDetail('pit')">PIT</span>
+        <span class="chip" onclick="event.stopPropagation();showDetail('rtc')">RTC</span>
+        <span class="chip" onclick="event.stopPropagation();showDetail('dma')">DMA</span>
+        <span class="chip" onclick="event.stopPropagation();showDetail('uart')">UART</span>
+        <span class="chip" onclick="event.stopPropagation();showDetail('ne2k')">NE2000</span>
+        <span class="chip" onclick="event.stopPropagation();showDetail('virtio')">Virtio</span>
+        <span class="chip" onclick="event.stopPropagation();showDetail('sb16')">SB16</span>
+        <span class="chip" onclick="event.stopPropagation();showDetail('floppy')">Floppy</span>
+      </div>
+    </div>
+
+    <!-- Connection: JS core ↔ WASM via import/export calls -->
+    <div class="conn">
+      <div class="conn-line">
+        <div class="packet" style="height:6px;background:var(--purple);animation-delay:0.3s;animation-duration:1.8s;"></div>
+        <div class="packet up" style="height:6px;background:var(--orange);animation-delay:1.2s;animation-duration:1.5s;"></div>
+      </div>
+      <span class="conn-label">WASM imports/exports &nbsp;(<code style="font-family:monospace;font-size:11px;color:var(--orange);">v86.wasm</code>)</span>
+      <div class="conn-line">
+        <div class="packet" style="height:6px;background:var(--purple);animation-delay:0.9s;animation-duration:2.2s;"></div>
+        <div class="packet up" style="height:6px;background:var(--orange);animation-delay:0s;animation-duration:1.8s;"></div>
+      </div>
+    </div>
+
+    <!-- WASM layer -->
+    <div class="layer layer-wasm" onclick="showDetail('wasm')">
+      <div class="layer-header">
+        <span class="layer-tag">WebAssembly Runtime</span>
+        <span class="layer-desc">Rust-compiled CPU engine — JIT compiles x86 blocks to WASM at runtime</span>
+      </div>
+      <div class="chips">
+        <span class="chip" onclick="event.stopPropagation();showDetail('jit')">JIT Engine</span>
+        <span class="chip" onclick="event.stopPropagation();showDetail('interpreter')">Interpreter</span>
+        <span class="chip" onclick="event.stopPropagation();showDetail('cpu-state')">CPU State</span>
+        <span class="chip" onclick="event.stopPropagation();showDetail('tlb')">TLB / Paging</span>
+        <span class="chip" onclick="event.stopPropagation();showDetail('linear-mem')">Linear Memory</span>
+        <span class="chip" onclick="event.stopPropagation();showDetail('fpu')">FPU / SSE</span>
+        <span class="chip" onclick="event.stopPropagation();showDetail('apic')">APIC</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Data flow section -->
+  <div class="flow-section">
+    <h2>Key Data Flows</h2>
+    <div class="flow-tabs">
+      <button class="tab-btn active" onclick="switchTab('keyboard-flow')">Keyboard Input</button>
+      <button class="tab-btn" onclick="switchTab('screen-flow')">Screen Render</button>
+      <button class="tab-btn" onclick="switchTab('disk-flow')">Disk Read</button>
+      <button class="tab-btn" onclick="switchTab('boot-flow')">Boot Sequence</button>
+    </div>
+
+    <div id="keyboard-flow" class="flow-content active">
+      <div class="flow-steps">
+        <div class="flow-step browser"><div class="step-num">1</div><div class="step-body"><strong>User presses a key</strong><span>Browser fires <code>keydown</code> event — keyboard.js adapter reads the scancode.</span></div></div>
+        <div class="flow-step browser"><div class="step-num">2</div><div class="step-body"><strong>Adapter sends to bus</strong><span><code>bus.send("keyboard-code", scancode)</code> — routes through BusConnector pair.</span></div></div>
+        <div class="flow-step js"><div class="step-num">3</div><div class="step-body"><strong>PS/2 device receives it</strong><span>PS/2 controller (port 0x60) queues the scancode in its internal FIFO buffer.</span></div></div>
+        <div class="flow-step js"><div class="step-num">4</div><div class="step-body"><strong>IRQ1 raised</strong><span>PS/2 calls <code>cpu.device_raise_irq(1)</code> — signals keyboard interrupt to PIC.</span></div></div>
+        <div class="flow-step wasm"><div class="step-num">5</div><div class="step-body"><strong>CPU handles interrupt</strong><span>WASM CPU checks pending interrupts, suspends current instruction, vectors to IDT[33] (IRQ1 handler).</span></div></div>
+        <div class="flow-step wasm"><div class="step-num">6</div><div class="step-body"><strong>Guest OS reads port 0x60</strong><span>Kernel interrupt handler executes <code>in al, 0x60</code> → WASM calls JS <code>io_port_read8(0x60)</code> → PS/2 dequeues scancode.</span></div></div>
+      </div>
+    </div>
+
+    <div id="screen-flow" class="flow-content">
+      <div class="flow-steps">
+        <div class="flow-step wasm"><div class="step-num">1</div><div class="step-body"><strong>Guest writes to video memory</strong><span>Guest OS writes pixel/text data to 0xA0000 (VGA) or VBE framebuffer at 0xE0000000+.</span></div></div>
+        <div class="flow-step wasm"><div class="step-num">2</div><div class="step-body"><strong>MMAP handler fires</strong><span>WASM calls <code>mmap_write8(addr, value)</code> → JS dispatches to VGA device's memory write handler.</span></div></div>
+        <div class="flow-step js"><div class="step-num">3</div><div class="step-body"><strong>VGA marks dirty region</strong><span>vga.js records which scanlines changed and schedules a redraw on the next timer tick.</span></div></div>
+        <div class="flow-step js"><div class="step-num">4</div><div class="step-body"><strong>VGA pushes pixel data</strong><span><code>bus.send("screen-fill-buffer", {x, y, w, h, buffer})</code> — sends changed pixels to adapter.</span></div></div>
+        <div class="flow-step browser"><div class="step-num">5</div><div class="step-body"><strong>Screen adapter renders</strong><span>screen.js draws the pixel buffer into an HTML <code>&lt;canvas&gt;</code> using <code>putImageData()</code>.</span></div></div>
+      </div>
+    </div>
+
+    <div id="disk-flow" class="flow-content">
+      <div class="flow-steps">
+        <div class="flow-step wasm"><div class="step-num">1</div><div class="step-body"><strong>Guest issues ATA command</strong><span>Guest OS writes command <code>0x20</code> (READ SECTORS) to IDE command register at port <code>0x1F7</code>.</span></div></div>
+        <div class="flow-step js"><div class="step-num">2</div><div class="step-body"><strong>IDE device processes command</strong><span>ide.js reads the LBA address and sector count from ports 0x1F3–0x1F6, locates data in the disk image buffer.</span></div></div>
+        <div class="flow-step js"><div class="step-num">3</div><div class="step-body"><strong>DMA transfer to guest memory</strong><span>IDE uses DMA controller to write sector data directly into guest RAM. DMA channel 3 maps physical pages.</span></div></div>
+        <div class="flow-step js"><div class="step-num">4</div><div class="step-body"><strong>IRQ14 raised</strong><span>IDE raises IRQ14 signaling transfer complete — CPU vectors to disk interrupt handler.</span></div></div>
+        <div class="flow-step wasm"><div class="step-num">5</div><div class="step-body"><strong>Guest OS reads data</strong><span>Kernel's DMA callback finds the sector data now in guest RAM and resumes the blocked process.</span></div></div>
+      </div>
+    </div>
+
+    <div id="boot-flow" class="flow-content">
+      <div class="flow-steps">
+        <div class="flow-step browser"><div class="step-num">1</div><div class="step-body"><strong>V86 constructor called</strong><span>starter.js creates BusConnector, loads WASM binary (v86.wasm), sets up adapters.</span></div></div>
+        <div class="flow-step js"><div class="step-num">2</div><div class="step-body"><strong>Devices initialized</strong><span>cpu.init() creates all devices in order: PCI → RTC → DMA → VGA → PS/2 → UART → Floppy → IDE → PIT → Network.</span></div></div>
+        <div class="flow-step js"><div class="step-num">3</div><div class="step-body"><strong>BIOS loaded into ROM</strong><span>BIOS binary mapped at physical address 0xF0000. VGA BIOS mapped at 0xC0000. CMOS filled with boot config.</span></div></div>
+        <div class="flow-step wasm"><div class="step-num">4</div><div class="step-body"><strong>CPU starts at reset vector</strong><span>WASM CPU initializes EIP to 0xFFFFFFF0 (16-byte alias into BIOS ROM). First instruction runs.</span></div></div>
+        <div class="flow-step wasm"><div class="step-num">5</div><div class="step-body"><strong>JIT warms up</strong><span>Frequently-executed x86 basic blocks get JIT-compiled to WASM functions. Subsequent runs are much faster.</span></div></div>
+        <div class="flow-step js"><div class="step-num">6</div><div class="step-body"><strong>Emulator-ready event</strong><span>Once BIOS finishes POST and loads bootloader, <code>bus.send("emulator-ready")</code> fires for the application.</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Component cards -->
+  <div class="cards-section">
+    <h2>Explore Components</h2>
+    <div class="cards">
+      <a href="cpu.html" class="card">
+        <div class="card-icon">⚙️</div>
+        <h3>CPU &amp; JIT Engine</h3>
+        <p>How x86 instructions execute — the JIT compilation pipeline, instruction interpreter, and WASM bridge callbacks.</p>
+        <span class="tag badge-purple">WASM / Rust</span>
+      </a>
+      <a href="memory.html" class="card">
+        <div class="card-icon">🗄️</div>
+        <h3>Memory System</h3>
+        <p>4 GB linear WASM address space, virtual-to-physical paging, TLB, MMIO regions, and CPU state layout.</p>
+        <span class="tag badge-blue">Memory / Paging</span>
+      </a>
+      <a href="io.html" class="card">
+        <div class="card-icon">🔌</div>
+        <h3>I/O Port Bus</h3>
+        <p>All 65 536 ISA I/O ports, device port assignments, and the read/write dispatch pipeline from WASM to JS.</p>
+        <span class="tag badge-green">I/O / Ports</span>
+      </a>
+      <a href="devices.html" class="card">
+        <div class="card-icon">🖥️</div>
+        <h3>Hardware Devices</h3>
+        <p>Every emulated device — PIC, PIT, VGA, IDE, PS/2, UART, SB16, NE2000, Virtio — with port ranges and IRQs.</p>
+        <span class="tag badge-orange">Devices</span>
+      </a>
+      <a href="bus.html" class="card">
+        <div class="card-icon">📡</div>
+        <h3>Event Bus</h3>
+        <p>The BusConnector pub/sub system that decouples browser adapters from emulator devices.</p>
+        <span class="tag badge-blue">bus.js</span>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<!-- Detail overlay -->
+<div id="detail-overlay" onclick="closeDetail()">
+  <div id="detail-box" onclick="event.stopPropagation()">
+    <button class="close-btn" onclick="closeDetail()">✕ close</button>
+    <h3 id="detail-title"></h3>
+    <div id="detail-body"></div>
+  </div>
+</div>
+
+<script>
+const details = {
+  browser: {
+    title: 'Browser Layer',
+    body: `<p>The browser layer contains <strong>adapter classes</strong> in <code>src/browser/</code> that translate between browser APIs and the emulator's event bus.</p>
+    <p>Adapters are <em>thin</em> — they do no emulation logic. They convert native browser events (keyboard, mouse, WebSocket messages) into bus messages the emulator understands.</p>
+    <div style="margin-top:10px"><span class="badge badge-blue">starter.js</span><span class="badge badge-blue">keyboard.js</span><span class="badge badge-blue">screen.js</span><span class="badge badge-blue">network.js</span></div>`
+  },
+  keyboard: {
+    title: 'Keyboard Adapter (src/browser/keyboard.js)',
+    body: `<p>Listens for <code>keydown</code>/<code>keyup</code> browser events, converts DOM key codes to PC scancode set 2, and sends them to the PS/2 device via <code>bus.send("keyboard-code", scancode)</code>.</p>
+    <p>Handles special keys: Ctrl+Alt+Del, Pause/Break, extended scancodes (E0 prefix).</p>`
+  },
+  screen: {
+    title: 'Screen Adapter (src/browser/screen.js)',
+    body: `<p>Listens for <code>"screen-fill-buffer"</code> bus messages from the VGA device and blits pixel data to an HTML <code>&lt;canvas&gt;</code> using <code>putImageData()</code>.</p>
+    <p>Handles both text mode (renders font glyphs) and graphics mode (raw pixel buffer). Supports dynamic canvas resize for SVGA modes.</p>`
+  },
+  audio: {
+    title: 'Audio Adapter (src/browser/speaker.js)',
+    body: `<p>Uses the Web Audio API to synthesize PC speaker tones and play SoundBlaster 16 DMA audio samples.</p>
+    <p>Listens for <code>"pcspeaker-update"</code>, <code>"pcspeaker-enable"</code>, <code>"pcspeaker-disable"</code> bus messages from the PIT channel 2 and SB16 device.</p>`
+  },
+  mouse: {
+    title: 'Mouse Adapter (src/browser/mouse.js)',
+    body: `<p>Captures mouse movement with Pointer Lock API (for relative movement) or absolute position tracking. Sends <code>"mouse-delta"</code> and <code>"mouse-click"</code> messages to the PS/2 device.</p>`
+  },
+  'network-adapter': {
+    title: 'Network Adapters (src/browser/network.js)',
+    body: `<p>Several network backends: <strong>WebSocket relay</strong> (connects to a network relay server), <strong>fetch</strong> (simulates HTTP via fetch API), and <strong>fake</strong> (local loopback for testing).</p>
+    <p>Listens for <code>"network-send"</code> (outgoing Ethernet frames from NE2000/Virtio) and fires <code>"network-receive"</code> for incoming frames.</p>`
+  },
+  'serial-adapter': {
+    title: 'Serial Adapter (src/browser/serial.js)',
+    body: `<p>Maps UART serial ports to a text terminal in the browser. Forwards serial output to a <code>&lt;textarea&gt;</code> or xterm.js, and sends keyboard input back to UART registers.</p>
+    <p>Useful for headless Linux VMs where all output goes to COM1.</p>`
+  },
+  'v86-api': {
+    title: 'V86 Public API (src/browser/starter.js)',
+    body: `<p>The <code>V86</code> constructor is the main entry point. It:</p>
+    <p>1. Creates the BusConnector pair<br>2. Asynchronously loads v86.wasm<br>3. Wires up all WASM import functions<br>4. Loads disk images, BIOS, kernel via HTTP or ArrayBuffer<br>5. Calls <code>cpu.init()</code> → <code>emulator.run()</code></p>
+    <p>Public methods: <code>run()</code>, <code>stop()</code>, <code>save_state()</code>, <code>restore_state()</code>, <code>get_bus()</code>, <code>create_file()</code>.</p>`
+  },
+  'js-core': {
+    title: 'JavaScript Core',
+    body: `<p>All device state lives in JavaScript objects. The WASM CPU calls JS whenever a guest instruction accesses an I/O port or MMIO region — control flows back to JS, the device handler runs, and the result returns to WASM.</p>
+    <p>This design keeps device code readable and maintainable at the cost of a small cross-language call overhead on I/O-intensive code paths.</p>`
+  },
+  'cpu-js': {
+    title: 'CPU Wrapper (src/cpu.js)',
+    body: `<p>The JS CPU object holds references to WASM memory (<code>Uint8Array</code> view over linear memory) and all device instances. It initializes devices, manages the execution tick loop, and exposes the JIT finalization callback.</p>
+    <p>CPU registers live at fixed byte offsets in WASM memory — JS can read them directly using typed array views.</p>`
+  },
+  'io-bus': {
+    title: 'I/O Port Bus (src/io.js)',
+    body: `<p>An array of 65 536 port handler records. Each record holds up to 6 functions: <code>read8</code>, <code>read16</code>, <code>read32</code>, <code>write8</code>, <code>write16</code>, <code>write32</code>.</p>
+    <p>WASM calls <code>io_port_read8(addr)</code> → JS dispatches to the registered handler. Unregistered ports return 0xFF / log a warning.</p>
+    <p><a href="io.html" style="color:var(--blue)">→ Full I/O port map</a></p>`
+  },
+  pci: {
+    title: 'PCI Bus (src/pci.js)',
+    body: `<p>Implements PCI configuration space access via I/O ports 0xCF8 (address register) and 0xCFC (data register). Devices register themselves with a bus:slot:function address.</p>
+    <p>PCI BIOS (in the BIOS ROM) enumerates devices at boot and assigns MMIO base addresses and IRQ lines from the PCI configuration space.</p>`
+  },
+  'vga-dev': {
+    title: 'VGA Device (src/vga.js)',
+    body: `<p>Emulates a VGA + Bochs VBE SVGA card (83 KB of JS). Handles attribute controller, CRTC, sequencer, and graphics controller register banks.</p>
+    <p>MMIO: video RAM at 0xA0000–0xBFFFF (planar VGA) and linear framebuffer at 0xE0000000+ (SVGA/VBE). Supports text mode, CGA, and high-res SVGA modes up to 1280×1024.</p>`
+  },
+  ide: { title: 'IDE Controller (src/ide.js)', body: `<p>Emulates a dual-channel PCI IDE controller (Primary: 0x1F0, Secondary: 0x170). Each channel supports a master and slave device — hard disk (ATA) or optical drive (ATAPI).</p><p>Supports PIO and DMA data transfers. Disk images are stored as JavaScript ArrayBuffers or in IndexedDB for persistence.</p>` },
+  ps2: { title: 'PS/2 Controller (src/ps2.js)', body: `<p>Emulates the Intel 8042 microcontroller. Port 0x60 is the data port; 0x64 is the status/command port. Manages keyboard scan codes and PS/2 mouse packets in separate FIFOs.</p><p>Commands include: set LEDs, set scan code set, enable/disable ports, self-test.</p>` },
+  pit: { title: 'PIT Timer (src/pit.js)', body: `<p>Programmable Interval Timer (Intel 8254). Three channels: channel 0 drives IRQ0 (system tick at ~18.2 Hz or reprogrammed rate), channel 1 (DRAM refresh, unused), channel 2 (PC speaker frequency).</p><p>Modes: one-shot, rate generator, square wave, software-triggered strobe.</p>` },
+  rtc: { title: 'RTC / CMOS (src/rtc.js)', body: `<p>Real-Time Clock emulated via CMOS I/O ports 0x70 (index) and 0x71 (data). Stores boot configuration: base/extended memory size, boot order, floppy type, disk geometry.</p><p>Also provides periodic interrupts (IRQ8) used by some OSes for high-resolution timing.</p>` },
+  dma: { title: 'DMA Controller (src/dma.js)', body: `<p>Dual Intel 8237 DMA controllers. 8 channels total: channels 0–3 (8-bit, for floppy and SB16) and channels 4–7 (16-bit, cascaded, for IDE).</p><p>DMA transfers copy data between device registers and guest RAM without CPU involvement, triggered by device requests.</p>` },
+  uart: { title: 'UART Serial Ports (src/uart.js)', body: `<p>Up to 4 UART 16550A serial ports: COM1 (0x3F8), COM2 (0x2F8), COM3 (0x3E8), COM4 (0x2E8). Each is connected to a serial adapter or Virtio console device.</p><p>Supports configurable baud rate (divisor latch), FIFO queues, and hardware flow control signals.</p>` },
+  ne2k: { title: 'NE2000 Network Card (src/ne2k.js)', body: `<p>Emulates a NE2000-compatible ISA Ethernet card at I/O port 0x280. Implements the DP8390 controller register set: command, data read/write, interrupt mask, receive/transmit configuration.</p><p>Alternatively, a Virtio network device (virtio_net.js) can be used — it is faster and simpler to drive.</p>` },
+  virtio: { title: 'Virtio Devices (src/virtio.js)', body: `<p>Virtio is a paravirtualized device standard. v86 implements Virtio over PCI: each device has a standard PCI configuration space header and uses virtqueues (ring buffers in guest RAM) for I/O.</p><p>Devices: <strong>virtio-net</strong> (network), <strong>virtio-9p</strong> (filesystem passthrough), <strong>virtio-console</strong> (serial), <strong>virtio-balloon</strong> (memory pressure).</p>` },
+  sb16: { title: 'SoundBlaster 16 (src/sb16.js)', body: `<p>Emulates the Creative SoundBlaster 16 ISA sound card at 0x220. Supports 8/16-bit DMA PCM playback and recording via DSP commands. Mixer chip at 0x224 controls volume and channel routing.</p><p>Audio samples are forwarded to the Web Audio API via the speaker adapter.</p>` },
+  floppy: { title: 'Floppy Controller (src/floppy.js)', body: `<p>Emulates the Intel 8272A floppy disk controller at I/O ports 0x3F0–0x3F7. Supports two drives (A: and B:) with standard 1.44 MB geometry (80 tracks, 2 heads, 18 sectors).</p><p>Commands: seek, read, write, format. Uses DMA channel 2 for data transfers.</p>` },
+  wasm: {
+    title: 'WebAssembly Runtime',
+    body: `<p>The CPU core is written in Rust (<code>src/rust/</code>) and compiled to WebAssembly. It runs in a tight main loop, executing x86 instructions either via a JIT compiler or a fallback interpreter.</p>
+    <p>WASM linear memory holds both the guest RAM and the CPU state. All device I/O crosses the WASM↔JS boundary via imported functions.</p>
+    <p><a href="cpu.html" style="color:var(--purple)">→ CPU &amp; JIT details</a></p>`
+  },
+  jit: { title: 'JIT Engine (src/rust/jit.rs + jit_instructions.rs)', body: `<p>Identifies "hot" x86 basic blocks and compiles them to WASM bytecode at runtime using <code>WebAssembly.compile()</code>. Compiled functions are stored in a <code>WebAssembly.Table</code> for fast dispatch.</p><p>JIT-compiled blocks bypass the instruction decode loop — they execute directly as native WASM, giving near-native speed for compute-intensive guest code.</p>` },
+  interpreter: { title: 'Interpreter (src/rust/cpu/instructions.rs)', body: `<p>The fallback interpreter handles all x86 instructions that are rarely executed or not yet JIT-compiled. It decodes ModRM bytes, reads operands from memory/registers, and dispatches to per-opcode handlers.</p><p>Supports the full x86 instruction set including SSE/SSE2 (via <code>instructions_sse.rs</code>) and x87 FPU (via <code>fpu.rs</code>).</p>` },
+  'cpu-state': { title: 'CPU State (in WASM linear memory)', body: `<p>All CPU registers live at fixed byte offsets in WASM memory so both Rust and JavaScript can access them efficiently:</p><p><code>offset 64</code>: reg32[8] — EAX through EDI<br><code>offset 120</code>: EFLAGS<br><code>offset 556</code>: EIP / previous IP<br><code>offset 668</code>: segment registers<br><code>offset 832</code>: XMM0–XMM7<br><code>offset 1152</code>: FPU stack (8 × 80-bit)</p><p><a href="memory.html" style="color:var(--purple)">→ Full memory layout</a></p>` },
+  tlb: { title: 'TLB / Paging (src/rust/cpu/memory.rs)', body: `<p>The software TLB caches virtual→physical page translations. On a TLB miss, the page table walker reads CR3 and traverses the two-level (non-PAE) or three-level (PAE) page tables in guest memory.</p><p>On a page fault, control transfers to the guest's page fault handler (interrupt 14) with the faulting address in CR2.</p>` },
+  'linear-mem': { title: 'WASM Linear Memory', body: `<p>A single contiguous <code>WebAssembly.Memory</code> object (up to 4 GB). Layout:</p><p>• Low addresses: CPU internal state (registers, flags, etc.)<br>• Guest RAM starts after CPU state (at offset determined by settings)<br>• BIOS ROM at physical 0xF0000<br>• VGA ROM at physical 0xC0000</p><p><a href="memory.html" style="color:var(--purple)">→ Memory system details</a></p>` },
+  fpu: { title: 'FPU / SSE (src/rust/cpu/fpu.rs)', body: `<p>x87 FPU emulation: 8-register stack of 80-bit extended-precision floats. Control word, status word, and tag word are all emulated. Transcendental instructions (FSIN, FCOS, FSQRT) use the host's 64-bit float math.</p><p>SSE/SSE2: 8 XMM registers (128-bit), packed and scalar float/integer operations.</p>` },
+  apic: { title: 'APIC (src/rust/cpu/apic.rs)', body: `<p>Local APIC emulation at MMIO address 0xFEE00000. Handles inter-processor interrupts (in single-CPU mode, loopback only), timer interrupts, and spurious interrupt handling.</p><p>The I/O APIC (ioapic.rs) at 0xFEC00000 maps legacy IRQs to APIC interrupt vectors.</p>` },
+};
+
+function showDetail(key) {
+  const d = details[key];
+  if (!d) return;
+  document.getElementById('detail-title').textContent = d.title;
+  document.getElementById('detail-body').innerHTML = d.body;
+  document.getElementById('detail-overlay').classList.add('open');
+}
+
+function closeDetail() {
+  document.getElementById('detail-overlay').classList.remove('open');
+}
+
+function switchTab(id) {
+  document.querySelectorAll('.flow-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDetail(); });
+</script>
+</body>
+</html>

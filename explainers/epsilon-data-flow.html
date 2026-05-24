@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Epsilon API — Data Flow</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #0b1120;
+  --surf:    #131c2e;
+  --surf2:   #1c2840;
+  --surf3:   #243050;
+  --border:  #2a3a58;
+  --border2: #384d6e;
+  --text:    #dde5f4;
+  --muted:   #7b90b8;
+  --accent:  #38bdf8;
+
+  --client:   #64748b;
+  --http:     #3b82f6;
+  --app:      #8b5cf6;
+  --executor: #f59e0b;
+  --search:   #10b981;
+
+  --radius: 7px;
+  --mono: 'SF Mono', ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+}
+
+html, body { height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+/* ── Header ──────────────────────────────────────────── */
+header {
+  flex-shrink: 0;
+  background: var(--surf);
+  border-bottom: 1px solid var(--border);
+}
+.header-top {
+  padding: 0.875rem 1.5rem 0;
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+h1 { font-size: 0.9375rem; font-weight: 600; letter-spacing: -0.01em; }
+.header-sub { font-size: 0.75rem; color: var(--muted); }
+
+.tabs {
+  display: flex;
+  padding: 0.625rem 1.5rem 0;
+  gap: 3px;
+}
+.tab {
+  padding: 0.4375rem 0.875rem;
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-family: var(--mono);
+  color: var(--muted);
+  background: transparent;
+  transition: color 0.12s;
+  user-select: none;
+  white-space: nowrap;
+}
+.tab:hover { color: var(--text); }
+.tab.active {
+  background: var(--bg);
+  border-color: var(--border);
+  color: var(--text);
+  margin-bottom: -1px;
+  position: relative;
+  z-index: 1;
+}
+.tab-method {
+  font-size: 0.5625rem;
+  font-weight: 800;
+  color: #4ade80;
+  letter-spacing: 0.06em;
+  margin-right: 0.3rem;
+}
+
+/* ── Main layout ─────────────────────────────────────── */
+.main {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* ── Flow panel (left) ───────────────────────────────── */
+.flow-panel {
+  width: 280px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 1rem 0.625rem 1.5rem 1rem;
+}
+.flow-ep-title {
+  font-size: 0.6875rem;
+  color: var(--muted);
+  margin-bottom: 0.875rem;
+  padding-left: 26px;
+  font-family: var(--mono);
+}
+.flow-list { display: flex; flex-direction: column; }
+
+.flow-item {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+  cursor: pointer;
+}
+.flow-spine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  width: 16px;
+}
+.flow-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  background: var(--bg);
+  flex-shrink: 0;
+  margin-top: 5px;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+.flow-item.active .flow-dot {
+  background: currentColor;
+  box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 20%, transparent);
+}
+.flow-line {
+  width: 2px;
+  flex: 1;
+  min-height: 6px;
+  margin: 2px 0;
+  background: var(--border);
+}
+.flow-pill-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 18px;
+  padding: 2px 0;
+}
+.flow-pill {
+  font-size: 0.5rem;
+  font-family: var(--mono);
+  color: var(--muted);
+  background: var(--surf2);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 1px 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 130px;
+}
+
+.flow-card {
+  flex: 1;
+  padding: 0.375rem 0.625rem;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  margin-bottom: 2px;
+  min-width: 0;
+  transition: border-color 0.12s, background 0.12s;
+}
+.flow-item:hover .flow-card { border-color: var(--border2); background: var(--surf); }
+.flow-item.active .flow-card { border-color: currentColor; background: var(--surf); }
+.flow-item.shared .flow-card { opacity: 0.65; border-style: dashed; }
+
+.flow-num {
+  font-size: 0.5625rem;
+  font-weight: 700;
+  color: var(--muted);
+  line-height: 1;
+  margin-bottom: 0.125rem;
+}
+.flow-title {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.flow-layer-label {
+  font-size: 0.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 0.1rem;
+}
+
+/* ── Detail panel (right) ────────────────────────────── */
+.detail-panel {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.75rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.detail-empty {
+  margin: auto;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+.detail-empty .arrow { font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--border2); }
+
+.detail-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding-bottom: 1.125rem;
+  border-bottom: 1px solid var(--border);
+}
+.layer-badge {
+  padding: 0.25rem 0.5625rem;
+  border-radius: 4px;
+  font-size: 0.5625rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #0b1120;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.detail-title-wrap { flex: 1; min-width: 0; }
+.detail-stepnum {
+  font-size: 0.625rem;
+  color: var(--muted);
+  margin-bottom: 0.2rem;
+  font-family: var(--mono);
+}
+.detail-title {
+  font-family: var(--mono);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+.detail-file {
+  font-size: 0.6875rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  margin-top: 0.25rem;
+}
+.detail-file a { color: var(--accent); text-decoration: none; }
+.detail-file a:hover { text-decoration: underline; }
+
+.detail-desc {
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: var(--text);
+}
+.detail-desc p + p { margin-top: 0.625rem; }
+.detail-desc code {
+  font-family: var(--mono);
+  font-size: 0.8125em;
+  background: var(--surf3);
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: var(--accent);
+}
+
+.code-block {
+  background: #060d1b;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.code-head {
+  background: var(--surf);
+  border-bottom: 1px solid var(--border);
+  padding: 0.375rem 0.875rem;
+  font-size: 0.6875rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.code-head::before {
+  content: '';
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--border2);
+}
+.code-body {
+  padding: 0.875rem 1rem;
+  font-family: var(--mono);
+  font-size: 0.7875rem;
+  line-height: 1.7;
+  color: #7da0c4;
+  overflow-x: auto;
+  white-space: pre;
+}
+/* syntax */
+.hl-cm { color: #3d5270; }
+.hl-st { color: #86efac; }
+.hl-ty { color: #67e8f9; }
+.hl-nu { color: #fda4af; }
+.hl-kw { color: #93c5fd; }
+.hl-at { color: #fde68a; }
+
+.io-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+.io-box {
+  background: var(--surf);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.75rem;
+}
+.io-label {
+  font-size: 0.5625rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 0.375rem;
+}
+.io-val {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--text);
+  line-height: 1.55;
+}
+
+.shared-notice {
+  background: var(--surf);
+  border: 1px dashed var(--border2);
+  border-radius: var(--radius);
+  padding: 1rem 1.125rem;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--muted);
+}
+.shared-notice strong { color: var(--text); }
+.jump-btn {
+  display: inline-block;
+  margin-top: 0.75rem;
+  padding: 0.375rem 0.875rem;
+  border-radius: 5px;
+  border: 1px solid var(--border2);
+  background: var(--surf2);
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 0.8125rem;
+  font-family: inherit;
+  transition: background 0.12s;
+}
+.jump-btn:hover { background: var(--surf3); }
+
+/* ── Footer ───────────────────────────────────────────── */
+footer {
+  flex-shrink: 0;
+  border-top: 1px solid var(--border);
+  background: var(--surf);
+  padding: 0.625rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.legend { display: flex; gap: 1.125rem; flex-wrap: wrap; }
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.6875rem;
+  color: var(--muted);
+}
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+.footer-right { display: flex; align-items: center; gap: 0.875rem; flex-shrink: 0; }
+.step-counter { font-size: 0.75rem; color: var(--muted); font-family: var(--mono); }
+.nav-btns { display: flex; gap: 0.4375rem; }
+.btn {
+  padding: 0.375rem 0.875rem;
+  border-radius: 5px;
+  border: 1px solid var(--border2);
+  background: var(--surf2);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.8125rem;
+  font-family: inherit;
+  transition: background 0.12s;
+}
+.btn:hover:not(:disabled) { background: var(--surf3); }
+.btn:disabled { opacity: 0.3; cursor: default; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <h1>Epsilon HTTP API</h1>
+    <span class="header-sub">— data flow explorer</span>
+  </div>
+  <nav class="tabs" id="tabs"></nav>
+</header>
+
+<div class="main">
+  <aside class="flow-panel" id="flow-panel"></aside>
+  <main class="detail-panel" id="detail-panel"></main>
+</div>
+
+<footer>
+  <div class="legend" id="legend"></div>
+  <div class="footer-right">
+    <span class="step-counter" id="counter"></span>
+    <div class="nav-btns">
+      <button class="btn" id="btn-prev" onclick="navigate(-1)">← Prev</button>
+      <button class="btn" id="btn-next" onclick="navigate(+1)">Next →</button>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── Layers ────────────────────────────────────────────────────────────────────
+
+const LAYERS = {
+  client:   { label: 'Client',   color: '#64748b' },
+  http:     { label: 'HTTP',     color: '#3b82f6' },
+  app:      { label: 'App',      color: '#8b5cf6' },
+  executor: { label: 'Executor', color: '#f59e0b' },
+  search:   { label: 'Search',   color: '#10b981' },
+};
+
+// ── Syntax highlighter ────────────────────────────────────────────────────────
+
+const KW = new Set([
+  'import','export','default','from','const','let','var','function','return',
+  'async','await','pub','fn','struct','impl','use','mod','crate','self',
+  'match','if','else','for','in','while','loop','move','mut','ref','type',
+  'enum','where','dyn','trait','true','false','null','undefined','new',
+  'this','typeof','class','extends','super','throw','try','catch','finally',
+  'of','do','Some','None','Ok','Err','Arc','Vec','Box',
+]);
+
+function hl(raw) {
+  const s = raw.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return s.replace(
+    /(\/\/[^\n]*)|("(?:[^"\\]|\\.)*")|(`[^`]*`)|(#\[[^\]]*\])|(\b[A-Z][a-zA-Z0-9_]+\b)|(\b\d+\b)|(\b[a-z_][a-zA-Z0-9_]*\b)/g,
+    (m, cm, dq, tq, attr, ty, nu, id) => {
+      if (cm)   return `<span class="hl-cm">${m}</span>`;
+      if (dq||tq) return `<span class="hl-st">${m}</span>`;
+      if (attr) return `<span class="hl-at">${m}</span>`;
+      if (ty)   return `<span class="hl-ty">${m}</span>`;
+      if (nu)   return `<span class="hl-nu">${m}</span>`;
+      if (id && KW.has(id)) return `<span class="hl-kw">${m}</span>`;
+      return m;
+    }
+  );
+}
+
+// ── Step data ─────────────────────────────────────────────────────────────────
+
+const ENDPOINTS = [
+
+// ── POST /api/search ──────────────────────────────────────────────────────────
+{
+  id: 'search',
+  method: 'POST',
+  path: '/api/search',
+  steps: [
+    {
+      layer: 'client',
+      title: 'HTTP Request',
+      output: 'JSON body',
+      desc: `<p>Client sends a POST with a JSON body. <code>query</code> is the only required field — a free-text search term. The three optional fields enable per-call config overrides so the same server can be used with different connector sets.</p>`,
+      code: `{
+  "query":  "send email",          // required: BM25 search term
+  "config": "type: api\\n...",     // optional: multi-doc YAML override
+  "files":  { "/handler.js": "" }, // optional: virtual FS for config refs
+  "env":    "dev"                  // "dev" (default) | "test"
+}`,
+      codeLabel: 'JSON',
+    },
+    {
+      layer: 'http',
+      title: 'search_handler',
+      file: 'crates/http/src/lib.rs',
+      line: 125,
+      input: 'JSON body',
+      output: 'SearchBody + env',
+      desc: `<p>Axum extracts the body into <code>SearchBody</code> and generates a fresh <code>Uuid</code> for distributed tracing. The tracing span attaches <code>request_id</code> and <code>route</code> fields to every log line emitted during this request.</p><p>Immediately calls <code>validate_env()</code> — any value other than <code>"dev"</code> or <code>"test"</code> is rejected with 400 before any further work is done. A typo like <code>"development"</code> fails loudly rather than silently falling back to dev.</p>`,
+      code: `struct SearchBody {
+    query: String,
+    #[serde(default)]
+    config: Option<String>,
+    #[serde(default)]
+    files: Option<serde_json::Value>,
+    #[serde(default)]
+    env: Option<String>,
+}
+
+fn validate_env(raw: Option<&str>) -> anyhow::Result<&'static str> {
+    match raw {
+        None | Some("dev") => Ok("dev"),
+        Some("test")       => Ok("test"),
+        Some(other) => anyhow::bail!("unknown env '{other}'"),
+    }
+}`,
+      codeLabel: 'Rust — http/src/lib.rs',
+    },
+    {
+      layer: 'http',
+      title: 'resolve_snapshot',
+      file: 'crates/http/src/lib.rs',
+      line: 194,
+      input: 'config + files + env',
+      output: 'Arc<AppSnapshot>',
+      desc: `<p>Decides which <code>AppSnapshot</code> (search index + script pool + registries) to use. <strong>Fast path:</strong> if no <code>config</code>/<code>files</code> override and env is <code>"dev"</code>, returns the server's default snapshot immediately — a single pointer clone, no I/O.</p><p><strong>Slow path:</strong> computes a SHA-256 key from <code>yaml ++ 0x00 ++ files_json ++ 0x00 ++ env</code> and calls <code>snapshot_for_cache_key</code>. On a cache hit the existing <code>Arc&lt;AppSnapshot&gt;</code> is returned; on a miss, <code>build_override_snapshot</code> runs inside <code>spawn_blocking</code> to avoid starving the tokio runtime.</p>`,
+      code: `async fn resolve_snapshot(
+    app: &Arc<AppHandle>,
+    override_yaml: Option<String>,
+    override_files: Option<serde_json::Value>,
+    env: &'static str,
+) -> anyhow::Result<Arc<AppSnapshot>> {
+    // Fast path: no overrides + dev env
+    if override_yaml.is_none() && override_files.is_none() && env == "dev" {
+        return Ok(app.snapshot().clone());
+    }
+    // Cache key: SHA-256(yaml ++ NUL ++ files_json ++ NUL ++ env)
+    let key_hash = sha256(&yaml, &files_bytes, env);
+    tokio::task::spawn_blocking(move || {
+        app.snapshot_for_cache_key(&key, || build_override_snapshot(...))
+    }).await
+}`,
+      codeLabel: 'Rust — http/src/lib.rs',
+    },
+    {
+      layer: 'app',
+      title: 'build_override_snapshot',
+      file: 'crates/http/src/lib.rs',
+      line: 262,
+      input: 'YAML string + files + env',
+      output: 'AppSnapshot',
+      desc: `<p>Only reached on a cache miss. Picks a filesystem implementation: <code>JsonFs</code> when the caller supplied a <code>files</code> virtual tree (paths resolve inside the JSON object), or <code>NativeFs</code> which resolves against the server's <code>base_dir</code>.</p><p>Parses the YAML via <code>config::load_config_from_yaml_string</code>, which dispatches each <code>type:</code> block to the appropriate loader and applies env-specific overlays. Then calls <code>app::build_snapshot</code> to construct fresh registries (API, database, storage, LLM, email, function) and a new <code>ScriptPool</code>.</p>`,
+      code: `fn build_override_snapshot(
+    app: &AppHandle,
+    yaml: String,
+    files: Option<serde_json::Value>,
+    env: &str,
+) -> anyhow::Result<AppSnapshot> {
+    let (base_dir, fs) = match files {
+        Some(tree) => (PathBuf::from("/"), Box::new(JsonFs::new(tree)?)),
+        None       => (app.base_dir().to_path_buf(), Box::new(NativeFs)),
+    };
+    let cfg = config::load_config_from_yaml_string(
+        &yaml, &base_dir, "api-request.yaml", Some(env), &*fs,
+    )?;
+    app::build_snapshot(cfg, app.n_threads())
+}`,
+      codeLabel: 'Rust — http/src/lib.rs',
+    },
+    {
+      layer: 'search',
+      title: 'SearchIndex.search',
+      file: 'crates/search/src/lib.rs',
+      line: 48,
+      input: 'query string',
+      output: 'Vec<&SearchEntry>',
+      desc: `<p>Runs a BM25 query against the <code>SearchIndex</code>. The index was built at startup (or snapshot-build time) from <code>SearchEntry</code> values — one per connector surface: each API endpoint, database table, LLM model, storage bucket, email template, and function library function.</p><p>Each entry contains the connector's name, JS import path, and a description of its call signature. BM25 ranks matches by term frequency and inverse document frequency, returning the most relevant entries first.</p>`,
+      code: `// SearchEntry shape (one per callable connector surface)
+{
+  resource_kind: ApiEndpoint | DatabaseTable | LlmModel | ...,
+  name: "stripe.createCharge",
+  import_path: "api/stripe",
+  signature: "createCharge(params: { amount: number, ... }): ChargeResult",
+  description: "Create a new payment charge",
+}`,
+      codeLabel: 'SearchEntry structure',
+    },
+    {
+      layer: 'search',
+      title: 'format_results',
+      file: 'crates/search/src/lib.rs',
+      line: 67,
+      input: 'Vec<&SearchEntry>',
+      output: 'String',
+      desc: `<p>Serializes the matched <code>SearchEntry</code> values into a plain-text response. Each entry becomes a block showing the JS import statement and the typed function signature. This text is what an LLM or developer reads to understand how to call a connector from a script.</p>`,
+      code: `// Example format_results output:
+
+import api from 'api/stripe';
+
+api.createCharge(params: {
+  amount: number,          // required
+  currency: string,        // required
+  customer?: string,
+}): { id: string, status: string, ... }
+
+---
+
+import email from 'email/sendgrid';
+
+email.send.welcome(
+  envelope: { to: string },
+  vars: { user_name: string },
+)`,
+      codeLabel: 'text/plain response',
+    },
+    {
+      layer: 'client',
+      title: '200 OK — text/plain',
+      input: 'String',
+      desc: `<p>Returns <code>200 OK</code> with <code>Content-Type: text/plain</code>. The body is the formatted connector signature listing. Unlike <code>/api/execute</code>, there is no JSON envelope — the response is plain text intended to be read directly by an LLM or copied into a script editor.</p>`,
+      code: `HTTP/1.1 200 OK
+Content-Type: text/plain; charset=utf-8
+
+import api from 'api/stripe';
+api.createCharge(params: { amount: number, ... }): { ... }
+
+import db from 'db/analytics';
+db.selectFrom('events')
+  .where('user_id', '=', value)
+  .execute(): EventRow[]`,
+      codeLabel: 'HTTP Response',
+    },
+  ],
+},
+
+// ── POST /api/execute ─────────────────────────────────────────────────────────
+{
+  id: 'execute',
+  method: 'POST',
+  path: '/api/execute',
+  steps: [
+    {
+      layer: 'client',
+      title: 'HTTP Request',
+      output: 'JSON body',
+      desc: `<p>Client sends POST with a JSON body. <code>script</code> is the only required field — an ES module source with a default-exported handler function. <code>request</code> becomes <code>request.body</code> inside the script. Markdown code fences (<code>\`\`\`js ... \`\`\`</code>) are stripped automatically, so LLM-generated scripts work without preprocessing.</p>`,
+      code: `{
+  "script": "import api from 'api/stripe';\\nexport default ...",
+  "request": { "amount": 100, "currency": "usd" },
+  "config": null,  // optional: YAML override (same as /api/search)
+  "files":  null,  // optional: virtual FS
+  "env":    "dev"  // "dev" | "test"
+}`,
+      codeLabel: 'JSON',
+    },
+    {
+      layer: 'http',
+      title: 'execute_handler',
+      file: 'crates/http/src/lib.rs',
+      line: 155,
+      input: 'JSON body',
+      output: 'Arc<AppSnapshot> + script + request',
+      desc: `<p>Mirrors <code>search_handler</code>: generates a tracing span with <code>request_id</code>, validates env, and resolves the snapshot via the same <code>resolve_snapshot</code> caching logic (fast path for default config, slow path for overrides).</p><p>Then calls <code>dispatch_script</code> with the resolved snapshot's <code>ScriptPool</code>, the script source, and the optional request body.</p>`,
+      code: `struct ExecuteBody {
+    script: String,
+    request: Option<serde_json::Value>,
+    #[serde(default)]
+    config: Option<String>,
+    #[serde(default)]
+    files: Option<serde_json::Value>,
+    #[serde(default)]
+    env: Option<String>,
+}`,
+      codeLabel: 'Rust — http/src/lib.rs',
+    },
+    {
+      layer: 'http',
+      title: 'dispatch_script',
+      file: 'crates/http/src/lib.rs',
+      line: 503,
+      input: 'script + request + request_id',
+      output: 'ScriptJob → mpsc channel',
+      desc: `<p>Creates a <code>tokio::sync::oneshot</code> channel — the reply sender goes into the job, the receiver stays in the async handler. Packages everything into a <code>ScriptJob</code> and submits it to the <code>ScriptPool</code> via a bounded <code>mpsc::SyncSender</code>.</p><p>Then <code>rx.await</code> suspends this tokio task. The tokio thread is free to serve other requests while the script runs on a dedicated worker thread. The bounded channel provides back-pressure: if all workers are busy the submit blocks at the OS level, never the tokio pool.</p>`,
+      code: `pub struct ScriptJob {
+    pub script:       String,
+    pub request:      Option<Value>,
+    pub request_id:   Uuid,
+    pub reply:        oneshot::Sender<anyhow::Result<ScriptResult>>,
+    pub parent_span:  Span,    // tracing context crosses thread boundary
+    pub enqueued_at:  Instant, // for queue-wait metrics
+}
+
+// in dispatch_script:
+let (tx, rx) = tokio::sync::oneshot::channel();
+pool.submit(ScriptJob { script, request, request_id, reply: tx, ... });
+let result = rx.await; // async suspend — tokio thread is free`,
+      codeLabel: 'Rust — executor/src/pool.rs + http/src/lib.rs',
+    },
+    {
+      layer: 'executor',
+      title: 'Worker thread picks job',
+      file: 'crates/executor/src/pool.rs',
+      line: 68,
+      input: 'ScriptJob from mpsc',
+      output: 'job ready to execute',
+      desc: `<p>One of <code>n</code> dedicated OS threads (spawned at pool creation, never on tokio) receives the job from the shared <code>mpsc::Receiver</code>. Script threads are isolated from the async runtime — blocking reqwest calls, SQLite queries, and long-running JavaScript won't starve tokio's thread pool.</p><p>Re-enters the caller's tracing span captured in <code>parent_span</code> so <code>request_id</code>, route, and endpoint fields propagate across the channel boundary into every child span created on this thread.</p>`,
+      code: `fn worker_loop(rx: Arc<Mutex<Receiver<ScriptJob>>>, providers: Arc<Providers>) {
+    let js_rt = js::sandbox::create_runtime().unwrap();
+    loop {
+        let job = rx.lock().unwrap().recv().unwrap();
+
+        // Re-enter the HTTP handler's tracing span so request_id
+        // and route fields appear in all logs from this job.
+        let _enter = job.parent_span.enter();
+        let wait_us = job.enqueued_at.elapsed().as_micros();
+
+        let result = js::sandbox::execute_script(
+            &js_rt, &providers,
+            &strip_markdown_fences(&job.script),
+            job.request, job.request_id,
+        );
+        let _ = job.reply.send(Ok(result));
+    }
+}`,
+      codeLabel: 'Rust — executor/src/pool.rs',
+    },
+    {
+      layer: 'executor',
+      title: 'build_runtime',
+      file: 'crates/executor/src/js/sandbox.rs',
+      line: 60,
+      input: 'clean script source',
+      output: 'rquickjs::Runtime',
+      desc: `<p>Constructs a <strong>fresh</strong> <code>rquickjs::Runtime</code> for this job. QuickJS caches declared modules on the runtime, so creating a new runtime per job gives clean module-graph semantics — no state leaks between scripts.</p><p>Configures three safety limits: 64 MB memory, 512 KB stack, and a 120-second deadline via an interrupt handler that polls a thread-local <code>DEADLINE</code> on every QuickJS tick. Registers <code>ConnectorResolver</code> and <code>ConnectorLoader</code> for custom module resolution.</p>`,
+      code: `fn build_runtime() -> rquickjs::Result<Runtime> {
+    let rt = Runtime::new()?;
+    rt.set_memory_limit(64 * 1024 * 1024); // 64 MB
+    rt.set_max_stack_size(512 * 1024);      // 512 KB
+    rt.set_interrupt_handler(Some(Box::new(|| {
+        // Called every QuickJS tick — aborts if past deadline
+        DEADLINE.with(|d| d.get().is_some_and(|dl| Instant::now() > dl))
+    })));
+    rt.set_loader(ConnectorResolver, ConnectorLoader);
+    Ok(rt)
+}
+
+// Deadline: set to Instant::now() + 120s before each job`,
+      codeLabel: 'Rust — executor/src/js/sandbox.rs',
+    },
+    {
+      layer: 'executor',
+      title: 'install_connector_registry',
+      file: 'crates/executor/src/js/sandbox.rs',
+      line: 326,
+      input: 'Arc<Providers>',
+      output: 'populated globalThis registry',
+      desc: `<p>The most complex setup step. Creates <code>globalThis[Symbol.for('epsilon.registry')]</code> and populates it by walking all six provider types. Each provider's <code>open(name)</code> returns a trait object; a corresponding JS object is built and stored under the connector's key. The registry is what <code>ConnectorLoader.load()</code> reads when a script does <code>import api from 'api/stripe'</code>.</p><p>Also installs <code>console</code> (captured to a Vec), <code>CSV</code>, <code>TextEncoder</code>/<code>TextDecoder</code>, and <code>Crypto</code> globals. Then <strong>deletes</strong> <code>eval</code> and replaces <code>Function</code> with a throw stub — no runtime code synthesis.</p>`,
+      code: `// Registry keys and their JS shapes:
+"api/<service>"   → { endpointFn(args): result, ... }
+"db/<name>"       → Kysely-style query builder (selectFrom, insertInto, ...)
+"storage/<name>"  → { get(key), put(key, data), delete(key), list(prefix) }
+"llm/<name>"      → { response({ model, messages, ... }) }
+"email/<name>"    → { send: { templateFn(env, vars) }, preview: { ... } }
+"lib/<libname>"   → { fnName: handler, ... }
+
+// Scripts import from these keys:
+import api  from 'api/stripe';
+import db   from 'db/analytics';
+import llm  from 'llm/claude';`,
+      codeLabel: 'connector registry map',
+    },
+    {
+      layer: 'executor',
+      title: 'Module declare + eval',
+      file: 'crates/executor/src/js/sandbox.rs',
+      line: 124,
+      input: 'script source string',
+      output: 'evaluated module default export',
+      desc: `<p>Compiles the user script as an ES module named <code>"epsilon_user"</code> via <code>Module::declare</code>. The <code>.eval()</code> call triggers QuickJS to link imports — each <code>import api from 'api/stripe'</code> invokes <code>ConnectorLoader.load("api/stripe")</code> which reads from the registry populated in the previous step.</p><p>The evaluation returns a Promise; <code>promise.finish()</code> drives it to completion so any import errors surface here rather than silently leaving exports half-initialized. Finally, <code>evaluated.get("default")</code> extracts the handler and validates it's callable.</p>`,
+      code: `let declared = Module::declare(ctx.clone(), "epsilon_user", script)?;
+let (evaluated, promise) = declared.eval()?;
+// Drive the eval promise — surfaces deferred import errors
+let _ = promise.finish::<Value>()?;
+
+let handler = evaluated
+    .get("default")
+    .map_err(|_| "script must \`export default\` a handler")?;
+let handler_fn = handler
+    .as_function()
+    .ok_or("\`export default\` must be a function")?;`,
+      codeLabel: 'Rust — executor/src/js/sandbox.rs',
+    },
+    {
+      layer: 'executor',
+      title: 'handler(request, context)',
+      file: 'crates/executor/src/js/sandbox.rs',
+      line: 136,
+      input: 'handler fn + request JSON',
+      output: 'serde_json::Value',
+      desc: `<p>Builds two JS objects: <code>request = { body: &lt;JSON&gt; }</code> (the caller's input data) and <code>context = { request_id, invoked_at }</code> (metadata). Calls the handler with both.</p><p>If the return value is a Promise (async handler), <code>resolve_if_promise</code> drives it to completion synchronously via QuickJS's event loop. The final JS value is converted to <code>serde_json::Value</code> via <code>js_to_json</code>. On success or failure, <code>runtime.run_gc()</code> runs to satisfy QuickJS's internal GC invariants before the runtime is dropped.</p>`,
+      code: `// request = { body: JSON }
+let req_obj  = build_request(&ctx, request)?;
+// context = { request_id: "uuid-...", invoked_at: 1716000000 }
+let ctx_obj  = build_context_object(&ctx, request_id)?;
+
+// Call the exported handler
+let result: Value = handler_fn.call((req_obj, ctx_obj))?;
+
+// Await if async — drives QuickJS Promise to completion
+let result = resolve_if_promise(result)?;
+
+// Convert JS value → serde_json::Value
+js_to_json(result)`,
+      codeLabel: 'Rust — executor/src/js/sandbox.rs',
+    },
+    {
+      layer: 'executor',
+      title: 'Reply via oneshot',
+      file: 'crates/executor/src/pool.rs',
+      line: 128,
+      input: 'outcome + thread-local logs',
+      output: 'ScriptResult → oneshot channel',
+      desc: `<p>Collects the two thread-local log buffers: <code>SCRIPT_LOGS</code> (lines from <code>console.log</code> calls inside the script) and <code>SERVER_LOGS</code> (structured records from each connector invocation — which connector, operation, and what was called).</p><p>Packages everything into <code>ScriptResult { outcome, script_logs, server_logs }</code> and sends it on the oneshot channel. The tokio side, which has been suspended since <code>dispatch_script</code> called <code>rx.await</code>, now resumes.</p>`,
+      code: `pub struct ScriptResult {
+    pub outcome:     Result<Value, String>,  // Ok(json) or Err(message)
+    pub script_logs: Vec<String>,            // console.log lines
+    pub server_logs: Vec<ServerLogEntry>,    // connector call records
+}
+
+pub struct ServerLogEntry {
+    pub connector: String,  // "api" | "db" | "storage" | ...
+    pub name:      String,  // connector name, e.g. "stripe"
+    pub operation: String,  // "createCharge"
+    pub message:   String,  // human-readable description
+}`,
+      codeLabel: 'Rust — executor/src/pool.rs + lib.rs',
+    },
+    {
+      layer: 'http',
+      title: 'Serialize response',
+      file: 'crates/http/src/lib.rs',
+      line: 519,
+      input: 'ScriptResult from oneshot',
+      output: '200 JSON',
+      desc: `<p><code>rx.await</code> resolves. The three possible outcomes are: success (<code>Ok(Ok(result))</code>), script-level error (<code>Ok(Err(e))</code> — thrown exception, type error, connector failure), or channel close (<code>Err(_)</code> — worker panicked). The first two both return <code>200 OK</code> with different JSON shapes; only the third returns <code>500</code>.</p><p>Both logs are always included in the response, regardless of success or failure — they're essential for debugging.</p>`,
+      code: `// Success
+{ "result": <any>,    "script_logs": ["..."], "server_logs": [...] }
+
+// Script error (exception, timeout, connector failure)
+{ "error": "message", "script_logs": ["..."], "server_logs": [...] }
+
+// Both return 200 OK — use the presence of "error" key to detect failure.
+// Channel close (worker panicked) → 500 Internal Server Error.`,
+      codeLabel: 'JSON response shapes',
+    },
+    {
+      layer: 'client',
+      title: '200 OK — JSON',
+      input: 'HTTP 200 JSON',
+      desc: `<p>Client receives the response. <code>result</code> holds the handler's return value serialized to JSON (any JSON-serializable value). <code>script_logs</code> captures every <code>console.log</code> call in order. <code>server_logs</code> records each connector operation with structured fields so callers can audit exactly what external calls were made.</p>`,
+      code: `{
+  "result": { "charge_id": "ch_abc123", "status": "succeeded" },
+  "script_logs": [
+    "Processing charge for customer cus_xyz",
+    "Charge created successfully"
+  ],
+  "server_logs": [
+    {
+      "connector": "api",
+      "name": "stripe",
+      "operation": "createCharge",
+      "message": "stripe.createCharge"
+    }
+  ]
+}`,
+      codeLabel: 'JSON',
+    },
+  ],
+},
+
+// ── POST /api/endpoints/{name} ────────────────────────────────────────────────
+{
+  id: 'endpoint',
+  method: 'POST',
+  path: '/api/endpoints/{name}',
+  steps: [
+    {
+      layer: 'client',
+      title: 'HTTP Request',
+      output: 'JSON body + name',
+      desc: `<p>Client sends POST to <code>/api/endpoints/{name}</code> where <code>name</code> matches an endpoint declared in the server's config. The body is arbitrary JSON matching the endpoint's declared input schema. Unlike <code>/api/execute</code>, no <code>script</code>, <code>config</code>, or <code>env</code> fields are needed — those are fully managed server-side.</p>`,
+      code: `// URL: POST /api/endpoints/create-charge
+// Body: the endpoint's declared input schema
+{
+  "amount":   100,
+  "currency": "usd",
+  "customer": "cus_xyz"
+}
+
+// No script, no config, no env — callers just provide data.
+// The handler source and connector config live in YAML on the server.`,
+      codeLabel: 'JSON',
+    },
+    {
+      layer: 'http',
+      title: 'endpoint_handler',
+      file: 'crates/http/src/lib.rs',
+      line: 294,
+      input: 'path param + JSON body',
+      output: 'name string + default snapshot',
+      desc: `<p>Axum extracts the <code>{name}</code> path parameter as a <code>String</code>. Fetches the server's <strong>default</strong> snapshot directly — endpoints have no per-call config override support, they always run against the server's startup configuration.</p><p>Unlike <code>/api/search</code> and <code>/api/execute</code>, there is no env validation here either. Endpoints always run in dev mode against the live database.</p>`,
+      code: `async fn endpoint_handler(
+    State(state): State<HttpState>,
+    Path(name): Path<String>,
+    body: Option<Json<serde_json::Value>>,
+) -> Response {
+    let snapshot = state.app.snapshot(); // always default snapshot
+    // ...
+}`,
+      codeLabel: 'Rust — http/src/lib.rs',
+    },
+    {
+      layer: 'app',
+      title: 'Endpoint lookup',
+      file: 'crates/http/src/lib.rs',
+      line: 308,
+      input: 'name string',
+      output: 'EndpointInfo',
+      desc: `<p>Looks up <code>name</code> in <code>snapshot.endpoints</code>, an <code>IndexMap&lt;String, EndpointInfo&gt;</code> built from <code>endpoint:</code> config files at server startup. Returns <code>404 { error: "unknown endpoint '...'" }</code> if not found.</p><p><code>EndpointInfo</code> is an HTTP-facing view: it carries the <code>library</code> and <code>function</code> fields (identifying the handler), plus the input/output schema copied from the target <code>FunctionDef</code> at snapshot-build time.</p>`,
+      code: `pub struct EndpointInfo {
+    pub name:        String,
+    pub description: Option<String>,
+    pub library:     String,          // function library name
+    pub function:    String,          // function name within library
+    pub input:       Vec<EndpointParam>,
+    pub output:      Option<String>,
+}
+
+// Lookup:
+let Some(ep) = snapshot.endpoints.get(&name) else {
+    return (StatusCode::NOT_FOUND, Json(json!({ "error": "..." }))).into_response();
+};`,
+      codeLabel: 'Rust — app/src/types.rs + http/src/lib.rs',
+    },
+    {
+      layer: 'http',
+      title: 'Trampoline synthesis',
+      file: 'crates/http/src/lib.rs',
+      line: 317,
+      input: 'EndpointInfo { library, function }',
+      output: 'trampoline script string',
+      desc: `<p>Synthesizes a small ES module on the fly from the endpoint's <code>library</code> and <code>function</code> fields. The trampoline imports the configured function library and calls the named function with <code>request.body</code>, which is the caller's JSON body.</p><p>This design means endpoint configs are pure YAML — no handler boilerplate needed. The library function itself is the handler; the endpoint is just a named URL alias that routes to it.</p>`,
+      code: `let (library, function) = (&ep.library, &ep.function);
+let script = format!(
+    "import lib from 'lib/{library}';\n\
+     export default (request, context) => lib.{function}(request.body);"
+);
+
+// Example output for library="payments" function="createCharge":
+import lib from 'lib/payments';
+export default (request, context) => lib.createCharge(request.body);`,
+      codeLabel: 'Rust + generated JS — http/src/lib.rs',
+    },
+    {
+      layer: 'http',
+      title: '→ dispatch_script (shared with /api/execute)',
+      shared: true,
+      input: 'trampoline script + request body',
+      output: '200 JSON (same as /api/execute)',
+      desc: `<p>From this point, the flow is <strong>identical to POST /api/execute</strong> starting at <code>dispatch_script</code>. The synthesized trampoline script is submitted to the <code>ScriptPool</code>, a worker thread picks it up, a fresh QuickJS runtime is built, the connector registry is installed, the trampoline module is evaluated, and the handler is called with <code>request.body</code> as <code>request.body</code> inside the function library.</p><p>The response shape is the same: <code>{ result, script_logs, server_logs }</code> on success or <code>{ error, script_logs, server_logs }</code> on failure.</p>`,
+    },
+  ],
+},
+
+]; // end ENDPOINTS
+
+// ── State ─────────────────────────────────────────────────────────────────────
+
+let activeEp   = 0;
+let activeStep = 0;
+
+// ── Rendering ─────────────────────────────────────────────────────────────────
+
+function layerColor(layer) { return LAYERS[layer]?.color ?? '#64748b'; }
+function layerLabel(layer) { return LAYERS[layer]?.label ?? layer; }
+
+function renderTabs() {
+  const el = document.getElementById('tabs');
+  el.innerHTML = ENDPOINTS.map((ep, i) => `
+    <div class="tab ${i === activeEp ? 'active' : ''}" onclick="switchEp(${i})">
+      <span class="tab-method">${ep.method}</span>${ep.path}
+    </div>
+  `).join('');
+}
+
+function renderLegend() {
+  document.getElementById('legend').innerHTML = Object.entries(LAYERS).map(([k,v]) =>
+    `<div class="legend-item">
+      <span class="legend-dot" style="background:${v.color}"></span>${v.label}
+    </div>`
+  ).join('');
+}
+
+function renderFlow() {
+  const ep = ENDPOINTS[activeEp];
+  const steps = ep.steps;
+  let html = `<div class="flow-ep-title">${ep.method} ${ep.path}</div><div class="flow-list">`;
+
+  steps.forEach((step, i) => {
+    const color = layerColor(step.layer);
+    const isActive = i === activeStep;
+    const isShared = step.shared;
+
+    // Data pill between steps (output of previous step)
+    if (i > 0) {
+      const prev = steps[i - 1];
+      const pill = prev.output ? `<span class="flow-pill">${prev.output}</span>` : '';
+      html += `
+        <div class="flow-item" style="pointer-events:none">
+          <div class="flow-spine">
+            <div class="flow-line"></div>
+          </div>
+          <div class="flow-pill-wrap">${pill}</div>
+        </div>`;
+    }
+
+    html += `
+      <div class="flow-item ${isActive ? 'active' : ''} ${isShared ? 'shared' : ''}"
+           style="color:${color}" onclick="selectStep(${i})">
+        <div class="flow-spine">
+          <div class="flow-dot"></div>
+        </div>
+        <div class="flow-card">
+          <div class="flow-num">STEP ${i + 1}</div>
+          <div class="flow-title">${step.title}</div>
+          <div class="flow-layer-label" style="color:${color}">${layerLabel(step.layer)}</div>
+        </div>
+      </div>`;
+  });
+
+  html += '</div>';
+  document.getElementById('flow-panel').innerHTML = html;
+}
+
+function renderDetail() {
+  const ep   = ENDPOINTS[activeEp];
+  const step = ep.steps[activeStep];
+  const color = layerColor(step.layer);
+  const total = ep.steps.length;
+
+  let html = `
+    <div class="detail-header">
+      <span class="layer-badge" style="background:${color}">${layerLabel(step.layer)}</span>
+      <div class="detail-title-wrap">
+        <div class="detail-stepnum">Step ${activeStep + 1} of ${total}</div>
+        <div class="detail-title">${step.title}</div>
+        ${step.file ? `<div class="detail-file">
+          <a href="#" onclick="return false">${step.file}${step.line ? ':' + step.line : ''}</a>
+        </div>` : ''}
+      </div>
+    </div>`;
+
+  if (step.desc) {
+    html += `<div class="detail-desc">${step.desc}</div>`;
+  }
+
+  if (step.shared) {
+    html += `
+      <div class="shared-notice">
+        <strong>Shared execution path.</strong> The synthesized trampoline script flows
+        through the exact same pipeline as <strong>POST /api/execute</strong> —
+        <code>dispatch_script</code> → worker thread → QuickJS sandbox →
+        connector registry → handler invocation → oneshot reply → JSON response.
+        <br>
+        <button class="jump-btn" onclick="jumpToExecute()">
+          View full flow in /api/execute →
+        </button>
+      </div>`;
+  }
+
+  if (step.code) {
+    html += `
+      <div class="code-block">
+        <div class="code-head">${step.codeLabel ?? 'Code'}</div>
+        <div class="code-body">${hl(step.code)}</div>
+      </div>`;
+  }
+
+  if (step.input || step.output) {
+    html += `<div class="io-grid">`;
+    if (step.input) {
+      html += `<div class="io-box">
+        <div class="io-label">↓ Input</div>
+        <div class="io-val">${step.input}</div>
+      </div>`;
+    }
+    if (step.output) {
+      html += `<div class="io-box">
+        <div class="io-label">↑ Output</div>
+        <div class="io-val">${step.output}</div>
+      </div>`;
+    }
+    html += `</div>`;
+  }
+
+  document.getElementById('detail-panel').innerHTML = html;
+}
+
+function renderNav() {
+  const ep = ENDPOINTS[activeEp];
+  document.getElementById('counter').textContent =
+    `${activeStep + 1} / ${ep.steps.length}`;
+  document.getElementById('btn-prev').disabled = activeStep === 0;
+  document.getElementById('btn-next').disabled = activeStep === ep.steps.length - 1;
+}
+
+function render() {
+  renderTabs();
+  renderLegend();
+  renderFlow();
+  renderDetail();
+  renderNav();
+  // Scroll active step into view in the flow panel
+  requestAnimationFrame(() => {
+    const items = document.querySelectorAll('.flow-item.active');
+    items[0]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  });
+}
+
+// ── Interaction ───────────────────────────────────────────────────────────────
+
+function switchEp(i) {
+  activeEp   = i;
+  activeStep = 0;
+  render();
+  document.getElementById('detail-panel').scrollTo(0, 0);
+}
+
+function selectStep(i) {
+  activeStep = i;
+  render();
+  document.getElementById('detail-panel').scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function navigate(delta) {
+  const ep = ENDPOINTS[activeEp];
+  activeStep = Math.max(0, Math.min(ep.steps.length - 1, activeStep + delta));
+  render();
+  document.getElementById('detail-panel').scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function jumpToExecute() {
+  // Switch to /api/execute, scroll to dispatch_script (step index 2)
+  activeEp   = 1;
+  activeStep = 2;
+  render();
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'j') navigate(+1);
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp'   || e.key === 'k') navigate(-1);
+  if (e.key === '1') switchEp(0);
+  if (e.key === '2') switchEp(1);
+  if (e.key === '3') switchEp(2);
+});
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+
+render();
+</script>
+</body>
+</html>

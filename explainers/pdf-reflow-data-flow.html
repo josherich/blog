@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0b0e14" />
+<title>pdf_reflow — data flow</title>
+<style>
+  :root {
+    --bg: #0b0e14;
+    --panel: #131826;
+    --panel-2: #1a2030;
+    --ink: #e6e9ef;
+    --ink-dim: #9aa4b8;
+    --rule: #232b3d;
+    --accent: #7aa2f7;
+    --accent-2: #9ece6a;
+    --accent-3: #e0af68;
+    --accent-4: #f7768e;
+    --accent-5: #bb9af7;
+    --code-bg: #0a0d14;
+    --shadow: 0 2px 12px rgba(0,0,0,.25);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f7f8fb;
+      --panel: #ffffff;
+      --panel-2: #f1f4fa;
+      --ink: #1a1f2e;
+      --ink-dim: #5a6478;
+      --rule: #e2e7ef;
+      --code-bg: #0f1422;
+      --shadow: 0 2px 10px rgba(20,30,60,.06);
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 18px 16px calc(28px + var(--safe-bottom));
+  }
+  header {
+    padding: 8px 4px 18px;
+  }
+  h1 {
+    margin: 0 0 6px;
+    font-size: 24px;
+    letter-spacing: -0.02em;
+  }
+  h1 .mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; color: var(--accent); }
+  .lede {
+    margin: 0;
+    color: var(--ink-dim);
+    font-size: 14.5px;
+  }
+  /* Sticky progress strip */
+  nav.stages {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    margin: 0 -16px 14px;
+    padding: 10px 12px;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: saturate(140%) blur(10px);
+    -webkit-backdrop-filter: saturate(140%) blur(10px);
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  nav.stages::-webkit-scrollbar { display: none; }
+  nav.stages button {
+    flex: 0 0 auto;
+    appearance: none;
+    border: 1px solid var(--rule);
+    background: var(--panel);
+    color: var(--ink-dim);
+    padding: 7px 12px;
+    border-radius: 999px;
+    font: 600 13px/1 -apple-system, sans-serif;
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: background .15s, color .15s, border-color .15s;
+  }
+  nav.stages button .num {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    text-align: center;
+    border-radius: 50%;
+    background: var(--panel-2);
+    margin-right: 6px;
+    font-size: 11px;
+    color: var(--ink-dim);
+  }
+  nav.stages button.active {
+    color: var(--ink);
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, var(--panel));
+  }
+  nav.stages button.active .num {
+    background: var(--accent);
+    color: #0b0e14;
+  }
+
+  .stage {
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: 14px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    scroll-margin-top: 70px;
+  }
+  .stage-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    user-select: none;
+    touch-action: manipulation;
+  }
+  .stage-head:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
+  .chip {
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    display: grid;
+    place-items: center;
+    font: 700 14px/1 ui-monospace, monospace;
+    color: #0b0e14;
+  }
+  .c1 { background: var(--accent); }
+  .c2 { background: var(--accent-2); }
+  .c3 { background: var(--accent-3); }
+  .c4 { background: var(--accent-5); }
+  .c5 { background: var(--accent-4); }
+  .stage-title { flex: 1; font-weight: 600; }
+  .stage-title small {
+    display: block;
+    font-weight: 400;
+    color: var(--ink-dim);
+    font-size: 12.5px;
+    margin-top: 2px;
+  }
+  .caret {
+    width: 12px; height: 12px;
+    border-right: 2px solid var(--ink-dim);
+    border-bottom: 2px solid var(--ink-dim);
+    transform: rotate(45deg);
+    transition: transform .25s ease;
+    margin-right: 4px;
+  }
+  .stage[open] .caret { transform: rotate(-135deg); }
+
+  .stage-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows .3s ease;
+  }
+  .stage[open] .stage-body { grid-template-rows: 1fr; }
+  .stage-body > .inner {
+    overflow: hidden;
+    min-height: 0;
+  }
+  .stage[open] .stage-body > .inner { overflow: visible; }
+  .stage-content {
+    padding: 0 16px 16px;
+    border-top: 1px solid var(--rule);
+    padding-top: 14px;
+  }
+
+  .row { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+  .tag {
+    display: inline-block;
+    font: 600 11px/1 ui-monospace, monospace;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: var(--panel-2);
+    color: var(--ink-dim);
+    border: 1px solid var(--rule);
+  }
+  .tag.input { color: var(--accent); }
+  .tag.output { color: var(--accent-2); }
+  .tag.file { color: var(--accent-3); font-weight: 500; }
+
+  p { margin: 8px 0; }
+  ul { padding-left: 18px; margin: 8px 0; }
+  li { margin: 4px 0; }
+  code {
+    font: 13px/1.4 ui-monospace, "SF Mono", Menlo, monospace;
+    background: var(--panel-2);
+    padding: 1px 5px;
+    border-radius: 4px;
+    border: 1px solid var(--rule);
+  }
+  pre {
+    background: var(--code-bg);
+    color: #cdd6f4;
+    padding: 12px;
+    margin: 10px 0 6px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font: 12.5px/1.5 ui-monospace, "SF Mono", Menlo, monospace;
+    -webkit-overflow-scrolling: touch;
+  }
+  pre .k { color: #f7768e; }
+  pre .s { color: #9ece6a; }
+  pre .n { color: #7aa2f7; }
+  pre .c { color: #6b7392; font-style: italic; }
+  pre .t { color: #e0af68; }
+
+  /* Visual diagrams */
+  .viz {
+    background: var(--panel-2);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 10px;
+    margin: 12px 0;
+  }
+  .viz svg { display: block; width: 100%; height: auto; }
+  .viz-cap {
+    color: var(--ink-dim);
+    font-size: 12px;
+    text-align: center;
+    margin-top: 6px;
+  }
+
+  /* Demo controls */
+  .demo {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 8%, var(--panel)), var(--panel));
+    border: 1px solid var(--rule);
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 14px;
+  }
+  .demo h2 {
+    margin: 0 0 6px;
+    font-size: 16px;
+  }
+  .demo p { font-size: 13px; color: var(--ink-dim); margin: 0 0 12px; }
+  .demo-stage-svg {
+    width: 100%;
+    height: 260px;
+    background: var(--bg);
+    border-radius: 10px;
+    border: 1px solid var(--rule);
+  }
+  .demo-controls {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    align-items: center;
+  }
+  .demo-controls button {
+    appearance: none;
+    border: 1px solid var(--rule);
+    background: var(--panel-2);
+    color: var(--ink);
+    padding: 9px 14px;
+    border-radius: 8px;
+    font: 600 13px/1 -apple-system, sans-serif;
+    cursor: pointer;
+    touch-action: manipulation;
+    flex: 1;
+    min-height: 38px;
+  }
+  .demo-controls button.primary {
+    background: var(--accent);
+    color: #0b0e14;
+    border-color: var(--accent);
+  }
+  .demo-step-label {
+    text-align: center;
+    margin-top: 8px;
+    font: 600 13px/1.3 -apple-system, sans-serif;
+    color: var(--ink);
+    min-height: 32px;
+  }
+  .demo-step-label .sub {
+    display: block;
+    font-weight: 400;
+    color: var(--ink-dim);
+    font-size: 12px;
+    margin-top: 3px;
+  }
+
+  /* Data-structure cards */
+  .ds {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin: 10px 0;
+  }
+  @media (min-width: 480px) { .ds { grid-template-columns: 1fr 1fr; } }
+  .ds-card {
+    background: var(--panel-2);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 10px 12px;
+  }
+  .ds-card .ds-name {
+    font: 600 13px/1 ui-monospace, monospace;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .ds-card ul { margin: 0; padding-left: 16px; font-size: 12.5px; }
+  .ds-card li { color: var(--ink-dim); }
+  .ds-card li b { color: var(--ink); font-weight: 500; }
+
+  footer {
+    text-align: center;
+    color: var(--ink-dim);
+    font-size: 12px;
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 1px solid var(--rule);
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  /* Accessibility: reduce motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>How <span class="mono">pdf_reflow</span> reshapes a PDF</h1>
+  <p class="lede">
+    Five stages turn a two-column desktop PDF into a single-column phone-sized one.
+    Tap any stage to expand. The pipeline is pure geometry &amp; font heuristics — no ML.
+  </p>
+</header>
+
+<nav class="stages" id="nav">
+  <button data-jump="0" class="active"><span class="num">0</span>Demo</button>
+  <button data-jump="1"><span class="num">1</span>Extract</button>
+  <button data-jump="2"><span class="num">2</span>Group</button>
+  <button data-jump="3"><span class="num">3</span>Classify</button>
+  <button data-jump="4"><span class="num">4</span>Order</button>
+  <button data-jump="5"><span class="num">5</span>Render</button>
+</nav>
+
+<!-- Demo -->
+<section class="demo" id="demo">
+  <h2>Watch a page flow through</h2>
+  <p>A two-column page with a figure becomes a single mobile column. Step through each transformation.</p>
+  <svg class="demo-stage-svg" viewBox="0 0 360 260" id="demoSvg" xmlns="http://www.w3.org/2000/svg">
+    <!-- contents injected -->
+  </svg>
+  <div class="demo-step-label" id="demoLabel">
+    Stage 0 · Source PDF
+    <span class="sub">Two columns, a figure, headers and footers</span>
+  </div>
+  <div class="demo-controls">
+    <button id="demoPrev">← Back</button>
+    <button id="demoNext" class="primary">Next →</button>
+  </div>
+</section>
+
+<!-- Stage 1: Extract -->
+<section class="stage" data-stage="1">
+  <div class="stage-head" tabindex="0" role="button" aria-expanded="false">
+    <div class="chip c1">1</div>
+    <div class="stage-title">
+      Extract
+      <small>PDF bytes → Spans, Drawings, Images</small>
+    </div>
+    <div class="caret"></div>
+  </div>
+  <div class="stage-body"><div class="inner"><div class="stage-content">
+
+    <div class="row">
+      <span class="tag input">in: PDF file</span>
+      <span class="tag output">out: PageContent[]</span>
+      <span class="tag file">extract.py</span>
+    </div>
+
+    <p>
+      PyMuPDF (a C wrapper around MuPDF) reads the source bytes and returns every
+      glyph in <code>rawdict</code> form — bbox, font, size, weight flags, color.
+      Vector drawings (lines, rects, curves) and embedded raster images are
+      reduced to bounding boxes.
+    </p>
+
+    <p>
+      At this boundary, ligature codepoints (<code>ﬁ</code>, <code>ﬂ</code>),
+      smart quotes, and soft hyphens are normalized to plain ASCII so every
+      downstream stage sees the same text and the base-14 PDF fonts we render
+      with can find a glyph for every char.
+    </p>
+
+    <div class="viz">
+      <svg viewBox="0 0 320 130" xmlns="http://www.w3.org/2000/svg" aria-label="Extract diagram">
+        <rect x="6" y="6" width="100" height="118" rx="6" fill="none" stroke="#7aa2f7" stroke-width="1.2"/>
+        <text x="56" y="22" text-anchor="middle" fill="#7aa2f7" font-family="ui-monospace" font-size="9">source.pdf</text>
+        <g fill="#7aa2f7">
+          <rect x="16" y="32" width="80" height="3"/>
+          <rect x="16" y="40" width="70" height="3"/>
+          <rect x="16" y="48" width="40" height="3"/>
+          <rect x="16" y="60" width="35" height="22" opacity=".5"/>
+          <rect x="56" y="60" width="40" height="22" opacity=".3"/>
+          <rect x="16" y="90" width="80" height="3"/>
+          <rect x="16" y="98" width="60" height="3"/>
+        </g>
+        <text x="120" y="68" fill="#9aa4b8" font-size="14">→</text>
+        <rect x="138" y="6" width="176" height="118" rx="6" fill="#1a2030" stroke="#232b3d"/>
+        <text x="146" y="22" fill="#9ece6a" font-family="ui-monospace" font-size="9">PageContent</text>
+        <g font-family="ui-monospace" font-size="8.5" fill="#cdd6f4">
+          <text x="146" y="38">spans[ Span(text, bbox,</text>
+          <text x="160" y="49">font, size, flags) ]</text>
+          <text x="146" y="66">drawings[ bbox, kind ]</text>
+          <text x="146" y="83">images[ bbox, xref ]</text>
+          <text x="146" y="100">rect = (0,0,w,h)</text>
+        </g>
+      </svg>
+      <div class="viz-cap">Every glyph keeps its exact bbox &amp; font metadata.</div>
+    </div>
+
+    <div class="ds">
+      <div class="ds-card">
+        <div class="ds-name">Span</div>
+        <ul>
+          <li><b>text</b> — one run of chars</li>
+          <li><b>bbox</b> — (x0, y0, x1, y1)</li>
+          <li><b>font / size / flags</b></li>
+          <li><b>is_bold / is_italic</b></li>
+        </ul>
+      </div>
+      <div class="ds-card">
+        <div class="ds-name">PageContent</div>
+        <ul>
+          <li><b>index</b> — source page #</li>
+          <li><b>rect</b> — page dimensions</li>
+          <li><b>spans, drawings, images</b></li>
+        </ul>
+      </div>
+    </div>
+
+    <p style="color:var(--ink-dim);font-size:12.5px">
+      Parallelism: long docs use <code>extract_document_parallel</code>, opening a fresh
+      <code>fitz.Document</code> in each worker process (PyMuPDF isn't thread-safe).
+    </p>
+
+  </div></div></div>
+</section>
+
+<!-- Stage 2: Group -->
+<section class="stage" data-stage="2">
+  <div class="stage-head" tabindex="0" role="button" aria-expanded="false">
+    <div class="chip c2">2</div>
+    <div class="stage-title">
+      Lines &amp; blocks
+      <small>Spans → Lines → Blocks; infer body size</small>
+    </div>
+    <div class="caret"></div>
+  </div>
+  <div class="stage-body"><div class="inner"><div class="stage-content">
+
+    <div class="row">
+      <span class="tag input">in: PageContent</span>
+      <span class="tag output">out: Block[]</span>
+      <span class="tag file">analyze.py</span>
+    </div>
+
+    <p>Three groupings happen here:</p>
+    <ul>
+      <li><b>Lines</b> — spans whose vertical midpoints differ by less than half a span height are merged. Then sorted by x.</li>
+      <li><b>Blocks</b> — adjacent lines with similar font size and vertical gap &lt; ~1.2× line height become one block (a paragraph candidate).</li>
+      <li><b>Body size</b> — weighted mode of all span sizes. Defines what counts as "body" for the rest of the pipeline.</li>
+    </ul>
+
+    <div class="viz">
+      <svg viewBox="0 0 320 100" xmlns="http://www.w3.org/2000/svg" aria-label="Spans→Lines→Blocks">
+        <g font-family="ui-monospace" font-size="9" fill="#9aa4b8">
+          <text x="42" y="14" text-anchor="middle">spans</text>
+          <text x="160" y="14" text-anchor="middle">lines</text>
+          <text x="276" y="14" text-anchor="middle">blocks</text>
+        </g>
+        <!-- spans: scattered fragments -->
+        <g fill="#7aa2f7">
+          <rect x="12" y="24" width="22" height="4"/><rect x="38" y="24" width="14" height="4"/><rect x="56" y="24" width="18" height="4"/>
+          <rect x="12" y="34" width="30" height="4"/><rect x="46" y="34" width="20" height="4"/>
+          <rect x="12" y="50" width="20" height="4"/><rect x="36" y="50" width="22" height="4"/><rect x="62" y="50" width="12" height="4"/>
+          <rect x="12" y="60" width="26" height="4"/>
+          <rect x="12" y="76" width="22" height="4"/>
+        </g>
+        <text x="92" y="48" fill="#9aa4b8" font-size="14">→</text>
+        <!-- lines: full horizontal runs -->
+        <g fill="#9ece6a">
+          <rect x="112" y="24" width="80" height="5"/>
+          <rect x="112" y="34" width="68" height="5"/>
+          <rect x="112" y="50" width="76" height="5"/>
+          <rect x="112" y="60" width="60" height="5"/>
+          <rect x="112" y="76" width="40" height="5"/>
+        </g>
+        <text x="208" y="48" fill="#9aa4b8" font-size="14">→</text>
+        <!-- blocks: grouped regions -->
+        <g fill="none" stroke="#e0af68" stroke-width="1.2">
+          <rect x="228" y="22" width="80" height="20" rx="3"/>
+          <rect x="228" y="48" width="80" height="20" rx="3"/>
+          <rect x="228" y="74" width="50" height="10" rx="3"/>
+        </g>
+      </svg>
+      <div class="viz-cap">Vertical-midpoint clustering, then size/gap thresholds.</div>
+    </div>
+
+    <pre><span class="c"># analyze.py — group spans into lines</span>
+<span class="k">def</span> <span class="n">_group_lines</span>(spans):
+    <span class="c"># sort by y, sweep, merge if mid-y diff &lt; ½ height</span>
+    ...
+
+<span class="k">def</span> <span class="n">_group_blocks</span>(lines, body_size):
+    <span class="c"># gap &lt; 1.2 × line_h AND |size diff| small → same block</span>
+    ...
+
+<span class="k">def</span> <span class="n">body_font_size</span>(pages):
+    counter = Counter()
+    <span class="k">for</span> p <span class="k">in</span> pages:
+        <span class="k">for</span> s <span class="k">in</span> p.spans:
+            counter[<span class="n">round</span>(s.size, 1)] += <span class="n">len</span>(s.text)
+    <span class="k">return</span> counter.most_common(1)[0][0]</pre>
+
+  </div></div></div>
+</section>
+
+<!-- Stage 3: Classify -->
+<section class="stage" data-stage="3">
+  <div class="stage-head" tabindex="0" role="button" aria-expanded="false">
+    <div class="chip c3">3</div>
+    <div class="stage-title">
+      Classify
+      <small>Tag each block: heading / body / code / equation…</small>
+    </div>
+    <div class="caret"></div>
+  </div>
+  <div class="stage-body"><div class="inner"><div class="stage-content">
+
+    <div class="row">
+      <span class="tag input">in: Block[]</span>
+      <span class="tag output">out: typed Block[]</span>
+      <span class="tag file">analyze.py</span>
+    </div>
+
+    <p>Each block is tagged using font &amp; geometry signals:</p>
+
+    <div class="ds">
+      <div class="ds-card">
+        <div class="ds-name">heading</div>
+        <ul><li>size &gt; body + 1pt and bold, or much larger than body</li></ul>
+      </div>
+      <div class="ds-card">
+        <div class="ds-name">body</div>
+        <ul><li>body-sized prose, no special font signals</li></ul>
+      </div>
+      <div class="ds-card">
+        <div class="ds-name">code</div>
+        <ul><li>block in a Courier-family font; line breaks preserved</li></ul>
+      </div>
+      <div class="ds-card">
+        <div class="ds-name">equation</div>
+        <ul><li>contains chars in Unicode Private Use Area, or math-only font like <code>CMMI</code>, <code>CMSY</code> → rasterize</li></ul>
+      </div>
+      <div class="ds-card">
+        <div class="ds-name">caption</div>
+        <ul><li>sub-body size text near a figure region</li></ul>
+      </div>
+      <div class="ds-card">
+        <div class="ds-name">toc / label</div>
+        <ul><li>dot-leader entries / single-token numerics (page #s, axis ticks)</li></ul>
+      </div>
+    </div>
+
+    <p style="color:var(--ink-dim);font-size:12.5px">
+      Why bother with PUA detection? LaTeX math fonts emit symbols at
+      Private-Use codepoints that never round-trip to plain text — these
+      blocks would render as garbage if typeset, so they're routed to be
+      rasterized as images instead.
+    </p>
+
+  </div></div></div>
+</section>
+
+<!-- Stage 4: Figure regions & reading order -->
+<section class="stage" data-stage="4">
+  <div class="stage-head" tabindex="0" role="button" aria-expanded="false">
+    <div class="chip c4">4</div>
+    <div class="stage-title">
+      Figure bands &amp; reading order
+      <small>Detect columns, build the linear FlowItem stream</small>
+    </div>
+    <div class="caret"></div>
+  </div>
+  <div class="stage-body"><div class="inner"><div class="stage-content">
+
+    <div class="row">
+      <span class="tag input">in: Block[], drawings, images</span>
+      <span class="tag output">out: FlowItem[]</span>
+      <span class="tag file">analyze.py</span>
+    </div>
+
+    <ul>
+      <li><b>Figure bands</b> — vector drawings on a page are merged vertically into y-bands. Equation blocks seed bands too. Captions and short fragments inside the band are absorbed.</li>
+      <li><b>Column detection</b> — body-block x-centers are clustered; two clusters = two-column layout.</li>
+      <li><b>Reading order</b> — column-major top→bottom. Figures take a synthetic slot at their band's top y.</li>
+      <li><b>Page chrome</b> — tiny text in the top 10% / bottom 12% (running headers, footers, page numbers) is dropped.</li>
+    </ul>
+
+    <div class="viz">
+      <svg viewBox="0 0 320 130" xmlns="http://www.w3.org/2000/svg" aria-label="Two columns to reading order">
+        <!-- two column source -->
+        <g>
+          <rect x="6" y="6" width="120" height="118" fill="none" stroke="#232b3d"/>
+          <rect x="14" y="14" width="48" height="3" fill="#7aa2f7"/>
+          <rect x="14" y="20" width="48" height="3" fill="#7aa2f7"/>
+          <rect x="14" y="26" width="48" height="3" fill="#7aa2f7"/>
+          <rect x="14" y="32" width="35" height="3" fill="#7aa2f7"/>
+          <!-- figure band spans both cols -->
+          <rect x="14" y="44" width="104" height="28" fill="#bb9af7" opacity=".3" stroke="#bb9af7" stroke-dasharray="3 2"/>
+          <text x="66" y="62" text-anchor="middle" fill="#bb9af7" font-size="9" font-family="ui-monospace">figure band</text>
+          <rect x="14" y="80" width="48" height="3" fill="#7aa2f7"/>
+          <rect x="14" y="86" width="48" height="3" fill="#7aa2f7"/>
+          <rect x="14" y="92" width="48" height="3" fill="#7aa2f7"/>
+          <!-- right col -->
+          <rect x="70" y="14" width="48" height="3" fill="#9ece6a"/>
+          <rect x="70" y="20" width="48" height="3" fill="#9ece6a"/>
+          <rect x="70" y="26" width="48" height="3" fill="#9ece6a"/>
+          <rect x="70" y="32" width="35" height="3" fill="#9ece6a"/>
+          <rect x="70" y="80" width="48" height="3" fill="#9ece6a"/>
+          <rect x="70" y="86" width="48" height="3" fill="#9ece6a"/>
+        </g>
+        <text x="148" y="68" fill="#9aa4b8" font-size="14">→</text>
+        <!-- linear stream -->
+        <g>
+          <rect x="178" y="6" width="136" height="118" fill="none" stroke="#232b3d"/>
+          <text x="246" y="18" text-anchor="middle" fill="#9aa4b8" font-size="9" font-family="ui-monospace">FlowItem[]</text>
+          <g font-family="ui-monospace" font-size="8">
+            <rect x="184" y="26" width="124" height="9" fill="#7aa2f7" opacity=".25"/>
+            <text x="188" y="33" fill="#7aa2f7">L¹ body</text>
+            <rect x="184" y="37" width="124" height="9" fill="#7aa2f7" opacity=".25"/>
+            <text x="188" y="44" fill="#7aa2f7">L² body</text>
+            <rect x="184" y="48" width="124" height="9" fill="#9ece6a" opacity=".25"/>
+            <text x="188" y="55" fill="#9ece6a">R¹ body</text>
+            <rect x="184" y="59" width="124" height="9" fill="#9ece6a" opacity=".25"/>
+            <text x="188" y="66" fill="#9ece6a">R² body</text>
+            <rect x="184" y="70" width="124" height="11" fill="#bb9af7" opacity=".3"/>
+            <text x="188" y="78" fill="#bb9af7">figure</text>
+            <rect x="184" y="83" width="124" height="9" fill="#7aa2f7" opacity=".25"/>
+            <text x="188" y="90" fill="#7aa2f7">L³ body</text>
+            <rect x="184" y="94" width="124" height="9" fill="#9ece6a" opacity=".25"/>
+            <text x="188" y="101" fill="#9ece6a">R³ body</text>
+          </g>
+        </g>
+      </svg>
+      <div class="viz-cap">Column-major flatten; figure inserted at its y-position.</div>
+    </div>
+
+    <pre><span class="c"># Sort key: (column, top_y)</span>
+items_with_y.sort(key=<span class="k">lambda</span> t: (t[0], t[1]))
+<span class="c"># figures use column 0 so they appear in-stream</span></pre>
+
+  </div></div></div>
+</section>
+
+<!-- Stage 5: Layout & render -->
+<section class="stage" data-stage="5">
+  <div class="stage-head" tabindex="0" role="button" aria-expanded="false">
+    <div class="chip c5">5</div>
+    <div class="stage-title">
+      Layout &amp; render
+      <small>FlowItem[] → 360×600 pt PDF pages</small>
+    </div>
+    <div class="caret"></div>
+  </div>
+  <div class="stage-body"><div class="inner"><div class="stage-content">
+
+    <div class="row">
+      <span class="tag input">in: FlowItem[]</span>
+      <span class="tag output">out: mobile PDF</span>
+      <span class="tag file">layout.py · render.py</span>
+    </div>
+
+    <ul>
+      <li><b>Page size</b> — default 360×600 pt (iPhone-friendly).</li>
+      <li><b>Wrap</b> — greedy word-wrap using PyMuPDF's base-14 font metrics (<code>tiro</code>, <code>tibo</code>, <code>tiit</code>, <code>cour</code>). Per-char widths are cached so wrapping is a Python-side sum (no SWIG crossing per word).</li>
+      <li><b>Figures</b> — clipped from the source page, tightened to the actual content bbox, rasterized at 150 dpi, scaled to fit the column.</li>
+      <li><b>Code</b> — small blocks kept together; large blocks scaled so the longest line fits.</li>
+      <li><b>TOC</b> — anchors mirror the source PDF outline; if none, headings synthesise one.</li>
+    </ul>
+
+    <div class="viz">
+      <svg viewBox="0 0 320 130" xmlns="http://www.w3.org/2000/svg" aria-label="Layout to mobile pages">
+        <text x="40" y="14" text-anchor="middle" fill="#9aa4b8" font-size="9" font-family="ui-monospace">FlowItem[]</text>
+        <g font-family="ui-monospace" font-size="8">
+          <rect x="8" y="20" width="64" height="8" fill="#7aa2f7" opacity=".3"/>
+          <rect x="8" y="30" width="64" height="8" fill="#7aa2f7" opacity=".3"/>
+          <rect x="8" y="40" width="64" height="12" fill="#bb9af7" opacity=".4"/>
+          <rect x="8" y="54" width="64" height="8" fill="#9ece6a" opacity=".3"/>
+          <rect x="8" y="64" width="64" height="8" fill="#9ece6a" opacity=".3"/>
+          <rect x="8" y="74" width="64" height="8" fill="#7aa2f7" opacity=".3"/>
+          <rect x="8" y="84" width="64" height="8" fill="#7aa2f7" opacity=".3"/>
+        </g>
+        <text x="92" y="62" fill="#9aa4b8" font-size="14">→</text>
+        <!-- mobile pages -->
+        <g>
+          <rect x="116" y="14" width="44" height="100" rx="4" fill="#1a2030" stroke="#7aa2f7"/>
+          <rect x="120" y="20" width="36" height="2" fill="#cdd6f4"/>
+          <rect x="120" y="25" width="32" height="2" fill="#cdd6f4"/>
+          <rect x="120" y="30" width="36" height="2" fill="#cdd6f4"/>
+          <rect x="120" y="38" width="36" height="20" fill="#bb9af7" opacity=".5"/>
+          <rect x="120" y="62" width="36" height="2" fill="#cdd6f4"/>
+          <rect x="120" y="67" width="32" height="2" fill="#cdd6f4"/>
+          <rect x="120" y="72" width="36" height="2" fill="#cdd6f4"/>
+          <rect x="120" y="77" width="28" height="2" fill="#cdd6f4"/>
+
+          <rect x="170" y="14" width="44" height="100" rx="4" fill="#1a2030" stroke="#9ece6a"/>
+          <rect x="174" y="20" width="36" height="2" fill="#cdd6f4"/>
+          <rect x="174" y="25" width="36" height="2" fill="#cdd6f4"/>
+          <rect x="174" y="30" width="32" height="2" fill="#cdd6f4"/>
+          <rect x="174" y="36" width="36" height="2" fill="#cdd6f4"/>
+          <rect x="174" y="41" width="36" height="2" fill="#cdd6f4"/>
+          <rect x="174" y="46" width="28" height="2" fill="#cdd6f4"/>
+
+          <rect x="224" y="14" width="44" height="100" rx="4" fill="#1a2030" stroke="#e0af68"/>
+          <rect x="228" y="20" width="36" height="2" fill="#cdd6f4"/>
+          <rect x="228" y="25" width="36" height="2" fill="#cdd6f4"/>
+          <rect x="228" y="30" width="36" height="2" fill="#cdd6f4"/>
+          <rect x="228" y="35" width="24" height="2" fill="#cdd6f4"/>
+        </g>
+      </svg>
+      <div class="viz-cap">Greedy-wrap + figure clip → paginated mobile PDF.</div>
+    </div>
+
+    <pre><span class="c"># layout.py — central loop</span>
+<span class="k">for</span> it <span class="k">in</span> items:
+    <span class="k">if</span> it.kind == <span class="s">"heading"</span>: emit_paragraph(..., font=<span class="s">"times-bold"</span>)
+    <span class="k">elif</span> it.kind == <span class="s">"body"</span>:    emit_paragraph(..., size=body)
+    <span class="k">elif</span> it.kind == <span class="s">"code"</span>:    <span class="c"># courier; scale if too wide</span>
+    <span class="k">elif</span> it.kind == <span class="s">"figure"</span>:  pb.emit_image(src_page, src_rect, w, h)
+
+<span class="c"># render.py — figures are rasterized via PyMuPDF Pixmap</span>
+pix = src.get_pixmap(matrix=fitz.Matrix(scale, scale),
+                     clip=fitz.Rect(rect), alpha=<span class="t">False</span>)</pre>
+
+    <p style="color:var(--ink-dim);font-size:12.5px">
+      A pre-pass de-duplicates figure rasterization tasks by (page, rect, scale)
+      so the same crop isn't redrawn for two output pages.
+    </p>
+
+  </div></div></div>
+</section>
+
+<footer>
+  Source: <a href="https://github.com/josherich/pdf-reflow"><code>pdf-reflow</code></a> ·
+  Pipeline: <code>extract → analyze → layout → render</code>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  // ---- accordion behavior ----
+  const stages = document.querySelectorAll('.stage');
+  stages.forEach(stage => {
+    const head = stage.querySelector('.stage-head');
+    head.addEventListener('click', () => toggle(stage));
+    head.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggle(stage);
+      }
+    });
+  });
+  function toggle(stage) {
+    const open = stage.hasAttribute('open');
+    if (open) stage.removeAttribute('open'); else stage.setAttribute('open', '');
+    const head = stage.querySelector('.stage-head');
+    head.setAttribute('aria-expanded', String(!open));
+  }
+
+  // Open Extract by default on first load (so the page isn't all-collapsed).
+  document.querySelector('.stage[data-stage="1"]').setAttribute('open', '');
+  document.querySelector('.stage[data-stage="1"] .stage-head').setAttribute('aria-expanded', 'true');
+
+  // ---- sticky-nav jump ----
+  const nav = document.getElementById('nav');
+  nav.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-jump]');
+    if (!btn) return;
+    const idx = +btn.dataset.jump;
+    nav.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (idx === 0) {
+      document.getElementById('demo').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      const stage = document.querySelector('.stage[data-stage="' + idx + '"]');
+      if (!stage.hasAttribute('open')) toggle(stage);
+      stage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+
+  // Update nav active on scroll.
+  const sections = [
+    { el: document.getElementById('demo'), idx: 0 },
+    ...Array.from(document.querySelectorAll('.stage')).map((s, i) => ({ el: s, idx: i + 1 })),
+  ];
+  const setActive = (idx) => {
+    nav.querySelectorAll('button').forEach(b => {
+      b.classList.toggle('active', +b.dataset.jump === idx);
+    });
+  };
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const y = window.scrollY + 90;
+      let cur = sections[0];
+      for (const s of sections) {
+        if (s.el.offsetTop <= y) cur = s;
+      }
+      setActive(cur.idx);
+      ticking = false;
+    });
+  }, { passive: true });
+
+  // ---- Demo: page flowing through stages ----
+  const svg = document.getElementById('demoSvg');
+  const label = document.getElementById('demoLabel');
+  const prevBtn = document.getElementById('demoPrev');
+  const nextBtn = document.getElementById('demoNext');
+
+  // SVG namespace
+  const NS = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs) {
+    const n = document.createElementNS(NS, tag);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    return n;
+  }
+
+  const steps = [
+    {
+      title: 'Stage 0 · Source PDF',
+      sub: 'Two columns, a figure, headers & footers',
+      draw: drawSource,
+    },
+    {
+      title: 'Stage 1 · Extract spans',
+      sub: 'Every glyph: bbox, font, size — drawings as bboxes',
+      draw: drawExtract,
+    },
+    {
+      title: 'Stage 2 · Group into lines & blocks',
+      sub: 'Cluster by baseline; merge by font-size & gap',
+      draw: drawGroup,
+    },
+    {
+      title: 'Stage 3 · Classify each block',
+      sub: 'heading / body / caption / figure',
+      draw: drawClassify,
+    },
+    {
+      title: 'Stage 4 · Reading order',
+      sub: 'Drop chrome, left col → figure → right col',
+      draw: drawOrder,
+    },
+    {
+      title: 'Stage 5 · Layout on mobile pages',
+      sub: 'Greedy-wrap; figure clipped & scaled to column',
+      draw: drawLayout,
+    },
+  ];
+
+  let step = 0;
+
+  function render() {
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    steps[step].draw();
+    label.innerHTML = steps[step].title + '<span class="sub">' + steps[step].sub + '</span>';
+    prevBtn.disabled = step === 0;
+    nextBtn.disabled = step === steps.length - 1;
+    prevBtn.style.opacity = prevBtn.disabled ? '.4' : '1';
+    nextBtn.style.opacity = nextBtn.disabled ? '.4' : '1';
+    nextBtn.textContent = step === steps.length - 1 ? 'Done ✓' : 'Next →';
+  }
+
+  // ------- shared layout data for the demo source page ------
+  // We simulate a page 320x240. Two columns of "text rows" + a figure band.
+  const COL_L = { x: 18, w: 130 };
+  const COL_R = { x: 172, w: 130 };
+  // text rows are abstract paragraph lines: [{col, y, w}]
+  // figure band y range
+  const FIG = { y0: 100, y1: 150 };
+  const ROWS = [
+    // header line (chrome)
+    { col: 'H', y: 14, w: 280, x: 20, kind: 'chrome' },
+    // left col rows
+    { col: 'L', y: 30, w: 120 }, { col: 'L', y: 38, w: 124 }, { col: 'L', y: 46, w: 110 },
+    { col: 'L', y: 54, w: 124 }, { col: 'L', y: 62, w: 90 },
+    // heading on left
+    { col: 'L', y: 74, w: 100, kind: 'heading' },
+    { col: 'L', y: 86, w: 122 }, { col: 'L', y: 94, w: 80 },
+    // figure
+    { col: 'F' }, // placeholder
+    // caption
+    { col: 'L', y: 154, w: 120, kind: 'caption' },
+    // bottom left rows
+    { col: 'L', y: 168, w: 124 }, { col: 'L', y: 176, w: 100 }, { col: 'L', y: 184, w: 122 },
+    // right col rows
+    { col: 'R', y: 30, w: 124 }, { col: 'R', y: 38, w: 120 }, { col: 'R', y: 46, w: 110 },
+    { col: 'R', y: 54, w: 124 }, { col: 'R', y: 62, w: 90 }, { col: 'R', y: 70, w: 124 },
+    { col: 'R', y: 78, w: 80 },
+    // right col bottom
+    { col: 'R', y: 168, w: 124 }, { col: 'R', y: 176, w: 100 }, { col: 'R', y: 184, w: 116 },
+    // footer (chrome)
+    { col: 'H', y: 224, w: 80, x: 140, kind: 'chrome' },
+  ];
+
+  function colX(col) { return col === 'L' ? COL_L.x : COL_R.x; }
+
+  function pageOutline(stroke) {
+    svg.appendChild(el('rect', { x: 10, y: 6, width: 340, height: 248, rx: 6,
+      fill: 'transparent', stroke: stroke || '#232b3d', 'stroke-width': 1.2 }));
+  }
+
+  function drawSource() {
+    pageOutline('#3a4664');
+    // header
+    const h = ROWS[0];
+    svg.appendChild(el('rect', { x: h.x, y: h.y, width: h.w, height: 3, fill: '#5a6478', opacity: 0.6 }));
+    // text rows
+    for (const r of ROWS) {
+      if (r.col === 'H' || r.col === 'F') continue;
+      svg.appendChild(el('rect', {
+        x: colX(r.col), y: r.y, width: r.w, height: r.kind === 'heading' ? 5 : 3,
+        fill: r.kind === 'heading' ? '#cdd6f4' : '#9aa4b8',
+        opacity: r.kind === 'caption' ? 0.55 : 0.9,
+      }));
+    }
+    // figure
+    svg.appendChild(el('rect', { x: 22, y: FIG.y0, width: 280, height: FIG.y1 - FIG.y0,
+      fill: '#2a3148', stroke: '#5a6478', 'stroke-dasharray': '3 2' }));
+    svg.appendChild(el('text', {
+      x: 162, y: 130, 'text-anchor': 'middle', fill: '#9aa4b8',
+      'font-family': 'ui-monospace', 'font-size': 10,
+    })).textContent = '⌬ figure (vector)';
+    // footer
+    const f = ROWS[ROWS.length - 1];
+    svg.appendChild(el('rect', { x: f.x, y: f.y, width: f.w, height: 3, fill: '#5a6478', opacity: 0.6 }));
+  }
+
+  function drawExtract() {
+    pageOutline('#7aa2f7');
+    // every "glyph" becomes a tiny tick
+    for (const r of ROWS) {
+      if (r.col === 'H') {
+        svg.appendChild(el('rect', { x: r.x, y: r.y, width: r.w, height: 3, fill: '#7aa2f7', opacity: 0.4 }));
+        continue;
+      }
+      if (r.col === 'F') continue;
+      // break a row into ~5 span boxes
+      const segs = 5;
+      const segW = r.w / segs;
+      for (let i = 0; i < segs; i++) {
+        const gap = (i === 2) ? 2 : 0;
+        svg.appendChild(el('rect', {
+          x: colX(r.col) + i * segW + gap,
+          y: r.y, width: segW - 2 - gap, height: r.kind === 'heading' ? 5 : 3,
+          fill: '#7aa2f7', opacity: r.kind === 'caption' ? 0.5 : 0.85,
+        }));
+      }
+    }
+    // drawings (figure) — show vector primitives as bbox outlines
+    svg.appendChild(el('rect', { x: 30, y: 108, width: 60, height: 36,
+      fill: 'none', stroke: '#7aa2f7', 'stroke-width': 1 }));
+    svg.appendChild(el('rect', { x: 100, y: 108, width: 100, height: 14,
+      fill: 'none', stroke: '#7aa2f7', 'stroke-width': 1 }));
+    svg.appendChild(el('rect', { x: 100, y: 128, width: 80, height: 16,
+      fill: 'none', stroke: '#7aa2f7', 'stroke-width': 1 }));
+    svg.appendChild(el('rect', { x: 210, y: 108, width: 80, height: 36,
+      fill: 'none', stroke: '#7aa2f7', 'stroke-width': 1 }));
+    // legend
+    const t = el('text', { x: 18, y: 248, fill: '#7aa2f7', 'font-family': 'ui-monospace', 'font-size': 9 });
+    t.textContent = 'spans · drawings · images';
+    svg.appendChild(t);
+  }
+
+  function drawGroup() {
+    pageOutline('#9ece6a');
+    // lines: full-width runs (merged spans)
+    for (const r of ROWS) {
+      if (r.col === 'H' || r.col === 'F') continue;
+      svg.appendChild(el('rect', {
+        x: colX(r.col), y: r.y, width: r.w, height: r.kind === 'heading' ? 5 : 3,
+        fill: '#9ece6a', opacity: 0.9,
+      }));
+    }
+    // chrome still visible but greyed
+    svg.appendChild(el('rect', { x: 20, y: 14, width: 280, height: 3, fill: '#5a6478', opacity: 0.4 }));
+    svg.appendChild(el('rect', { x: 140, y: 224, width: 80, height: 3, fill: '#5a6478', opacity: 0.4 }));
+    // figure drawings (still raw shapes)
+    svg.appendChild(el('rect', { x: 30, y: 108, width: 60, height: 36, fill: 'none', stroke: '#5a6478' }));
+    svg.appendChild(el('rect', { x: 100, y: 108, width: 100, height: 14, fill: 'none', stroke: '#5a6478' }));
+    svg.appendChild(el('rect', { x: 100, y: 128, width: 80, height: 16, fill: 'none', stroke: '#5a6478' }));
+    svg.appendChild(el('rect', { x: 210, y: 108, width: 80, height: 36, fill: 'none', stroke: '#5a6478' }));
+
+    // block outlines (grouped lines)
+    const blocks = [
+      { x: 16, y: 27, w: 132, h: 42 },     // L body 1
+      { x: 16, y: 72, w: 132, h: 5 },      // L heading
+      { x: 16, y: 84, w: 132, h: 14 },     // L body 2
+      { x: 16, y: 152, w: 132, h: 6 },     // caption
+      { x: 16, y: 165, w: 132, h: 22 },    // L bottom body
+      { x: 170, y: 27, w: 132, h: 56 },    // R body 1
+      { x: 170, y: 165, w: 132, h: 22 },   // R bottom body
+    ];
+    for (const b of blocks) {
+      svg.appendChild(el('rect', { x: b.x, y: b.y, width: b.w, height: b.h, rx: 3,
+        fill: 'none', stroke: '#e0af68', 'stroke-width': 1, 'stroke-dasharray': '2 2' }));
+    }
+    const t = el('text', { x: 18, y: 248, fill: '#e0af68', 'font-family': 'ui-monospace', 'font-size': 9 });
+    t.textContent = 'blocks (lines merged by gap+size)';
+    svg.appendChild(t);
+  }
+
+  function drawClassify() {
+    pageOutline('#e0af68');
+    // colored blocks by type
+    const classes = [
+      { x: 16, y: 27, w: 132, h: 42, c: 'body' },
+      { x: 16, y: 72, w: 132, h: 5,  c: 'heading' },
+      { x: 16, y: 84, w: 132, h: 14, c: 'body' },
+      { x: 22, y: 100, w: 280, h: 50, c: 'figure' },
+      { x: 16, y: 152, w: 132, h: 6, c: 'caption' },
+      { x: 16, y: 165, w: 132, h: 22, c: 'body' },
+      { x: 170, y: 27, w: 132, h: 56, c: 'body' },
+      { x: 170, y: 165, w: 132, h: 22, c: 'body' },
+      { x: 20, y: 13, w: 280, h: 4, c: 'chrome' },
+      { x: 140, y: 223, w: 80, h: 4, c: 'chrome' },
+    ];
+    const colors = {
+      body: ['#7aa2f7', 0.35],
+      heading: ['#cdd6f4', 0.9],
+      caption: ['#9ece6a', 0.55],
+      figure: ['#bb9af7', 0.35],
+      chrome: ['#f7768e', 0.45],
+    };
+    for (const b of classes) {
+      const [fill, op] = colors[b.c];
+      svg.appendChild(el('rect', { x: b.x, y: b.y, width: b.w, height: b.h, rx: 3, fill, opacity: op,
+        stroke: fill }));
+    }
+    // legend
+    const legend = [
+      { c: 'body', x: 18, lbl: 'body' },
+      { c: 'heading', x: 70, lbl: 'heading' },
+      { c: 'figure', x: 132, lbl: 'figure' },
+      { c: 'caption', x: 190, lbl: 'caption' },
+      { c: 'chrome', x: 252, lbl: 'drop' },
+    ];
+    for (const L of legend) {
+      svg.appendChild(el('rect', { x: L.x, y: 244, width: 8, height: 8, fill: colors[L.c][0], opacity: colors[L.c][1] }));
+      const t = el('text', { x: L.x + 12, y: 251, fill: '#cdd6f4', 'font-family': 'ui-monospace', 'font-size': 9 });
+      t.textContent = L.lbl;
+      svg.appendChild(t);
+    }
+  }
+
+  function drawOrder() {
+    pageOutline('#bb9af7');
+    // animate-ish numbered order: L1, L2, ..., figure, R1, R2 ...
+    const order = [
+      { x: 16, y: 27, w: 132, h: 42, c: 'body', n: 1 },
+      { x: 16, y: 72, w: 132, h: 5, c: 'heading', n: 2 },
+      { x: 16, y: 84, w: 132, h: 14, c: 'body', n: 3 },
+      { x: 22, y: 100, w: 280, h: 50, c: 'figure', n: 4 },
+      { x: 16, y: 152, w: 132, h: 6, c: 'caption', n: 5 },
+      { x: 16, y: 165, w: 132, h: 22, c: 'body', n: 6 },
+      { x: 170, y: 27, w: 132, h: 56, c: 'body', n: 7 },
+      { x: 170, y: 165, w: 132, h: 22, c: 'body', n: 8 },
+    ];
+    const colors = {
+      body: ['#7aa2f7', 0.32],
+      heading: ['#cdd6f4', 0.9],
+      caption: ['#9ece6a', 0.5],
+      figure: ['#bb9af7', 0.32],
+    };
+    for (const b of order) {
+      const [fill, op] = colors[b.c];
+      svg.appendChild(el('rect', { x: b.x, y: b.y, width: b.w, height: b.h, rx: 3, fill, opacity: op, stroke: fill }));
+      // number badge
+      const cx = b.x + Math.min(b.w, 14);
+      const cy = b.y + Math.min(b.h, 14) / 2 + 3;
+      svg.appendChild(el('circle', { cx: cx - 2, cy: cy - 2, r: 7, fill: '#0b0e14', stroke: '#bb9af7' }));
+      const t = el('text', { x: cx - 2, y: cy + 1, 'text-anchor': 'middle', fill: '#bb9af7',
+        'font-family': 'ui-monospace', 'font-size': 9, 'font-weight': 700 });
+      t.textContent = b.n;
+      svg.appendChild(t);
+    }
+    // arrows connecting them
+    const path = el('path', {
+      d: 'M 22 48  L 22 74  L 22 91  L 22 125  L 22 155  L 22 176  L 22 200 ' +
+         'L 80 200 L 176 55 L 176 176 L 176 200',
+      fill: 'none', stroke: '#bb9af7', 'stroke-width': 1.2, 'stroke-dasharray': '4 3', opacity: 0.6,
+    });
+    svg.appendChild(path);
+    const t = el('text', { x: 18, y: 248, fill: '#bb9af7', 'font-family': 'ui-monospace', 'font-size': 9 });
+    t.textContent = 'column-major; figure inserted by y';
+    svg.appendChild(t);
+  }
+
+  function drawLayout() {
+    // draw a 3-phone strip
+    svg.appendChild(el('text', {
+      x: 180, y: 14, 'text-anchor': 'middle', fill: '#9aa4b8',
+      'font-family': 'ui-monospace', 'font-size': 10,
+    })).textContent = 'mobile pages';
+
+    const phones = [
+      { x: 28, color: '#7aa2f7', items: [
+        { y: 14, w: 60, h: 3, c: '#cdd6f4' },
+        { y: 20, w: 56, h: 3, c: '#cdd6f4' },
+        { y: 26, w: 60, h: 3, c: '#cdd6f4' },
+        { y: 32, w: 50, h: 3, c: '#cdd6f4' },
+        { y: 42, w: 60, h: 5, c: '#cdd6f4' }, // heading
+        { y: 52, w: 60, h: 3, c: '#cdd6f4' },
+        { y: 58, w: 50, h: 3, c: '#cdd6f4' },
+        { y: 68, w: 60, h: 30, c: '#bb9af7', fig: true },
+        { y: 102, w: 50, h: 2.5, c: '#9ece6a' }, // caption
+        { y: 110, w: 60, h: 3, c: '#cdd6f4' },
+        { y: 116, w: 56, h: 3, c: '#cdd6f4' },
+      ] },
+      { x: 134, color: '#9ece6a', items: [
+        { y: 14, w: 60, h: 3, c: '#cdd6f4' },
+        { y: 20, w: 60, h: 3, c: '#cdd6f4' },
+        { y: 26, w: 56, h: 3, c: '#cdd6f4' },
+        { y: 32, w: 60, h: 3, c: '#cdd6f4' },
+        { y: 38, w: 60, h: 3, c: '#cdd6f4' },
+        { y: 44, w: 56, h: 3, c: '#cdd6f4' },
+        { y: 50, w: 60, h: 3, c: '#cdd6f4' },
+        { y: 56, w: 60, h: 3, c: '#cdd6f4' },
+        { y: 62, w: 52, h: 3, c: '#cdd6f4' },
+        { y: 68, w: 60, h: 3, c: '#cdd6f4' },
+        { y: 74, w: 40, h: 3, c: '#cdd6f4' },
+        { y: 90, w: 60, h: 3, c: '#cdd6f4' },
+        { y: 96, w: 60, h: 3, c: '#cdd6f4' },
+        { y: 102, w: 56, h: 3, c: '#cdd6f4' },
+      ] },
+      { x: 240, color: '#e0af68', items: [
+        { y: 14, w: 60, h: 3, c: '#cdd6f4' },
+        { y: 20, w: 60, h: 3, c: '#cdd6f4' },
+        { y: 26, w: 60, h: 3, c: '#cdd6f4' },
+        { y: 32, w: 36, h: 3, c: '#cdd6f4' },
+      ] },
+    ];
+    for (const p of phones) {
+      svg.appendChild(el('rect', { x: p.x, y: 22, width: 92, height: 200, rx: 8,
+        fill: '#1a2030', stroke: p.color, 'stroke-width': 1.4 }));
+      svg.appendChild(el('rect', { x: p.x + 36, y: 26, width: 20, height: 2, rx: 1, fill: p.color, opacity: 0.5 }));
+      for (const it of p.items) {
+        svg.appendChild(el('rect', {
+          x: p.x + 16, y: 32 + it.y, width: it.w, height: it.h,
+          fill: it.c, opacity: it.fig ? 0.5 : 0.85, rx: it.fig ? 2 : 0,
+        }));
+      }
+    }
+  }
+
+  prevBtn.addEventListener('click', () => { if (step > 0) { step--; render(); } });
+  nextBtn.addEventListener('click', () => { if (step < steps.length - 1) { step++; render(); } });
+
+  // Initial render
+  render();
+})();
+</script>
+</body>
+</html>
