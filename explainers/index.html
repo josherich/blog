@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Explainers</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:     #0b1120;
+  --surf:   #131c2e;
+  --surf2:  #1c2840;
+  --border: #2a3a58;
+  --text:   #dde5f4;
+  --muted:  #7b90b8;
+  --accent: #38bdf8;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  min-height: 100vh;
+  padding: 3rem 1.5rem;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 1.5rem;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.04em;
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-bottom: 2.5rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section-title {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.entry {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--text);
+  transition: background 0.15s;
+}
+
+.entry:hover {
+  background: var(--surf2);
+}
+
+.entry-title {
+  font-size: 0.95rem;
+}
+
+.entry-slug {
+  font-size: 0.75rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.sub-entries {
+  margin-left: 1.25rem;
+  border-left: 1px solid var(--border);
+  padding-left: 0.5rem;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Explainers</h1>
+  <p class="subtitle">Interactive data-flow and architecture diagrams</p>
+
+  <div class="section">
+    <div class="section-title">Standalone</div>
+
+    <a class="entry" href="epsilon-data-flow.html">
+      <span class="entry-title">Epsilon API — Data Flow</span>
+      <span class="entry-slug">epsilon-data-flow.html</span>
+    </a>
+    <a class="entry" href="opencode-data-flow.html">
+      <span class="entry-title">OpenCode — Prompt Data Flow</span>
+      <span class="entry-slug">opencode-data-flow.html</span>
+    </a>
+    <a class="entry" href="pdf-reflow-data-flow.html">
+      <span class="entry-title">pdf_reflow — Data Flow</span>
+      <span class="entry-slug">pdf-reflow-data-flow.html</span>
+    </a>
+    <a class="entry" href="mquickjs-data-flow.html">
+      <span class="entry-title">MicroQuickJS — Data Flow</span>
+      <span class="entry-slug">mquickjs-data-flow.html</span>
+    </a>
+    <a class="entry" href="shuru-run-flow.html">
+      <span class="entry-title">shuru run — Data Flow</span>
+      <span class="entry-slug">shuru-run-flow.html</span>
+    </a>
+  </div>
+
+  <div class="section">
+    <div class="section-title">v86 — Architecture Series</div>
+
+    <a class="entry" href="v86-data-flow/index.html">
+      <span class="entry-title">Architecture Overview</span>
+      <span class="entry-slug">v86-data-flow/</span>
+    </a>
+    <div class="sub-entries">
+      <a class="entry" href="v86-data-flow/cpu.html">
+        <span class="entry-title">CPU &amp; JIT Engine</span>
+        <span class="entry-slug">cpu.html</span>
+      </a>
+      <a class="entry" href="v86-data-flow/memory.html">
+        <span class="entry-title">Memory System</span>
+        <span class="entry-slug">memory.html</span>
+      </a>
+      <a class="entry" href="v86-data-flow/io.html">
+        <span class="entry-title">I/O Port Bus</span>
+        <span class="entry-slug">io.html</span>
+      </a>
+      <a class="entry" href="v86-data-flow/devices.html">
+        <span class="entry-title">Hardware Devices</span>
+        <span class="entry-slug">devices.html</span>
+      </a>
+      <a class="entry" href="v86-data-flow/bus.html">
+        <span class="entry-title">Event Bus</span>
+        <span class="entry-slug">bus.html</span>
+      </a>
+    </div>
+  </div>
+</div>
+</body>
+</html>
