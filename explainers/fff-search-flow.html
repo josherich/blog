@@ -1,0 +1,1626 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>FFF.nvim — Search Data Flow</title>
+        <style>
+            :root {
+                --lua: #7c6af7;
+                --lua-bg: #1e1a3a;
+                --lua-border: #4a3f8a;
+                --rust: #e07b3a;
+                --rust-bg: #2d1a0a;
+                --rust-border: #8a4a1a;
+                --db: #3aaa6a;
+                --db-bg: #0a2d1a;
+                --db-border: #1a6a3a;
+                --bg: #0f0f13;
+                --surface: #16161d;
+                --surface2: #1e1e28;
+                --text: #d4d4d8;
+                --muted: #71717a;
+                --accent: #7c6af7;
+                --border: #27272f;
+                --arrow: #52525b;
+            }
+
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                background: var(--bg);
+                color: var(--text);
+                font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+                font-size: 13px;
+                line-height: 1.5;
+                min-height: 100vh;
+            }
+
+            header {
+                padding: 20px 16px 12px;
+                border-bottom: 1px solid var(--border);
+                background: var(--surface);
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+
+            header h1 {
+                font-size: 15px;
+                font-weight: 600;
+                color: #fff;
+                letter-spacing: 0.02em;
+            }
+
+            header p {
+                color: var(--muted);
+                font-size: 11px;
+                margin-top: 2px;
+            }
+
+            .legend {
+                display: flex;
+                gap: 12px;
+                flex-wrap: wrap;
+                margin-top: 10px;
+            }
+
+            .legend-item {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                font-size: 10px;
+                color: var(--muted);
+            }
+
+            .legend-dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 2px;
+                flex-shrink: 0;
+            }
+
+            .main {
+                padding: 0 0 60px;
+                max-width: 680px;
+                margin: 0 auto;
+            }
+
+            /* ── PHASE SEPARATOR ── */
+            .phase {
+                padding: 10px 16px 4px;
+                font-size: 9px;
+                text-transform: uppercase;
+                letter-spacing: 0.12em;
+                color: var(--muted);
+                margin-top: 8px;
+            }
+
+            /* ── FLOW NODE ── */
+            .node {
+                margin: 0 12px 2px;
+                border-radius: 8px;
+                border: 1px solid var(--border);
+                background: var(--surface);
+                cursor: pointer;
+                transition:
+                    border-color 0.15s,
+                    background 0.15s;
+                overflow: hidden;
+            }
+
+            .node.lua {
+                border-color: var(--lua-border);
+            }
+            .node.rust {
+                border-color: var(--rust-border);
+            }
+            .node.db {
+                border-color: var(--db-border);
+            }
+            .node.active {
+                background: var(--surface2);
+            }
+            .node.lua.active {
+                background: var(--lua-bg);
+            }
+            .node.rust.active {
+                background: var(--rust-bg);
+            }
+            .node.db.active {
+                background: var(--db-bg);
+            }
+
+            .node-header {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 12px;
+                user-select: none;
+            }
+
+            .node-badge {
+                font-size: 9px;
+                padding: 2px 6px;
+                border-radius: 3px;
+                font-weight: 600;
+                letter-spacing: 0.06em;
+                flex-shrink: 0;
+            }
+
+            .lua .node-badge {
+                background: var(--lua-bg);
+                color: var(--lua);
+                border: 1px solid var(--lua-border);
+            }
+            .rust .node-badge {
+                background: var(--rust-bg);
+                color: var(--rust);
+                border: 1px solid var(--rust-border);
+            }
+            .db .node-badge {
+                background: var(--db-bg);
+                color: var(--db);
+                border: 1px solid var(--db-border);
+            }
+
+            .node-title {
+                flex: 1;
+                font-size: 12px;
+                font-weight: 600;
+                color: #fff;
+            }
+
+            .node-file {
+                font-size: 10px;
+                color: var(--muted);
+                font-weight: 400;
+            }
+
+            .node-chevron {
+                color: var(--muted);
+                font-size: 10px;
+                transition: transform 0.2s;
+                flex-shrink: 0;
+            }
+
+            .node.active .node-chevron {
+                transform: rotate(90deg);
+            }
+
+            /* ── EXPANDED DETAIL ── */
+            .node-detail {
+                /*display: none;*/
+                padding: 0 12px 12px;
+            }
+
+            .node.active .node-detail {
+                display: block;
+            }
+
+            .detail-section {
+                margin-top: 10px;
+            }
+
+            .detail-label {
+                font-size: 9px;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                color: var(--muted);
+                margin-bottom: 4px;
+            }
+
+            .detail-desc {
+                font-size: 11px;
+                color: #a1a1aa;
+                line-height: 1.6;
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            }
+
+            pre {
+                background: #0a0a0e;
+                border: 1px solid var(--border);
+                border-radius: 5px;
+                padding: 8px 10px;
+                font-size: 10px;
+                overflow-x: auto;
+                line-height: 1.6;
+                color: #a8b1c2;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .kw {
+                color: #c792ea;
+            }
+            .ty {
+                color: #82aaff;
+            }
+            .str {
+                color: #c3e88d;
+            }
+            .num {
+                color: #f78c6c;
+            }
+            .cm {
+                color: #546e7a;
+                font-style: italic;
+            }
+            .fn {
+                color: #82aaff;
+            }
+            .field {
+                color: #89ddff;
+            }
+            .op {
+                color: #89ddff;
+            }
+
+            /* ── IO PILL ── */
+            .io-row {
+                display: flex;
+                gap: 6px;
+                flex-wrap: wrap;
+                margin-top: 4px;
+            }
+
+            .io-pill {
+                font-size: 9px;
+                padding: 2px 7px;
+                border-radius: 10px;
+                border: 1px solid var(--border);
+                color: var(--muted);
+                background: #0a0a0e;
+            }
+
+            .io-pill.in {
+                border-color: #2a3a5a;
+                color: #7ba7d4;
+            }
+            .io-pill.out {
+                border-color: #3a2a5a;
+                color: #a87bd4;
+            }
+
+            /* ── ARROW ── */
+            .arrow {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 20px;
+                color: var(--arrow);
+                font-size: 14px;
+                position: relative;
+            }
+
+            .arrow.branch {
+                height: 28px;
+            }
+
+            .arrow-label {
+                position: absolute;
+                right: 16px;
+                font-size: 9px;
+                color: var(--muted);
+                background: var(--bg);
+                padding: 0 4px;
+            }
+
+            /* ── FORK / JOIN ── */
+            .fork-wrap {
+                margin: 0 12px;
+                position: relative;
+            }
+
+            .fork-label {
+                font-size: 9px;
+                color: var(--muted);
+                text-align: center;
+                margin-bottom: 4px;
+            }
+
+            .fork-cols {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 6px;
+            }
+
+            .fork-node {
+                border-radius: 8px;
+                border: 1px solid var(--rust-border);
+                background: var(--rust-bg);
+                cursor: pointer;
+                overflow: hidden;
+                transition: background 0.15s;
+            }
+
+            .fork-node.active {
+                background: #3a1a0a;
+            }
+
+            .fork-node .node-header {
+                padding: 8px 10px;
+            }
+            .fork-node .node-title {
+                font-size: 11px;
+            }
+            .fork-node .node-detail {
+                padding: 0 10px 10px;
+            }
+
+            /* ── SCORE BREAKDOWN ── */
+            .score-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 4px;
+                margin-top: 4px;
+            }
+
+            .score-item {
+                background: #0a0a0e;
+                border: 1px solid var(--border);
+                border-radius: 5px;
+                padding: 6px 8px;
+                font-size: 10px;
+            }
+
+            .score-name {
+                color: var(--muted);
+                font-size: 9px;
+            }
+            .score-val {
+                color: #fff;
+                font-weight: 600;
+                margin-top: 1px;
+            }
+
+            /* ── TIMELINE TAB ── */
+            .tabs {
+                display: flex;
+                border-bottom: 1px solid var(--border);
+                padding: 0 12px;
+                gap: 2px;
+                margin: 12px 12px 0;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .tab {
+                padding: 6px 12px;
+                font-size: 10px;
+                cursor: pointer;
+                color: var(--muted);
+                border-bottom: 2px solid transparent;
+                white-space: nowrap;
+                transition:
+                    color 0.15s,
+                    border-color 0.15s;
+            }
+
+            .tab.active {
+                color: #fff;
+                border-bottom-color: var(--accent);
+            }
+
+            .tab-panel {
+                display: none;
+                padding: 12px;
+            }
+            .tab-panel.active {
+                display: block;
+            }
+
+            /* ── THREAD TABLE ── */
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 10px;
+            }
+
+            th,
+            td {
+                padding: 6px 8px;
+                text-align: left;
+                border-bottom: 1px solid var(--border);
+            }
+
+            th {
+                color: var(--muted);
+                font-weight: 600;
+                font-size: 9px;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+            }
+            td {
+                color: var(--text);
+            }
+            td:first-child {
+                color: #fff;
+            }
+
+            /* ── SEARCH BAR ANIMATION ── */
+            .demo-wrap {
+                margin: 12px;
+                background: var(--surface2);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                overflow: hidden;
+            }
+
+            .demo-input {
+                display: flex;
+                align-items: center;
+                padding: 10px 14px;
+                border-bottom: 1px solid var(--border);
+                gap: 8px;
+            }
+
+            .demo-prompt {
+                color: var(--lua);
+                font-weight: 700;
+                font-size: 13px;
+            }
+
+            .demo-text {
+                color: #fff;
+                font-size: 13px;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+
+            .demo-cursor {
+                width: 2px;
+                height: 14px;
+                background: var(--lua);
+                animation: blink 1s step-end infinite;
+                flex-shrink: 0;
+            }
+
+            @keyframes blink {
+                50% {
+                    opacity: 0;
+                }
+            }
+
+            .demo-results {
+                padding: 6px 0;
+            }
+
+            .demo-item {
+                padding: 4px 14px;
+                display: flex;
+                gap: 8px;
+                font-size: 11px;
+                align-items: center;
+                opacity: 0;
+                transform: translateX(-6px);
+                transition:
+                    opacity 0.2s,
+                    transform 0.2s;
+            }
+
+            .demo-item.visible {
+                opacity: 1;
+                transform: none;
+            }
+
+            .demo-item.selected {
+                background: rgba(124, 106, 247, 0.15);
+            }
+            .demo-icon {
+                color: var(--muted);
+            }
+            .demo-name {
+                color: #fff;
+            }
+            .demo-name em {
+                color: var(--lua);
+                font-style: normal;
+                font-weight: 700;
+            }
+            .demo-path {
+                color: var(--muted);
+                font-size: 10px;
+                flex: 1;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .demo-score {
+                font-size: 9px;
+                color: var(--db);
+                margin-left: auto;
+                flex-shrink: 0;
+            }
+
+            .demo-status {
+                padding: 4px 14px;
+                font-size: 9px;
+                color: var(--muted);
+                border-top: 1px solid var(--border);
+                display: flex;
+                justify-content: space-between;
+            }
+
+            /* ── STEP HIGHLIGHT ── */
+            .node[data-step] {
+                transition: box-shadow 0.3s;
+            }
+            .node.highlighted {
+                box-shadow: 0 0 0 2px var(--accent);
+            }
+
+            /* step indicator in header */
+            .node-step {
+                font-size: 9px;
+                color: var(--muted);
+                background: #0a0a0e;
+                border: 1px solid var(--border);
+                border-radius: 3px;
+                padding: 1px 5px;
+                flex-shrink: 0;
+            }
+
+            .pipe-label {
+                font-size: 9px;
+                color: var(--muted);
+                text-align: center;
+                padding: 2px 0;
+            }
+
+            /* ── RESPONSIVE ── */
+            @media (max-width: 400px) {
+                .score-grid {
+                    grid-template-columns: 1fr;
+                }
+                .fork-cols {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>FFF.nvim — Search Data Flow</h1>
+            <p>Tap any step to expand. Lua → FFI → Rust → Scoring → Render.</p>
+            <div class="legend">
+                <div class="legend-item">
+                    <div
+                        class="legend-dot"
+                        style="background: var(--lua)"
+                    ></div>
+                    Lua (UI)
+                </div>
+                <div class="legend-item">
+                    <div
+                        class="legend-dot"
+                        style="background: var(--rust)"
+                    ></div>
+                    Rust (Core)
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--db)"></div>
+                    DB / Storage
+                </div>
+            </div>
+        </header>
+
+        <div class="main">
+            <!-- DEMO ANIMATION -->
+            <div class="demo-wrap" id="demo">
+                <div class="demo-input">
+                    <span class="demo-prompt">❯</span>
+                    <span class="demo-text" id="demo-text"></span>
+                    <div class="demo-cursor"></div>
+                </div>
+                <div class="demo-results" id="demo-results">
+                    <div class="demo-item selected" id="r0">
+                        <span class="demo-icon">󰈔</span>
+                        <span class="demo-name"></span>
+                        <span class="demo-path"></span>
+                        <span class="demo-score"></span>
+                    </div>
+                    <div class="demo-item" id="r1">
+                        <span class="demo-icon">󰈔</span>
+                        <span class="demo-name"></span>
+                        <span class="demo-path"></span>
+                        <span class="demo-score"></span>
+                    </div>
+                    <div class="demo-item" id="r2">
+                        <span class="demo-icon">󰈔</span>
+                        <span class="demo-name"></span>
+                        <span class="demo-path"></span>
+                        <span class="demo-score"></span>
+                    </div>
+                </div>
+                <div class="demo-status">
+                    <span id="demo-status-left">waiting for input…</span>
+                    <span id="demo-status-right"></span>
+                </div>
+            </div>
+
+            <!-- PHASE 1 -->
+            <div class="phase">① Input — Lua UI Layer</div>
+
+            <div class="node lua" data-step="1" onclick="toggle(this)">
+                <div class="node-header">
+                    <span class="node-step">1</span>
+                    <span class="node-badge">LUA</span>
+                    <div>
+                        <div class="node-title">Keypress → Buffer Attach</div>
+                        <div class="node-file">
+                            picker_ui.lua · setup_keymaps()
+                        </div>
+                    </div>
+                    <span class="node-chevron">▶</span>
+                </div>
+                <div class="node-detail">
+                    <div class="detail-section">
+                        <div class="detail-desc">
+                            User types in the floating input buffer. Neovim's
+                            <code>nvim_buf_attach(on_lines)</code> fires on
+                            every buffer change and schedules the search on the
+                            main thread via <code>vim.schedule()</code>.
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">data shape</div>
+                        <pre><span class="cm">-- on_lines callback args</span>
+buf_id   <span class="op">=</span> <span class="num">42</span>
+changedtick <span class="op">=</span> <span class="num">7</span>
+first_line  <span class="op">=</span> <span class="num">0</span>
+last_line   <span class="op">=</span> <span class="num">1</span></pre>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">why vim.schedule?</div>
+                        <div class="detail-desc">
+                            Buffer-attach callbacks fire in a restricted
+                            context. Scheduling defers the search until Neovim's
+                            event loop is idle, preventing re-entrancy.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow">▼</div>
+
+            <div class="node lua" data-step="2" onclick="toggle(this)">
+                <div class="node-header">
+                    <span class="node-step">2</span>
+                    <span class="node-badge">LUA</span>
+                    <div>
+                        <div class="node-title">Extract Query String</div>
+                        <div class="node-file">
+                            picker_ui.lua · on_input_change()
+                        </div>
+                    </div>
+                    <span class="node-chevron">▶</span>
+                </div>
+                <div class="node-detail">
+                    <div class="detail-section">
+                        <div class="detail-desc">
+                            Reads the input buffer, strips the prompt prefix
+                            (e.g. <code>❯ </code>), trims whitespace, and stores
+                            the clean query. Then calls
+                            <code>update_results_sync()</code>.
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">transform</div>
+                        <pre><span class="str">"❯  scr/main"</span>
+      ↓ strip prompt + trim
+<span class="str">"scr/main"</span>  <span class="cm">→ M.state.query</span></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow">▼</div>
+
+            <div class="node lua" data-step="3" onclick="toggle(this)">
+                <div class="node-header">
+                    <span class="node-step">3</span>
+                    <span class="node-badge">LUA</span>
+                    <div>
+                        <div class="node-title">
+                            Dispatch Mode & Build Context
+                        </div>
+                        <div class="node-file">
+                            picker_ui.lua · update_results_sync()
+                        </div>
+                    </div>
+                    <span class="node-chevron">▶</span>
+                </div>
+                <div class="node-detail">
+                    <div class="detail-section">
+                        <div class="detail-desc">
+                            Determines which search path to take based on
+                            <code>M.state.mode</code>. Calculates page size from
+                            window height and builds call arguments.
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">branch logic</div>
+                        <pre><span class="kw">if</span> M.state.mode <span class="op">==</span> <span class="str">'grep'</span> <span class="kw">then</span>
+  grep.search(query, offset, page_size, ...)
+<span class="kw">else</span>
+  file_picker.search_files_paginated(query, ...)
+<span class="kw">end</span></pre>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">inputs computed here</div>
+                        <div class="io-row">
+                            <span class="io-pill in">query: string</span>
+                            <span class="io-pill in">page_size: number</span>
+                            <span class="io-pill in">current_file: path</span>
+                            <span class="io-pill in">min_combo_override</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHASE 2 -->
+            <div class="phase">② FFI Bridge</div>
+
+            <div class="arrow branch">
+                ▼
+                <span class="arrow-label">file picker path ↓</span>
+            </div>
+
+            <div class="node lua" data-step="4" onclick="toggle(this)">
+                <div class="node-header">
+                    <span class="node-step">4</span>
+                    <span class="node-badge">LUA</span>
+                    <div>
+                        <div class="node-title">FFI Call via fuzzy.so</div>
+                        <div class="node-file">
+                            rust/init.lua · fuzzy.fuzzy_search_files()
+                        </div>
+                    </div>
+                    <span class="node-chevron">▶</span>
+                </div>
+                <div class="node-detail">
+                    <div class="detail-section">
+                        <div class="detail-desc">
+                            The compiled Rust shared library
+                            (<code>libfff_nvim.so</code>) is loaded via LuaJIT's
+                            FFI. The Lua side calls the exported C-ABI function
+                            directly — no subprocess or RPC overhead.
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">C ABI signature</div>
+                        <pre><span class="ty">fuzzy_search_files</span>(
+  query              <span class="cm">-- string</span>
+  max_threads        <span class="cm">-- usize</span>
+  current_file       <span class="cm">-- string | nil</span>
+  combo_boost_mult   <span class="cm">-- i32</span>
+  min_combo_count    <span class="cm">-- u32 | nil</span>
+  page_index         <span class="cm">-- usize | nil</span>
+  page_size          <span class="cm">-- usize | nil</span>
+)</pre>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">why FFI not RPC?</div>
+                        <div class="detail-desc">
+                            Direct FFI eliminates serialization and socket
+                            latency. Results come back as a Lua table in
+                            microseconds, keeping search imperceptibly fast.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHASE 3 -->
+            <div class="phase">③ Rust Core — Parse & Route</div>
+
+            <div class="arrow">▼</div>
+
+            <div class="node rust" data-step="5" onclick="toggle(this)">
+                <div class="node-header">
+                    <span class="node-step">5</span>
+                    <span class="node-badge">RUST</span>
+                    <div>
+                        <div class="node-title">
+                            FFI Entry — Acquire Locks & Parse Query
+                        </div>
+                        <div class="node-file">
+                            lib.rs · fuzzy_search_files()
+                        </div>
+                    </div>
+                    <span class="node-chevron">▶</span>
+                </div>
+                <div class="node-detail">
+                    <div class="detail-section">
+                        <div class="detail-desc">
+                            Global state is protected by <code>RwLock</code>.
+                            This function acquires <em>read</em> locks on both
+                            <code>FILE_PICKER</code> and
+                            <code>QUERY_TRACKER</code>, then parses the raw
+                            query string into a structured
+                            <code>FFFQuery</code>.
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">locking</div>
+                        <pre><span class="kw">let</span> picker  <span class="op">=</span> FILE_PICKER.<span class="fn">read</span>();   <span class="cm">// shared read</span>
+<span class="kw">let</span> tracker <span class="op">=</span> QUERY_TRACKER.<span class="fn">read</span>(); <span class="cm">// shared read</span></pre>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">query parsing output</div>
+                        <pre><span class="kw">struct</span> <span class="ty">FFFQuery</span> {
+  fuzzy_parts:  <span class="ty">Vec</span><span class="op">&lt;</span><span class="ty">String</span><span class="op">&gt;</span>,  <span class="cm">// "scr/main" → ["scr", "main"]</span>
+  constraints:  <span class="ty">Vec</span><span class="op">&lt;</span><span class="ty">Constraint</span><span class="op">&gt;</span>, <span class="cm">// *.rs, path:src/</span>
+  location:     <span class="ty">Option</span><span class="op">&lt;</span>(<span class="ty">u32</span>, <span class="ty">u32</span>)<span class="op">&gt;</span>, <span class="cm">// :42:7</span>
+}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow">▼</div>
+
+            <!-- PHASE 4 -->
+            <div class="phase">④ Rust Core — Fuzzy Match</div>
+
+            <div class="node rust" data-step="6" onclick="toggle(this)">
+                <div class="node-header">
+                    <span class="node-step">6</span>
+                    <span class="node-badge">RUST</span>
+                    <div>
+                        <div class="node-title">
+                            Query Tracker Lookup (combo boost)
+                        </div>
+                        <div class="node-file">
+                            file_picker.rs · fuzzy_search()
+                        </div>
+                    </div>
+                    <span class="node-chevron">▶</span>
+                </div>
+                <div class="node-detail">
+                    <div class="detail-section">
+                        <div class="detail-desc">
+                            Before scoring, checks if the user has previously
+                            typed this exact query and selected a file. If so,
+                            that file gets a massive score multiplier (combo
+                            boost).
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">combo boost lookup</div>
+                        <pre>tracker.<span class="fn">get_last_query_entry</span>(
+  query, project_path
+) <span class="op">→</span> <span class="ty">Option</span><span class="op">&lt;</span><span class="ty">QueryEntry</span><span class="op">&gt;</span>
+
+<span class="cm">// if count ≥ min_combo_count:</span>
+score <span class="op">*=</span> combo_boost_multiplier  <span class="cm">// default 100×</span></pre>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">example</div>
+                        <div class="detail-desc">
+                            Type <code>main</code> → always picks
+                            <code>src/main.rs</code>. After a few picks, the
+                            tracker locks that file to the top for that query
+                            string.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow">▼</div>
+
+            <div class="node rust" data-step="7" onclick="toggle(this)">
+                <div class="node-header">
+                    <span class="node-step">7</span>
+                    <span class="node-badge">RUST</span>
+                    <div>
+                        <div class="node-title">
+                            Frizbee Fuzzy Match (parallel)
+                        </div>
+                        <div class="node-file">
+                            score.rs · fuzzy_match_and_score_files()
+                        </div>
+                    </div>
+                    <span class="node-chevron">▶</span>
+                </div>
+                <div class="node-detail">
+                    <div class="detail-section">
+                        <div class="detail-desc">
+                            Uses the <strong>neo_frizbee</strong> library to
+                            match the query against every indexed file path in
+                            parallel via Rayon threadpool. Each fuzzy part is
+                            matched independently and averaged.
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">parallel match call</div>
+                        <pre>neo_frizbee::<span class="fn">match_list_parallel_resolved</span>(
+  paths,       <span class="cm">// *const u8 pointers into arena</span>
+  query_part,  <span class="cm">// one fuzzy part</span>
+  max_typos,   <span class="cm">// query.len() / 4, clamped 2..6</span>
+) <span class="op">→</span> <span class="ty">Vec</span><span class="op">&lt;</span><span class="ty">Match</span><span class="op">&gt;</span>   <span class="cm">// (index, score 0–65535)</span>
+
+<span class="cm">// multi-part: average across all parts</span>
+base_score <span class="op">=</span> parts.iter().<span class="fn">sum</span>() <span class="op">/</span> parts.<span class="fn">len</span>()</pre>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">memory layout</div>
+                        <div class="detail-desc">
+                            File paths live in a
+                            <code>ChunkedPathStore</code> arena. Frizbee
+                            receives raw pointers — zero copy. Overflow files
+                            (added after initial scan) have their own arena.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHASE 5 -->
+            <div class="phase">⑤ Rust Core — Score Composition</div>
+
+            <div class="arrow">▼</div>
+
+            <div class="node rust" data-step="8" onclick="toggle(this)">
+                <div class="node-header">
+                    <span class="node-step">8</span>
+                    <span class="node-badge">RUST</span>
+                    <div>
+                        <div class="node-title">
+                            Score Composition (7 factors)
+                        </div>
+                        <div class="node-file">score.rs</div>
+                    </div>
+                    <span class="node-chevron">▶</span>
+                </div>
+                <div class="node-detail">
+                    <div class="detail-section">
+                        <div class="detail-desc">
+                            Each candidate file's final score is the sum of
+                            multiple weighted components. The design lets
+                            frecency nudge ranking without overwhelming match
+                            quality.
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">score breakdown</div>
+                        <div class="score-grid">
+                            <div class="score-item">
+                                <div class="score-name">base_score</div>
+                                <div class="score-val">
+                                    frizbee match (0–65535)
+                                </div>
+                            </div>
+                            <div class="score-item">
+                                <div class="score-name">filename_bonus</div>
+                                <div class="score-val">
+                                    match on name vs. full path
+                                </div>
+                            </div>
+                            <div class="score-item">
+                                <div class="score-name">frecency_boost</div>
+                                <div class="score-val">
+                                    recent/frequent access weight
+                                </div>
+                            </div>
+                            <div class="score-item">
+                                <div class="score-name">git_status_boost</div>
+                                <div class="score-val">
+                                    modified files ranked up
+                                </div>
+                            </div>
+                            <div class="score-item">
+                                <div class="score-name">distance_penalty</div>
+                                <div class="score-val">
+                                    deeper paths rank lower
+                                </div>
+                            </div>
+                            <div class="score-item">
+                                <div class="score-name">
+                                    current_file_penalty
+                                </div>
+                                <div class="score-val">
+                                    deprioritize open file
+                                </div>
+                            </div>
+                            <div class="score-item">
+                                <div class="score-name">combo_match_boost</div>
+                                <div class="score-val">
+                                    100× if query-history hit
+                                </div>
+                            </div>
+                            <div class="score-item">
+                                <div class="score-name">exact_match flag</div>
+                                <div class="score-val">
+                                    perfect match sentinel
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">then sort + paginate</div>
+                        <pre>items.<span class="fn">sort_by</span>(|a, b| b.score.<span class="fn">cmp</span>(&a.score))
+result <span class="op">=</span> items[offset .. offset <span class="op">+</span> limit]</pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DB LOOKUPS SIDE -->
+            <div class="arrow">▼</div>
+            <div class="pipe-label">consulted during scoring ↓</div>
+
+            <div class="fork-wrap">
+                <div class="fork-cols">
+                    <div class="fork-node" onclick="toggle(this)">
+                        <div class="node-header">
+                            <span
+                                class="node-badge"
+                                style="
+                                    background: var(--db-bg);
+                                    color: var(--db);
+                                    border-color: var(--db-border);
+                                "
+                                >DB</span
+                            >
+                            <div>
+                                <div class="node-title">Frecency DB</div>
+                                <div class="node-file">frecency.rs · LMDB</div>
+                            </div>
+                            <span class="node-chevron">▶</span>
+                        </div>
+                        <div class="node-detail">
+                            <div class="detail-label">decay formula</div>
+                            <pre
+                                style="font-size: 9px"
+                            ><span class="cm">// 10-day half-life</span>
+λ <span class="op">=</span> <span class="num">0.0693</span>
+score <span class="op">=</span> Σ exp(−λ × days_ago)
+
+<span class="cm">// recency multipliers</span>
+<span class="op">&lt;</span><span class="num">2</span> min  → 16×
+<span class="op">&lt;</span><span class="num">15</span> min → 8×
+<span class="op">&lt;</span><span class="num">1</span> hr   → 4×</pre>
+                            <div class="detail-desc" style="margin-top: 6px">
+                                LMDB gives lock-free concurrent reads — no
+                                contention with background writes.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fork-node" onclick="toggle(this)">
+                        <div class="node-header">
+                            <span
+                                class="node-badge"
+                                style="
+                                    background: var(--db-bg);
+                                    color: var(--db);
+                                    border-color: var(--db-border);
+                                "
+                                >DB</span
+                            >
+                            <div>
+                                <div class="node-title">Query Tracker</div>
+                                <div class="node-file">
+                                    query_tracker.rs · LMDB
+                                </div>
+                            </div>
+                            <span class="node-chevron">▶</span>
+                        </div>
+                        <div class="node-detail">
+                            <div class="detail-label">stored per query</div>
+                            <pre
+                                style="font-size: 9px"
+                            ><span class="kw">struct</span> <span class="ty">QueryEntry</span> {
+  file_path:      <span class="ty">String</span>,
+  count:          <span class="ty">u32</span>,
+  last_timestamp: <span class="ty">u64</span>,
+}</pre>
+                            <div class="detail-desc" style="margin-top: 6px">
+                                Key = hash(query + project_path). Enables
+                                per-project query muscle memory.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHASE 6 -->
+            <div class="phase">⑥ Rust → Lua — Serialize Results</div>
+
+            <div class="arrow">▼</div>
+
+            <div class="node rust" data-step="9" onclick="toggle(this)">
+                <div class="node-header">
+                    <span class="node-step">9</span>
+                    <span class="node-badge">RUST</span>
+                    <div>
+                        <div class="node-title">
+                            Convert SearchResult → Lua Table
+                        </div>
+                        <div class="node-file">
+                            lua_types.rs · SearchResultLua
+                        </div>
+                    </div>
+                    <span class="node-chevron">▶</span>
+                </div>
+                <div class="node-detail">
+                    <div class="detail-section">
+                        <div class="detail-desc">
+                            The top-N results are serialized into a Lua table.
+                            ChunkedString paths are resolved to full strings.
+                            Score breakdowns are included for debug/display.
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">Lua table shape</div>
+                        <pre>{
+  items <span class="op">=</span> {
+    {
+      <span class="field">relative_path</span> <span class="op">=</span> <span class="str">"src/main.rs"</span>,
+      <span class="field">name</span>          <span class="op">=</span> <span class="str">"main.rs"</span>,
+      <span class="field">git_status</span>    <span class="op">=</span> <span class="str">"M"</span>,
+      <span class="field">is_binary</span>     <span class="op">=</span> <span class="kw">false</span>,
+      <span class="field">total_frecency_score</span> <span class="op">=</span> <span class="num">650</span>,
+    }, ...
+  },
+  scores <span class="op">=</span> {
+    { <span class="field">total</span><span class="op">=</span><span class="num">9500</span>, <span class="field">base_score</span><span class="op">=</span><span class="num">5000</span>, <span class="field">frecency_boost</span><span class="op">=</span><span class="num">1500</span>, ... }
+  },
+  total_matched <span class="op">=</span> <span class="num">47</span>,
+  total_files   <span class="op">=</span> <span class="num">1234</span>,
+}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHASE 7 -->
+            <div class="phase">⑦ Lua — Update State & Render</div>
+
+            <div class="arrow">▼</div>
+
+            <div class="node lua" data-step="10" onclick="toggle(this)">
+                <div class="node-header">
+                    <span class="node-step">10</span>
+                    <span class="node-badge">LUA</span>
+                    <div>
+                        <div class="node-title">
+                            Update State & Reset Cursor
+                        </div>
+                        <div class="node-file">
+                            picker_ui.lua · update_results_sync()
+                        </div>
+                    </div>
+                    <span class="node-chevron">▶</span>
+                </div>
+                <div class="node-detail">
+                    <div class="detail-section">
+                        <div class="detail-desc">
+                            Stores results in <code>M.state</code>, resets
+                            cursor to item 1, checks for zero-result cross-mode
+                            suggestions, then schedules a debounced render.
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">state mutations</div>
+                        <pre>M.state.items            <span class="op">=</span> results.items
+M.state.filtered_items   <span class="op">=</span> results.items
+M.state.pagination.<span class="field">total_matched</span> <span class="op">=</span> n
+M.state.cursor           <span class="op">=</span> <span class="num">1</span>  <span class="cm">-- best result</span>
+M.state.location         <span class="op">=</span> loc <span class="cm">-- :line:col</span>
+M.<span class="fn">render_debounced</span>()</pre>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">zero-result fallback</div>
+                        <div class="detail-desc">
+                            If file mode returns 0 results, silently runs a grep
+                            suggestion and shows it as a hint below the empty
+                            list.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow">▼</div>
+
+            <div class="node lua" data-step="11" onclick="toggle(this)">
+                <div class="node-header">
+                    <span class="node-step">11</span>
+                    <span class="node-badge">LUA</span>
+                    <div>
+                        <div class="node-title">Render List to Buffer</div>
+                        <div class="node-file">
+                            picker_ui.lua · render_list()
+                        </div>
+                    </div>
+                    <span class="node-chevron">▶</span>
+                </div>
+                <div class="node-detail">
+                    <div class="detail-section">
+                        <div class="detail-desc">
+                            Iterates results in display order (reversed if
+                            <code>prompt_position="bottom"</code>), writes lines
+                            into <code>list_buf</code>, and applies extmarks for
+                            icons, git indicators, and highlight groups.
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">per-item render</div>
+                        <pre><span class="kw">for</span> i, item <span class="kw">in</span> <span class="fn">ipairs</span>(display_items) <span class="kw">do</span>
+  <span class="cm">-- icon + name + path + git badge</span>
+  renderer.<span class="fn">render_file_item</span>(buf, row, item)
+  <span class="cm">-- highlight matched chars</span>
+  <span class="fn">set_extmark</span>(buf, ns, row, col, hl)
+<span class="kw">end</span>
+<span class="fn">render_scrollbar</span>(win, total, offset)</pre>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">combo separator</div>
+                        <div class="detail-desc">
+                            If the top result is a combo-boosted item, a visual
+                            separator is drawn between it and the regular
+                            results.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow">▼</div>
+
+            <div class="node lua" data-step="12" onclick="toggle(this)">
+                <div class="node-header">
+                    <span class="node-step">12</span>
+                    <span class="node-badge">LUA</span>
+                    <div>
+                        <div class="node-title">Update Preview Pane</div>
+                        <div class="node-file">
+                            file_picker/preview.lua · update_preview()
+                        </div>
+                    </div>
+                    <span class="node-chevron">▶</span>
+                </div>
+                <div class="node-detail">
+                    <div class="detail-section">
+                        <div class="detail-desc">
+                            Debounced 100 ms. Reads the highlighted file,
+                            renders it with syntax highlighting into the preview
+                            buffer, and jumps to <code>line:col</code> if the
+                            query contained a location suffix.
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-label">debounce</div>
+                        <pre><span class="cm">-- avoid expensive reads on every keypress</span>
+<span class="fn">vim.defer_fn</span>(<span class="kw">function</span>()
+  <span class="fn">read_and_highlight_file</span>(item.path)
+<span class="kw">end</span>, <span class="num">100</span>)</pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHASE 8 — Threading -->
+            <div class="phase">⑧ Threading & Storage Overview</div>
+
+            <div style="margin: 0 12px">
+                <div class="tabs" id="tabs">
+                    <div class="tab active" onclick="switchTab('threads')">
+                        Threads
+                    </div>
+                    <div class="tab" onclick="switchTab('storage')">
+                        Storage
+                    </div>
+                    <div class="tab" onclick="switchTab('perf')">
+                        Perf tricks
+                    </div>
+                </div>
+
+                <div class="tab-panel active" id="panel-threads">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Component</th>
+                                <th>Model</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Lua search dispatch</td>
+                                <td>Neovim main thread</td>
+                                <td>Non-blocking, scheduled</td>
+                            </tr>
+                            <tr>
+                                <td>Fuzzy match</td>
+                                <td>Rayon threadpool</td>
+                                <td>max_threads from config</td>
+                            </tr>
+                            <tr>
+                                <td>Grep search</td>
+                                <td>Rayon threadpool</td>
+                                <td>early-exit after page_limit</td>
+                            </tr>
+                            <tr>
+                                <td>Frecency/QT reads</td>
+                                <td>Shared read locks</td>
+                                <td>Concurrent, no writer wait</td>
+                            </tr>
+                            <tr>
+                                <td>File system watcher</td>
+                                <td>Dedicated bg thread</td>
+                                <td>Async inotify/FSEvents</td>
+                            </tr>
+                            <tr>
+                                <td>Initial scanner</td>
+                                <td>bg threadpool</td>
+                                <td>Brief write lock at merge</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="tab-panel" id="panel-storage">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Store</th>
+                                <th>Engine</th>
+                                <th>Key → Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Frecency DB</td>
+                                <td>LMDB</td>
+                                <td>path_hash → Vec&lt;timestamp&gt;</td>
+                            </tr>
+                            <tr>
+                                <td>Query Tracker</td>
+                                <td>LMDB</td>
+                                <td>hash(query+project) → QueryEntry</td>
+                            </tr>
+                            <tr>
+                                <td>File index</td>
+                                <td>In-memory Vec</td>
+                                <td>ChunkedPathStore arena</td>
+                            </tr>
+                            <tr>
+                                <td>Bigram index</td>
+                                <td>In-memory</td>
+                                <td>bigram → file_id bitset</td>
+                            </tr>
+                            <tr>
+                                <td>Git cache</td>
+                                <td>In-memory HashMap</td>
+                                <td>path → git::Status</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="tab-panel" id="panel-perf">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Technique</th>
+                                <th>Benefit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ChunkedPathStore arena</td>
+                                <td>Zero-copy path pointers to frizbee</td>
+                            </tr>
+                            <tr>
+                                <td>Bigram inverted index</td>
+                                <td>Skip non-matching files before grep</td>
+                            </tr>
+                            <tr>
+                                <td>LMDB memory-mapped</td>
+                                <td>Lock-free concurrent frecency reads</td>
+                            </tr>
+                            <tr>
+                                <td>mmap file I/O (grep)</td>
+                                <td>Zero-copy file reading</td>
+                            </tr>
+                            <tr>
+                                <td>Frecency-ordered grep</td>
+                                <td>Best files searched first, early exit</td>
+                            </tr>
+                            <tr>
+                                <td>StableVec snapshots</td>
+                                <td>Post-scan index access without copy</td>
+                            </tr>
+                            <tr>
+                                <td>100 ms preview debounce</td>
+                                <td>Avoid file reads on every keypress</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function toggle(node) {
+                node.classList.toggle("active");
+            }
+
+            function switchTab(id) {
+                document
+                    .querySelectorAll(".tab")
+                    .forEach((t) => t.classList.remove("active"));
+                document
+                    .querySelectorAll(".tab-panel")
+                    .forEach((p) => p.classList.remove("active"));
+                event.target.classList.add("active");
+                document.getElementById("panel-" + id).classList.add("active");
+            }
+
+            // ── DEMO ANIMATION ──
+            const QUERIES = ["scr/ma", "score", "fzf", "picker_ui", "lib.rs"];
+            const RESULTS = [
+                [
+                    {
+                        name: "score.<em>ma</em>in.rs",
+                        path: "<em>scr</em>/score/",
+                        score: "9842",
+                        sel: true,
+                    },
+                    {
+                        name: "<em>ma</em>in.rs",
+                        path: "<em>scr</em>/rust/",
+                        score: "8760",
+                        sel: false,
+                    },
+                    {
+                        name: "<em>scr</em>eenshot.<em>ma</em>d",
+                        path: "docs/",
+                        score: "4310",
+                        sel: false,
+                    },
+                ],
+                [
+                    {
+                        name: "<em>score</em>.rs",
+                        path: "crates/fff-core/src/",
+                        score: "9999",
+                        sel: true,
+                    },
+                    {
+                        name: "<em>score</em>_test.rs",
+                        path: "tests/",
+                        score: "8100",
+                        sel: false,
+                    },
+                    {
+                        name: "lib.rs",
+                        path: "crates/fff-nvim/src/",
+                        score: "5200",
+                        sel: false,
+                    },
+                ],
+                [
+                    {
+                        name: "init.lua",
+                        path: "lua/fff/rust/",
+                        score: "9100",
+                        sel: true,
+                    },
+                    {
+                        name: "main.lua",
+                        path: "lua/fff/",
+                        score: "7400",
+                        sel: false,
+                    },
+                    {
+                        name: "conf.lua",
+                        path: "lua/fff/",
+                        score: "6800",
+                        sel: false,
+                    },
+                ],
+                [
+                    {
+                        name: "<em>picker_ui</em>.lua",
+                        path: "lua/fff/",
+                        score: "9999",
+                        sel: true,
+                    },
+                    {
+                        name: "preview.lua",
+                        path: "lua/fff/file_picker/",
+                        score: "5100",
+                        sel: false,
+                    },
+                    {
+                        name: "image.lua",
+                        path: "lua/fff/file_picker/",
+                        score: "4200",
+                        sel: false,
+                    },
+                ],
+                [
+                    {
+                        name: "<em>lib</em>.<em>rs</em>",
+                        path: "crates/fff-nvim/src/",
+                        score: "9999",
+                        sel: true,
+                    },
+                    {
+                        name: "frecency.<em>rs</em>",
+                        path: "crates/fff-core/src/dbs/",
+                        score: "7800",
+                        sel: false,
+                    },
+                    {
+                        name: "score.<em>rs</em>",
+                        path: "crates/fff-core/src/",
+                        score: "7600",
+                        sel: false,
+                    },
+                ],
+            ];
+
+            let qi = 0;
+            const textEl = document.getElementById("demo-text");
+            const statusLeft = document.getElementById("demo-status-left");
+            const statusRight = document.getElementById("demo-status-right");
+            const rows = [0, 1, 2].map((i) => document.getElementById("r" + i));
+
+            function showResults(ri) {
+                const set = RESULTS[ri];
+                rows.forEach((row, i) => {
+                    const d = set[i];
+                    row.querySelector(".demo-name").innerHTML = d.name;
+                    row.querySelector(".demo-path").textContent = d.path;
+                    row.querySelector(".demo-score").textContent =
+                        "▲ " + d.score;
+                    row.className = "demo-item" + (d.sel ? " selected" : "");
+                    setTimeout(() => row.classList.add("visible"), 30 + i * 60);
+                });
+                statusLeft.textContent =
+                    "matched " +
+                    (Math.floor(Math.random() * 900) + 100) +
+                    " files";
+                statusRight.textContent = "fuzzy";
+            }
+
+            function hideResults() {
+                rows.forEach((r) => r.classList.remove("visible"));
+            }
+
+            function typeQuery(q, cb) {
+                textEl.textContent = "";
+                hideResults();
+                statusLeft.textContent = "typing…";
+                statusRight.textContent = "";
+                let i = 0;
+                const iv = setInterval(() => {
+                    textEl.textContent += q[i++];
+                    if (i > 2) {
+                        statusLeft.textContent = "searching…";
+                    }
+                    if (i === q.length) {
+                        clearInterval(iv);
+                        setTimeout(cb, 180);
+                    }
+                }, 90);
+            }
+
+            function runDemo() {
+                const q = QUERIES[qi % QUERIES.length];
+                const r = qi % RESULTS.length;
+                typeQuery(q, () => {
+                    showResults(r);
+                    qi++;
+                    setTimeout(() => {
+                        hideResults();
+                        setTimeout(runDemo, 300);
+                    }, 2200);
+                });
+            }
+
+            setTimeout(runDemo, 600);
+        </script>
+    </body>
+</html>
