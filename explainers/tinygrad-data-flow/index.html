@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tinygrad — Data Flow</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --border: #2a2d3a;
+    --accent: #7c6af5;
+    --accent2: #56cfb2;
+    --accent3: #f5836e;
+    --text: #e2e4ed;
+    --muted: #8b8fa8;
+    --code-bg: #12141e;
+    --link: #7c9ef5;
+    --tag-bg: #252838;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'SF Mono', 'Fira Code', monospace; font-size: 14px; line-height: 1.6; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Header */
+  header { padding: 24px 24px 18px; border-bottom: 1px solid var(--border); }
+  .header-top { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 6px; }
+  h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+  .header-tag { font-size: 11px; padding: 2px 8px; border-radius: 10px; background: var(--tag-bg); color: var(--accent2); border: 1px solid rgba(86,207,178,0.25); }
+  .header-sub { color: var(--muted); font-size: 13px; }
+  .commit-link { color: var(--muted); font-size: 11px; border: 1px solid var(--border); border-radius: 4px; padding: 2px 7px; margin-left: auto; }
+  .commit-link:hover { color: var(--link); border-color: var(--link); text-decoration: none; }
+
+  main { max-width: 960px; margin: 0 auto; padding: 28px 16px 60px; }
+
+  /* Pipeline diagram */
+  .pipeline { display: flex; flex-direction: column; gap: 0; margin-bottom: 36px; }
+  .pipe-row { display: flex; align-items: stretch; gap: 0; position: relative; }
+  .pipe-stage { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px 14px; text-decoration: none; transition: border-color 0.15s, background 0.15s; position: relative; }
+  .pipe-stage:hover { border-color: var(--accent); background: rgba(124,106,245,0.06); text-decoration: none; }
+  .pipe-num { font-size: 10px; font-weight: 800; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 4px; }
+  .pipe-name { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .pipe-file { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+  .pipe-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .pipe-arrow { display: flex; align-items: center; justify-content: center; padding: 6px 0; color: var(--accent); font-size: 14px; }
+  .pipe-uop { display: inline-block; margin-top: 8px; font-size: 11px; padding: 2px 7px; border-radius: 4px; background: var(--tag-bg); color: var(--accent2); border: 1px solid rgba(86,207,178,0.2); }
+
+  /* Section blocks */
+  .section { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 20px; overflow: hidden; }
+  .section-header { padding: 14px 18px; display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+  .section-header:hover { background: rgba(124,106,245,0.06); }
+  .section-title { font-size: 15px; font-weight: 600; }
+  .section-badge { font-size: 11px; padding: 2px 8px; border-radius: 12px; background: var(--tag-bg); color: var(--muted); }
+  .toggle { margin-left: auto; color: var(--muted); font-size: 12px; transition: transform 0.2s; }
+  .toggle.open { transform: rotate(180deg); }
+  .section-body { padding: 18px; border-top: 1px solid var(--border); }
+  .section-body.collapsed { display: none; }
+
+  code { background: var(--code-bg); padding: 1px 5px; border-radius: 3px; font-size: 12px; color: #e8b86d; }
+  pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; overflow-x: auto; font-size: 12px; line-height: 1.7; white-space: pre; }
+  .ref-link { display: inline-block; font-size: 11px; color: var(--muted); border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; margin-top: 8px; margin-right: 6px; }
+  .ref-link:hover { color: var(--link); border-color: var(--link); text-decoration: none; }
+  .note { background: rgba(86,207,178,0.07); border-left: 3px solid var(--accent2); padding: 10px 14px; border-radius: 0 4px 4px 0; margin: 10px 0; font-size: 13px; }
+  h2 { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+  h3 { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin: 14px 0 8px; }
+  p { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+
+  /* File map */
+  .file-map { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 10px; }
+  .file-row { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; }
+  .file-path { font-size: 12px; color: var(--accent2); font-weight: 600; }
+  .file-purpose { font-size: 12px; color: var(--muted); }
+
+  /* Design patterns */
+  .pattern-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
+  .pattern-card { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; }
+  .pattern-name { font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+  .pattern-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  @media (max-width: 600px) {
+    .pipe-name { font-size: 14px; }
+    .header-top { flex-direction: column; gap: 6px; }
+    .commit-link { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-top">
+    <h1>tinygrad — Data Flow</h1>
+    <span class="header-tag">interactive guide</span>
+    <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91" target="_blank" class="commit-link">@ 5d5e028</a>
+  </div>
+  <div class="header-sub">From <code>Tensor.add()</code> to GPU kernel execution — the complete pipeline.</div>
+</header>
+<main>
+
+  <h2>Pipeline</h2>
+  <div class="pipeline">
+
+    <a class="pipe-stage" href="tensor.html">
+      <div class="pipe-num">STAGE 1</div>
+      <div class="pipe-name">Tensor &amp; Operations</div>
+      <div class="pipe-file">tensor.py · mixin/</div>
+      <div class="pipe-desc">User calls <code>a + b</code>, <code>matmul()</code>, <code>sum()</code>. Each op builds a node in a lazy DAG — no computation happens yet.</div>
+      <span class="pipe-uop">out: UOp DAG</span>
+    </a>
+
+    <div class="pipe-arrow">↓</div>
+
+    <a class="pipe-stage" href="uops.html">
+      <div class="pipe-num">STAGE 2</div>
+      <div class="pipe-name">UOps — IR</div>
+      <div class="pipe-file">uop/ops.py · uop/__init__.py</div>
+      <div class="pipe-desc">The intermediate representation. Every operation — tensor math, memory, loops, and compiled programs — is a <code>UOp</code> node in a DAG. PatternMatcher rewrites transform the graph at every stage.</div>
+      <span class="pipe-uop">UOp(op, dtype, src, arg)</span>
+    </a>
+
+    <div class="pipe-arrow">↓  <small style="color:var(--muted)">Tensor.realize() / linear_with_vars()</small></div>
+
+    <a class="pipe-stage" href="schedule.html">
+      <div class="pipe-num">STAGE 3</div>
+      <div class="pipe-name">Scheduler</div>
+      <div class="pipe-file">schedule/__init__.py</div>
+      <div class="pipe-desc">Transforms the tensor UOp graph into an ordered list of kernel invocations. Decides kernel fusion boundaries, allocates buffers, handles multi-device routing.</div>
+      <span class="pipe-uop">out: LINEAR(CALL, CALL, …)</span>
+    </a>
+
+    <div class="pipe-arrow">↓</div>
+
+    <a class="pipe-stage" href="codegen.html">
+      <div class="pipe-num">STAGE 4</div>
+      <div class="pipe-name">Codegen</div>
+      <div class="pipe-file">codegen/__init__.py</div>
+      <div class="pipe-desc">Lowers each kernel AST through a cascade of PatternMatcher passes: movement ops eliminated, loops inserted, vector ops expanded, device-specific lowering applied.</div>
+      <span class="pipe-uop">out: SINK with RANGE/LOAD/STORE</span>
+    </a>
+
+    <div class="pipe-arrow">↓</div>
+
+    <a class="pipe-stage" href="renderer.html">
+      <div class="pipe-num">STAGE 5</div>
+      <div class="pipe-name">Renderer &amp; Compiler</div>
+      <div class="pipe-file">renderer/ · device.py</div>
+      <div class="pipe-desc">Linearized UOp list → device source string (C, PTX, MSL, WGSL, LLVM IR) → compiled binary bytes via the device compiler.</div>
+      <span class="pipe-uop">out: BINARY(bytes)</span>
+    </a>
+
+    <div class="pipe-arrow">↓</div>
+
+    <a class="pipe-stage" href="runtime.html">
+      <div class="pipe-num">STAGE 6</div>
+      <div class="pipe-name">Runtime &amp; Execution</div>
+      <div class="pipe-file">engine/realize.py · runtime/ops_*.py</div>
+      <div class="pipe-desc">Executes the compiled plan: kernel dispatch, memory copies, buffer views. Multi-level caching ensures JIT training loops have near-zero CPU overhead.</div>
+      <span class="pipe-uop">actual FLOPS ✓</span>
+    </a>
+
+  </div>
+
+  <!-- Annotated flow -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Annotated code flow</span>
+      <span class="section-badge">full trace</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <pre># 1. User code
+import tinygrad
+a = Tensor.randn(1024, 1024)          # UOp(BUFFER, shape=(1024,1024))
+b = Tensor.randn(1024, 1024)          # UOp(BUFFER, shape=(1024,1024))
+c = (a @ b).relu()                    # DAG: RELU(REDUCE(MUL(EXPAND(a), EXPAND(b))))
+# ↑ nothing computed — just graph nodes
+
+# 2. Trigger execution
+c.realize()
+# calls: Tensor.linear_with_vars()
+#   → create_linear_with_vars(big_sink)          [schedule/__init__.py:122]
+#     → full graph rewrite (movement op fusion)
+#     → create_schedule(sched_sink)              [schedule/__init__.py:21]
+#       → topological sort of kernel dependencies
+#       → returns LINEAR(CALL(kernel_ast, buf_a, buf_b, buf_c))
+#     → returns (linear_uop, var_vals={})
+#
+# calls: run_linear(linear, var_vals)             [engine/realize.py:252]
+#   → for each CALL in linear.src:
+#       compile_linear if not cached
+#         → do_to_program(ast, renderer)         [codegen/__init__.py:176]
+#           → full_rewrite_to_sink(ast, ren)     [codegen/__init__.py:27]
+#               phase 1: eliminate RESHAPE/EXPAND
+#               phase 2: add RANGE loop bounds
+#               phase 3: expand WMMA / tensor cores
+#               phase 4: finalize loop bounds
+#               phase 5: devectorize, lower index dtypes
+#           → do_linearize(ren, prg, sink)       [codegen/__init__.py:132]
+#               toposort → flat list[UOp]
+#           → do_render(ren, prg, lin)           [codegen/__init__.py:155]
+#               renderer.render(uops) → source str
+#           → do_compile(ren, prg, source)       [codegen/__init__.py:160]
+#               compiler.compile_cached(src) → bytes
+#       exec_kernel(ctx, call, ast)              [engine/realize.py:170]
+#           → get_runtime(device, ast)
+#           → runtime(bufs, var_vals, global_sz, local_sz)
+#           → GPU kernel runs ← ACTUAL COMPUTATION HERE</pre>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/tensor.py#L241" target="_blank" class="ref-link">tensor.py:241 — realize()</a>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/schedule/__init__.py#L122" target="_blank" class="ref-link">schedule/__init__.py:122 — create_linear_with_vars</a>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/codegen/__init__.py#L176" target="_blank" class="ref-link">codegen/__init__.py:176 — do_to_program</a>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/engine/realize.py#L252" target="_blank" class="ref-link">engine/realize.py:252 — run_linear</a>
+    </div>
+  </div>
+
+  <!-- File map -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Key files quick reference</span>
+      <span class="section-badge">index</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="file-map">
+        <div class="file-row">
+          <span class="file-path"><a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/tensor.py" target="_blank">tinygrad/tensor.py</a></span>
+          <span class="file-purpose">Tensor class, realize(), _apply_uop()</span>
+        </div>
+        <div class="file-row">
+          <span class="file-path"><a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/mixin/elementwise.py" target="_blank">tinygrad/mixin/elementwise.py</a></span>
+          <span class="file-purpose">add, mul, exp2, log2, cast, where…</span>
+        </div>
+        <div class="file-row">
+          <span class="file-path"><a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/mixin/movement.py" target="_blank">tinygrad/mixin/movement.py</a></span>
+          <span class="file-purpose">reshape, permute, expand, pad, shrink…</span>
+        </div>
+        <div class="file-row">
+          <span class="file-path"><a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/mixin/reduce.py" target="_blank">tinygrad/mixin/reduce.py</a></span>
+          <span class="file-purpose">sum, max, min, mean, argmax…</span>
+        </div>
+        <div class="file-row">
+          <span class="file-path"><a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/uop/__init__.py" target="_blank">tinygrad/uop/__init__.py</a></span>
+          <span class="file-purpose">Ops enum — all 80+ operation codes</span>
+        </div>
+        <div class="file-row">
+          <span class="file-path"><a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/uop/ops.py" target="_blank">tinygrad/uop/ops.py</a></span>
+          <span class="file-purpose">UOp class, PatternMatcher, UPat, graph_rewrite</span>
+        </div>
+        <div class="file-row">
+          <span class="file-path"><a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/schedule/__init__.py" target="_blank">tinygrad/schedule/__init__.py</a></span>
+          <span class="file-purpose">create_linear_with_vars, create_schedule</span>
+        </div>
+        <div class="file-row">
+          <span class="file-path"><a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/codegen/__init__.py" target="_blank">tinygrad/codegen/__init__.py</a></span>
+          <span class="file-purpose">do_to_program, full_rewrite_to_sink, do_render, do_compile</span>
+        </div>
+        <div class="file-row">
+          <span class="file-path"><a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/codegen/late/linearizer.py" target="_blank">tinygrad/codegen/late/linearizer.py</a></span>
+          <span class="file-purpose">linearize(): DAG → ordered flat list[UOp]</span>
+        </div>
+        <div class="file-row">
+          <span class="file-path"><a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/renderer/__init__.py" target="_blank">tinygrad/renderer/__init__.py</a></span>
+          <span class="file-purpose">Renderer base class, TensorCore config</span>
+        </div>
+        <div class="file-row">
+          <span class="file-path"><a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/renderer/cstyle.py" target="_blank">tinygrad/renderer/cstyle.py</a></span>
+          <span class="file-purpose">C/OpenCL source generation</span>
+        </div>
+        <div class="file-row">
+          <span class="file-path"><a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/renderer/ptx.py" target="_blank">tinygrad/renderer/ptx.py</a></span>
+          <span class="file-purpose">NVIDIA PTX assembly generation</span>
+        </div>
+        <div class="file-row">
+          <span class="file-path"><a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/engine/realize.py" target="_blank">tinygrad/engine/realize.py</a></span>
+          <span class="file-purpose">run_linear, compile_linear, exec_kernel, pm_exec</span>
+        </div>
+        <div class="file-row">
+          <span class="file-path"><a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/device.py" target="_blank">tinygrad/device.py</a></span>
+          <span class="file-purpose">Device, Buffer, Allocator, Compiler, Compiled</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Design patterns -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Core design patterns</span>
+      <span class="section-badge">architecture</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="pattern-grid">
+        <div class="pattern-card">
+          <div class="pattern-name">Lazy evaluation</div>
+          <div class="pattern-desc">Tensors build a UOp DAG without computing. <code>.realize()</code> is the single trigger that flushes everything. This enables cross-op fusion decisions to be made globally.</div>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-name">Graph rewrites (PatternMatcher)</div>
+          <div class="pattern-desc">Every optimization and lowering pass is expressed as declarative pattern → replacement rules. The same mechanism is used from early Tensor-level rewrites all the way to device-specific instruction selection.</div>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-name">UOp deduplication</div>
+          <div class="pattern-desc"><code>UOpMetaClass</code> caches instances by (op, dtype, src, arg). Two identical subgraphs always share the same nodes. This keeps the DAG compact and enables O(1) equality.</div>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-name">Symbolic shapes</div>
+          <div class="pattern-desc">Dimension sizes can be symbolic <code>UOp</code> expressions. Concrete values are only bound at runtime via <code>sym_infer(var_vals)</code>. This allows one compiled kernel to handle multiple tensor sizes.</div>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-name">Renderer abstraction</div>
+          <div class="pattern-desc">All device-specific code lives in a <code>Renderer</code> subclass. Codegen only knows abstract UOps; it calls <code>renderer.render(uops)</code> which maps them to device strings. Adding a new backend means writing one Renderer.</div>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-name">Multi-level caching</div>
+          <div class="pattern-desc">Six independent cache layers (UOp, schedule, source, disk, runtime, graph) ensure that repeated forward passes — as in training — approach zero CPU overhead after the first iteration.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UOp lifecycle summary -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">UOp shape across the pipeline</span>
+      <span class="section-badge">transformation summary</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <pre>Stage 1 — Tensor graph (movement ops present, high-level)
+  SINK
+    └─ REDUCE(ADD) ← MUL ← EXPAND ← RESHAPE ← BUFFER(a)
+                          ← EXPAND ← RESHAPE ← BUFFER(b)
+
+Stage 2 — After scheduling (movement ops fused/eliminated, CALL tree)
+  LINEAR(
+    CALL(PROGRAM(ast), buf_a, buf_b, buf_out)
+  )
+
+Stage 3 — After codegen / full_rewrite_to_sink (explicit loops)
+  SINK(
+    RANGE(0..M)                          ← outer loop
+      RANGE(0..N)                        ← inner loop
+        STORE(INDEX(buf_out, m*N+n),
+              REDUCE(MUL(LOAD(a[m,k]),
+                         LOAD(b[k,n]))))
+      END
+    END
+  )
+
+Stage 4 — After linearize (flat list)
+  [DEFINE_VAR(m), RANGE(m, 0, M),
+   DEFINE_VAR(n), RANGE(n, 0, N),
+   LOAD(a[m,k]), LOAD(b[k,n]), MUL, STORE(out[m,n]),
+   END(n), END(m)]
+
+Stage 5 — After render (device source string)
+  "__kernel void r_MxN(global float* out, global float* a, global float* b) { ... }"
+
+Stage 6 — After compile
+  BINARY(b'\x7fELF...' or b'PTX...')</pre>
+    </div>
+  </div>
+
+</main>
+<script>
+function toggle(header) {
+  const body = header.nextElementSibling;
+  const arrow = header.querySelector('.toggle');
+  const isOpen = !body.classList.contains('collapsed');
+  if (isOpen) { body.classList.add('collapsed'); arrow.classList.remove('open'); }
+  else { body.classList.remove('collapsed'); arrow.classList.add('open'); }
+}
+</script>
+</body>
+</html>

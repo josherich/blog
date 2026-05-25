@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ghostty Terminal Data Flow</title>
+    <link rel="stylesheet" href="assets/style.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="hero">
+        <p class="eyebrow">Ghostty data flow</p>
+        <h1>From GUI surface to PTY bytes to rendered terminal cells.</h1>
+        <p class="lede">
+          This map follows the primary runtime path in Ghostty: app startup creates a surface, the surface wires
+          renderer and terminal IO state, input is queued to the IO mailbox, PTY output is parsed into terminal
+          state, and the renderer is woken to draw the new frame.
+        </p>
+        <nav class="top-nav" aria-label="Data flow pages">
+          <a href="index.html" aria-current="page">Overview</a>
+          <a href="app-surface.html">App and Surface</a>
+          <a href="input-mailbox.html">Input and Mailbox</a>
+          <a href="pty-stream.html">PTY and Stream</a>
+          <a href="renderer.html">Renderer</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="toolbar" aria-label="Controls">
+        <input class="search" data-search type="search" placeholder="Filter sections, code references, or concepts">
+        <button class="button" data-expand-all type="button">Expand all</button>
+        <button class="button" data-collapse-all type="button">Collapse all</button>
+      </section>
+
+      <section class="flow" aria-label="Interactive flow">
+        <button class="flow-step active" data-step-target="#launch" type="button">
+          <strong>1. Launch</strong>
+          <span>`main` creates `App`, initializes `apprt.App`, and runs the GUI loop.</span>
+        </button>
+        <button class="flow-step" data-step-target="#surface" type="button">
+          <strong>2. Surface</strong>
+          <span>`Surface.init` derives config, creates renderer, termio, mailbox, and threads.</span>
+        </button>
+        <button class="flow-step" data-step-target="#input" type="button">
+          <strong>3. Input</strong>
+          <span>Key and mouse actions become `termio.Message` writes queued to the IO thread.</span>
+        </button>
+        <button class="flow-step" data-step-target="#pty" type="button">
+          <strong>4. PTY</strong>
+          <span>The exec backend starts the subprocess and reads PTY output on a dedicated read loop.</span>
+        </button>
+        <button class="flow-step" data-step-target="#stream" type="button">
+          <strong>5. Stream</strong>
+          <span>Bytes enter `Terminal.Stream`, whose handler mutates terminal state under the renderer lock.</span>
+        </button>
+        <button class="flow-step" data-step-target="#render" type="button">
+          <strong>6. Render</strong>
+          <span>Renderer wakeups drain renderer messages and draw the terminal state.</span>
+        </button>
+      </section>
+
+      <section class="grid" aria-label="Overview summary">
+        <article class="card" data-filter>
+          <h2>Thread ownership</h2>
+          <p>
+            The surface owns stable pointers for runtime callbacks, renderer state, `Termio`, and both worker
+            threads. The renderer state points at `self.io.terminal`, so renderer and IO coordinate terminal access
+            through `renderer_state.mutex`.
+          </p>
+          <div class="refs">
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/Surface.zig#L607-L633">Surface state assignment</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/Surface.zig#L740-L753">Thread startup</a>
+          </div>
+        </article>
+
+        <article class="card" data-filter>
+          <h2>Hot path</h2>
+          <p>
+            The read side is optimized around small, frequent PTY reads. `Exec.ReadThread` reads bytes and calls
+            `Termio.processOutput`, which locks render state, queues a render, and feeds bytes into the terminal
+            stream parser.
+          </p>
+          <div class="refs">
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/termio/Exec.zig#L1247-L1258">Read-thread rationale</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/termio/Termio.zig#L640-L700">Output processing</a>
+          </div>
+        </article>
+      </section>
+
+      <details id="launch" open data-filter>
+        <summary>Launch: process state to GUI runtime</summary>
+        <div class="detail-body">
+          <p>
+            `main` initializes global state, handles CLI actions, creates the core `App`, initializes the platform
+            runtime app through `apprt`, and hands control to the GUI event loop.
+          </p>
+          <div class="refs">
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/main_ghostty.zig#L26-L112">src/main_ghostty.zig</a>
+          </div>
+          <pre><code>const app: *App = try App.create(alloc);
+defer app.destroy();
+
+var app_runtime: apprt.App = undefined;
+try app_runtime.init(app, .{});
+defer app_runtime.terminate();
+
+try app_runtime.run();</code></pre>
+        </div>
+      </details>
+
+      <details id="surface" open data-filter>
+        <summary>Surface: shared state, renderer, IO, and mailboxes</summary>
+        <div class="detail-body">
+          <p>
+            `Surface.init` is the main wiring point. It derives config, computes font and grid sizing, initializes the
+            renderer, creates the renderer thread, creates the IO thread, initializes the exec backend, creates the
+            SPSC termio mailbox, and finally starts both worker threads.
+          </p>
+          <div class="refs">
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/Surface.zig#L486-L604">Surface setup</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/Surface.zig#L674-L704">Termio setup</a>
+            <a href="app-surface.html">Component page</a>
+          </div>
+          <pre><code>var io_mailbox = try termio.Mailbox.initSPSC(alloc);
+
+try termio.Termio.init(&amp;self.io, alloc, .{
+    .backend = .{ .exec = io_exec },
+    .mailbox = io_mailbox,
+    .renderer_state = &amp;self.renderer_state,
+    .renderer_wakeup = render_thread.wakeup,
+    .renderer_mailbox = render_thread.mailbox,
+    .surface_mailbox = .{ .surface = self, .app = app_mailbox },
+});</code></pre>
+        </div>
+      </details>
+
+      <details id="input" open data-filter>
+        <summary>Input: UI events to IO mailbox writes</summary>
+        <div class="detail-body">
+          <p>
+            UI input is encoded into terminal sequences, wrapped in `termio.Message` variants, and sent through
+            `Surface.queueIo`. `Termio.queueMessage` publishes the message to the mailbox and notifies the IO thread.
+          </p>
+          <div class="refs">
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/Surface.zig#L883-L900">Surface.queueIo</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/Surface.zig#L3173-L3247">Key encoding</a>
+            <a href="input-mailbox.html">Component page</a>
+          </div>
+          <pre><code>self.io.queueMessage(msg, mutex);
+
+self.mailbox.send(msg, switch (mutex) {
+    .locked =&gt; self.renderer_state.mutex,
+    .unlocked =&gt; null,
+});
+self.mailbox.notify();</code></pre>
+        </div>
+      </details>
+
+      <details id="pty" open data-filter>
+        <summary>PTY: subprocess output enters Termio</summary>
+        <div class="detail-body">
+          <p>
+            The exec backend starts the subprocess when the IO thread enters. The read loop reads from the PTY and
+            immediately calls `Termio.processOutput` with the bytes.
+          </p>
+          <div class="refs">
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/termio/Exec.zig#L85-L95">Subprocess start</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/termio/Exec.zig#L1260-L1339">POSIX read loop</a>
+            <a href="pty-stream.html">Component page</a>
+          </div>
+          <pre><code>const n = posix.read(fd, &amp;buf) catch |err| switch (err) {
+    error.WouldBlock =&gt; break,
+    else =&gt; unreachable,
+};
+
+@call(.always_inline, termio.Termio.processOutput, .{ io, buf[0..n] });</code></pre>
+        </div>
+      </details>
+
+      <details id="stream" open data-filter>
+        <summary>Stream: parser actions mutate terminal state</summary>
+        <div class="detail-body">
+          <p>
+            `Termio.processOutput` locks renderer state and feeds bytes into `terminal_stream`. `StreamHandler.vt`
+            receives parsed VT actions and applies them to `terminal.Terminal`, including printing, cursor movement,
+            screen erasing, modes, links, clipboard handling, and renderer or surface side effects.
+          </p>
+          <div class="refs">
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/termio/Termio.zig#L643-L692">Feed stream</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/termio/stream_handler.zig#L175-L360">VT action handling</a>
+            <a href="pty-stream.html">Component page</a>
+          </div>
+          <pre><code>self.terminal_stream.handler.queueRender() catch unreachable;
+
+if (self.renderer_state.inspector) |insp| {
+    for (buf, 0..) |byte, i| {
+        insp.recordPtyRead(self.alloc, &amp;self.terminal, buf[i .. i + 1]) catch {};
+        self.terminal_stream.next(byte);
+    }
+} else {
+    self.terminal_stream.nextSlice(buf);
+}</code></pre>
+        </div>
+      </details>
+
+      <details id="render" open data-filter>
+        <summary>Renderer: wakeups, messages, and draw</summary>
+        <div class="detail-body">
+          <p>
+            The renderer thread registers async wakeups, drain callbacks, draw timers, and cursor timers. When Termio
+            or the surface notifies the renderer, the thread drains messages and either draws directly or asks the app
+            thread to redraw if the platform requires app-thread drawing.
+          </p>
+          <div class="refs">
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/renderer/Thread.zig#L207-L263">Renderer thread loop</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/renderer/Thread.zig#L498-L515">Draw dispatch</a>
+            <a href="renderer.html">Component page</a>
+          </div>
+          <pre><code>if (must_draw_from_app_thread) {
+    _ = self.app_mailbox.push(.{ .redraw_surface = self.surface }, .{ .instant = {} });
+} else {
+    self.renderer.drawFrame(false) catch |err|
+        log.warn("error drawing err={}", .{err});
+}</code></pre>
+        </div>
+      </details>
+    </main>
+
+    <script src="assets/script.js"></script>
+  </body>
+</html>

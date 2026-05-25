@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tinygrad — Codegen</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --border: #2a2d3a;
+    --accent: #7c6af5;
+    --accent2: #56cfb2;
+    --text: #e2e4ed;
+    --muted: #8b8fa8;
+    --code-bg: #12141e;
+    --link: #7c9ef5;
+    --tag-bg: #252838;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'SF Mono', 'Fira Code', monospace; font-size: 14px; line-height: 1.6; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .back-link { font-size: 12px; color: var(--muted); }
+  .back-link:hover { color: var(--text); }
+  h1 { font-size: 18px; font-weight: 700; }
+  .subtitle { color: var(--muted); font-size: 13px; margin-left: auto; }
+  main { max-width: 900px; margin: 0 auto; padding: 24px 16px; }
+  .section { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 20px; overflow: hidden; }
+  .section-header { padding: 14px 18px; display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+  .section-header:hover { background: rgba(124,106,245,0.06); }
+  .section-title { font-size: 15px; font-weight: 600; }
+  .section-badge { font-size: 11px; padding: 2px 8px; border-radius: 12px; background: var(--tag-bg); color: var(--muted); }
+  .toggle { margin-left: auto; color: var(--muted); font-size: 12px; transition: transform 0.2s; }
+  .toggle.open { transform: rotate(180deg); }
+  .section-body { padding: 18px; border-top: 1px solid var(--border); }
+  .section-body.collapsed { display: none; }
+  code { background: var(--code-bg); padding: 1px 5px; border-radius: 3px; font-size: 12px; color: #e8b86d; }
+  pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; overflow-x: auto; font-size: 12px; line-height: 1.7; white-space: pre; }
+  .ref-link { display: inline-block; font-size: 11px; color: var(--muted); border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; margin-top: 8px; margin-right: 6px; }
+  .ref-link:hover { color: var(--link); border-color: var(--link); text-decoration: none; }
+  .note { background: rgba(86,207,178,0.07); border-left: 3px solid var(--accent2); padding: 10px 14px; border-radius: 0 4px 4px 0; margin: 10px 0; font-size: 13px; }
+  .flow-step { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .flow-step:last-child { border-bottom: none; }
+  .step-num { width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+  .step-body { flex: 1; }
+  .step-title { font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .step-desc { color: var(--muted); font-size: 13px; }
+  h3 { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin: 14px 0 8px; }
+  p { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+  .phase-block { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; margin-bottom: 10px; }
+  .phase-title { color: var(--accent); font-size: 12px; font-weight: 700; margin-bottom: 8px; }
+  .phase-steps { list-style: none; padding: 0; }
+  .phase-steps li { color: var(--muted); font-size: 12px; padding: 3px 0; padding-left: 12px; position: relative; }
+  .phase-steps li::before { content: "›"; position: absolute; left: 0; color: var(--accent2); }
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html" class="back-link">← overview</a>
+  <h1>Codegen</h1>
+  <span class="subtitle">Stage 4 of 6 · tinygrad/codegen/</span>
+</header>
+<main>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Overview</span>
+      <span class="section-badge">pipeline</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <p>Codegen receives a single kernel AST (the SINK UOp from the scheduler) and produces a compiled PROGRAM UOp containing device-executable bytes. It does this through a sequence of graph-rewrite passes followed by linearization and rendering.</p>
+      <pre>do_to_program(ast: UOp, renderer: Renderer) -> UOp
+  │
+  ├─ full_rewrite_to_sink(ast, renderer)   # optimize + lower to indexed loops
+  │
+  ├─ do_linearize(renderer, prg, sink)     # toposort UOps for execution
+  │
+  ├─ do_render(renderer, prg, lin)         # generate source string
+  │    └─ renderer.render(uops) -> str
+  │
+  └─ do_compile(renderer, prg, source)     # compile to binary
+       └─ renderer.compiler.compile(src) -> bytes</pre>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/codegen/__init__.py#L176" target="_blank" class="ref-link">codegen/__init__.py:176 — do_to_program</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">full_rewrite_to_sink — the optimization pipeline</span>
+      <span class="section-badge">codegen/__init__.py:27</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <p>This function applies a cascade of <code>PatternMatcher</code> passes, each transforming the UOp AST closer to device-runnable code.</p>
+
+      <div class="phase-block">
+        <div class="phase-title">Phase 1 — Early movement ops</div>
+        <ul class="phase-steps">
+          <li><code>pm_mops</code>: Propagate/eliminate RESHAPE, EXPAND, PERMUTE, SHRINK through math ops</li>
+          <li><code>pm_syntactic_sugar</code>: Simplify redundant index/cast chains</li>
+          <li><code>pm_store_ranges</code>: Attach loop range info to STORE nodes</li>
+        </ul>
+      </div>
+
+      <div class="phase-block">
+        <div class="phase-title">Phase 2 — Optimization (when optimize=True)</div>
+        <ul class="phase-steps">
+          <li>Load collapse: eliminate redundant memory reads within a kernel</li>
+          <li>Range splitting: divide loops for parallelism (local/global split)</li>
+          <li>Symbolic simplification: constant-fold index arithmetic</li>
+          <li>BEAM search or hand-coded heuristics to pick best tiling/unrolling</li>
+          <li>Post-range opts: loop reordering, cache tiling</li>
+        </ul>
+      </div>
+
+      <div class="phase-block">
+        <div class="phase-title">Phase 3 — Expander</div>
+        <ul class="phase-steps">
+          <li><code>pm_pre_expander</code>: Prepare ops for vectorization/unrolling</li>
+          <li><code>pm_group_for_reduce</code>: Identify reduction groups for warp/block operations</li>
+          <li><code>expander</code>: Expand complex ops (tensor cores, vector) into constituent UOps</li>
+        </ul>
+      </div>
+
+      <div class="phase-block">
+        <div class="phase-title">Phase 4 — Local buffer &amp; range concretization</div>
+        <ul class="phase-steps">
+          <li><code>pm_add_buffers_local</code>: Insert DEFINE_LOCAL for shared memory allocations</li>
+          <li><code>rangeify_codegen</code>: Finalize RANGE/END pairs with concrete integer bounds</li>
+        </ul>
+      </div>
+
+      <div class="phase-block">
+        <div class="phase-title">Phase 5 — Devectorize &amp; lower</div>
+        <ul class="phase-steps">
+          <li><code>pm_reduce</code>: Convert REDUCE ops to explicit loop + accumulator patterns</li>
+          <li><code>pm_add_loads</code>: Insert explicit LOAD for each variable use</li>
+          <li>Devectorize passes: break vector ops into scalar instructions</li>
+          <li>Index dtype lowering: replace symbolic shapes with int32/int64</li>
+          <li>Op decomposition: rewrite ops not in <code>renderer.supported_ops</code> to equivalents</li>
+          <li>Transcendental lowering: replace sin/cos/exp2 with polynomial approximations if needed</li>
+        </ul>
+      </div>
+
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/codegen/__init__.py#L27" target="_blank" class="ref-link">codegen/__init__.py:27 — full_rewrite_to_sink</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">do_linearize — instruction ordering</span>
+      <span class="section-badge">codegen/__init__.py:132</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <p>Converts the DAG SINK back into a flat ordered list of UOps (<code>list[UOp]</code>) that a renderer can iterate over sequentially.</p>
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Topological sort with run-count priority</div>
+          <div class="step-desc">UOps inside loops execute many times. Scheduling considers multiplicity — ops inside nested loops should come after their loop RANGE nodes.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">PLACE ordering</div>
+          <div class="step-desc">Ensures control-flow structure (RANGE/END pairs, IF/ENDIF) is correct and that variable definitions precede uses.</div>
+        </div>
+      </div>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/codegen/__init__.py#L132" target="_blank" class="ref-link">codegen/__init__.py:132 — do_linearize</a>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/codegen/late/linearizer.py#L1" target="_blank" class="ref-link">codegen/late/linearizer.py</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">do_render &amp; do_compile</span>
+      <span class="section-badge">codegen/__init__.py:155–170</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="flow-step">
+        <div class="step-num">R</div>
+        <div class="step-body">
+          <div class="step-title">do_render</div>
+          <div class="step-desc">Calls <code>renderer.render(uops_list)</code>, which walks the linearized list and emits the device-specific source string (C, PTX, WGSL, Metal, LLVM IR, etc.).</div>
+          <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/codegen/__init__.py#L155" target="_blank" class="ref-link">codegen/__init__.py:155 — do_render</a>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">C</div>
+        <div class="step-body">
+          <div class="step-title">do_compile</div>
+          <div class="step-desc">Calls <code>renderer.compiler.compile_cached(source)</code>, which invokes the device compiler (nvrtc for CUDA, Metal compiler for Metal, LLVM for CPU…) and returns the compiled binary bytes as a <code>BINARY</code> UOp.</div>
+          <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/codegen/__init__.py#L160" target="_blank" class="ref-link">codegen/__init__.py:160 — do_compile</a>
+        </div>
+      </div>
+      <div class="note">Compilation results are cached by source hash in <code>Compiler.compile_cached()</code>, so identical kernels (same ops, same shapes) are only compiled once per device per process.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Transformation example: a simple elementwise kernel</span>
+      <span class="section-badge">walkthrough</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <pre># Input AST (from scheduler):
+SINK(
+  STORE(BUFFER(out, shape=(1024,)),
+        ADD(LOAD(BUFFER(a, shape=(1024,))),
+            LOAD(BUFFER(b, shape=(1024,)))))
+)
+
+# After full_rewrite_to_sink:
+SINK(
+  RANGE(i, 0, 1024) ─────────────────────────────┐
+    STORE(INDEX(BUFFER(out), i),                  │
+          ADD(LOAD(INDEX(BUFFER(a), i)),           │
+              LOAD(INDEX(BUFFER(b), i))))          │
+  END(RANGE) ◄──────────────────────────────────┘
+)
+
+# After linearize: flat list
+[RANGE(i,0,1024), LOAD(a[i]), LOAD(b[i]), ADD, STORE(out[i]), END]
+
+# After render (OpenCL C example):
+"""
+kernel void r_1024(global float* out, global float* a, global float* b) {
+  int i = get_global_id(0);
+  out[i] = a[i] + b[i];
+}
+"""
+
+# After compile: bytes of .ptx / .metallib / .so etc.</pre>
+    </div>
+  </div>
+
+</main>
+<script>
+function toggle(header) {
+  const body = header.nextElementSibling;
+  const arrow = header.querySelector('.toggle');
+  const isOpen = !body.classList.contains('collapsed');
+  if (isOpen) { body.classList.add('collapsed'); arrow.classList.remove('open'); }
+  else { body.classList.remove('collapsed'); arrow.classList.add('open'); }
+}
+</script>
+</body>
+</html>

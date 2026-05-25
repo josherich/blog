@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prometheus Data Flow — PromQL Engine</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav>
+  <span class="nav-brand">Prometheus</span>
+  <a href="index.html">Overview</a>
+  <a href="scrape.html">Scrape</a>
+  <a href="tsdb.html">TSDB</a>
+  <a href="remote-write.html">Remote Write</a>
+  <a href="query.html" class="active">PromQL</a>
+  <a href="alerting.html">Alerting</a>
+</nav>
+
+<main>
+  <div class="page-header">
+    <h1>PromQL Query Engine</h1>
+    <p>How a PromQL expression is parsed, planned, and evaluated against the TSDB to produce a result vector or matrix.</p>
+  </div>
+
+  <!-- Query flow diagram -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">🗺</span> Query Execution Flow</summary>
+    <div class="section-body">
+      <div class="flow-diagram">
+        <pre>
+  HTTP GET /api/v1/query?query=rate(http_requests_total[5m])&time=...
+        │
+        ▼
+  ┌─────────────────────────────────────────────────────────────┐
+  │                  web/api/v1/api.go                          │
+  │  queryHandler → engine.NewInstantQuery(queryable, expr, t)  │
+  └──────────────────────────┬──────────────────────────────────┘
+                             │
+                             ▼
+  ┌─────────────────────────────────────────────────────────────┐
+  │                   promql.Engine                             │  promql/engine.go:348
+  │                                                             │
+  │  1. parser.ParseExpr(exprStr)  →  AST                       │
+  │  2. Validate AST (functions, types)                         │
+  │  3. activeQueryTracker.Insert()  (concurrency limit)        │
+  │  4. newEvalNodeHelper per-step                              │
+  └──────────────────────────┬──────────────────────────────────┘
+                             │
+                             ▼
+  ┌─────────────────────────────────────────────────────────────┐
+  │                    evaluator.eval(AST)                      │
+  │                                                             │
+  │  Walk AST nodes recursively:                                │
+  │  • VectorSelector  → select from storage                   │
+  │  • MatrixSelector  → select range from storage             │
+  │  • BinaryExpr      → join two vectors (label matching)     │
+  │  • AggregateExpr   → sum/avg/topk/… over label sets        │
+  │  • Call (function) → rate/increase/histogram_quantile/…    │
+  └──────────────────────────┬──────────────────────────────────┘
+                             │  (for each VectorSelector)
+                             ▼
+  ┌─────────────────────────────────────────────────────────────┐
+  │                 storage.Querier.Select()                    │
+  │                                                             │
+  │  FanoutQuerier fans reads across:                           │
+  │  • headQuerier  (in-memory Head block)                      │
+  │  • blockQueriers[] (one per on-disk Block in time range)    │
+  └──────────────────────────┬──────────────────────────────────┘
+                             │  SeriesSet
+                             ▼
+  ┌────────────────────┐    ┌────────────────────────────────────┐
+  │   headQuerier      │    │      blockQuerier                  │
+  │   tsdb/head_read.go│    │      tsdb/querier.go               │
+  │                    │    │                                    │
+  │ • stripeSeries map │    │ • index.Reader (postings search)   │
+  │ • memChunks        │    │ • chunks.Reader (decompress)       │
+  └────────────────────┘    └────────────────────────────────────┘
+                             │  []chunks.Meta → Iterator
+                             ▼
+                    XOR-decode samples at each step timestamp
+                             │
+                             ▼
+                       *Result{Value, Err}
+                    (Scalar | Vector | Matrix | String)</pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- Engine struct -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">⚙</span> Engine — Configuration &amp; Limits</summary>
+    <div class="section-body">
+      <div class="code-header">
+        <span class="code-label">promql/engine.go — Engine struct</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/promql/engine.go#L348" target="_blank">L348</a>
+      </div>
+      <pre class="code-block">type Engine struct {
+    logger             *slog.Logger
+    timeout            time.Duration     // max query duration
+    maxSamplesPerQuery int               // OOM guard
+    lookbackDelta      time.Duration     // default 5m
+
+    activeQueryTracker QueryTracker      // cap on concurrent queries
+    queryLogger        QueryLogger       // slow query log
+
+    noStepSubqueryIntervalFn func(rangeMillis int64) int64
+    enableAtModifier         bool        // @timestamp modifier
+    enableNegativeOffset     bool        // offset -5m
+    enablePerStepStats       bool        // per-step sample counts
+    enableDelayedNameRemoval bool        // __name__ removal timing
+    enableTypeAndUnitLabels  bool        // unit/type label propagation
+    parser                   parser.Parser
+}</pre>
+
+      <h3>Key Engine Options</h3>
+      <table class="props">
+        <thead><tr><th>Option</th><th>Default</th><th>Guards against</th></tr></thead>
+        <tbody>
+          <tr><td>timeout</td><td>2m</td><td>Long-running query denial-of-service</td></tr>
+          <tr><td>maxSamplesPerQuery</td><td>50 000 000</td><td>OOM from huge result sets</td></tr>
+          <tr><td>lookbackDelta</td><td>5m</td><td>Stale series extrapolation window</td></tr>
+          <tr><td>maxConcurrentQueries</td><td>20</td><td>CPU saturation from concurrent queries</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <!-- Parsing & AST -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">🌳</span> Parsing — PromQL AST</summary>
+    <div class="section-body">
+      <p>The PromQL lexer and parser live in <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/promql/parser" target="_blank">promql/parser</a>. The parser produces an <code>Expr</code> interface value representing the AST.</p>
+
+      <div class="code-header">
+        <span class="code-label">promql/parser/ast.go — key Expr types</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/promql/parser/ast.go" target="_blank">ast.go</a>
+      </div>
+      <pre class="code-block">// Example: rate(http_requests_total{job="api"}[5m])
+//
+// AST:
+//   Call{
+//     Func: "rate",
+//     Args: [
+//       MatrixSelector{
+//         VectorSelector{
+//           Name: "http_requests_total",
+//           LabelMatchers: [{job="api"}],
+//         },
+//         Range: 5m,
+//       }
+//     ]
+//   }
+
+type VectorSelector struct {
+    Name           string
+    LabelMatchers  []*labels.Matcher
+    Offset         time.Duration
+    Timestamp      *int64           // @modifier
+    StartOrEnd     ItemType
+    Series         []storage.Series // populated during eval
+    ...
+}
+
+type BinaryExpr struct {
+    Op       ItemType          // +, -, *, /, ==, and, or, …
+    LHS, RHS Expr
+    VectorMatching *VectorMatching
+    ReturnBool bool
+}
+
+type AggregateExpr struct {
+    Op       ItemType          // sum, avg, topk, count, …
+    Expr     Expr
+    Grouping []string          // by/without label list
+    Without  bool
+    Param    Expr              // for topk(N, …) etc.
+}</pre>
+    </div>
+  </details>
+
+  <!-- Storage Select -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">🔎</span> Storage Select — Index Lookup <span class="tag tag-read">read</span></summary>
+    <div class="section-body">
+      <p>A <code>VectorSelector</code> is resolved by calling <code>querier.Select()</code>. The fanout querier merges results from all blocks that overlap the query time range.</p>
+
+      <div class="code-header">
+        <span class="code-label">tsdb/querier.go — blockQuerier.Select()</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/tsdb/querier.go" target="_blank">querier.go</a>
+      </div>
+      <pre class="code-block">// Label matcher lookup in the inverted index:
+//  1. For each Matcher, call indexReader.Postings(name, value)
+//     → returns a sorted list of series references (posting list)
+//  2. AND matchers → Intersect(postings...)
+//  3. OR matchers  → Merge(postings...)
+//  4. NOT matchers → subtract via AllPostings() \ match
+//  5. Iterate refs → load labels from index
+//  6. Return as SeriesSet (lazy; chunks loaded on iteration)</pre>
+
+      <h3>Index Structure</h3>
+      <pre class="code-block">tsdb/index/index.go — Reader / Writer
+
+Block index file layout:
+  ┌─────────────────────────────────────────────┐
+  │  Symbol table  (label names + values)       │
+  │  Series table  (ref → labels + chunk metas) │
+  │  Postings      (label=value → []seriesRef)  │
+  │  Postings offset table                      │
+  │  TOC           (offsets of above sections)  │
+  └─────────────────────────────────────────────┘</pre>
+
+      <p>Implementation: <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/tsdb/index/index.go" target="_blank">tsdb/index/index.go</a></p>
+    </div>
+  </details>
+
+  <!-- Chunk reading -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">📦</span> Chunk Reading &amp; Decoding</summary>
+    <div class="section-body">
+      <p>Once series references are resolved, the evaluator iterates their chunks for the query time range.</p>
+
+      <div class="code-header">
+        <span class="code-label">tsdb/chunkenc/xor.go — XorIterator</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/tsdb/chunkenc/xor.go" target="_blank">xor.go</a>
+      </div>
+      <pre class="code-block">// ChunkedSeriesIterator iterates chunks for a series:
+for _, meta := range series.chunks {
+    if meta.MaxTime < mint || meta.MinTime > maxt {
+        continue  // skip chunks outside time range
+    }
+    chk, err := chunkReader.Chunk(meta)
+    it := chk.Iterator(reuse)   // XOR decoder
+    for it.Next() == chunkenc.ValFloat {
+        ts, val := it.At()      // decode next (t, v) pair
+        // feed into evaluator matrix
+    }
+}</pre>
+
+      <h3>Iterator Value Types</h3>
+      <table class="props">
+        <thead><tr><th>ValType</th><th>Method</th><th>Data</th></tr></thead>
+        <tbody>
+          <tr><td>ValFloat</td><td>At()</td><td>(int64 ts, float64 v)</td></tr>
+          <tr><td>ValHistogram</td><td>AtHistogram()</td><td>(int64 ts, *histogram.Histogram)</td></tr>
+          <tr><td>ValFloatHistogram</td><td>AtFloatHistogram()</td><td>(int64 ts, *histogram.FloatHistogram)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <!-- Evaluation -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">🧮</span> Expression Evaluation</summary>
+    <div class="section-body">
+      <p>The evaluator walks the AST bottom-up. At each step timestamp it evaluates each node:</p>
+
+      <div class="code-header">
+        <span class="code-label">promql/engine.go — evaluator.eval() dispatch</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/promql/engine.go" target="_blank">engine.go</a>
+      </div>
+      <pre class="code-block">func (ev *evaluator) eval(ctx context.Context, expr parser.Expr) (parser.Value, annotations.Annotations) {
+    switch e := expr.(type) {
+
+    case *parser.AggregateExpr:
+        // Evaluate inner expression, then group + aggregate.
+        return ev.evalAggregation(ctx, e)
+
+    case *parser.Call:
+        // Evaluate arguments, then call registered function.
+        // e.g. "rate" → functions.FuncRate
+        return ev.evalCall(ctx, e)
+
+    case *parser.BinaryExpr:
+        // Evaluate LHS + RHS, then vector matching + binary op.
+        return ev.evalBinaryExpr(ctx, e)
+
+    case *parser.VectorSelector:
+        // Already pre-populated with series; sample lookup by timestamp.
+        return ev.evalVectorSelector(ctx, e, ...)
+
+    case *parser.MatrixSelector:
+        // Return a matrix (series → []sample window).
+        return ev.evalMatrixSelector(ctx, e, ...)
+    }
+}</pre>
+
+      <h3>rate() / increase() Function</h3>
+      <pre class="code-block">// rate(v[d]) = extrapolated per-second increase over window d.
+// Implemented in: promql/functions.go — funcRate()
+//
+// Algorithm:
+//  1. Take samples in [t-d, t] from the range vector.
+//  2. Compute (last - first) considering counter resets.
+//  3. Extrapolate to exact window boundaries.
+//  4. Divide by window duration in seconds.</pre>
+
+      <p>Function registry: <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/promql/functions.go" target="_blank">promql/functions.go</a></p>
+    </div>
+  </details>
+
+  <!-- Result types -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">📤</span> Result Types</summary>
+    <div class="section-body">
+      <table class="props">
+        <thead><tr><th>Type</th><th>PromQL produces</th><th>API resultType</th></tr></thead>
+        <tbody>
+          <tr><td>Vector</td><td>instant query on metric selector or aggregation</td><td>"vector"</td></tr>
+          <tr><td>Matrix</td><td>range query, or any expression with range selector</td><td>"matrix"</td></tr>
+          <tr><td>Scalar</td><td>numeric literal or scalar() function</td><td>"scalar"</td></tr>
+          <tr><td>String</td><td>label("name", selector) etc.</td><td>"string"</td></tr>
+        </tbody>
+      </table>
+
+      <div class="code-header">
+        <span class="code-label">promql/value.go — result structs</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/promql/value.go" target="_blank">value.go</a>
+      </div>
+      <pre class="code-block">// Vector — instant query result
+type Vector []Sample      // one Sample per matching series
+
+type Sample struct {
+    Metric labels.Labels
+    T      int64
+    F      float64
+    H      *histogram.FloatHistogram
+}
+
+// Matrix — range query result
+type Matrix []Series
+
+type Series struct {
+    Metric  labels.Labels
+    Floats  []FPoint        // (t, float64) pairs
+    Histograms []HPoint     // (t, *FloatHistogram) pairs
+}</pre>
+    </div>
+  </details>
+
+  <!-- lookback delta -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">⏱</span> Staleness &amp; lookbackDelta</summary>
+    <div class="section-body">
+      <p>For an instant query at time <code>t</code>, a series must have a sample in <code>(t - lookbackDelta, t]</code> (default 5 min) to appear in the result. This prevents showing stale gauge values from targets that went away.</p>
+      <div class="callout callout-info">
+        <code>lookbackDelta</code> can be overridden globally (<code>--query.lookback-delta</code>) or per-query via the <code>lookback_delta</code> query parameter. Range selectors use their explicit window instead.
+      </div>
+      <div class="callout callout-warn">
+        The stale marker (special NaN written by the scrape loop) makes a series immediately invisible regardless of <code>lookbackDelta</code> — it short-circuits the window check.
+      </div>
+    </div>
+  </details>
+
+</main>
+</body>
+</html>

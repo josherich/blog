@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQLite — Tokenizer</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <span class="brand">SQLite Internals</span>
+  <a href="index.html">Overview</a>
+  <a href="tokenizer.html" class="active">Tokenizer</a>
+  <a href="parser.html">Parser</a>
+  <a href="codegen.html">Code Gen</a>
+  <a href="vdbe.html">VDBE</a>
+  <a href="btree.html">B-Tree</a>
+  <a href="pager.html">Pager</a>
+  <a href="os.html">OS Layer</a>
+</nav>
+
+<main>
+  <div class="page-title">Stage 1 — Tokenizer</div>
+  <div class="page-subtitle">tokenize.c — Breaks SQL text into a stream of typed tokens for the parser</div>
+
+  <div class="card">
+    <details open>
+      <summary>What the Tokenizer Does</summary>
+      <div class="card-body">
+        <p>The tokenizer is a hand-coded deterministic finite automaton (DFA) in <code>tokenize.c</code>. It scans the SQL string one character at a time and classifies each lexeme into a token type constant (e.g. <code>TK_SELECT</code>, <code>TK_ID</code>, <code>TK_INTEGER</code>).</p>
+        <p>Unlike a separate lex pass, SQLite's tokenizer is <strong>tightly coupled to the parser</strong>: <code>sqlite3RunParser()</code> owns both. It tokenizes incrementally — each call to <code>sqlite3GetToken()</code> returns exactly one token, which is immediately fed to the LEMON parser engine.</p>
+        <div class="callout">
+          <strong>Design choice:</strong> The tokenizer and parser run in a single pass. There is no separate tokenization phase that builds a token list. This minimizes memory allocation.
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Key Functions</summary>
+      <div class="card-body">
+        <div class="fn-list">
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/tokenize.c#L600" target="_blank">sqlite3RunParser <span class="file-loc">tokenize.c:600</span></a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/tokenize.c#L273" target="_blank">sqlite3GetToken <span class="file-loc">tokenize.c:273</span></a>
+        </div>
+
+        <div class="pre-label">tokenize.c:600 — sqlite3RunParser: drives the tokenize+parse loop</div>
+        <pre>int sqlite3RunParser(Parse *pParse, const char *zSql){
+  int nErr = 0;
+  void *pEngine;               /* LEMON-generated LALR(1) parser */
+  i64 n = 0;                   /* Length of the next token */
+  int tokenType;               /* type of the next token */
+  int lastTokenParsed = -1;    /* type of the previous token */
+  sqlite3 *db = pParse->db;
+
+  pParse->rc = SQLITE_OK;
+  pParse->zTail = zSql;
+
+  /* Allocate (or reuse) the LEMON parser object */
+  pEngine = sqlite3ParserAlloc(sqlite3Malloc, pParse);
+
+  /* ── Main tokenization loop ── */
+  do {
+    n = sqlite3GetToken((u8*)zSql, &tokenType); /* classify next token */
+
+    if( tokenType==TK_ILLEGAL ) { nErr++; break; }
+    if( tokenType==TK_SEMI )    { pParse->zTail = &zSql[1]; }
+
+    sqlite3Parser(pEngine, tokenType,      /* feed token to LALR engine */
+                  pParse->sLastToken, pParse);
+
+    lastTokenParsed = tokenType;
+    zSql += n;                            /* advance pointer past token */
+  } while( tokenType!=TK_EOF && pParse->rc==SQLITE_OK );
+
+  sqlite3ParserFree(pEngine, sqlite3_free);
+  return nErr;
+}</pre>
+
+        <div class="pre-label">tokenize.c:273 — sqlite3GetToken: DFA that classifies one lexeme</div>
+        <pre>i64 sqlite3GetToken(const unsigned char *z, int *tokenType){
+  int i, c;
+  switch( aiClass[*z] ){         /* aiClass is a 256-entry lookup table */
+
+    case CC_SPACE:               /* whitespace */
+      for(i=1; sqlite3Isspace(z[i]); i++){}
+      *tokenType = TK_SPACE;
+      return i;
+
+    case CC_MINUS:               /* "-" or "-- comment" */
+      if( z[1]=='-' ){
+        for(i=2; z[i] && z[i]!='\n'; i++){}
+        *tokenType = TK_SPACE;   /* comments become whitespace */
+        return i;
+      }
+      *tokenType = TK_MINUS;
+      return 1;
+
+    case CC_ALPHA: {             /* keyword or identifier */
+      for(i=1; (c=z[i])!=0 && (aiClass[c]==CC_ALPHA
+                             || aiClass[c]==CC_DIGIT); i++){}
+      /* sqlite3KeywordCode() maps the text to TK_SELECT etc. */
+      *tokenType = sqlite3KeywordCode(z, i);
+      return i;
+    }
+
+    case CC_DIGIT:               /* numeric literal */
+      ...
+      *tokenType = TK_INTEGER;
+      return i;
+
+    /* ... many more character classes ... */
+  }
+}</pre>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Token Types</summary>
+      <div class="card-body">
+        <p>Every token has an integer type constant defined in <code>parse.h</code> (auto-generated by LEMON from <code>parse.y</code>). The tokenizer maps character sequences to these constants via the <code>aiClass[]</code> lookup table and the <code>sqlite3KeywordCode()</code> function (generated in <code>keywordhash.h</code>).</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Token constant</th><th>Matches</th></tr></thead>
+            <tbody>
+              <tr><td><code>TK_SELECT</code></td><td>keyword <code>SELECT</code></td></tr>
+              <tr><td><code>TK_FROM</code></td><td>keyword <code>FROM</code></td></tr>
+              <tr><td><code>TK_WHERE</code></td><td>keyword <code>WHERE</code></td></tr>
+              <tr><td><code>TK_ID</code></td><td>unquoted identifier (table/column name)</td></tr>
+              <tr><td><code>TK_STRING</code></td><td>single-quoted string literal <code>'text'</code></td></tr>
+              <tr><td><code>TK_INTEGER</code></td><td>numeric integer literal <code>42</code></td></tr>
+              <tr><td><code>TK_FLOAT</code></td><td>floating point literal <code>3.14</code></td></tr>
+              <tr><td><code>TK_BLOB</code></td><td>hex blob literal <code>X'ABCD'</code></td></tr>
+              <tr><td><code>TK_SEMI</code></td><td>statement terminator <code>;</code></td></tr>
+              <tr><td><code>TK_EOF</code></td><td>end of input</td></tr>
+              <tr><td><code>TK_SPACE</code></td><td>whitespace / comments (skipped by parser)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>Keywords are detected by <code>sqlite3KeywordCode()</code>, which uses a <strong>perfect hash</strong> generated by <code>mkkeywordhash.c</code> — no string comparison loop needed.</p>
+
+        <div class="fn-list">
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/tool/mkkeywordhash.c" target="_blank">mkkeywordhash.c <span class="file-loc">tool/</span></a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/tokenize.c#L1" target="_blank">tokenize.c <span class="file-loc">full file</span></a>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Token Flow Example</summary>
+      <div class="card-body">
+        <p>For the SQL <code>SELECT name FROM users WHERE id = 1</code>, the tokenizer emits:</p>
+        <pre>TK_SELECT  "SELECT"
+TK_ID      "name"
+TK_FROM    "FROM"
+TK_ID      "users"
+TK_WHERE   "WHERE"
+TK_ID      "id"
+TK_EQ      "="
+TK_INTEGER "1"
+TK_EOF</pre>
+        <p>Each token is fed immediately to <code>sqlite3Parser()</code> (the LEMON engine) which reduces grammar rules as they complete.</p>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Next Stage</summary>
+      <div class="card-body">
+        <p>Each token emitted here is consumed by the LEMON LALR(1) parser. The parser builds AST nodes (like <code>Select</code>, <code>Expr</code>) by firing grammar rule actions.</p>
+        <div class="fn-list">
+          <a class="fn-ref" href="parser.html">→ Parser (parse.y)</a>
+        </div>
+      </div>
+    </details>
+  </div>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>pooltool — Physics Resolution</title>
+<style>
+  :root {
+    --bg: #0f1117; --surface: #1a1d27; --surface2: #22263a;
+    --border: #2e3350; --accent: #5b8af5; --accent2: #7c6af5;
+    --green: #4caf7d; --orange: #f5a623; --red: #e85c5c;
+    --text: #e0e4f0; --muted: #7a82a8; --code-bg: #12151f;
+    --radius: 8px;
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.6; }
+  nav {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 12px 20px; position: sticky; top: 0; z-index: 100;
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  }
+  nav .brand { font-weight: 700; font-size: 15px; color: var(--accent); margin-right: 8px; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 13px; padding: 4px 10px; border-radius: 5px; transition: all 0.15s; }
+  nav a:hover, nav a.active { background: var(--surface2); color: var(--text); }
+  nav a.active { color: var(--red); }
+  .container { max-width: 860px; margin: 0 auto; padding: 28px 20px 60px; }
+  h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
+  h2 { font-size: 19px; font-weight: 600; margin: 36px 0 12px; color: var(--red); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  h3 { font-size: 14px; font-weight: 600; margin: 16px 0 8px; color: var(--orange); }
+  p { color: #b0b8d8; margin-bottom: 10px; font-size: 14px; }
+  .subtitle { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
+  a.gh { font-family: var(--mono); font-size: 11px; color: var(--accent); text-decoration: none; border-bottom: 1px dashed var(--border); }
+  a.gh:hover { border-color: var(--accent); }
+  details { margin: 10px 0; }
+  summary {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 10px 14px; cursor: pointer; font-size: 13px; font-weight: 600;
+    list-style: none; display: flex; align-items: center; gap: 8px; user-select: none;
+  }
+  summary:hover { border-color: var(--red); }
+  details[open] summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom: none; }
+  summary::before { content: '▶'; font-size: 10px; color: var(--muted); transition: transform 0.15s; flex-shrink: 0; }
+  details[open] summary::before { transform: rotate(90deg); }
+  .details-body {
+    background: var(--code-bg); border: 1px solid var(--border); border-top: none;
+    border-bottom-left-radius: var(--radius); border-bottom-right-radius: var(--radius);
+    padding: 16px;
+  }
+  pre { font-family: var(--mono); font-size: 12.5px; line-height: 1.55; color: #cdd6f4; white-space: pre; overflow-x: auto; }
+  .kw { color: #cba6f7; } .fn { color: #89b4fa; } .cls { color: #a6e3a1; }
+  .str { color: #a6e3a1; } .cm { color: #6c7086; font-style: italic; }
+  .num { color: #fab387; } .dec { color: #f38ba8; } .tp { color: #94e2d5; }
+  .section-intro { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 14px; }
+  .section-intro p { margin: 0; }
+  .inset { background: var(--surface2); border-left: 3px solid var(--red); border-radius: 0 var(--radius) var(--radius) 0; padding: 10px 14px; margin: 10px 0; font-size: 13px; color: #8892b0; }
+  .inset.orange { border-left-color: var(--orange); }
+  .inset.green { border-left-color: var(--green); }
+  .strategy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 14px 0; }
+  .strategy-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; }
+  .strategy-card .cat { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 4px; }
+  .strategy-card .name { font-size: 13px; font-weight: 600; color: var(--red); margin-bottom: 4px; }
+  .strategy-card .desc { font-size: 12px; color: #8892b0; }
+  .strategy-card .is-default { display: inline-block; font-size: 10px; background: rgba(76,175,125,0.15); color: var(--green); border: 1px solid var(--green); border-radius: 3px; padding: 1px 5px; margin-top: 5px; }
+  .attr-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 10px 0; }
+  .attr-table th { text-align: left; color: var(--muted); font-weight: 500; padding: 6px 10px; border-bottom: 1px solid var(--border); font-size: 11px; text-transform: uppercase; }
+  .attr-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .attr-table tr:last-child td { border-bottom: none; }
+  .attr-table td:first-child { font-family: var(--mono); color: var(--accent); font-size: 12px; }
+  .attr-table td:nth-child(3) { color: #8892b0; }
+  @media (max-width: 600px) { h1 { font-size: 20px; } }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">pooltool</span>
+  <a href="index.html">Overview</a>
+  <a href="system.html">Data Models</a>
+  <a href="simulation.html">Simulation</a>
+  <a href="detection.html">Detection</a>
+  <a href="resolution.html" class="active">Resolution</a>
+  <a href="visualization.html">Visualization</a>
+</nav>
+
+<div class="container">
+  <h1>Physics Resolution</h1>
+  <p class="subtitle">Applying collision models to update ball velocities and spin after each detected event.</p>
+
+  <!-- ── RESOLVER ──────────────────────────────────────── -->
+  <h2>Resolver — strategy dispatcher</h2>
+  <p><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/physics/resolve/resolver.py#L98" target="_blank">pooltool/physics/resolve/resolver.py:98</a></p>
+
+  <div class="section-intro">
+    <p><code>Resolver</code> is a plain dataclass. Each field holds the strategy object for one event category. When <code>resolve(event)</code> is called, it reads <code>event.event_type</code> and delegates to the right strategy. Strategies are swappable — pass a custom <code>SimulationEngine</code> to override any of them.</p>
+  </div>
+
+  <details open>
+    <summary>Resolver — field layout and dispatch</summary>
+    <div class="details-body">
+<pre><span class="cm"># pooltool/physics/resolve/resolver.py:98</span>
+<span class="kw">@dataclass</span>
+<span class="kw">class</span> <span class="cls">Resolver</span>:
+    ball_ball:             BallBallCollisionStrategy
+    ball_linear_cushion:   BallLCushionCollisionStrategy
+    ball_circular_cushion: BallCCushionCollisionStrategy
+    ball_pocket:           BallPocketStrategy
+    stick_ball:            StickBallCollisionStrategy
+    ball_table:            BallTableCollisionStrategy  <span class="cm"># 3D only</span>
+    transition:            BallTransitionStrategy
+
+    <span class="kw">def</span> <span class="fn">resolve</span>(self, event: Event, shot: System) -&gt; <span class="kw">None</span>:  <span class="cm"># line 116</span>
+        <span class="kw">match</span> event.event_type:
+            <span class="kw">case</span> EventType.BALL_BALL:
+                self.ball_ball.resolve(event, shot)
+            <span class="kw">case</span> EventType.BALL_LINEAR_CUSHION:
+                self.ball_linear_cushion.resolve(event, shot)
+            <span class="kw">case</span> EventType.BALL_CIRCULAR_CUSHION:
+                self.ball_circular_cushion.resolve(event, shot)
+            <span class="kw">case</span> EventType.BALL_POCKET:
+                self.ball_pocket.resolve(event, shot)
+            <span class="kw">case</span> EventType.STICK_BALL:
+                self.stick_ball.resolve(event, shot)
+            <span class="kw">case</span> _:  <span class="cm"># transitions</span>
+                self.transition.resolve(event, shot)</pre>
+    </div>
+  </details>
+
+  <!-- ── STRATEGIES TABLE ───────────────────────────────── -->
+  <h2>Available strategies</h2>
+
+  <div class="strategy-grid">
+    <div class="strategy-card">
+      <div class="cat">Ball–Ball</div>
+      <div class="name">FrictionalInelastic</div>
+      <div class="desc">Accounts for friction during contact. Realistic for billiards. Default.</div>
+      <span class="is-default">default</span>
+    </div>
+    <div class="strategy-card">
+      <div class="cat">Ball–Ball</div>
+      <div class="name">FrictionalMathavan</div>
+      <div class="desc">Mathavan 2010 model — alternative friction treatment with different spin transfer.</div>
+    </div>
+    <div class="strategy-card">
+      <div class="cat">Ball–Ball</div>
+      <div class="name">FrictionlessElastic</div>
+      <div class="desc">Simple elastic collision. No spin transfer. Fast but less realistic.</div>
+    </div>
+    <div class="strategy-card">
+      <div class="cat">Ball–Cushion</div>
+      <div class="name">StrongeCompliant</div>
+      <div class="desc">Compliant contact model (Stronge). Models cushion deformation. Default.</div>
+      <span class="is-default">default</span>
+    </div>
+    <div class="strategy-card">
+      <div class="cat">Ball–Cushion</div>
+      <div class="name">Han2005</div>
+      <div class="desc">Alternative cushion model. Different normal/tangential restitution.</div>
+    </div>
+    <div class="strategy-card">
+      <div class="cat">Ball–Cushion</div>
+      <div class="name">Mathavan2010</div>
+      <div class="desc">Physics-based cushion with friction. Published by Mathavan et al.</div>
+    </div>
+    <div class="strategy-card">
+      <div class="cat">Ball–Cushion</div>
+      <div class="name">ImpulseFrictional</div>
+      <div class="desc">Impulse-based model with Coulomb friction. Alternative formulation.</div>
+    </div>
+    <div class="strategy-card">
+      <div class="cat">Stick–Ball</div>
+      <div class="name">InstantaneousPoint2D</div>
+      <div class="desc">Treats cue-tip contact as an instantaneous off-center impulse. Default.</div>
+      <span class="is-default">default</span>
+    </div>
+    <div class="strategy-card">
+      <div class="cat">Pocket</div>
+      <div class="name">CanonicalBallPocket</div>
+      <div class="desc">Sets ball state to <code>pocketed</code> and zeroes velocity. Simple removal.</div>
+      <span class="is-default">default</span>
+    </div>
+    <div class="strategy-card">
+      <div class="cat">Transition</div>
+      <div class="name">CanonicalTransition</div>
+      <div class="desc">Updates motion state label and adjusts <code>rvw</code> to exactly satisfy the transition condition.</div>
+      <span class="is-default">default</span>
+    </div>
+  </div>
+
+  <!-- ── STICK-BALL ────────────────────────────────────── -->
+  <h2>Stick–ball resolution — impulse mechanics</h2>
+  <p><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/physics/resolve/stick_ball/" target="_blank">pooltool/physics/resolve/stick_ball/</a></p>
+
+  <details open>
+    <summary>InstantaneousPoint2D — converting strike params to initial rvw</summary>
+    <div class="details-body">
+<pre><span class="cm"># The cue strikes the ball with speed V0 at tip offset (a, b)</span>
+<span class="cm"># relative to the ball center. The impulse is decomposed into:</span>
+<span class="cm">#   - center-of-mass linear velocity  v = f(V0, theta, phi, a, b, ...)</span>
+<span class="cm">#   - angular velocity                w = f(V0, theta, phi, a, b, R, M_cue, m_ball, ...)</span>
+<span class="cm">#</span>
+<span class="cm"># With offset a=0, b=0: ball slides with no spin → transitions to rolling.</span>
+<span class="cm"># With b>0 (high contact): topspin → accelerates toward rolling faster.</span>
+<span class="cm"># With b<0 (low contact): backspin → stun/draw shot.</span>
+<span class="cm"># With a≠0: sidespin (english) → curve on cushion rebound.</span>
+<span class="cm">#</span>
+<span class="cm"># After resolution, the ball is set to SLIDING state.</span>
+<span class="cm"># squirt.py computes the small angle deflection from sidespin (squirt effect).</span></pre>
+      <div class="inset orange"><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/physics/resolve/stick_ball/instantaneous_point/" target="_blank">stick_ball/instantaneous_point/</a> — core impulse model &nbsp;·&nbsp; <a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/physics/resolve/stick_ball/squirt.py" target="_blank">squirt.py</a> — sidespin deflection</div>
+    </div>
+  </details>
+
+  <!-- ── BALL-BALL ─────────────────────────────────────── -->
+  <h2>Ball–ball resolution — frictional inelastic</h2>
+  <p><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/physics/resolve/ball_ball/core.py" target="_blank">pooltool/physics/resolve/ball_ball/core.py</a></p>
+
+  <details open>
+    <summary>FrictionalInelastic — collision impulse model</summary>
+    <div class="details-body">
+<pre><span class="cm"># At the moment of collision, ball centers are separated by exactly (R1+R2).</span>
+<span class="cm"># The collision normal n̂ points from ball 2 center to ball 1 center.</span>
+<span class="cm">#</span>
+<span class="cm"># FrictionalInelastic computes:</span>
+<span class="cm">#   1. Relative contact-point velocity (includes angular contribution)</span>
+<span class="cm">#   2. Normal impulse J_n = -(1 + e_n) * (relative_vel · n̂) / (1/m1 + 1/m2)</span>
+<span class="cm">#      where e_n is the coefficient of restitution</span>
+<span class="cm">#   3. Tangential impulse limited by Coulomb friction: |J_t| ≤ μ * |J_n|</span>
+<span class="cm">#   4. Apply impulse to both balls: Δv = J/m, Δω = R×J / I</span>
+<span class="cm">#</span>
+<span class="cm"># Both balls re-enter SLIDING state after the collision.</span></pre>
+      <div class="inset"><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/physics/resolve/ball_ball/core.py" target="_blank">ball_ball/core.py</a></div>
+    </div>
+  </details>
+
+  <!-- ── CUSHION ───────────────────────────────────────── -->
+  <h2>Ball–cushion resolution — compliant contact</h2>
+  <p><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/physics/resolve/ball_cushion/" target="_blank">pooltool/physics/resolve/ball_cushion/</a></p>
+
+  <details open>
+    <summary>Stronge compliant model — default cushion strategy</summary>
+    <div class="details-body">
+<pre><span class="cm"># The Stronge (2000) energetic restitution model:</span>
+<span class="cm">#</span>
+<span class="cm"># Unlike a simple coefficient-of-restitution bounce, the Stronge model</span>
+<span class="cm"># integrates the contact dynamics over the compression/restitution phases.</span>
+<span class="cm"># This naturally handles the coupling between normal and tangential</span>
+<span class="cm"># (friction) forces during the bounce, producing realistic spin transfer.</span>
+<span class="cm">#</span>
+<span class="cm"># Key parameters:</span>
+<span class="cm">#   e_c   — coefficient of restitution (normal, ~0.85 for billiard rubber)</span>
+<span class="cm">#   mu_c  — cushion friction coefficient</span>
+<span class="cm">#   theta_c — cushion nose angle</span>
+<span class="cm">#</span>
+<span class="cm"># After the cushion bounce, ball re-enters SLIDING state.</span></pre>
+      <div class="inset"><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/physics/resolve/ball_cushion/stronge_compliant/" target="_blank">ball_cushion/stronge_compliant/</a></div>
+    </div>
+  </details>
+
+  <!-- ── TRANSITION ───────────────────────────────────── -->
+  <h2>Transition resolution — state label update</h2>
+
+  <details open>
+    <summary>CanonicalTransition — adjusting rvw at state boundary</summary>
+    <div class="details-body">
+<pre><span class="cm"># A SLIDING_ROLLING transition fires when slip velocity → 0.</span>
+<span class="cm"># At that exact instant:</span>
+<span class="cm">#   - Update ball.state.s from sliding → rolling</span>
+<span class="cm">#   - Adjust rvw[2] to satisfy the no-slip constraint exactly:</span>
+<span class="cm">#       w_perp = v / R  (spin magnitude = velocity / radius)</span>
+<span class="cm">#</span>
+<span class="cm"># This prevents floating-point drift from keeping the ball</span>
+<span class="cm"># perpetually near-but-not-quite rolling.</span>
+<span class="cm">#</span>
+<span class="cm"># Similarly for other transitions:</span>
+<span class="cm">#   ROLLING_STATIONARY   → zero all of rvw[1], rvw[2]</span>
+<span class="cm">#   ROLLING_SPINNING     → zero rvw[1], keep rvw[2] vertical component</span>
+<span class="cm">#   SPINNING_STATIONARY  → zero all of rvw[2]</span></pre>
+      <div class="inset green"><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/physics/resolve/transition/" target="_blank">physics/resolve/transition/</a></div>
+    </div>
+  </details>
+
+  <!-- ── SNAPSHOT ─────────────────────────────────────── -->
+  <h2>Pre/post-event snapshots</h2>
+  <p><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/physics/resolve/resolver.py#L209" target="_blank">resolver.py:209</a></p>
+
+  <details open>
+    <summary>_snapshot_initial / _snapshot_final — recording history</summary>
+    <div class="details-body">
+<pre><span class="cm"># resolver.py:209</span>
+<span class="kw">def</span> <span class="fn">_snapshot_initial</span>(shot: System, event: Event) -&gt; <span class="kw">None</span>:
+    <span class="cm"># Before resolving: append current ball.state to ball.history</span>
+    <span class="cm"># for each ball involved in the event.</span>
+    <span class="cm"># This records the state just before the collision.</span>
+    <span class="kw">for</span> agent <span class="kw">in</span> event.agents:
+        <span class="kw">if</span> isinstance(agent, Ball):
+            agent.history.add(copy(agent.state))
+
+<span class="cm"># resolver.py:224</span>
+<span class="kw">def</span> <span class="fn">_snapshot_final</span>(shot: System, event: Event) -&gt; <span class="kw">None</span>:
+    <span class="cm"># After resolving: append updated ball.state</span>
+    <span class="cm"># This records the state just after the collision.</span>
+    <span class="cm"># Together, the two snapshots bracket the instantaneous collision.</span>
+    <span class="kw">for</span> agent <span class="kw">in</span> event.agents:
+        <span class="kw">if</span> isinstance(agent, Ball):
+            agent.history.add(copy(agent.state))</pre>
+      <div class="inset">Two states at the same timestamp bracket every collision in <code>ball.history</code> — one before and one after. The interpolation in <code>continuize()</code> treats these as an instantaneous discontinuity.</div>
+    </div>
+  </details>
+
+</div>
+</body>
+</html>

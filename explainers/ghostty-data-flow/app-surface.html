@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ghostty App and Surface Data Flow</title>
+    <link rel="stylesheet" href="assets/style.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="hero">
+        <p class="eyebrow">Component flow</p>
+        <h1>App and Surface own the runtime wiring.</h1>
+        <p class="lede">
+          The app runtime provides the GUI loop. Each surface builds the shared state that connects platform callbacks,
+          renderer state, terminal IO, mailboxes, and worker threads.
+        </p>
+        <nav class="top-nav" aria-label="Data flow pages">
+          <a href="index.html">Overview</a>
+          <a href="app-surface.html" aria-current="page">App and Surface</a>
+          <a href="input-mailbox.html">Input and Mailbox</a>
+          <a href="pty-stream.html">PTY and Stream</a>
+          <a href="renderer.html">Renderer</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="toolbar" aria-label="Controls">
+        <input class="search" data-search type="search" placeholder="Filter this component">
+        <button class="button" data-expand-all type="button">Expand all</button>
+        <button class="button" data-collapse-all type="button">Collapse all</button>
+      </section>
+
+      <section class="grid three">
+        <article class="card" data-filter>
+          <h2>Inputs</h2>
+          <p>Config, platform runtime handles, app font caches, surface size, content scale, and the command/env to execute.</p>
+        </article>
+        <article class="card" data-filter>
+          <h2>Outputs</h2>
+          <p>A stable `Surface` containing renderer state, `Termio`, renderer and IO thread managers, runtime mailboxes, and spawned threads.</p>
+        </article>
+        <article class="card" data-filter>
+          <h2>Boundary</h2>
+          <p>The surface is called from the main thread, but it creates the objects used by IO and renderer threads.</p>
+        </article>
+      </section>
+
+      <details open data-filter>
+        <summary>App startup hands off to the platform GUI runtime</summary>
+        <div class="detail-body">
+          <p>
+            `main` creates core app state, initializes `apprt.App`, starts the optional quit timer, and runs the GUI
+            event loop. Runtime-specific surface creation happens after this handoff.
+          </p>
+          <div class="refs">
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/main_ghostty.zig#L96-L111">main app setup</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/App.zig#L76-L129">App create/init/tick</a>
+          </div>
+          <pre><code>const app: *App = try App.create(alloc);
+var app_runtime: apprt.App = undefined;
+try app_runtime.init(app, .{});
+try app_runtime.run();</code></pre>
+        </div>
+      </details>
+
+      <details open data-filter>
+        <summary>Surface derives config, fonts, size, and renderer implementation</summary>
+        <div class="detail-body">
+          <p>
+            `Surface.init` first converts user config into derived config, initializes the runtime surface, computes
+            DPI-aware font sizing, references the shared font grid, calculates renderer sizing, and initializes the
+            renderer implementation with a surface mailbox.
+          </p>
+          <div class="refs">
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/Surface.zig#L494-L584">Derived config and renderer init</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/Surface.zig#L547-L573">Renderer size construction</a>
+          </div>
+          <pre><code>const font_grid_key, const font_grid = try app.font_grid_set.ref(
+    &amp;derived_config.font,
+    font_size,
+);
+
+var renderer_impl = try Renderer.init(alloc, .{
+    .font_grid = font_grid,
+    .size = size,
+    .surface_mailbox = .{ .surface = self, .app = app_mailbox },
+});</code></pre>
+        </div>
+      </details>
+
+      <details open data-filter>
+        <summary>Surface initializes Termio and starts worker threads</summary>
+        <div class="detail-body">
+          <p>
+            After renderer thread and IO thread managers exist, the surface creates the exec backend, SPSC IO mailbox,
+            and `Termio`. The renderer state stores a pointer to `self.io.terminal`; thread startup happens only after
+            Termio has been initialized and the first resize/finalization work has completed.
+          </p>
+          <div class="refs">
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/Surface.zig#L592-L604">Thread manager creation</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/Surface.zig#L607-L633">Surface state ownership</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/Surface.zig#L740-L753">Thread spawn</a>
+          </div>
+          <pre><code>.renderer_state = .{
+    .mutex = mutex,
+    .terminal = &amp;self.io.terminal,
+},
+.io = undefined,
+.io_thread = io_thread,
+
+self.renderer_thr = try std.Thread.spawn(.{}, rendererpkg.Thread.threadMain, .{&amp;self.renderer_thread});
+self.io_thr = try std.Thread.spawn(.{}, termio.Thread.threadMain, .{ &amp;self.io_thread, &amp;self.io });</code></pre>
+        </div>
+      </details>
+
+      <p class="note" data-filter>
+        Read next: <a href="input-mailbox.html">Input and Mailbox</a> follows how the surface sends user input into
+        the `Termio` thread.
+      </p>
+    </main>
+    <script src="assets/script.js"></script>
+  </body>
+</html>

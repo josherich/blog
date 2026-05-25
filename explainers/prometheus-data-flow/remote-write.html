@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prometheus Data Flow — Remote Write</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav>
+  <span class="nav-brand">Prometheus</span>
+  <a href="index.html">Overview</a>
+  <a href="scrape.html">Scrape</a>
+  <a href="tsdb.html">TSDB</a>
+  <a href="remote-write.html" class="active">Remote Write</a>
+  <a href="query.html">PromQL</a>
+  <a href="alerting.html">Alerting</a>
+</nav>
+
+<main>
+  <div class="page-header">
+    <h1>Remote Write</h1>
+    <p>How Prometheus durably forwards samples to external long-term storage systems via the remote_write protocol.</p>
+  </div>
+
+  <!-- Flow -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">🗺</span> Remote Write Pipeline</summary>
+    <div class="section-body">
+      <div class="flow-diagram">
+        <pre>
+  Scraper → fanoutStorage.Append()
+                 │
+                 ├─── Primary (local TSDB) writes WAL
+                 │
+                 └─── remote.Storage.Appender() [no-op shim]
+                           │
+                           │  WAL is the source of truth for remote write.
+                           │  Samples are not re-buffered; the WAL is tailed.
+                           ▼
+  ┌──────────────────────────────────────────────────────────┐
+  │                  remote.WriteStorage                     │  storage/remote/write.go:60
+  │  • one QueueManager per remote_write endpoint           │
+  │  • notified when WAL has new data                       │
+  └────────────────────┬─────────────────────────────────────┘
+                       │
+                       ▼
+  ┌──────────────────────────────────────────────────────────┐
+  │                  wlog.Watcher                            │  tsdb/wlog/watcher.go
+  │  • tails WAL segments sequentially                      │
+  │  • decodes records: SERIES, SAMPLES, HISTOGRAMS, …      │
+  │  • sends to QueueManager.Append()                       │
+  └────────────────────┬─────────────────────────────────────┘
+                       │  []record.RefSample batches
+                       ▼
+  ┌──────────────────────────────────────────────────────────┐
+  │                  QueueManager                            │  storage/remote/queue_manager.go:421
+  │  • resolves series labels (ref → labels.Labels)         │
+  │  • applies remote relabeling                            │
+  │  • shards samples across N parallel senders             │
+  └───────────────┬────────────────────────────────────────┘
+                  │   dynamic sharding (numShards adapts)
+          ┌───────┼──────────┐
+          ▼       ▼          ▼
+      shard[0] shard[1] … shard[N-1]       storage/remote/queue_manager.go
+          │
+          │  batch full OR maxShards flush timeout
+          ▼
+  ┌─────────────────────────────┐
+  │      WriteClient            │  storage/remote/client.go
+  │  • serialize → proto/JSON   │
+  │  • compress (snappy/zstd)   │
+  │  • HTTP POST /api/v1/write  │
+  │  • retry on 429/5xx         │
+  └─────────────────────────────┘</pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- WriteStorage -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">🏗</span> WriteStorage — Manager</summary>
+    <div class="section-body">
+      <div class="code-header">
+        <span class="code-label">storage/remote/write.go — WriteStorage struct</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/storage/remote/write.go#L60" target="_blank">L60</a>
+      </div>
+      <pre class="code-block">type WriteStorage struct {
+    logger *slog.Logger
+    reg    prometheus.Registerer
+    mtx    sync.Mutex
+
+    watcherMetrics *wlog.WatcherMetrics
+    liveReaderMetrics *wlog.LiveReaderMetrics
+
+    // walDir is the TSDB WAL directory being tailed.
+    walDir     string
+    queues     []*QueueManager
+    samplesIn  *ewmaRate  // EMA rate of incoming samples
+    flushDeadline time.Duration
+    interner   labels.Interner
+    ...
+}</pre>
+
+      <p>On <code>ApplyConfig()</code>, <code>WriteStorage</code> diffs the old and new <code>remote_write</code> configs. Unchanged endpoints keep their WAL tail position (no re-replay). New or changed endpoints start a fresh <code>QueueManager</code> from the current WAL head.</p>
+    </div>
+  </details>
+
+  <!-- WAL Watcher -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">👁</span> WAL Watcher <span class="tag tag-async">async</span></summary>
+    <div class="section-body">
+      <p>The WAL Watcher is a persistent reader that follows the TSDB WAL tail in real-time and decodes records to feed the QueueManager.</p>
+
+      <div class="code-header">
+        <span class="code-label">tsdb/wlog/watcher.go — Watcher key method</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/tsdb/wlog/watcher.go" target="_blank">watcher.go</a>
+      </div>
+      <pre class="code-block">// Watcher tails WAL segments, decoding each record type:
+func (w *Watcher) readSegment(r *LiveReader, segmentNum int, tail bool) error {
+    for r.Next() {
+        rec := r.Record()
+        switch dec.Type(rec) {
+        case record.Series:
+            series, err := dec.Series(rec, nil)
+            w.writer.StoreSeries(series, segmentNum)  // cache ref→labels
+
+        case record.Samples:
+            samples, err := dec.Samples(rec, nil)
+            w.writer.Append(samples)  // → QueueManager
+
+        case record.HistogramSamples:
+            hSamples, err := dec.HistogramSamples(rec, nil)
+            w.writer.AppendHistograms(hSamples)
+
+        case record.MmapMarkers:
+            // Head chunks were flushed to disk; update watcher position.
+        }
+    }
+}</pre>
+
+      <p>The watcher maintains a <code>segmentNum</code> bookmark so it can resume after crashes. When Prometheus restarts, each <code>QueueManager</code>'s watcher replays unacknowledged WAL records.</p>
+
+      <div class="callout callout-info">
+        The WAL watcher uses a <em>live reader</em> that can read the currently-active (incomplete) WAL segment, not just completed segments.
+      </div>
+    </div>
+  </details>
+
+  <!-- QueueManager -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">📦</span> QueueManager — Sharded Sender</summary>
+    <div class="section-body">
+      <div class="code-header">
+        <span class="code-label">storage/remote/queue_manager.go — QueueManager struct (key fields)</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/storage/remote/queue_manager.go#L421" target="_blank">L421</a>
+      </div>
+      <pre class="code-block">type QueueManager struct {
+    logger        *slog.Logger
+    cfg           config.QueueConfig
+    externalLabels []labels.Label
+    relabelConfigs []*relabel.Config
+
+    watcher *wlog.Watcher  // WAL tail reader
+
+    // seriesLabels maps HeadSeriesRef → labels.Labels.
+    // Populated when SERIES records are decoded by the watcher.
+    seriesLabels   map[chunks.HeadSeriesRef]labels.Labels
+    seriesMetadata map[chunks.HeadSeriesRef]*metadata.Metadata
+    droppedSeries  map[chunks.HeadSeriesRef]struct{}
+
+    shards    *shards        // current active shards
+    numShards int            // dynamically adjusted
+    reshardChan chan int      // signals resharding
+    ...
+}</pre>
+
+      <h3>Dynamic Sharding</h3>
+      <p>The QueueManager monitors queue depth and send rate, then continuously adjusts <code>numShards</code> to saturate the remote endpoint without overloading it:</p>
+      <pre class="code-block">// Sharding logic (simplified):
+//  desired = samplesPerSec * batchSendDeadline / samplesPerBatch
+//  clamp to [minShards, maxShards]
+//  if desired ≠ numShards: reshard(desired)</pre>
+
+      <h3>Shard → HTTP Batch</h3>
+      <ol class="steps">
+        <li data-step="1">Each shard maintains a <code>[]timeSeries</code> buffer</li>
+        <li data-step="2">When buffer reaches <code>MaxSamplesPerSend</code> (default 500) or <code>BatchSendDeadline</code> elapses: send</li>
+        <li data-step="3">Samples serialized to <code>prompb.WriteRequest</code> (protobuf)</li>
+        <li data-step="4">Compressed with Snappy (RW v1) or Zstd (RW v2)</li>
+        <li data-step="5">HTTP POST; on 4xx/5xx: exponential backoff and retry</li>
+        <li data-step="6">On <code>429 Too Many Requests</code>: respect <code>Retry-After</code> header</li>
+      </ol>
+
+      <h3>Key Queue Config Parameters</h3>
+      <table class="props">
+        <thead><tr><th>Parameter</th><th>Default</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td>capacity</td><td>2500</td><td>Per-shard buffer size (samples)</td></tr>
+          <tr><td>max_samples_per_send</td><td>500</td><td>Batch size before flush</td></tr>
+          <tr><td>batch_send_deadline</td><td>5s</td><td>Max time before partial batch is sent</td></tr>
+          <tr><td>min_shards</td><td>1</td><td>Minimum parallel senders</td></tr>
+          <tr><td>max_shards</td><td>200</td><td>Maximum parallel senders</td></tr>
+          <tr><td>min_backoff</td><td>30ms</td><td>Initial retry delay</td></tr>
+          <tr><td>max_backoff</td><td>5s</td><td>Max retry delay</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <!-- WriteClient -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">🌐</span> WriteClient — HTTP Sender</summary>
+    <div class="section-body">
+      <div class="code-header">
+        <span class="code-label">storage/remote/client.go</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/storage/remote/client.go" target="_blank">client.go</a>
+      </div>
+      <pre class="code-block">// Remote Write v1 request (legacy):
+POST /api/v1/write
+Content-Type: application/x-protobuf
+Content-Encoding: snappy
+X-Prometheus-Remote-Write-Version: 0.1.0
+Body: snappy( proto.Marshal(prompb.WriteRequest{
+    Timeseries: []TimeSeries{
+        {Labels: [...], Samples: [{Timestamp, Value}, ...]},
+        ...
+    },
+}))
+
+// Remote Write v2 request (preferred since Prometheus 2.54):
+POST /api/v1/write
+Content-Type: application/x-protobuf;proto=io.prometheus.write.v2.Request
+Content-Encoding: snappy
+X-Prometheus-Remote-Write-Version: 2.0.0</pre>
+
+      <p>The client is configured per <code>remote_write</code> block. It supports TLS, Basic Auth, Bearer tokens, OAuth2, and custom HTTP headers.</p>
+
+      <div class="callout callout-warn">
+        Remote write is at-least-once. On network partition the QueueManager will buffer and retry. If the WAL is rotated before delivery succeeds, old records may be lost — sized by <code>capacity × numShards</code>.
+      </div>
+    </div>
+  </details>
+
+  <!-- Metrics -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">📊</span> Key Remote Write Metrics</summary>
+    <div class="section-body">
+      <table class="props">
+        <thead><tr><th>Metric</th><th>What it measures</th></tr></thead>
+        <tbody>
+          <tr><td>prometheus_remote_storage_samples_in_total</td><td>Samples received from WAL watcher</td></tr>
+          <tr><td>prometheus_remote_storage_samples_pending</td><td>Samples queued, waiting to send</td></tr>
+          <tr><td>prometheus_remote_storage_samples_dropped_total</td><td>Samples dropped (queue overflow)</td></tr>
+          <tr><td>prometheus_remote_storage_samples_failed_total</td><td>HTTP POST failures</td></tr>
+          <tr><td>prometheus_remote_storage_shards</td><td>Current number of shards per queue</td></tr>
+          <tr><td>prometheus_remote_storage_queue_highest_sent_timestamp_seconds</td><td>Lag vs. now indicates backpressure</td></tr>
+          <tr><td>prometheus_remote_storage_sent_batch_duration_seconds</td><td>Round-trip latency per batch</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+</main>
+</body>
+</html>

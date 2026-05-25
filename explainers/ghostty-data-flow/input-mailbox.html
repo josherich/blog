@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ghostty Input and Mailbox Data Flow</title>
+    <link rel="stylesheet" href="assets/style.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="hero">
+        <p class="eyebrow">Component flow</p>
+        <h1>User input becomes mailbox messages for the IO thread.</h1>
+        <p class="lede">
+          Surface methods encode keyboard and mouse events into terminal byte sequences, then publish write messages to
+          the `Termio` mailbox. The IO thread drains the mailbox and writes to the backend.
+        </p>
+        <nav class="top-nav" aria-label="Data flow pages">
+          <a href="index.html">Overview</a>
+          <a href="app-surface.html">App and Surface</a>
+          <a href="input-mailbox.html" aria-current="page">Input and Mailbox</a>
+          <a href="pty-stream.html">PTY and Stream</a>
+          <a href="renderer.html">Renderer</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="toolbar" aria-label="Controls">
+        <input class="search" data-search type="search" placeholder="Filter this component">
+        <button class="button" data-expand-all type="button">Expand all</button>
+        <button class="button" data-collapse-all type="button">Collapse all</button>
+      </section>
+
+      <details open data-filter>
+        <summary>Key events are encoded before crossing the thread boundary</summary>
+        <div class="detail-body">
+          <p>
+            `Surface.encodeKey` builds key encoding options, asks `input.key_encode.encode` to serialize the event,
+            stores small outputs inline when possible, and allocates only for larger data.
+          </p>
+          <div class="refs">
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/Surface.zig#L3173-L3247">Surface.encodeKey</a>
+          </div>
+          <pre><code>var data: termio.Message.WriteReq.Small.Array = undefined;
+var writer: std.Io.Writer = .fixed(&amp;data);
+if (input.key_encode.encode(&amp;writer, event, encoding_opts)) {
+    const written = writer.buffered();
+    if (written.len == 0) return null;
+    break :req .{ .small = .{ .data = data, .len = @intCast(written.len) } };
+}</code></pre>
+        </div>
+      </details>
+
+      <details open data-filter>
+        <summary>Surface.queueIo centralizes outgoing IO messages</summary>
+        <div class="detail-body">
+          <p>
+            `queueIo` is the surface-side choke point. It can block writes in read-only mode, then delegates to
+            `Termio.queueMessage`.
+          </p>
+          <div class="refs">
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/Surface.zig#L879-L900">Surface.queueIo</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/Surface.zig#L5054-L5090">Action writes</a>
+          </div>
+          <pre><code>if (self.readonly) {
+    switch (msg) {
+        .write_small, .write_stable, .write_alloc =&gt; return,
+        else =&gt; {},
+    }
+}
+
+self.io.queueMessage(msg, mutex);</code></pre>
+        </div>
+      </details>
+
+      <details open data-filter>
+        <summary>The mailbox is SPSC and wakes the IO loop</summary>
+        <div class="detail-body">
+          <p>
+            The mailbox uses a fixed-capacity SPSC queue plus an async wakeup handle. `send` tries the fast nonblocking
+            path first. If the queue is full and a renderer mutex is held, it temporarily unlocks the mutex while
+            waiting to avoid a deadlock between producers and the IO thread.
+          </p>
+          <div class="refs">
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/termio/mailbox.zig#L10-L44">Mailbox shape</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/termio/mailbox.zig#L55-L104">Mailbox send/notify</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/termio/Termio.zig#L392-L402">Termio.queueMessage</a>
+          </div>
+          <pre><code>if (mb.queue.push(msg, .{ .instant = {} }) &gt; 0) break :send;
+
+mb.wakeup.notify() catch |err| {
+    log.warn("failed to wake up writer, data will be dropped err={}", .{err});
+    return;
+};
+
+if (mutex) |m| m.unlock();
+defer if (mutex) |m| m.lock();
+_ = mb.queue.push(msg, .{ .forever = {} });</code></pre>
+        </div>
+      </details>
+
+      <details open data-filter>
+        <summary>The IO thread drains messages and dispatches writes or state changes</summary>
+        <div class="detail-body">
+          <p>
+            `termio.Thread` registers the mailbox wakeup with its event loop. Each wakeup drains queued messages,
+            dispatches resizes, focus, config, selection, and write messages, and triggers a renderer wakeup after
+            draining if anything changed.
+          </p>
+          <div class="refs">
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/termio/Thread.zig#L236-L279">IO thread loop</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/termio/Thread.zig#L288-L361">Drain mailbox</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/termio/Thread.zig#L440-L457">Wakeup callback</a>
+          </div>
+          <pre><code>while (mailbox.pop()) |message| {
+    redraw = true;
+    switch (message) {
+        .resize =&gt; |v| self.handleResize(cb, v),
+        .write_small =&gt; |v| try io.queueWrite(data, v.data[0..v.len], self.flags.linefeed_mode),
+        .write_stable =&gt; |v| try io.queueWrite(data, v, self.flags.linefeed_mode),
+        .write_alloc =&gt; |v| { defer v.alloc.free(v.data); try io.queueWrite(data, v.data, self.flags.linefeed_mode); },
+        else =&gt; {},
+    }
+}
+
+if (redraw) try io.renderer_wakeup.notify();</code></pre>
+        </div>
+      </details>
+
+      <p class="note" data-filter>
+        Read next: <a href="pty-stream.html">PTY and Stream</a> follows the return path from subprocess output into
+        terminal state.
+      </p>
+    </main>
+    <script src="assets/script.js"></script>
+  </body>
+</html>

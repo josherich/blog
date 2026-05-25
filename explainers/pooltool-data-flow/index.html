@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>pooltool — Data Flow Overview</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: #2e3350;
+    --accent: #5b8af5;
+    --accent2: #7c6af5;
+    --green: #4caf7d;
+    --orange: #f5a623;
+    --red: #e85c5c;
+    --text: #e0e4f0;
+    --muted: #7a82a8;
+    --code-bg: #12151f;
+    --radius: 8px;
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.6; }
+
+  /* Nav */
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    position: sticky; top: 0; z-index: 100;
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  }
+  nav .brand { font-weight: 700; font-size: 15px; color: var(--accent); margin-right: 8px; }
+  nav a {
+    color: var(--muted); text-decoration: none; font-size: 13px;
+    padding: 4px 10px; border-radius: 5px; transition: all 0.15s;
+  }
+  nav a:hover, nav a.active { background: var(--surface2); color: var(--text); }
+  nav a.active { color: var(--accent); }
+
+  /* Layout */
+  .container { max-width: 860px; margin: 0 auto; padding: 28px 20px 60px; }
+
+  h1 { font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+  h2 { font-size: 20px; font-weight: 600; margin: 32px 0 14px; color: var(--accent); }
+  h3 { font-size: 15px; font-weight: 600; margin: 18px 0 8px; color: var(--text); }
+  p { color: #b0b8d8; margin-bottom: 10px; font-size: 14px; }
+  .subtitle { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
+
+  /* Flow diagram */
+  .flow {
+    display: flex; flex-direction: column; gap: 0;
+    margin: 20px 0 32px;
+  }
+  .flow-step {
+    display: flex; align-items: stretch; gap: 0;
+  }
+  .flow-connector {
+    display: flex; flex-direction: column; align-items: center;
+    width: 44px; flex-shrink: 0;
+  }
+  .flow-dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--accent); border: 2px solid var(--bg);
+    flex-shrink: 0; margin-top: 18px; z-index: 1;
+  }
+  .flow-line {
+    width: 2px; background: var(--border);
+    flex: 1; margin: 0 auto;
+  }
+  .flow-line.last { display: none; }
+  .flow-card {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin: 4px 0;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    text-decoration: none;
+    display: block;
+  }
+  .flow-card:hover { border-color: var(--accent); background: var(--surface2); }
+  .flow-card .step-label {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 1px;
+    color: var(--muted); margin-bottom: 4px;
+  }
+  .flow-card .step-title {
+    font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 4px;
+  }
+  .flow-card .step-desc { font-size: 13px; color: #8892b0; }
+  .flow-card .step-files { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 5px; }
+  .tag {
+    font-family: var(--mono); font-size: 11px;
+    background: var(--code-bg); color: var(--accent);
+    padding: 2px 7px; border-radius: 4px; border: 1px solid var(--border);
+  }
+  .tag.green { color: var(--green); }
+  .tag.orange { color: var(--orange); }
+  .tag.purple { color: var(--accent2); }
+  .tag.red { color: var(--red); }
+
+  /* RVW diagram */
+  .rvw-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px; margin: 14px 0;
+  }
+  .rvw-cell {
+    background: var(--code-bg); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 12px;
+    text-align: center;
+  }
+  .rvw-cell .label { font-family: var(--mono); font-size: 18px; color: var(--accent); font-weight: 700; }
+  .rvw-cell .name { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .rvw-cell .desc { font-size: 12px; color: var(--text); margin-top: 4px; }
+
+  /* Code blocks */
+  details { margin: 12px 0; }
+  summary {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    cursor: pointer;
+    font-size: 13px; font-weight: 600;
+    list-style: none;
+    display: flex; align-items: center; gap: 8px;
+    user-select: none;
+    transition: border-color 0.15s;
+  }
+  summary:hover { border-color: var(--accent); }
+  details[open] summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom: none; }
+  summary::before {
+    content: '▶'; font-size: 10px; color: var(--muted);
+    transition: transform 0.15s; flex-shrink: 0;
+  }
+  details[open] summary::before { transform: rotate(90deg); }
+  .details-body {
+    background: var(--code-bg);
+    border: 1px solid var(--border); border-top: none;
+    border-bottom-left-radius: var(--radius); border-bottom-right-radius: var(--radius);
+    padding: 16px;
+  }
+  pre {
+    font-family: var(--mono); font-size: 12.5px; line-height: 1.55;
+    color: #cdd6f4; white-space: pre; overflow-x: auto;
+  }
+  .kw { color: #cba6f7; }
+  .fn { color: #89b4fa; }
+  .cls { color: #a6e3a1; }
+  .str { color: #a6e3a1; }
+  .cm { color: #6c7086; font-style: italic; }
+  .num { color: #fab387; }
+  .dec { color: #f38ba8; }
+
+  /* Info cards */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 16px 0; }
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 14px;
+  }
+  .card .card-title { font-size: 13px; font-weight: 600; color: var(--accent); margin-bottom: 6px; }
+  .card p { font-size: 12px; color: #8892b0; margin: 0; }
+
+  /* Github link */
+  a.gh {
+    font-family: var(--mono); font-size: 11px; color: var(--accent);
+    text-decoration: none; border-bottom: 1px dashed var(--border);
+    transition: border-color 0.15s;
+  }
+  a.gh:hover { border-color: var(--accent); }
+
+  /* State machine */
+  .states {
+    display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0;
+    align-items: center;
+  }
+  .state-box {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; padding: 6px 12px;
+    font-family: var(--mono); font-size: 12px; color: var(--orange);
+  }
+  .arrow { color: var(--muted); font-size: 14px; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    h1 { font-size: 22px; }
+    .rvw-grid { grid-template-columns: 1fr; }
+    nav { padding: 10px 14px; }
+    .flow-connector { width: 32px; }
+  }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">pooltool</span>
+  <a href="index.html" class="active">Overview</a>
+  <a href="system.html">Data Models</a>
+  <a href="simulation.html">Simulation</a>
+  <a href="detection.html">Detection</a>
+  <a href="resolution.html">Resolution</a>
+  <a href="visualization.html">Visualization</a>
+</nav>
+
+<div class="container">
+  <h1>pooltool Data Flow</h1>
+  <p class="subtitle">
+    Physics-based pool simulation — from a cue strike to rendered animation.
+    Repository: <a class="gh" href="https://github.com/ekiefl/pooltool" target="_blank">ekiefl/pooltool</a>
+    &nbsp;·&nbsp; commit <a class="gh" href="https://github.com/ekiefl/pooltool/tree/79d1df640f28abf0df9ad4334b7601a95b93c6db" target="_blank">79d1df6</a>
+  </p>
+
+  <h2>Pipeline at a Glance</h2>
+
+  <div class="flow">
+
+    <div class="flow-step">
+      <div class="flow-connector">
+        <div class="flow-dot" style="background:var(--green)"></div>
+        <div class="flow-line"></div>
+      </div>
+      <a class="flow-card" href="system.html">
+        <div class="step-label">Step 1</div>
+        <div class="step-title">Build a System</div>
+        <div class="step-desc">Assemble <strong>Ball</strong>, <strong>Cue</strong>, and <strong>Table</strong> objects into a <strong>System</strong>. Set cue parameters (speed, direction, spin) via <code>system.strike()</code>.</div>
+        <div class="step-files">
+          <span class="tag green">System</span>
+          <span class="tag green">Ball / BallState</span>
+          <span class="tag green">Cue</span>
+          <span class="tag green">Table</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="flow-step">
+      <div class="flow-connector">
+        <div class="flow-dot"></div>
+        <div class="flow-line"></div>
+      </div>
+      <a class="flow-card" href="simulation.html">
+        <div class="step-label">Step 2</div>
+        <div class="step-title">simulate(system)</div>
+        <div class="step-desc">The event-based engine advances time by finding the <em>next</em> physical event, evolving ball motion to that instant, then resolving the collision or transition. Repeats until all balls are at rest.</div>
+        <div class="step-files">
+          <span class="tag">simulate()</span>
+          <span class="tag">SimulationEngine</span>
+          <span class="tag">_SimulationState</span>
+          <span class="tag orange">evolve_ball_motion()</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="flow-step">
+      <div class="flow-connector">
+        <div class="flow-dot" style="background:var(--accent2)"></div>
+        <div class="flow-line"></div>
+      </div>
+      <a class="flow-card" href="detection.html">
+        <div class="step-label">Step 2a — inside the loop</div>
+        <div class="step-title">Detect Next Event</div>
+        <div class="step-desc"><strong>EventDetector</strong> checks all event types in parallel — ball-ball collisions, cushion hits, pockets, motion-state transitions, and the initial cue strike. Returns the soonest event.</div>
+        <div class="step-files">
+          <span class="tag purple">EventDetector</span>
+          <span class="tag purple">EventType</span>
+          <span class="tag purple">ball_ball_collision_time()</span>
+          <span class="tag purple">TransitionCache</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="flow-step">
+      <div class="flow-connector">
+        <div class="flow-dot" style="background:var(--red)"></div>
+        <div class="flow-line"></div>
+      </div>
+      <a class="flow-card" href="resolution.html">
+        <div class="step-label">Step 2b — inside the loop</div>
+        <div class="step-title">Resolve Event</div>
+        <div class="step-desc"><strong>Resolver</strong> dispatches to the correct physics model — Mathavan/Stronge ball-ball, compliant cushion, stick-ball impulse, pocket removal, or state transition. Updates ball velocities and angular momentum.</div>
+        <div class="step-files">
+          <span class="tag red">Resolver</span>
+          <span class="tag red">FrictionalInelastic (ball-ball)</span>
+          <span class="tag red">Stronge cushion</span>
+          <span class="tag red">InstantaneousPoint (stick)</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="flow-step">
+      <div class="flow-connector">
+        <div class="flow-dot" style="background:var(--orange)"></div>
+        <div class="flow-line"></div>
+      </div>
+      <a class="flow-card" href="visualization.html">
+        <div class="step-label">Step 3</div>
+        <div class="step-title">continuize(system)</div>
+        <div class="step-desc">The raw simulation stores states only at event times (sparse). <code>continuize()</code> interpolates dense, uniform-dt samples into <code>ball.history_cts</code> — ready for smooth 60 fps playback.</div>
+        <div class="step-files">
+          <span class="tag orange">continuize()</span>
+          <span class="tag orange">interpolate_ball_states()</span>
+          <span class="tag orange">BallHistory (history_cts)</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="flow-step">
+      <div class="flow-connector">
+        <div class="flow-dot" style="background:var(--green)"></div>
+        <div class="flow-line last"></div>
+      </div>
+      <a class="flow-card" href="visualization.html">
+        <div class="step-label">Step 4</div>
+        <div class="step-title">show(system)</div>
+        <div class="step-desc"><strong>ShotViewer</strong> opens a Panda3D window. Ball meshes, table geometry, cushions, pockets, and the cue are rendered. <code>history_cts</code> drives the animation frame-by-frame.</div>
+        <div class="step-files">
+          <span class="tag green">show()</span>
+          <span class="tag green">ShotViewer</span>
+          <span class="tag green">SystemRender</span>
+          <span class="tag green">BallRender</span>
+        </div>
+      </a>
+    </div>
+
+  </div>
+
+  <h2>The BallState Tensor (rvw)</h2>
+  <p>Every ball's kinematic state is a 3×3 NumPy array called <code>rvw</code>. Each row is a 3D vector:</p>
+  <div class="rvw-grid">
+    <div class="rvw-cell">
+      <div class="label">r</div>
+      <div class="name">rvw[0]</div>
+      <div class="desc">Position (x, y, z)</div>
+    </div>
+    <div class="rvw-cell">
+      <div class="label">v</div>
+      <div class="name">rvw[1]</div>
+      <div class="desc">Linear velocity</div>
+    </div>
+    <div class="rvw-cell">
+      <div class="label">w</div>
+      <div class="name">rvw[2]</div>
+      <div class="desc">Angular velocity (spin)</div>
+    </div>
+  </div>
+
+  <h2>Ball Motion States</h2>
+  <p>Each ball carries an integer state <code>s</code> that controls which physics equations apply:</p>
+  <div class="states">
+    <span class="state-box">0 · stationary</span>
+    <span class="arrow">←</span>
+    <span class="state-box">1 · spinning</span>
+    <span class="arrow">←</span>
+    <span class="state-box">2 · sliding</span>
+    <span class="arrow">→</span>
+    <span class="state-box">3 · rolling</span>
+    <span class="arrow">→</span>
+    <span class="state-box">4 · pocketed</span>
+  </div>
+  <p style="margin-top:8px;">Sliding decays to rolling (kinetic friction), rolling decays to spinning or stationary, spinning decays to stationary. Pocketed balls are removed from further simulation.</p>
+
+  <h2>Public API</h2>
+  <details open>
+    <summary>Minimal usage example</summary>
+    <div class="details-body">
+<pre><span class="kw">import</span> pooltool <span class="kw">as</span> pt
+
+<span class="cm"># 1. Build system</span>
+system = pt.System(
+    cue=pt.Cue.default(),
+    table=(table := pt.Table.default()),
+    balls=pt.get_rack(pt.GameType.NINEBALL, table=table),
+)
+
+<span class="cm"># 2. Aim and strike</span>
+system.strike(V0=<span class="num">8.0</span>, phi=pt.aim.at_ball(system, <span class="str">"1"</span>))
+
+<span class="cm"># 3. Simulate physics</span>
+pt.simulate(system, inplace=<span class="kw">True</span>)
+
+<span class="cm"># 4. Densify for animation (optional)</span>
+pt.continuize(system, dt=<span class="num">0.01</span>, inplace=<span class="kw">True</span>)
+
+<span class="cm"># 5. View in Panda3D window</span>
+pt.show(system)</pre>
+    </div>
+  </details>
+
+  <h2>Key Modules</h2>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title">pooltool/__init__.py</div>
+      <p>Public API surface. Re-exports <code>System</code>, <code>simulate</code>, <code>continuize</code>, <code>show</code>, <code>Ball</code>, <code>Cue</code>, <code>Table</code>.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">pooltool/system/datatypes.py</div>
+      <p>Root container class <code>System</code> (line 30). Holds balls, cue, table, elapsed time, and event history.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">pooltool/evolution/event_based/simulate.py</div>
+      <p>The main simulation loop. <code>simulate()</code> at line 103 drives <code>_SimulationState</code> until quiescence.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">pooltool/physics/evolve/__init__.py</div>
+      <p>Numba-compiled <code>evolve_ball_motion()</code>. Analytically advances rvw based on the current motion state.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">pooltool/evolution/event_based/detect/</div>
+      <p>One module per event type. <code>detector.py</code> orchestrates all detectors and picks the earliest event.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">pooltool/physics/resolve/</div>
+      <p>Pluggable collision models for every event type. <code>resolver.py</code> dispatches to the chosen strategy.</p>
+    </div>
+  </div>
+
+  <details open>
+    <summary>Full data flow — annotated call graph</summary>
+    <div class="details-body">
+<pre>pt.simulate(system)
+└── simulate()                          <a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/event_based/simulate.py#L103" target="_blank">simulate.py:103</a>
+    ├── SimulationEngine()              <a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/engine.py#L12" target="_blank">engine.py:12</a>
+    │   ├── .detector  EventDetector   <a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/event_based/detect/detector.py#L105" target="_blank">detector.py:105</a>
+    │   └── .resolver  Resolver        <a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/physics/resolve/resolver.py#L98" target="_blank">resolver.py:98</a>
+    ├── _SimulationState.init()         <a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/event_based/simulate.py#L38" target="_blank">simulate.py:38</a>
+    │   └── ball.history.reset() × N
+    └── while not_done:
+        └── _SimulationState.step()     <a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/event_based/simulate.py#L42" target="_blank">simulate.py:42</a>
+            ├── EventDetector.get_next_event()   <a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/event_based/detect/detector.py#L123" target="_blank">detector.py:123</a>
+            │   ├── get_next_stick_ball_event()
+            │   ├── transition_cache.get_next()
+            │   ├── get_next_ball_linear_cushion_event()
+            │   ├── get_next_ball_circular_cushion_event()
+            │   ├── get_next_ball_pocket_event()
+            │   ├── get_next_ball_ball_2d_event()
+            │   └── → earliest Event by _get_event_priority()
+            ├── evolve(shot, dt=event.time)      <a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/event_based/simulate.py#L80" target="_blank">simulate.py:80</a>
+            │   └── evolve_ball_motion() × N     <a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/physics/evolve/__init__.py#L28" target="_blank">evolve/__init__.py:28</a>
+            ├── Resolver.resolve(event)          <a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/physics/resolve/resolver.py#L116" target="_blank">resolver.py:116</a>
+            │   └── strategy.resolve(event, shot)
+            └── System._update_history(event)
+
+pt.continuize(system)                   <a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/continuous.py#L17" target="_blank">continuous.py:17</a>
+└── interpolate_ball_states() × N balls <a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/continuous.py#L194" target="_blank">continuous.py:194</a>
+    └── populates ball.history_cts
+
+pt.show(system)                         <a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/interact.py#L8" target="_blank">interact.py:8</a>
+└── ShotViewer(system)                  <a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/ani/animate.py#L327" target="_blank">animate.py:327</a>
+    ├── SystemRender.from_system()
+    └── Panda3D animation loop → ball.history_cts</pre>
+    </div>
+  </details>
+
+</div>
+</body>
+</html>

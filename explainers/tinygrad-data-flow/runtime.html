@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tinygrad — Runtime &amp; Execution</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --border: #2a2d3a;
+    --accent: #7c6af5;
+    --accent2: #56cfb2;
+    --text: #e2e4ed;
+    --muted: #8b8fa8;
+    --code-bg: #12141e;
+    --link: #7c9ef5;
+    --tag-bg: #252838;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'SF Mono', 'Fira Code', monospace; font-size: 14px; line-height: 1.6; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .back-link { font-size: 12px; color: var(--muted); }
+  .back-link:hover { color: var(--text); }
+  h1 { font-size: 18px; font-weight: 700; }
+  .subtitle { color: var(--muted); font-size: 13px; margin-left: auto; }
+  main { max-width: 900px; margin: 0 auto; padding: 24px 16px; }
+  .section { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 20px; overflow: hidden; }
+  .section-header { padding: 14px 18px; display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+  .section-header:hover { background: rgba(124,106,245,0.06); }
+  .section-title { font-size: 15px; font-weight: 600; }
+  .section-badge { font-size: 11px; padding: 2px 8px; border-radius: 12px; background: var(--tag-bg); color: var(--muted); }
+  .toggle { margin-left: auto; color: var(--muted); font-size: 12px; transition: transform 0.2s; }
+  .toggle.open { transform: rotate(180deg); }
+  .section-body { padding: 18px; border-top: 1px solid var(--border); }
+  .section-body.collapsed { display: none; }
+  .field-grid { display: grid; grid-template-columns: minmax(140px, auto) 1fr; gap: 6px 16px; align-items: start; }
+  .field-name { color: var(--accent2); font-weight: 600; padding-top: 2px; }
+  code { background: var(--code-bg); padding: 1px 5px; border-radius: 3px; font-size: 12px; color: #e8b86d; }
+  pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; overflow-x: auto; font-size: 12px; line-height: 1.7; white-space: pre; }
+  .ref-link { display: inline-block; font-size: 11px; color: var(--muted); border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; margin-top: 8px; margin-right: 6px; }
+  .ref-link:hover { color: var(--link); border-color: var(--link); text-decoration: none; }
+  .note { background: rgba(86,207,178,0.07); border-left: 3px solid var(--accent2); padding: 10px 14px; border-radius: 0 4px 4px 0; margin: 10px 0; font-size: 13px; }
+  .flow-step { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .flow-step:last-child { border-bottom: none; }
+  .step-num { min-width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+  .step-body { flex: 1; }
+  .step-title { font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .step-desc { color: var(--muted); font-size: 13px; }
+  h3 { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin: 14px 0 8px; }
+  p { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+  .runtime-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; }
+  .runtime-card { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 11px 13px; }
+  .runtime-name { color: var(--accent); font-size: 12px; font-weight: 700; margin-bottom: 3px; }
+  .runtime-file { color: var(--muted); font-size: 11px; margin-bottom: 4px; }
+  .runtime-desc { color: var(--text); font-size: 12px; }
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html" class="back-link">← overview</a>
+  <h1>Runtime &amp; Execution</h1>
+  <span class="subtitle">Stage 6 of 6 · tinygrad/engine/ · tinygrad/device.py · tinygrad/runtime/</span>
+</header>
+<main>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">run_linear — the execution entry point</span>
+      <span class="section-badge">engine/realize.py:252</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <p>Called at the end of <code>Tensor.realize()</code>. Takes the <strong>LINEAR</strong> UOp produced by the scheduler and executes each CALL node against the device.</p>
+      <pre>def run_linear(
+  linear:    UOp,                    # LINEAR with ordered CALLs
+  var_vals:  dict[str, int] | None,  # symbolic variable values
+  input_uops: tuple[UOp, ...] = (), # externally-provided buffers
+  update_stats: bool = True,
+  jit:  bool = False,
+  wait: bool = False,
+):
+  ctx = ExecContext(var_vals or {}, ...)
+  for call in linear.src:
+    pm_exec.rewrite(call, ctx)       # dispatch by CALL type</pre>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/engine/realize.py#L252" target="_blank" class="ref-link">engine/realize.py:252 — run_linear</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">compile_linear — deferred compilation</span>
+      <span class="section-badge">engine/realize.py:246</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <p>Compiles all kernels in the LINEAR plan without executing them. Used by the JIT to pre-warm the kernel cache.</p>
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Apply pm_compile pattern matcher</div>
+          <div class="step-desc">Walks the LINEAR and compiles any CALL nodes that contain un-compiled PROGRAM ASTs via <code>do_to_program()</code>. Converts SINK ASTs to BINARY UOps.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">BEAM search (optional)</div>
+          <div class="step-desc">When <code>BEAM&gt;0</code>, compile many tiling candidates and benchmark them. Keep the fastest. The winner's compiled binary is cached.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Validate (optional)</div>
+          <div class="step-desc">When <code>VALIDATE_WITH_CPU=1</code>, run the same computation on CPU and compare outputs. Useful for debugging backend correctness.</div>
+        </div>
+      </div>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/engine/realize.py#L246" target="_blank" class="ref-link">engine/realize.py:246 — compile_linear</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">pm_exec — execution dispatch (pattern matcher)</span>
+      <span class="section-badge">engine/realize.py:233</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <p>Each CALL node is dispatched to the appropriate executor via a PatternMatcher. The CALL type determines which function handles it.</p>
+      <div class="flow-step">
+        <div class="step-num">K</div>
+        <div class="step-body">
+          <div class="step-title">exec_kernel — run a compiled GPU/CPU kernel</div>
+          <div class="step-desc">Resolves buffer arguments to concrete <code>Buffer</code> objects, looks up or creates the kernel runtime via <code>get_runtime()</code>, then calls <code>runtime(bufs, var_vals, global_size, local_size)</code>.</div>
+          <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/engine/realize.py#L170" target="_blank" class="ref-link">engine/realize.py:170 — exec_kernel</a>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">C</div>
+        <div class="step-body">
+          <div class="step-title">exec_copy — buffer data transfer</div>
+          <div class="step-desc">Handles host→device uploads, device→host downloads, and device→device copies. Dispatches to allocator's <code>copyin()</code>/<code>copyout()</code>/<code>_transfer()</code>.</div>
+          <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/engine/realize.py#L156" target="_blank" class="ref-link">engine/realize.py:156 — exec_copy</a>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">V</div>
+        <div class="step-body">
+          <div class="step-title">exec_view — buffer alias/slice</div>
+          <div class="step-desc">Creates a <code>BUFFER_VIEW</code> — a zero-copy view into an existing buffer at an offset. Used for slices and tensor views.</div>
+          <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/engine/realize.py#L149" target="_blank" class="ref-link">engine/realize.py:149 — exec_view</a>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">G</div>
+        <div class="step-body">
+          <div class="step-title">exec_graph — batched kernel graph</div>
+          <div class="step-desc">Submits multiple kernels as a single batched command graph (CUDA Graph, Metal command buffer, HCQ graph). Reduces per-kernel CPU overhead for training loops.</div>
+          <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/engine/realize.py#L200" target="_blank" class="ref-link">engine/realize.py:200 — exec_graph</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Buffer — device memory abstraction</span>
+      <span class="section-badge">device.py:99</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <p>Every tensor's data lives in a <code>Buffer</code>. Allocation is lazy — the underlying device memory is only allocated on first use.</p>
+      <div class="field-grid">
+        <span class="field-name">device</span>
+        <span class="field-desc">Device string this buffer lives on (<code>"CUDA:0"</code>, <code>"CPU"</code>, etc.)</span>
+        <span class="field-name">size</span>
+        <span class="field-desc">Number of elements</span>
+        <span class="field-name">dtype</span>
+        <span class="field-desc">Element type</span>
+        <span class="field-name">allocate()</span>
+        <span class="field-desc">Trigger actual device memory allocation via the device's allocator</span>
+        <span class="field-name">copyin(mv)</span>
+        <span class="field-desc">Copy data from a Python memoryview into device memory</span>
+        <span class="field-name">copyout(mv)</span>
+        <span class="field-desc">Copy device memory back to a Python memoryview</span>
+        <span class="field-name">view(offset, size)</span>
+        <span class="field-desc">Create a zero-copy alias starting at the given element offset</span>
+        <span class="field-name">ref(count)</span>
+        <span class="field-desc">Adjust reference count for kernel-held buffers (prevents premature free)</span>
+      </div>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/device.py#L99" target="_blank" class="ref-link">device.py:99 — class Buffer</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Device singleton &amp; Compiled class</span>
+      <span class="section-badge">device.py:15, 287</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <p><code>Device["CUDA"]</code> returns the singleton for that backend, which provides the allocator, compiler, and renderer triplet.</p>
+      <div class="field-grid">
+        <span class="field-name">Device[name]</span>
+        <span class="field-desc">Returns cached device instance, loading the runtime module on first access</span>
+        <span class="field-name">Device.DEFAULT</span>
+        <span class="field-desc">Current default device string from env or first available</span>
+        <span class="field-name">allocator</span>
+        <span class="field-desc">Device-specific memory allocator (e.g. CUDAAllocator, MetalAllocator)</span>
+        <span class="field-name">compiler</span>
+        <span class="field-desc">Code compiler for this device (nvrtc, clang, Metal, etc.)</span>
+        <span class="field-name">renderer</span>
+        <span class="field-desc">Source code renderer for this device</span>
+        <span class="field-name">runtime(prg)</span>
+        <span class="field-desc">Creates a callable kernel from compiled bytes</span>
+        <span class="field-name">graph()</span>
+        <span class="field-desc">Creates a batched graph executor for JIT training loops</span>
+      </div>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/device.py#L15" target="_blank" class="ref-link">device.py:15 — class _Device</a>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/device.py#L287" target="_blank" class="ref-link">device.py:287 — class Compiled</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Runtime backends</span>
+      <span class="section-badge">runtime/ops_*.py</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="runtime-list">
+        <div class="runtime-card">
+          <div class="runtime-name">CUDA</div>
+          <div class="runtime-file">runtime/ops_cuda.py</div>
+          <div class="runtime-desc">nvrtc JIT compiler, CUDAAllocator, CUDA stream management.</div>
+        </div>
+        <div class="runtime-card">
+          <div class="runtime-name">Metal (Apple)</div>
+          <div class="runtime-file">runtime/ops_metal.py</div>
+          <div class="runtime-desc">Metal command queues, MTLBuffer allocation, MSL compilation.</div>
+        </div>
+        <div class="runtime-card">
+          <div class="runtime-name">AMD (HIP/HSA)</div>
+          <div class="runtime-file">runtime/ops_amd.py</div>
+          <div class="runtime-desc">HCQ-based direct HSA queue submission. Low-overhead GPU dispatch.</div>
+        </div>
+        <div class="runtime-card">
+          <div class="runtime-name">NV (low-level)</div>
+          <div class="runtime-file">runtime/ops_nv.py</div>
+          <div class="runtime-desc">Direct NVIDIA HCQ (hardware command queue) submission without CUDA driver overhead.</div>
+        </div>
+        <div class="runtime-card">
+          <div class="runtime-name">CPU (clang)</div>
+          <div class="runtime-file">runtime/ops_cpu.py</div>
+          <div class="runtime-desc">Clang JIT compiler, mmap allocator, shared library loading and calling.</div>
+        </div>
+        <div class="runtime-card">
+          <div class="runtime-name">OpenCL</div>
+          <div class="runtime-file">runtime/ops_opencl.py</div>
+          <div class="runtime-desc">OpenCL platform/device enumeration, cl_mem allocation, kernel build and enqueue.</div>
+        </div>
+        <div class="runtime-card">
+          <div class="runtime-name">WebGPU</div>
+          <div class="runtime-file">runtime/ops_webgpu.py</div>
+          <div class="runtime-desc">Browser-native GPU via the WebGPU API. Runs in Node or browser environments.</div>
+        </div>
+        <div class="runtime-card">
+          <div class="runtime-name">DISK</div>
+          <div class="runtime-file">runtime/ops_disk.py</div>
+          <div class="runtime-desc">Memory-mapped file buffers. Used for loading model weights directly from disk.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Stats tracking &amp; profiling</span>
+      <span class="section-badge">engine/realize.py:49</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <p>Every kernel execution updates global counters and can emit profiling events.</p>
+      <div class="field-grid">
+        <span class="field-name">GlobalCounters</span>
+        <span class="field-desc">Tracks kernel count, total FLOPS, memory bandwidth, and wall time across all executions</span>
+        <span class="field-name">track_stats()</span>
+        <span class="field-desc">Records per-kernel execution time, op count, memory bytes</span>
+        <span class="field-name">ProfileEvent</span>
+        <span class="field-desc">Emitted for each kernel/copy; used by the profiler for timeline visualization</span>
+        <span class="field-name">estimate_uop()</span>
+        <span class="field-desc">Static analysis of a CALL to estimate FLOPS and memory before running</span>
+      </div>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/engine/realize.py#L49" target="_blank" class="ref-link">engine/realize.py:49 — track_stats</a>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/engine/realize.py#L38" target="_blank" class="ref-link">engine/realize.py:38 — estimate_uop</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Caching layers summary</span>
+      <span class="section-badge">multi-level cache</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <pre>Level 1: UOp deduplication
+  UOpMetaClass caches UOp instances by (op, dtype, src, arg)
+  → same computation graph node returned if already exists
+
+Level 2: Schedule cache (SCACHE=1)
+  schedule_cache[uop_key] = linear_uop
+  → skip re-scheduling for identical tensor graphs
+
+Level 3: Kernel source cache
+  Compiler.compile_cached(source) hashes source string
+  → skip recompiling identical kernels within a process
+
+Level 4: Disk cache (~/.cache/tinygrad/)
+  Compiled binaries persisted to disk
+  → survive process restarts; keyed on source hash + device
+
+Level 5: Runtime cache
+  runtime_cache[(key, device)] = compiled_kernel_callable
+  → skip kernel loading overhead on repeated runs
+
+Level 6: Graph cache (JIT)
+  graph_cache caches batched CUDA Graph / Metal command buffer
+  → near-zero CPU overhead per training step</pre>
+    </div>
+  </div>
+
+</main>
+<script>
+function toggle(header) {
+  const body = header.nextElementSibling;
+  const arrow = header.querySelector('.toggle');
+  const isOpen = !body.classList.contains('collapsed');
+  if (isOpen) { body.classList.add('collapsed'); arrow.classList.remove('open'); }
+  else { body.classList.remove('collapsed'); arrow.classList.add('open'); }
+}
+</script>
+</body>
+</html>

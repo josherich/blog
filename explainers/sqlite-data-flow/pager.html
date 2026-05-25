@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQLite — Pager &amp; WAL</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <span class="brand">SQLite Internals</span>
+  <a href="index.html">Overview</a>
+  <a href="tokenizer.html">Tokenizer</a>
+  <a href="parser.html">Parser</a>
+  <a href="codegen.html">Code Gen</a>
+  <a href="vdbe.html">VDBE</a>
+  <a href="btree.html">B-Tree</a>
+  <a href="pager.html" class="active">Pager</a>
+  <a href="os.html">OS Layer</a>
+</nav>
+
+<main>
+  <div class="page-title">Stage 6 — Pager &amp; WAL</div>
+  <div class="page-subtitle">pager.c · wal.c — Page cache, atomic commits, and crash recovery</div>
+
+  <div class="card">
+    <details open>
+      <summary>Role of the Pager</summary>
+      <div class="card-body">
+        <p>The Pager sits between the B-tree engine and the OS layer. Its jobs are:</p>
+        <ul style="font-size:0.86rem; margin:8px 0 8px 18px; line-height:1.9">
+          <li><strong>Page cache:</strong> keeps recently-used pages in memory to avoid repeated disk I/O.</li>
+          <li><strong>Atomic commits:</strong> ensures that a transaction either fully commits or fully rolls back, even if the process crashes mid-write.</li>
+          <li><strong>Concurrency:</strong> manages file-level locking so multiple readers don't block each other, and readers are isolated from writers.</li>
+          <li><strong>WAL mode:</strong> an alternative journaling mode that allows concurrent readers while a writer is active.</li>
+        </ul>
+        <div class="callout">
+          <strong>Abstraction boundary:</strong> The B-tree calls <code>sqlite3PagerGet(pgno)</code> to get a page and <code>sqlite3PagerWrite(pPage)</code> before modifying it. The B-tree never writes to disk directly and is unaware of journals or locking.
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Key Functions</summary>
+      <div class="card-body">
+        <div class="fn-list">
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/pager.c#L4735" target="_blank">sqlite3PagerOpen <span class="file-loc">pager.c:4735</span></a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/pager.c#L5726" target="_blank">sqlite3PagerGet <span class="file-loc">pager.c:5726</span></a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/pager.c#L6234" target="_blank">sqlite3PagerWrite <span class="file-loc">pager.c:6234</span></a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/pager.c#L6465" target="_blank">sqlite3PagerCommitPhaseOne <span class="file-loc">pager.c:6465</span></a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/pager.c#L6702" target="_blank">sqlite3PagerCommitPhaseTwo <span class="file-loc">pager.c:6702</span></a>
+        </div>
+
+        <div class="pre-label">pager.c:5726 — sqlite3PagerGet: fetch a page into the cache</div>
+        <pre>int sqlite3PagerGet(
+  Pager *pPager,   /* the pager open on the database file */
+  Pgno pgno,       /* page number to fetch (1-based) */
+  DbPage **ppPage, /* OUT: pointer to page in cache */
+  int flags        /* PAGER_GET_NOCONTENT etc. */
+){
+  /* Dispatches to pPager->xGet, which is either
+     pagerGetDbPage (rollback mode) or
+     walRead         (WAL mode).
+     Returns a pointer to a PgHdr held in the page cache. */
+  return pPager->xGet(pPager, pgno, ppPage, flags);
+}</pre>
+
+        <div class="pre-label">pager.c:6234 — sqlite3PagerWrite: mark page dirty before modifying</div>
+        <pre>int sqlite3PagerWrite(PgHdr *pPg){
+  /* This must be called BEFORE the B-tree modifies page content.
+     In rollback journal mode:
+       1. If not yet in the journal, write the ORIGINAL content to
+          the journal file (so it can be restored on rollback).
+       2. Mark the page as dirty in the cache.
+     In WAL mode:
+       The page is copied to the WAL file on commit, not here. */
+  Pager *pPager = pPg->pPager;
+  if( pPager->eState == PAGER_WRITER_LOCKED ){
+    return pager_write_pagelist(pPager, pPg);
+  }
+  pPg->flags |= PGHDR_DIRTY;
+  ...
+}</pre>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Rollback Journal Mode — Atomic Commit</summary>
+      <div class="card-body">
+        <p>In the default (rollback journal) mode, SQLite achieves atomic commits using a <strong>write-ahead journal</strong> of the original page content:</p>
+        <pre>Commit sequence (rollback journal):
+
+1. RESERVED lock obtained on database file.
+2. For each page to be modified:
+   a. Original page content written to journal file (-journal).
+   b. Page modified in cache.
+3. EXCLUSIVE lock obtained.
+4. sqlite3PagerCommitPhaseOne():
+   a. Journal file fsync'd (durable write of originals).
+   b. All dirty pages written to database file.
+5. sqlite3PagerCommitPhaseTwo():
+   a. Journal file deleted (or truncated to 0).
+   b. EXCLUSIVE lock released.
+
+Crash recovery (on next open):
+  If journal exists → read originals back → restore database to
+  pre-transaction state → delete journal. Transaction as if it
+  never happened.</pre>
+
+        <div class="fn-list">
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/pager.c#L6465" target="_blank">sqlite3PagerCommitPhaseOne <span class="file-loc">pager.c:6465</span></a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/pager.c#L6702" target="_blank">sqlite3PagerCommitPhaseTwo <span class="file-loc">pager.c:6702</span></a>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>WAL Mode (Write-Ahead Log)</summary>
+      <div class="card-body">
+        <p>When WAL mode is enabled (<code>PRAGMA journal_mode=WAL</code>), writes go to a separate <code>-wal</code> file instead of directly to the database. Readers always see a consistent snapshot; a writer never blocks readers.</p>
+        <pre>WAL commit sequence:
+
+1. New/modified pages are appended to the WAL file.
+2. A "commit record" is written to the WAL.
+3. WAL file is fsync'd.
+4. Readers check the WAL for the latest version of each page;
+   if not found in WAL, they read from the main database file.
+
+WAL checkpoint (periodic):
+  Pages in the WAL are written back to the main database file.
+  Can happen automatically (default: every 1000 pages written).
+
+Concurrency:
+  ┌───────────┐     ┌───────────────┐     ┌──────────┐
+  │  Readers  │────▶│  database.db  │     │  Writer  │
+  │(no locks) │     │ (old content) │     │          │
+  └───────────┘     └───────────────┘     └────┬─────┘
+       │                                        │
+       │         ┌──────────────┐               │ appends
+       └────────▶│  -wal file   │◀──────────────┘
+      (check WAL │  new pages   │
+       first)    └──────────────┘</pre>
+
+        <div class="fn-list">
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/wal.c#L1" target="_blank">wal.c <span class="file-loc">WAL implementation</span></a>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Page Cache (pcache.c)</summary>
+      <div class="card-body">
+        <p>The page cache is a separate module (<code>pcache.c</code> + <code>pcache1.c</code>) that implements an LRU eviction policy. The Pager delegates cache management to the <code>sqlite3_pcache</code> interface, which allows the application to provide a custom cache implementation.</p>
+        <pre>/* Page header tracked by the pager (pagerInt.h) */
+struct PgHdr {
+  sqlite3_pcache_page *pPage; /* data managed by pcache */
+  void *pData;                /* page content (4096 bytes) */
+  void *pExtra;               /* extra per-page data for btree */
+  PgHdr *pDirty;              /* linked list of dirty pages */
+  Pager *pPager;              /* owning pager */
+  Pgno pgno;                  /* page number */
+  u16 flags;                  /* PGHDR_DIRTY, PGHDR_NEED_SYNC ... */
+  ...
+};</pre>
+        <div class="fn-list">
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/pcache.c#L1" target="_blank">pcache.c</a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/pcache1.c#L1" target="_blank">pcache1.c <span class="file-loc">default LRU impl</span></a>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Next Stage</summary>
+      <div class="card-body">
+        <p>When the Pager needs to actually read bytes from or write bytes to the file, it calls through the <strong>OS / VFS abstraction layer</strong>.</p>
+        <div class="fn-list">
+          <a class="fn-ref" href="os.html">→ OS / VFS Layer</a>
+        </div>
+      </div>
+    </details>
+  </div>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQLite — B-Tree Engine</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.page-diagram {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 12px 0;
+}
+.page-box {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  text-align: center;
+  font-size: 0.78rem;
+  background: var(--card-bg);
+  min-width: 90px;
+}
+.page-box.root { border-color: #0078D4; border-width: 2px; }
+.page-box.internal { border-color: #7c3aed; }
+.page-box.leaf { border-color: #059669; }
+.page-box .pt { font-weight: 700; font-size: 0.7rem; margin-bottom: 3px; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="brand">SQLite Internals</span>
+  <a href="index.html">Overview</a>
+  <a href="tokenizer.html">Tokenizer</a>
+  <a href="parser.html">Parser</a>
+  <a href="codegen.html">Code Gen</a>
+  <a href="vdbe.html">VDBE</a>
+  <a href="btree.html" class="active">B-Tree</a>
+  <a href="pager.html">Pager</a>
+  <a href="os.html">OS Layer</a>
+</nav>
+
+<main>
+  <div class="page-title">Stage 5 — B-Tree Engine</div>
+  <div class="page-subtitle">btree.c — Manages tables and indexes as B-trees over fixed-size database pages</div>
+
+  <div class="card">
+    <details open>
+      <summary>B-Tree Fundamentals</summary>
+      <div class="card-body">
+        <p>SQLite stores every table and index as a separate <strong>B-tree</strong> within the database file. The file is divided into <em>pages</em> of a fixed size (default 4096 bytes). Each page is either an <em>interior node</em> (holds only keys + child pointers) or a <em>leaf node</em> (holds keys + data).</p>
+
+        <div class="page-diagram">
+          <div class="page-box root">
+            <div class="pt">ROOT PAGE 2</div>
+            key ranges<br>+ child ptrs
+          </div>
+          <div style="display:flex;align-items:center;font-size:1.2rem;color:#94a3b8">↙ ↓ ↘</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center">
+            <div class="page-box internal">
+              <div class="pt">INTERIOR</div>
+              keys+ptrs
+            </div>
+            <div class="page-box internal">
+              <div class="pt">INTERIOR</div>
+              keys+ptrs
+            </div>
+          </div>
+        </div>
+        <div class="page-diagram">
+          <div class="page-box leaf">
+            <div class="pt">LEAF</div>
+            rowid + record
+          </div>
+          <div class="page-box leaf">
+            <div class="pt">LEAF</div>
+            rowid + record
+          </div>
+          <div class="page-box leaf">
+            <div class="pt">LEAF</div>
+            rowid + record
+          </div>
+        </div>
+
+        <p>SQLite uses a variant called a <strong>B*-tree</strong>: all data lives in leaf pages; interior pages hold only separator keys and child page numbers. Tables are sorted by rowid (or the PRIMARY KEY for WITHOUT ROWID tables); indexes are sorted by the indexed column values.</p>
+
+        <div class="callout">
+          <strong>Two B-tree flavors:</strong> <em>Table B-trees</em> use the 64-bit rowid as the key and store full row records in leaves. <em>Index B-trees</em> use the indexed column(s) plus rowid as the key; leaves contain no additional data (the rowid is used to look up the full record in the table B-tree).
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Key Functions</summary>
+      <div class="card-body">
+        <div class="fn-list">
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/btree.c#L4775" target="_blank">sqlite3BtreeCursor <span class="file-loc">btree.c:4775</span></a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/btree.c#L6387" target="_blank">sqlite3BtreeNext <span class="file-loc">btree.c:6387</span></a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/btree.c#L9412" target="_blank">sqlite3BtreeInsert <span class="file-loc">btree.c:9412</span></a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/btree.c#L9844" target="_blank">sqlite3BtreeDelete <span class="file-loc">btree.c:9844</span></a>
+        </div>
+
+        <div class="pre-label">btree.c:4775 — Open a cursor on a B-tree by root page number</div>
+        <pre>int sqlite3BtreeCursor(
+  Btree *p,              /* the btree */
+  Pgno iTable,           /* root page of the table/index */
+  int wrFlag,            /* 1 = write cursor, 0 = read-only */
+  struct KeyInfo *pKeyInfo, /* column affinity/collation (indexes only) */
+  BtCursor *pCur         /* OUT: write new cursor here */
+){
+  if( p->sharable ){
+    return btreeCursorWithLock(p, iTable, wrFlag, pKeyInfo, pCur);
+  }else{
+    return btreeCursor(p, iTable, wrFlag, pKeyInfo, pCur);
+  }
+}
+/* The cursor tracks:
+   - a page stack from root → leaf (the "path")
+   - the cell index within the current leaf page
+   - whether the cursor is valid (pointing at an existing entry) */</pre>
+
+        <div class="pre-label">btree.c:6387 — Advance cursor to the next entry</div>
+        <pre>int sqlite3BtreeNext(BtCursor *pCur, int flags){
+  /* Moves within the current leaf page first.
+     If we reach the last cell, ascend to the parent,
+     then descend into the next subtree. */
+  MemPage *pPage = pCur->pPage;
+  int idx = pCur->ix;
+
+  idx++;
+  if( idx >= pPage->nCell ){
+    /* move to parent or return SQLITE_DONE */
+    return moveToParent(pCur);
+  }
+  pCur->ix = idx;
+  return SQLITE_OK;
+}</pre>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>BtCursor — Position Tracking</summary>
+      <div class="card-body">
+        <p>A <code>BtCursor</code> tracks the cursor's current position in the B-tree as a stack of (page, cell-index) pairs — the path from the root down to the current leaf entry.</p>
+        <pre>/* btreeInt.h — BtCursor (simplified) */
+struct BtCursor {
+  u8 eState;            /* CURSOR_VALID, CURSOR_INVALID, CURSOR_SKIPNEXT */
+  u8 curFlags;          /* read-only? etc. */
+  i16 iPage;            /* index of current level in apPage[] */
+  u16 ix;               /* current cell index on apPage[iPage] */
+  Pgno pgnoRoot;        /* root page of this B-tree */
+  BtShared *pBt;        /* shared B-tree state */
+  MemPage *pPage;       /* current page (= apPage[iPage]) */
+  MemPage *apPage[BTCURSOR_MAX_DEPTH]; /* page stack root→leaf */
+  u16     aiIdx[BTCURSOR_MAX_DEPTH];  /* cell index at each level */
+  KeyInfo *pKeyInfo;    /* collation for index cursors */
+  ...
+};</pre>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Page Layout</summary>
+      <div class="card-body">
+        <p>Each page follows a defined binary format. The first 100 bytes of page 1 are the database file header. Every page starts with a small page header followed by a cell pointer array (offsets into the page content area), then the cell content itself at the end of the page.</p>
+        <pre>Page layout (4096 bytes):
+┌─────────────────────────────────┐ 0
+│  Page header (8 or 12 bytes)    │
+│  flags, freeblocks, ncells,     │
+│  content area offset, ...       │
+├─────────────────────────────────┤ 8/12
+│  Cell pointer array             │
+│  [offset₀, offset₁, offset₂…]  │ 2 bytes each
+├─────────────────────────────────┤
+│  Unallocated space              │
+│  (grows down ↓)                 │
+├─────────────────────────────────┤
+│  Cell content area              │ ← cells stored right-to-left
+│  [cell₂ | cell₁ | cell₀]       │
+└─────────────────────────────────┘ 4096</pre>
+
+        <p>For a <em>table leaf</em> page, each cell encodes: varint(payload_length) + varint(rowid) + payload_data. For an <em>index leaf</em> page, each cell encodes: varint(payload_length) + payload_data (key columns + rowid packed into the key).</p>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Record Format</summary>
+      <div class="card-body">
+        <p>Row data (the "payload" in leaf cells) uses SQLite's packed record format. A record header tells the type and size of each column value; column values follow in order.</p>
+        <pre>Record format:
+┌────────────────┬──────────────────────────────┬──────────────────┐
+│ header_size    │ serial_type₀ serial_type₁ …  │ value₀ value₁ … │
+│ (varint)       │ (varint each)                 │ (variable width) │
+└────────────────┴──────────────────────────────┴──────────────────┘
+
+Serial type encoding:
+  0  → NULL
+  1  → 1-byte int
+  2  → 2-byte int
+  ...
+  7  → IEEE 754 double
+  8  → integer 0 (no bytes in value section)
+  9  → integer 1 (no bytes in value section)
+  N≥12, N even  → BLOB, length = (N-12)/2 bytes
+  N≥13, N odd   → TEXT, length = (N-13)/2 bytes</pre>
+
+        <p>The VDBE <code>OP_MakeRecord</code> encodes registers into this format; <code>OP_Column</code> decodes it back, skipping directly to the requested column offset.</p>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Insert and Page Splits</summary>
+      <div class="card-body">
+        <p>Inserting a new entry moves the cursor to the correct leaf position using a binary search, then calls <code>insertCell()</code>. When a leaf fills up, <code>balance()</code> redistributes cells across sibling pages (a B-tree balance/split operation). Interior nodes are updated to reflect the new separator keys.</p>
+        <div class="fn-list">
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/btree.c#L9412" target="_blank">sqlite3BtreeInsert <span class="file-loc">btree.c:9412</span></a>
+        </div>
+        <pre>int sqlite3BtreeInsert(
+  BtCursor *pCur,    /* cursor pointing at insertion location */
+  const BtreePayload *pX, /* key + data to insert */
+  int flags,         /* BTREE_SAVEPOSITION etc. */
+  int seekResult     /* result of prior seek (0 if unknown) */
+){
+  /* 1. Ensure write transaction is active */
+  /* 2. Move cursor to correct leaf position */
+  /* 3. insertCell() — put the encoded cell onto the leaf page */
+  /* 4. balance()    — split/redistribute if page overflows */
+  ...
+}</pre>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Next Stage</summary>
+      <div class="card-body">
+        <p>The B-tree engine never reads or writes disk directly. It asks the <strong>Pager</strong> for a <code>DbPage*</code> (an in-memory copy of a page) via <code>sqlite3PagerGet()</code>, modifies it, and marks it dirty via <code>sqlite3PagerWrite()</code>. The Pager handles journaling and eventual disk flush.</p>
+        <div class="fn-list">
+          <a class="fn-ref" href="pager.html">→ Pager &amp; WAL</a>
+        </div>
+      </div>
+    </details>
+  </div>
+
+</main>
+</body>
+</html>

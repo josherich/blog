@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQLite — Code Generator</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <span class="brand">SQLite Internals</span>
+  <a href="index.html">Overview</a>
+  <a href="tokenizer.html">Tokenizer</a>
+  <a href="parser.html">Parser</a>
+  <a href="codegen.html" class="active">Code Gen</a>
+  <a href="vdbe.html">VDBE</a>
+  <a href="btree.html">B-Tree</a>
+  <a href="pager.html">Pager</a>
+  <a href="os.html">OS Layer</a>
+</nav>
+
+<main>
+  <div class="page-title">Stage 3 — Code Generator</div>
+  <div class="page-subtitle">select.c · insert.c · delete.c · update.c · where.c · expr.c — AST → VDBE bytecode</div>
+
+  <div class="card">
+    <details open>
+      <summary>How Code Generation Works</summary>
+      <div class="card-body">
+        <p>The code generators translate AST structures into VDBE opcode instructions. They call <code>sqlite3VdbeAddOp*()</code> (defined in <code>vdbeaux.c</code>) to append opcodes to the <code>Vdbe</code> object's instruction array. Opcodes use a register machine model: each instruction has up to three integer operands (<code>P1</code>, <code>P2</code>, <code>P3</code>) and an optional pointer (<code>P4</code>).</p>
+        <p>Code generation functions receive a <code>Parse*</code> context which holds a pointer to the <code>Vdbe</code> being built. Labels are resolved via backpatching — a jump target is recorded as a placeholder and filled in later when the destination address is known.</p>
+        <div class="callout">
+          <strong>Register allocation:</strong> <code>pParse->nMem</code> is the next free register. Code generators increment it to allocate registers for temporary values, cursor positions, and column results.
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Opcode Emission Functions (vdbeaux.c)</summary>
+      <div class="card-body">
+        <p>All opcode emission goes through a family of functions in <code>vdbeaux.c</code>. They append to <code>p->aOp[]</code> and return the index of the new instruction (used for backpatching jumps).</p>
+        <div class="fn-list">
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/vdbeaux.c#L263" target="_blank">sqlite3VdbeAddOp0 <span class="file-loc">vdbeaux.c:263</span></a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/vdbeaux.c#L269" target="_blank">sqlite3VdbeAddOp2 <span class="file-loc">vdbeaux.c:269</span></a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/vdbeaux.c#L272" target="_blank">sqlite3VdbeAddOp3 <span class="file-loc">vdbeaux.c:272</span></a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/vdbeaux.c#L414" target="_blank">sqlite3VdbeAddOp4 <span class="file-loc">vdbeaux.c:414</span></a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/vdbeaux.c#L317" target="_blank">sqlite3VdbeAddOp4Int <span class="file-loc">vdbeaux.c:317</span></a>
+        </div>
+        <pre>/* vdbeaux.c:263 — opcode emission (simplified) */
+int sqlite3VdbeAddOp2(Vdbe *p, int op, int p1, int p2){
+  int i;
+  Op *pOp;
+  i = p->nOp;
+  p->nOp++;
+  /* grow p->aOp[] if needed */
+  pOp = &p->aOp[i];
+  pOp->opcode = (u8)op;
+  pOp->p1     = p1;
+  pOp->p2     = p2;
+  pOp->p3     = 0;
+  pOp->p4.p  = 0;
+  pOp->p4type = P4_NOTUSED;
+  return i;        /* return address for backpatching */
+}</pre>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>SELECT Code Generation (select.c)</summary>
+      <div class="card-body">
+        <p><code>sqlite3Select()</code> is the largest and most complex code-generation function. It handles simple SELECTs, subqueries, compound queries (UNION/INTERSECT/EXCEPT), aggregates, and window functions.</p>
+        <div class="fn-list">
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/select.c#L7578" target="_blank">sqlite3Select <span class="file-loc">select.c:7578</span></a>
+        </div>
+
+        <div class="pre-label">Simplified opcode sequence for: SELECT name FROM users WHERE id=1</div>
+        <pre>Addr  Opcode         P1    P2    P3    Comment
+----  -------------  ----  ----  ----  -------------------------
+0     Init           0     13    0     Start; jump to P2 if already run
+1     OpenRead       0     2     0     Open cursor 0 on table "users" (root page 2)
+2     Rewind         0     12    0     Move to first row; jump P2 if empty
+3     Column         0     0     1     r[1] = users.id  (column 0)
+4     Integer        1     2     0     r[2] = 1
+5     Ne             2     11    1     if r[1]!=r[2] jump to addr 11 (next row)
+6     Column         0     1     3     r[3] = users.name (column 1)
+7     ResultRow      3     1     0     Output r[3..3+1] as a result row
+8     Next           0     3     0     Advance cursor; loop back to addr 3
+9     Goto           0     12    0     fall through to halt
+10    Halt           0     0     0
+11    Goto           0     2     0     start over
+12    Halt           0     0     0     SQLITE_DONE</pre>
+
+        <p>The actual generated bytecode uses an index scan or full-table scan depending on what indices exist, which is decided by the WHERE-clause optimizer in <code>where.c</code>.</p>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>WHERE Clause Optimizer (where.c)</summary>
+      <div class="card-body">
+        <p>The WHERE clause is the most important optimization target. <code>where.c</code> (7,886 lines) analyzes the WHERE expression, picks the best index for each table in the FROM list, and generates the loop structure that drives row iteration.</p>
+        <div class="fn-list">
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/where.c#L6830" target="_blank">sqlite3WhereBegin <span class="file-loc">where.c:6830</span></a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/where.c#L7521" target="_blank">sqlite3WhereEnd <span class="file-loc">where.c:7521</span></a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/wherecode.c#L1" target="_blank">wherecode.c <span class="file-loc">loop codegen</span></a>
+        </div>
+
+        <pre>/* Pattern used by every query with a WHERE clause */
+WhereInfo *pWInfo = sqlite3WhereBegin(
+    pParse,   /* parse context */
+    pTabList, /* FROM clause (SrcList) */
+    pWhere,   /* WHERE expression */
+    pOrderBy, /* ORDER BY (may be NULL) */
+    ...
+);
+
+/* Code generator emits column extraction + result here */
+sqlite3ExprCode(pParse, pEList->a[i].pExpr, reg);
+sqlite3VdbeAddOp2(v, OP_ResultRow, regResult, nCol);
+
+sqlite3WhereEnd(pWInfo);  /* close loops, emit OP_Next/OP_Prev */</pre>
+
+        <p><code>sqlite3WhereBegin()</code> emits <code>OP_OpenRead</code> (or <code>OP_OpenWrite</code>), <code>OP_Rewind</code>/<code>OP_SeekGE</code>, and the loop head. <code>sqlite3WhereEnd()</code> emits <code>OP_Next</code> and backpatches all jump addresses.</p>
+
+        <div class="callout">
+          <strong>Index selection:</strong> The query planner in <code>where.c</code> computes an estimated cost for each possible scan strategy and picks the lowest-cost plan. It considers full-table scans, index range scans, covering indexes, and multi-table join orderings.
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>INSERT / UPDATE / DELETE (insert.c · update.c · delete.c)</summary>
+      <div class="card-body">
+        <div class="fn-list">
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/insert.c#L894" target="_blank">sqlite3Insert <span class="file-loc">insert.c:894</span></a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/update.c#L285" target="_blank">sqlite3Update <span class="file-loc">update.c:285</span></a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/delete.c#L288" target="_blank">sqlite3DeleteFrom <span class="file-loc">delete.c:288</span></a>
+        </div>
+
+        <div class="pre-label">INSERT opcodes (simplified for: INSERT INTO t VALUES (1, 'hello'))</div>
+        <pre>OpenWrite   0   rootPage   nCols    -- open write cursor on table
+Integer     1   r[1]                -- r[1] = 1
+String8     0   r[2]       "hello"  -- r[2] = 'hello'
+NewRowid    0   r[3]                -- r[3] = new rowid (auto-increment)
+MakeRecord  r[1] 2  r[4]           -- r[4] = encoded row from r[1..2]
+Insert      0   r[4]   r[3]        -- btree insert: key=r[3], data=r[4]
+Close       0                      -- close cursor</pre>
+
+        <div class="pre-label">DELETE opcodes (simplified for: DELETE FROM t WHERE id=5)</div>
+        <pre>OpenWrite  0  rootPage  nCols    -- open write cursor
+SeekRowid  0  end  r[1]         -- seek to rowid=r[1]; jump if not found
+Delete     0  OPFLAG_NCHANGE   -- delete current row under cursor
+Next       0  top              -- loop (would be full scan without index)</pre>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Expression Code Generation (expr.c)</summary>
+      <div class="card-body">
+        <p><code>expr.c</code> (~6,000 lines) generates VDBE code for every expression type: arithmetic, comparisons, function calls, subqueries, CASE expressions, and CAST. It is called by all DML code generators.</p>
+        <div class="fn-list">
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/expr.c#L5897" target="_blank">sqlite3ExprCode <span class="file-loc">expr.c:5897</span></a>
+        </div>
+
+        <pre>/* expr.c:5897 — entry point; calls sqlite3ExprCodeTarget internally */
+void sqlite3ExprCode(Parse *pParse, Expr *pExpr, int target){
+  /* target = destination register number */
+  int inReg = sqlite3ExprCodeTarget(pParse, pExpr, target);
+  if( inReg!=target ){
+    /* move result to requested register if generated elsewhere */
+    sqlite3VdbeAddOp2(pParse->pVdbe, OP_SCopy, inReg, target);
+  }
+}
+
+/* sqlite3ExprCodeTarget dispatches on pExpr->op:
+     TK_INTEGER  → OP_Integer
+     TK_FLOAT    → OP_Real
+     TK_STRING   → OP_String8
+     TK_COLUMN   → OP_Column (reads from a B-tree cursor)
+     TK_AND      → recurse left + right, OP_And
+     TK_FUNCTION → OP_Function
+     TK_SELECT   → sqlite3CodeSubselect() ...
+*/</pre>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Finalization (build.c)</summary>
+      <div class="card-body">
+        <p>After all statement code is generated, <code>sqlite3FinishCoding()</code> performs final bookkeeping: it emits the <code>OP_Halt</code> instruction, resolves any outstanding forward-jump labels, and hands the completed <code>Vdbe*</code> back to <code>sqlite3Prepare()</code>.</p>
+        <div class="fn-list">
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/build.c#L141" target="_blank">sqlite3FinishCoding <span class="file-loc">build.c:141</span></a>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Next Stage</summary>
+      <div class="card-body">
+        <p>The completed <code>Vdbe*</code> object (opcode array + register count) is returned as the prepared statement. <code>sqlite3_step()</code> then hands it to <code>sqlite3VdbeExec()</code> to execute.</p>
+        <div class="fn-list">
+          <a class="fn-ref" href="vdbe.html">→ VDBE Interpreter</a>
+        </div>
+      </div>
+    </details>
+  </div>
+
+</main>
+</body>
+</html>

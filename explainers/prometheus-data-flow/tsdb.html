@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prometheus Data Flow — TSDB Write Path</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav>
+  <span class="nav-brand">Prometheus</span>
+  <a href="index.html">Overview</a>
+  <a href="scrape.html">Scrape</a>
+  <a href="tsdb.html" class="active">TSDB</a>
+  <a href="remote-write.html">Remote Write</a>
+  <a href="query.html">PromQL</a>
+  <a href="alerting.html">Alerting</a>
+</nav>
+
+<main>
+  <div class="page-header">
+    <h1>TSDB Write Path</h1>
+    <p>How samples flow from the fanout storage interface through the WAL and Head into durable on-disk blocks.</p>
+  </div>
+
+  <!-- Write path diagram -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">🗺</span> Write Path Diagram</summary>
+    <div class="section-body">
+      <div class="flow-diagram">
+        <pre>
+  scrape.Commit()
+        │
+        ▼
+  ┌───────────────────────────────────────────┐
+  │         fanoutStorage.Appender            │  storage/fanout.go:29
+  │   fanoutAppender.Append() fans to ALL     │
+  └────────┬──────────────────────────────────┘
+           │
+  ┌────────┴──────────┐
+  │ local (primary)   │   remote (secondary, best-effort)
+  ▼                   ▼
+  ┌──────────────────────────────────────────────┐
+  │                tsdb.DB                       │  tsdb/db.go:291
+  │  Appender() → initAppender → headAppender    │
+  └────────────────────┬─────────────────────────┘
+                       │
+          ┌────────────┴────────────────┐
+          │                             │
+          ▼                             ▼
+  ┌──────────────┐            ┌─────────────────────┐
+  │  WAL (wlog)  │            │   Head              │  tsdb/head.go:71
+  │ tsdb/wlog/   │            │   (in-memory)       │
+  │ wlog.go:182  │            │                     │
+  │              │            │  stripeSeries map   │
+  │  SERIES rec  │            │  └─ memSeries #ID   │  tsdb/head.go:2508
+  │  SAMPLE rec  │            │     └─ headChunks   │
+  │  EXEMPLAR rec│            │     └─ mmappedChunks│
+  │  HISTOGRAM   │            └──────────┬──────────┘
+  └──────────────┘                       │  chunk full (120 samples)
+                                         ▼
+                              ┌─────────────────────┐
+                              │  Head Chunk Files   │
+                              │  (m-mmap)           │
+                              │  data/wal/chunks_head/
+                              └──────────┬──────────┘
+                                         │  compaction trigger
+                                         ▼
+                              ┌─────────────────────┐
+                              │  Block (on disk)    │  tsdb/block.go
+                              │  data/&lt;ulid&gt;/       │
+                              │  ├── chunks/        │
+                              │  ├── index          │
+                              │  ├── tombstones     │
+                              │  └── meta.json      │
+                              └─────────────────────┘</pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- fanoutStorage -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">📡</span> fanoutStorage — Write Multiplexer <span class="tag tag-write">write</span></summary>
+    <div class="section-body">
+      <div class="code-header">
+        <span class="code-label">storage/fanout.go — fanout struct</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/storage/fanout.go#L29" target="_blank">L29</a>
+      </div>
+      <pre class="code-block">type fanout struct {
+    logger     *slog.Logger
+    primary    Storage    // local TSDB — error here aborts the write
+    secondaries []Storage // remote write — errors logged but ignored
+}
+
+// fanoutAppender.Commit() order:
+//  1. primary.Commit()   ← must succeed
+//  2. secondary[i].Commit()  ← best-effort, logged on failure</pre>
+
+      <p>The fanout decouples local durability from remote delivery. A remote write failure never drops a local sample.</p>
+    </div>
+  </details>
+
+  <!-- DB / initAppender -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">🗄</span> tsdb.DB — Top-level Database</summary>
+    <div class="section-body">
+      <div class="code-header">
+        <span class="code-label">tsdb/db.go — DB struct (key fields)</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/tsdb/db.go#L291" target="_blank">L291</a>
+      </div>
+      <pre class="code-block">type DB struct {
+    dir    string
+    locker *tsdbutil.DirLocker
+
+    logger    *slog.Logger
+    opts      *Options
+    compactor Compactor
+
+    mtx    sync.RWMutex
+    blocks []*Block      // persisted, immutable blocks sorted by time
+
+    head *Head           // mutable in-memory block
+
+    compactc chan struct{} // signal to trigger compaction
+    stopc    chan struct{}
+    donec    chan struct{}
+
+    autoCompact bool
+    ...
+}</pre>
+
+      <div class="code-header">
+        <span class="code-label">tsdb/head_append.go — initAppender (entry point)</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/tsdb/head_append.go#L50" target="_blank">L50</a>
+      </div>
+      <pre class="code-block">// initAppender defers creation of the real headAppender until the first
+// Append() call so that the mint/maxt are known.
+type initAppender struct {
+    app  storage.Appender    // nil until first append
+    head *Head
+    ...
+}
+
+func (a *initAppender) Append(ref storage.SeriesRef, lset labels.Labels,
+    t int64, v float64) (storage.SeriesRef, error) {
+    if a.app != nil {
+        return a.app.Append(ref, lset, t, v)
+    }
+    // First append: create real headAppender
+    a.app = a.head.appender()
+    return a.app.Append(ref, lset, t, v)
+}</pre>
+    </div>
+  </details>
+
+  <!-- WAL -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">📝</span> WAL — Write-Ahead Log <span class="tag tag-write">write</span></summary>
+    <div class="section-body">
+      <p>The WAL provides durability. Every sample is persisted to disk <em>before</em> it enters the in-memory Head. On crash recovery Prometheus replays the WAL to rebuild the Head.</p>
+
+      <div class="code-header">
+        <span class="code-label">tsdb/wlog/wlog.go — WL struct</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/tsdb/wlog/wlog.go#L182" target="_blank">L182</a>
+      </div>
+      <pre class="code-block">type WL struct {
+    dir            string
+    logger         *slog.Logger
+    segmentSize    int    // default 128 MiB
+    mtx            sync.RWMutex
+    segment        *Segment  // active segment file
+    donePages      int
+    page           [pageSize]byte  // 32 KiB page buffer
+    actorc         chan func()
+    stopc          chan chan struct{}
+    compress       CompressionType // snappy or zstd
+    ...
+}</pre>
+
+      <h3>Record Types</h3>
+      <table class="props">
+        <thead><tr><th>Record</th><th>Written when</th><th>Content</th></tr></thead>
+        <tbody>
+          <tr><td>SERIES</td><td>First time a label set is seen</td><td>series ref + labels.Labels</td></tr>
+          <tr><td>SAMPLES</td><td>Every Append()</td><td>[]RefSample{ref, t, v}</td></tr>
+          <tr><td>EXEMPLARS</td><td>AppendExemplar()</td><td>[]RefExemplar{ref, exemplar}</td></tr>
+          <tr><td>HISTOGRAMS</td><td>AppendHistogram()</td><td>[]RefHistogramSample{ref, t, h}</td></tr>
+          <tr><td>METADATA</td><td>metadata updates</td><td>[]RefMetadata{ref, type, unit, help}</td></tr>
+          <tr><td>TOMBSTONES</td><td>Delete() intervals</td><td>[]Stone{ref, {mint,maxt}}</td></tr>
+          <tr><td>MMAPMARKERS</td><td>chunk m-mapped</td><td>refs of flushed chunks</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Segment Layout</h3>
+      <pre class="code-block">data/wal/
+├── 00000001    ← completed segment (128 MiB)
+├── 00000002    ← completed segment
+└── 00000003    ← active segment (being written)
+
+data/wal/chunks_head/
+├── 000001      ← m-mapped head chunks</pre>
+
+      <div class="callout callout-info">
+        WAL segments are deleted once their time range has been fully compacted into a Block and the head has checkpointed past them. The WAL also has a checkpoint mechanism (<code>wlog.WriteCheckpoint()</code>) that compresses older segments.
+      </div>
+    </div>
+  </details>
+
+  <!-- Head -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">🧠</span> Head — In-Memory Block</summary>
+    <div class="section-body">
+      <div class="code-header">
+        <span class="code-label">tsdb/head.go — Head struct (key fields)</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/tsdb/head.go#L71" target="_blank">L71</a>
+      </div>
+      <pre class="code-block">type Head struct {
+    chunkRange atomic.Int64   // maximum time range for a chunk (default 2h)
+    numSeries  atomic.Uint64
+    minTime, maxTime atomic.Int64
+
+    wal, wbl *wlog.WL  // WAL and Write-Behind Log (OOO samples)
+
+    exemplars ExemplarStorage
+
+    // Hash-stripe sharded map: 512 stripes to reduce lock contention.
+    series *stripeSeries
+
+    // Pools to recycle slices without GC pressure.
+    floatsPool          zeropool.Pool[[]record.RefSample]
+    histogramsPool      zeropool.Pool[[]record.RefHistogramSample]
+    ...
+}</pre>
+
+      <p>The <code>stripeSeries</code> structure is a 512-way hash-sharded map that maps <code>HeadSeriesRef</code> → <code>*memSeries</code>. This dramatically reduces lock contention under high write concurrency.</p>
+    </div>
+  </details>
+
+  <!-- memSeries -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">📈</span> memSeries — Per-Series Storage</summary>
+    <div class="section-body">
+      <div class="code-header">
+        <span class="code-label">tsdb/head.go — memSeries struct</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/tsdb/head.go#L2508" target="_blank">L2508</a>
+      </div>
+      <pre class="code-block">type memSeries struct {
+    // Immutable after construction — no lock needed.
+    ref       chunks.HeadSeriesRef
+    shardHash uint64
+
+    sync.Mutex  // guards everything below
+
+    lset labels.Labels
+
+    // mmappedChunks: completed chunks flushed to disk (memory-mapped).
+    // Pointer arithmetic tracks firstChunkID to handle compaction shifts.
+    mmappedChunks []*mmappedChunk
+    firstChunkID  chunks.HeadChunkID
+
+    // headChunks: linked list of in-memory chunks still being written.
+    // headChunks → headChunks.prev → ... (most recent first)
+    headChunks *memChunk
+
+    ooo *memSeriesOOOFields  // out-of-order sample state
+    ...
+}</pre>
+
+      <h3>Chunk Lifecycle for a memSeries</h3>
+      <ol class="steps">
+        <li data-step="1">First sample → allocate <code>memChunk</code> with XOR encoder; attach as <code>headChunks</code></li>
+        <li data-step="2">Samples appended to active <code>headChunk</code> via XOR encoding (~120 samples max)</li>
+        <li data-step="3">Chunk full or time range exceeded → flush to <code>chunks_head/</code> m-map file via <code>chunkDiskMapper</code></li>
+        <li data-step="4">Flushed chunk pointer stored in <code>mmappedChunks</code>; memory freed</li>
+        <li data-step="5">Compaction moves <code>mmappedChunks</code> into a Block; <code>firstChunkID</code> advances</li>
+      </ol>
+
+      <h3>XOR Chunk Encoding</h3>
+      <p>Prometheus uses the Gorilla XOR encoding for float samples, adapted from Facebook's paper:</p>
+      <table class="props">
+        <thead><tr><th>Component</th><th>Encoding</th><th>Typical size</th></tr></thead>
+        <tbody>
+          <tr><td>timestamp delta</td><td>delta-of-delta, variable bits</td><td>1–3 bytes</td></tr>
+          <tr><td>float value</td><td>XOR of previous, leading/trailing zeros compressed</td><td>0–9 bytes</td></tr>
+          <tr><td>per sample average</td><td>combined</td><td>~1.37 bytes</td></tr>
+        </tbody>
+      </table>
+      <p>Implementation: <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/tsdb/chunkenc/xor.go" target="_blank">tsdb/chunkenc/xor.go</a></p>
+    </div>
+  </details>
+
+  <!-- headAppender -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">✏</span> headAppender — Transactional Append</summary>
+    <div class="section-body">
+      <p>The <code>headAppender</code> collects samples in memory for a single scrape batch, writes WAL records, then appends to memSeries — all under a single lock lifecycle.</p>
+
+      <div class="code-header">
+        <span class="code-label">tsdb/head_append.go — headAppender.Append()</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/tsdb/head_append.go#L434" target="_blank">L434</a>
+      </div>
+      <pre class="code-block">func (a *headAppender) Append(ref storage.SeriesRef,
+    lset labels.Labels, t int64, v float64) (storage.SeriesRef, error) {
+
+    // 1. Look up existing series by ref or by label hash.
+    s := a.head.series.getByID(chunks.HeadSeriesRef(ref))
+    if s == nil {
+        // 2. New series: register it, get a new ref.
+        var created bool
+        s, created, err = a.head.getOrCreate(lset.Hash(), lset)
+        if created {
+            // 3. WAL SERIES record scheduled.
+            a.series = append(a.series, record.RefSeries{
+                Ref:    s.ref,
+                Labels: lset,
+            })
+        }
+    }
+
+    // 4. Accumulate sample for batch WAL write.
+    a.samples = append(a.samples, record.RefSample{
+        Ref: s.ref, T: t, V: v,
+    })
+    a.sampleSeries = append(a.sampleSeries, s)
+    return storage.SeriesRef(s.ref), nil
+}
+
+func (a *headAppender) Commit() error {
+    // 5. Write WAL SERIES + SAMPLES records atomically.
+    // 6. For each sample: s.append(t, v, ...) → XOR encode into headChunk.
+    // 7. If chunk full: enqueue for m-map flush.
+    ...
+}</pre>
+    </div>
+  </details>
+
+  <!-- Compaction -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">🔧</span> Compaction — Head → Block</summary>
+    <div class="section-body">
+      <p>When the Head accumulates more than <code>chunkRange * 3/2</code> (default 3h) of data, a compaction is triggered. The oldest portion of the head is written to a new immutable on-disk Block.</p>
+
+      <div class="code-header">
+        <span class="code-label">tsdb/compact.go — LeveledCompactor</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/tsdb/compact.go" target="_blank">compact.go</a>
+      </div>
+      <pre class="code-block">// Block directory layout after compaction:
+data/
+├── 01HJXXXXXXXXXXXXX/       ← ULID (time-sortable unique ID)
+│   ├── chunks/
+│   │   ├── 000001           ← raw XOR-compressed chunk data
+│   │   └── 000002
+│   ├── index                ← inverted index: label → posting list
+│   ├── tombstones           ← delete intervals
+│   └── meta.json            ← {ulid, minTime, maxTime, stats, compaction}
+└── 01HJYYYYY.../</pre>
+
+      <h3>Block Merge (Level Compaction)</h3>
+      <table class="props">
+        <thead><tr><th>Level</th><th>Time range</th><th>Triggered by</th></tr></thead>
+        <tbody>
+          <tr><td>0 (head flush)</td><td>≤ 2h</td><td>Head min time advancing</td></tr>
+          <tr><td>1</td><td>≤ 2h × 3 = 6h</td><td>3 overlapping L0 blocks</td></tr>
+          <tr><td>2</td><td>≤ 18h</td><td>3 overlapping L1 blocks</td></tr>
+          <tr><td>N</td><td>≤ 2h × 3^N</td><td>cascading merge</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-info">
+        Retention is enforced after compaction. Blocks with <code>maxTime &lt; now - retentionDuration</code> are marked for deletion and removed from <code>DB.blocks</code>.
+      </div>
+    </div>
+  </details>
+
+  <!-- Out-of-order -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">⏪</span> Out-of-Order (OOO) Samples</summary>
+    <div class="section-body">
+      <p>Since Prometheus 2.39, OOO samples (arriving with timestamps older than the current Head <code>maxTime</code>) are buffered in a separate Write-Behind Log (WBL) and the <code>memSeriesOOOFields</code> structure, then merged at compaction time.</p>
+
+      <div class="code-header">
+        <span class="code-label">tsdb/head.go — OOO fields</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/tsdb/head.go" target="_blank">head.go</a>
+      </div>
+      <pre class="code-block">type memSeriesOOOFields struct {
+    oooMmappedChunks []*mmappedChunk  // flushed OOO chunks
+    oooHeadChunk     *oooHeadChunk    // current in-memory OOO chunk
+    firstOOOChunkID  chunks.HeadChunkID
+}
+
+// OOO write path:
+//  headAppender.Append() → detects t < s.maxTime
+//  → s.appendOOO(t, v)
+//  → written to wbl (Write-Behind Log, separate WAL)
+//  → OOO compaction merges into regular blocks</pre>
+
+      <div class="callout callout-warn">
+        OOO is controlled by <code>--storage.tsdb.allow-overlapping-compaction</code> and <code>out_of_order_time_window</code> in the TSDB config. OOO data older than the window is silently dropped.
+      </div>
+    </div>
+  </details>
+
+</main>
+</body>
+</html>

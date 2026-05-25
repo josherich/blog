@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prometheus Data Flow — Alerting &amp; Rules</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav>
+  <span class="nav-brand">Prometheus</span>
+  <a href="index.html">Overview</a>
+  <a href="scrape.html">Scrape</a>
+  <a href="tsdb.html">TSDB</a>
+  <a href="remote-write.html">Remote Write</a>
+  <a href="query.html">PromQL</a>
+  <a href="alerting.html" class="active">Alerting</a>
+</nav>
+
+<main>
+  <div class="page-header">
+    <h1>Alerting &amp; Rules</h1>
+    <p>How rule files are loaded, evaluated on a schedule, and how firing alerts are delivered to Alertmanager.</p>
+  </div>
+
+  <!-- Flow diagram -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">🗺</span> Alerting Pipeline</summary>
+    <div class="section-body">
+      <div class="flow-diagram">
+        <pre>
+  rule files (*.yml / *.yaml)
+        │
+        ▼
+  ┌───────────────────────────────────────────────┐
+  │           rules.Manager                       │  rules/manager.go:99
+  │  • ParseFiles() → []Group                     │
+  │  • one goroutine per Group                    │
+  │  • ticker fires every group.interval          │
+  └──────────────────────┬────────────────────────┘
+                         │ per Group
+                         ▼
+  ┌───────────────────────────────────────────────┐
+  │           rules.Group.Eval()                  │  rules/group.go:504
+  │  • evaluates all rules in the group           │
+  │  • respects query_offset                      │
+  └───────────┬───────────────────────┬───────────┘
+              │                       │
+              ▼                       ▼
+  ┌───────────────────┐    ┌────────────────────────────┐
+  │  AlertingRule     │    │  RecordingRule             │
+  │  rules/alerting.go│    │  rules/recording.go        │
+  │                   │    │                            │
+  │ 1. exec PromQL    │    │ 1. exec PromQL             │
+  │ 2. each result    │    │ 2. rename metric label     │
+  │    sample →       │    │ 3. Append() to storage     │
+  │    alert instance │    └────────────────────────────┘
+  │ 3. state machine  │
+  │    inactive→      │
+  │    pending→       │
+  │    firing         │
+  │ 4. write ALERTS{} │
+  │    to storage     │
+  └───────────┬───────┘
+              │  firing alerts
+              ▼
+  ┌───────────────────────────────────────────────┐
+  │           notifier.Manager                    │  notifier/manager.go:53
+  │  • SendAlerts() called after each Group eval  │
+  │  • batches alerts (default 256 per request)   │
+  │  • discovers Alertmanager endpoints via SD    │
+  │  • HTTP POST /api/v1/alerts                   │
+  └───────────────────────────────────────────────┘
+              │
+              ▼
+  Alertmanager  (dedup, group, route, silence, inhibit)</pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- Rule Manager -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">📋</span> rules.Manager — Lifecycle</summary>
+    <div class="section-body">
+      <div class="code-header">
+        <span class="code-label">rules/manager.go — Manager struct</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/rules/manager.go#L99" target="_blank">L99</a>
+      </div>
+      <pre class="code-block">type Manager struct {
+    opts   *ManagerOptions
+    groups map[string]*Group  // key: "filepath;groupname"
+    mtx    sync.RWMutex
+    block  chan struct{}   // blocks until rule files are loaded
+    done   chan struct{}
+    ...
+}
+
+// ManagerOptions wires dependencies:
+type ManagerOptions struct {
+    Appendable storage.Appendable  // write recording rules + ALERTS
+    Queryable  storage.Queryable   // read for rule PromQL
+    QueryFunc  QueryFunc           // calls promql.Engine
+    NotifyFunc NotifyFunc          // deliver alerts to notifier
+    Context    context.Context
+    ExternalURL *url.URL
+    Logger     *slog.Logger
+    ...
+}</pre>
+
+      <p>On config reload, <code>Manager.Update()</code> diffs old and new groups. Groups with the same name and same rules are kept running (their evaluation offset is preserved). New or changed groups are started fresh.</p>
+    </div>
+  </details>
+
+  <!-- Group evaluation -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">⏱</span> Group.Eval() — Per-Interval Evaluation</summary>
+    <div class="section-body">
+      <div class="code-header">
+        <span class="code-label">rules/group.go — Group struct</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/rules/group.go#L45" target="_blank">L45</a>
+      </div>
+      <pre class="code-block">type Group struct {
+    name          string
+    file          string
+    interval      time.Duration      // eval_interval
+    queryOffset   *time.Duration     // query_offset
+    rules         []Rule
+    seriesInPreviousEval []map[string]labels.Labels
+    staleSeries   []labels.Labels
+    opts          *ManagerOptions
+    mtx           sync.Mutex
+    evaluationTime time.Duration     // last eval duration
+    ...
+}</pre>
+
+      <div class="code-header">
+        <span class="code-label">rules/group.go — Group.Eval()</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/rules/group.go#L504" target="_blank">L504</a>
+      </div>
+      <pre class="code-block">func (g *Group) Eval(ctx context.Context, ts time.Time) {
+    for i, rule := range g.rules {
+        // Execute PromQL query via QueryFunc.
+        vector, err := rule.Eval(ctx, g.QueryOffset(), ts,
+                                 g.opts.QueryFunc, g.opts.ExternalURL, g.Limit())
+
+        // For alerting rules: update alert state machine.
+        // For recording rules: append resulting vector to storage.
+
+        // Track which series were produced; stale-mark any that vanished.
+    }
+
+    // After all rules: call NotifyFunc with firing alerts.
+    g.opts.NotifyFunc(ctx, g.file, firingAlerts...)
+}</pre>
+
+      <h3>Evaluation Timestamp</h3>
+      <p>The evaluation timestamp <code>ts</code> is the wall-clock time of the tick, optionally shifted back by <code>query_offset</code>. This allows rules to query "slightly in the past" to avoid reading data that hasn't been fully scraped yet.</p>
+    </div>
+  </details>
+
+  <!-- AlertingRule -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">🔔</span> AlertingRule — State Machine</summary>
+    <div class="section-body">
+      <div class="code-header">
+        <span class="code-label">rules/alerting.go — AlertingRule struct</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/rules/alerting.go#L116" target="_blank">L116</a>
+      </div>
+      <pre class="code-block">type AlertingRule struct {
+    name        string
+    vector      parser.Expr     // the PromQL expression
+    holdDuration time.Duration  // "for:" clause
+    labels      labels.Labels   // extra labels to attach
+    annotations labels.Labels   // human-readable annotations
+    externalURL *url.URL
+    active      map[uint64]*Alert  // fingerprint → alert state
+    mtx         sync.Mutex
+    ...
+}
+
+type Alert struct {
+    State       AlertState   // StateInactive / StatePending / StateFiring
+    Labels      labels.Labels
+    Annotations labels.Labels
+    Value       float64      // the sample value that triggered
+    ActiveAt    time.Time    // when alert first became Pending
+    FiredAt     time.Time    // when alert transitioned to Firing
+    ResolvedAt  time.Time    // when alert resolved
+    LastSentAt  time.Time    // last time sent to Alertmanager
+    ValidUntil  time.Time    // expiry if not re-evaluated
+    ...
+}</pre>
+
+      <h3>Alert State Machine</h3>
+      <div class="flow-diagram">
+        <pre>
+  ┌─────────────┐      PromQL returns sample     ┌─────────────┐
+  │  Inactive   │  ─────────────────────────────▶ │   Pending   │
+  │  (no data   │                                 │  (waiting   │
+  │   or false) │  ◀─────────────────────────── │  for: dur)  │
+  └─────────────┘     PromQL returns no sample    └──────┬──────┘
+                                                         │ holdDuration elapsed
+                                                         ▼
+                                                  ┌─────────────┐
+                                                  │   Firing    │
+                                                  │ (sent to    │
+                                                  │  Alertmgr)  │
+                                                  └─────────────┘
+                                                         │ PromQL returns no sample
+                                                         ▼
+                                                  ┌─────────────┐
+                                                  │  Inactive   │
+                                                  │ (resolved   │
+                                                  │  sent once) │
+                                                  └─────────────┘</pre>
+      </div>
+
+      <h3>Synthetic Metrics Written to Storage</h3>
+      <pre class="code-block">// ALERTS metric (one per active alert instance):
+ALERTS{
+    alertname="MyAlert",
+    alertstate="firing",    // or "pending"
+    &lt;rule labels&gt;,
+    &lt;alert labels&gt;,
+} = 1
+
+// ALERTS_FOR_STATE metric (tracks "for:" start time):
+ALERTS_FOR_STATE{
+    alertname="MyAlert",
+    &lt;rule labels&gt;,
+} = &lt;unix timestamp when alert became pending&gt;</pre>
+      <p>These are written to <code>fanoutStorage</code> exactly like scraped metrics, making alert state queryable via PromQL.</p>
+    </div>
+  </details>
+
+  <!-- RecordingRule -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">🖊</span> RecordingRule — Precomputed Aggregates</summary>
+    <div class="section-body">
+      <div class="code-header">
+        <span class="code-label">rules/recording.go</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/rules/recording.go" target="_blank">recording.go</a>
+      </div>
+      <pre class="code-block">// Example rule:
+// - record: job:http_requests:rate5m
+//   expr: sum by (job) (rate(http_requests_total[5m]))
+
+func (rule *RecordingRule) Eval(ctx context.Context, ...) (promql.Vector, error) {
+    vector, err := queryFunc(ctx, rule.vector.String(), t)
+    // Rename __name__ label to rule.name on each sample.
+    for i := range vector {
+        vector[i].Metric = labelsutil.ReplaceOrAddLabel(
+            vector[i].Metric, labels.MetricName, rule.name)
+    }
+    return vector, err
+}
+
+// The caller (Group.Eval) appends the vector to storage:
+app := opts.Appendable.Appender(ctx)
+for _, s := range vector {
+    app.Append(0, s.Metric, s.T, s.F)
+}
+app.Commit()</pre>
+
+      <div class="callout callout-info">
+        Recording rules are the primary way to pre-aggregate expensive queries. The stored result is a regular metric, queryable at sub-interval precision isn't possible — it has the same granularity as the evaluation interval.
+      </div>
+    </div>
+  </details>
+
+  <!-- Notifier -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">📣</span> Notifier — Alertmanager Delivery</summary>
+    <div class="section-body">
+      <div class="code-header">
+        <span class="code-label">notifier/manager.go — Manager struct</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/notifier/manager.go#L53" target="_blank">L53</a>
+      </div>
+      <pre class="code-block">type Manager struct {
+    opts  *Options
+    queue []*Alert          // buffered alerts pending delivery
+    more  chan struct{}      // signal: new alerts in queue
+    mtx   sync.RWMutex
+
+    // alertmanagers discovered via SD (separate discovery manager).
+    alertmanagers map[string]*alertmanagerSet
+    ...
+}
+
+// Delivery loop (simplified):
+func (n *Manager) run() {
+    for {
+        select {
+        case &lt;-n.more:
+            n.sendAll(n.nextBatch())
+        }
+    }
+}
+
+// sendAll sends the batch to all discovered Alertmanager endpoints.
+// Each endpoint is tried independently; failure for one does not
+// block delivery to others.</pre>
+
+      <h3>Alert Enrichment</h3>
+      <p>Before sending, each alert is enriched:</p>
+      <ol class="steps">
+        <li data-step="1">External labels from <code>--external-labels</code> added (do not override alert labels)</li>
+        <li data-step="2">Alertmanager URL added to <code>GeneratorURL</code> field</li>
+        <li data-step="3">Annotations templated using Go <code>text/template</code> with <code>$value</code>, <code>$labels</code> available</li>
+        <li data-step="4">Batched into chunks of <code>maxBatchSize</code> (default 256)</li>
+        <li data-step="5">POST to <code>https://&lt;alertmanager&gt;/api/v2/alerts</code></li>
+      </ol>
+
+      <h3>Alertmanager Discovery</h3>
+      <p>The notifier uses its own <code>discovery.Manager</code> instance to watch the <code>alerting.alertmanagers</code> config. Alertmanager endpoints can be discovered via any SD mechanism, just like scrape targets.</p>
+
+      <div class="callout callout-warn">
+        The alert queue has a maximum size (<code>QueueCapacity</code>, default 10 000). If Alertmanager is unreachable for too long and the queue fills, older alerts are dropped. Alert counts are tracked in <code>prometheus_notifications_dropped_total</code>.
+      </div>
+    </div>
+  </details>
+
+  <!-- Rule file format -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">📄</span> Rule File Format</summary>
+    <div class="section-body">
+      <pre class="code-block">groups:
+  - name: example                   # group name (must be unique per file)
+    interval: 1m                    # override global evaluation_interval
+    query_offset: 30s               # evaluate 30s in the past
+    limit: 10                       # max alerts per rule (0 = unlimited)
+    rules:
+
+      # Alerting rule
+      - alert: HighErrorRate
+        expr: |
+          rate(http_requests_total{status=~"5.."}[5m])
+          / rate(http_requests_total[5m]) > 0.05
+        for: 5m                     # must be true for 5m before firing
+        keep_firing_for: 2m         # stay firing at least 2m after resolving
+        labels:
+          severity: critical
+          team: backend
+        annotations:
+          summary: "High error rate on {{ $labels.job }}"
+          description: "Error rate is {{ $value | humanizePercentage }}"
+
+      # Recording rule
+      - record: job:http_request_duration:p99
+        expr: histogram_quantile(0.99, sum by (job, le) (
+                rate(http_request_duration_seconds_bucket[5m])
+              ))</pre>
+    </div>
+  </details>
+
+</main>
+</body>
+</html>

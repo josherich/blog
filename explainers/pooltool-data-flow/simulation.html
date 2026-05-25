@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>pooltool — Simulation Engine</title>
+<style>
+  :root {
+    --bg: #0f1117; --surface: #1a1d27; --surface2: #22263a;
+    --border: #2e3350; --accent: #5b8af5; --accent2: #7c6af5;
+    --green: #4caf7d; --orange: #f5a623; --red: #e85c5c;
+    --text: #e0e4f0; --muted: #7a82a8; --code-bg: #12151f;
+    --radius: 8px;
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.6; }
+  nav {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 12px 20px; position: sticky; top: 0; z-index: 100;
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  }
+  nav .brand { font-weight: 700; font-size: 15px; color: var(--accent); margin-right: 8px; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 13px; padding: 4px 10px; border-radius: 5px; transition: all 0.15s; }
+  nav a:hover, nav a.active { background: var(--surface2); color: var(--text); }
+  nav a.active { color: var(--accent); }
+  .container { max-width: 860px; margin: 0 auto; padding: 28px 20px 60px; }
+  h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
+  h2 { font-size: 19px; font-weight: 600; margin: 36px 0 12px; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  h3 { font-size: 14px; font-weight: 600; margin: 16px 0 8px; color: var(--orange); }
+  p { color: #b0b8d8; margin-bottom: 10px; font-size: 14px; }
+  .subtitle { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
+  a.gh { font-family: var(--mono); font-size: 11px; color: var(--accent); text-decoration: none; border-bottom: 1px dashed var(--border); }
+  a.gh:hover { border-color: var(--accent); }
+  details { margin: 10px 0; }
+  summary {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 10px 14px; cursor: pointer; font-size: 13px; font-weight: 600;
+    list-style: none; display: flex; align-items: center; gap: 8px; user-select: none;
+  }
+  summary:hover { border-color: var(--accent); }
+  details[open] summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom: none; }
+  summary::before { content: '▶'; font-size: 10px; color: var(--muted); transition: transform 0.15s; flex-shrink: 0; }
+  details[open] summary::before { transform: rotate(90deg); }
+  .details-body {
+    background: var(--code-bg); border: 1px solid var(--border); border-top: none;
+    border-bottom-left-radius: var(--radius); border-bottom-right-radius: var(--radius);
+    padding: 16px;
+  }
+  pre { font-family: var(--mono); font-size: 12.5px; line-height: 1.55; color: #cdd6f4; white-space: pre; overflow-x: auto; }
+  .kw { color: #cba6f7; } .fn { color: #89b4fa; } .cls { color: #a6e3a1; }
+  .str { color: #a6e3a1; } .cm { color: #6c7086; font-style: italic; }
+  .num { color: #fab387; } .dec { color: #f38ba8; } .tp { color: #94e2d5; }
+  .section-intro { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 14px; }
+  .section-intro p { margin: 0; }
+  .inset { background: var(--surface2); border-left: 3px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0; padding: 10px 14px; margin: 10px 0; font-size: 13px; color: #8892b0; }
+  .loop-box {
+    border: 1px solid var(--border); border-radius: var(--radius);
+    overflow: hidden; margin: 16px 0;
+  }
+  .loop-header { background: var(--surface2); padding: 10px 14px; font-size: 13px; font-weight: 600; color: var(--accent); border-bottom: 1px solid var(--border); }
+  .loop-step { display: flex; align-items: flex-start; gap: 12px; padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  .loop-step:last-child { border-bottom: none; }
+  .loop-num { background: var(--accent); color: var(--bg); font-weight: 700; font-size: 11px; min-width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .loop-num.orange { background: var(--orange); }
+  .loop-num.red { background: var(--red); }
+  .loop-num.green { background: var(--green); }
+  .loop-content { flex: 1; font-size: 13px; color: #b0b8d8; }
+  .loop-content strong { color: var(--text); }
+  .attr-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 10px 0; }
+  .attr-table th { text-align: left; color: var(--muted); font-weight: 500; padding: 6px 10px; border-bottom: 1px solid var(--border); font-size: 11px; text-transform: uppercase; }
+  .attr-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .attr-table tr:last-child td { border-bottom: none; }
+  .attr-table td:first-child { font-family: var(--mono); color: var(--accent); font-size: 12px; }
+  .attr-table td:nth-child(2) { font-family: var(--mono); color: var(--orange); font-size: 11px; white-space: nowrap; }
+  .attr-table td:nth-child(3) { color: #8892b0; }
+  .states { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; align-items: center; }
+  .state-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 5px 10px; font-family: var(--mono); font-size: 12px; color: var(--orange); }
+  .arrow { color: var(--muted); font-size: 14px; }
+  @media (max-width: 600px) { h1 { font-size: 20px; } }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">pooltool</span>
+  <a href="index.html">Overview</a>
+  <a href="system.html">Data Models</a>
+  <a href="simulation.html" class="active">Simulation</a>
+  <a href="detection.html">Detection</a>
+  <a href="resolution.html">Resolution</a>
+  <a href="visualization.html">Visualization</a>
+</nav>
+
+<div class="container">
+  <h1>Simulation Engine</h1>
+  <p class="subtitle">Event-based time-stepping — advancing physics exactly to each collision or state transition, no fixed timestep approximations.</p>
+
+  <!-- ── WHY EVENT-BASED ──────────────────────────────── -->
+  <h2>Why event-based simulation?</h2>
+  <div class="section-intro">
+    <p>Fixed-timestep (Euler/RK4) methods accumulate error at each step. Because billiard physics are analytically solvable between events, pooltool finds the <em>exact</em> next event time, jumps there, then applies the collision model — zero error accumulation between events.</p>
+  </div>
+
+  <!-- ── THE MAIN LOOP ────────────────────────────────── -->
+  <h2>The simulation loop</h2>
+  <p><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/event_based/simulate.py#L103" target="_blank">pooltool/evolution/event_based/simulate.py:103</a></p>
+
+  <div class="loop-box">
+    <div class="loop-header">simulate(system) — main loop</div>
+    <div class="loop-step">
+      <div class="loop-num">0</div>
+      <div class="loop-content"><strong>init</strong> — Reset all ball histories, push a null event at t=0. Caches are warm.</div>
+    </div>
+    <div class="loop-step">
+      <div class="loop-num">1</div>
+      <div class="loop-content"><strong>detect</strong> — <code>EventDetector.get_next_event()</code> queries all event categories and returns the soonest one (broken by priority tier).</div>
+    </div>
+    <div class="loop-step">
+      <div class="loop-num orange">2</div>
+      <div class="loop-content"><strong>evolve</strong> — <code>evolve_ball_motion()</code> is called for every non-stationary ball, analytically advancing <code>rvw</code> by <code>dt = event.time − system.t</code>.</div>
+    </div>
+    <div class="loop-step">
+      <div class="loop-num red">3</div>
+      <div class="loop-content"><strong>resolve</strong> — <code>Resolver.resolve(event)</code> applies the collision or transition model, updating the agents' <code>BallState</code>.</div>
+    </div>
+    <div class="loop-step">
+      <div class="loop-num green">4</div>
+      <div class="loop-content"><strong>record</strong> — Current ball states are appended to <code>ball.history</code>. The event is appended to <code>system.events</code>. Caches are invalidated.</div>
+    </div>
+    <div class="loop-step">
+      <div class="loop-num">↺</div>
+      <div class="loop-content"><strong>repeat</strong> until all balls are stationary or pocketed (or <code>t_final</code> is reached).</div>
+    </div>
+  </div>
+
+  <details open>
+    <summary>simulate() — full signature and parameters</summary>
+    <div class="details-body">
+<pre><span class="kw">def</span> <span class="fn">simulate</span>(
+    shot:       System,
+    engine:     SimulationEngine | <span class="kw">None</span> = <span class="kw">None</span>,
+    inplace:    <span class="tp">bool</span>               = <span class="kw">False</span>,
+    continuous: <span class="tp">bool</span>               = <span class="kw">False</span>,
+    t_final:    <span class="tp">float</span> | <span class="kw">None</span>       = <span class="kw">None</span>,
+    include:    set[EventType]      = INCLUDE_ALL,
+) -&gt; System:</pre>
+      <table class="attr-table" style="margin-top:12px">
+        <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
+        <tr><td>shot</td><td>System</td><td>The system to simulate. Copied unless <code>inplace=True</code>.</td></tr>
+        <tr><td>engine</td><td>SimulationEngine | None</td><td>Physics engine bundle. Created with defaults if not given.</td></tr>
+        <tr><td>inplace</td><td>bool</td><td>Mutate <code>shot</code> directly instead of copying. Cheaper for single-use.</td></tr>
+        <tr><td>continuous</td><td>bool</td><td>If True, call <code>continuize()</code> automatically after simulation.</td></tr>
+        <tr><td>t_final</td><td>float | None</td><td>Stop simulation early at this time (seconds).</td></tr>
+        <tr><td>include</td><td>set[EventType]</td><td>Restrict which event types are resolved (others are still detected but skipped).</td></tr>
+      </table>
+      <div class="inset"><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/event_based/simulate.py#L103" target="_blank">simulate.py:103</a></div>
+    </div>
+  </details>
+
+  <details open>
+    <summary>_SimulationState — internal state machine</summary>
+    <div class="details-body">
+<pre><span class="cm"># pooltool/evolution/event_based/simulate.py:21</span>
+<span class="kw">class</span> <span class="cls">_SimulationState</span>:
+    shot:   System
+    engine: SimulationEngine
+
+    <span class="kw">def</span> <span class="fn">init</span>(self):                             <span class="cm"># line 38</span>
+        <span class="cm"># Reset all ball histories</span>
+        <span class="cm"># Record initial null event at t=0</span>
+        ...
+
+    <span class="kw">def</span> <span class="fn">step</span>(self) -&gt; Event:                    <span class="cm"># line 42</span>
+        event = self.engine.detector.get_next_event(self.shot)
+        self._evolve(self.shot, event.time - self.shot.t)
+        self.engine.resolver.resolve(event, self.shot)
+        self.shot._update_history(event)
+        self.update_caches()
+        <span class="kw">return</span> event
+
+    <span class="kw">@staticmethod</span>
+    <span class="kw">def</span> <span class="fn">evolve</span>(shot: System, dt: <span class="tp">float</span>):        <span class="cm"># line 80</span>
+        <span class="kw">for</span> ball <span class="kw">in</span> shot.balls.values():
+            <span class="kw">if</span> ball.state.s != stationary <span class="kw">and</span> ball.state.s != pocketed:
+                ball.state.rvw, ball.state.s = evolve_ball_motion(
+                    state=ball.state.s, rvw=ball.state.rvw,
+                    R=ball.params.R, m=ball.params.m,
+                    u_s=ball.params.u_s, u_sp=ball.params.u_sp,
+                    u_r=ball.params.u_r, g=g, t=dt,
+                )</pre>
+      <div class="inset"><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/event_based/simulate.py#L21" target="_blank">simulate.py:21</a></div>
+    </div>
+  </details>
+
+  <!-- ── ENGINE ───────────────────────────────────────── -->
+  <h2>SimulationEngine</h2>
+  <p><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/engine.py#L12" target="_blank">pooltool/evolution/engine.py:12</a></p>
+
+  <details open>
+    <summary>SimulationEngine — bundling detector and resolver</summary>
+    <div class="details-body">
+<pre><span class="cm"># pooltool/evolution/engine.py:12</span>
+<span class="kw">@dataclass</span>
+<span class="kw">class</span> <span class="cls">SimulationEngine</span>:
+    detector: EventDetector   <span class="cm"># finds the next event</span>
+    resolver: Resolver        <span class="cm"># applies the physics model</span>
+    is_3d:    <span class="tp">bool</span>           <span class="cm"># enable airborne-ball support</span>
+
+<span class="cm"># Default engine (used when engine=None in simulate()):</span>
+engine = SimulationEngine.default()
+<span class="cm"># Equivalent to:</span>
+engine = SimulationEngine(
+    detector=EventDetector(is_3d=<span class="kw">False</span>),
+    resolver=default_resolver(),
+    is_3d=<span class="kw">False</span>,
+)</pre>
+      <p style="color:#8892b0;font-size:13px;margin-top:10px">
+        The engine is designed to be swapped. You can pass a custom engine to <code>simulate()</code> to use different collision models (e.g. Mathavan instead of FrictionalInelastic for ball-ball).
+      </p>
+    </div>
+  </details>
+
+  <!-- ── BALL MOTION EVOLUTION ────────────────────────── -->
+  <h2>evolve_ball_motion() — analytical motion update</h2>
+  <p><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/physics/evolve/__init__.py#L28" target="_blank">pooltool/physics/evolve/__init__.py:28</a></p>
+
+  <div class="section-intro">
+    <p>This Numba-compiled function takes the current <code>rvw</code> and motion state, advances them analytically by time <code>t</code>, and returns the new <code>(rvw, state)</code>. No numerical integration — the equations have closed-form solutions.</p>
+  </div>
+
+  <details open>
+    <summary>evolve_ball_motion() — dispatch by motion state</summary>
+    <div class="details-body">
+<pre><span class="kw">@nb.jit</span>(nopython=<span class="kw">True</span>, cache=<span class="kw">True</span>)
+<span class="kw">def</span> <span class="fn">evolve_ball_motion</span>(state, rvw, R, m, u_s, u_sp, u_r, g, t):
+    <span class="cm"># pooltool/physics/evolve/__init__.py:28</span>
+    <span class="kw">if</span> state == stationary <span class="kw">or</span> state == pocketed:
+        <span class="kw">return</span> rvw, state
+
+    <span class="kw">if</span> state == sliding:
+        <span class="kw">return</span> _evolve_slide_state(rvw, R, m, u_s, u_sp, g, t)  <span class="cm"># line 88</span>
+
+    <span class="kw">if</span> state == rolling:
+        <span class="kw">return</span> _evolve_roll_state(rvw, R, m, u_r, u_sp, g, t)   <span class="cm"># line 133</span>
+
+    <span class="kw">if</span> state == spinning:
+        <span class="kw">return</span> _evolve_perpendicular_spin_state(rvw, R, m, u_sp, g, t)  <span class="cm"># line 184</span>
+
+    <span class="kw">if</span> state == airborne:
+        <span class="kw">return</span> _evolve_airborne_state(rvw, g, t)                 <span class="cm"># line 192</span></pre>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Sliding state — kinetic friction decelerates ball</summary>
+    <div class="details-body">
+<pre><span class="cm"># pooltool/physics/evolve/__init__.py:88</span>
+<span class="kw">def</span> <span class="fn">_evolve_slide_state</span>(rvw, R, m, u_s, u_sp, g, t):
+    <span class="cm"># Sliding: surface velocity ≠ ball velocity</span>
+    <span class="cm"># Kinetic (sliding) friction decelerates the center-of-mass</span>
+    <span class="cm"># and also applies a torque changing angular velocity.</span>
+    <span class="cm">#</span>
+    <span class="cm"># v(t) = v0 + a_slide * t           (linear)</span>
+    <span class="cm"># w(t) = w0 + alpha_slide * t        (angular)</span>
+    <span class="cm">#</span>
+    <span class="cm"># Transition to ROLLING when |v - R×w| → 0</span>
+    ...</pre>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Rolling state — pure rolling, slower deceleration</summary>
+    <div class="details-body">
+<pre><span class="cm"># pooltool/physics/evolve/__init__.py:133</span>
+<span class="kw">def</span> <span class="fn">_evolve_roll_state</span>(rvw, R, m, u_r, u_sp, g, t):
+    <span class="cm"># Rolling: no slip between ball and cloth</span>
+    <span class="cm"># Only rolling friction (u_r ≪ u_s) slows the ball.</span>
+    <span class="cm"># The spin vector stays aligned with velocity.</span>
+    <span class="cm">#</span>
+    <span class="cm"># v(t) = v0 - u_r * g * t            (decelerates)</span>
+    <span class="cm"># w(t) = v(t) / R                    (no-slip constraint)</span>
+    <span class="cm">#</span>
+    <span class="cm"># Transition to SPINNING when forward speed → 0 but spin remains,</span>
+    <span class="cm"># or to STATIONARY when both are zero.</span>
+    ...</pre>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Spinning state — residual vertical spin decays</summary>
+    <div class="details-body">
+<pre><span class="cm"># pooltool/physics/evolve/__init__.py:184</span>
+<span class="kw">def</span> <span class="fn">_evolve_perpendicular_spin_state</span>(rvw, R, m, u_sp, g, t):
+    <span class="cm"># Ball has zero linear velocity but non-zero angular velocity</span>
+    <span class="cm"># around the vertical axis (e.g. from stun or massé shot).</span>
+    <span class="cm"># Spinning friction (u_sp) decays it to zero.</span>
+    ...</pre>
+    </div>
+  </details>
+
+  <details open>
+    <summary>State transition timeline — single ball example</summary>
+    <div class="details-body">
+<pre>t=0.000s  STICK_BALL   → ball enters SLIDING  (high slip, both v and w change)
+t=0.012s  SLIDING→ROLLING  → slip ratio = 0, pure roll begins
+t=0.290s  BALL_LINEAR_CUSHION → cushion collision, ball re-enters SLIDING
+t=0.308s  SLIDING→ROLLING
+t=1.100s  ROLLING→STATIONARY → ball stops</pre>
+      <div class="inset">After each collision the ball usually re-enters <code>SLIDING</code> because the bounce changes the velocity/spin ratio.</div>
+    </div>
+  </details>
+
+  <!-- ── CACHES ────────────────────────────────────────── -->
+  <h2>Event caching</h2>
+  <p><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/event_based/cache.py" target="_blank">pooltool/evolution/event_based/cache.py</a></p>
+
+  <details open>
+    <summary>TransitionCache — avoid recomputing transition times</summary>
+    <div class="details-body">
+<pre><span class="cm"># pooltool/evolution/event_based/cache.py:30</span>
+<span class="cm">#</span>
+<span class="cm"># For each ball, the cache stores the time of its next</span>
+<span class="cm"># motion-state transition (SLIDING→ROLLING, etc.).</span>
+<span class="cm">#</span>
+<span class="cm"># Transition times depend only on current ball state, so</span>
+<span class="cm"># they only need recomputing when a ball is touched by a collision.</span>
+<span class="cm"># All other balls can reuse their cached value.</span>
+
+<span class="kw">class</span> <span class="cls">TransitionCache</span>:
+    <span class="kw">def</span> <span class="fn">get_next</span>(self, ball: Ball) -&gt; Event:
+        <span class="kw">if</span> ball.id <span class="kw">not in</span> self._cache:
+            self._cache[ball.id] = self._next_transition(ball)  <span class="cm"># line 73</span>
+        <span class="kw">return</span> self._cache[ball.id]
+
+    <span class="kw">def</span> <span class="fn">invalidate</span>(self, ball_id: str) -&gt; <span class="kw">None</span>:
+        self._cache.pop(ball_id, <span class="kw">None</span>)</pre>
+    </div>
+  </details>
+
+</div>
+</body>
+</html>

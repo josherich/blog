@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prometheus Data Flow — Overview</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav>
+  <span class="nav-brand">Prometheus</span>
+  <a href="index.html" class="active">Overview</a>
+  <a href="scrape.html">Scrape</a>
+  <a href="tsdb.html">TSDB</a>
+  <a href="remote-write.html">Remote Write</a>
+  <a href="query.html">PromQL</a>
+  <a href="alerting.html">Alerting</a>
+</nav>
+
+<main>
+  <div class="page-header">
+    <h1>Prometheus Data Flow</h1>
+    <p>End-to-end walkthrough of how metrics travel from scrape targets through storage to query results and alerts. Commit <a class="gh-link" href="https://github.com/prometheus/prometheus/tree/01822f2a7cea65b7af992ce92b650e9a58b75435" target="_blank">01822f2</a></p>
+  </div>
+
+  <!-- Full pipeline diagram -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">🗺</span> Full Pipeline Diagram</summary>
+    <div class="section-body">
+      <div class="flow-diagram">
+        <pre>
+  SCRAPE TARGETS  (exporters, node_exporter, etc.)
+        │
+        ▼
+  ┌─────────────────────────────────────────────┐
+  │           Discovery Manager                 │  discovery/manager.go
+  │  (Kubernetes, AWS, Consul, File, DNS, …)    │
+  └────────────────────┬────────────────────────┘
+                       │  targetgroup.Group
+                       ▼
+  ┌─────────────────────────────────────────────┐
+  │            Scrape Manager                   │  scrape/manager.go
+  │  (one scrapePool per job, relabeling)       │
+  └────────────────────┬────────────────────────┘
+                       │  HTTP GET /metrics
+                       ▼
+  ┌─────────────────────────────────────────────┐
+  │             Scrape Loop                     │  scrape/scrape.go
+  │  (parse text/protobuf, apply limits)        │
+  └────────────────────┬────────────────────────┘
+                       │  samples / exemplars / histograms
+                       ▼
+  ┌─────────────────────────────────────────────┐
+  │           fanoutStorage.Appender            │  storage/fanout.go
+  └──────────────┬──────────────────────────────┘
+                 │
+       ┌─────────┴────────┐
+       ▼                  ▼
+  ┌─────────┐     ┌───────────────────────────────┐
+  │  Local  │     │       Remote Storage           │
+  │  TSDB   │     │  storage/remote/write.go       │
+  │         │     │  WAL Watcher → QueueManager    │
+  │ ┌─────┐ │     │  → HTTP POST remote_write      │
+  │ │ WAL │ │     └───────────────────────────────┘
+  │ └──┬──┘ │
+  │    │    │
+  │ ┌──▼──┐ │
+  │ │Head │ │   tsdb/head.go
+  │ │ +   │ │   (in-memory XOR chunks, memSeries)
+  │ │mmap │ │
+  │ └──┬──┘ │
+  │    │ compaction
+  │ ┌──▼──────┐ │
+  │ │ Blocks  │ │   tsdb/block.go
+  │ │(on disk)│ │   (index + chunk files)
+  │ └─────────┘ │
+  └─────────────┘
+        │
+        ▼  (Querier)
+  ┌─────────────────────────────────────────────┐
+  │              PromQL Engine                  │  promql/engine.go
+  │  (parse AST → select → eval → result)       │
+  └──────────────┬──────────────────────────────┘
+                 │
+       ┌─────────┴─────────┐
+       ▼                   ▼
+  ┌─────────┐       ┌─────────────────────┐
+  │ HTTP    │       │   Rule Manager       │  rules/manager.go
+  │ API     │       │ (alerting + record.) │
+  │/api/v1/ │       └──────────┬──────────┘
+  └─────────┘                  │ firing alerts
+                               ▼
+                        ┌─────────────┐
+                        │  Notifier   │  notifier/manager.go
+                        │ Alertmanager│
+                        └─────────────┘</pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- Startup sequence -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">🚀</span> Startup Sequence</summary>
+    <div class="section-body">
+      <p>All components are wired together in <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/cmd/prometheus/main.go" target="_blank">cmd/prometheus/main.go</a>. Initialization order matters — storage must be ready before scrapers start.</p>
+      <ol class="steps">
+        <li data-step="1">Config loaded via <code>config.LoadFile()</code>; flags parsed into <code>flagConfig</code></li>
+        <li data-step="2">Local TSDB opened: <code>tsdb.Open()</code> replays WAL, rebuilds Head</li>
+        <li data-step="3"><code>remote.NewStorage()</code> — remote write queues created per endpoint</li>
+        <li data-step="4"><code>storage.NewFanout(local, remote)</code> — unified write surface</li>
+        <li data-step="5"><code>discovery.NewManager()</code> starts — SD providers launch goroutines</li>
+        <li data-step="6"><code>scrape.NewManager()</code> starts — waits for first config sync from discovery</li>
+        <li data-step="7"><code>promql.NewEngine()</code> created with timeout, lookback delta, limits</li>
+        <li data-step="8"><code>rules.NewManager()</code> loads rule files, starts evaluation goroutines</li>
+        <li data-step="9">Web server starts — <code>/api/v1/query</code>, <code>/metrics</code>, <code>/targets</code>, etc.</li>
+        <li data-step="10">SIGHUP triggers <code>reloadConfig()</code> — all reloader funcs called in order</li>
+      </ol>
+    </div>
+  </details>
+
+  <!-- Component pages -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">📦</span> Components</summary>
+    <div class="section-body">
+      <div class="component-grid">
+        <a href="scrape.html" class="component-card">
+          <div class="card-icon">🎯</div>
+          <div class="card-title">Scrape Pipeline</div>
+          <div class="card-desc">Discovery → target groups → HTTP scrape → parse metrics → Appender</div>
+        </a>
+        <a href="tsdb.html" class="component-card">
+          <div class="card-icon">💾</div>
+          <div class="card-title">TSDB Write Path</div>
+          <div class="card-desc">fanoutStorage → WAL → Head memSeries → m-map chunks → disk Blocks</div>
+        </a>
+        <a href="remote-write.html" class="component-card">
+          <div class="card-icon">📡</div>
+          <div class="card-title">Remote Write</div>
+          <div class="card-desc">WAL watcher → QueueManager shards → protobuf HTTP POST</div>
+        </a>
+        <a href="query.html" class="component-card">
+          <div class="card-icon">🔍</div>
+          <div class="card-title">PromQL Engine</div>
+          <div class="card-desc">Parse AST → index lookup → chunk decode → expression eval</div>
+        </a>
+        <a href="alerting.html" class="component-card">
+          <div class="card-icon">🔔</div>
+          <div class="card-title">Alerting &amp; Rules</div>
+          <div class="card-desc">Rule groups → PromQL eval → state machine → Alertmanager notify</div>
+        </a>
+      </div>
+    </div>
+  </details>
+
+  <!-- Key interfaces -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">🔌</span> Core Interfaces</summary>
+    <div class="section-body">
+      <p>All components communicate through a small set of interfaces defined in <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/storage/interface.go" target="_blank">storage/interface.go</a>.</p>
+      <div class="code-header">
+        <span class="code-label">storage/interface.go — key interfaces</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/storage/interface.go#L82" target="_blank">L82</a>
+      </div>
+      <pre class="code-block">// Storage combines all sub-interfaces
+type Storage interface {
+    SampleAndChunkQueryable           // read path
+    Appendable                        // write path (deprecated Q2 2026)
+    AppendableV2                      // write path (new)
+    StartTime() (int64, error)
+    Close() error
+}
+
+// Appender — transactional write interface
+type Appender interface {
+    Append(ref SeriesRef, l labels.Labels, t int64, v float64) (SeriesRef, error)
+    AppendExemplar(ref SeriesRef, l labels.Labels, e exemplar.Exemplar) (SeriesRef, error)
+    AppendHistogram(ref SeriesRef, l labels.Labels, t int64, h *histogram.Histogram, ...) (SeriesRef, error)
+    Commit() error
+    Rollback() error
+}
+
+// Querier — read interface for a time range
+type Querier interface {
+    Select(ctx, sortSeries bool, hints *SelectHints, matchers ...*labels.Matcher) SeriesSet
+    LabelNames(ctx, hints *LabelHints, matchers ...) ([]string, Warnings, error)
+    LabelValues(ctx, name string, hints *LabelHints, matchers ...) ([]string, Warnings, error)
+    Close() error
+}</pre>
+
+      <div class="callout callout-info">
+        <code>SeriesRef</code> is a uint64 opaque handle returned by <code>Append()</code> that can be reused in subsequent calls to skip label lookup — key hot-path optimization.
+      </div>
+    </div>
+  </details>
+
+  <!-- Data types -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">🧱</span> Core Data Types</summary>
+    <div class="section-body">
+      <table class="props">
+        <thead>
+          <tr><th>Type</th><th>Package</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>labels.Labels</td>
+            <td><a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/model/labels/labels.go" target="_blank">model/labels</a></td>
+            <td>Sorted key=value pairs identifying a time series</td>
+          </tr>
+          <tr>
+            <td>storage.SeriesRef</td>
+            <td><a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/storage/interface.go#L48" target="_blank">storage</a></td>
+            <td>uint64 handle for a series within an Appender transaction</td>
+          </tr>
+          <tr>
+            <td>chunks.HeadSeriesRef</td>
+            <td><a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/tsdb/chunks/head_chunks.go" target="_blank">tsdb/chunks</a></td>
+            <td>uint64 monotonic ID assigned per series in the Head</td>
+          </tr>
+          <tr>
+            <td>histogram.Histogram</td>
+            <td><a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/model/histogram/histogram.go" target="_blank">model/histogram</a></td>
+            <td>Native histogram with bucket counts, sum, count</td>
+          </tr>
+          <tr>
+            <td>exemplar.Exemplar</td>
+            <td><a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/model/exemplar/exemplar.go" target="_blank">model/exemplar</a></td>
+            <td>High-cardinality trace ID attached to a metric sample</td>
+          </tr>
+          <tr>
+            <td>chunkenc.Chunk</td>
+            <td><a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/tsdb/chunkenc/chunk.go" target="_blank">tsdb/chunkenc</a></td>
+            <td>Compressed byte slice of (timestamp, value) pairs</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <!-- Configuration reload -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">🔄</span> Config Reload</summary>
+    <div class="section-body">
+      <p>Prometheus supports live reload (SIGHUP or <code>/-/reload</code> POST). Each component registers a reloader function.</p>
+      <div class="code-header">
+        <span class="code-label">cmd/prometheus/main.go — reloader list</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/cmd/prometheus/main.go#L1073" target="_blank">~L1073</a>
+      </div>
+      <pre class="code-block">reloaders = []reloader{
+    {name: "db_storage",       reloader: localStorage.reloader},
+    {name: "remote_storage",   reloader: remoteStorage.ApplyConfig},
+    {name: "web_handler",      reloader: webHandler.ApplyConfig},
+    {name: "query_engine",     reloader: func(cfg *config.Config) error { ... }},
+    {name: "scrape",           reloader: scrapeManager.ApplyConfig},
+    {name: "scrape_sd",        reloader: discoveryManagerScrape.ApplyConfig},
+    {name: "notify",           reloader: notifierManager.ApplyConfig},
+    {name: "notify_sd",        reloader: discoveryManagerNotify.ApplyConfig},
+    {name: "rules",            reloader: rulesManager.Update},
+    {name: "tracing",          reloader: tracingManager.ApplyConfig},
+}</pre>
+      <div class="callout callout-warn">
+        Reloaders run sequentially. If any fails, the reload is aborted and the previous config stays active.
+      </div>
+    </div>
+  </details>
+
+</main>
+</body>
+</html>

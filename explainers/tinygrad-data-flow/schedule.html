@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tinygrad — Scheduler</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --border: #2a2d3a;
+    --accent: #7c6af5;
+    --accent2: #56cfb2;
+    --text: #e2e4ed;
+    --muted: #8b8fa8;
+    --code-bg: #12141e;
+    --link: #7c9ef5;
+    --tag-bg: #252838;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'SF Mono', 'Fira Code', monospace; font-size: 14px; line-height: 1.6; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .back-link { font-size: 12px; color: var(--muted); }
+  .back-link:hover { color: var(--text); }
+  h1 { font-size: 18px; font-weight: 700; }
+  .subtitle { color: var(--muted); font-size: 13px; margin-left: auto; }
+  main { max-width: 900px; margin: 0 auto; padding: 24px 16px; }
+  .section { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 20px; overflow: hidden; }
+  .section-header { padding: 14px 18px; display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+  .section-header:hover { background: rgba(124,106,245,0.06); }
+  .section-title { font-size: 15px; font-weight: 600; }
+  .section-badge { font-size: 11px; padding: 2px 8px; border-radius: 12px; background: var(--tag-bg); color: var(--muted); }
+  .toggle { margin-left: auto; color: var(--muted); font-size: 12px; transition: transform 0.2s; }
+  .toggle.open { transform: rotate(180deg); }
+  .section-body { padding: 18px; border-top: 1px solid var(--border); }
+  .section-body.collapsed { display: none; }
+  .field-grid { display: grid; grid-template-columns: minmax(140px, auto) 1fr; gap: 6px 16px; align-items: start; }
+  .field-name { color: var(--accent2); font-weight: 600; padding-top: 2px; }
+  .field-desc .type { color: var(--accent); font-size: 12px; }
+  code { background: var(--code-bg); padding: 1px 5px; border-radius: 3px; font-size: 12px; color: #e8b86d; }
+  pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; overflow-x: auto; font-size: 12px; line-height: 1.7; white-space: pre; }
+  .ref-link { display: inline-block; font-size: 11px; color: var(--muted); border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; margin-top: 8px; margin-right: 6px; }
+  .ref-link:hover { color: var(--link); border-color: var(--link); text-decoration: none; }
+  .note { background: rgba(86,207,178,0.07); border-left: 3px solid var(--accent2); padding: 10px 14px; border-radius: 0 4px 4px 0; margin: 10px 0; font-size: 13px; }
+  .warn { background: rgba(245,185,66,0.07); border-left: 3px solid #f5b942; padding: 10px 14px; border-radius: 0 4px 4px 0; margin: 10px 0; font-size: 13px; }
+  .flow-step { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .flow-step:last-child { border-bottom: none; }
+  .step-num { width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+  .step-body { flex: 1; }
+  .step-title { font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .step-desc { color: var(--muted); font-size: 13px; }
+  h3 { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin: 14px 0 8px; }
+  p { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+  .file-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+  .file-card { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; }
+  .file-name { color: var(--accent2); font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+  .file-desc { color: var(--muted); font-size: 12px; }
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html" class="back-link">← overview</a>
+  <h1>Scheduler</h1>
+  <span class="subtitle">Stage 3 of 6 · tinygrad/schedule/</span>
+</header>
+<main>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">What the scheduler does</span>
+      <span class="section-badge">overview</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <p>The scheduler takes the raw tensor-level UOp DAG (with <code>RESHAPE</code>, <code>EXPAND</code>, <code>REDUCE</code>, <code>BUFFER</code> etc.) and transforms it into a <strong>LINEAR</strong> UOp — an ordered, dependency-respecting list of kernel <strong>CALL</strong> nodes ready to compile and run.</p>
+      <p>Key concerns: fusion (merging kernels to avoid memory round-trips), buffer allocation, multi-device routing, and linearizing the dependency graph.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">create_linear_with_vars — top-level entry</span>
+      <span class="section-badge">schedule/__init__.py:122</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <p>Called by <code>Tensor.linear_with_vars()</code> and <code>Tensor.realize()</code>. Accepts the big SINK UOp, returns a compiled execution plan.</p>
+      <pre>def create_linear_with_vars(big_sink: UOp) -> tuple[UOp, dict[str, int]]:
+  # 1. Apply pattern matchers that fuse ops and lower movement ops
+  # 2. Create a schedule (ordered CALL list) via create_schedule()
+  # 3. Extract symbolic variable values from BIND nodes
+  # 4. Return (LINEAR uop, var_vals dict)</pre>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/schedule/__init__.py#L122" target="_blank" class="ref-link">schedule/__init__.py:122</a>
+      <div class="field-grid">
+        <span class="field-name">Returns LINEAR</span>
+        <span class="field-desc">A <code>UOp(Ops.LINEAR)</code> whose <code>src</code> is an ordered tuple of CALL nodes</span>
+        <span class="field-name">Returns var_vals</span>
+        <span class="field-desc"><code>dict[str, int]</code> — concrete values for any symbolic dimension variables</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">create_schedule — build the execution DAG</span>
+      <span class="section-badge">schedule/__init__.py:21</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <p>Converts the tensor UOp graph into a topologically-sorted list of CALL nodes.</p>
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Build AFTER dependency edges</div>
+          <div class="step-desc">Traverse SINK, find all AFTER nodes (which represent data dependencies between kernels), collect them into a dependency graph.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">In-degree topological sort</div>
+          <div class="step-desc">Use a priority queue to emit kernels in the best order, ensuring each kernel only runs after its data sources are ready.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Produce LINEAR UOp</div>
+          <div class="step-desc">Wrap the ordered CALL sequence in a <code>UOp(Ops.LINEAR)</code> node.</div>
+        </div>
+      </div>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/schedule/__init__.py#L21" target="_blank" class="ref-link">schedule/__init__.py:21 — create_schedule</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">lower_sink_to_linear — kernel boundary decisions</span>
+      <span class="section-badge">schedule/__init__.py:93</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <p>Decides how to split the UOp graph into separate kernels. The core fusion heuristic lives here: ops that share the same loop structure can be merged into one kernel.</p>
+      <pre>def lower_sink_to_linear(function: UOp) -> UOp|None:
+  # Returns a LINEAR UOp for a single fused kernel group,
+  # or None if this function doesn't need a kernel
+  # (e.g. pure in-memory copies or views)</pre>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/schedule/__init__.py#L93" target="_blank" class="ref-link">schedule/__init__.py:93</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Supporting schedule modules</span>
+      <span class="section-badge">schedule/</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="file-list">
+        <div class="file-card">
+          <div class="file-name">schedule/rangeify.py</div>
+          <div class="file-desc">Converts tensor index arithmetic into <code>RANGE/END</code> loop pairs. Turns abstract shapes into concrete loop bounds.</div>
+        </div>
+        <div class="file-card">
+          <div class="file-name">schedule/indexing.py</div>
+          <div class="file-desc">Maps multi-dimensional tensor indices to flat buffer offsets. Handles strides, padding, and permutations.</div>
+        </div>
+        <div class="file-card">
+          <div class="file-name">schedule/memory.py</div>
+          <div class="file-desc">Buffer allocation and layout decisions. Determines which buffers can be reused or aliased.</div>
+        </div>
+        <div class="file-card">
+          <div class="file-name">schedule/multi.py</div>
+          <div class="file-desc">Multi-device sharding logic. Handles <code>MSELECT</code>/<code>MSTACK</code> ops for distributing tensors across devices.</div>
+        </div>
+        <div class="file-card">
+          <div class="file-name">schedule/allreduce.py</div>
+          <div class="file-desc">Cross-device all-reduce for distributed training. Produces communication primitives in the schedule.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Schedule caching (SCACHE)</span>
+      <span class="section-badge">schedule/__init__.py:91</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <p>When <code>SCACHE=1</code> is set, the computed schedule is cached by the UOp key hash. On repeated calls with identical graphs (same shapes, same ops), the cached LINEAR is returned without re-scheduling.</p>
+      <div class="note">Schedule caching is separate from kernel compilation caching (<code>runtime_cache</code>). Both are required for JIT-style repeated execution to be fast.</div>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/schedule/__init__.py#L91" target="_blank" class="ref-link">schedule/__init__.py:91 — schedule_cache</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Example: two-op schedule</span>
+      <span class="section-badge">walkthrough</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <pre># Tensor graph (input to scheduler):
+# SINK
+#   └─ BUFFER(out) ← REDUCE(ADD) ← MUL ← BUFFER(a), BUFFER(b)
+
+# After scheduling, produces:
+LINEAR(
+  # Kernel 1: fused mul+reduce in a single pass
+  CALL(
+    PROGRAM(ast=SINK(STORE(buf_out, REDUCE(MUL(LOAD(a), LOAD(b)))))),
+    buf_a,     # input
+    buf_b,     # input
+    buf_out    # output (newly allocated)
+  )
+)
+
+# var_vals = {} (no symbolic dims here)
+
+# If buf_a or buf_b needed an upload first, the schedule would also contain:
+# CALL(COPY, host_data, buf_a)  ← before the kernel call</pre>
+    </div>
+  </div>
+
+</main>
+<script>
+function toggle(header) {
+  const body = header.nextElementSibling;
+  const arrow = header.querySelector('.toggle');
+  const isOpen = !body.classList.contains('collapsed');
+  if (isOpen) { body.classList.add('collapsed'); arrow.classList.remove('open'); }
+  else { body.classList.remove('collapsed'); arrow.classList.add('open'); }
+}
+</script>
+</body>
+</html>

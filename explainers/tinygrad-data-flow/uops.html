@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tinygrad — UOps (IR)</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --border: #2a2d3a;
+    --accent: #7c6af5;
+    --accent2: #56cfb2;
+    --text: #e2e4ed;
+    --muted: #8b8fa8;
+    --code-bg: #12141e;
+    --link: #7c9ef5;
+    --tag-bg: #252838;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'SF Mono', 'Fira Code', monospace; font-size: 14px; line-height: 1.6; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .back-link { font-size: 12px; color: var(--muted); }
+  .back-link:hover { color: var(--text); }
+  h1 { font-size: 18px; font-weight: 700; }
+  .subtitle { color: var(--muted); font-size: 13px; margin-left: auto; }
+  main { max-width: 900px; margin: 0 auto; padding: 24px 16px; }
+  .section { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 20px; overflow: hidden; }
+  .section-header { padding: 14px 18px; display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+  .section-header:hover { background: rgba(124,106,245,0.06); }
+  .section-title { font-size: 15px; font-weight: 600; }
+  .section-badge { font-size: 11px; padding: 2px 8px; border-radius: 12px; background: var(--tag-bg); color: var(--muted); }
+  .toggle { margin-left: auto; color: var(--muted); font-size: 12px; transition: transform 0.2s; }
+  .toggle.open { transform: rotate(180deg); }
+  .section-body { padding: 18px; border-top: 1px solid var(--border); }
+  .section-body.collapsed { display: none; }
+  .field-grid { display: grid; grid-template-columns: minmax(100px, auto) 1fr; gap: 6px 16px; align-items: start; }
+  .field-name { color: var(--accent2); font-weight: 600; padding-top: 2px; }
+  .field-desc .type { color: var(--accent); font-size: 12px; }
+  code { background: var(--code-bg); padding: 1px 5px; border-radius: 3px; font-size: 12px; color: #e8b86d; }
+  pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; overflow-x: auto; font-size: 12px; line-height: 1.7; white-space: pre; }
+  .ref-link { display: inline-block; font-size: 11px; color: var(--muted); border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; margin-top: 8px; }
+  .ref-link:hover { color: var(--link); border-color: var(--link); text-decoration: none; }
+  .note { background: rgba(86,207,178,0.07); border-left: 3px solid var(--accent2); padding: 10px 14px; border-radius: 0 4px 4px 0; margin: 10px 0; font-size: 13px; }
+  h3 { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin: 14px 0 8px; }
+  p { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+  .ops-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+  .ops-card { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; }
+  .ops-card-title { font-size: 12px; font-weight: 700; color: var(--accent); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .ops-list { display: flex; flex-wrap: wrap; gap: 4px; }
+  .op-tag { font-size: 11px; padding: 1px 6px; border-radius: 4px; background: var(--tag-bg); color: var(--text); border: 1px solid var(--border); }
+  .op-tag.special { color: var(--accent2); border-color: rgba(86,207,178,0.3); }
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html" class="back-link">← overview</a>
+  <h1>UOps — Intermediate Representation</h1>
+  <span class="subtitle">Stage 2 of 6 · tinygrad/uop/</span>
+</header>
+<main>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">UOp dataclass</span>
+      <span class="section-badge">uop/ops.py:128</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <p>UOp is the single IR node that represents every operation in the entire pipeline — from high-level tensor ops through scheduling to compiled kernels. All Tensor computation is a DAG of UOps.</p>
+      <pre>@dataclass(eq=False, slots=True)
+class UOp(OpMixin, metaclass=UOpMetaClass):
+  op:       Ops                  # what this node does
+  dtype:    DType  = dtypes.void # output type
+  src:      tuple[UOp,...] = ()  # input nodes (the DAG edges)
+  arg:      Any    = None        # op-specific extra data
+  tag:      Any    = None        # optional tracing metadata
+  metadata: Metadata = None      # user-supplied metadata</pre>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/uop/ops.py#L128" target="_blank" class="ref-link">uop/ops.py:128 — class UOp</a>
+      <div class="note"><strong>Deduplication:</strong> <code>UOpMetaClass</code> (line 85) caches instances — two UOps with identical (op, dtype, src, arg) return the same object. This keeps the DAG compact and enables O(1) equality checks.</div>
+      <h3>Key properties</h3>
+      <div class="field-grid">
+        <span class="field-name">toposort()</span>
+        <span class="field-desc">Returns ordered dict of all ancestor UOps; respects control-flow entry ordering</span>
+        <span class="field-name">_shape</span>
+        <span class="field-desc">Recursively infers shape from src nodes; may contain symbolic <code>sint</code> values</span>
+        <span class="field-name">ssimplify()</span>
+        <span class="field-desc">Constant-fold symbolic expressions where possible</span>
+        <span class="field-name">sym_infer(var_vals)</span>
+        <span class="field-desc">Substitute symbolic variables with concrete ints</span>
+      </div>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/uop/ops.py#L174" target="_blank" class="ref-link">uop/ops.py:174 — toposort()</a>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/uop/ops.py#L212" target="_blank" class="ref-link">uop/ops.py:212 — _shape</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Ops enum — all operation codes</span>
+      <span class="section-badge">uop/__init__.py:13</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <p>The <code>Ops</code> enum enumerates every operation a UOp can represent. The ordering controls toposort priority.</p>
+      <div class="ops-grid">
+        <div class="ops-card">
+          <div class="ops-card-title">Defines / Params</div>
+          <div class="ops-list">
+            <span class="op-tag">DEFINE_VAR</span>
+            <span class="op-tag">BIND</span>
+            <span class="op-tag">SPECIAL</span>
+            <span class="op-tag">DEFINE_LOCAL</span>
+            <span class="op-tag">DEFINE_REG</span>
+          </div>
+        </div>
+        <div class="ops-card">
+          <div class="ops-card-title">Program Structure</div>
+          <div class="ops-list">
+            <span class="op-tag special">SINK</span>
+            <span class="op-tag special">LINEAR</span>
+            <span class="op-tag special">PROGRAM</span>
+            <span class="op-tag">SOURCE</span>
+            <span class="op-tag">BINARY</span>
+            <span class="op-tag">PARAM</span>
+            <span class="op-tag">FUNCTION</span>
+            <span class="op-tag special">CALL</span>
+          </div>
+        </div>
+        <div class="ops-card">
+          <div class="ops-card-title">Memory</div>
+          <div class="ops-list">
+            <span class="op-tag special">BUFFER</span>
+            <span class="op-tag">BUFFER_VIEW</span>
+            <span class="op-tag special">LOAD</span>
+            <span class="op-tag special">STORE</span>
+            <span class="op-tag">INDEX</span>
+            <span class="op-tag">COPY</span>
+          </div>
+        </div>
+        <div class="ops-card">
+          <div class="ops-card-title">Arithmetic (Unary)</div>
+          <div class="ops-list">
+            <span class="op-tag">CAST</span>
+            <span class="op-tag">BITCAST</span>
+            <span class="op-tag">EXP2</span>
+            <span class="op-tag">LOG2</span>
+            <span class="op-tag">SIN</span>
+            <span class="op-tag">SQRT</span>
+            <span class="op-tag">RECIPROCAL</span>
+            <span class="op-tag">NEG</span>
+            <span class="op-tag">TRUNC</span>
+          </div>
+        </div>
+        <div class="ops-card">
+          <div class="ops-card-title">Arithmetic (Binary)</div>
+          <div class="ops-list">
+            <span class="op-tag">ADD</span>
+            <span class="op-tag">MUL</span>
+            <span class="op-tag">SUB</span>
+            <span class="op-tag">FDIV</span>
+            <span class="op-tag">MAX</span>
+            <span class="op-tag">SHL</span>
+            <span class="op-tag">SHR</span>
+            <span class="op-tag">XOR</span>
+            <span class="op-tag">OR</span>
+            <span class="op-tag">AND</span>
+            <span class="op-tag">CMPLT</span>
+            <span class="op-tag">CMPNE</span>
+            <span class="op-tag">CMPEQ</span>
+            <span class="op-tag">POW</span>
+          </div>
+        </div>
+        <div class="ops-card">
+          <div class="ops-card-title">Ternary &amp; Reduce</div>
+          <div class="ops-list">
+            <span class="op-tag">WHERE</span>
+            <span class="op-tag">MULACC</span>
+            <span class="op-tag special">REDUCE</span>
+            <span class="op-tag">ALLREDUCE</span>
+            <span class="op-tag">WMMA</span>
+          </div>
+        </div>
+        <div class="ops-card">
+          <div class="ops-card-title">Control Flow</div>
+          <div class="ops-list">
+            <span class="op-tag">RANGE</span>
+            <span class="op-tag">END</span>
+            <span class="op-tag">IF</span>
+            <span class="op-tag">ENDIF</span>
+            <span class="op-tag">BARRIER</span>
+            <span class="op-tag">WAIT</span>
+          </div>
+        </div>
+        <div class="ops-card">
+          <div class="ops-card-title">Tensor-only (pre-schedule)</div>
+          <div class="ops-list">
+            <span class="op-tag special">RESHAPE</span>
+            <span class="op-tag special">PERMUTE</span>
+            <span class="op-tag special">EXPAND</span>
+            <span class="op-tag special">PAD</span>
+            <span class="op-tag special">SHRINK</span>
+            <span class="op-tag special">FLIP</span>
+            <span class="op-tag">CONTIGUOUS</span>
+            <span class="op-tag">DEVICE</span>
+          </div>
+        </div>
+      </div>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/uop/__init__.py#L13" target="_blank" class="ref-link">uop/__init__.py:13 — class Ops(FastEnum)</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">PatternMatcher — AST rewriting</span>
+      <span class="section-badge">uop/ops.py:1299</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <p>All optimization and lowering passes are expressed as <code>PatternMatcher</code> rules. A pattern describes a UOp subgraph to match; if matched, a replacement is returned.</p>
+      <pre>pm = PatternMatcher([
+  # constant folding: ADD(CONST a, CONST b) → CONST(a+b)
+  (UPat(Ops.ADD, src=(UPat(Ops.CONST, name="a"),
+                      UPat(Ops.CONST, name="b"))),
+   lambda a, b: UOp.const(a.dtype, a.arg + b.arg)),
+  ...
+])
+
+new_uop = graph_rewrite(uop, pm)</pre>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/uop/ops.py#L1299" target="_blank" class="ref-link">uop/ops.py:1299 — class PatternMatcher</a>
+      <div class="note"><strong>Bottom-up rewriting:</strong> <code>graph_rewrite</code> applies the pattern matcher bottom-up, repeatedly until no more rules match. All codegen, scheduling, and optimization passes are built from these rules.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Kernel-related UOp containers</span>
+      <span class="section-badge">uop/ops.py:1037–1097</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <p>Three frozen dataclasses wrap kernel-level information and are stored in UOp <code>arg</code> fields.</p>
+      <div class="field-grid">
+        <span class="field-name">KernelInfo</span>
+        <span class="field-desc">Local sizes, <code>dont_use_locals</code>, <code>tensor_core</code> config. Stored in PROGRAM arg.</span>
+        <span class="field-name">ProgramInfo</span>
+        <span class="field-desc">Device, name, globals/locals shape, op counts. Attached to PROGRAM after compilation.</span>
+        <span class="field-name">CallInfo</span>
+        <span class="field-desc">Argument buffer list for a CALL node: which Buffers the kernel reads/writes and their roles.</span>
+      </div>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/uop/ops.py#L1037" target="_blank" class="ref-link">uop/ops.py:1037 — KernelInfo</a>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/uop/ops.py#L1050" target="_blank" class="ref-link">uop/ops.py:1050 — ProgramInfo</a>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/uop/ops.py#L1097" target="_blank" class="ref-link">uop/ops.py:1097 — CallInfo</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">UOp lifecycle through the pipeline</span>
+      <span class="section-badge">stages</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <pre># Stage 1 — Tensor graph (high-level, movement ops present)
+BUFFER ─ RESHAPE ─ PERMUTE ─ EXPAND ─┐
+                                      ├─ MUL ─ REDUCE ─ SINK
+BUFFER ─────────────────────────────┘
+
+# Stage 2 — After scheduling (movement ops eliminated, CALL tree)
+LINEAR(
+  CALL(PROGRAM(kernel_ast), buf_a, buf_b, buf_out)
+  CALL(COPY, buf_src, buf_dst)
+  ...
+)
+
+# Stage 3 — After codegen (lowered to indexed loops)
+SINK(
+  RANGE(0..N) ─┐
+               ├─ STORE(INDEX(buf_out, i), LOAD(buf_a,i) * LOAD(buf_b,i))
+               └─ END
+)
+
+# Stage 4 — After render (device source string)
+SOURCE("kernel void k(float* a, float* b, float* c) { ... }")
+
+# Stage 5 — After compile
+BINARY(bytes_of_ptx_or_metallib)</pre>
+    </div>
+  </div>
+
+</main>
+<script>
+function toggle(header) {
+  const body = header.nextElementSibling;
+  const arrow = header.querySelector('.toggle');
+  const isOpen = !body.classList.contains('collapsed');
+  if (isOpen) { body.classList.add('collapsed'); arrow.classList.remove('open'); }
+  else { body.classList.remove('collapsed'); arrow.classList.add('open'); }
+}
+</script>
+</body>
+</html>

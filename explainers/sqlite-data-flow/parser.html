@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQLite — Parser</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <span class="brand">SQLite Internals</span>
+  <a href="index.html">Overview</a>
+  <a href="tokenizer.html">Tokenizer</a>
+  <a href="parser.html" class="active">Parser</a>
+  <a href="codegen.html">Code Gen</a>
+  <a href="vdbe.html">VDBE</a>
+  <a href="btree.html">B-Tree</a>
+  <a href="pager.html">Pager</a>
+  <a href="os.html">OS Layer</a>
+</nav>
+
+<main>
+  <div class="page-title">Stage 2 — Parser</div>
+  <div class="page-subtitle">parse.y → parse.c — LEMON LALR(1) grammar that builds the AST</div>
+
+  <div class="card">
+    <details open>
+      <summary>LEMON Parser Generator</summary>
+      <div class="card-body">
+        <p>SQLite uses <strong>LEMON</strong>, its own LALR(1) parser generator (similar to yacc/bison but with a cleaner interface and thread-safe output). The grammar is written in <code>parse.y</code>. The LEMON tool compiles this into <code>parse.c</code> (a large generated C file) which is then compiled into SQLite.</p>
+        <p>LEMON generates a <strong>table-driven shift-reduce parser</strong>. Grammar rule actions in <code>parse.y</code> are C code fragments that fire when a rule is completely matched. These actions construct AST nodes and — critically — also call code-generation functions directly.</p>
+        <div class="callout">
+          <strong>Key insight:</strong> Unlike many compilers, SQLite's parser does not build a complete AST then hand it off. Grammar rule actions call code-gen functions (like <code>sqlite3Select()</code>) incrementally as rules reduce. The "AST" is short-lived.
+        </div>
+        <div class="fn-list">
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/parse.y#L1" target="_blank">parse.y <span class="file-loc">full grammar</span></a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/tool/lemon.c" target="_blank">lemon.c <span class="file-loc">parser generator</span></a>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Grammar Structure (parse.y)</summary>
+      <div class="card-body">
+        <p>The grammar file has roughly 2,100 lines and covers all of SQL that SQLite supports. Rules are written in the Lemon format: <code>result ::= components . { action }</code></p>
+
+        <div class="pre-label">parse.y — top-level structure</div>
+        <pre>/* Top-level rule */
+input ::= cmdlist.
+cmdlist ::= cmdlist ecmd.
+cmdlist ::= ecmd.
+ecmd ::= SEMI.
+ecmd ::= cmdx SEMI.
+
+/* All statement types */
+cmdx ::= cmd.
+cmd ::= BEGIN transtype trans_opt. { sqlite3BeginTransaction(pParse, ...); }
+cmd ::= COMMIT|END trans_opt.      { sqlite3CommitTransaction(pParse); }
+cmd ::= ROLLBACK trans_opt.        { sqlite3RollbackTransaction(pParse); }
+cmd ::= select(X). {
+  SelectDest dest = {SRT_Output, 0, 0, 0, 0, 0, 0};
+  sqlite3Select(pParse, X, &dest);   /* ← code generator called here */
+  sqlite3SelectDelete(pParse->db, X);
+}
+cmd ::= createkw TABLE ...   /* DDL */
+cmd ::= insert_stmt(X).  { sqlite3Insert(pParse, ...); }
+cmd ::= update_stmt(X).  { sqlite3Update(pParse, ...); }
+cmd ::= delete_stmt(X).  { sqlite3DeleteFrom(pParse, ...); }</pre>
+
+        <div class="pre-label">parse.y — SELECT rule (simplified)</div>
+        <pre>select(A) ::= WITH wqlist(W) selectnowith(X). {
+  A = attachWithToSelect(pParse, X, W);
+}
+
+select(A) ::= selectnowith(A).
+
+selectnowith(A) ::= selectnowith(X) multiselect_op(Y) oneselect(Z). {
+  /* Build linked list for UNION / INTERSECT / EXCEPT */
+  A = sqlite3SelectNew(pParse, 0, 0, 0, 0, 0, 0, Y, 0);
+  A->pPrior = X;
+  A->pNext = Z;
+}
+
+oneselect(A) ::= SELECT distinct(D) selcollist(W) from(X)
+                 where_opt(Y) groupby_opt(P) having_opt(Q)
+                 orderby_opt(Z) limit_opt(L). {
+  A = sqlite3SelectNew(pParse, W, X, Y, P, Q, Z, D, L);
+}</pre>
+
+        <div class="pre-label">parse.y — expression rules (simplified)</div>
+        <pre>expr(A) ::= expr(X) AND expr(Y).  { A = sqlite3ExprAnd(pParse,X,Y); }
+expr(A) ::= expr(X) OR  expr(Y).  { BINARY(TK_OR,  X, Y); }
+expr(A) ::= expr(X) EQ  expr(Y).  { BINARY(TK_EQ,  X, Y); }
+expr(A) ::= expr(X) NE  expr(Y).  { BINARY(TK_NE,  X, Y); }
+expr(A) ::= expr(X) LT  expr(Y).  { BINARY(TK_LT,  X, Y); }
+expr(A) ::= nm(X) DOT nm(Y).      { A = sqlite3PExpr(pParse, TK_DOT, X, Y); }
+expr(A) ::= nm(X) LP exprlist(Y) RP. {   /* function call */
+  A = sqlite3ExprFunction(pParse, Y, &X, 0);
+}</pre>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>AST Node Types</summary>
+      <div class="card-body">
+        <p>Grammar actions build lightweight structures that live on the heap and are freed promptly after code generation. The key ones:</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Structure</th><th>Created by</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><code>Select</code></td>
+                <td><a class="gh-link" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/select.c" target="_blank">sqlite3SelectNew()</a></td>
+                <td>Represents one SELECT statement; linked list for compound queries (UNION etc.)</td>
+              </tr>
+              <tr>
+                <td><code>Expr</code></td>
+                <td><a class="gh-link" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/expr.c" target="_blank">sqlite3PExpr()</a></td>
+                <td>Binary tree for expressions; each node carries op code, optional left/right children, and literal value</td>
+              </tr>
+              <tr>
+                <td><code>ExprList</code></td>
+                <td><code>sqlite3ExprListAppend()</code></td>
+                <td>Dynamic array of Expr* for SELECT column list, ORDER BY, etc.</td>
+              </tr>
+              <tr>
+                <td><code>SrcList</code></td>
+                <td><code>sqlite3SrcListAppend()</code></td>
+                <td>FROM clause: list of tables/subqueries with aliases</td>
+              </tr>
+              <tr>
+                <td><code>IdList</code></td>
+                <td><code>sqlite3IdListAppend()</code></td>
+                <td>List of bare identifiers (e.g. column names in INSERT)</td>
+              </tr>
+              <tr>
+                <td><code>Token</code></td>
+                <td>tokenizer</td>
+                <td>Lightweight: just pointer + length into the original SQL string (no copy)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pre-label">sqliteInt.h — Expr node (simplified)</div>
+        <pre>struct Expr {
+  u8 op;           /* TK_AND, TK_EQ, TK_INTEGER, TK_COLUMN … */
+  u8 affExpr;      /* column affinity */
+  u32 flags;       /* EP_* flags */
+  union {
+    char *zToken;  /* TK_STRING, TK_ID, TK_VARIABLE */
+    int iValue;    /* TK_INTEGER when EP_IntValue is set */
+  } u;
+  Expr *pLeft;     /* left subtree */
+  Expr *pRight;    /* right subtree */
+  union {
+    ExprList *pList; /* function arguments / IN operator list */
+    Select   *pSelect; /* subquery */
+  } x;
+  int iTable;      /* TK_COLUMN: cursor number of source table */
+  int iColumn;     /* TK_COLUMN: column index */
+  ...
+};</pre>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Name Resolution (resolve.c)</summary>
+      <div class="card-body">
+        <p>After the AST is built, a name-resolution pass in <code>resolve.c</code> walks every <code>Expr</code> node and converts symbolic column references (like <code>users.id</code>) into table-cursor numbers and column indices. This is where "column not found" errors are raised.</p>
+        <p>The key function is <code>sqlite3ResolveExprNames()</code> which is called from within the parser actions for WHERE, ORDER BY, GROUP BY, and HAVING clauses.</p>
+        <div class="fn-list">
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/resolve.c#L1" target="_blank">resolve.c <span class="file-loc">full file</span></a>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Compilation Context: the Parse struct</summary>
+      <div class="card-body">
+        <p>The <code>Parse</code> struct threads through the entire tokenize → parse → codegen pipeline. It carries:</p>
+        <pre>struct Parse {
+  sqlite3 *db;        /* database connection */
+  Vdbe *pVdbe;        /* the VDBE being built */
+  int nErr;           /* error count */
+  char *zErrMsg;      /* error message */
+  Table *pNewTable;   /* table being CREATE'd */
+  int nTab;           /* next available cursor number */
+  int nMem;           /* next available register number */
+  int nLabel;         /* next available label number */
+  ...
+};</pre>
+        <p>When the parser fires a grammar action and calls, say, <code>sqlite3Select(pParse, ...)</code>, the code generator uses <code>pParse->pVdbe</code> to emit opcodes and <code>pParse->nMem</code> to allocate registers.</p>
+        <div class="fn-list">
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/prepare.c#L688" target="_blank">sqlite3Prepare <span class="file-loc">prepare.c:688</span></a>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Next Stage</summary>
+      <div class="card-body">
+        <p>Grammar actions directly invoke the code generator. <code>sqlite3Select()</code>, <code>sqlite3Insert()</code>, etc. walk the AST structures and emit VDBE opcodes.</p>
+        <div class="fn-list">
+          <a class="fn-ref" href="codegen.html">→ Code Generator</a>
+        </div>
+      </div>
+    </details>
+  </div>
+
+</main>
+</body>
+</html>

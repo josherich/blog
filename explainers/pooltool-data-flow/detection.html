@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>pooltool — Event Detection</title>
+<style>
+  :root {
+    --bg: #0f1117; --surface: #1a1d27; --surface2: #22263a;
+    --border: #2e3350; --accent: #5b8af5; --accent2: #7c6af5;
+    --green: #4caf7d; --orange: #f5a623; --red: #e85c5c;
+    --text: #e0e4f0; --muted: #7a82a8; --code-bg: #12151f;
+    --radius: 8px;
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.6; }
+  nav {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 12px 20px; position: sticky; top: 0; z-index: 100;
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  }
+  nav .brand { font-weight: 700; font-size: 15px; color: var(--accent); margin-right: 8px; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 13px; padding: 4px 10px; border-radius: 5px; transition: all 0.15s; }
+  nav a:hover, nav a.active { background: var(--surface2); color: var(--text); }
+  nav a.active { color: var(--accent2); }
+  .container { max-width: 860px; margin: 0 auto; padding: 28px 20px 60px; }
+  h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
+  h2 { font-size: 19px; font-weight: 600; margin: 36px 0 12px; color: var(--accent2); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  h3 { font-size: 14px; font-weight: 600; margin: 16px 0 8px; color: var(--orange); }
+  p { color: #b0b8d8; margin-bottom: 10px; font-size: 14px; }
+  .subtitle { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
+  a.gh { font-family: var(--mono); font-size: 11px; color: var(--accent); text-decoration: none; border-bottom: 1px dashed var(--border); }
+  a.gh:hover { border-color: var(--accent); }
+  details { margin: 10px 0; }
+  summary {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 10px 14px; cursor: pointer; font-size: 13px; font-weight: 600;
+    list-style: none; display: flex; align-items: center; gap: 8px; user-select: none;
+  }
+  summary:hover { border-color: var(--accent2); }
+  details[open] summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom: none; }
+  summary::before { content: '▶'; font-size: 10px; color: var(--muted); transition: transform 0.15s; flex-shrink: 0; }
+  details[open] summary::before { transform: rotate(90deg); }
+  .details-body {
+    background: var(--code-bg); border: 1px solid var(--border); border-top: none;
+    border-bottom-left-radius: var(--radius); border-bottom-right-radius: var(--radius);
+    padding: 16px;
+  }
+  pre { font-family: var(--mono); font-size: 12.5px; line-height: 1.55; color: #cdd6f4; white-space: pre; overflow-x: auto; }
+  .kw { color: #cba6f7; } .fn { color: #89b4fa; } .cls { color: #a6e3a1; }
+  .str { color: #a6e3a1; } .cm { color: #6c7086; font-style: italic; }
+  .num { color: #fab387; } .dec { color: #f38ba8; } .tp { color: #94e2d5; }
+  .section-intro { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 14px; }
+  .section-intro p { margin: 0; }
+  .inset { background: var(--surface2); border-left: 3px solid var(--accent2); border-radius: 0 var(--radius) var(--radius) 0; padding: 10px 14px; margin: 10px 0; font-size: 13px; color: #8892b0; }
+  .tier-grid { display: grid; gap: 10px; margin: 14px 0; }
+  .tier {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .tier-header { padding: 8px 14px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
+  .tier-header.t1 { background: rgba(232,92,92,0.12); color: var(--red); }
+  .tier-header.t2 { background: rgba(245,166,35,0.12); color: var(--orange); }
+  .tier-header.t3 { background: rgba(91,138,245,0.12); color: var(--accent); }
+  .tier-body { padding: 8px 14px; font-size: 13px; color: #8892b0; }
+  .tier-body code { font-family: var(--mono); font-size: 12px; color: var(--text); }
+  .det-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; margin: 14px 0; }
+  .det-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; }
+  .det-card .title { font-size: 13px; font-weight: 600; color: var(--accent2); margin-bottom: 4px; }
+  .det-card .file { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+  .det-card p { font-size: 12px; color: #8892b0; margin: 0; }
+  .attr-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 10px 0; }
+  .attr-table th { text-align: left; color: var(--muted); font-weight: 500; padding: 6px 10px; border-bottom: 1px solid var(--border); font-size: 11px; text-transform: uppercase; }
+  .attr-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .attr-table tr:last-child td { border-bottom: none; }
+  .attr-table td:first-child { font-family: var(--mono); color: var(--accent); font-size: 12px; }
+  .attr-table td:nth-child(3) { color: #8892b0; }
+  @media (max-width: 600px) { h1 { font-size: 20px; } }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">pooltool</span>
+  <a href="index.html">Overview</a>
+  <a href="system.html">Data Models</a>
+  <a href="simulation.html">Simulation</a>
+  <a href="detection.html" class="active">Detection</a>
+  <a href="resolution.html">Resolution</a>
+  <a href="visualization.html">Visualization</a>
+</nav>
+
+<div class="container">
+  <h1>Event Detection</h1>
+  <p class="subtitle">Finding the exact moment of the next physical event — before it happens.</p>
+
+  <!-- ── OVERVIEW ─────────────────────────────────────── -->
+  <h2>How detection works</h2>
+  <div class="section-intro">
+    <p>On every simulation step, <code>EventDetector.get_next_event()</code> computes the predicted future collision or transition time for <em>every</em> possible event category. The earliest one wins. Tie-breaking uses a fixed priority order — transitions beat collisions at the same time.</p>
+  </div>
+
+  <details open>
+    <summary>EventDetector.get_next_event() — all detectors in parallel</summary>
+    <div class="details-body">
+<pre><span class="cm"># pooltool/evolution/event_based/detect/detector.py:123</span>
+<span class="kw">def</span> <span class="fn">get_next_event</span>(self, shot: System) -&gt; Event:
+    candidates: list[Event] = []
+
+    <span class="cm"># ── Highest priority ──────────────────────────────</span>
+    candidates.append(get_next_stick_ball_event(shot))     <span class="cm"># line 149</span>
+
+    <span class="cm"># ── Transitions (cached) ──────────────────────────</span>
+    <span class="kw">for</span> ball <span class="kw">in</span> shot.balls.values():
+        candidates.append(self.transition_cache.get_next(ball))  <span class="cm"># line 151</span>
+
+    <span class="cm"># ── Collision detectors ───────────────────────────</span>
+    candidates.append(get_next_ball_linear_cushion_event(shot))  <span class="cm"># line 152</span>
+    candidates.append(get_next_ball_circular_cushion_event(shot))<span class="cm"># line 153</span>
+    candidates.append(get_next_ball_pocket_event(shot))          <span class="cm"># line 154</span>
+    candidates.append(get_next_ball_ball_2d_event(shot))         <span class="cm"># line 160</span>
+    <span class="kw">if</span> self.is_3d:
+        candidates.append(get_next_ball_table_event(shot))
+
+    <span class="cm"># ── Pick earliest by time + priority tier ─────────</span>
+    <span class="kw">return</span> min(candidates, key=<span class="kw">lambda</span> e: _get_event_priority(e, shot))</pre>
+      <div class="inset"><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/event_based/detect/detector.py#L123" target="_blank">detector.py:123</a></div>
+    </div>
+  </details>
+
+  <!-- ── PRIORITY ─────────────────────────────────────── -->
+  <h2>Priority tiebreaking</h2>
+  <p><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/event_based/detect/detector.py#L30" target="_blank">detector.py:30</a></p>
+  <p>When two events have the same predicted time (floating-point ties are common), the engine must pick one. The rule is a two-level key: first by time, then by tier.</p>
+
+  <div class="tier-grid">
+    <div class="tier">
+      <div class="tier-header t1">Tier 1 — highest priority</div>
+      <div class="tier-body"><code>STICK_BALL</code> — The cue strike at t=0. Always processed first so the ball starts moving before anything else can be detected.</div>
+    </div>
+    <div class="tier">
+      <div class="tier-header t2">Tier 2</div>
+      <div class="tier-body"><code>BALL_POCKET</code> and all motion-state <strong>transitions</strong> (<code>SLIDING_ROLLING</code>, <code>ROLLING_SPINNING</code>, <code>ROLLING_STATIONARY</code>, <code>SPINNING_STATIONARY</code>). Transitions change the physics equations, so they must precede any collision that was computed with the old trajectory.</div>
+    </div>
+    <div class="tier">
+      <div class="tier-header t3">Tier 3 — lowest priority</div>
+      <div class="tier-body"><code>BALL_BALL</code>, <code>BALL_LINEAR_CUSHION</code>, <code>BALL_CIRCULAR_CUSHION</code>, <code>BALL_TABLE</code>. Physical collisions — resolved after the state is accurate.</div>
+    </div>
+  </div>
+
+  <!-- ── DETECTORS ─────────────────────────────────────── -->
+  <h2>Individual detectors</h2>
+
+  <div class="det-grid">
+    <div class="det-card">
+      <div class="title">Stick–Ball</div>
+      <div class="file"><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/event_based/detect/stick_ball.py" target="_blank">detect/stick_ball.py</a></div>
+      <p>Only fires at t=0 when <code>V0 &gt; 0</code> and the cue ball is stationary. Produces a single <code>STICK_BALL</code> event at time 0.</p>
+    </div>
+    <div class="det-card">
+      <div class="title">Ball–Ball</div>
+      <div class="file"><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/event_based/detect/ball_ball.py" target="_blank">detect/ball_ball.py</a></div>
+      <p>Solves a quartic equation for each pair to find their earliest contact time. Returns the pair with the smallest positive root.</p>
+    </div>
+    <div class="det-card">
+      <div class="title">Ball–Linear Cushion</div>
+      <div class="file"><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/event_based/detect/ball_cushion.py" target="_blank">detect/ball_cushion.py</a></div>
+      <p>Each straight rail is treated as a vertical plane. Finds the time the ball center is exactly one radius from the plane.</p>
+    </div>
+    <div class="det-card">
+      <div class="title">Ball–Circular Cushion</div>
+      <div class="file"><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/event_based/detect/ball_cushion.py" target="_blank">detect/ball_cushion.py</a></div>
+      <p>Corner and side-pocket curved rails. The ball collides when the center-to-center distance equals the sum of the two radii.</p>
+    </div>
+    <div class="det-card">
+      <div class="title">Ball–Pocket</div>
+      <div class="file"><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/event_based/detect/ball_pocket.py" target="_blank">detect/ball_pocket.py</a></div>
+      <p>Ball enters a pocket when its center crosses within the pocket radius. Checked for all ball–pocket pairs.</p>
+    </div>
+    <div class="det-card">
+      <div class="title">Ball–Table (3D)</div>
+      <div class="file"><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/event_based/detect/ball_table.py" target="_blank">detect/ball_table.py</a></div>
+      <p>Only active when <code>is_3d=True</code>. Detects an airborne ball landing back on the table surface.</p>
+    </div>
+  </div>
+
+  <!-- ── BALL-BALL MATH ─────────────────────────────── -->
+  <h2>Ball–ball collision time — quartic solve</h2>
+  <p><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/event_based/detect/ball_ball.py#L19" target="_blank">detect/ball_ball.py:19</a></p>
+
+  <details open>
+    <summary>ball_ball_collision_time() — the math</summary>
+    <div class="details-body">
+<pre><span class="cm"># The condition for two sliding/rolling balls to touch is:</span>
+<span class="cm">#   |r1(t) - r2(t)|² = (R1 + R2)²</span>
+<span class="cm">#</span>
+<span class="cm"># Where r(t) is the position of each ball as a function of time.</span>
+<span class="cm"># For sliding balls r(t) is quadratic in t (constant acceleration),</span>
+<span class="cm"># so |Δr(t)|² is a degree-4 polynomial → quartic equation.</span>
+<span class="cm">#</span>
+<span class="cm"># The function finds the smallest positive real root.</span>
+<span class="cm"># Returns inf if no future collision exists.</span>
+
+<span class="kw">@nb.jit</span>(nopython=<span class="kw">True</span>, cache=<span class="kw">True</span>)
+<span class="kw">def</span> <span class="fn">ball_ball_collision_time</span>(
+    rvw1, rvw2,
+    s1, s2,
+    mu1, mu2,
+    m1, m2,
+    g, R
+) -&gt; <span class="tp">float</span>:
+    <span class="cm"># Build polynomial coefficients from trajectory equations</span>
+    <span class="cm"># Solve quartic for t > 0</span>
+    <span class="cm"># Return smallest positive root (or inf)</span>
+    ...</pre>
+      <div class="inset">The quartic is solved numerically using companion-matrix eigenvalues. This is exact (modulo floating point) — no root-finding iteration needed.</div>
+    </div>
+  </details>
+
+  <!-- ── CUSHION MATH ───────────────────────────────── -->
+  <h2>Ball–cushion collision time — plane intersection</h2>
+  <p><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/event_based/detect/ball_cushion.py#L23" target="_blank">detect/ball_cushion.py:23</a></p>
+
+  <details open>
+    <summary>ball_vertical_plane_collision_time() — signed distance to rail</summary>
+    <div class="details-body">
+<pre><span class="cm"># Linear cushion: modeled as an infinite vertical plane at distance d</span>
+<span class="cm"># from the table center along normal n̂.</span>
+<span class="cm">#</span>
+<span class="cm"># Signed distance:  φ(t) = n̂ · r(t) - d</span>
+<span class="cm"># Collision when:   φ(t) = R  (ball surface touches rail face)</span>
+<span class="cm">#</span>
+<span class="cm"># r(t) is quadratic for sliding, linear for rolling →</span>
+<span class="cm"># φ(t) = R is a quadratic (sliding) or linear (rolling) equation.</span>
+<span class="cm"># Take smallest positive root.</span>
+
+<span class="kw">@nb.jit</span>(nopython=<span class="kw">True</span>, cache=<span class="kw">True</span>)
+<span class="kw">def</span> <span class="fn">ball_vertical_plane_collision_time</span>(rvw, s, lx, ly, l0, mu, m, g, R) -&gt; <span class="tp">float</span>:
+    ...</pre>
+    </div>
+  </details>
+
+  <!-- ── TRANSITION DETECTION ───────────────────────── -->
+  <h2>Transition detection — when does a state end?</h2>
+  <p>Motion-state transitions (e.g. sliding → rolling) are detected analytically by solving for the time the relevant condition becomes zero.</p>
+
+  <details open>
+    <summary>TransitionCache._next_transition() — per-ball transition time</summary>
+    <div class="details-body">
+<pre><span class="cm"># pooltool/evolution/event_based/cache.py:73</span>
+<span class="kw">def</span> <span class="fn">_next_transition</span>(self, ball: Ball) -&gt; Event:
+    s = ball.state.s
+
+    <span class="kw">if</span> s == sliding:
+        <span class="cm"># Time when |v - R×w_perp| → 0  (slip velocity → 0)</span>
+        t = _sliding_to_rolling_time(ball.state.rvw, ...)
+        <span class="kw">return</span> Event(SLIDING_ROLLING, time=t, agents=[ball])
+
+    <span class="kw">if</span> s == rolling:
+        <span class="cm"># Time when |v| → 0</span>
+        t_stop  = _rolling_to_stationary_time(ball.state.rvw, ...)
+        <span class="cm"># Time when spin decouples from velocity (perpendicular spin remains)</span>
+        t_spin  = _rolling_to_spinning_time(ball.state.rvw, ...)
+        <span class="kw">if</span> t_spin &lt; t_stop:
+            <span class="kw">return</span> Event(ROLLING_SPINNING, time=t_spin, ...)
+        <span class="kw">return</span> Event(ROLLING_STATIONARY, time=t_stop, ...)
+
+    <span class="kw">if</span> s == spinning:
+        <span class="cm"># Time when |w_perp| → 0</span>
+        t = _spinning_to_stationary_time(ball.state.rvw, ...)
+        <span class="kw">return</span> Event(SPINNING_STATIONARY, time=t, ...)</pre>
+      <div class="inset"><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/event_based/cache.py" target="_blank">cache.py</a> — transitions are cached per-ball and invalidated only when a ball is involved in a collision.</div>
+    </div>
+  </details>
+
+</div>
+</body>
+</html>

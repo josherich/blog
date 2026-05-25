@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQLite Data Flow — Overview</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.hero {
+  background: linear-gradient(135deg, #003B6E 0%, #0056a3 100%);
+  color: white;
+  padding: 28px 20px;
+  margin: -20px -16px 24px;
+  border-radius: 0 0 12px 12px;
+}
+.hero h1 { color: white; font-size: 1.6rem; margin-bottom: 6px; border: none; }
+.hero p { color: rgba(255,255,255,0.85); font-size: 0.9rem; max-width: 600px; }
+
+.flow-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+@media (max-width: 520px) {
+  .flow-grid { grid-template-columns: 1fr; }
+}
+
+.stage-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  text-decoration: none;
+  color: var(--text);
+  transition: all 0.18s;
+  display: block;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.stage-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(0,120,212,0.15);
+  transform: translateY(-2px);
+}
+
+.stage-num {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+
+.stage-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 3px;
+}
+
+.stage-file {
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-family: monospace;
+  margin-bottom: 6px;
+}
+
+.stage-desc {
+  font-size: 0.8rem;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.big-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin: 0 auto;
+  max-width: 460px;
+}
+
+.bf-node {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.bf-phase {
+  width: 6px;
+  flex-shrink: 0;
+}
+
+.phase-parse { background: #0078D4; }
+.phase-codegen { background: #7c3aed; }
+.phase-exec { background: #d97706; }
+.phase-storage { background: #059669; }
+.phase-io { background: #dc2626; }
+
+.bf-content {
+  padding: 9px 14px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.bf-label { font-weight: 700; font-size: 0.9rem; }
+.bf-file { font-size: 0.72rem; color: var(--muted); font-family: monospace; }
+.bf-tag {
+  font-size: 0.65rem;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tag-parse { background: #dbeafe; color: #1d4ed8; }
+.tag-codegen { background: #f3e8ff; color: #6d28d9; }
+.tag-exec { background: #fef3c7; color: #92400e; }
+.tag-storage { background: #d1fae5; color: #065f46; }
+.tag-io { background: #fee2e2; color: #991b1b; }
+
+.bf-arrow {
+  text-align: center;
+  padding: 2px 0;
+  font-size: 1rem;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.bf-arrow span { font-size: 0.65rem; color: var(--muted); font-style: italic; }
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+  justify-content: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="brand">SQLite Internals</span>
+  <a href="index.html" class="active">Overview</a>
+  <a href="tokenizer.html">Tokenizer</a>
+  <a href="parser.html">Parser</a>
+  <a href="codegen.html">Code Gen</a>
+  <a href="vdbe.html">VDBE</a>
+  <a href="btree.html">B-Tree</a>
+  <a href="pager.html">Pager</a>
+  <a href="os.html">OS Layer</a>
+</nav>
+
+<main>
+  <div class="hero">
+    <h1>SQLite Data Flow</h1>
+    <p>An interactive walkthrough of how SQLite transforms a SQL string into rows on disk — from the tokenizer through the virtual machine down to the filesystem.</p>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Complete Data Flow Pipeline</summary>
+      <div class="card-body">
+
+        <div class="big-flow">
+
+          <div class="bf-node">
+            <div class="bf-phase" style="background:#64748b"></div>
+            <div class="bf-content">
+              <div>
+                <div class="bf-label">SQL Text</div>
+                <div class="bf-file">e.g. "SELECT * FROM users WHERE id=1"</div>
+              </div>
+              <span class="bf-tag" style="background:#f1f5f9;color:#475569">input</span>
+            </div>
+          </div>
+
+          <div class="bf-arrow">↓ <span>characters</span></div>
+
+          <div class="bf-node">
+            <div class="bf-phase phase-parse"></div>
+            <div class="bf-content">
+              <div>
+                <div class="bf-label"><a href="tokenizer.html" style="color:inherit;text-decoration:none">1. Tokenizer</a></div>
+                <div class="bf-file">tokenize.c · sqlite3RunParser():600</div>
+              </div>
+              <span class="bf-tag tag-parse">parse</span>
+            </div>
+          </div>
+
+          <div class="bf-arrow">↓ <span>token stream (TK_SELECT, TK_FROM…)</span></div>
+
+          <div class="bf-node">
+            <div class="bf-phase phase-parse"></div>
+            <div class="bf-content">
+              <div>
+                <div class="bf-label"><a href="parser.html" style="color:inherit;text-decoration:none">2. Parser (LEMON)</a></div>
+                <div class="bf-file">parse.y · sqlite3RunParser():600</div>
+              </div>
+              <span class="bf-tag tag-parse">parse</span>
+            </div>
+          </div>
+
+          <div class="bf-arrow">↓ <span>AST — Select, Expr, SrcList…</span></div>
+
+          <div class="bf-node">
+            <div class="bf-phase phase-codegen"></div>
+            <div class="bf-content">
+              <div>
+                <div class="bf-label"><a href="codegen.html" style="color:inherit;text-decoration:none">3. Code Generator</a></div>
+                <div class="bf-file">select.c · insert.c · where.c · expr.c</div>
+              </div>
+              <span class="bf-tag tag-codegen">codegen</span>
+            </div>
+          </div>
+
+          <div class="bf-arrow">↓ <span>VDBE opcode array (OP_OpenRead, OP_Next…)</span></div>
+
+          <div class="bf-node">
+            <div class="bf-phase phase-exec"></div>
+            <div class="bf-content">
+              <div>
+                <div class="bf-label"><a href="vdbe.html" style="color:inherit;text-decoration:none">4. VDBE Interpreter</a></div>
+                <div class="bf-file">vdbe.c · sqlite3VdbeExec():881</div>
+              </div>
+              <span class="bf-tag tag-exec">execute</span>
+            </div>
+          </div>
+
+          <div class="bf-arrow">↓ <span>BtCursor calls</span></div>
+
+          <div class="bf-node">
+            <div class="bf-phase phase-storage"></div>
+            <div class="bf-content">
+              <div>
+                <div class="bf-label"><a href="btree.html" style="color:inherit;text-decoration:none">5. B-Tree Engine</a></div>
+                <div class="bf-file">btree.c · sqlite3BtreeCursor():4775</div>
+              </div>
+              <span class="bf-tag tag-storage">storage</span>
+            </div>
+          </div>
+
+          <div class="bf-arrow">↓ <span>page reads/writes</span></div>
+
+          <div class="bf-node">
+            <div class="bf-phase phase-storage"></div>
+            <div class="bf-content">
+              <div>
+                <div class="bf-label"><a href="pager.html" style="color:inherit;text-decoration:none">6. Pager &amp; WAL</a></div>
+                <div class="bf-file">pager.c · sqlite3PagerGet():5726</div>
+              </div>
+              <span class="bf-tag tag-storage">storage</span>
+            </div>
+          </div>
+
+          <div class="bf-arrow">↓ <span>VFS calls</span></div>
+
+          <div class="bf-node">
+            <div class="bf-phase phase-io"></div>
+            <div class="bf-content">
+              <div>
+                <div class="bf-label"><a href="os.html" style="color:inherit;text-decoration:none">7. OS / VFS Layer</a></div>
+                <div class="bf-file">os.c · os_unix.c · sqlite3OsRead():88</div>
+              </div>
+              <span class="bf-tag tag-io">I/O</span>
+            </div>
+          </div>
+
+          <div class="bf-arrow">↓ <span>syscalls (read/write/fsync)</span></div>
+
+          <div class="bf-node">
+            <div class="bf-phase" style="background:#64748b"></div>
+            <div class="bf-content">
+              <div>
+                <div class="bf-label">Filesystem / Disk</div>
+                <div class="bf-file">database.db (4096-byte pages)</div>
+              </div>
+              <span class="bf-tag" style="background:#f1f5f9;color:#475569">output</span>
+            </div>
+          </div>
+
+        </div><!-- big-flow -->
+
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#0078D4"></div>Parse phase</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#7c3aed"></div>Code generation</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#d97706"></div>Execution</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#059669"></div>Storage</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>I/O</div>
+        </div>
+
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Public API Entry Points</summary>
+      <div class="card-body">
+        <p>Applications interact with SQLite through three primary functions that wrap the full pipeline:</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Function</th><th>File</th><th>Role</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><a class="gh-link" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/legacy.c#L30" target="_blank"><code>sqlite3_exec()</code></a></td>
+                <td><code>legacy.c:30</code></td>
+                <td>One-shot: prepare → step loop → finalize, with row callback</td>
+              </tr>
+              <tr>
+                <td><a class="gh-link" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/prepare.c#L943" target="_blank"><code>sqlite3_prepare_v2()</code></a></td>
+                <td><code>prepare.c:943</code></td>
+                <td>Compile SQL text → prepared statement (Vdbe*)</td>
+              </tr>
+              <tr>
+                <td><a class="gh-link" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/vdbeapi.c#L913" target="_blank"><code>sqlite3_step()</code></a></td>
+                <td><code>vdbeapi.c:913</code></td>
+                <td>Advance VM one step; returns SQLITE_ROW or SQLITE_DONE</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pre-label">legacy.c:30 — sqlite3_exec() loops prepare → step → finalize</div>
+        <pre>int sqlite3_exec(
+  sqlite3 *db,                /* The database on which the SQL executes */
+  const char *zSql,           /* The SQL to be executed */
+  sqlite3_callback xCallback, /* Invoke this callback routine */
+  void *pArg,                 /* First argument to xCallback() */
+  char **pzErrMsg             /* Write error messages here */
+){
+  int rc = SQLITE_OK;
+  const char *zLeftover;
+  sqlite3_stmt *pStmt = 0;
+
+  sqlite3_mutex_enter(db->mutex);
+  while( rc==SQLITE_OK && zSql[0] ){
+    rc = sqlite3_prepare_v2(db, zSql, -1, &pStmt, &zLeftover);
+    if( rc!=SQLITE_OK ) continue;
+    while( 1 ){
+      rc = sqlite3_step(pStmt);          // ← drives the VDBE
+      if( xCallback && SQLITE_ROW==rc ){
+        /* invoke user callback with row data */
+      }
+      if( rc!=SQLITE_ROW ) break;
+    }
+    sqlite3_finalize(pStmt);
+    zSql = zLeftover;
+  }
+  ...
+}</pre>
+
+        <div class="fn-list">
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/legacy.c#L30" target="_blank">sqlite3_exec <span class="file-loc">legacy.c:30</span></a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/prepare.c#L943" target="_blank">sqlite3_prepare_v2 <span class="file-loc">prepare.c:943</span></a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/vdbeapi.c#L913" target="_blank">sqlite3_step <span class="file-loc">vdbeapi.c:913</span></a>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Component Overview</summary>
+      <div class="card-body">
+        <div class="flow-grid">
+          <a class="stage-card" href="tokenizer.html">
+            <div class="stage-num">Stage 1</div>
+            <div class="stage-name">Tokenizer</div>
+            <div class="stage-file">tokenize.c</div>
+            <div class="stage-desc">Scans SQL characters and emits a stream of typed tokens (keywords, identifiers, literals). Uses a hand-coded DFA for performance.</div>
+          </a>
+          <a class="stage-card" href="parser.html">
+            <div class="stage-num">Stage 2</div>
+            <div class="stage-name">Parser</div>
+            <div class="stage-file">parse.y → parse.c</div>
+            <div class="stage-desc">LEMON-generated LALR(1) parser. Grammar rules build AST nodes (Select, Expr, SrcList) and invoke code generator callbacks immediately.</div>
+          </a>
+          <a class="stage-card" href="codegen.html">
+            <div class="stage-num">Stage 3</div>
+            <div class="stage-name">Code Generator</div>
+            <div class="stage-file">select.c · insert.c · where.c</div>
+            <div class="stage-desc">Walks the AST and emits VDBE bytecode opcodes. WHERE clause optimization happens here via query planner in where.c.</div>
+          </a>
+          <a class="stage-card" href="vdbe.html">
+            <div class="stage-num">Stage 4</div>
+            <div class="stage-name">VDBE</div>
+            <div class="stage-file">vdbe.c · vdbeaux.c</div>
+            <div class="stage-desc">Register-based virtual machine. Interprets the opcode array in a tight switch loop. Calls into B-tree for all data access.</div>
+          </a>
+          <a class="stage-card" href="btree.html">
+            <div class="stage-num">Stage 5</div>
+            <div class="stage-name">B-Tree Engine</div>
+            <div class="stage-file">btree.c</div>
+            <div class="stage-desc">Manages tables and indexes as B-trees of fixed-size pages. Provides cursor-based traversal and CRUD operations on sorted key/value pairs.</div>
+          </a>
+          <a class="stage-card" href="pager.html">
+            <div class="stage-num">Stage 6</div>
+            <div class="stage-name">Pager &amp; WAL</div>
+            <div class="stage-file">pager.c · wal.c</div>
+            <div class="stage-desc">Page cache manager. Handles journaling for crash recovery, atomic commits, and the Write-Ahead Log (WAL) for concurrent readers.</div>
+          </a>
+          <a class="stage-card" href="os.html">
+            <div class="stage-num">Stage 7</div>
+            <div class="stage-name">OS / VFS Layer</div>
+            <div class="stage-file">os.c · os_unix.c</div>
+            <div class="stage-desc">Virtual File System abstraction. Decouples storage from the platform. Each VFS implementation handles open/read/write/fsync/lock for one OS.</div>
+          </a>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Key Data Structures</summary>
+      <div class="card-body">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Structure</th><th>Defined in</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><code>sqlite3</code></td>
+                <td><a class="gh-link" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/sqliteInt.h" target="_blank">sqliteInt.h</a></td>
+                <td>Database connection; holds schema, pager handle, flags, mutex</td>
+              </tr>
+              <tr>
+                <td><code>Parse</code></td>
+                <td><a class="gh-link" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/sqliteInt.h" target="_blank">sqliteInt.h</a></td>
+                <td>Parse/compile context; threads through tokenizer → parser → codegen</td>
+              </tr>
+              <tr>
+                <td><code>Select</code></td>
+                <td><a class="gh-link" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/sqliteInt.h" target="_blank">sqliteInt.h</a></td>
+                <td>AST for a SELECT statement; linked list for compound queries</td>
+              </tr>
+              <tr>
+                <td><code>Expr</code></td>
+                <td><a class="gh-link" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/sqliteInt.h" target="_blank">sqliteInt.h</a></td>
+                <td>Expression tree node (binary tree); carries type, operator, literal value</td>
+              </tr>
+              <tr>
+                <td><code>Vdbe</code></td>
+                <td><a class="gh-link" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/vdbeInt.h" target="_blank">vdbeInt.h</a></td>
+                <td>Prepared statement / VM instance; holds opcode array, register bank</td>
+              </tr>
+              <tr>
+                <td><code>BtCursor</code></td>
+                <td><a class="gh-link" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/btreeInt.h" target="_blank">btreeInt.h</a></td>
+                <td>Cursor positioned within a B-tree; tracks page stack and cell index</td>
+              </tr>
+              <tr>
+                <td><code>Pager</code></td>
+                <td><a class="gh-link" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/pagerInt.h" target="_blank">pager.h</a></td>
+                <td>Page cache and journal manager; one instance per open database file</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+  </div>
+
+</main>
+</body>
+</html>

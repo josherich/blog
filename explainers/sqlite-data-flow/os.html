@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQLite — OS / VFS Layer</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <span class="brand">SQLite Internals</span>
+  <a href="index.html">Overview</a>
+  <a href="tokenizer.html">Tokenizer</a>
+  <a href="parser.html">Parser</a>
+  <a href="codegen.html">Code Gen</a>
+  <a href="vdbe.html">VDBE</a>
+  <a href="btree.html">B-Tree</a>
+  <a href="pager.html">Pager</a>
+  <a href="os.html" class="active">OS Layer</a>
+</nav>
+
+<main>
+  <div class="page-title">Stage 7 — OS / VFS Layer</div>
+  <div class="page-subtitle">os.c · os_unix.c · os_win.c — Virtual File System abstraction over platform I/O</div>
+
+  <div class="card">
+    <details open>
+      <summary>What the VFS Is</summary>
+      <div class="card-body">
+        <p>The <strong>VFS</strong> (Virtual File System) is SQLite's portability layer. All file I/O — opening, reading, writing, locking, fsync — goes through a two-level vtable structure instead of calling OS functions directly:</p>
+        <ul style="font-size:0.86rem; margin:8px 0 8px 18px; line-height:1.9">
+          <li><code>sqlite3_vfs</code> — represents a VFS implementation. Its methods open/delete/access files and provide OS-level services (randomness, time, sleep).</li>
+          <li><code>sqlite3_file</code> — represents one open file handle. Its methods (via <code>sqlite3_io_methods</code>) handle read/write/sync/lock on that specific file.</li>
+        </ul>
+        <div class="callout">
+          <strong>Pluggable storage:</strong> An application can register a custom VFS to store SQLite databases in memory, over a network, on a read-only medium, or in any other medium — without modifying SQLite itself.
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>VFS Vtable Structures</summary>
+      <div class="card-body">
+        <pre>/* sqlite3.h — VFS interface (simplified) */
+
+struct sqlite3_vfs {
+  int iVersion;          /* 1, 2, or 3 */
+  int szOsFile;          /* size in bytes of the sqlite3_file object */
+  int mxPathname;        /* max pathname length */
+  sqlite3_vfs *pNext;    /* linked list of registered VFS impls */
+  const char *zName;     /* VFS name, e.g. "unix", "win32" */
+  void *pAppData;        /* opaque pointer for the implementation */
+
+  /* Methods */
+  int (*xOpen)(sqlite3_vfs*, const char *zName, sqlite3_file*,
+               int flags, int *pOutFlags);
+  int (*xDelete)(sqlite3_vfs*, const char *zName, int syncDir);
+  int (*xAccess)(sqlite3_vfs*, const char *zName,
+                 int flags, int *pResOut);
+  int (*xFullPathname)(sqlite3_vfs*, const char *zName,
+                       int nOut, char *zOut);
+  int (*xRandomness)(sqlite3_vfs*, int nByte, char *zOut);
+  int (*xSleep)(sqlite3_vfs*, int microseconds);
+  int (*xCurrentTime)(sqlite3_vfs*, double*);
+  ...
+};
+
+struct sqlite3_io_methods {
+  int iVersion;
+  int (*xClose)(sqlite3_file*);
+  int (*xRead)(sqlite3_file*, void*, int iAmt, sqlite3_int64 iOfst);
+  int (*xWrite)(sqlite3_file*, const void*, int iAmt, sqlite3_int64 iOfst);
+  int (*xTruncate)(sqlite3_file*, sqlite3_int64 size);
+  int (*xSync)(sqlite3_file*, int flags);
+  int (*xFileSize)(sqlite3_file*, sqlite3_int64 *pSize);
+  int (*xLock)(sqlite3_file*, int);
+  int (*xUnlock)(sqlite3_file*, int);
+  int (*xCheckReservedLock)(sqlite3_file*, int *pResOut);
+  ...
+};</pre>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>os.c — Thin Dispatch Wrappers</summary>
+      <div class="card-body">
+        <p><code>os.c</code> provides inline wrappers that call through to the vtable methods. The Pager calls these wrappers; it never calls the VFS methods directly. This allows OS-level instrumentation, error injection, and testing to be added in one place.</p>
+        <div class="fn-list">
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/os.c#L88" target="_blank">sqlite3OsRead <span class="file-loc">os.c:88</span></a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/os.c#L92" target="_blank">sqlite3OsWrite <span class="file-loc">os.c:92</span></a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/os.c#L215" target="_blank">sqlite3OsOpen <span class="file-loc">os.c:215</span></a>
+        </div>
+        <pre>/* os.c:88 — read wrapper */
+int sqlite3OsRead(sqlite3_file *id, void *pBuf, int amt, i64 offset){
+  DO_OS_MALLOC_TEST(id);
+  return id->pMethods->xRead(id, pBuf, amt, offset);
+}
+
+/* os.c:92 — write wrapper */
+int sqlite3OsWrite(sqlite3_file *id, const void *pBuf, int amt, i64 offset){
+  DO_OS_MALLOC_TEST(id);
+  return id->pMethods->xWrite(id, pBuf, amt, offset);
+}
+
+/* os.c:215 — open: selects VFS and calls xOpen */
+int sqlite3OsOpen(
+  sqlite3_vfs *pVfs,
+  const char *zPath,
+  sqlite3_file *pFile,
+  int flags,
+  int *pFlagsOut
+){
+  int rc;
+  DO_OS_MALLOC_TEST(0);
+  /* SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | ... */
+  rc = pVfs->xOpen(pVfs, zPath, pFile, flags, pFlagsOut);
+  return rc;
+}</pre>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Unix Implementation (os_unix.c)</summary>
+      <div class="card-body">
+        <p><code>os_unix.c</code> (~6,500 lines) is the default VFS on Linux, macOS, and other POSIX systems. It handles the full complexity of POSIX file locking semantics, which differ between operating systems and even between NFS versions.</p>
+        <div class="fn-list">
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/os_unix.c#L3512" target="_blank">unixRead <span class="file-loc">os_unix.c:3512</span></a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/os_unix.c#L3643" target="_blank">unixWrite <span class="file-loc">os_unix.c:3643</span></a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/os_unix.c#L6538" target="_blank">unixOpen <span class="file-loc">os_unix.c:6538</span></a>
+        </div>
+
+        <pre>/* os_unix.c:3512 — unixRead: pread() with short-read handling */
+static int unixRead(
+  sqlite3_file *id,
+  void *pBuf,
+  int amt,
+  sqlite3_int64 offset
+){
+  unixFile *pFile = (unixFile *)id;
+  int got;
+  got = osPread(pFile->h, pBuf, amt, offset);  /* pread(2) syscall */
+  if( got==amt ){
+    return SQLITE_OK;
+  }else if( got<0 ){
+    return SQLITE_IOERR_READ;
+  }else{
+    /* short read: zero-fill the remainder */
+    memset(&((char*)pBuf)[got], 0, amt-got);
+    return SQLITE_IOERR_SHORT_READ;
+  }
+}
+
+/* os_unix.c:3643 — unixWrite: pwrite() with retry on EINTR */
+static int unixWrite(
+  sqlite3_file *id,
+  const void *pBuf,
+  int amt,
+  sqlite3_int64 offset
+){
+  unixFile *pFile = (unixFile *)id;
+  int wrote = 0;
+  do {
+    int rc = osPwrite(pFile->h, pBuf, amt, offset);
+    if( rc<0 ){
+      if( errno==EINTR ) continue;  /* retry interrupted writes */
+      return SQLITE_IOERR_WRITE;
+    }
+    amt -= rc;
+    offset += rc;
+    pBuf = &((char*)pBuf)[rc];
+    wrote += rc;
+  } while( amt > 0 );
+  return SQLITE_OK;
+}</pre>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>File Locking</summary>
+      <div class="card-body">
+        <p>SQLite uses a <strong>5-level locking protocol</strong> to coordinate concurrent access. Locks are advisory POSIX byte-range locks (<code>fcntl(F_SETLK)</code>) on specific byte ranges of the database file.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Lock Level</th><th>Held by</th><th>Effect</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><code>UNLOCKED</code></td>
+                <td>idle</td>
+                <td>No locks held</td>
+              </tr>
+              <tr>
+                <td><code>SHARED</code></td>
+                <td>readers</td>
+                <td>Multiple allowed; allows reads; blocks pending EXCLUSIVE</td>
+              </tr>
+              <tr>
+                <td><code>RESERVED</code></td>
+                <td>one writer</td>
+                <td>Signals intent to write; readers still allowed</td>
+              </tr>
+              <tr>
+                <td><code>PENDING</code></td>
+                <td>one writer</td>
+                <td>Waits for existing readers to finish; blocks new SHARED</td>
+              </tr>
+              <tr>
+                <td><code>EXCLUSIVE</code></td>
+                <td>one writer</td>
+                <td>No other readers or writers; full write access</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>In WAL mode, locking is handled differently: readers and the writer use separate WAL-index lock slots, so a writer never needs to wait for readers to finish.</p>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Registering a Custom VFS</summary>
+      <div class="card-body">
+        <p>An application can register a custom VFS with <code>sqlite3_vfs_register()</code>. The in-memory VFS (<code>":memory:"</code>) and the <code>memdb</code> VFS are built-in examples. The <code>kvvfs</code> in <code>os_kv.c</code> stores pages in a key-value store.</p>
+        <pre>/* Register a custom VFS */
+sqlite3_vfs myVfs = {
+  3,                    /* iVersion */
+  sizeof(MyFile),       /* szOsFile */
+  MAX_PATH,             /* mxPathname */
+  0,                    /* pNext (filled by SQLite) */
+  "myvfs",              /* zName */
+  0,                    /* pAppData */
+  myVfsOpen,
+  myVfsDelete,
+  myVfsAccess,
+  ...
+};
+sqlite3_vfs_register(&myVfs, 0 /* not default */);
+
+/* Then open a database using it */
+sqlite3_open_v2("path", &db, SQLITE_OPEN_READWRITE,
+                "myvfs" /* VFS name */);</pre>
+        <div class="fn-list">
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/os_kv.c#L1" target="_blank">os_kv.c <span class="file-loc">key-value VFS</span></a>
+          <a class="fn-ref" href="https://github.com/sqlite/sqlite/blob/3020203708aef0b579ce7692dd539642cafec6e1/src/os_win.c#L1" target="_blank">os_win.c <span class="file-loc">Windows VFS</span></a>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <details open>
+      <summary>Back to Overview</summary>
+      <div class="card-body">
+        <p>That's all seven stages of the SQLite data flow — from SQL text to bytes on disk. Return to the overview for a summary diagram.</p>
+        <div class="fn-list">
+          <a class="fn-ref" href="index.html">← Back to Overview</a>
+        </div>
+      </div>
+    </details>
+  </div>
+
+</main>
+</body>
+</html>

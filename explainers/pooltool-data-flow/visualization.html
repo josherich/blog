@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>pooltool — Visualization</title>
+<style>
+  :root {
+    --bg: #0f1117; --surface: #1a1d27; --surface2: #22263a;
+    --border: #2e3350; --accent: #5b8af5; --accent2: #7c6af5;
+    --green: #4caf7d; --orange: #f5a623; --red: #e85c5c;
+    --text: #e0e4f0; --muted: #7a82a8; --code-bg: #12151f;
+    --radius: 8px;
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.6; }
+  nav {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 12px 20px; position: sticky; top: 0; z-index: 100;
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  }
+  nav .brand { font-weight: 700; font-size: 15px; color: var(--accent); margin-right: 8px; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 13px; padding: 4px 10px; border-radius: 5px; transition: all 0.15s; }
+  nav a:hover, nav a.active { background: var(--surface2); color: var(--text); }
+  nav a.active { color: var(--orange); }
+  .container { max-width: 860px; margin: 0 auto; padding: 28px 20px 60px; }
+  h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
+  h2 { font-size: 19px; font-weight: 600; margin: 36px 0 12px; color: var(--orange); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  h3 { font-size: 14px; font-weight: 600; margin: 16px 0 8px; color: var(--accent); }
+  p { color: #b0b8d8; margin-bottom: 10px; font-size: 14px; }
+  .subtitle { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
+  a.gh { font-family: var(--mono); font-size: 11px; color: var(--accent); text-decoration: none; border-bottom: 1px dashed var(--border); }
+  a.gh:hover { border-color: var(--accent); }
+  details { margin: 10px 0; }
+  summary {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 10px 14px; cursor: pointer; font-size: 13px; font-weight: 600;
+    list-style: none; display: flex; align-items: center; gap: 8px; user-select: none;
+  }
+  summary:hover { border-color: var(--orange); }
+  details[open] summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom: none; }
+  summary::before { content: '▶'; font-size: 10px; color: var(--muted); transition: transform 0.15s; flex-shrink: 0; }
+  details[open] summary::before { transform: rotate(90deg); }
+  .details-body {
+    background: var(--code-bg); border: 1px solid var(--border); border-top: none;
+    border-bottom-left-radius: var(--radius); border-bottom-right-radius: var(--radius);
+    padding: 16px;
+  }
+  pre { font-family: var(--mono); font-size: 12.5px; line-height: 1.55; color: #cdd6f4; white-space: pre; overflow-x: auto; }
+  .kw { color: #cba6f7; } .fn { color: #89b4fa; } .cls { color: #a6e3a1; }
+  .str { color: #a6e3a1; } .cm { color: #6c7086; font-style: italic; }
+  .num { color: #fab387; } .dec { color: #f38ba8; } .tp { color: #94e2d5; }
+  .section-intro { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 14px; }
+  .section-intro p { margin: 0; }
+  .inset { background: var(--surface2); border-left: 3px solid var(--orange); border-radius: 0 var(--radius) var(--radius) 0; padding: 10px 14px; margin: 10px 0; font-size: 13px; color: #8892b0; }
+  .inset.green { border-left-color: var(--green); }
+  .attr-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 10px 0; }
+  .attr-table th { text-align: left; color: var(--muted); font-weight: 500; padding: 6px 10px; border-bottom: 1px solid var(--border); font-size: 11px; text-transform: uppercase; }
+  .attr-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .attr-table tr:last-child td { border-bottom: none; }
+  .attr-table td:first-child { font-family: var(--mono); color: var(--accent); font-size: 12px; }
+  .attr-table td:nth-child(2) { font-family: var(--mono); color: var(--orange); font-size: 11px; white-space: nowrap; }
+  .attr-table td:nth-child(3) { color: #8892b0; }
+  /* Timeline diagram */
+  .timeline { margin: 16px 0; }
+  .tl-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+  .tl-label { font-family: var(--mono); font-size: 11px; color: var(--muted); width: 70px; flex-shrink: 0; text-align: right; padding-top: 3px; }
+  .tl-bar-wrap { flex: 1; }
+  .tl-bar { height: 22px; border-radius: 4px; display: flex; align-items: center; padding: 0 8px; font-size: 11px; font-weight: 600; white-space: nowrap; overflow: hidden; }
+  .tl-bar.sparse { background: rgba(91,138,245,0.2); border: 1px solid var(--accent); color: var(--accent); }
+  .tl-bar.dense { background: rgba(245,166,35,0.2); border: 1px solid var(--orange); color: var(--orange); }
+  .tl-caption { font-size: 11px; color: var(--muted); margin-top: 2px; padding-left: 2px; }
+  @media (max-width: 600px) { h1 { font-size: 20px; } }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">pooltool</span>
+  <a href="index.html">Overview</a>
+  <a href="system.html">Data Models</a>
+  <a href="simulation.html">Simulation</a>
+  <a href="detection.html">Detection</a>
+  <a href="resolution.html">Resolution</a>
+  <a href="visualization.html" class="active">Visualization</a>
+</nav>
+
+<div class="container">
+  <h1>Visualization</h1>
+  <p class="subtitle">Densifying the sparse event-log into a smooth animation, then rendering with Panda3D.</p>
+
+  <!-- ── SPARSE VS DENSE ──────────────────────────────── -->
+  <h2>Sparse vs dense trajectory</h2>
+
+  <div class="section-intro">
+    <p>Simulation stores one <code>BallState</code> per event — efficient for physics, but useless for animation. <code>continuize()</code> samples the analytic trajectory at a fixed timestep <code>dt</code>, producing the dense <code>history_cts</code> used by the renderer.</p>
+  </div>
+
+  <div class="timeline">
+    <div class="tl-row">
+      <div class="tl-label">history</div>
+      <div class="tl-bar-wrap">
+        <div class="tl-bar sparse" style="width:100%">14 states at event times (irregular spacing)</div>
+        <div class="tl-caption">ball.history — produced by simulate()</div>
+      </div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-label">history_cts</div>
+      <div class="tl-bar-wrap">
+        <div class="tl-bar dense" style="width:100%">350 states at dt=0.01s (uniform spacing)</div>
+        <div class="tl-caption">ball.history_cts — produced by continuize()</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CONTINUIZE ───────────────────────────────────── -->
+  <h2>continuize() — trajectory interpolation</h2>
+  <p><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/continuous.py#L17" target="_blank">pooltool/evolution/continuous.py:17</a></p>
+
+  <details open>
+    <summary>continuize() — function signature and algorithm</summary>
+    <div class="details-body">
+<pre><span class="kw">def</span> <span class="fn">continuize</span>(
+    system:  System,
+    dt:      <span class="tp">float</span> = <span class="num">0.01</span>,   <span class="cm"># sampling interval in seconds</span>
+    inplace: <span class="tp">bool</span>  = <span class="kw">False</span>,
+) -&gt; System:</pre>
+      <p style="color:#8892b0;font-size:13px;margin-top:10px">For each ball, the algorithm walks the event history and fills gaps:</p>
+<pre style="margin-top:8px">
+<span class="cm"># For each ball b:</span>
+<span class="cm">#   For each consecutive event pair (t_i, t_{i+1}):</span>
+<span class="cm">#     Generate timestamps: t_i, t_i+dt, t_i+2dt, ..., t_{i+1}</span>
+<span class="cm">#     For each timestamp t:</span>
+<span class="cm">#       Call interpolate_ball_states(b.history.states[i], dt=t-t_i, ...)</span>
+<span class="cm">#       Append result to b.history_cts</span>
+<span class="cm">#</span>
+<span class="cm"># The interpolation uses the same analytic equations as the simulator:</span>
+<span class="cm"># evolve_ball_motion() — so the dense trajectory is exact, not</span>
+<span class="cm"># a linear blend between keyframes.</span></pre>
+    </div>
+  </details>
+
+  <details open>
+    <summary>interpolate_ball_states() — re-using the physics equations</summary>
+    <div class="details-body">
+<pre><span class="cm"># pooltool/evolution/continuous.py:194</span>
+<span class="kw">def</span> <span class="fn">interpolate_ball_states</span>(
+    state:   BallState,
+    dt:      <span class="tp">float</span>,
+    ball:    Ball,
+) -&gt; BallState:
+    <span class="cm"># Advance `state` by exactly `dt` seconds using evolve_ball_motion().</span>
+    <span class="cm"># Returns the new BallState without mutating the input.</span>
+    <span class="cm">#</span>
+    <span class="cm"># Because the analytic equations are used, the interpolated position</span>
+    <span class="cm"># is numerically identical to what the simulator would compute</span>
+    <span class="cm"># if it had stepped to that exact time.</span>
+    new_rvw, new_s = evolve_ball_motion(
+        state=state.s, rvw=state.rvw.copy(), ..., t=dt
+    )
+    <span class="kw">return</span> BallState(rvw=new_rvw, s=new_s, t=state.t + dt)</pre>
+      <div class="inset"><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/evolution/continuous.py#L194" target="_blank">continuous.py:194</a></div>
+    </div>
+  </details>
+
+  <!-- ── SYSTEM RENDER ────────────────────────────────── -->
+  <h2>SystemRender — scene graph builder</h2>
+  <p><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/system/render.py" target="_blank">pooltool/system/render.py</a></p>
+
+  <details open>
+    <summary>SystemRender.from_system() — constructing the scene</summary>
+    <div class="details-body">
+<pre><span class="cm"># pooltool/system/render.py</span>
+<span class="kw">class</span> <span class="cls">SystemRender</span>:
+    ball_renders:  dict[str, BallRender]
+    table_render:  TableRender
+    cue_render:    CueRender
+
+    <span class="kw">@classmethod</span>
+    <span class="kw">def</span> <span class="fn">from_system</span>(cls, system: System) -&gt; <span class="str">"SystemRender"</span>:
+        <span class="cm"># Auto-continuize if history_cts is empty</span>
+        <span class="kw">if not</span> system.balls[<span class="str">"cue"</span>].history_cts.states:
+            continuize(system, inplace=<span class="kw">True</span>)
+
+        <span class="kw">return</span> cls(
+            ball_renders = {
+                bid: BallRender.from_ball(ball)
+                <span class="kw">for</span> bid, ball <span class="kw">in</span> system.balls.items()
+            },
+            table_render = TableRender.from_table(system.table),
+            cue_render   = CueRender.from_cue(system.cue),
+        )</pre>
+    </div>
+  </details>
+
+  <!-- ── BALL RENDER ───────────────────────────────────── -->
+  <h2>BallRender — 3D sphere with texture and shadow</h2>
+  <p><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/objects/ball/render.py" target="_blank">pooltool/objects/ball/render.py</a></p>
+
+  <details open>
+    <summary>BallRender — Panda3D node setup</summary>
+    <div class="details-body">
+<pre><span class="cm"># pooltool/objects/ball/render.py:47 (init_sphere)</span>
+<span class="cm">#</span>
+<span class="cm"># Each ball is a Panda3D sphere node:</span>
+<span class="cm">#   - Geometry: 16×16 sphere tessellation</span>
+<span class="cm">#   - Texture:  loaded from ball.ballset (PNG atlas by ball number)</span>
+<span class="cm">#   - Shadow:   flat ellipse projected below ball using height-dependent</span>
+<span class="cm">#               scale (vendored from 3d branch in #339)</span>
+<span class="cm">#</span>
+<span class="cm"># Per-frame update during animation:</span>
+<span class="cm">#   node.setPos(rvw[0, 0], rvw[0, 1], rvw[0, 2])   # position</span>
+<span class="cm">#   node.setQuat(quat)                               # rotation from BallOrientation</span>
+<span class="cm">#</span>
+<span class="cm"># BallOrientation stores a quaternion that is updated by integrating</span>
+<span class="cm"># angular velocity ω over each frame's dt.</span></pre>
+    </div>
+  </details>
+
+  <!-- ── SHOT VIEWER ──────────────────────────────────── -->
+  <h2>ShotViewer — interactive playback</h2>
+  <p><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/ani/animate.py#L327" target="_blank">pooltool/ani/animate.py:327</a></p>
+
+  <details open>
+    <summary>ShotViewer — Panda3D ShowBase with animation loop</summary>
+    <div class="details-body">
+<pre><span class="cm"># pooltool/ani/animate.py:327</span>
+<span class="kw">class</span> <span class="cls">ShotViewer</span>(Interface):
+    <span class="cm">"""Visualization-only mode: plays back a simulated shot."""</span>
+
+    <span class="cm"># Inherits Panda3D ShowBase.  Key tasks added:</span>
+    <span class="cm">#   taskMgr.add(self._animate_task, "animate")</span>
+    <span class="cm">#</span>
+    <span class="cm"># _animate_task each frame:</span>
+    <span class="cm">#   frame_idx = int(elapsed / dt)</span>
+    <span class="cm">#   for ball in balls:</span>
+    <span class="cm">#       state = ball.history_cts.states[frame_idx]</span>
+    <span class="cm">#       render_node.setPos(state.rvw[0])</span>
+    <span class="cm">#       render_node.setQuat(state.orientation)</span>
+    <span class="cm">#</span>
+    <span class="cm"># Controls:</span>
+    <span class="cm">#   ESC       — quit</span>
+    <span class="cm">#   Space     — pause / resume</span>
+    <span class="cm">#   n / p     — next / previous shot (MultiSystem)</span>
+    <span class="cm">#   scroll    — camera zoom</span>
+    <span class="cm">#   drag      — camera orbit</span></pre>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Game — full interactive play mode</summary>
+    <div class="details-body">
+<pre><span class="cm"># pooltool/ani/animate.py:469</span>
+<span class="kw">class</span> <span class="cls">Game</span>(Interface):
+    <span class="cm">"""Interactive billiards game using the same Panda3D base."""</span>
+
+    <span class="cm"># Modes / states the Game can be in:</span>
+    <span class="cm">#   aim        — player rotates cue angle with mouse</span>
+    <span class="cm">#   stroke     — player drags cue to set V0, then releases</span>
+    <span class="cm">#   calculate  — simulate() runs asynchronously</span>
+    <span class="cm">#   view       — ShotViewer playback of the result</span>
+    <span class="cm">#   ball_in_hand — player places a ball (e.g. after scratch)</span>
+    <span class="cm">#</span>
+    <span class="cm"># Invoked via CLI: run-pooltool  (pooltool/main.py)</span></pre>
+      <div class="inset green"><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/interact.py#L8" target="_blank">interact.py:8</a> — <code>show()</code> entry point &nbsp;·&nbsp; <a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/main.py" target="_blank">main.py</a> — CLI entry point</div>
+    </div>
+  </details>
+
+  <!-- ── show() ───────────────────────────────────────── -->
+  <h2>show() — public entry point</h2>
+  <p><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/interact.py#L8" target="_blank">pooltool/interact.py:8</a></p>
+
+  <details open>
+    <summary>show() — accepts System or MultiSystem</summary>
+    <div class="details-body">
+<pre><span class="kw">def</span> <span class="fn">show</span>(*args, **kwargs):
+    <span class="cm"># pooltool/interact.py:8</span>
+    <span class="cm">#</span>
+    <span class="cm"># Accepts:</span>
+    <span class="cm">#   show(system)             — single shot viewer</span>
+    <span class="cm">#   show(multisystem)        — multi-shot viewer (n/p to navigate)</span>
+    <span class="cm">#   show(system, game=True)  — interactive game mode</span>
+    <span class="cm">#</span>
+    <span class="cm"># Internally:</span>
+    <span class="cm">#   1. Auto-continuize any system that lacks history_cts</span>
+    <span class="cm">#   2. Construct ShotViewer (or Game)</span>
+    <span class="cm">#   3. Call ShowBase.run() → blocks until window is closed</span>
+    ...</pre>
+    </div>
+  </details>
+
+</div>
+</body>
+</html>

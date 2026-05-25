@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prometheus Data Flow — Scrape Pipeline</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav>
+  <span class="nav-brand">Prometheus</span>
+  <a href="index.html">Overview</a>
+  <a href="scrape.html" class="active">Scrape</a>
+  <a href="tsdb.html">TSDB</a>
+  <a href="remote-write.html">Remote Write</a>
+  <a href="query.html">PromQL</a>
+  <a href="alerting.html">Alerting</a>
+</nav>
+
+<main>
+  <div class="page-header">
+    <h1>Scrape Pipeline</h1>
+    <p>How Prometheus discovers targets, fetches metrics via HTTP, and delivers parsed samples to storage.</p>
+  </div>
+
+  <!-- Flow -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">🗺</span> Pipeline Flow</summary>
+    <div class="section-body">
+      <div class="flow-diagram">
+        <pre>
+  SD Providers (K8s, Consul, File, DNS, AWS, …)
+        │
+        │ []*targetgroup.Group  (goroutine per provider)
+        ▼
+  ┌──────────────────────────────────────────┐
+  │       discovery.Manager                  │  discovery/manager.go:170
+  │  • syncCh  chan map[string][]*Group       │
+  │  • ticker-based reconciliation           │
+  └────────────────────┬─────────────────────┘
+                       │ map[jobName][]*targetgroup.Group
+                       ▼
+  ┌──────────────────────────────────────────┐
+  │        scrape.Manager                    │  scrape/manager.go:186
+  │  • one scrapePool per job                │
+  │  • applies target relabeling             │
+  │  • starts/stops scrapeLoop goroutines    │
+  └────────────────────┬─────────────────────┘
+                       │
+              (per target goroutine)
+                       │
+                       ▼
+  ┌──────────────────────────────────────────┐
+  │           scrapeLoop                     │  scrape/scrape.go:1167
+  │  • ticker: every scrape_interval         │
+  │  • HTTP GET target.URL                   │
+  │  • parse response (text or proto)        │
+  │  • apply sample/label limits             │
+  │  • call appender.Append() per sample     │
+  │  • appender.Commit()                     │
+  └────────────────────┬─────────────────────┘
+                       │ samples, exemplars, histograms
+                       ▼
+              storage.Appender
+          (fanoutStorage → TSDB + Remote)</pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- Discovery Manager -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">🔭</span> Discovery Manager <span class="tag tag-async">async</span></summary>
+    <div class="section-body">
+      <p>Each service discovery mechanism runs as a pluggable <code>Discoverer</code>. The manager aggregates their output and pushes batched updates downstream over a channel.</p>
+
+      <div class="code-header">
+        <span class="code-label">discovery/manager.go — Manager struct</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/discovery/manager.go#L170" target="_blank">L170</a>
+      </div>
+      <pre class="code-block">type Manager struct {
+    logger         *slog.Logger
+    name           string
+    httpClientOpts []config.HTTPClientOption
+
+    // Guards metrics and targetSets.
+    mtx sync.RWMutex
+
+    // Sync channel to the consumer (scrape/notify manager).
+    syncCh chan map[string][]*targetgroup.Group
+
+    // Providers holds all active SD providers.
+    providers []*Provider
+
+    // Target groups keyed by providerRef → jobName.
+    targetSets map[string]map[string]*targetgroup.Group
+    ...
+}</pre>
+
+      <p>Each SD provider type has its own <code>Discoverer</code> implementation. When target groups change, the provider sends updates into the manager's internal channel, which the manager batches and forwards to <code>syncCh</code> after a configurable <code>updatert</code> delay (default 5 s).</p>
+
+      <div class="callout callout-info">
+        The <code>syncCh</code> is read by the Scrape Manager in a dedicated goroutine. The Notify Manager has its own separate Discovery Manager instance for Alertmanager endpoint discovery.
+      </div>
+
+      <h3>Supported SD Mechanisms</h3>
+      <table class="props">
+        <thead><tr><th>Name</th><th>Package</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>kubernetes</td><td><a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/discovery/kubernetes" target="_blank">discovery/kubernetes</a></td><td>Pods, services, endpoints, nodes</td></tr>
+          <tr><td>file</td><td><a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/discovery/file" target="_blank">discovery/file</a></td><td>JSON/YAML; inotify watched</td></tr>
+          <tr><td>ec2</td><td><a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/discovery/aws" target="_blank">discovery/aws</a></td><td>AWS EC2 instances via API</td></tr>
+          <tr><td>consul</td><td><a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/discovery/consul" target="_blank">discovery/consul</a></td><td>Consul catalog long-poll</td></tr>
+          <tr><td>dns</td><td><a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/discovery/dns" target="_blank">discovery/dns</a></td><td>SRV/A/AAAA record lookup</td></tr>
+          <tr><td>http</td><td><a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/discovery/http" target="_blank">discovery/http</a></td><td>HTTP endpoint returning JSON target groups</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <!-- Scrape Manager -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">🏊</span> Scrape Manager &amp; scrapePool</summary>
+    <div class="section-body">
+
+      <div class="code-header">
+        <span class="code-label">scrape/manager.go — Manager struct</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/scrape/manager.go#L186" target="_blank">L186</a>
+      </div>
+      <pre class="code-block">type Manager struct {
+    opts         *Options
+    logger       *slog.Logger
+    append       storage.Appendable
+    graceShut    chan struct{}
+
+    offsetSeed    uint64              // used to jitter scrape offsets
+    mtxScrape     sync.Mutex         // guards the maps below
+    scrapeConfigs map[string]*config.ScrapeConfig
+    scrapePools   map[string]*scrapePool  // one pool per job_name
+    ...
+}</pre>
+
+      <p>When the Discovery Manager pushes a new set of target groups, <code>Manager.reload()</code> diffs the current and incoming pools:</p>
+      <ol class="steps">
+        <li data-step="1">New jobs → create <code>scrapePool</code>, call <code>pool.Sync(tgroups)</code></li>
+        <li data-step="2">Removed jobs → call <code>pool.stop()</code> to drain loops</li>
+        <li data-step="3">Changed targets within a job → <code>pool.Sync()</code> starts/stops individual <code>scrapeLoop</code> goroutines</li>
+      </ol>
+
+      <h3>Target Relabeling</h3>
+      <p>Before a target is scraped, the scrape pool applies <code>relabel.Process()</code> using the job's <code>relabel_configs</code>. Labels prefixed with <code>__</code> are internal and stripped before storage. Key labels:</p>
+      <table class="props">
+        <thead><tr><th>Label</th><th>Source</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td>__address__</td><td>SD</td><td>host:port to scrape</td></tr>
+          <tr><td>__scheme__</td><td>config</td><td>http or https</td></tr>
+          <tr><td>__metrics_path__</td><td>config</td><td>defaults to /metrics</td></tr>
+          <tr><td>__scrape_interval__</td><td>config</td><td>per-target override</td></tr>
+          <tr><td>instance</td><td>derived</td><td>set to __address__ after relabeling</td></tr>
+          <tr><td>job</td><td>config</td><td>job_name from scrape config</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <!-- Scrape Loop -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">🔁</span> scrapeLoop — Per-Target Goroutine</summary>
+    <div class="section-body">
+
+      <div class="code-header">
+        <span class="code-label">scrape/scrape.go — newScrapeLoop constructor</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/scrape/scrape.go#L1167" target="_blank">L1167</a>
+      </div>
+      <pre class="code-block">func newScrapeLoop(opts scrapeLoopOptions) *scrapeLoop {
+    sl := &scrapeLoop{
+        target:             opts.target,
+        scraper:            opts.scraper,       // HTTP client
+        buffers:            pool.New(1e3, 1e6, 3, func(n int) interface{} {
+                                return make([]byte, 0, n)
+                            }),
+        sampleMutator:      opts.sampleMutator,  // relabeling
+        reportSampleMutator: opts.reportSampleMutator,
+        appender:           opts.appender,        // storage.Appendable
+        ...
+    }
+    return sl
+}</pre>
+
+      <div class="code-header">
+        <span class="code-label">scrape/scrape.go — main run loop</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/scrape/scrape.go#L1263" target="_blank">L1263</a>
+      </div>
+      <pre class="code-block">func (sl *scrapeLoop) run(errc chan&lt;- error) {
+    // Align scrape to a fixed offset within the interval to spread load.
+    select {
+    case &lt;-time.After(sl.scrapeOffset()):
+    case &lt;-sl.ctx.Done():
+        return
+    }
+
+    ticker := time.NewTicker(sl.interval)
+    defer ticker.Stop()
+
+    for {
+        select {
+        case &lt;-ticker.C:
+            // 1. HTTP GET target URL
+            // 2. Parse response into samples
+            // 3. Append to storage
+            // 4. Report scrape metadata (__scrape_duration_seconds__, etc.)
+            sl.scrapeAndReport(...)
+        case &lt;-sl.ctx.Done():
+            return
+        }
+    }
+}</pre>
+
+      <h3>Parse &amp; Append Sequence</h3>
+      <ol class="steps">
+        <li data-step="1">HTTP GET <code>target.URL()</code> with <code>Accept: text/plain; version=0.0.4, application/openmetrics-text</code></li>
+        <li data-step="2">Response body piped through <code>textparse.New()</code> or <code>openmetricsparse.New()</code></li>
+        <li data-step="3">Each metric family iterated; relabeling applied per sample</li>
+        <li data-step="4"><code>app.Append(ref, lset, ts, val)</code> called for each float sample</li>
+        <li data-step="5"><code>app.AppendHistogram()</code> for native histograms</li>
+        <li data-step="6"><code>app.AppendExemplar()</code> for OpenMetrics exemplars</li>
+        <li data-step="7">Sample/label limits checked; excess → <code>errSampleLimit</code></li>
+        <li data-step="8"><code>app.Commit()</code> — atomically writes all samples of this scrape</li>
+        <li data-step="9">Stale markers written for series that disappeared since last scrape</li>
+      </ol>
+
+      <div class="callout callout-warn">
+        If <code>Commit()</code> fails the entire scrape is rolled back via <code>app.Rollback()</code> — scrape metrics are stored atomically or not at all.
+      </div>
+    </div>
+  </details>
+
+  <!-- Scrape config reference -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">⚙</span> Scrape Config Parameters</summary>
+    <div class="section-body">
+      <table class="props">
+        <thead><tr><th>Parameter</th><th>Default</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td>scrape_interval</td><td>1m</td><td>How often to scrape</td></tr>
+          <tr><td>scrape_timeout</td><td>10s</td><td>HTTP request deadline</td></tr>
+          <tr><td>sample_limit</td><td>0 (off)</td><td>Max samples per scrape before error</td></tr>
+          <tr><td>label_limit</td><td>0 (off)</td><td>Max labels per series</td></tr>
+          <tr><td>target_limit</td><td>0 (off)</td><td>Max targets per job</td></tr>
+          <tr><td>honor_labels</td><td>false</td><td>Prefer target labels over server labels on conflict</td></tr>
+          <tr><td>honor_timestamps</td><td>true</td><td>Use timestamps from exposition if present</td></tr>
+          <tr><td>metrics_path</td><td>/metrics</td><td>Endpoint to scrape</td></tr>
+          <tr><td>scheme</td><td>http</td><td>http or https</td></tr>
+        </tbody>
+      </table>
+      <p>Config struct: <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/config/config.go" target="_blank">config/config.go — ScrapeConfig</a></p>
+    </div>
+  </details>
+
+  <!-- Stale markers -->
+  <details open>
+    <summary><span class="summary-arrow">▶</span><span class="summary-icon">🪦</span> Stale Markers</summary>
+    <div class="section-body">
+      <p>When a series disappears (target down or metric removed), Prometheus injects a special stale NaN value at the next scrape. This tells the query engine not to extrapolate across the gap.</p>
+      <div class="code-header">
+        <span class="code-label">scrape/scrape.go — stale marker injection</span>
+        <a class="gh-link" href="https://github.com/prometheus/prometheus/blob/01822f2a7cea65b7af992ce92b650e9a58b75435/scrape/scrape.go" target="_blank">scrape.go</a>
+      </div>
+      <pre class="code-block">// For each series seen in the previous scrape but absent now:
+app.Append(ref, lset, scrapeTimestamp, math.Float64frombits(value.StaleNaN))</pre>
+      <div class="callout callout-info">
+        <code>value.StaleNaN</code> is a special IEEE 754 NaN with the stale marker bit pattern (<code>0x7ff0000000000002</code>). The query engine treats it as end-of-series rather than a data point.
+      </div>
+    </div>
+  </details>
+
+</main>
+</body>
+</html>

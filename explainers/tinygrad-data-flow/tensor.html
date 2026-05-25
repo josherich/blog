@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tinygrad — Tensor & Operations</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --border: #2a2d3a;
+    --accent: #7c6af5;
+    --accent2: #56cfb2;
+    --text: #e2e4ed;
+    --muted: #8b8fa8;
+    --code-bg: #12141e;
+    --link: #7c9ef5;
+    --tag-bg: #252838;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'SF Mono', 'Fira Code', monospace; font-size: 14px; line-height: 1.6; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .back-link { font-size: 12px; color: var(--muted); }
+  .back-link:hover { color: var(--text); }
+  h1 { font-size: 18px; font-weight: 700; color: var(--text); }
+  .subtitle { color: var(--muted); font-size: 13px; margin-left: auto; }
+  main { max-width: 900px; margin: 0 auto; padding: 24px 16px; }
+  .section { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 20px; overflow: hidden; }
+  .section-header { padding: 14px 18px; display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+  .section-header:hover { background: rgba(124,106,245,0.06); }
+  .section-title { font-size: 15px; font-weight: 600; }
+  .section-badge { font-size: 11px; padding: 2px 8px; border-radius: 12px; background: var(--tag-bg); color: var(--muted); }
+  .toggle { margin-left: auto; color: var(--muted); font-size: 12px; transition: transform 0.2s; }
+  .toggle.open { transform: rotate(180deg); }
+  .section-body { padding: 18px; border-top: 1px solid var(--border); }
+  .section-body.collapsed { display: none; }
+  .field-grid { display: grid; grid-template-columns: minmax(120px, auto) 1fr; gap: 6px 16px; align-items: start; }
+  .field-name { color: var(--accent2); font-weight: 600; padding-top: 2px; }
+  .field-desc { color: var(--text); }
+  .field-desc .type { color: var(--accent); font-size: 12px; }
+  code { background: var(--code-bg); padding: 1px 5px; border-radius: 3px; font-size: 12px; color: #e8b86d; }
+  pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; overflow-x: auto; font-size: 12px; line-height: 1.7; white-space: pre; }
+  .ref-link { display: inline-block; font-size: 11px; color: var(--muted); border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; margin-top: 8px; }
+  .ref-link:hover { color: var(--link); border-color: var(--link); text-decoration: none; }
+  .note { background: rgba(86,207,178,0.07); border-left: 3px solid var(--accent2); padding: 10px 14px; border-radius: 0 4px 4px 0; margin: 10px 0; font-size: 13px; }
+  .flow-step { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .flow-step:last-child { border-bottom: none; }
+  .step-num { width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+  .step-body { flex: 1; }
+  .step-title { font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .step-desc { color: var(--muted); font-size: 13px; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .tag { font-size: 11px; padding: 2px 8px; border-radius: 10px; background: var(--tag-bg); color: var(--accent); border: 1px solid rgba(124,106,245,0.2); }
+  .tag.green { color: var(--accent2); border-color: rgba(86,207,178,0.2); }
+  .tag.gray { color: var(--muted); border-color: var(--border); }
+  h3 { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin: 14px 0 8px; }
+  p { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html" class="back-link">← overview</a>
+  <h1>Tensor &amp; Operations</h1>
+  <span class="subtitle">Stage 1 of 6 · tinygrad/tensor.py · tinygrad/mixin/</span>
+</header>
+<main>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Tensor class</span>
+      <span class="section-badge">tensor.py:80</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <p>The <code>Tensor</code> class is the user-facing entry point. Every operation builds a lazy computation graph (UOp DAG) — nothing executes until <code>.realize()</code> is called.</p>
+      <p>Tensor inherits from <code>OpMixin</code> which pulls in <code>ElementwiseMixin</code>, <code>MovementMixin</code>, and <code>ReduceMixin</code>.</p>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/tensor.py#L80" target="_blank" class="ref-link">tensor.py:80 — class Tensor(OpMixin)</a>
+      <h3>Key attributes</h3>
+      <div class="field-grid">
+        <span class="field-name">uop</span>
+        <span class="field-desc"><span class="type">UOp</span> — the computation graph node for this tensor; the root of the DAG</span>
+        <span class="field-name">device</span>
+        <span class="field-desc"><span class="type">str</span> — target device string, e.g. <code>"CUDA"</code>, <code>"CPU"</code>, <code>"METAL"</code></span>
+        <span class="field-name">dtype</span>
+        <span class="field-desc"><span class="type">DType</span> — numeric type (dtypes.float32, dtypes.int32, etc.)</span>
+        <span class="field-name">shape</span>
+        <span class="field-desc"><span class="type">tuple[sint,...]</span> — dimension sizes; may contain symbolic ints</span>
+        <span class="field-name">grad</span>
+        <span class="field-desc"><span class="type">Tensor|None</span> — gradient tensor after backward pass</span>
+      </div>
+      <h3>Constructor inputs</h3>
+      <div class="field-grid">
+        <span class="field-name">scalar/list</span>
+        <span class="field-desc">Python number or nested list → converted to UOp via <code>CONST</code>/<code>BUFFER</code></span>
+        <span class="field-name">numpy array</span>
+        <span class="field-desc">ndarray → allocated Buffer, data copied in via <code>copyin()</code></span>
+        <span class="field-name">UOp</span>
+        <span class="field-desc">Wrap an existing UOp node directly (used internally)</span>
+        <span class="field-name">None</span>
+        <span class="field-desc">Allocates an uninitialized <code>BUFFER</code> on the given device</span>
+      </div>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/tensor.py#L94" target="_blank" class="ref-link">tensor.py:94 — Tensor.__init__</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Operation mixins</span>
+      <span class="section-badge">mixin/</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <p>Operations are split into three mixin classes. Each method eventually calls <code>_apply_uop()</code> to build a new UOp node.</p>
+      <div class="flow-step">
+        <div class="step-num">E</div>
+        <div class="step-body">
+          <div class="step-title">ElementwiseMixin</div>
+          <div class="step-desc">Pointwise ops: <code>add</code>, <code>sub</code>, <code>mul</code>, <code>div</code>, <code>neg</code>, <code>exp2</code>, <code>log2</code>, <code>sin</code>, <code>sqrt</code>, <code>cast</code>, <code>where</code>, …</div>
+          <div class="tag-row">
+            <span class="tag">ADD</span><span class="tag">MUL</span><span class="tag">EXP2</span><span class="tag">LOG2</span><span class="tag">WHERE</span><span class="tag">CAST</span>
+          </div>
+          <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/mixin/elementwise.py#L10" target="_blank" class="ref-link">mixin/elementwise.py:10</a>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">M</div>
+        <div class="step-body">
+          <div class="step-title">MovementMixin</div>
+          <div class="step-desc">Shape/layout ops: <code>reshape</code>, <code>permute</code>, <code>expand</code>, <code>pad</code>, <code>shrink</code>, <code>flip</code>, <code>transpose</code>, <code>slice</code>, …</div>
+          <div class="tag-row">
+            <span class="tag">RESHAPE</span><span class="tag">PERMUTE</span><span class="tag">EXPAND</span><span class="tag">PAD</span><span class="tag">SHRINK</span><span class="tag">FLIP</span>
+          </div>
+          <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/mixin/movement.py#L1" target="_blank" class="ref-link">mixin/movement.py</a>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">R</div>
+        <div class="step-body">
+          <div class="step-title">ReduceMixin</div>
+          <div class="step-desc">Reduction ops: <code>sum</code>, <code>max</code>, <code>min</code>, <code>mean</code>, <code>prod</code>, <code>std</code>, <code>argmax</code>, <code>argmin</code>, …</div>
+          <div class="tag-row">
+            <span class="tag">REDUCE</span><span class="tag">ADD</span><span class="tag">MAX</span>
+          </div>
+          <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/mixin/reduce.py#L1" target="_blank" class="ref-link">mixin/reduce.py</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">_apply_uop — lazy graph construction</span>
+      <span class="section-badge">tensor.py:147</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <p>Every op calls <code>_apply_uop</code> which wraps the UOp creation and returns a new <code>Tensor</code> object containing the new DAG node. No computation happens yet.</p>
+      <pre>user: a = Tensor([1,2,3])   # BUFFER uop
+user: b = Tensor([4,5,6])   # BUFFER uop
+user: c = a + b             # creates ADD uop: src=(a.uop, b.uop)
+# c.uop = UOp(Ops.ADD, dtypes.int32, src=(a.uop, b.uop))
+# nothing executed yet — just a graph node</pre>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/tensor.py#L147" target="_blank" class="ref-link">tensor.py:147 — _apply_uop</a>
+      <div class="note">The DAG is immutable and deduplicated: if two operations produce identical UOps (same op, dtype, src, arg), the metaclass returns the same cached node.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">realize() &amp; linear_with_vars()</span>
+      <span class="section-badge">tensor.py:228–241</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <p>These are the two exits from the lazy graph — they trigger the full pipeline from scheduling through execution.</p>
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">realize(*lst)</div>
+          <div class="step-desc">Materializes this tensor (and optionally others). Calls <code>linear_with_vars()</code> then <code>run_linear()</code>. Returns <code>self</code> so it chains.</div>
+          <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/tensor.py#L241" target="_blank" class="ref-link">tensor.py:241 — realize()</a>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">linear_with_vars(*lst)</div>
+          <div class="step-desc">Builds a SINK UOp over all tensor outputs, then calls <code>create_linear_with_vars()</code> in the scheduler. Returns <code>(linear_uop, var_vals)</code> — the compiled execution plan without running it.</div>
+          <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/tensor.py#L228" target="_blank" class="ref-link">tensor.py:228 — linear_with_vars()</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Example: a.matmul(b)</span>
+      <span class="section-badge">walkthrough</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <pre>a = Tensor.randn(4, 8)    # BUFFER(shape=(4,8))
+b = Tensor.randn(8, 16)   # BUFFER(shape=(8,16))
+c = a.matmul(b)
+
+# Internally, matmul does roughly:
+#   a2 = a.reshape(4,8,1)         → RESHAPE uop
+#   b2 = b.permute(1,0).reshape(1,8,16) → PERMUTE + RESHAPE uop
+#   mul = (a2 * b2)               → MUL uop (broadcast EXPAND implied)
+#   c = mul.sum(axis=1)           → REDUCE(ADD) uop over axis=1
+#
+# No FLOPS yet — just a DAG:
+#
+#   BUFFER(a) ─┐
+#               ├─ RESHAPE ─┐
+#                           ├─ MUL ─ REDUCE(ADD) ── c.uop
+#   BUFFER(b) ─ PERMUTE ─ RESHAPE ─┘
+
+c.realize()   # ← triggers scheduling → codegen → execution</pre>
+    </div>
+  </div>
+
+</main>
+<script>
+function toggle(header) {
+  const body = header.nextElementSibling;
+  const arrow = header.querySelector('.toggle');
+  const isOpen = !body.classList.contains('collapsed');
+  if (isOpen) { body.classList.add('collapsed'); arrow.classList.remove('open'); }
+  else { body.classList.remove('collapsed'); arrow.classList.add('open'); }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ghostty PTY and Stream Data Flow</title>
+    <link rel="stylesheet" href="assets/style.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="hero">
+        <p class="eyebrow">Component flow</p>
+        <h1>PTY output is parsed into terminal state.</h1>
+        <p class="lede">
+          The exec backend starts the child process and reads PTY bytes. `Termio` owns the terminal stream and feeds
+          those bytes to a handler that translates VT parser actions into `terminal.Terminal` mutations.
+        </p>
+        <nav class="top-nav" aria-label="Data flow pages">
+          <a href="index.html">Overview</a>
+          <a href="app-surface.html">App and Surface</a>
+          <a href="input-mailbox.html">Input and Mailbox</a>
+          <a href="pty-stream.html" aria-current="page">PTY and Stream</a>
+          <a href="renderer.html">Renderer</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="toolbar" aria-label="Controls">
+        <input class="search" data-search type="search" placeholder="Filter this component">
+        <button class="button" data-expand-all type="button">Expand all</button>
+        <button class="button" data-collapse-all type="button">Collapse all</button>
+      </section>
+
+      <details open data-filter>
+        <summary>Termio creates the terminal and stream handler</summary>
+        <div class="detail-body">
+          <p>
+            `Termio.init` creates the `terminal.Terminal`, lets the backend initialize terminal-specific state, and
+            builds `StreamHandler` with references to termio, surface, renderer, size, and terminal state.
+          </p>
+          <div class="refs">
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/termio/Termio.zig#L240-L311">Termio.init</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/termio/Exec.zig#L62-L83">Exec.initTerminal</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/termio/stream_handler.zig#L18-L85">StreamHandler fields</a>
+          </div>
+          <pre><code>const handler: StreamHandler = .{
+    .termio_mailbox = &amp;self.mailbox,
+    .surface_mailbox = opts.surface_mailbox,
+    .renderer_state = opts.renderer_state,
+    .renderer_wakeup = opts.renderer_wakeup,
+    .renderer_mailbox = opts.renderer_mailbox,
+    .size = &amp;self.size,
+    .terminal = &amp;self.terminal,
+};
+
+self.* = .{
+    .terminal = term,
+    .terminal_stream = .initAlloc(alloc, handler),
+};</code></pre>
+        </div>
+      </details>
+
+      <details open data-filter>
+        <summary>The exec backend starts the subprocess on IO thread entry</summary>
+        <div class="detail-body">
+          <p>
+            `termio.Thread.threadMain_` calls `io.threadEnter`, which dispatches to the backend. For `Exec`, this
+            starts the subprocess and sets up backend thread data before the IO loop begins processing mailbox wakeups.
+          </p>
+          <div class="refs">
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/termio/Thread.zig#L263-L278">IO thread enter/run</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/termio/Exec.zig#L85-L95">Exec.threadEnter</a>
+          </div>
+          <pre><code>try io.threadEnter(self, &amp;cb.data);
+defer cb.data.deinit();
+defer io.threadExit(&amp;cb.data);
+
+try self.loop.run(.until_done);</code></pre>
+        </div>
+      </details>
+
+      <details open data-filter>
+        <summary>Read threads feed raw bytes into Termio.processOutput</summary>
+        <div class="detail-body">
+          <p>
+            The POSIX read thread sets the PTY fd nonblocking, reads repeatedly until it would block, and calls
+            `Termio.processOutput` for each buffer. The Windows path mirrors this using `ReadFile`.
+          </p>
+          <div class="refs">
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/termio/Exec.zig#L1247-L1339">POSIX read thread</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/termio/Exec.zig#L1373-L1390">Windows read loop</a>
+          </div>
+          <pre><code>while (true) {
+    const n = posix.read(fd, &amp;buf) catch |err| {
+        switch (err) {
+            error.WouldBlock =&gt; break,
+            else =&gt; unreachable,
+        }
+    };
+
+    @call(.always_inline, termio.Termio.processOutput, .{ io, buf[0..n] });
+}</code></pre>
+        </div>
+      </details>
+
+      <details open data-filter>
+        <summary>Termio locks renderer state and feeds the terminal stream</summary>
+        <div class="detail-body">
+          <p>
+            Output processing is protected by `renderer_state.mutex` because it mutates terminal state that the renderer
+            reads. The handler schedules a render before parsing, resets cursor blink as needed, records inspector data
+            in slow mode, and feeds either byte-by-byte or as a slice.
+          </p>
+          <div class="refs">
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/termio/Termio.zig#L640-L700">Termio.processOutput</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/termio/stream_handler.zig#L101-L106">Queue render helper</a>
+          </div>
+          <pre><code>self.renderer_state.mutex.lock();
+defer self.renderer_state.mutex.unlock();
+
+self.terminal_stream.handler.queueRender() catch unreachable;
+self.terminal_stream.nextSlice(buf);</code></pre>
+        </div>
+      </details>
+
+      <details open data-filter>
+        <summary>VT parser actions apply directly to terminal state</summary>
+        <div class="detail-body">
+          <p>
+            The stream handler receives parser actions and updates the terminal. The common path is intentionally
+            branch-hinted around print, SGR attributes, cursor motion, line feed, and carriage return.
+          </p>
+          <div class="refs">
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/termio/stream_handler.zig#L175-L207">VT dispatch start</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/termio/stream_handler.zig#L227-L353">Terminal mutations</a>
+          </div>
+          <pre><code>switch (action) {
+    .print =&gt; {
+        @branchHint(.likely);
+        try self.terminal.print(value.cp);
+    },
+    .cursor_pos =&gt; self.terminal.setCursorPos(value.row, value.col),
+    .set_attribute =&gt; self.terminal.setAttribute(value) catch |err| {
+        log.warn("error setting attribute {}: {}", .{ value, err });
+    },
+    else =&gt; {},
+}</code></pre>
+        </div>
+      </details>
+
+      <p class="note" data-filter>
+        Read next: <a href="renderer.html">Renderer</a> follows how these mutations become a new drawn frame.
+      </p>
+    </main>
+    <script src="assets/script.js"></script>
+  </body>
+</html>

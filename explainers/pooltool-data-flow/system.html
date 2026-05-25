@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>pooltool — Data Models</title>
+<style>
+  :root {
+    --bg: #0f1117; --surface: #1a1d27; --surface2: #22263a;
+    --border: #2e3350; --accent: #5b8af5; --accent2: #7c6af5;
+    --green: #4caf7d; --orange: #f5a623; --red: #e85c5c;
+    --text: #e0e4f0; --muted: #7a82a8; --code-bg: #12151f;
+    --radius: 8px;
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.6; }
+  nav {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 12px 20px; position: sticky; top: 0; z-index: 100;
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  }
+  nav .brand { font-weight: 700; font-size: 15px; color: var(--accent); margin-right: 8px; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 13px; padding: 4px 10px; border-radius: 5px; transition: all 0.15s; }
+  nav a:hover, nav a.active { background: var(--surface2); color: var(--text); }
+  nav a.active { color: var(--green); }
+  .container { max-width: 860px; margin: 0 auto; padding: 28px 20px 60px; }
+  h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
+  h2 { font-size: 19px; font-weight: 600; margin: 36px 0 12px; color: var(--green); border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  h3 { font-size: 14px; font-weight: 600; margin: 16px 0 8px; color: var(--orange); }
+  p { color: #b0b8d8; margin-bottom: 10px; font-size: 14px; }
+  .subtitle { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
+  a.gh { font-family: var(--mono); font-size: 11px; color: var(--accent); text-decoration: none; border-bottom: 1px dashed var(--border); }
+  a.gh:hover { border-color: var(--accent); }
+  details { margin: 10px 0; }
+  summary {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 10px 14px; cursor: pointer; font-size: 13px; font-weight: 600;
+    list-style: none; display: flex; align-items: center; gap: 8px; user-select: none;
+    transition: border-color 0.15s;
+  }
+  summary:hover { border-color: var(--green); }
+  details[open] summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom: none; }
+  summary::before { content: '▶'; font-size: 10px; color: var(--muted); transition: transform 0.15s; flex-shrink: 0; }
+  details[open] summary::before { transform: rotate(90deg); }
+  .details-body {
+    background: var(--code-bg); border: 1px solid var(--border); border-top: none;
+    border-bottom-left-radius: var(--radius); border-bottom-right-radius: var(--radius);
+    padding: 16px;
+  }
+  pre { font-family: var(--mono); font-size: 12.5px; line-height: 1.55; color: #cdd6f4; white-space: pre; overflow-x: auto; }
+  .kw { color: #cba6f7; } .fn { color: #89b4fa; } .cls { color: #a6e3a1; }
+  .str { color: #a6e3a1; } .cm { color: #6c7086; font-style: italic; }
+  .num { color: #fab387; } .dec { color: #f38ba8; } .tp { color: #94e2d5; }
+  .attr-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 10px 0; }
+  .attr-table th { text-align: left; color: var(--muted); font-weight: 500; padding: 6px 10px; border-bottom: 1px solid var(--border); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .attr-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .attr-table tr:last-child td { border-bottom: none; }
+  .attr-table td:first-child { font-family: var(--mono); color: var(--accent); font-size: 12px; white-space: nowrap; }
+  .attr-table td:nth-child(2) { font-family: var(--mono); color: var(--orange); font-size: 11px; white-space: nowrap; }
+  .attr-table td:nth-child(3) { color: #8892b0; }
+  .badge { display: inline-block; font-family: var(--mono); font-size: 11px; padding: 2px 7px; border-radius: 4px; border: 1px solid; margin-right: 4px; }
+  .badge-blue { color: var(--accent); border-color: var(--accent); background: rgba(91,138,245,0.1); }
+  .badge-green { color: var(--green); border-color: var(--green); background: rgba(76,175,125,0.1); }
+  .badge-orange { color: var(--orange); border-color: var(--orange); background: rgba(245,166,35,0.1); }
+  .badge-red { color: var(--red); border-color: var(--red); background: rgba(232,92,92,0.1); }
+  .section-intro { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 14px; }
+  .section-intro p { margin: 0; }
+  .inset { background: var(--surface2); border-left: 3px solid var(--accent2); border-radius: 0 var(--radius) var(--radius) 0; padding: 10px 14px; margin: 10px 0; font-size: 13px; color: #8892b0; }
+  @media (max-width: 600px) { h1 { font-size: 20px; } }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">pooltool</span>
+  <a href="index.html">Overview</a>
+  <a href="system.html" class="active">Data Models</a>
+  <a href="simulation.html">Simulation</a>
+  <a href="detection.html">Detection</a>
+  <a href="resolution.html">Resolution</a>
+  <a href="visualization.html">Visualization</a>
+</nav>
+
+<div class="container">
+  <h1>Data Models</h1>
+  <p class="subtitle">The objects that describe the state of a pool game before and after simulation.</p>
+
+  <!-- ── SYSTEM ─────────────────────────────────────────── -->
+  <h2>System — the root container</h2>
+  <div class="section-intro">
+    <p><code>System</code> is the single object passed into every API function. It owns the balls, cue, table, simulation clock, and the complete event log produced by simulation.</p>
+  </div>
+  <p><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/system/datatypes.py#L30" target="_blank">pooltool/system/datatypes.py:30</a></p>
+
+  <details open>
+    <summary>System — fields and key methods</summary>
+    <div class="details-body">
+      <table class="attr-table">
+        <tr><th>Attribute</th><th>Type</th><th>Description</th></tr>
+        <tr><td>cue</td><td>Cue</td><td>The cue stick with strike parameters.</td></tr>
+        <tr><td>table</td><td>Table</td><td>Table geometry — cushions, pockets, surface.</td></tr>
+        <tr><td>balls</td><td>dict[str, Ball]</td><td>Ball ID → Ball object. Key <code>"cue"</code> is the cue ball.</td></tr>
+        <tr><td>t</td><td>float</td><td>Elapsed simulation time (seconds).</td></tr>
+        <tr><td>events</td><td>list[Event]</td><td>Ordered event log produced by <code>simulate()</code>.</td></tr>
+      </table>
+<pre style="margin-top:12px">
+<span class="cm"># strike() sets cue parameters before simulation</span>
+system.strike(
+    V0=<span class="num">8.0</span>,       <span class="cm"># m/s impact speed</span>
+    phi=<span class="num">45.0</span>,     <span class="cm"># azimuth angle (degrees)</span>
+    theta=<span class="num">20.0</span>,   <span class="cm"># cue elevation (degrees)</span>
+    a=<span class="num">0.0</span>,        <span class="cm"># side offset (-1 .. +1)</span>
+    b=<span class="num">0.5</span>,        <span class="cm"># top/bottom offset (-1 .. +1)</span>
+)
+
+<span class="cm"># reset_balls() restores all balls to their initial states</span>
+system.reset_balls()
+
+<span class="cm"># copy() produces a deep-copied system (used by simulate inplace=False)</span>
+clone = system.copy()</pre>
+    </div>
+  </details>
+
+  <details open>
+    <summary>MultiSystem — multiple sequential shots</summary>
+    <div class="details-body">
+<pre><span class="cm"># MultiSystem wraps a list[System] for multi-shot games</span>
+<span class="cm"># pooltool/system/datatypes.py:587</span>
+<span class="kw">class</span> <span class="cls">MultiSystem</span>:
+    multisystem: list[System]
+
+    <span class="kw">def</span> <span class="fn">append</span>(self, system: System) -&gt; <span class="kw">None</span>: ...
+    <span class="kw">def</span> <span class="fn">active</span>(self) -&gt; System: ...   <span class="cm"># last system</span>
+    <span class="kw">def</span> <span class="fn">__len__</span>(self) -&gt; <span class="tp">int</span>: ...</pre>
+      <div class="inset"><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/system/datatypes.py#L587" target="_blank">pooltool/system/datatypes.py:587</a></div>
+    </div>
+  </details>
+
+  <!-- ── BALL ──────────────────────────────────────────── -->
+  <h2>Ball — kinematic state and history</h2>
+  <div class="section-intro">
+    <p>A <code>Ball</code> wraps the current kinematic state, physical parameters, and two trajectory histories — one sparse (event-timestamped) and one dense (continuous, for animation).</p>
+  </div>
+  <p><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/objects/ball/datatypes.py#L324" target="_blank">pooltool/objects/ball/datatypes.py:324</a></p>
+
+  <details open>
+    <summary>Ball — fields and convenience properties</summary>
+    <div class="details-body">
+      <table class="attr-table">
+        <tr><th>Attribute</th><th>Type</th><th>Description</th></tr>
+        <tr><td>id</td><td>str</td><td>Unique identifier: <code>"cue"</code>, <code>"1"</code> … <code>"15"</code>.</td></tr>
+        <tr><td>state</td><td>BallState</td><td>Current position, velocity, spin, and motion state.</td></tr>
+        <tr><td>params</td><td>BallParams</td><td>Mass, radius, friction coefficients.</td></tr>
+        <tr><td>history</td><td>BallHistory</td><td>Sparse trajectory — one state per event.</td></tr>
+        <tr><td>history_cts</td><td>BallHistory</td><td>Dense trajectory — uniform dt, filled by <code>continuize()</code>.</td></tr>
+        <tr><td>ballset</td><td>BallSet | None</td><td>Texture / rendering metadata.</td></tr>
+      </table>
+<pre style="margin-top:12px">
+<span class="cm"># Convenience properties delegate to state.rvw:</span>
+ball.xyz   <span class="cm"># → state.rvw[0]  — position  (x, y, z)</span>
+ball.vel   <span class="cm"># → state.rvw[1]  — velocity  (vx, vy, vz)</span>
+ball.avel  <span class="cm"># → state.rvw[2]  — angular velocity (wx, wy, wz)</span>
+
+<span class="cm"># Factory:</span>
+ball = Ball.create(<span class="str">"cue"</span>, xy=(<span class="num">0.5</span>, <span class="num">1.0</span>))</pre>
+    </div>
+  </details>
+
+  <details open>
+    <summary>BallState — rvw tensor and motion state</summary>
+    <div class="details-body">
+<pre><span class="cm"># pooltool/objects/ball/datatypes.py:70</span>
+<span class="kw">@dataclass</span>
+<span class="kw">class</span> <span class="cls">BallState</span>:
+    rvw: NDArray[np.float64]   <span class="cm"># shape (3, 3)</span>
+    s:   <span class="tp">int</span>                   <span class="cm"># motion state label</span>
+    t:   <span class="tp">float</span>                 <span class="cm"># time of this state snapshot</span>
+
+<span class="cm"># Motion state labels (pooltool/objects/ball/constants.py):</span>
+<span class="cm">#  0 = stationary</span>
+<span class="cm">#  1 = spinning  (ball is rotating in-place)</span>
+<span class="cm">#  2 = sliding   (linear velocity ≠ surface velocity)</span>
+<span class="cm">#  3 = rolling   (no slip between ball and cloth)</span>
+<span class="cm">#  4 = pocketed</span>
+<span class="cm">#  5 = airborne  (3D mode only)</span>
+
+<span class="cm"># The rvw rows:</span>
+state.rvw[<span class="num">0</span>]  <span class="cm"># [x, y, z]        — position</span>
+state.rvw[<span class="num">1</span>]  <span class="cm"># [vx, vy, vz]     — linear velocity</span>
+state.rvw[<span class="num">2</span>]  <span class="cm"># [wx, wy, wz]     — angular velocity</span></pre>
+      <div class="inset"><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/objects/ball/datatypes.py#L70" target="_blank">pooltool/objects/ball/datatypes.py:70</a></div>
+    </div>
+  </details>
+
+  <details open>
+    <summary>BallHistory — sparse and dense trajectories</summary>
+    <div class="details-body">
+<pre><span class="cm"># pooltool/objects/ball/datatypes.py:142</span>
+<span class="kw">class</span> <span class="cls">BallHistory</span>:
+    <span class="cm">"""Ordered list of BallState snapshots."""</span>
+    states: list[BallState]
+
+    <span class="kw">def</span> <span class="fn">add</span>(self, state: BallState) -&gt; <span class="kw">None</span>: ...
+    <span class="kw">def</span> <span class="fn">vectorize</span>(self) -&gt; dict[str, NDArray]: ...
+    <span class="cm"># vectorize() returns arrays of shape (N,) for each field</span>
+    <span class="cm"># Used internally by rendering and interpolation.</span>
+
+<span class="cm"># After simulate()  — ball.history has one entry per event</span>
+<span class="cm"># After continuize() — ball.history_cts has uniform dt entries</span>
+len(ball.history.states)      <span class="cm"># e.g. 14  (one per event)</span>
+len(ball.history_cts.states)  <span class="cm"># e.g. 350 (dt=0.01 over 3.5s)</span></pre>
+      <div class="inset"><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/objects/ball/datatypes.py#L142" target="_blank">pooltool/objects/ball/datatypes.py:142</a></div>
+    </div>
+  </details>
+
+  <!-- ── CUE ───────────────────────────────────────────── -->
+  <h2>Cue — the cue stick</h2>
+  <div class="section-intro">
+    <p><code>Cue</code> carries all parameters of the intended shot. These are consumed once by the stick-ball resolver at t=0 to determine the initial ball velocity and spin.</p>
+  </div>
+  <p><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/objects/cue/datatypes.py#L137" target="_blank">pooltool/objects/cue/datatypes.py:137</a></p>
+
+  <details open>
+    <summary>Cue — strike parameters</summary>
+    <div class="details-body">
+      <table class="attr-table">
+        <tr><th>Attribute</th><th>Type</th><th>Description</th></tr>
+        <tr><td>V0</td><td>float</td><td>Impact speed (m/s). Controls how hard the ball is hit.</td></tr>
+        <tr><td>phi</td><td>float</td><td>Azimuth angle (degrees). Direction the cue ball will travel.</td></tr>
+        <tr><td>theta</td><td>float</td><td>Cue elevation (degrees). 0 = parallel to table, 90 = massé.</td></tr>
+        <tr><td>a</td><td>float</td><td>Side offset of tip contact (−1 to +1). Adds left/right english.</td></tr>
+        <tr><td>b</td><td>float</td><td>Vertical offset of tip contact (−1 to +1). Top/bottom spin.</td></tr>
+        <tr><td>cue_ball_id</td><td>str</td><td>Which ball is struck. Default <code>"cue"</code>.</td></tr>
+        <tr><td>specs</td><td>CueSpecs</td><td>Physical properties of the stick (mass, tip radius, …).</td></tr>
+      </table>
+    </div>
+  </details>
+
+  <details open>
+    <summary>CueSpecs — physical constants of the cue</summary>
+    <div class="details-body">
+<pre><span class="cm"># pooltool/objects/cue/datatypes.py:12</span>
+<span class="kw">@dataclass(frozen=True)</span>
+<span class="kw">class</span> <span class="cls">CueSpecs</span>:
+    brand: <span class="tp">str</span>          = <span class="str">"Predator"</span>
+    M:     <span class="tp">float</span>        = <span class="num">0.567</span>   <span class="cm"># kg  — cue mass</span>
+    length:<span class="tp">float</span>        = <span class="num">1.4732</span>  <span class="cm"># m   — cue length</span>
+    tip_radius: <span class="tp">float</span>  = <span class="num">0.007</span>   <span class="cm"># m   — tip radius</span>
+    end_mass:   <span class="tp">float</span>  = <span class="num">0.02</span>    <span class="cm"># kg  — butt mass</span></pre>
+      <div class="inset"><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/objects/cue/datatypes.py#L12" target="_blank">pooltool/objects/cue/datatypes.py:12</a></div>
+    </div>
+  </details>
+
+  <!-- ── TABLE ─────────────────────────────────────────── -->
+  <h2>Table — geometry and playing surface</h2>
+  <div class="section-intro">
+    <p><code>Table</code> provides the geometric constraints: cushion rail segments (linear and circular) that balls can bounce off, and pockets that swallow balls.</p>
+  </div>
+  <p><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/objects/table/datatypes.py#L35" target="_blank">pooltool/objects/table/datatypes.py:35</a></p>
+
+  <details open>
+    <summary>Table — cushion segments and pockets</summary>
+    <div class="details-body">
+      <table class="attr-table">
+        <tr><th>Attribute</th><th>Type</th><th>Description</th></tr>
+        <tr><td>cushion_segments</td><td>CushionSegments</td><td>Collection of linear rails and circular corner curves.</td></tr>
+        <tr><td>pockets</td><td>dict[str, Pocket]</td><td>Six pockets: <code>"tl"</code>, <code>"tr"</code>, <code>"bl"</code>, <code>"br"</code>, <code>"lc"</code>, <code>"rc"</code>.</td></tr>
+        <tr><td>table_type</td><td>TableType</td><td>Enum — <code>BILLIARD</code>, <code>SNOOKER</code>, <code>POCKET</code>, …</td></tr>
+        <tr><td>height</td><td>float</td><td>Height of playing surface above floor.</td></tr>
+      </table>
+<pre style="margin-top:12px">
+<span class="cm"># Two cushion segment types:</span>
+
+<span class="cm"># LinearCushionSegment — a straight rail section</span>
+<span class="cm"># Defined by two endpoints; represented as an infinite vertical plane</span>
+<span class="cm"># for collision math</span>
+
+<span class="cm"># CircularCushionSegment — the curved rail at corner/side pockets</span>
+<span class="cm"># Defined by center point and radius</span>
+<span class="cm"># Added in #343 with configurable nose radius</span></pre>
+    </div>
+  </details>
+
+  <!-- ── EVENTS ────────────────────────────────────────── -->
+  <h2>Event — simulation log entries</h2>
+  <p><a class="gh" href="https://github.com/ekiefl/pooltool/blob/79d1df640f28abf0df9ad4334b7601a95b93c6db/pooltool/events/datatypes.py#L21" target="_blank">pooltool/events/datatypes.py:21</a></p>
+
+  <details open>
+    <summary>EventType enum — all physics events</summary>
+    <div class="details-body">
+      <table class="attr-table">
+        <tr><th>EventType</th><th>Class</th><th>Description</th></tr>
+        <tr><td>STICK_BALL</td><td>collision</td><td>Cue tip contacts ball at t=0.</td></tr>
+        <tr><td>BALL_BALL</td><td>collision</td><td>Two balls touch.</td></tr>
+        <tr><td>BALL_LINEAR_CUSHION</td><td>collision</td><td>Ball hits a straight rail.</td></tr>
+        <tr><td>BALL_CIRCULAR_CUSHION</td><td>collision</td><td>Ball hits a curved corner rail.</td></tr>
+        <tr><td>BALL_POCKET</td><td>collision</td><td>Ball enters pocket radius.</td></tr>
+        <tr><td>BALL_TABLE</td><td>collision</td><td>Airborne ball lands on table (3D only).</td></tr>
+        <tr><td>SLIDING_ROLLING</td><td>transition</td><td>Ball decelerates to rolling (no-slip) condition.</td></tr>
+        <tr><td>ROLLING_SPINNING</td><td>transition</td><td>Ball loses forward motion, only spin remains.</td></tr>
+        <tr><td>ROLLING_STATIONARY</td><td>transition</td><td>Slow ball comes to rest directly.</td></tr>
+        <tr><td>SPINNING_STATIONARY</td><td>transition</td><td>Residual spin stops.</td></tr>
+      </table>
+<pre style="margin-top:12px">
+<span class="cm"># Event dataclass:</span>
+<span class="kw">@dataclass</span>
+<span class="kw">class</span> <span class="cls">Event</span>:
+    event_type: <span class="cls">EventType</span>
+    agents:     list[Agent]   <span class="cm"># balls (and cushion/pocket) involved</span>
+    time:       <span class="tp">float</span>        <span class="cm"># absolute simulation time</span>
+
+<span class="cm"># After simulation:</span>
+<span class="kw">for</span> event <span class="kw">in</span> system.events:
+    print(event.event_type, event.time, [a.id <span class="kw">for</span> a <span class="kw">in</span> event.agents])</pre>
+    </div>
+  </details>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ghostty Renderer Data Flow</title>
+    <link rel="stylesheet" href="assets/style.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="hero">
+        <p class="eyebrow">Component flow</p>
+        <h1>The renderer turns shared terminal state into frames.</h1>
+        <p class="lede">
+          Renderer wakeups come from surface actions, Termio output processing, cursor timers, resize messages, and
+          platform display links. The renderer drains messages and draws when visible and allowed by the platform.
+        </p>
+        <nav class="top-nav" aria-label="Data flow pages">
+          <a href="index.html">Overview</a>
+          <a href="app-surface.html">App and Surface</a>
+          <a href="input-mailbox.html">Input and Mailbox</a>
+          <a href="pty-stream.html">PTY and Stream</a>
+          <a href="renderer.html" aria-current="page">Renderer</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="toolbar" aria-label="Controls">
+        <input class="search" data-search type="search" placeholder="Filter this component">
+        <button class="button" data-expand-all type="button">Expand all</button>
+        <button class="button" data-collapse-all type="button">Collapse all</button>
+      </section>
+
+      <details open data-filter>
+        <summary>The renderer thread owns its event loop and draw triggers</summary>
+        <div class="detail-body">
+          <p>
+            `renderer.Thread.threadMain_` sets crash metadata and QoS, lets the renderer enter its loop and thread,
+            registers async wakeups, sends an initial wakeup, starts cursor blinking, configures draw timing, and runs
+            the event loop.
+          </p>
+          <div class="refs">
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/renderer/Thread.zig#L207-L263">Renderer thread main</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/renderer/Thread.zig#L295-L333">Draw timer setup</a>
+          </div>
+          <pre><code>self.wakeup.wait(&amp;self.loop, &amp;self.wakeup_c, Thread, self, wakeupCallback);
+self.stop.wait(&amp;self.loop, &amp;self.stop_c, Thread, self, stopCallback);
+self.draw_now.wait(&amp;self.loop, &amp;self.draw_now_c, Thread, self, drawNowCallback);
+
+try self.wakeup.notify();
+self.syncDrawTimer();
+_ = try self.loop.run(.until_done);</code></pre>
+        </div>
+      </details>
+
+      <details open data-filter>
+        <summary>Renderer messages update render-side state</summary>
+        <div class="detail-body">
+          <p>
+            The renderer mailbox carries visibility, focus, resize, inspector, cursor, config, and crash messages. The
+            drain loop applies these messages on the renderer thread before drawing.
+          </p>
+          <div class="refs">
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/renderer/Thread.zig#L336-L365">Drain mailbox start</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/renderer/message.zig#L1-L105">Renderer message types</a>
+          </div>
+          <pre><code>while (self.mailbox.pop()) |message| {
+    switch (message) {
+        .visible =&gt; |v| { self.flags.visible = v; self.setQosClass(); },
+        .resize =&gt; |v| try self.renderer.setScreenSize(v.screen),
+        .change_config =&gt; |config| try self.changeConfig(config.thread),
+        else =&gt; {},
+    }
+}</code></pre>
+        </div>
+      </details>
+
+      <details open data-filter>
+        <summary>Draw dispatch respects visibility, vsync, and platform constraints</summary>
+        <div class="detail-body">
+          <p>
+            `drawFrame` drops work if the surface is invisible. If the renderer owns vsync, non-forced draws are skipped.
+            Some platform runtimes require drawing on the app thread; otherwise the renderer draws directly.
+          </p>
+          <div class="refs">
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/renderer/Thread.zig#L498-L515">Draw dispatch</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/Surface.zig#L2455-L2460">Surface render wakeup</a>
+          </div>
+          <pre><code>if (!self.flags.visible) return;
+if (!now and self.renderer.hasVsync()) return;
+
+if (must_draw_from_app_thread) {
+    _ = self.app_mailbox.push(.{ .redraw_surface = self.surface }, .{ .instant = {} });
+} else {
+    self.renderer.drawFrame(false) catch |err|
+        log.warn("error drawing err={}", .{err});
+}</code></pre>
+        </div>
+      </details>
+
+      <details open data-filter>
+        <summary>The generic renderer prepares frame data from terminal cells</summary>
+        <div class="detail-body">
+          <p>
+            The generic renderer is where terminal grid data becomes shaped glyphs and cell draw data. It iterates rows,
+            applies selection/cursor/preedit logic, uses the font shaper and shaping cache, and ultimately submits GPU
+            work through the selected graphics backend.
+          </p>
+          <div class="refs">
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/renderer/generic.zig#L2635-L2715">Cell shaping path</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/renderer/generic.zig#L1017-L1024">Vsync ownership</a>
+          </div>
+          <pre><code>var run_iter = self.font_shaper.runIterator(run_iter_opts);
+var shaper_run: ?font.shape.TextRun = try run_iter.next(self.alloc);
+
+for (0.., cells_raw[0..cells_len], cells_style[0..cells_len]) |x, *cell, *managed_style| {
+    const run = shaper_run orelse break;
+    shaper_cells = shaper_cells orelse
+        self.font_shaper_cache.get(run) orelse cache: {
+            const new_cells = try self.font_shaper.shape(run);
+            break :cache new_cells;
+        };
+}</code></pre>
+        </div>
+      </details>
+
+      <details open data-filter>
+        <summary>Display links and focus influence draw cadence</summary>
+        <div class="detail-body">
+          <p>
+            The generic renderer wires a display link callback to `draw_now` where supported. Focus changes can start or
+            stop that display link, shifting between platform-driven vsync and change-driven updates.
+          </p>
+          <div class="refs">
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/renderer/generic.zig#L896-L916">Display link setup</a>
+            <a href="https://github.com/ghostty-org/ghostty/blob/b869a6e5ab0a50ce01e8eb5aa408a02b3cbe4f3a/src/renderer/generic.zig#L1026-L1047">Focus and display link</a>
+          </div>
+          <pre><code>try display_link.setOutputCallback(
+    xev.Async,
+    &amp;displayLinkCallback,
+    &amp;thr.draw_now,
+);
+display_link.start() catch {};</code></pre>
+        </div>
+      </details>
+
+      <p class="note" data-filter>
+        Back to <a href="index.html">Overview</a> for the full end-to-end map.
+      </p>
+    </main>
+    <script src="assets/script.js"></script>
+  </body>
+</html>

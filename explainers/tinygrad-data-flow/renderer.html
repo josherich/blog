@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tinygrad — Renderer</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --border: #2a2d3a;
+    --accent: #7c6af5;
+    --accent2: #56cfb2;
+    --text: #e2e4ed;
+    --muted: #8b8fa8;
+    --code-bg: #12141e;
+    --link: #7c9ef5;
+    --tag-bg: #252838;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'SF Mono', 'Fira Code', monospace; font-size: 14px; line-height: 1.6; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .back-link { font-size: 12px; color: var(--muted); }
+  .back-link:hover { color: var(--text); }
+  h1 { font-size: 18px; font-weight: 700; }
+  .subtitle { color: var(--muted); font-size: 13px; margin-left: auto; }
+  main { max-width: 900px; margin: 0 auto; padding: 24px 16px; }
+  .section { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 20px; overflow: hidden; }
+  .section-header { padding: 14px 18px; display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+  .section-header:hover { background: rgba(124,106,245,0.06); }
+  .section-title { font-size: 15px; font-weight: 600; }
+  .section-badge { font-size: 11px; padding: 2px 8px; border-radius: 12px; background: var(--tag-bg); color: var(--muted); }
+  .toggle { margin-left: auto; color: var(--muted); font-size: 12px; transition: transform 0.2s; }
+  .toggle.open { transform: rotate(180deg); }
+  .section-body { padding: 18px; border-top: 1px solid var(--border); }
+  .section-body.collapsed { display: none; }
+  .field-grid { display: grid; grid-template-columns: minmax(140px, auto) 1fr; gap: 6px 16px; align-items: start; }
+  .field-name { color: var(--accent2); font-weight: 600; padding-top: 2px; }
+  code { background: var(--code-bg); padding: 1px 5px; border-radius: 3px; font-size: 12px; color: #e8b86d; }
+  pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; overflow-x: auto; font-size: 12px; line-height: 1.7; white-space: pre; }
+  .ref-link { display: inline-block; font-size: 11px; color: var(--muted); border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; margin-top: 8px; margin-right: 6px; }
+  .ref-link:hover { color: var(--link); border-color: var(--link); text-decoration: none; }
+  .note { background: rgba(86,207,178,0.07); border-left: 3px solid var(--accent2); padding: 10px 14px; border-radius: 0 4px 4px 0; margin: 10px 0; font-size: 13px; }
+  h3 { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin: 14px 0 8px; }
+  p { color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+  .backend-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
+  .backend-card { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; }
+  .backend-name { color: var(--accent); font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .backend-file { color: var(--muted); font-size: 11px; margin-bottom: 4px; }
+  .backend-desc { color: var(--text); font-size: 12px; }
+  .backend-tag { display: inline-block; font-size: 10px; padding: 1px 5px; border-radius: 3px; background: var(--tag-bg); color: var(--accent2); margin-top: 4px; border: 1px solid rgba(86,207,178,0.2); }
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html" class="back-link">← overview</a>
+  <h1>Renderer</h1>
+  <span class="subtitle">Stage 5 of 6 · tinygrad/renderer/</span>
+</header>
+<main>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Renderer base class</span>
+      <span class="section-badge">renderer/__init__.py:62</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <p>The <code>Renderer</code> class is the abstract interface all device backends implement. Codegen calls <code>renderer.render(uops)</code>; the renderer walks the linearized UOp list and emits device source code.</p>
+      <pre>@dataclass
+class Renderer:
+  device: str = ""
+  suffix: str = ""
+  # capability flags
+  has_local: bool  = True    # has thread-local storage
+  has_shared: bool = True    # has shared/LDS memory
+  has_threads: bool = True   # is parallel (GPU)
+  # resource limits
+  global_max: tuple = (...)
+  local_max:  tuple = (...)
+  shared_max: int   = 32768
+  # operation → code string mapping
+  code_for_op: dict[Ops, Callable] = {}
+  # available tensor-core configs
+  tensor_cores: list[TensorCore] = []
+  # methods
+  def render(self, uops: list[UOp]) -> str: ...
+  def asm(self, prg, lin) -> bytes: ...        # for ISA renderers</pre>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/renderer/__init__.py#L62" target="_blank" class="ref-link">renderer/__init__.py:62 — class Renderer</a>
+      <div class="note"><code>supported_ops</code> is derived from <code>code_for_op.keys()</code>. Codegen uses this to decompose ops the renderer can't express into combinations of ops it can.</div>
+      <h3>Key properties</h3>
+      <div class="field-grid">
+        <span class="field-name">has_local</span>
+        <span class="field-desc">Whether thread-local variables exist (false for simple CPU backends)</span>
+        <span class="field-name">has_shared</span>
+        <span class="field-desc">Shared memory across a thread group (GPU only)</span>
+        <span class="field-name">global_max</span>
+        <span class="field-desc">Max grid dimensions; controls loop tiling strategy</span>
+        <span class="field-name">local_max</span>
+        <span class="field-desc">Max thread block dimensions</span>
+        <span class="field-name">tensor_cores</span>
+        <span class="field-desc">Available WMMA/tensor-core configurations (e.g. 16×8×16 fp16)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Device backends</span>
+      <span class="section-badge">renderer/ &amp; runtime/</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="backend-grid">
+        <div class="backend-card">
+          <div class="backend-name">C-style (CPU / OpenCL)</div>
+          <div class="backend-file">renderer/cstyle.py</div>
+          <div class="backend-desc">Generates C/OpenCL C with explicit memory casts. Used by CPU (clang) and OpenCL backends.</div>
+          <span class="backend-tag">CPU</span> <span class="backend-tag">OpenCL</span>
+        </div>
+        <div class="backend-card">
+          <div class="backend-name">LLVM IR</div>
+          <div class="backend-file">renderer/llvmir.py</div>
+          <div class="backend-desc">Generates textual LLVM IR. Compiled via llvmlite. Used for high-performance CPU execution.</div>
+          <span class="backend-tag">CPU</span>
+        </div>
+        <div class="backend-card">
+          <div class="backend-name">NVIDIA PTX</div>
+          <div class="backend-file">renderer/ptx.py</div>
+          <div class="backend-desc">Generates PTX assembly. Assembled via CUDA's nvrtc or ptxas. Supports tensor cores.</div>
+          <span class="backend-tag">CUDA</span>
+        </div>
+        <div class="backend-card">
+          <div class="backend-name">WebGPU WGSL</div>
+          <div class="backend-file">renderer/wgsl.py</div>
+          <div class="backend-desc">Generates WGSL for WebGPU. Enables browser-based GPU execution.</div>
+          <span class="backend-tag">WebGPU</span>
+        </div>
+        <div class="backend-card">
+          <div class="backend-name">NIR</div>
+          <div class="backend-file">renderer/nir.py</div>
+          <div class="backend-desc">Mesa NIR (generic GPU IR). Used as an alternative GPU backend path.</div>
+          <span class="backend-tag">GPU</span>
+        </div>
+        <div class="backend-card">
+          <div class="backend-name">AMD GCN/RDNA</div>
+          <div class="backend-file">renderer/amd/</div>
+          <div class="backend-desc">AMD-specific GPU code generation for GCN and RDNA architectures. Supports AMD tensor/matrix cores.</div>
+          <span class="backend-tag">AMD</span>
+        </div>
+        <div class="backend-card">
+          <div class="backend-name">x86 / ARM ISA</div>
+          <div class="backend-file">renderer/isa/</div>
+          <div class="backend-desc">Direct machine-code generation bypassing LLVM. Used for embedded/bare-metal targets.</div>
+          <span class="backend-tag">CPU</span>
+        </div>
+        <div class="backend-card">
+          <div class="backend-name">Metal (Apple)</div>
+          <div class="backend-file">runtime/ops_metal.py</div>
+          <div class="backend-desc">Metal Shading Language (MSL) generation. Uses Metal C++ compiler on macOS/iOS. Supports Apple GPU tensor ops.</div>
+          <span class="backend-tag">Metal</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Compiler class</span>
+      <span class="section-badge">device.py:276</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <p>The <code>Compiler</code> class wraps device-specific compilation. Each backend provides a <code>Compiler</code> subclass that implements <code>compile(src: str) -> bytes</code>.</p>
+      <div class="field-grid">
+        <span class="field-name">compile(src)</span>
+        <span class="field-desc">Takes rendered source string, returns compiled binary bytes</span>
+        <span class="field-name">compile_cached</span>
+        <span class="field-desc">Wraps <code>compile()</code> with disk/memory caching keyed on source hash</span>
+        <span class="field-name">disassemble</span>
+        <span class="field-desc">Optional: convert bytes back to human-readable assembly for debugging</span>
+      </div>
+      <a href="https://github.com/tinygrad/tinygrad/blob/5d5e02871f9a7e825424a8088e3cc084b8a76c91/tinygrad/device.py#L276" target="_blank" class="ref-link">device.py:276 — class Compiler</a>
+      <div class="note">Compile results are cached by content hash. On warm runs or JIT loops, identical kernels hit the cache and skip compilation entirely.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-title">Tensor cores &amp; WMMA</span>
+      <span class="section-badge">hardware acceleration</span>
+      <span class="toggle open">▼</span>
+    </div>
+    <div class="section-body">
+      <p>When a <code>Renderer</code> declares <code>tensor_cores</code>, the optimizer can emit <code>WMMA</code>/<code>SHAPED_WMMA</code> UOps for matrix multiplications. Each <code>TensorCore</code> entry describes:</p>
+      <div class="field-grid">
+        <span class="field-name">dims</span>
+        <span class="field-desc">The M×N×K tile size (e.g. 16×8×16 for CUDA fp16)</span>
+        <span class="field-name">dtypes</span>
+        <span class="field-desc">Input and accumulator dtypes (e.g. half → float)</span>
+        <span class="field-name">threads</span>
+        <span class="field-desc">Required thread layout within the warp/wave</span>
+        <span class="field-name">layout</span>
+        <span class="field-desc">Memory layout of the fragments (row-major, column-major)</span>
+      </div>
+      <p>The codegen expander converts matmul DAGs into WMMA UOps which the renderer maps to hardware instructions (<code>mma.sync</code> in PTX, <code>simdgroup_multiply_accumulate</code> in Metal, etc.).</p>
+    </div>
+  </div>
+
+</main>
+<script>
+function toggle(header) {
+  const body = header.nextElementSibling;
+  const arrow = header.querySelector('.toggle');
+  const isOpen = !body.classList.contains('collapsed');
+  if (isOpen) { body.classList.add('collapsed'); arrow.classList.remove('open'); }
+  else { body.classList.remove('collapsed'); arrow.classList.add('open'); }
+}
+</script>
+</body>
+</html>
