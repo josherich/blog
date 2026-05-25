@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Network &amp; Block — TinyEMU Data Flow</title>
+<style>
+  :root {
+    --bg: #0b0f19; --panel: #111827; --panel-2: #0f172a; --text: #e5e7eb; --muted: #9ca3af;
+    --accent: #22d3ee; --accent-2: #818cf8; --border: #1f2937; --code-bg: #0b1220; --link: #60a5fa;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  header { position: sticky; top: 0; z-index: 10; background: linear-gradient(180deg, rgba(11,15,25,0.95), rgba(11,15,25,0.7)); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+  .container { max-width: 1100px; margin: 0 auto; padding: 16px; }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  .subtitle { color: var(--muted); font-size: 13px; }
+  .nav { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .nav a { display: inline-block; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--border); background: var(--panel); color: var(--text); font-size: 13px; }
+  .nav a:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin: 14px 0; }
+  .card h2 { margin: 0 0 8px; font-size: 18px; color: var(--accent); }
+  .card h3 { margin: 12px 0 6px; font-size: 15px; color: var(--accent-2); }
+  .card p, .card li { color: var(--text); line-height: 1.6; font-size: 14px; }
+  .card ul { padding-left: 18px; }
+  .card li { margin: 6px 0; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #0ea5e91a; color: #7dd3fc; border: 1px solid #0ea5e933; font-size: 12px; margin-right: 6px; }
+  .mermaid { background: var(--panel-2); border: 1px solid var(--border); border-radius: 12px; padding: 12px; overflow-x: auto; }
+  .codeblock { background: var(--code-bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px; overflow-x: auto; }
+  .codeblock pre { margin: 0; white-space: pre; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 13px; line-height: 1.5; color: #e5e7eb; }
+  .permalink { font-size: 12px; color: var(--muted); }
+  .permalink a { color: var(--link); }
+  footer { text-align: center; padding: 24px 0; color: var(--muted); font-size: 12px; }
+  @media (max-width: 640px) { h1 { font-size: 18px; } .card { padding: 12px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <h1>Network &amp; Block</h1>
+    <div class="subtitle">SLIRP networking, HTTP block device, and HTTP 9P filesystem</div>
+    <nav class="nav">
+      <a href="index.html">Overview</a>
+      <a href="machine.html">Machine Layer</a>
+      <a href="cpu.html">CPU / Interpreter</a>
+      <a href="memory.html">Memory &amp; I/O</a>
+      <a href="virtio.html">VirtIO Devices</a>
+      <a href="devices.html">Platform Devices</a>
+      <a href="network.html">Network &amp; Block</a>
+      <a href="display.html">Display &amp; Input</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="card">
+    <h2>Data Flow</h2>
+    <div class="mermaid">
+graph TD
+    A[Guest Net Driver] --> B[VirtIO Net]
+    B --> C[EthernetDevice]
+    C --> D{Backend}
+    D -->|user| E[SLIRP]
+    D -->|tap| F[TUN/TAP]
+    E --> G[Host UDP/TCP/ICMP]
+    H[Guest Block Driver] --> I[VirtIO Block]
+    I --> J[BlockDevice]
+    J --> K{Backend}
+    K -->|local| L[block_device_init]
+    K -->|http| M[block_device_init_http]
+    M --> N[HTTP Range Requests]
+    O[Guest 9P Driver] --> P[VirtIO 9P]
+    P --> Q[FSDevice]
+    Q --> R{Backend}
+    R -->|local| S[fs_disk_init]
+    R -->|http| T[fs_net_init]
+    T --> U[HTTP GET + Cache]
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>SLIRP User Networking</h2>
+    <p>
+      When the config specifies <code>driver: "user"</code>, TinyEMU uses the bundled SLIRP library. SLIRP performs NAT-like translation: the guest sees a virtual network, and outbound traffic is translated to the host's IP stack. No root privileges or tap interface are required.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/temu.c#L414-L530" target="_blank">temu.c#L414-L530</a> (slirp_open, slirp_write_packet, slirp_select_fill/poll)</div>
+    <div class="codeblock"><pre>EthernetDevice *slirp_open(void)
+{
+    /* initialize SLIRP state */
+    ...
+    eth->write_packet = slirp_write_packet;
+    eth->select_fill = slirp_select_fill1;
+    eth->select_poll = slirp_select_poll1;
+    return eth;
+}</pre></div>
+  </section>
+
+  <section class="card">
+    <h2>TUN/TAP Backend</h2>
+    <p>
+      For bridged networking, TinyEMU supports a TUN/TAP backend. The <code>netinit.sh</code> script sets up the tap interface and NAT rules. The emulator opens <code>/dev/net/tun</code> and forwards raw Ethernet frames.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/temu.c#L351-L451" target="_blank">temu.c#L351-L451</a> (tun_open, tun_write_packet, tun_select_fill/poll)</div>
+    <div class="codeblock"><pre>EthernetDevice *tun_open(const char *ifname)
+{
+    int fd = open("/dev/net/tun", O_RDWR);
+    struct ifreq ifr;
+    strncpy(ifr.ifr_name, ifname, IFNAMSIZ);
+    ifr.ifr_flags = IFF_TAP | IFF_NO_PI;
+    ioctl(fd, TUNSETIFF, &ifr);
+    /* wrap fd in EthernetDevice */
+}</pre></div>
+  </section>
+
+  <section class="card">
+    <h2>HTTP Block Device</h2>
+    <p>
+      <code>block_device_init_http()</code> creates a block device backed by remote HTTP resources. The disk image is split into small files (via <code>splitimg</code>). The driver caches blocks locally and prefetches adjacent blocks to improve performance.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/block_net.c#L1-L120" target="_blank">block_net.c</a></div>
+    <div class="codeblock"><pre>BlockDevice *block_device_init_http(const char *url,
+                                    int max_cache_size_kb,
+                                    void (*start_cb)(void *opaque),
+                                    void *start_opaque)
+{
+    BlockDeviceHTTP *s = mallocz(sizeof(*s));
+    s->max_cache_size_kb = max_cache_size_kb;
+    strncpy(s->url, url, sizeof(s->url));
+    s->bs->get_sector_count = bf_http_get_sector_count;
+    s->bs->read_async = bf_http_read_async;
+    s->bs->write_async = bf_http_write_async;
+    return s->bs;
+}</pre></div>
+  </section>
+
+  <section class="card">
+    <h2>HTTP 9P Filesystem</h2>
+    <p>
+      <code>fs_net.c</code> implements a 9P filesystem over HTTP. It downloads files on demand, caches inodes, and supports preloading via a <code>.preload</code> file list. This allows running a full Linux rootfs without downloading the entire image upfront.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/fs_net.c#L1-L120" target="_blank">fs_net.c</a></div>
+    <div class="codeblock"><pre>FSDevice *fs_net_init(const char *url,
+                      void (*start_cb)(void *opaque),
+                      void *opaque)
+{
+    FSNetState *s = mallocz(sizeof(*s));
+    s->base_url = strdup(url);
+    s->fs_dev.fs_walk = fs_net_walk;
+    s->fs_dev.fs_read = fs_net_read;
+    s->fs_dev.fs_write = fs_net_write;
+    /* ... */
+    return &s->fs_dev;
+}</pre></div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    Generated from TinyEMU source. Permalinks point to <a href="https://github.com/fernandotcl/TinyEMU" target="_blank">github.com/fernandotcl/TinyEMU</a>.
+  </div>
+</footer>
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+</script>
+</body>
+</html>

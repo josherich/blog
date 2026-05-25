@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>TinyEMU Data Flow Explorer</title>
+        <style>
+            :root {
+                --bg: #0b0f19;
+                --panel: #111827;
+                --panel-2: #0f172a;
+                --text: #e5e7eb;
+                --muted: #9ca3af;
+                --accent: #22d3ee;
+                --accent-2: #818cf8;
+                --border: #1f2937;
+                --code-bg: #0b1220;
+                --link: #60a5fa;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+                background: var(--bg);
+                color: var(--text);
+                font-family:
+                    ui-sans-serif,
+                    system-ui,
+                    -apple-system,
+                    Segoe UI,
+                    Roboto,
+                    Helvetica,
+                    Arial,
+                    "Apple Color Emoji",
+                    "Segoe UI Emoji";
+            }
+            a {
+                color: var(--link);
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+            header {
+                position: sticky;
+                top: 0;
+                z-index: 10;
+                background: linear-gradient(
+                    180deg,
+                    rgba(11, 15, 25, 0.95),
+                    rgba(11, 15, 25, 0.7)
+                );
+                backdrop-filter: blur(8px);
+                border-bottom: 1px solid var(--border);
+            }
+            .container {
+                max-width: 1100px;
+                margin: 0 auto;
+                padding: 16px;
+            }
+            h1 {
+                font-size: 22px;
+                margin: 0 0 6px;
+            }
+            .subtitle {
+                color: var(--muted);
+                font-size: 13px;
+            }
+            .nav {
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+                margin-top: 10px;
+            }
+            .nav a {
+                display: inline-block;
+                padding: 8px 12px;
+                border-radius: 999px;
+                border: 1px solid var(--border);
+                background: var(--panel);
+                color: var(--text);
+                font-size: 13px;
+            }
+            .nav a:hover {
+                border-color: var(--accent);
+                color: var(--accent);
+                text-decoration: none;
+            }
+            .hero {
+                padding: 18px 0 6px;
+            }
+            .card {
+                background: var(--panel);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 16px;
+                margin: 14px 0;
+            }
+            .card h2 {
+                margin: 0 0 8px;
+                font-size: 18px;
+                color: var(--accent);
+            }
+            .card h3 {
+                margin: 12px 0 6px;
+                font-size: 15px;
+                color: var(--accent-2);
+            }
+            .card p,
+            .card li {
+                color: var(--text);
+                line-height: 1.6;
+                font-size: 14px;
+            }
+            .card ul {
+                padding-left: 18px;
+            }
+            .card li {
+                margin: 6px 0;
+            }
+            .tag {
+                display: inline-block;
+                padding: 2px 8px;
+                border-radius: 999px;
+                background: #0ea5e91a;
+                color: #7dd3fc;
+                border: 1px solid #0ea5e933;
+                font-size: 12px;
+                margin-right: 6px;
+            }
+            .mermaid {
+                background: var(--panel-2);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 12px;
+                overflow-x: auto;
+            }
+            .btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 14px;
+                border-radius: 10px;
+                background: var(--panel);
+                border: 1px solid var(--border);
+                color: var(--text);
+            }
+            .btn:hover {
+                border-color: var(--accent);
+                color: var(--accent);
+            }
+            footer {
+                text-align: center;
+                padding: 24px 0;
+                color: var(--muted);
+                font-size: 12px;
+            }
+            @media (max-width: 640px) {
+                h1 {
+                    font-size: 18px;
+                }
+                .card {
+                    padding: 12px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="container">
+                <h1>TinyEMU Data Flow Explorer</h1>
+                <div class="subtitle">
+                    Interactive, mobile-friendly deep dive into Fabrice
+                    Bellard’s TinyEMU codebase
+                </div>
+                <nav class="nav">
+                    <a href="index.html">Overview</a>
+                    <a href="machine.html">Machine Layer</a>
+                    <a href="cpu.html">CPU / Interpreter</a>
+                    <a href="memory.html">Memory &amp; I/O</a>
+                    <a href="virtio.html">VirtIO Devices</a>
+                    <a href="devices.html">Platform Devices</a>
+                    <a href="network.html">Network &amp; Block</a>
+                    <a href="display.html">Display &amp; Input</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="container">
+            <section class="hero">
+                <div class="card">
+                    <h2>What is TinyEMU?</h2>
+                    <p>
+                        TinyEMU is a small, self-contained system emulator by
+                        Fabrice Bellard. It supports RISC-V (32/64/128-bit) and
+                        x86 (via KVM), and implements VirtIO console, network,
+                        block, input, and 9P filesystem devices. It can run with
+                        SDL or as a JavaScript demo (JSLinux).
+                    </p>
+                    <p>
+                        This guide follows the <strong>data flow</strong> from
+                        configuration parsing through machine initialization,
+                        CPU execution, memory access, device I/O, and display
+                        output. Each page includes GitHub-style permalinks to
+                        the source.
+                    </p>
+                </div>
+            </section>
+
+            <section class="card">
+                <h2>High-Level Data Flow</h2>
+                <div class="mermaid">
+                    graph TD A[CLI / JS Entry] --> B[Config Parsing] B -->
+                    C[Machine Init] C --> D[CPU Init] C --> E[Memory Map] C -->
+                    F[Device Init] D --> G[CPU Interpreter Loop] G --> H[TLB /
+                    MMU] H --> I[RAM or MMIO] I --> J[Device Handlers] J -->
+                    K[IRQ / PLIC] K --> G F --> L[VirtIO Queues] L --> M[Network
+                    / Block / FS] E --> N[Framebuffer] N --> O[SDL / simplefb]
+                </div>
+                <p
+                    style="
+                        color: var(--muted);
+                        font-size: 12px;
+                        margin-top: 8px;
+                    "
+                >
+                    Tip: On mobile, pinch to zoom the diagram. All blocks are
+                    expanded by default on detail pages.
+                </p>
+            </section>
+
+            <section class="card">
+                <h2>Component Map</h2>
+                <ul>
+                    <li>
+                        <span class="tag">Entry</span> <strong>temu.c</strong> —
+                        CLI argument parsing, config loading, main event loop
+                        (<code>virt_machine_run</code>).
+                    </li>
+                    <li>
+                        <span class="tag">Config</span>
+                        <strong>machine.c + json.c</strong> — JSON config
+                        parsing, file loading, parameter defaults.
+                    </li>
+                    <li>
+                        <span class="tag">Machine</span>
+                        <strong>riscv_machine.c / x86_machine.c</strong> — SoC
+                        integration: RAM, CLINT, PLIC, HTIF, VirtIO,
+                        framebuffer.
+                    </li>
+                    <li>
+                        <span class="tag">CPU</span>
+                        <strong>riscv_cpu.c + riscv_cpu_template.h</strong> —
+                        RISC-V interpreter, TLB, CSR, exception handling.
+                    </li>
+                    <li>
+                        <span class="tag">Memory</span>
+                        <strong>iomem.c + iomem.h</strong> — Physical memory
+                        map, RAM registration, MMIO dispatch, dirty bits.
+                    </li>
+                    <li>
+                        <span class="tag">Devices</span>
+                        <strong>virtio.c + virtio.h</strong> — VirtIO MMIO/PCI
+                        transport, queues, console, net, block, 9P, input.
+                    </li>
+                    <li>
+                        <span class="tag">Platform</span>
+                        <strong>riscv_machine.c</strong> — CLINT (timer), PLIC
+                        (irq), HTIF (console/poweroff).
+                    </li>
+                    <li>
+                        <span class="tag">Network</span>
+                        <strong>slirp/ + block_net.c + fs_net.c</strong> — SLIRP
+                        user networking, HTTP block device, HTTP 9P filesystem.
+                    </li>
+                    <li>
+                        <span class="tag">Display</span>
+                        <strong>sdl.c + simplefb.c + vga.c</strong> — SDL
+                        window, simple framebuffer, VGA/PCI.
+                    </li>
+                </ul>
+            </section>
+
+            <section class="card">
+                <h2>Key Data Structures</h2>
+                <ul>
+                    <li>
+                        <code>VirtMachineParams</code> — Parsed configuration
+                        (RAM size, drives, filesystems, network, display).
+                    </li>
+                    <li>
+                        <code>VirtMachine</code> — Abstract machine handle
+                        (console, net, fb_dev).
+                    </li>
+                    <li>
+                        <code>RISCVMachine</code> — RISC-V specific state
+                        (cpu_state, mem_map, plic_irq, htif, virtio_count).
+                    </li>
+                    <li>
+                        <code>RISCVCPUState</code> — CPU registers, PC, TLBs,
+                        CSRs, FPU state, privilege level.
+                    </li>
+                    <li>
+                        <code>PhysMemoryMap</code> — Array of
+                        <code>PhysMemoryRange</code> entries (RAM or MMIO).
+                    </li>
+                    <li>
+                        <code>VIRTIODevice</code> — VirtIO device instance
+                        (queues, features, status).
+                    </li>
+                </ul>
+            </section>
+
+            <section class="card">
+                <h2>Execution Loop</h2>
+                <p>
+                    The main loop in <code>temu.c</code> alternates between
+                    waiting for I/O events and executing guest instructions:
+                </p>
+                <ol>
+                    <li>
+                        Compute sleep duration
+                        (<code>virt_machine_get_sleep_duration</code>).
+                    </li>
+                    <li>
+                        <code>select()</code> on console stdin, network sockets,
+                        and filesystem events.
+                    </li>
+                    <li>
+                        Dispatch ready file descriptors (console input, network
+                        packets).
+                    </li>
+                    <li>Refresh display (<code>sdl_refresh</code>).</li>
+                    <li>
+                        Run the CPU interpreter for up to
+                        <code>MAX_EXEC_CYCLE</code> instructions
+                        (<code>virt_machine_interp</code>).
+                    </li>
+                </ol>
+            </section>
+        </main>
+
+        <footer>
+            <div class="container">
+                Generated from TinyEMU source by Kimi 2.6. Permalinks point to
+                <a href="https://github.com/fernandotcl/TinyEMU" target="_blank"
+                    >github.com/fernandotcl/TinyEMU</a
+                >.
+            </div>
+        </footer>
+
+        <script type="module">
+            import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+            mermaid.initialize({ startOnLoad: true, theme: "dark" });
+        </script>
+    </body>
+</html>

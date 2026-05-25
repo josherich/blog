@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TinyEMU Host I/O Flow</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="flow.js"></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand"><strong>TinyEMU Data Flow</strong><span>Host-backed services</span></div>
+      <nav aria-label="Sections">
+        <a href="index.html">Overview</a>
+        <a href="startup-config.html">Startup</a>
+        <a href="riscv-machine.html">RISC-V Machine</a>
+        <a href="cpu-memory.html">CPU & Memory</a>
+        <a href="virtio.html">VirtIO</a>
+        <a aria-current="page" href="host-io.html">Host I/O</a>
+      </nav>
+    </header>
+    <section class="hero">
+      <h1>Host I/O supplies the outside world</h1>
+      <p>VirtIO and device callbacks ultimately land in host implementations: local disk files, HTTP block cache, tap/slirp network, terminal stdin/stdout, local directories exposed through 9P, and optional SDL display refresh.</p>
+    </section>
+    <div class="layout">
+      <main>
+        <div class="controls">
+          <button class="control" type="button" data-expand-all>Expand all</button>
+          <button class="control" type="button" data-collapse-all>Collapse all</button>
+          <label class="control">Filter <input data-filter type="search" aria-label="Filter blocks" placeholder="snapshot, tap, 9P"></label>
+        </div>
+
+        <details class="flow" open id="run-loop">
+          <summary><span class="summary-title"><strong>The run loop multiplexes host events and CPU slices</strong><span>Each iteration computes sleep time, polls fds, handles ready host events, refreshes SDL, then executes guest instructions.</span></span><span class="chevron" aria-hidden="true"></span></summary>
+          <div class="content">
+            <pre>virt_machine_run(machine)
+  delay = machine sleep duration
+  FD_SET terminal if console queue can receive
+  net->select_fill(...)
+  fs_net_set_fdset(...)
+  select(...)
+  net->select_poll(...)
+  terminal bytes -> virtio_console_write_data()
+  sdl_refresh()
+  virt_machine_interp(MAX_EXEC_CYCLE)</pre>
+            <div class="refs">
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/temu.c#L537">temu.c:537 run loop</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/temu.c#L604">temu.c:604 terminal to console</a>
+            </div>
+          </div>
+        </details>
+
+        <details class="flow" open id="local-block">
+          <summary><span class="summary-title"><strong>Local block devices are synchronous callbacks</strong><span>The block backend exposes sector count, read, and write functions to VirtIO block.</span></span><span class="chevron" aria-hidden="true"></span></summary>
+          <div class="content">
+            <p>Read-only and read-write modes operate directly on the disk image. Snapshot mode overlays writes in `sector_table`, so guest writes are visible to later reads without modifying the original image.</p>
+            <pre>virtio block request
+  -> bs->read_async / write_async
+  -> local file fseek/fread/fwrite
+  -> snapshot writes copy sectors into sector_table
+  -> status byte returned through VirtIO descriptor</pre>
+            <div class="refs">
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/temu.c#L232">temu.c:232 local read</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/temu.c#L268">temu.c:268 local write</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/temu.c#L307">temu.c:307 block init</a>
+            </div>
+          </div>
+        </details>
+
+        <details class="flow" open id="http-block">
+          <summary><span class="summary-title"><strong>HTTP block devices cache split image chunks</strong><span>Network block data is fetched block-by-block or by prefetch group, with per-cluster write overlay support.</span></span><span class="chevron" aria-hidden="true"></span></summary>
+          <div class="content">
+            <pre>block_device_init_http(url)
+  -> load blk.txt metadata
+  -> read request enters bf_rw_async1()
+  -> if cluster overlay exists: read modified cluster
+  -> else find cached block
+       loaded  -> copy from cache
+       loading -> return async wait
+       missing -> fs_wget(blkNNN.bin)
+  -> onload updates cache and resumes request</pre>
+            <div class="refs">
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/block_net.c#L176">block_net.c:176 start load block</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/block_net.c#L262">block_net.c:262 rw core</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/block_net.c#L370">block_net.c:370 HTTP read</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/block_net.c#L404">block_net.c:404 HTTP init</a>
+            </div>
+          </div>
+        </details>
+
+        <details class="flow" open id="network">
+          <summary><span class="summary-title"><strong>Network packets cross an `EthernetDevice` bridge</strong><span>Tap uses a host fd; slirp routes through the user-mode network stack.</span></span><span class="chevron" aria-hidden="true"></span></summary>
+          <div class="content">
+            <p>Guest TX starts in VirtIO net and calls `write_packet`. Host RX is polled through `select_fill`/`select_poll`; when a packet arrives, the backend calls `device_write_packet`, which copies it into the guest receive queue.</p>
+            <pre>guest TX:
+  virtio_net_recv_request(queue 1)
+  -> EthernetDevice.write_packet()
+  -> tap write(fd) or slirp_input()
+
+host RX:
+  select says backend readable
+  -> backend reads packet
+  -> EthernetDevice.device_write_packet()
+  -> virtio_net_write_packet(queue 0)</pre>
+            <div class="refs">
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/temu.c#L366">temu.c:366 tap write</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/temu.c#L509">temu.c:509 slirp open</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/virtio.c#L1153">virtio.c:1153 guest TX</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/virtio.c#L1190">virtio.c:1190 host RX</a>
+            </div>
+          </div>
+        </details>
+
+        <details class="flow" open id="filesystem">
+          <summary><span class="summary-title"><strong>Local 9P maps guest FIDs to host paths and file descriptors</strong><span>The VirtIO 9P layer owns protocol framing; `fs_disk.c` owns filesystem operations.</span></span><span class="chevron" aria-hidden="true"></span></summary>
+          <div class="content">
+            <pre>guest 9P request
+  -> virtio_9p_recv_request()
+  -> fid lookup or create
+  -> FSDevice method
+       attach -> root path
+       walk   -> compose child path
+       open   -> opendir/open
+       read   -> readdir/read
+       write  -> write
+  -> marshal 9P reply
+  -> virtio_consume_desc()</pre>
+            <div class="refs">
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/fs_disk.c#L172">fs_disk.c:172 attach</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/fs_disk.c#L190">fs_disk.c:190 walk</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/fs_disk.c#L233">fs_disk.c:233 open</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/fs_disk.c#L349">fs_disk.c:349 read</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/fs_disk.c#L363">fs_disk.c:363 write</a>
+            </div>
+          </div>
+        </details>
+      </main>
+      <aside class="side"><section class="panel toc"><h2>Host I/O Blocks</h2><a href="#run-loop">Run loop</a><a href="#local-block">Local block</a><a href="#http-block">HTTP block</a><a href="#network">Network</a><a href="#filesystem">Filesystem</a></section></aside>
+    </div>
+  </div>
+</body>
+</html>

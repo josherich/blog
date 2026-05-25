@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory &amp; I/O — TinyEMU Data Flow</title>
+<style>
+  :root {
+    --bg: #0b0f19; --panel: #111827; --panel-2: #0f172a; --text: #e5e7eb; --muted: #9ca3af;
+    --accent: #22d3ee; --accent-2: #818cf8; --border: #1f2937; --code-bg: #0b1220; --link: #60a5fa;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  header { position: sticky; top: 0; z-index: 10; background: linear-gradient(180deg, rgba(11,15,25,0.95), rgba(11,15,25,0.7)); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+  .container { max-width: 1100px; margin: 0 auto; padding: 16px; }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  .subtitle { color: var(--muted); font-size: 13px; }
+  .nav { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .nav a { display: inline-block; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--border); background: var(--panel); color: var(--text); font-size: 13px; }
+  .nav a:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin: 14px 0; }
+  .card h2 { margin: 0 0 8px; font-size: 18px; color: var(--accent); }
+  .card h3 { margin: 12px 0 6px; font-size: 15px; color: var(--accent-2); }
+  .card p, .card li { color: var(--text); line-height: 1.6; font-size: 14px; }
+  .card ul { padding-left: 18px; }
+  .card li { margin: 6px 0; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #0ea5e91a; color: #7dd3fc; border: 1px solid #0ea5e933; font-size: 12px; margin-right: 6px; }
+  .mermaid { background: var(--panel-2); border: 1px solid var(--border); border-radius: 12px; padding: 12px; overflow-x: auto; }
+  .codeblock { background: var(--code-bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px; overflow-x: auto; }
+  .codeblock pre { margin: 0; white-space: pre; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 13px; line-height: 1.5; color: #e5e7eb; }
+  .permalink { font-size: 12px; color: var(--muted); }
+  .permalink a { color: var(--link); }
+  footer { text-align: center; padding: 24px 0; color: var(--muted); font-size: 12px; }
+  @media (max-width: 640px) { h1 { font-size: 18px; } .card { padding: 12px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <h1>Memory &amp; I/O</h1>
+    <div class="subtitle">Physical memory map, RAM, MMIO dispatch, dirty bits, and IRQ wiring</div>
+    <nav class="nav">
+      <a href="index.html">Overview</a>
+      <a href="machine.html">Machine Layer</a>
+      <a href="cpu.html">CPU / Interpreter</a>
+      <a href="memory.html">Memory &amp; I/O</a>
+      <a href="virtio.html">VirtIO Devices</a>
+      <a href="devices.html">Platform Devices</a>
+      <a href="network.html">Network &amp; Block</a>
+      <a href="display.html">Display &amp; Input</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="card">
+    <h2>Data Flow</h2>
+    <div class="mermaid">
+graph TD
+    A[CPU Load/Store] --> B[TLB check]
+    B -->|Hit| C[Direct RAM pointer]
+    B -->|Miss| D[target_read_slow / target_write_slow]
+    D --> E[MMU page table walk]
+    E --> F[PhysMemoryMap lookup]
+    F -->|RAM| G[phys_mem_get_ram_ptr]
+    F -->|MMIO| H[Device read_func / write_func]
+    H --> I[CLINT / PLIC / HTIF / VirtIO]
+    C --> J[Dirty bit tracking]
+    J --> K[simplefb_refresh / VGA update]
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Physical Memory Map</h2>
+    <p>
+      <code>iomem.c</code> manages the <code>PhysMemoryMap</code>: an array of up to <code>PHYS_MEM_RANGE_MAX</code> ranges. Each range is either RAM (<code>is_ram = TRUE</code>) or a device (<code>is_ram = FALSE</code>). The map provides function pointers for RAM registration, freeing, dirty-bit retrieval, and address changes.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/iomem.c#L28-L50" target="_blank">iomem.c#L28-L50</a></div>
+    <div class="codeblock"><pre>PhysMemoryMap *phys_mem_map_init(void)
+{
+    PhysMemoryMap *s;
+    s = mallocz(sizeof(*s));
+    s->register_ram = default_register_ram;
+    s->free_ram = default_free_ram;
+    s->get_dirty_bits = default_get_dirty_bits;
+    s->set_ram_addr = default_set_addr;
+    return s;
+}</pre></div>
+
+    <h3>Memory Range Lookup</h3>
+    <p>
+      <code>get_phys_mem_range()</code> linearly searches the array for a range containing the physical address. This is called on every TLB miss and MMIO access.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/iomem.c#L52-L65" target="_blank">iomem.c#L52-L65</a></div>
+    <div class="codeblock"><pre>PhysMemoryRange *get_phys_mem_range(PhysMemoryMap *s, uint64_t paddr)
+{
+    PhysMemoryRange *pr;
+    int i;
+    for(i = 0; i < s->n_phys_mem_range; i++) {
+        pr = &s->phys_mem_range[i];
+        if (paddr >= pr->addr && paddr < pr->addr + pr->size)
+            return pr;
+    }
+    return NULL;
+}</pre></div>
+  </section>
+
+  <section class="card">
+    <h2>RAM Registration</h2>
+    <p>
+      <code>cpu_register_ram()</code> allocates host memory for a guest RAM region. The <code>DEVRAM_FLAG_DIRTY_BITS</code> flag enables tracking of modified pages via a bitmap, used by the display subsystem to detect framebuffer changes.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/iomem.c#L67-L110" target="_blank">iomem.c#L67-L110</a></div>
+    <div class="codeblock"><pre>static PhysMemoryRange *default_register_ram(PhysMemoryMap *s, uint64_t addr,
+                                             uint64_t size, int devram_flags)
+{
+    PhysMemoryRange *pr;
+    pr = register_ram_entry(s, addr, size, devram_flags);
+    pr->phys_mem = mallocz(size);
+    if (!pr->phys_mem) {
+        fprintf(stderr, "Could not allocate VM memory\n");
+        exit(1);
+    }
+    if (devram_flags & DEVRAM_FLAG_DIRTY_BITS) {
+        size_t nb_pages = size >> DEVRAM_PAGE_SIZE_LOG2;
+        pr->dirty_bits_size = ((nb_pages + 31) / 32) * sizeof(uint32_t);
+        pr->dirty_bits_index = 0;
+        for(i = 0; i < 2; i++) {
+            pr->dirty_bits_tab[i] = mallocz(pr->dirty_bits_size);
+        }
+        pr->dirty_bits = pr->dirty_bits_tab[pr->dirty_bits_index];
+    }
+    return pr;
+}</pre></div>
+  </section>
+
+  <section class="card">
+    <h2>MMIO Device Registration</h2>
+    <p>
+      <code>cpu_register_device()</code> maps a physical address range to callback functions. When the CPU accesses this range, the read/write callbacks are invoked with the offset and access size.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/iomem.c#L140-L165" target="_blank">iomem.c#L140-L165</a></div>
+    <div class="codeblock"><pre>PhysMemoryRange *cpu_register_device(PhysMemoryMap *s, uint64_t addr,
+                                     uint64_t size, void *opaque,
+                                     DeviceReadFunc *read_func,
+                                     DeviceWriteFunc *write_func,
+                                     int devio_flags)
+{
+    PhysMemoryRange *pr;
+    assert(s->n_phys_mem_range < PHYS_MEM_RANGE_MAX);
+    assert(size <= 0xffffffff);
+    pr = &s->phys_mem_range[s->n_phys_mem_range++];
+    pr->map = s;
+    pr->addr = addr;
+    pr->org_size = size;
+    pr->size = (devio_flags & DEVIO_DISABLED) ? 0 : pr->org_size;
+    pr->is_ram = FALSE;
+    pr->opaque = opaque;
+    pr->read_func = read_func;
+    pr->write_func = write_func;
+    pr->devio_flags = devio_flags;
+    return pr;
+}</pre></div>
+  </section>
+
+  <section class="card">
+    <h2>Dirty Bits</h2>
+    <p>
+      Dirty bits track which pages have been written by the CPU. The display code calls <code>phys_mem_get_dirty_bits()</code> to retrieve and reset the bitmap, then flushes only changed regions to the screen.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/iomem.c#L112-L138" target="_blank">iomem.c#L112-L138</a></div>
+    <div class="codeblock"><pre>static const uint32_t *default_get_dirty_bits(PhysMemoryMap *map,
+                                              PhysMemoryRange *pr)
+{
+    uint32_t *dirty_bits = pr->dirty_bits;
+    BOOL has_dirty_bits = FALSE;
+    size_t n = pr->dirty_bits_size / sizeof(uint32_t);
+    for(i = 0; i < n; i++) {
+        if (dirty_bits[i] != 0) { has_dirty_bits = TRUE; break; }
+    }
+    if (has_dirty_bits && pr->size != 0) {
+        map->flush_tlb_write_range(map->opaque, pr->phys_mem, pr->org_size);
+    }
+    pr->dirty_bits_index ^= 1;
+    pr->dirty_bits = pr->dirty_bits_tab[pr->dirty_bits_index];
+    memset(pr->dirty_bits, 0, pr->dirty_bits_size);
+    return dirty_bits;
+}</pre></div>
+  </section>
+
+  <section class="card">
+    <h2>IRQ Wiring</h2>
+    <p>
+      The <code>IRQSignal</code> abstraction connects devices to interrupt controllers. <code>irq_init()</code> binds a <code>SetIRQFunc</code> callback, and <code>set_irq()</code> raises or lowers the line. On RISC-V, PLIC IRQs are wired to the CPU's <code>mip</code> via <code>plic_set_irq</code>.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/iomem.h#L130-L145" target="_blank">iomem.h#L130-L145</a></div>
+    <div class="codeblock"><pre>typedef void SetIRQFunc(void *opaque, int irq_num, int level);
+
+typedef struct {
+    SetIRQFunc *set_irq;
+    void *opaque;
+    int irq_num;
+} IRQSignal;
+
+void irq_init(IRQSignal *irq, SetIRQFunc *set_irq, void *opaque, int irq_num);
+
+static inline void set_irq(IRQSignal *irq, int level)
+{
+    irq->set_irq(irq->opaque, irq->irq_num, level);
+}</pre></div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    Generated from TinyEMU source. Permalinks point to <a href="https://github.com/fernandotcl/TinyEMU" target="_blank">github.com/fernandotcl/TinyEMU</a>.
+  </div>
+</footer>
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+</script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Search Cache Flow</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <p class="eyebrow">Component</p>
+      <h1>Search commit ingestion and cache-backed reads</h1>
+      <p class="lede">SearchEngine processes commit notifications, optionally prefetches missing BCC ranges, updates SearchDirectory metadata, and serves Lucene reads from shared blob cache.</p>
+    </div>
+    <nav>
+      <a href="../index.html">Overview</a>
+      <a href="bootstrap.html">Bootstrap</a>
+      <a href="object-store.html">Object Store</a>
+      <a href="write-path.html">Write Path</a>
+      <a href="commit-lifecycle.html">Commit Lifecycle</a>
+      <a href="search-cache.html">Search Cache</a>
+      <a href="allocation-recovery.html">Allocation & Recovery</a>
+      <a href="cluster-state.html">Cluster State</a>
+    </nav>
+  </header>
+  <main>
+    <div class="toolbar"><button data-expand="open">Expand all</button><button data-expand="closed">Collapse all</button></div>
+    <section class="grid">
+      <details class="span-6" open>
+        <summary>Commit notification entry</summary>
+        <div class="body">
+          <p><code>SearchEngine.onCommitNotification</code> updates latest uploaded BCC information, starts prefetch if enabled, then queues the newest notification for serialized processing.</p>
+          <pre><code>searchDirectory.updateLatestUploadedBcc(...);
+searchDirectory.updateLatestCommitInfo(ccTermAndGen, notification.nodeId());
+SubscribableListener
+    .newForked(l -&gt; maybePreFetchLatestCommit(notification, l))
+    .andThen(...);</code></pre>
+          <div class="ref-list">
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/engine/SearchEngine.java#L321-L370">SearchEngine.onCommitNotification</a>
+          </div>
+        </div>
+      </details>
+
+      <details class="span-6" open>
+        <summary>Prefetching missing ranges</summary>
+        <div class="body">
+          <p>The prefetcher skips idle shards, starts at the current term to avoid downloading long history, computes pending BCC ranges, and fills shared cache regions. It can prefetch uploaded BCCs from object store or small non-uploaded ranges from indexing nodes.</p>
+          <pre><code>Map&lt;BlobFile, ByteRange&gt; bccRangesToPrefetch =
+    getPendingRangesToPrefetch(...);
+cacheService.fetchRange(cacheKey, region, adjustedRangeToPrefetch, ...);</code></pre>
+          <div class="ref-list">
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/cache/SearchCommitPrefetcher.java#L130-L198">SearchCommitPrefetcher.maybePrefetchLatestCommit</a>
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/cache/SearchCommitPrefetcher.java#L198-L330">SearchCommitPrefetcher.prefetchLatestCommit</a>
+          </div>
+        </div>
+      </details>
+
+      <details class="span-6" open>
+        <summary>Directory commit swap</summary>
+        <div class="body">
+          <p>Commit notifications are collapsed to the latest term/generation. The search directory is updated with the new commit metadata, then Lucene reader refresh runs while preserving retained file sets for open readers.</p>
+          <pre><code>final boolean commitUpdated =
+    searchDirectory.updateCommit(latestCommit, blobFileRangesMap);
+if (commitUpdated) {
+    updateInternalState(latestCommit, current);
+}</code></pre>
+          <div class="ref-list">
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/engine/SearchEngine.java#L386-L440">SearchEngine.processCommitNotifications update</a>
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/engine/SearchEngine.java#L491-L545">SearchEngine.doUpdateInternalState</a>
+          </div>
+        </div>
+      </details>
+
+      <details class="span-6" open>
+        <summary>Lucene file reads</summary>
+        <div class="body">
+          <p>When Lucene opens a file, <code>BlobStoreCacheDirectory</code> resolves the file to <code>BlobFileRanges</code>, builds a <code>CacheFileReader</code>, and returns <code>BlobCacheIndexInput</code>. Cache misses are filled by a component-specific <code>CacheBlobReader</code>.</p>
+          <pre><code>var reader = new CacheFileReader(
+    getCacheFile(blobFileRanges),
+    getCacheBlobReader(name, blobFile),
+    blobFileRanges,
+    ...);
+return new BlobCacheIndexInput(...);</code></pre>
+          <div class="ref-list">
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/lucene/BlobStoreCacheDirectory.java#L260-L310">BlobStoreCacheDirectory.openInput</a>
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/cache/StatelessSharedBlobCacheService.java#L35-L92">StatelessSharedBlobCacheService region helpers</a>
+          </div>
+        </div>
+      </details>
+    </section>
+  </main>
+  <script src="../app.js"></script>
+</body>
+</html>

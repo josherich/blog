@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stateless Elasticsearch Data Flow</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div class="header-inner">
+        <p class="eyebrow">Elasticsearch stateless source map</p>
+        <h1>Stateless data flow from write to object store to search</h1>
+        <p class="lede">This static guide follows how the stateless plugin wires object-store durability, indexing commits, translog replication, search cache hydration, allocation, relocation, and cluster-state persistence. All code links are pinned to commit <code>4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77</code>.</p>
+      </div>
+      <nav aria-label="Guide pages">
+        <a href="index.html">Overview</a>
+        <a href="components/bootstrap.html">Bootstrap</a>
+        <a href="components/object-store.html">Object Store</a>
+        <a href="components/write-path.html">Write Path</a>
+        <a href="components/commit-lifecycle.html">Commit Lifecycle</a>
+        <a href="components/search-cache.html">Search Cache</a>
+        <a href="components/allocation-recovery.html">Allocation & Recovery</a>
+        <a href="components/cluster-state.html">Cluster State</a>
+      </nav>
+    </header>
+
+    <main>
+      <div class="toolbar">
+        <button type="button" data-expand="open">Expand all</button>
+        <button type="button" data-expand="closed">Collapse all</button>
+      </div>
+
+      <section class="grid">
+        <div class="panel span-12">
+          <h2>End-to-end path</h2>
+          <div class="flow" aria-label="High level stateless flow">
+            <div class="flow-step"><strong>1. Plugin starts</strong>Creates object-store, cache, commit, translog, recovery, and role-aware services.</div>
+            <div class="flow-step"><strong>2. Indexing node writes</strong>IndexEngine writes Lucene and appends serialized operations into a node translog buffer.</div>
+            <div class="flow-step"><strong>3. Remote durability</strong>Translog files and batched compound commits are uploaded through ObjectStoreService.</div>
+            <div class="flow-step"><strong>4. Commit notification</strong>Search shards are told about the newest available commit and what BCC backs it.</div>
+            <div class="flow-step"><strong>5. Search shard refreshes</strong>SearchEngine updates SearchDirectory metadata, opens readers, and retains files needed by PIT/open readers.</div>
+            <div class="flow-step"><strong>6. Cache fills on demand</strong>BlobStoreCacheDirectory opens IndexInput through cache readers backed by shared blob cache and object store.</div>
+          </div>
+        </div>
+
+        <details class="span-6" open>
+          <summary>What makes the flow stateless</summary>
+          <div class="body">
+            <p>Shard data is treated as object-store state. Indexing nodes can write and upload Lucene commit content plus translog snapshots; search nodes read through cached object-store-backed Lucene directories. Allocation does not search for a previous local copy because local disk is not durable state.</p>
+            <div class="ref-list">
+              <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/allocation/StatelessExistingShardsAllocator.java#L28-L39">StatelessExistingShardsAllocator: object store replaces previous local shard lookup</a>
+              <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/allocation/StatelessAllocationDecider.java#L36-L63">StatelessAllocationDecider: shard role must match index/search node role</a>
+            </div>
+          </div>
+        </details>
+
+        <details class="span-6" open>
+          <summary>Main runtime boundary</summary>
+          <div class="body">
+            <p>The runtime split is in the engine factory. Promotable shards get <code>IndexEngine</code>, a replicated translog config, and commit tracking. Searchable non-promotable shards get <code>SearchEngine</code>, which consumes commit notifications and reads through cache-backed directories.</p>
+            <pre><code>if (config.isPromotableToPrimary()) {
+    ... return newHollowOrIndexEngine(indexSettings, newConfig);
+} else {
+    return new SearchEngine(...);
+}</code></pre>
+            <div class="ref-list">
+              <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/StatelessPlugin.java#L1539-L1649">StatelessPlugin.getEngineFactory</a>
+            </div>
+          </div>
+        </details>
+
+        <details class="span-12" open>
+          <summary>Data flow summary</summary>
+          <div class="body two-col">
+            <div>
+              <h3>Indexing side</h3>
+              <ol>
+                <li>The plugin creates <code>ObjectStoreService</code>, <code>StatelessCommitService</code>, <code>TranslogReplicator</code>, and <code>HollowShardsService</code>.</li>
+                <li><code>IndexEngine</code> receives operations and the engine factory injects a translog callback to <code>TranslogReplicator.add(...)</code>.</li>
+                <li>Flush/refresh commits are turned into <code>StatelessCommitRef</code> instances and appended into virtual batched compound commits.</li>
+                <li>Uploads are pushed to the blob store and search nodes are notified only when the data is safe for search visibility.</li>
+              </ol>
+            </div>
+            <div>
+              <h3>Search side</h3>
+              <ol>
+                <li><code>SearchEngine.onCommitNotification</code> receives the latest commit and updates the known latest uploaded BCC.</li>
+                <li>The prefetcher can warm missing BCC ranges into shared blob cache before reader refresh.</li>
+                <li><code>SearchDirectory.updateCommit(...)</code> swaps metadata so Lucene file opens resolve to blob ranges.</li>
+                <li><code>BlobStoreCacheDirectory.openInput(...)</code> returns an IndexInput backed by cache readers.</li>
+              </ol>
+            </div>
+          </div>
+        </details>
+
+        <details class="span-12" open>
+          <summary>Component pages</summary>
+          <div class="body">
+            <div class="tag-row">
+              <span class="tag">default-open details</span>
+              <span class="tag">mobile horizontal flow</span>
+              <span class="tag">white-space: pre code</span>
+              <span class="tag">commit-pinned links</span>
+            </div>
+            <ul>
+              <li><a href="components/bootstrap.html">Bootstrap</a> explains plugin service creation and index/search engine selection.</li>
+              <li><a href="components/object-store.html">Object Store</a> explains repository-backed blob containers and upload APIs.</li>
+              <li><a href="components/write-path.html">Write Path</a> explains operation buffering, translog sync, flush, and recovery reads.</li>
+              <li><a href="components/commit-lifecycle.html">Commit Lifecycle</a> explains VBCC creation, upload, notification, and retention.</li>
+              <li><a href="components/search-cache.html">Search Cache</a> explains notification processing, prefetch, reader refresh, and cached IndexInput.</li>
+              <li><a href="components/allocation-recovery.html">Allocation & Recovery</a> explains role-aware placement, relocation, hollowing, and target activation.</li>
+              <li><a href="components/cluster-state.html">Cluster State</a> explains lease-backed election and blob-store cluster-state commits.</li>
+            </ul>
+          </div>
+        </details>
+      </section>
+    </main>
+
+    <div class="footer">Generated from local source at commit 4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77.</div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

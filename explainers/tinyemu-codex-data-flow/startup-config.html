@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TinyEMU Startup and Config Flow</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="flow.js"></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand"><strong>TinyEMU Data Flow</strong><span>Startup and config</span></div>
+      <nav aria-label="Sections">
+        <a href="index.html">Overview</a>
+        <a aria-current="page" href="startup-config.html">Startup</a>
+        <a href="riscv-machine.html">RISC-V Machine</a>
+        <a href="cpu-memory.html">CPU & Memory</a>
+        <a href="virtio.html">VirtIO</a>
+        <a href="host-io.html">Host I/O</a>
+      </nav>
+    </header>
+    <section class="hero">
+      <h1>Startup turns files into a runnable machine</h1>
+      <p>The native executable stages work in a strict order: parse CLI, load and parse config, load auxiliary blobs, open host-backed devices, initialize console/display, instantiate the selected machine class, then enter the run loop.</p>
+    </section>
+    <div class="layout">
+      <main>
+        <div class="controls">
+          <button class="control" type="button" data-expand-all>Expand all</button>
+          <button class="control" type="button" data-collapse-all>Collapse all</button>
+          <label class="control">Filter <input data-filter type="search" aria-label="Filter blocks" placeholder="drive, fs, cmdline"></label>
+        </div>
+
+        <details class="flow" open id="cli">
+          <summary><span class="summary-title"><strong>1. CLI options seed defaults and overrides</strong><span>`main()` captures runtime choices before loading the VM config.</span></span><span class="chevron" aria-hidden="true"></span></summary>
+          <div class="content">
+            <p>`drive_mode` defaults to snapshot, `ram_size` and `accel_enable` start unset, and `cmdline` is optional. After config loading, these values override the JSON-derived values so command-line flags win.</p>
+            <pre>main(argc, argv)
+  parse -m, -rw, -ro, -append, -no-accel
+  path = config_file
+  virt_machine_set_defaults(&params)
+  virt_machine_load_config_file(&params, path, NULL, NULL)
+  apply CLI overrides to params</pre>
+            <div class="refs">
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/temu.c#L647">temu.c:647 main</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/temu.c#L728">temu.c:728 overrides</a>
+            </div>
+          </div>
+        </details>
+
+        <details class="flow" open id="config">
+          <summary><span class="summary-title"><strong>2. JSON becomes `VirtMachineParams`</strong><span>Config parsing selects the machine class and records devices without opening them yet.</span></span><span class="chevron" aria-hidden="true"></span></summary>
+          <div class="content">
+            <p>`virt_machine_parse_config()` validates `version`, resolves `machine` to a `VirtMachineClass`, then reads memory, BIOS/kernel/initrd, drives, 9P filesystems, ethernet interfaces, display, input, acceleration, and RTC options.</p>
+            <pre>config JSON
+  -> machine_name + vmc
+  -> ram_size
+  -> files[BIOS/KERNEL/INITRD/VGA_BIOS]
+  -> tab_drive[]
+  -> tab_fs[]
+  -> tab_eth[]
+  -> display/input/accel/rtc</pre>
+            <div class="refs">
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/machine.c#L223">machine.c:223 parse config</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/machine.h#L58">machine.h:58 params shape</a>
+            </div>
+          </div>
+        </details>
+
+        <details class="flow" open id="files">
+          <summary><span class="summary-title"><strong>3. Auxiliary files are loaded before machine init</strong><span>BIOS, kernel, initrd, and VGA BIOS bytes are pulled into memory buffers.</span></span><span class="chevron" aria-hidden="true"></span></summary>
+          <div class="content">
+            <p>`virt_machine_load_config_file()` loads the config itself. `config_file_loaded()` parses it, then `config_additional_file_load()` walks the `files[]` table. Each relative path is made relative to the config path by `get_file_path()`.</p>
+            <pre>config_load_file(config)
+  -> config_file_loaded()
+  -> virt_machine_parse_config()
+  -> for each VM_FILE_* filename:
+       get_file_path(cfg_filename, filename)
+       config_load_file(file)
+       copy bytes to files[index].buf / len</pre>
+            <div class="refs">
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/machine.c#L515">machine.c:515 load config</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/machine.c#L531">machine.c:531 config loaded</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/machine.c#L544">machine.c:544 additional files</a>
+            </div>
+          </div>
+        </details>
+
+        <details class="flow" open id="open-devices">
+          <summary><span class="summary-title"><strong>4. Host device handles are opened after overrides</strong><span>Drives, filesystems, network, and console/display become concrete host-backed objects.</span></span><span class="chevron" aria-hidden="true"></span></summary>
+          <div class="content">
+            <p>The parser records descriptions, but `main()` opens the actual backends. Drives become `BlockDevice` callbacks, filesystems become `FSDevice`, ethernet entries become tap or slirp devices, and the UI path chooses SDL display or terminal console.</p>
+            <pre>for each drive:
+  local file -> block_device_init()
+  URL        -> block_device_init_http()
+
+for each fs:
+  local dir -> fs_disk_init()
+  URL       -> fs_net_init()
+
+for each eth:
+  user -> slirp_open()
+  tap  -> tun_open()
+
+display0 ? sdl_init() : console_init()</pre>
+            <div class="refs">
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/temu.c#L734">temu.c:734 drives</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/temu.c#L752">temu.c:752 filesystems</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/temu.c#L779">temu.c:779 ethernet</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/temu.c#L803">temu.c:803 console/display</a>
+            </div>
+          </div>
+        </details>
+
+        <details class="flow" open id="handoff">
+          <summary><span class="summary-title"><strong>5. The selected machine class receives a complete parameter bundle</strong><span>`virt_machine_init()` is just a dispatch through `VirtMachineClass`.</span></span><span class="chevron" aria-hidden="true"></span></summary>
+          <div class="content">
+            <p>The common startup code stops owning the machine topology once `virt_machine_init()` calls the class-specific initializer. For RISC-V, this is `riscv_machine_init()`; for x86 builds, `pc_machine_class` is also available.</p>
+            <pre>VirtMachineParams p
+  -> p.vmc->virt_machine_init(&p)
+  -> returns VirtMachine*
+  -> config buffers are freed
+  -> carrier is enabled if net exists
+  -> forever: virt_machine_run(machine)</pre>
+            <div class="refs">
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/machine.c#L626">machine.c:626 dispatch init</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/temu.c#L814">temu.c:814 init call</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/temu.c#L831">temu.c:831 run forever</a>
+            </div>
+          </div>
+        </details>
+      </main>
+      <aside class="side">
+        <section class="panel toc">
+          <h2>Startup Flow</h2>
+          <a href="#cli">CLI options</a>
+          <a href="#config">JSON params</a>
+          <a href="#files">Aux files</a>
+          <a href="#open-devices">Open devices</a>
+          <a href="#handoff">Machine handoff</a>
+        </section>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cluster State Persistence</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <p class="eyebrow">Component</p>
+      <h1>Stateless cluster state</h1>
+      <p class="lede">Masters use the object store for election leasing and persisted cluster-state Lucene files, so master node loss does not imply loss of durable cluster metadata.</p>
+    </div>
+    <nav>
+      <a href="../index.html">Overview</a>
+      <a href="bootstrap.html">Bootstrap</a>
+      <a href="object-store.html">Object Store</a>
+      <a href="write-path.html">Write Path</a>
+      <a href="commit-lifecycle.html">Commit Lifecycle</a>
+      <a href="search-cache.html">Search Cache</a>
+      <a href="allocation-recovery.html">Allocation & Recovery</a>
+      <a href="cluster-state.html">Cluster State</a>
+    </nav>
+  </header>
+  <main>
+    <div class="toolbar"><button data-expand="open">Expand all</button><button data-expand="closed">Collapse all</button></div>
+    <section class="grid">
+      <details class="span-6" open>
+        <summary>Factory wiring</summary>
+        <div class="body">
+          <p>The stateless plugin supplies both a persisted-state factory and a persisted-cluster-state-service factory. The service receives the election strategy and object-store service suppliers, binding coordination to blob-store durability.</p>
+          <pre><code>return ((StatelessPersistedClusterStateService) persistedClusterStateService)
+    .createPersistedState(settings, transportService.getLocalNode());</code></pre>
+          <div class="ref-list">
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/StatelessPlugin.java#L1860-L1895">StatelessPlugin persisted state factories</a>
+          </div>
+        </div>
+      </details>
+
+      <details class="span-6" open>
+        <summary>Lease-backed term</summary>
+        <div class="body">
+          <p>The persisted state does not write the current term locally. The package documentation explains that the stateless election strategy claims ownership of a term through a compare-and-set lease in <code>cluster_state/lease</code>.</p>
+          <pre><code>protected void writeCurrentTermToDisk(long currentTerm) {
+    // never write term to disk, the lease takes care
+}</code></pre>
+          <div class="ref-list">
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/cluster/coordination/StatelessPersistedState.java#L93-L111">StatelessPersistedState term and cluster-state writes</a>
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/cluster/coordination/package-info.java#L25-L45">Package docs: stateless leader election</a>
+          </div>
+        </div>
+      </details>
+
+      <details class="span-12" open>
+        <summary>Cluster-state file upload</summary>
+        <div class="body">
+          <p><code>BlobStoreSyncDirectory</code> wraps a Lucene directory. It intercepts sync-like writes and uploads files into the cluster-state blob container. Metadata blobs are written atomically, and normal files are written with the cluster-state operation purpose.</p>
+          <pre><code>if (atomic) {
+    blobContainer.writeMetadataBlob(OperationPurpose.CLUSTER_STATE, fileName, false, true, ...);
+} else {
+    blobContainer.writeBlob(OperationPurpose.CLUSTER_STATE, fileName, inputStream, length, false);
+}</code></pre>
+          <div class="ref-list">
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/cluster/coordination/BlobStoreSyncDirectory.java#L41-L65">BlobStoreSyncDirectory fields and deletion tracking</a>
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/cluster/coordination/BlobStoreSyncDirectory.java#L163-L179">BlobStoreSyncDirectory.writeFile</a>
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/cluster/coordination/package-info.java#L47-L65">Package docs: cluster-state storage</a>
+          </div>
+        </div>
+      </details>
+    </section>
+  </main>
+  <script src="../app.js"></script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Display &amp; Input — TinyEMU Data Flow</title>
+<style>
+  :root {
+    --bg: #0b0f19; --panel: #111827; --panel-2: #0f172a; --text: #e5e7eb; --muted: #9ca3af;
+    --accent: #22d3ee; --accent-2: #818cf8; --border: #1f2937; --code-bg: #0b1220; --link: #60a5fa;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  header { position: sticky; top: 0; z-index: 10; background: linear-gradient(180deg, rgba(11,15,25,0.95), rgba(11,15,25,0.7)); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+  .container { max-width: 1100px; margin: 0 auto; padding: 16px; }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  .subtitle { color: var(--muted); font-size: 13px; }
+  .nav { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .nav a { display: inline-block; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--border); background: var(--panel); color: var(--text); font-size: 13px; }
+  .nav a:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin: 14px 0; }
+  .card h2 { margin: 0 0 8px; font-size: 18px; color: var(--accent); }
+  .card h3 { margin: 12px 0 6px; font-size: 15px; color: var(--accent-2); }
+  .card p, .card li { color: var(--text); line-height: 1.6; font-size: 14px; }
+  .card ul { padding-left: 18px; }
+  .card li { margin: 6px 0; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #0ea5e91a; color: #7dd3fc; border: 1px solid #0ea5e933; font-size: 12px; margin-right: 6px; }
+  .mermaid { background: var(--panel-2); border: 1px solid var(--border); border-radius: 12px; padding: 12px; overflow-x: auto; }
+  .codeblock { background: var(--code-bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px; overflow-x: auto; }
+  .codeblock pre { margin: 0; white-space: pre; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 13px; line-height: 1.5; color: #e5e7eb; }
+  .permalink { font-size: 12px; color: var(--muted); }
+  .permalink a { color: var(--link); }
+  footer { text-align: center; padding: 24px 0; color: var(--muted); font-size: 12px; }
+  @media (max-width: 640px) { h1 { font-size: 18px; } .card { padding: 12px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <h1>Display &amp; Input</h1>
+    <div class="subtitle">Framebuffer, SDL, simplefb, VGA, and input event routing</div>
+    <nav class="nav">
+      <a href="index.html">Overview</a>
+      <a href="machine.html">Machine Layer</a>
+      <a href="cpu.html">CPU / Interpreter</a>
+      <a href="memory.html">Memory &amp; I/O</a>
+      <a href="virtio.html">VirtIO Devices</a>
+      <a href="devices.html">Platform Devices</a>
+      <a href="network.html">Network &amp; Block</a>
+      <a href="display.html">Display &amp; Input</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="card">
+    <h2>Data Flow</h2>
+    <div class="mermaid">
+graph TD
+    A[Guest writes to FB RAM] --> B[Dirty bits set]
+    B --> C[sdl_refresh / simplefb_refresh]
+    C --> D[SDL_BlitSurface + SDL_UpdateRect]
+    E[Host Keyboard] --> F[SDL key event]
+    F --> G[vm_send_key_event]
+    G --> H[virtio_input_send_key_event]
+    I[Host Mouse] --> J[SDL mouse event]
+    J --> K[vm_send_mouse_event]
+    K --> L[virtio_input_send_mouse_event]
+    M[Console resize] --> N[virtio_console_resize_event]
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Framebuffer Architecture</h2>
+    <p>
+      TinyEMU abstracts the display via <code>FBDevice</code> (<code>machine.h</code>). The device-specific code (simplefb or VGA) fills <code>fb_data</code>, <code>width</code>, <code>height</code>, and <code>stride</code>. The SDL frontend polls for dirty pages and redraws only changed regions.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/machine.h#L35-L50" target="_blank">machine.h#L35-L50</a></div>
+    <div class="codeblock"><pre>struct FBDevice {
+    int width;
+    int height;
+    int stride;
+    uint8_t *fb_data;
+    int fb_size;
+    void *device_opaque;
+    void (*refresh)(struct FBDevice *fb_dev,
+                    SimpleFBDrawFunc *redraw_func, void *opaque);
+};</pre></div>
+  </section>
+
+  <section class="card">
+    <h2>Simple Framebuffer</h2>
+    <p>
+      <code>simplefb.c</code> registers a RAM region with <code>DEVRAM_FLAG_DIRTY_BITS</code> at <code>FRAMEBUFFER_BASE_ADDR</code>. The guest writes pixels directly into RAM. The host detects changes via the dirty-bit bitmap and calls the registered <code>redraw_func</code>.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/simplefb.c#L1-L120" target="_blank">simplefb.c</a></div>
+    <div class="codeblock"><pre>SimpleFBState *simplefb_init(PhysMemoryMap *map, uint64_t phys_addr,
+                             FBDevice *fb_dev, int width, int height)
+{
+    SimpleFBState *s = mallocz(sizeof(*s));
+    fb_dev->width = width;
+    fb_dev->height = height;
+    fb_dev->stride = width * 4;
+    fb_dev->fb_size = (height * fb_dev->stride + FB_ALLOC_ALIGN - 1)
+                      & ~(FB_ALLOC_ALIGN - 1);
+    s->fb_page_count = fb_dev->fb_size >> DEVRAM_PAGE_SIZE_LOG2;
+    s->mem_range = cpu_register_ram(map, phys_addr, fb_dev->fb_size,
+                                    DEVRAM_FLAG_DIRTY_BITS);
+    fb_dev->fb_data = s->mem_range->phys_mem;
+    fb_dev->device_opaque = s;
+    fb_dev->refresh = simplefb_refresh1;
+    return s;
+}</pre></div>
+  </section>
+
+  <section class="card">
+    <h2>SDL Frontend</h2>
+    <p>
+      <code>sdl.c</code> creates an SDL window and surface. During <code>sdl_refresh()</code> it calls <code>fb_dev->refresh()</code>, which invokes <code>sdl_update()</code> to blit dirty rectangles to the screen.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/sdl.c#L1-L120" target="_blank">sdl.c</a></div>
+    <div class="codeblock"><pre>static void sdl_update(FBDevice *fb_dev, void *opaque,
+                       int x, int y, int w, int h)
+{
+    SDL_Rect r;
+    r.x = x; r.y = y; r.w = w; r.h = h;
+    SDL_BlitSurface(fb_surface, &r, screen, &r);
+    SDL_UpdateRect(screen, r.x, r.y, r.w, r.h);
+}
+
+void sdl_refresh(VirtMachine *m)
+{
+    if (m->fb_dev) {
+        m->fb_dev->refresh(m->fb_dev, sdl_update, NULL);
+    }
+}</pre></div>
+  </section>
+
+  <section class="card">
+    <h2>VGA / PCI Display</h2>
+    <p>
+      For x86 machines, TinyEMU includes a minimal VGA device (<code>vga.c</code>) and a PCI VGA card (<code>pci.c</code>). It exposes Bochs VBE registers and a linear framebuffer. The same <code>FBDevice</code> abstraction is used to forward updates to SDL.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/vga.c#L1-L120" target="_blank">vga.c</a></div>
+    <div class="codeblock"><pre>VGAState *pci_vga_init(PCIBus *bus, FBDevice *fb_dev,
+                       int width, int height,
+                       const uint8_t *vga_rom_buf, int vga_rom_size)
+{
+    VGAState *s = mallocz(sizeof(*s));
+    s->fb_dev = fb_dev;
+    /* register PCI BARs, VBE IO ports, VGA memory */
+    return s;
+}</pre></div>
+  </section>
+
+  <section class="card">
+    <h2>Input Event Routing</h2>
+    <p>
+      Keyboard and mouse events from SDL are routed through the machine class vtable to VirtIO input devices. For RISC-V, <code>riscv_vm_send_key_event</code> and <code>riscv_vm_send_mouse_event</code> forward to the respective <code>VIRTIODevice</code>.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L1020-L1041" target="_blank">riscv_machine.c#L1020-L1041</a></div>
+    <div class="codeblock"><pre>static void riscv_vm_send_key_event(VirtMachine *s1, BOOL is_down,
+                                    uint16_t key_code)
+{
+    RISCVMachine *s = (RISCVMachine *)s1;
+    if (s->keyboard_dev) {
+        virtio_input_send_key_event(s->keyboard_dev, is_down, key_code);
+    }
+}
+
+static void riscv_vm_send_mouse_event(VirtMachine *s1, int dx, int dy, int dz,
+                                      unsigned int buttons)
+{
+    RISCVMachine *s = (RISCVMachine *)s1;
+    if (s->mouse_dev) {
+        virtio_input_send_mouse_event(s->mouse_dev, dx, dy, dz, buttons);
+    }
+}</pre></div>
+  </section>
+
+  <section class="card">
+    <h2>Console Resize</h2>
+    <p>
+      When the terminal window changes size, the STDIODevice sets <code>resize_pending</code>. The next iteration of <code>virt_machine_run()</code> reads the new dimensions and notifies the VirtIO console via <code>virtio_console_resize_event()</code>.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/temu.c#L537-L600" target="_blank">temu.c#L537-L600</a></div>
+    <div class="codeblock"><pre>if (s->resize_pending) {
+    int width, height;
+    console_get_size(s, &width, &height);
+    virtio_console_resize_event(m->console_dev, width, height);
+    s->resize_pending = FALSE;
+}</pre></div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    Generated from TinyEMU source. Permalinks point to <a href="https://github.com/fernandotcl/TinyEMU" target="_blank">github.com/fernandotcl/TinyEMU</a>.
+  </div>
+</footer>
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+</script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Commit Lifecycle</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <p class="eyebrow">Component</p>
+      <h1>Commit creation, upload, notification, and retention</h1>
+      <p class="lede">StatelessCommitService turns local Lucene commits into object-store-backed batched compound commits, then coordinates search-node visibility and cleanup.</p>
+    </div>
+    <nav>
+      <a href="../index.html">Overview</a>
+      <a href="bootstrap.html">Bootstrap</a>
+      <a href="object-store.html">Object Store</a>
+      <a href="write-path.html">Write Path</a>
+      <a href="commit-lifecycle.html">Commit Lifecycle</a>
+      <a href="search-cache.html">Search Cache</a>
+      <a href="allocation-recovery.html">Allocation & Recovery</a>
+      <a href="cluster-state.html">Cluster State</a>
+    </nav>
+  </header>
+  <main>
+    <div class="toolbar"><button data-expand="open">Expand all</button><button data-expand="closed">Collapse all</button></div>
+    <section class="grid">
+      <details class="span-12" open>
+        <summary>Lifecycle timeline</summary>
+        <div class="body">
+          <div class="flow">
+            <div class="flow-step"><strong>Local commit</strong><code>IndexEngineDeletionPolicy</code> creates a <code>StatelessCommitRef</code>.</div>
+            <div class="flow-step"><strong>Append</strong><code>onCommitCreation</code> appends it to a virtual BCC.</div>
+            <div class="flow-step"><strong>Persist operations</strong>Non-uploaded notifications wait for max seqno durability.</div>
+            <div class="flow-step"><strong>Upload</strong><code>BatchedCompoundCommitUploadTask</code> writes the BCC blob.</div>
+            <div class="flow-step"><strong>Notify</strong>Search nodes receive the newest uploaded BCC and return commits in use.</div>
+            <div class="flow-step"><strong>Retain/delete</strong>Open readers, PITs, and pending uploads determine safe deletion.</div>
+          </div>
+        </div>
+      </details>
+
+      <details class="span-6" open>
+        <summary>Commit creation</summary>
+        <div class="body">
+          <p><code>onCommitCreation</code> validates shard state, skips recovered or already-handled hollow commits, appends the commit to a virtual BCC, then decides whether to notify search shards or only complete local listeners.</p>
+          <pre><code>virtualBcc = commitState.appendCommit(reference, timestampFieldValueRange);
+...
+// Non-uploaded new commit notifications should be sent after ensuring
+// the operations are persisted.</code></pre>
+          <div class="ref-list">
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/commits/StatelessCommitService.java#L624-L705">StatelessCommitService.onCommitCreation</a>
+          </div>
+        </div>
+      </details>
+
+      <details class="span-6" open>
+        <summary>BCC upload</summary>
+        <div class="body">
+          <p>Upload is encapsulated in <code>BatchedCompoundCommitUploadTask</code>. The service updates BCC size, commit count, and age metrics, then runs the task. On success, the shard state marks the BCC uploaded and sends the new uploaded commit notification.</p>
+          <pre><code>var bccUpload = new BatchedCompoundCommitUploadTask(
+    threadPool,
+    cacheWarmingService,
+    objectStoreService,
+    new UploadRetryDecider(commitState),
+    ...);
+bccUpload.run();</code></pre>
+          <div class="ref-list">
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/commits/StatelessCommitService.java#L810-L870">StatelessCommitService.createAndRunCommitUpload</a>
+          </div>
+        </div>
+      </details>
+
+      <details class="span-12" open>
+        <summary>Search-node notification and retention feedback</summary>
+        <div class="body">
+          <p>Uploaded commit notification is not just a broadcast. The publisher sends to current search shards and old nodes that may retain commits, then collects commits still in use. That feedback drives release of BCC references and deletion of obsolete blob ranges.</p>
+          <pre><code>sendNewUploadedCommitNotificationAndFetchInUseCommits(
+    shardRoutingTable.get(),
+    currentRoutingNodesWithAssignedSearchShards,
+    allSearchNodesRetainingCommits,
+    uploadedBcc,
+    clusterService.state().version(),
+    ...);</code></pre>
+          <div class="ref-list">
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/commits/StatelessCommitService.java#L2189-L2268">ShardCommitState.sendNewUploadedCommitNotification</a>
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/commits/StatelessCommitService.java#L1950-L2050">ShardCommitState.handleUploadedBcc</a>
+          </div>
+        </div>
+      </details>
+    </section>
+  </main>
+  <script src="../app.js"></script>
+</body>
+</html>

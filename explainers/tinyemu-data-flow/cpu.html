@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPU / Interpreter — TinyEMU Data Flow</title>
+<style>
+  :root {
+    --bg: #0b0f19; --panel: #111827; --panel-2: #0f172a; --text: #e5e7eb; --muted: #9ca3af;
+    --accent: #22d3ee; --accent-2: #818cf8; --border: #1f2937; --code-bg: #0b1220; --link: #60a5fa;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  header { position: sticky; top: 0; z-index: 10; background: linear-gradient(180deg, rgba(11,15,25,0.95), rgba(11,15,25,0.7)); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+  .container { max-width: 1100px; margin: 0 auto; padding: 16px; }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  .subtitle { color: var(--muted); font-size: 13px; }
+  .nav { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .nav a { display: inline-block; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--border); background: var(--panel); color: var(--text); font-size: 13px; }
+  .nav a:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin: 14px 0; }
+  .card h2 { margin: 0 0 8px; font-size: 18px; color: var(--accent); }
+  .card h3 { margin: 12px 0 6px; font-size: 15px; color: var(--accent-2); }
+  .card p, .card li { color: var(--text); line-height: 1.6; font-size: 14px; }
+  .card ul { padding-left: 18px; }
+  .card li { margin: 6px 0; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #0ea5e91a; color: #7dd3fc; border: 1px solid #0ea5e933; font-size: 12px; margin-right: 6px; }
+  .mermaid { background: var(--panel-2); border: 1px solid var(--border); border-radius: 12px; padding: 12px; overflow-x: auto; }
+  .codeblock { background: var(--code-bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px; overflow-x: auto; }
+  .codeblock pre { margin: 0; white-space: pre; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 13px; line-height: 1.5; color: #e5e7eb; }
+  .permalink { font-size: 12px; color: var(--muted); }
+  .permalink a { color: var(--link); }
+  footer { text-align: center; padding: 24px 0; color: var(--muted); font-size: 12px; }
+  @media (max-width: 640px) { h1 { font-size: 18px; } .card { padding: 12px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <h1>CPU / Interpreter</h1>
+    <div class="subtitle">RISC-V interpreter loop, TLB, CSR, and exception handling</div>
+    <nav class="nav">
+      <a href="index.html">Overview</a>
+      <a href="machine.html">Machine Layer</a>
+      <a href="cpu.html">CPU / Interpreter</a>
+      <a href="memory.html">Memory &amp; I/O</a>
+      <a href="virtio.html">VirtIO Devices</a>
+      <a href="devices.html">Platform Devices</a>
+      <a href="network.html">Network &amp; Block</a>
+      <a href="display.html">Display &amp; Input</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="card">
+    <h2>Data Flow</h2>
+    <div class="mermaid">
+graph TD
+    A[virt_machine_interp] --> B[riscv_machine_interp]
+    B --> C[riscv_cpu_interp]
+    C --> D[Instruction Fetch via TLB]
+    D --> E[Decode opcode / rd / rs1 / rs2]
+    E --> F{Instruction type}
+    F -->|ALU| G[Register ops]
+    F -->|Load/Store| H[TLB read/write]
+    F -->|Branch| I[PC update]
+    F -->|System| J[CSR / ECALL / EBREAK]
+    H --> K[target_read_slow / target_write_slow]
+    K --> L[MMU walk if TLB miss]
+    J --> M[raise_interrupt / raise_exception]
+    M --> N[PLIC / CLINT mip/mie]
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>CPU State</h2>
+    <p>
+      <code>RISCVCPUState</code> (defined in <code>riscv_cpu_priv.h</code>) holds all CPU context: integer registers <code>reg[32]</code>, floating-point registers <code>fp_reg[32]</code>, program counter <code>pc</code>, privilege level <code>priv</code>, CSRs, and three TLBs (read, write, code).
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_cpu_priv.h#L120-L180" target="_blank">riscv_cpu_priv.h#L120-L180</a></div>
+    <div class="codeblock"><pre>struct RISCVCPUState {
+    RISCVCPUCommonState common;
+    target_ulong pc;
+    target_ulong reg[32];
+#if FLEN > 0
+    fp_uint fp_reg[32];
+    uint32_t fflags;
+    uint8_t frm;
+#endif
+    uint8_t cur_xlen;
+    uint8_t priv;
+    uint8_t fs;
+    uint8_t mxl;
+    /* CSRs */
+    target_ulong mstatus, mtvec, mepc, mcause, mtval, mhartid;
+    uint32_t misa, mie, mip, medeleg, mideleg, mcounteren;
+    target_ulong stvec, sscratch, sepc, scause, stval;
+    target_ulong satp;
+    /* TLBs */
+    TLBEntry tlb_read[TLB_SIZE];
+    TLBEntry tlb_write[TLB_SIZE];
+    TLBEntry tlb_code[TLB_SIZE];
+    PhysMemoryMap *mem_map;
+};</pre></div>
+  </section>
+
+  <section class="card">
+    <h2>Interpreter Loop</h2>
+    <p>
+      The interpreter is generated from <code>riscv_cpu_template.h</code> by compiling <code>riscv_cpu.c</code> three times with <code>MAX_XLEN=32/64/128</code>. The core function is <code>riscv_cpu_interp_x&lt;XLEN&gt;</code>.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_cpu_template.h#L200-L350" target="_blank">riscv_cpu_template.h#L200-L350</a></div>
+    <div class="codeblock"><pre>static void no_inline glue(riscv_cpu_interp_x, XLEN)(RISCVCPUState *s,
+                                                   int n_cycles1)
+{
+    uint32_t opcode, insn, rd, rs1, rs2, funct3;
+    int32_t imm, cond, err;
+    target_ulong addr, val, val2;
+    uint64_t insn_counter_addend;
+
+    if (n_cycles1 == 0) return;
+    insn_counter_addend = s->insn_counter + n_cycles1;
+    s->n_cycles = n_cycles1;
+
+    /* check pending interrupts */
+    if (unlikely((s->mip & s->mie) != 0)) {
+        if (raise_interrupt(s)) {
+            s->n_cycles--;
+            goto done_interp;
+        }
+    }
+
+    s->pending_exception = -1;
+    code_ptr = NULL;
+    code_end = NULL;
+    code_to_pc_addend = s->pc;
+
+    for(;;) {
+        if (unlikely(code_ptr >= code_end)) {
+            /* TLB lookup for code fetch */
+            addr = s->pc;
+            tlb_idx = (addr >> PG_SHIFT) & (TLB_SIZE - 1);
+            if (likely(s->tlb_code[tlb_idx].vaddr == (addr & ~PG_MASK))) {
+                ptr = (uint8_t *)(s->tlb_code[tlb_idx].mem_addend +
+                                  (uintptr_t)addr);
+            } else {
+                if (unlikely(target_read_insn_slow(s, &ptr, addr)))
+                    goto mmu_exception;
+            }
+            code_ptr = ptr;
+            code_end = ptr + (PG_MASK - 1 - (addr & PG_MASK));
+            code_to_pc_addend = addr - (uintptr_t)code_ptr;
+            insn = get_insn32(code_ptr);
+        } else {
+            insn = get_insn32(code_ptr);
+        }
+        s->n_cycles--;
+        opcode = insn & 0x7f;
+        rd = (insn >> 7) & 0x1f;
+        rs1 = (insn >> 15) & 0x1f;
+        rs2 = (insn >> 20) & 0x1f;
+        switch(opcode) {
+            /* ... opcode handlers ... */
+        }
+    }
+}</pre></div>
+  </section>
+
+  <section class="card">
+    <h2>TLB Fast Path</h2>
+    <p>
+      Memory accesses use inlined TLB checks. If the virtual page matches, the access is a direct pointer dereference. On miss, <code>target_read_slow</code> or <code>target_write_slow</code> performs the page-table walk.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_cpu_priv.h#L182-L220" target="_blank">riscv_cpu_priv.h#L182-L220</a></div>
+    <div class="codeblock"><pre>static inline __exception int target_read_u32(RISCVCPUState *s,
+                                              uint32_t *pval,
+                                              target_ulong addr)
+{
+    uint32_t tlb_idx = (addr >> PG_SHIFT) & (TLB_SIZE - 1);
+    if (likely(s->tlb_read[tlb_idx].vaddr ==
+               (addr & ~(PG_MASK & ~3)))) {
+        *pval = *(uint32_t *)(s->tlb_read[tlb_idx].mem_addend +
+                              (uintptr_t)addr);
+    } else {
+        mem_uint_t val;
+        int ret = target_read_slow(s, &val, addr, 2);
+        if (ret) return ret;
+        *pval = val;
+    }
+    return 0;
+}</pre></div>
+  </section>
+
+  <section class="card">
+    <h2>Interrupts &amp; Exceptions</h2>
+    <p>
+      The CPU checks <code>mip &amp; mie</code> between instruction blocks. If an interrupt is pending and enabled, <code>raise_interrupt()</code> updates <code>mcause</code>, saves <code>pc</code> to <code>mepc</code>, and jumps to <code>mtvec</code>. Exceptions (page faults, illegal instructions) follow a similar path.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_cpu_template.h#L200-L220" target="_blank">riscv_cpu_template.h#L200-L220</a> (interrupt check at loop top)</div>
+  </section>
+
+  <section class="card">
+    <h2>Floating Point (SoftFP)</h2>
+    <p>
+      TinyEMU uses its own <code>SoftFP</code> library (<code>softfp.c/h</code>) for bit-exact 32/64/128-bit floating-point emulation. The interpreter calls functions like <code>add_sf64</code>, <code>mul_sf128</code>, etc., updating <code>fflags</code> for rounding/exception status.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/softfp.h" target="_blank">softfp.h</a></div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    Generated from TinyEMU source. Permalinks point to <a href="https://github.com/fernandotcl/TinyEMU" target="_blank">github.com/fernandotcl/TinyEMU</a>.
+  </div>
+</footer>
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+</script>
+</body>
+</html>

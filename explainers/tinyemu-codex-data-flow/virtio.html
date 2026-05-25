@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TinyEMU VirtIO Flow</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="flow.js"></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand"><strong>TinyEMU Data Flow</strong><span>VirtIO devices</span></div>
+      <nav aria-label="Sections">
+        <a href="index.html">Overview</a>
+        <a href="startup-config.html">Startup</a>
+        <a href="riscv-machine.html">RISC-V Machine</a>
+        <a href="cpu-memory.html">CPU & Memory</a>
+        <a aria-current="page" href="virtio.html">VirtIO</a>
+        <a href="host-io.html">Host I/O</a>
+      </nav>
+    </header>
+    <section class="hero">
+      <h1>VirtIO converts guest queues into host callbacks</h1>
+      <p>All VirtIO devices share the same queue and MMIO/PCI register machinery. Device-specific code only needs to interpret descriptor payloads and complete requests.</p>
+    </section>
+    <div class="layout">
+      <main>
+        <div class="controls">
+          <button class="control" type="button" data-expand-all>Expand all</button>
+          <button class="control" type="button" data-collapse-all>Collapse all</button>
+          <label class="control">Filter <input data-filter type="search" aria-label="Filter blocks" placeholder="block, net, 9P"></label>
+        </div>
+
+        <details class="flow" open id="common-init">
+          <summary><span class="summary-title"><strong>Common initialization chooses MMIO or PCI</strong><span>`virtio_init()` creates the register surface, selects DMA access, and resets queues.</span></span><span class="chevron" aria-hidden="true"></span></summary>
+          <div class="content">
+            <pre>virtio_init(device, bus, device_id, config_size, recv)
+  if PCI bus:
+    register PCI device, BAR, capabilities
+    DMA via pci_device_get_dma_ptr()
+  else:
+    cpu_register_device(bus->mem_map, bus->addr, VIRTIO_PAGE_SIZE)
+    DMA via phys_mem_get_ram_ptr()
+  store device_recv callback
+  virtio_reset()</pre>
+            <div class="refs">
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/virtio.c#L220">virtio.c:220 init</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/virtio.c#L286">virtio.c:286 MMIO register</a>
+            </div>
+          </div>
+        </details>
+
+        <details class="flow" open id="queue">
+          <summary><span class="summary-title"><strong>Queue notification is the central dispatch point</strong><span>Guest writes to `QUEUE_NOTIFY`; TinyEMU walks available descriptors and calls the device handler.</span></span><span class="chevron" aria-hidden="true"></span></summary>
+          <div class="content">
+            <pre>guest driver:
+  writes desc/avail/used addresses
+  fills descriptor chain in guest RAM
+  increments avail->idx
+  writes VIRTIO_MMIO_QUEUE_NOTIFY
+
+TinyEMU:
+  virtio_mmio_write()
+  -> queue_notify(queue)
+  -> get desc_idx from avail ring
+  -> get_desc_rw_size()
+  -> device_recv(device, queue, desc_idx, read_size, write_size)</pre>
+            <div class="refs">
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/virtio.c#L518">virtio.c:518 queue_notify</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/virtio.c#L719">virtio.c:719 MMIO write</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/virtio.c#L783">virtio.c:783 notify register</a>
+            </div>
+          </div>
+        </details>
+
+        <details class="flow" open id="descriptor-copy">
+          <summary><span class="summary-title"><strong>Descriptor chains are copied page by page</strong><span>Queue helpers follow descriptor `next` links and cross page boundaries safely through `get_ram_ptr`.</span></span><span class="chevron" aria-hidden="true"></span></summary>
+          <div class="content">
+            <p>`memcpy_to_from_queue()` finds the descriptor that contains the requested offset, validates read/write direction, and copies between host buffers and guest RAM through `virtio_memcpy_from_ram()` or `virtio_memcpy_to_ram()`.</p>
+            <pre>descriptor chain
+  -> get_desc()
+  -> locate offset
+  -> verify VRING_DESC_F_WRITE direction
+  -> copy chunk
+  -> follow VRING_DESC_F_NEXT
+  -> repeat until count is consumed</pre>
+            <div class="refs">
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/virtio.c#L380">virtio.c:380 queue copy</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/virtio.c#L461">virtio.c:461 consume descriptor</a>
+            </div>
+          </div>
+        </details>
+
+        <details class="flow" open id="completion">
+          <summary><span class="summary-title"><strong>Completion writes the used ring and raises an IRQ</strong><span>Device handlers report consumed descriptors back to the guest with one shared routine.</span></span><span class="chevron" aria-hidden="true"></span></summary>
+          <div class="content">
+            <pre>virtio_consume_desc(device, queue_idx, desc_idx, desc_len)
+  used->idx++
+  used->ring[index] = { desc_idx, desc_len }
+  int_status |= 1
+  set_irq(device->irq, 1)</pre>
+            <p>On RISC-V MMIO VirtIO, `set_irq()` enters the PLIC path. The guest later acknowledges with `INTERRUPT_ACK`, which clears `int_status` and lowers the IRQ when no bits remain.</p>
+            <div class="refs">
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/virtio.c#L461">virtio.c:461 consume</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/virtio.c#L786">virtio.c:786 interrupt ack</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/riscv_machine.c#L303">riscv_machine.c:303 PLIC IRQ</a>
+            </div>
+          </div>
+        </details>
+
+        <details class="flow" open id="devices">
+          <summary><span class="summary-title"><strong>Device handlers specialize the payload</strong><span>Block, network, console, input, and 9P all sit behind the same queue ABI.</span></span><span class="chevron" aria-hidden="true"></span></summary>
+          <div class="content grid">
+            <div class="step"><h3>Block</h3><p>Reads a block header, calls `BlockDevice` read/write callbacks, writes a status byte, and completes the descriptor.</p><div class="refs"><a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/virtio.c#L1064">virtio.c:1064 block recv</a></div></div>
+            <div class="step"><h3>Network</h3><p>Transmit queue copies a packet to `EthernetDevice.write_packet`; receive queue is manual and filled when the host network backend has a packet.</p><div class="refs"><a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/virtio.c#L1153">virtio.c:1153 net TX</a><a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/virtio.c#L1190">virtio.c:1190 net RX</a></div></div>
+            <div class="step"><h3>Console</h3><p>Queue 1 writes guest output to the host character device; queue 0 is manual and receives host terminal bytes.</p><div class="refs"><a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/virtio.c#L1268">virtio.c:1268 console recv</a><a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/virtio.c#L1319">virtio.c:1319 console write data</a></div></div>
+            <div class="step"><h3>Input</h3><p>Keyboard and pointer events are encoded as 8-byte VirtIO input events followed by SYN events.</p><div class="refs"><a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/virtio.c#L1419">virtio.c:1419 input queue</a></div></div>
+            <div class="step"><h3>9P filesystem</h3><p>The 9P handler unmarshals messages, maps FIDs to `FSFile` handles, calls the backing `FSDevice`, marshals replies, and completes the queue.</p><div class="refs"><a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/virtio.c#L2042">virtio.c:2042 9P recv</a></div></div>
+          </div>
+        </details>
+      </main>
+      <aside class="side"><section class="panel toc"><h2>VirtIO Blocks</h2><a href="#common-init">Common init</a><a href="#queue">Queue notify</a><a href="#descriptor-copy">Descriptor copy</a><a href="#completion">Completion</a><a href="#devices">Device handlers</a></section></aside>
+    </div>
+  </div>
+</body>
+</html>

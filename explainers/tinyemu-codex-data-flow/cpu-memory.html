@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TinyEMU CPU and Memory Flow</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="flow.js"></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand"><strong>TinyEMU Data Flow</strong><span>CPU and memory</span></div>
+      <nav aria-label="Sections">
+        <a href="index.html">Overview</a>
+        <a href="startup-config.html">Startup</a>
+        <a href="riscv-machine.html">RISC-V Machine</a>
+        <a aria-current="page" href="cpu-memory.html">CPU & Memory</a>
+        <a href="virtio.html">VirtIO</a>
+        <a href="host-io.html">Host I/O</a>
+      </nav>
+    </header>
+    <section class="hero">
+      <h1>CPU accesses split into RAM and MMIO</h1>
+      <p>The CPU interpreter fetches and executes guest instructions. Every slow path translates the guest virtual address, finds the physical memory range, and either touches host RAM directly or calls a device callback.</p>
+    </section>
+    <div class="layout">
+      <main>
+        <div class="controls">
+          <button class="control" type="button" data-expand-all>Expand all</button>
+          <button class="control" type="button" data-collapse-all>Collapse all</button>
+          <label class="control">Filter <input data-filter type="search" aria-label="Filter blocks" placeholder="TLB, MMIO, page"></label>
+        </div>
+
+        <details class="flow" open id="memory-map">
+          <summary><span class="summary-title"><strong>Physical memory map is a range table</strong><span>RAM and devices share one lookup mechanism.</span></span><span class="chevron" aria-hidden="true"></span></summary>
+          <div class="content">
+            <p>`PhysMemoryMap` stores `PhysMemoryRange` entries. RAM ranges carry `phys_mem` and optional dirty bits; device ranges carry read/write function pointers and an opaque state pointer.</p>
+            <pre>get_phys_mem_range(map, paddr)
+  for each range:
+    if paddr in [addr, addr + size):
+      return range
+
+range.is_ram ? use range.phys_mem : call range.read_func/write_func</pre>
+            <div class="refs">
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/iomem.c#L41">iomem.c:41 map init</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/iomem.c#L68">iomem.c:68 range lookup</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/iomem.c#L184">iomem.c:184 device register</a>
+            </div>
+          </div>
+        </details>
+
+        <details class="flow" open id="translation">
+          <summary><span class="summary-title"><strong>Virtual addresses are translated before lookup</strong><span>`get_phys_addr()` handles privilege, XLEN truncation, SATP modes, PTE permissions, and accessed/dirty updates.</span></span><span class="chevron" aria-hidden="true"></span></summary>
+          <div class="content">
+            <pre>target virtual address
+  -> select effective privilege
+  -> machine mode: direct/truncated physical address
+  -> supervisor/user: walk page tables from satp
+  -> validate V/U/X/W/R/A/D bits
+  -> set A/D bits if needed
+  -> produce physical address or pending page fault</pre>
+            <div class="refs">
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/riscv_cpu.c#L188">riscv_cpu.c:188 get_phys_addr</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/riscv_cpu.c#L370">riscv_cpu.c:370 load fault</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/riscv_cpu.c#L457">riscv_cpu.c:457 store fault</a>
+            </div>
+          </div>
+        </details>
+
+        <details class="flow" open id="read-write">
+          <summary><span class="summary-title"><strong>Data reads and writes populate TLBs on RAM hits</strong><span>Slow paths turn future aligned RAM accesses into direct pointer math.</span></span><span class="chevron" aria-hidden="true"></span></summary>
+          <div class="content">
+            <p>For RAM, the slow read/write path stores a page-aligned virtual tag and a `mem_addend` so later helper calls can compute the host address quickly. Writes mark dirty bits for framebuffer and other RAM observers.</p>
+            <pre>target_read_slow()
+  translate virtual -> physical
+  range = get_phys_mem_range()
+  if RAM:
+    tlb_read[index] = { vaddr page, host_ptr - vaddr }
+    read scalar from host memory
+  else:
+    read_func(opaque, offset, size_log2)
+
+target_write_slow()
+  same translation
+  if RAM: dirty bit + tlb_write + store scalar
+  else: write_func(opaque, offset, value, size_log2)</pre>
+            <div class="refs">
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/riscv_cpu.c#L297">riscv_cpu.c:297 read slow</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/riscv_cpu.c#L439">riscv_cpu.c:439 write slow</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/iomem.c#L245">iomem.c:245 RAM pointer</a>
+            </div>
+          </div>
+        </details>
+
+        <details class="flow" open id="instruction-fetch">
+          <summary><span class="summary-title"><strong>Instruction fetch is RAM-only</strong><span>Code fetches translate with execute permission and fault if the result is not mapped RAM.</span></span><span class="chevron" aria-hidden="true"></span></summary>
+          <div class="content">
+            <p>`target_read_insn_slow()` rejects missing ranges and device ranges because TinyEMU fetches executable code only from RAM. It fills `tlb_code` separately from data TLBs.</p>
+            <pre>fetch PC
+  -> get_phys_addr(..., ACCESS_CODE)
+  -> range lookup
+  -> must be RAM
+  -> tlb_code[index] = host pointer addend
+  -> interpreter decodes 16-bit or 32-bit instruction</pre>
+            <div class="refs">
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/riscv_cpu.c#L539">riscv_cpu.c:539 insn fetch slow</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/riscv_cpu.c#L1229">riscv_cpu.c:1229 interp dispatch</a>
+            </div>
+          </div>
+        </details>
+
+        <details class="flow" open id="device-callback">
+          <summary><span class="summary-title"><strong>MMIO calls device-specific callbacks</strong><span>The CPU does not know CLINT, PLIC, HTIF, VirtIO, framebuffer, or PCI details.</span></span><span class="chevron" aria-hidden="true"></span></summary>
+          <div class="content">
+            <p>Device registration binds an address range to functions. That makes the CPU memory path generic: once a physical address lands in a device range, the registered callback receives only offset, value, size, and opaque state.</p>
+            <pre>cpu_register_device(map, base, size, opaque, read, write, flags)
+
+guest store to base + offset
+  -> target_write_slow()
+  -> range is device
+  -> write(opaque, offset, value, size_log2)</pre>
+            <div class="refs">
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/iomem.c#L184">iomem.c:184 register device</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/riscv_machine.c#L153">riscv_machine.c:153 HTIF write</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/virtio.c#L606">virtio.c:606 MMIO read</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/virtio.c#L719">virtio.c:719 MMIO write</a>
+            </div>
+          </div>
+        </details>
+      </main>
+      <aside class="side"><section class="panel toc"><h2>CPU Blocks</h2><a href="#memory-map">Memory map</a><a href="#translation">Translation</a><a href="#read-write">Reads/writes</a><a href="#instruction-fetch">Fetch</a><a href="#device-callback">MMIO callback</a></section></aside>
+    </div>
+  </div>
+</body>
+</html>

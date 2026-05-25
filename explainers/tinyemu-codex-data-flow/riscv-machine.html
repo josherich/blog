@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TinyEMU RISC-V Machine Flow</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="flow.js"></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand"><strong>TinyEMU Data Flow</strong><span>RISC-V machine</span></div>
+      <nav aria-label="Sections">
+        <a href="index.html">Overview</a>
+        <a href="startup-config.html">Startup</a>
+        <a aria-current="page" href="riscv-machine.html">RISC-V Machine</a>
+        <a href="cpu-memory.html">CPU & Memory</a>
+        <a href="virtio.html">VirtIO</a>
+        <a href="host-io.html">Host I/O</a>
+      </nav>
+    </header>
+    <section class="hero">
+      <h1>RISC-V machine assembly</h1>
+      <p>The RISC-V initializer converts `VirtMachineParams` into a concrete SoC: RAM at fixed physical addresses, CLINT/PLIC/HTIF devices, a sequence of VirtIO MMIO devices, optional framebuffer/input, and a boot image plus FDT.</p>
+    </section>
+    <div class="layout">
+      <main>
+        <div class="controls">
+          <button class="control" type="button" data-expand-all>Expand all</button>
+          <button class="control" type="button" data-collapse-all>Collapse all</button>
+          <label class="control">Filter <input data-filter type="search" aria-label="Filter blocks" placeholder="PLIC, FDT, boot"></label>
+        </div>
+
+        <details class="flow" open id="topology">
+          <summary><span class="summary-title"><strong>Machine topology is fixed and explicit</strong><span>Each RISC-V machine name chooses XLEN, then registers RAM and devices into one `PhysMemoryMap`.</span></span><span class="chevron" aria-hidden="true"></span></summary>
+          <div class="content">
+            <pre>riscv32/riscv64/riscv128
+  -> max_xlen
+  -> phys_mem_map_init()
+  -> riscv_cpu_init(mem_map, max_xlen)
+  -> cpu_register_ram(0x80000000, ram_size)
+  -> cpu_register_ram(0x00000000, 64 KiB)
+  -> cpu_register_device(CLINT)
+  -> cpu_register_device(PLIC)
+  -> cpu_register_device(HTIF)</pre>
+            <div class="refs">
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/riscv_machine.c#L829">riscv_machine.c:829 init</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/riscv_machine.c#L873">riscv_machine.c:873 CLINT map</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/riscv_machine.c#L881">riscv_machine.c:881 HTIF map</a>
+            </div>
+          </div>
+        </details>
+
+        <details class="flow" open id="interrupts">
+          <summary><span class="summary-title"><strong>CLINT and PLIC feed CPU interrupt state</strong><span>Timer and external interrupt data flows converge on RISC-V `mip` bits.</span></span><span class="chevron" aria-hidden="true"></span></summary>
+          <div class="content">
+            <p>CLINT reads expose emulated time and `timecmp`; writes clear timer interrupt state. PLIC IRQ signals set or clear pending bits, and `plic_update_mip()` projects pending external interrupts into machine and supervisor interrupt-pending bits.</p>
+            <pre>device raises IRQ
+  -> set_irq(IRQSignal)
+  -> plic_set_irq(irq_num, state)
+  -> plic_pending_irq changes
+  -> plic_update_mip()
+  -> riscv_cpu_set_mip(MIP_MEIP | MIP_SEIP)</pre>
+            <div class="refs">
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/riscv_machine.c#L195">riscv_machine.c:195 CLINT read</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/riscv_machine.c#L303">riscv_machine.c:303 PLIC set IRQ</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/iomem.c#L259">iomem.c:259 IRQSignal</a>
+            </div>
+          </div>
+        </details>
+
+        <details class="flow" open id="virtio-mmio">
+          <summary><span class="summary-title"><strong>VirtIO devices are placed in a linear MMIO bank</strong><span>Every configured device advances `vbus->addr` by `VIRTIO_SIZE` and gets the next PLIC IRQ.</span></span><span class="chevron" aria-hidden="true"></span></summary>
+          <div class="content">
+            <pre>VIRTIO_BASE_ADDR = 0x40010000
+VIRTIO_SIZE      = 0x1000
+VIRTIO_IRQ       = 1
+
+console -> net -> block drives -> 9P fs -> keyboard -> tablet
+each device:
+  vbus->irq = &plic_irq[next_irq]
+  virtio_*_init(vbus, backend)
+  vbus->addr += VIRTIO_SIZE
+  next_irq++</pre>
+            <div class="refs">
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/riscv_machine.c#L887">riscv_machine.c:887 console</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/riscv_machine.c#L897">riscv_machine.c:897 net</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/riscv_machine.c#L908">riscv_machine.c:908 block</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/riscv_machine.c#L919">riscv_machine.c:919 9P</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/riscv_machine.c#L942">riscv_machine.c:942 input</a>
+            </div>
+          </div>
+        </details>
+
+        <details class="flow" open id="boot">
+          <summary><span class="summary-title"><strong>Boot payloads are copied into guest RAM</strong><span>BIOS, optional kernel/initrd, FDT, and a low-RAM trampoline form the initial guest view.</span></span><span class="chevron" aria-hidden="true"></span></summary>
+          <div class="content">
+            <p>`copy_bios()` copies the BIOS at RAM base, aligns and copies the kernel, places initrd near the lower half of RAM, builds an FDT in low RAM, and writes a small trampoline at `0x1000` to jump to `0x80000000` with `a0=hartid` and `a1=dtb`.</p>
+            <pre>RAM_BASE_ADDR + 0:
+  BIOS bytes
+  aligned kernel bytes
+  optional initrd bytes
+
+low RAM:
+  0x1000          boot trampoline
+  0x1000 + 64     flattened device tree</pre>
+            <div class="refs">
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/riscv_machine.c#L587">riscv_machine.c:587 build FDT</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/riscv_machine.c#L754">riscv_machine.c:754 copy BIOS</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/riscv_machine.c#L803">riscv_machine.c:803 FDT output</a>
+            </div>
+          </div>
+        </details>
+
+        <details class="flow" open id="run-hooks">
+          <summary><span class="summary-title"><strong>Machine class hooks drive scheduling</strong><span>The generic run loop asks the machine for sleep time and CPU execution.</span></span><span class="chevron" aria-hidden="true"></span></summary>
+          <div class="content">
+            <p>`riscv_machine_get_sleep_duration()` shortens host sleep when the CLINT timer should fire or the CPU is not powered down. `riscv_machine_interp()` delegates the execution slice to the CPU interpreter.</p>
+            <pre>virt_machine_run()
+  -> virt_machine_get_sleep_duration()
+       RISC-V: consult timer compare and power-down state
+  -> select(...)
+  -> virt_machine_interp(MAX_EXEC_CYCLE)
+       RISC-V: riscv_cpu_interp(cpu_state, n)</pre>
+            <div class="refs">
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/riscv_machine.c#L990">riscv_machine.c:990 sleep duration</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/riscv_machine.c#L1014">riscv_machine.c:1014 interp</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/riscv_machine.c#L1044">riscv_machine.c:1044 class table</a>
+            </div>
+          </div>
+        </details>
+      </main>
+      <aside class="side"><section class="panel toc"><h2>RISC-V Blocks</h2><a href="#topology">Topology</a><a href="#interrupts">Interrupts</a><a href="#virtio-mmio">VirtIO MMIO</a><a href="#boot">Boot payloads</a><a href="#run-hooks">Run hooks</a></section></aside>
+    </div>
+  </div>
+</body>
+</html>

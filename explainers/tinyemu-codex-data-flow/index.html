@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TinyEMU Data Flow Overview</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="flow.js"></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <strong>TinyEMU Data Flow</strong>
+        <span>Interactive source-guided map</span>
+      </div>
+      <nav aria-label="Sections">
+        <a aria-current="page" href="index.html">Overview</a>
+        <a href="startup-config.html">Startup</a>
+        <a href="riscv-machine.html">RISC-V Machine</a>
+        <a href="cpu-memory.html">CPU & Memory</a>
+        <a href="virtio.html">VirtIO</a>
+        <a href="host-io.html">Host I/O</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <h1>How bytes move through TinyEMU</h1>
+      <p>This overview follows a VM from config file to running guest: config bytes become machine parameters, files become RAM and devices, guest CPU accesses route through the physical memory map, and VirtIO queues bridge guest descriptors to host-backed console, disk, network, filesystem, input, and display services.</p>
+    </section>
+
+    <div class="layout">
+      <main>
+        <div class="controls">
+          <button class="control" type="button" data-expand-all>Expand all</button>
+          <button class="control" type="button" data-collapse-all>Collapse all</button>
+          <label class="control">Filter <input data-filter type="search" aria-label="Filter blocks" placeholder="queue, RAM, config"></label>
+        </div>
+
+        <details class="flow" open id="big-picture">
+          <summary>
+            <span class="summary-title"><strong>End-to-end pipeline</strong><span>The main data structures and callbacks that connect host resources to the guest.</span></span>
+            <span class="chevron" aria-hidden="true"></span>
+          </summary>
+          <div class="content">
+            <div class="flowline" aria-label="Data flow">
+              <div class="node"><b>CLI and config</b><small>`main()` parses options, loads JSON, and resolves relative files.</small></div>
+              <div class="node"><b>Machine params</b><small>`VirtMachineParams` accumulates memory, files, drives, net, fs, display, and input.</small></div>
+              <div class="node"><b>Machine init</b><small>The selected `VirtMachineClass` registers RAM, MMIO devices, IRQs, and boot payloads.</small></div>
+              <div class="node"><b>Run loop</b><small>`select()` polls host fds, refreshes UI, then executes a bounded CPU slice.</small></div>
+              <div class="node"><b>Guest I/O</b><small>MMIO writes notify VirtIO queues; host callbacks complete descriptors and raise IRQs.</small></div>
+            </div>
+            <pre>CLI argv
+  -> VirtMachineParams
+  -> RISCVMachine / PC machine
+  -> PhysMemoryMap ranges
+  -> CPU interpreter
+  -> target_* memory helpers
+  -> device read/write callbacks
+  -> VirtIO queue callbacks
+  -> host block/net/fs/console/display/input</pre>
+            <div class="refs">
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/temu.c#L647">temu.c:647 main</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/machine.h#L58">machine.h:58 VirtMachineParams</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/riscv_machine.c#L829">riscv_machine.c:829 init</a>
+              <a href="https://github.com/jhhuh/tinyemu/blob/1a534eb4c3bd70197b99062fcdec2ab97a075fc2/temu.c#L537">temu.c:537 run loop</a>
+            </div>
+          </div>
+        </details>
+
+        <details class="flow" open id="layers">
+          <summary>
+            <span class="summary-title"><strong>Layer responsibilities</strong><span>Each layer owns one translation in the flow.</span></span>
+            <span class="chevron" aria-hidden="true"></span>
+          </summary>
+          <div class="content grid">
+            <div class="step">
+              <h3><span class="tag">Startup</span> Config to parameters</h3>
+              <p>`virt_machine_parse_config()` turns JSON keys into typed fields. `config_additional_file_load()` then loads BIOS, kernel, initrd, and VGA BIOS blobs before device construction.</p>
+            </div>
+            <div class="step">
+              <h3><span class="tag">Machine</span> Parameters to topology</h3>
+              <p>`riscv_machine_init()` allocates the CPU, maps RAM, installs CLINT/PLIC/HTIF MMIO callbacks, creates VirtIO devices, and copies boot payloads into RAM.</p>
+            </div>
+            <div class="step">
+              <h3><span class="tag">CPU</span> Virtual to physical</h3>
+              <p>`get_phys_addr()` performs privilege and page-table translation. Slow read/write paths populate TLB entries for RAM and call device callbacks for MMIO.</p>
+            </div>
+            <div class="step">
+              <h3><span class="tag">VirtIO</span> Descriptors to host work</h3>
+              <p>Guest drivers write queue addresses and notify registers. `queue_notify()` walks available descriptors, calls the device handler, then `virtio_consume_desc()` writes used-ring entries and raises an IRQ.</p>
+            </div>
+          </div>
+        </details>
+
+        <details class="flow" open id="navigation">
+          <summary>
+            <span class="summary-title"><strong>Where to continue</strong><span>Use component pages for deeper traces and source-linked branches.</span></span>
+            <span class="chevron" aria-hidden="true"></span>
+          </summary>
+          <div class="content">
+            <div class="grid">
+              <div class="note"><h3><a href="startup-config.html">Startup and config</a></h3><p>Command-line overrides, JSON parsing, local/HTTP file loading, and device-open staging.</p></div>
+              <div class="note"><h3><a href="riscv-machine.html">RISC-V machine</a></h3><p>RAM layout, FDT construction, CLINT, PLIC, HTIF, VirtIO MMIO placement, and boot trampoline.</p></div>
+              <div class="note"><h3><a href="cpu-memory.html">CPU and memory</a></h3><p>Instruction fetch, page-table walk, TLB caching, RAM dirty bits, and MMIO callback dispatch.</p></div>
+              <div class="note"><h3><a href="virtio.html">VirtIO devices</a></h3><p>Common queue machinery plus block, net, console, input, and 9P request flows.</p></div>
+              <div class="note"><h3><a href="host-io.html">Host I/O</a></h3><p>Local disk snapshot writes, HTTP block caching, tap/slirp network polling, terminal events, and local 9P filesystem operations.</p></div>
+            </div>
+          </div>
+        </details>
+      </main>
+
+      <aside class="side">
+        <section class="panel toc">
+          <h2>Overview Blocks</h2>
+          <a href="#big-picture">End-to-end pipeline</a>
+          <a href="#layers">Layer responsibilities</a>
+          <a href="#navigation">Where to continue</a>
+        </section>
+        <section class="panel">
+          <h2>Reference Policy</h2>
+          <p>All source links target commit <code>1a534eb4c3bd70197b99062fcdec2ab97a075fc2</code>, so line references stay stable.</p>
+        </section>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

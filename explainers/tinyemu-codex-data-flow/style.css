@@ -1,0 +1,399 @@
+:root {
+  color-scheme: light;
+  --bg: #f7f8f5;
+  --panel: #ffffff;
+  --panel-2: #eef4f1;
+  --ink: #18211f;
+  --muted: #5d6a66;
+  --line: #d8e0dc;
+  --accent: #1f7668;
+  --accent-2: #b84835;
+  --code-bg: #fbfbf7;
+  --shadow: 0 12px 30px rgba(30, 42, 38, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.55 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.2em;
+}
+
+.shell {
+  min-height: 100vh;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px clamp(16px, 4vw, 44px);
+  background: rgba(247, 248, 245, 0.94);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(12px);
+}
+
+.brand {
+  display: grid;
+  gap: 2px;
+}
+
+.brand strong {
+  font-size: 0.98rem;
+}
+
+.brand span {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.topbar nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.topbar nav a,
+.control {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 7px 10px;
+  background: var(--panel);
+  color: var(--ink);
+  font-size: 0.84rem;
+  text-decoration: none;
+}
+
+.topbar nav a[aria-current="page"] {
+  border-color: rgba(31, 118, 104, 0.55);
+  background: #e4f2ee;
+  color: #0d554c;
+}
+
+.hero {
+  padding: clamp(28px, 7vw, 70px) clamp(16px, 5vw, 72px) 26px;
+  border-bottom: 1px solid var(--line);
+  background:
+    linear-gradient(120deg, rgba(31, 118, 104, 0.14), transparent 50%),
+    linear-gradient(280deg, rgba(184, 72, 53, 0.12), transparent 45%);
+}
+
+.hero h1 {
+  max-width: 980px;
+  margin: 0;
+  font-size: clamp(2rem, 7vw, 5.2rem);
+  line-height: 0.96;
+  letter-spacing: 0;
+}
+
+.hero p {
+  max-width: 850px;
+  margin: 18px 0 0;
+  color: var(--muted);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 290px;
+  gap: 30px;
+  width: min(1280px, 100%);
+  margin: 0 auto;
+  padding: 30px clamp(16px, 4vw, 42px) 64px;
+}
+
+main {
+  min-width: 0;
+}
+
+.side {
+  position: sticky;
+  top: 86px;
+  align-self: start;
+  display: grid;
+  gap: 14px;
+}
+
+.panel,
+details.flow {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.panel {
+  padding: 18px;
+}
+
+.panel h2,
+.panel h3 {
+  margin: 0 0 10px;
+  font-size: 1rem;
+}
+
+.panel p,
+.panel li {
+  color: var(--muted);
+}
+
+.panel ul {
+  margin: 10px 0 0;
+  padding-left: 18px;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+details.flow {
+  margin: 0 0 16px;
+  overflow: clip;
+}
+
+details.flow summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel-2);
+}
+
+details.flow summary::-webkit-details-marker {
+  display: none;
+}
+
+.summary-title {
+  display: grid;
+  gap: 2px;
+}
+
+.summary-title strong {
+  font-size: 1.05rem;
+}
+
+.summary-title span {
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.chevron {
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: var(--panel);
+}
+
+.chevron::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+
+details[open] .chevron::before {
+  transform: rotate(225deg) translate(-1px, -1px);
+}
+
+.content {
+  padding: 18px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.step,
+.note {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+  background: #fff;
+}
+
+.step h3,
+.note h3 {
+  margin: 0 0 8px;
+  font-size: 0.98rem;
+}
+
+.step p,
+.note p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.flowline {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(120px, 1fr));
+  gap: 10px;
+  margin: 14px 0;
+  overflow-x: auto;
+  padding-bottom: 6px;
+}
+
+.node {
+  min-height: 96px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  background: #fff;
+}
+
+.node b {
+  display: block;
+  margin-bottom: 5px;
+  color: #102724;
+}
+
+.node small {
+  color: var(--muted);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  border-radius: 999px;
+  padding: 2px 8px;
+  background: #e6f0ec;
+  color: #0f5c52;
+  font-size: 0.76rem;
+  font-weight: 650;
+}
+
+pre,
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+pre {
+  white-space: pre;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin: 12px 0 0;
+  padding: 14px;
+  background: var(--code-bg);
+  color: #1f2523;
+  font-size: 0.88rem;
+}
+
+.refs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.refs a {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 9px;
+  background: #fff;
+  font-size: 0.82rem;
+  text-decoration: none;
+}
+
+.toc a {
+  display: block;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.toc a:last-child {
+  border-bottom: 0;
+}
+
+.toc a:hover {
+  color: var(--accent);
+}
+
+.callout {
+  border-left: 4px solid var(--accent-2);
+  padding: 10px 14px;
+  background: #fff6f1;
+  color: #5b352d;
+}
+
+@media (max-width: 880px) {
+  .topbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .topbar nav {
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 2px;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .side {
+    position: static;
+    order: -1;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .hero {
+    padding-top: 24px;
+  }
+
+  details.flow summary,
+  .content,
+  .panel {
+    padding: 14px;
+  }
+
+  .topbar nav a,
+  .control {
+    min-height: 34px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+}

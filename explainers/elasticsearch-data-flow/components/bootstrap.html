@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stateless Bootstrap</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <p class="eyebrow">Component</p>
+      <h1>Bootstrap and service wiring</h1>
+      <p class="lede">The plugin constructs the runtime graph, starts object-store infrastructure before translog replication, and selects index or search engines from shard promotability.</p>
+    </div>
+    <nav>
+      <a href="../index.html">Overview</a>
+      <a href="bootstrap.html">Bootstrap</a>
+      <a href="object-store.html">Object Store</a>
+      <a href="write-path.html">Write Path</a>
+      <a href="commit-lifecycle.html">Commit Lifecycle</a>
+      <a href="search-cache.html">Search Cache</a>
+      <a href="allocation-recovery.html">Allocation & Recovery</a>
+      <a href="cluster-state.html">Cluster State</a>
+    </nav>
+  </header>
+  <main>
+    <div class="toolbar"><button data-expand="open">Expand all</button><button data-expand="closed">Collapse all</button></div>
+    <section class="grid">
+      <details class="span-6" open>
+        <summary>Service graph</summary>
+        <div class="body">
+          <p><code>createComponents</code> builds the shared services used by all later flows: object store, shared blob cache, cache readers, election, consistency, commit cleaner, commit service, snapshots, translog replication, hollow shard handling, memory metrics, recovery metrics, resharding, PIT relocation, and search prefetch support.</p>
+          <pre><code>var objectStoreService = createObjectStoreService(...);
+var cacheService = createSharedBlobCacheService(...);
+var commitService = createStatelessCommitService(...);
+var translogReplicator = new TranslogReplicator(...);
+components.add(new StatelessComponents(translogReplicator, objectStoreService));</code></pre>
+          <div class="ref-list">
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/StatelessPlugin.java#L739-L1032">StatelessPlugin.createComponents</a>
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/StatelessComponents.java#L30-L61">StatelessComponents lifecycle ordering</a>
+          </div>
+        </div>
+      </details>
+
+      <details class="span-6" open>
+        <summary>Lifecycle order matters</summary>
+        <div class="body">
+          <p><code>TranslogReplicator</code> enqueues upload work into <code>ObjectStoreService</code>, so startup and shutdown are deliberately ordered. Object store starts first; translog replication stops first.</p>
+          <pre><code>protected void doStart() {
+    startComponents(List.of(objectStoreService, translogReplicator));
+}
+
+protected void doStop() {
+    stopComponents(List.of(translogReplicator, objectStoreService));
+}</code></pre>
+          <p>This prevents a stopped object-store service from receiving new translog upload tasks during node shutdown.</p>
+        </div>
+      </details>
+
+      <details class="span-12" open>
+        <summary>Engine selection</summary>
+        <div class="body">
+          <p>The engine factory is the main runtime fork. Promotable shards run the mutable indexing path. Search-only shards run a read-only engine that applies commit notifications.</p>
+          <div class="flow">
+            <div class="flow-step"><strong>Promotable</strong><code>config.isPromotableToPrimary()</code></div>
+            <div class="flow-step"><strong>Translog callback</strong>Operations call <code>replicator.add(...)</code>.</div>
+            <div class="flow-step"><strong>Deletion policy</strong>Tracks local commit refs for upload and hollowing.</div>
+            <div class="flow-step"><strong>IndexEngine</strong>Flush creates commits and upload pressure.</div>
+            <div class="flow-step"><strong>Searchable</strong>Non-promotable shards create <code>SearchEngine</code>.</div>
+            <div class="flow-step"><strong>SearchEngine</strong>Consumes notifications and opens cache-backed readers.</div>
+          </div>
+          <div class="ref-list">
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/StatelessPlugin.java#L1539-L1649">Engine factory and IndexEngine/SearchEngine branch</a>
+          </div>
+        </div>
+      </details>
+    </section>
+  </main>
+  <script src="../app.js"></script>
+</body>
+</html>

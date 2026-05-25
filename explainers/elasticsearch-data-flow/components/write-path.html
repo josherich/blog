@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Indexing Write Path</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <p class="eyebrow">Component</p>
+      <h1>Indexing and translog replication</h1>
+      <p class="lede">IndexEngine keeps the write path mutable while TranslogReplicator makes operation history durable in object storage for recovery and search visibility guarantees.</p>
+    </div>
+    <nav>
+      <a href="../index.html">Overview</a>
+      <a href="bootstrap.html">Bootstrap</a>
+      <a href="object-store.html">Object Store</a>
+      <a href="write-path.html">Write Path</a>
+      <a href="commit-lifecycle.html">Commit Lifecycle</a>
+      <a href="search-cache.html">Search Cache</a>
+      <a href="allocation-recovery.html">Allocation & Recovery</a>
+      <a href="cluster-state.html">Cluster State</a>
+    </nav>
+  </header>
+  <main>
+    <div class="toolbar"><button data-expand="open">Expand all</button><button data-expand="closed">Collapse all</button></div>
+    <section class="grid">
+      <details class="span-6" open>
+        <summary>Translog callback injection</summary>
+        <div class="body">
+          <p>The engine factory replaces the translog config with a callback that serializes operations into <code>TranslogReplicator.add</code>. It also disables filesystem fsync for that translog because object store replication is the durability path.</p>
+          <pre><code>(operation, seqNo, location) -&gt;
+    replicator.add(translogConfig.getShardId(), operation, seqNo, location),
+false // translog is replicated to the object store, no need fsync that</code></pre>
+          <div class="ref-list">
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/StatelessPlugin.java#L1543-L1561">Engine factory translog config replacement</a>
+          </div>
+        </div>
+      </details>
+
+      <details class="span-6" open>
+        <summary>Buffering and sync</summary>
+        <div class="body">
+          <p><code>TranslogReplicator.add</code> writes serialized operations into a node-level buffer. Size and sync pressure create upload tasks. <code>sync</code> and <code>syncAll</code> wait until the relevant locations are included in uploaded files.</p>
+          <pre><code>if (nodeTranslogBuffer.writeToBuffer(shardSyncState, operation, seqNo, location)) {
+    if (nodeTranslogBuffer.shouldFlushBufferDueToSize()) {
+        executor.execute(new FlushTask(nodeTranslogBuffer));
+    }
+}</code></pre>
+          <div class="ref-list">
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/engine/translog/TranslogReplicator.java#L290-L355">TranslogReplicator.add and sync</a>
+          </div>
+        </div>
+      </details>
+
+      <details class="span-6" open>
+        <summary>Remote upload</summary>
+        <div class="body">
+          <p>Upload tasks retain the byte reference, call <code>ObjectStoreService.uploadTranslogFile</code>, and retry on failure. The max uploaded translog generation is then used by commits to record a safe recovery start point.</p>
+          <pre><code>objectStoreService.uploadTranslogFile(
+    translog.metadata().name(),
+    translog.bytes().data(),
+    ActionListener.releaseAfter(...));</code></pre>
+          <div class="ref-list">
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/engine/translog/TranslogReplicator.java#L406-L425">Translog upload attempt</a>
+          </div>
+        </div>
+      </details>
+
+      <details class="span-6" open>
+        <summary>Commit records translog boundary</summary>
+        <div class="body">
+          <p>Before committing Lucene, <code>IndexEngine</code> records <code>maxUploadedFile + 1</code>. That value becomes metadata on the stateless compound commit, allowing recovery to know which translog files may be needed after the Lucene commit.</p>
+          <pre><code>translogStartFileForNextCommit =
+    translogReplicator.getMaxUploadedFile() + 1;
+super.commitIndexWriter(writer, translog);</code></pre>
+          <div class="ref-list">
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/engine/IndexEngine.java#L461-L475">IndexEngine.commitIndexWriter and afterFlush</a>
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/engine/IndexEngine.java#L789-L815">IndexEngine remote translog snapshot reader setup</a>
+          </div>
+        </div>
+      </details>
+    </section>
+  </main>
+  <script src="../app.js"></script>
+</body>
+</html>

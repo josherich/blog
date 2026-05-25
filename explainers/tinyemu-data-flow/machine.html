@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Machine Layer — TinyEMU Data Flow</title>
+<style>
+  :root {
+    --bg: #0b0f19; --panel: #111827; --panel-2: #0f172a; --text: #e5e7eb; --muted: #9ca3af;
+    --accent: #22d3ee; --accent-2: #818cf8; --border: #1f2937; --code-bg: #0b1220; --link: #60a5fa;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  header { position: sticky; top: 0; z-index: 10; background: linear-gradient(180deg, rgba(11,15,25,0.95), rgba(11,15,25,0.7)); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+  .container { max-width: 1100px; margin: 0 auto; padding: 16px; }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  .subtitle { color: var(--muted); font-size: 13px; }
+  .nav { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .nav a { display: inline-block; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--border); background: var(--panel); color: var(--text); font-size: 13px; }
+  .nav a:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin: 14px 0; }
+  .card h2 { margin: 0 0 8px; font-size: 18px; color: var(--accent); }
+  .card h3 { margin: 12px 0 6px; font-size: 15px; color: var(--accent-2); }
+  .card p, .card li { color: var(--text); line-height: 1.6; font-size: 14px; }
+  .card ul { padding-left: 18px; }
+  .card li { margin: 6px 0; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #0ea5e91a; color: #7dd3fc; border: 1px solid #0ea5e933; font-size: 12px; margin-right: 6px; }
+  .mermaid { background: var(--panel-2); border: 1px solid var(--border); border-radius: 12px; padding: 12px; overflow-x: auto; }
+  .codeblock { background: var(--code-bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px; overflow-x: auto; }
+  .codeblock pre { margin: 0; white-space: pre; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 13px; line-height: 1.5; color: #e5e7eb; }
+  .permalink { font-size: 12px; color: var(--muted); }
+  .permalink a { color: var(--link); }
+  footer { text-align: center; padding: 24px 0; color: var(--muted); font-size: 12px; }
+  @media (max-width: 640px) { h1 { font-size: 18px; } .card { padding: 12px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <h1>Machine Layer</h1>
+    <div class="subtitle">Config parsing, machine class dispatch, and SoC initialization</div>
+    <nav class="nav">
+      <a href="index.html">Overview</a>
+      <a href="machine.html">Machine Layer</a>
+      <a href="cpu.html">CPU / Interpreter</a>
+      <a href="memory.html">Memory &amp; I/O</a>
+      <a href="virtio.html">VirtIO Devices</a>
+      <a href="devices.html">Platform Devices</a>
+      <a href="network.html">Network &amp; Block</a>
+      <a href="display.html">Display &amp; Input</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="card">
+    <h2>Data Flow</h2>
+    <div class="mermaid">
+graph TD
+    A[main in temu.c] --> B[virt_machine_set_defaults]
+    B --> C[virt_machine_load_config_file]
+    C --> D[JSON parse: machine.c + json.c]
+    D --> E[VirtMachineParams]
+    E --> F[virt_machine_init]
+    F --> G{Machine class?}
+    G -->|riscv| H[riscv_machine_init]
+    G -->|pc| I[pc_machine_init]
+    H --> J[phys_mem_map_init]
+    H --> K[riscv_cpu_init]
+    H --> L[Register RAM + Devices]
+    H --> M[copy_bios / FDT]
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Configuration Parsing</h2>
+    <p>
+      The emulator starts in <code>main()</code> inside <code>temu.c</code>. It parses CLI flags, sets defaults, loads a JSON configuration file, and then overrides parameters like RAM size or acceleration.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/temu.c#L647-L835" target="_blank">temu.c#L647-L835</a></div>
+    <div class="codeblock"><pre>int main(int argc, char **argv)
+{
+    VirtMachine *s;
+    VirtMachineParams p_s, *p = &p_s;
+    /* ... option parsing ... */
+    virt_machine_set_defaults(p);
+    virt_machine_load_config_file(p, path, NULL, NULL);
+    /* override parameters */
+    if (ram_size > 0) p->ram_size = (uint64_t)ram_size << 20;
+    /* open drives, filesystems, network */
+    s = virt_machine_init(p);
+    for(;;) { virt_machine_run(s); }
+}</pre></div>
+
+    <h3>JSON Config Loader</h3>
+    <p>
+      <code>machine.c</code> defines <code>virt_machine_parse_config()</code> which walks the JSON object and fills <code>VirtMachineParams</code>: machine name, RAM size, drives, filesystems, network interfaces, display, and input devices.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/machine.c#L223-L404" target="_blank">machine.c#L223-L404</a></div>
+    <div class="codeblock"><pre>int virt_machine_parse_config(VirtMachineParams *p,
+                              const char *buf, int buf_len)
+{
+    /* parse JSON into VM parameters */
+}</pre></div>
+  </section>
+
+  <section class="card">
+    <h2>Machine Class Dispatch</h2>
+    <p>
+      <code>machine.h</code> defines the <code>VirtMachineClass</code> vtable. Two classes are exported: <code>riscv_machine_class</code> and <code>pc_machine_class</code>. The config <code>machine_name</code> selects which class is used.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/machine.h#L85-L105" target="_blank">machine.h#L85-L105</a></div>
+    <div class="codeblock"><pre>struct VirtMachineClass {
+    const char *machine_names;
+    void (*virt_machine_set_defaults)(VirtMachineParams *p);
+    VirtMachine *(*virt_machine_init)(const VirtMachineParams *p);
+    void (*virt_machine_end)(VirtMachine *s);
+    int (*virt_machine_get_sleep_duration)(VirtMachine *s, int delay);
+    void (*virt_machine_interp)(VirtMachine *s, int max_exec_cycle);
+    BOOL (*vm_mouse_is_absolute)(VirtMachine *s);
+    void (*vm_send_mouse_event)(VirtMachine *s1, int dx, int dy, int dz,
+                                unsigned int buttons);
+    void (*vm_send_key_event)(VirtMachine *s1, BOOL is_down, uint16_t key_code);
+};</pre></div>
+  </section>
+
+  <section class="card">
+    <h2>RISC-V Machine Initialization</h2>
+    <p>
+      <code>riscv_machine_init()</code> in <code>riscv_machine.c</code> is the heart of SoC setup. It creates the memory map, initializes the CPU, registers RAM, CLINT, PLIC, HTIF, and all VirtIO devices, then copies the BIOS/kernel into RAM and builds the Flattened Device Tree (FDT).
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L829-L978" target="_blank">riscv_machine.c#L829-L978</a></div>
+    <div class="codeblock"><pre>static VirtMachine *riscv_machine_init(const VirtMachineParams *p)
+{
+    RISCVMachine *s;
+    /* select xlen from machine_name */
+    s->mem_map = phys_mem_map_init();
+    s->cpu_state = riscv_cpu_init(s->mem_map, max_xlen);
+    cpu_register_ram(s->mem_map, RAM_BASE_ADDR, p->ram_size, 0);
+    cpu_register_ram(s->mem_map, 0x00000000, LOW_RAM_SIZE, 0);
+    cpu_register_device(s->mem_map, CLINT_BASE_ADDR, CLINT_SIZE, s,
+                        clint_read, clint_write, DEVIO_SIZE32);
+    cpu_register_device(s->mem_map, PLIC_BASE_ADDR, PLIC_SIZE, s,
+                        plic_read, plic_write, DEVIO_SIZE32);
+    cpu_register_device(s->mem_map, HTIF_BASE_ADDR, 16,
+                        s, htif_read, htif_write, DEVIO_SIZE32);
+    /* virtio devices */
+    virtio_console_init(vbus, p->console);
+    virtio_net_init(vbus, p->tab_eth[i].net);
+    virtio_block_init(vbus, p->tab_drive[i].block_dev);
+    virtio_9p_init(vbus, p->tab_fs[i].fs_dev, p->tab_fs[i].tag);
+    /* display & input */
+    simplefb_init(s->mem_map, FRAMEBUFFER_BASE_ADDR, fb_dev, p->width, p->height);
+    virtio_input_init(vbus, VIRTIO_INPUT_TYPE_KEYBOARD);
+    virtio_input_init(vbus, VIRTIO_INPUT_TYPE_TABLET);
+    /* copy bios/kernel/cmdline and build FDT */
+    copy_bios(s, ...);
+    return (VirtMachine *)s;
+}</pre></div>
+  </section>
+
+  <section class="card">
+    <h2>Key Data Structures</h2>
+    <ul>
+      <li><code>VirtMachineParams</code> — holds the full parsed configuration.</li>
+      <li><code>VirtMachine</code> — abstract base with console, net, fb_dev.</li>
+      <li><code>RISCVMachine</code> — extends VirtMachine with cpu_state, mem_map, plic_irq, htif, rtc, virtio_count.</li>
+    </ul>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/machine.h#L65-L83" target="_blank">machine.h#L65-L83</a> and <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L43-L63" target="_blank">riscv_machine.c#L43-L63</a></div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    Generated from TinyEMU source. Permalinks point to <a href="https://github.com/fernandotcl/TinyEMU" target="_blank">github.com/fernandotcl/TinyEMU</a>.
+  </div>
+</footer>
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+</script>
+</body>
+</html>

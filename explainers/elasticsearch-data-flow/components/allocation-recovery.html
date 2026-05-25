@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Allocation and Recovery</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <p class="eyebrow">Component</p>
+      <h1>Allocation, relocation, and hollow shards</h1>
+      <p class="lede">Stateless allocation assigns from scratch against node roles, while relocation focuses on committing a durable handoff and keeping inactive indexing shards thin.</p>
+    </div>
+    <nav>
+      <a href="../index.html">Overview</a>
+      <a href="bootstrap.html">Bootstrap</a>
+      <a href="object-store.html">Object Store</a>
+      <a href="write-path.html">Write Path</a>
+      <a href="commit-lifecycle.html">Commit Lifecycle</a>
+      <a href="search-cache.html">Search Cache</a>
+      <a href="allocation-recovery.html">Allocation & Recovery</a>
+      <a href="cluster-state.html">Cluster State</a>
+    </nav>
+  </header>
+  <main>
+    <div class="toolbar"><button data-expand="open">Expand all</button><button data-expand="closed">Collapse all</button></div>
+    <section class="grid">
+      <details class="span-6" open>
+        <summary>Allocation model</summary>
+        <div class="body">
+          <p>The existing-shards allocator intentionally does not look for old local shard data. All data is in object store, so the normal shards allocator can assign the shard from scratch. A separate decider enforces that promotable shards land on index nodes and searchable shards land on search nodes.</p>
+          <pre><code>return (shardRouting.isPromotableToPrimary() &amp;&amp; nodeRoles.contains(INDEX_ROLE))
+    || (shardRouting.isSearchable() &amp;&amp; nodeRoles.contains(SEARCH_ROLE));</code></pre>
+          <div class="ref-list">
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/allocation/StatelessExistingShardsAllocator.java#L28-L39">StatelessExistingShardsAllocator.allocateUnassigned</a>
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/allocation/StatelessAllocationDecider.java#L36-L63">StatelessAllocationDecider role check</a>
+          </div>
+        </div>
+      </details>
+
+      <details class="span-6" open>
+        <summary>Primary relocation source</summary>
+        <div class="body">
+          <p>Primary relocation first performs a best-effort flush, acquires primary context by blocking operations, and then either hollows the source engine or performs a final flush. The source waits for handoff while commit service tracks which generations are safe.</p>
+          <pre><code>preFlushEngine.flush(false, false, l);
+indexShard.relocated(..., (primaryContext, handoffResultListener) -&gt; {
+    ...
+    indexShard.resetEngine(newEngine -&gt; {
+        newEngine.refresh("hollowing");
+    });
+});</code></pre>
+          <div class="ref-list">
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/recovery/TransportStatelessPrimaryRelocationAction.java#L319-L415">TransportStatelessPrimaryRelocationAction source handoff</a>
+          </div>
+        </div>
+      </details>
+
+      <details class="span-6" open>
+        <summary>Relocation target</summary>
+        <div class="body">
+          <p>The target pre-recovers, applies retention leases, skips traditional translog recovery, opens the engine, validates sequence-number consistency, marks file details complete, and activates with the primary context.</p>
+          <pre><code>indexShard.openEngineAndSkipTranslogRecovery();
+...
+recoveryState.setStage(RecoveryState.Stage.FINALIZE);
+indexShard.activateWithPrimaryContext(request.primaryContext());</code></pre>
+          <div class="ref-list">
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/recovery/TransportStatelessPrimaryRelocationAction.java#L610-L655">TransportStatelessPrimaryRelocationAction target activation</a>
+          </div>
+        </div>
+      </details>
+
+      <details class="span-6" open>
+        <summary>Hollow shard blocker</summary>
+        <div class="body">
+          <p>Hollow shards block ingestion with a per-shard listener. A mutable operation either waits on the blocker or initiates unhollowing under the right primary permit conditions. This keeps inactive indexing shards light without letting writes pass through stale hollow state.</p>
+          <pre><code>var ingestionBlocker = hollowShards.get(shardId);
+if (featureEnabled &amp;&amp; ingestionBlocker != null) {
+    ingestionBlocker.listener.addListener(listener);
+    unhollow(shardId);
+}</code></pre>
+          <div class="ref-list">
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/commits/HollowShardsService.java#L53-L71">HollowShardsService class-level flow summary</a>
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/commits/HollowShardsService.java#L230-L257">HollowShardsService.addHollowShard</a>
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/commits/HollowShardsService.java#L301-L330">HollowShardsService.onMutableOperation</a>
+          </div>
+        </div>
+      </details>
+    </section>
+  </main>
+  <script src="../app.js"></script>
+</body>
+</html>

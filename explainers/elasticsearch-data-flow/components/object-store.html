@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Object Store Flow</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <p class="eyebrow">Component</p>
+      <h1>Object store service</h1>
+      <p class="lede">ObjectStoreService wraps repository-backed BlobStoreRepository instances and exposes typed containers for shard data, translogs, cluster state, and cleanup.</p>
+    </div>
+    <nav>
+      <a href="../index.html">Overview</a>
+      <a href="bootstrap.html">Bootstrap</a>
+      <a href="object-store.html">Object Store</a>
+      <a href="write-path.html">Write Path</a>
+      <a href="commit-lifecycle.html">Commit Lifecycle</a>
+      <a href="search-cache.html">Search Cache</a>
+      <a href="allocation-recovery.html">Allocation & Recovery</a>
+      <a href="cluster-state.html">Cluster State</a>
+    </nav>
+  </header>
+  <main>
+    <div class="toolbar"><button data-expand="open">Expand all</button><button data-expand="closed">Collapse all</button></div>
+    <section class="grid">
+      <details class="span-6" open>
+        <summary>Repository-backed startup</summary>
+        <div class="body">
+          <p>On start, the service creates a non-project repository from stateless object-store settings, starts it, and releases upload permits. In multi-project mode, additional project object stores are applied from cluster state.</p>
+          <pre><code>Repository repository = repositoriesService.createNonProjectRepository(getRepositoryMetadata(settings));
+this.objectStore = (BlobStoreRepository) repository;
+this.objectStore.start();
+this.permits.release(UPLOAD_PERMITS);</code></pre>
+          <div class="ref-list">
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/objectstore/ObjectStoreService.java#L116-L183">ObjectStoreService object store type settings</a>
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/objectstore/ObjectStoreService.java#L585-L604">ObjectStoreService.doStart</a>
+          </div>
+        </div>
+      </details>
+
+      <details class="span-6" open>
+        <summary>Upload entry points</summary>
+        <div class="body">
+          <p>Indexing code does not write blobs directly. Translog files and batched compound commits are enqueued as object-store tasks, which keeps backpressure and retry behavior centralized.</p>
+          <pre><code>public void uploadTranslogFile(String fileName, BytesReference reference, ActionListener&lt;Void&gt; listener) {
+    enqueueTask(listener, uploadTranslogTaskRunner, l -&gt; new TranslogFileUploadTask(fileName, reference, l));
+}
+
+public void uploadBatchedCompoundCommitFile(...) {
+    enqueueTask(listener, uploadTaskRunner, l -&gt; new BatchedCommitFileUploadTask(...));
+}</code></pre>
+          <div class="ref-list">
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/objectstore/ObjectStoreService.java#L661-L681">Translog and BCC upload APIs</a>
+          </div>
+        </div>
+      </details>
+
+      <details class="span-12" open>
+        <summary>Blob namespace</summary>
+        <div class="body">
+          <p>The service exposes different containers for different data classes. The key prefixes make the object store the durable boundary between node-local runtime state and cluster state that survives node replacement.</p>
+          <ul>
+            <li><code>indices/</code> and per-index containers hold shard commit files.</li>
+            <li><code>nodes/&lt;ephemeral-id&gt;/translog</code> holds replicated node translog files.</li>
+            <li><code>cluster_state/</code> holds stateless coordination and persisted metadata files.</li>
+            <li>Delete queues clean translog and commit blobs asynchronously after retention rules say they are safe.</li>
+          </ul>
+          <div class="ref-list">
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/objectstore/ObjectStoreService.java#L485-L532">Object-store blob container accessors</a>
+            <a href="https://github.com/elastic/elasticsearch/blob/4b8f87a3bdfbe8e1c8fc556911d605bbcd95bb77/x-pack/plugin/stateless/src/main/java/org/elasticsearch/xpack/stateless/objectstore/ObjectStoreService.java#L684-L690">Async translog deletion entry point</a>
+          </div>
+        </div>
+      </details>
+    </section>
+  </main>
+  <script src="../app.js"></script>
+</body>
+</html>

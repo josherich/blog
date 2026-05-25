@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Platform Devices — TinyEMU Data Flow</title>
+<style>
+  :root {
+    --bg: #0b0f19; --panel: #111827; --panel-2: #0f172a; --text: #e5e7eb; --muted: #9ca3af;
+    --accent: #22d3ee; --accent-2: #818cf8; --border: #1f2937; --code-bg: #0b1220; --link: #60a5fa;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  header { position: sticky; top: 0; z-index: 10; background: linear-gradient(180deg, rgba(11,15,25,0.95), rgba(11,15,25,0.7)); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+  .container { max-width: 1100px; margin: 0 auto; padding: 16px; }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  .subtitle { color: var(--muted); font-size: 13px; }
+  .nav { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .nav a { display: inline-block; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--border); background: var(--panel); color: var(--text); font-size: 13px; }
+  .nav a:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin: 14px 0; }
+  .card h2 { margin: 0 0 8px; font-size: 18px; color: var(--accent); }
+  .card h3 { margin: 12px 0 6px; font-size: 15px; color: var(--accent-2); }
+  .card p, .card li { color: var(--text); line-height: 1.6; font-size: 14px; }
+  .card ul { padding-left: 18px; }
+  .card li { margin: 6px 0; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #0ea5e91a; color: #7dd3fc; border: 1px solid #0ea5e933; font-size: 12px; margin-right: 6px; }
+  .mermaid { background: var(--panel-2); border: 1px solid var(--border); border-radius: 12px; padding: 12px; overflow-x: auto; }
+  .codeblock { background: var(--code-bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px; overflow-x: auto; }
+  .codeblock pre { margin: 0; white-space: pre; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 13px; line-height: 1.5; color: #e5e7eb; }
+  .permalink { font-size: 12px; color: var(--muted); }
+  .permalink a { color: var(--link); }
+  footer { text-align: center; padding: 24px 0; color: var(--muted); font-size: 12px; }
+  @media (max-width: 640px) { h1 { font-size: 18px; } .card { padding: 12px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <h1>Platform Devices</h1>
+    <div class="subtitle">CLINT, PLIC, HTIF, and FDT generation on RISC-V</div>
+    <nav class="nav">
+      <a href="index.html">Overview</a>
+      <a href="machine.html">Machine Layer</a>
+      <a href="cpu.html">CPU / Interpreter</a>
+      <a href="memory.html">Memory &amp; I/O</a>
+      <a href="virtio.html">VirtIO Devices</a>
+      <a href="devices.html">Platform Devices</a>
+      <a href="network.html">Network &amp; Block</a>
+      <a href="display.html">Display &amp; Input</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="card">
+    <h2>Data Flow</h2>
+    <div class="mermaid">
+graph TD
+    A[Timer IRQ] --> B[CLINT]
+    B --> C[set_irq -> mip.MTIP]
+    D[Device IRQ] --> E[PLIC]
+    E --> F[plic_set_irq -> mip.SEIP/MEIP]
+    G[HTIF Console] --> H[htif_read / htif_write]
+    H --> I[Host console / poweroff]
+    J[Machine Init] --> K[riscv_build_fdt]
+    K --> L[Device Tree Blob in RAM]
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>CLINT — Core Local Interruptor</h2>
+    <p>
+      The CLINT provides timer interrupts and software interrupts. It is mapped at <code>CLINT_BASE_ADDR</code>. Reading <code>mtimecmp</code> and writing <code>mtime</code> allows the guest to schedule timer interrupts. When the host real-time clock exceeds <code>mtimecmp</code>, the CLINT raises <code>MTIP</code> in <code>mip</code>.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L195-L239" target="_blank">riscv_machine.c#L195-L239</a></div>
+    <div class="codeblock"><pre>static uint32_t clint_read(void *opaque, uint32_t offset, int size_log2)
+{
+    RISCVMachine *s = opaque;
+    switch(offset) {
+    case 0x4000 ... 0x4007:
+        /* mtimecmp low/high */
+        return ...;
+    case 0xbff8 ... 0xbfff:
+        /* mtime low/high */
+        return rtc_get_time(s);
+    }
+}
+
+static void clint_write(void *opaque, uint32_t offset,
+                        uint32_t val, int size_log2)
+{
+    RISCVMachine *s = opaque;
+    switch(offset) {
+    case 0x4000 ... 0x4007:
+        /* set mtimecmp */
+        s->timecmp = ...;
+        break;
+    }
+}</pre></div>
+  </section>
+
+  <section class="card">
+    <h2>PLIC — Platform Level Interrupt Controller</h2>
+    <p>
+      The PLIC aggregates up to 32 external interrupt sources. Each source has a priority, a pending bit, and an enable bit per context. When a device raises an IRQ, <code>plic_set_irq</code> updates the pending register and asserts the CPU interrupt line.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L256-L314" target="_blank">riscv_machine.c#L256-L314</a></div>
+    <div class="codeblock"><pre>static uint32_t plic_read(void *opaque, uint32_t offset, int size_log2)
+{
+    RISCVMachine *s = opaque;
+    if (offset >= PLIC_HART_BASE) {
+        /* context threshold / claim/complete */
+    } else {
+        /* priority / pending / enable registers */
+    }
+}
+
+static void plic_write(void *opaque, uint32_t offset,
+                       uint32_t val, int size_log2)
+{
+    /* threshold, claim/complete, enable */
+}
+
+static void plic_set_irq(void *opaque, int irq_num, int level)
+{
+    RISCVMachine *s = opaque;
+    if (level) {
+        s->plic_pending_irq |= (1 << irq_num);
+    } else {
+        s->plic_pending_irq &= ~(1 << irq_num);
+    }
+    plic_update_mip(s);
+}</pre></div>
+  </section>
+
+  <section class="card">
+    <h2>HTIF — Host Target Interface</h2>
+    <p>
+      HTIF is a legacy mechanism for console output and system poweroff. TinyEMU uses fixed addresses (<code>0x40008000</code>) instead of ELF-symbol-based addresses. The bootloader was patched to support this.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L102-L177" target="_blank">riscv_machine.c#L102-L177</a></div>
+    <div class="codeblock"><pre>static uint32_t htif_read(void *opaque, uint32_t offset, int size_log2)
+{
+    RISCVMachine *s = opaque;
+    if (offset == 0) return s->htif_tohost;
+    if (offset == 8) return s->htif_fromhost;
+    return 0;
+}
+
+static void htif_write(void *opaque, uint32_t offset,
+                       uint32_t val, int size_log2)
+{
+    RISCVMachine *s = opaque;
+    if (offset == 0) {
+        s->htif_tohost = val;
+        htif_handle_cmd(s);
+    }
+}
+
+static void htif_handle_cmd(RISCVMachine *s)
+{
+    uint64_t cmd = s->htif_tohost;
+    int device = (cmd >> 56) & 0xff;
+    int cmd_code = (cmd >> 48) & 0xff;
+    if (device == 1 && cmd_code == 1) {
+        /* console output */
+        console_write(s->common.console, (char)(cmd & 0xff));
+    } else if (device == 0 && cmd_code == 0) {
+        /* poweroff */
+        exit(0);
+    }
+}</pre></div>
+  </section>
+
+  <section class="card">
+    <h2>FDT — Flattened Device Tree</h2>
+    <p>
+      Before boot, <code>riscv_build_fdt()</code> constructs a device tree blob in memory describing CPUs, memory, CLINT, PLIC, VirtIO devices, and the framebuffer. The BIOS reads this FDT to discover hardware.
+    </p>
+    <div class="permalink">Source: <a href="https://github.com/fernandotcl/TinyEMU/blob/master/riscv_machine.c#L587-L752" target="_blank">riscv_machine.c#L587-L752</a></div>
+    <div class="codeblock"><pre>int riscv_build_fdt(RISCVMachine *s, uint8_t *dst,
+                    uint64_t kernel_start, uint64_t kernel_size,
+                    uint64_t initrd_start, uint64_t initrd_size,
+                    const char *cmdline)
+{
+    FDTState *s = fdt_init();
+    fdt_begin_node(s, "");
+    fdt_prop_u32(s, "#address-cells", 2);
+    fdt_prop_u32(s, "#size-cells", 2);
+    fdt_prop_str(s, "compatible", "riscv-virtio");
+    /* cpus, memory, soc, virtio, chosen ... */
+    fdt_end_node(s);
+    return fdt_output(s, dst);
+}</pre></div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    Generated from TinyEMU source. Permalinks point to <a href="https://github.com/fernandotcl/TinyEMU" target="_blank">github.com/fernandotcl/TinyEMU</a>.
+  </div>
+</footer>
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+</script>
+</body>
+</html>
