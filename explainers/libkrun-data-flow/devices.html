@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>libkrun — Virtio Devices</title>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --border: #30363d;
+    --text: #e6edf3; --muted: #8b949e;
+    --api: #3fb950; --vmm: #58a6ff; --vcpu: #ff7b72;
+    --mem: #bc8cff; --dev: #39d0d8; --vsock: #ffa657;
+    --accent: #39d0d8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+
+  header { padding: 24px 20px 16px; border-bottom: 1px solid var(--border); }
+  header h1 { font-size: 1.4rem; font-weight: 700; color: var(--dev); }
+  header p { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+
+  nav { display: flex; gap: 8px; padding: 12px 20px; border-bottom: 1px solid var(--border); overflow-x: auto; flex-wrap: wrap; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 0.8rem; padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border); white-space: nowrap; transition: all .2s; }
+  nav a:hover, nav a.active { color: var(--text); border-color: var(--dev); background: rgba(57,208,216,.1); }
+
+  .gh { display: inline-flex; align-items: center; gap: 3px; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.7rem; color: var(--muted); text-decoration: none; padding: 1px 6px; border-radius: 4px; border: 1px solid var(--border); margin-left: 6px; transition: all .15s; vertical-align: middle; }
+  .gh:hover { color: var(--text); border-color: var(--dev); background: rgba(57,208,216,.1); }
+  .gh::before { content: '⌥'; font-size: 0.65rem; }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+  .section { margin-bottom: 32px; }
+  .section h2 { font-size: 1.05rem; font-weight: 600; margin-bottom: 14px; border-left: 3px solid var(--accent); padding-left: 10px; }
+
+  /* Bus diagram */
+  .bus-diagram { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+  .bus-row { display: flex; align-items: center; gap: 0; flex-wrap: wrap; justify-content: center; margin-bottom: 10px; }
+  .bus-box { padding: 8px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; text-align: center; margin: 4px; border: 1px solid transparent; }
+  .b-guest { background: rgba(255,123,114,.2); color: var(--vcpu); border-color: var(--vcpu); }
+  .b-mmio  { background: rgba(57,208,216,.15); color: var(--dev); border-color: var(--dev); width: 100%; text-align: center; border-radius: 8px; padding: 10px; }
+  .b-block { background: rgba(63,185,80,.15);  color: var(--api);   border-color: var(--api); }
+  .b-net   { background: rgba(88,166,255,.15); color: var(--vmm);  border-color: var(--vmm); }
+  .b-vsock { background: rgba(255,166,87,.15); color: var(--vsock);border-color: var(--vsock); }
+  .b-gpu   { background: rgba(188,140,255,.15);color: var(--mem);  border-color: var(--mem); }
+  .b-con   { background: rgba(57,208,216,.12); color: var(--dev);  border-color: rgba(57,208,216,.5); }
+  .b-ent   { background: rgba(255,123,114,.12);color: var(--vcpu); border-color: rgba(255,123,114,.5); }
+  .bus-connector { text-align: center; color: var(--muted); font-size: 0.82rem; margin: 4px 0; }
+
+  /* Device cards — all open */
+  .dev-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+  .dev-card { background: var(--surface); border: 1px solid var(--dev); border-radius: 10px; overflow: hidden; cursor: pointer; transition: border-color .2s; }
+  .dev-card:not(.open) { border-color: var(--border); }
+  .dev-card-head { padding: 14px 16px; display: flex; align-items: center; gap: 10px; }
+  .dev-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+  .dev-info h4 { font-size: 0.88rem; font-weight: 600; }
+  .dev-info span { font-size: 0.72rem; color: var(--muted); }
+  .dev-card-body { padding: 0 16px 14px; border-top: 1px solid var(--border); }
+  .dev-card:not(.open) .dev-card-body { display: none; }
+  .dev-card-body p { font-size: 0.82rem; color: var(--muted); line-height: 1.5; margin-top: 10px; }
+  .dev-card-body ul { list-style: none; margin-top: 6px; }
+  .dev-card-body ul li { font-size: 0.78rem; color: var(--muted); padding: 2px 0 2px 14px; position: relative; }
+  .dev-card-body ul li::before { content: '›'; position: absolute; left: 0; }
+
+  /* Virtqueue mechanics */
+  .queue-diagram { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .qd-header { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--border); }
+  .qd-col { padding: 10px 14px; text-align: center; }
+  .qd-col h4 { font-size: 0.82rem; font-weight: 700; color: var(--dev); margin-bottom: 2px; }
+  .qd-col p { font-size: 0.72rem; color: var(--muted); }
+  .qd-body { padding: 16px; font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
+  .qd-flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+  .qd-step { padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; white-space: nowrap; }
+  .qd-arrow { color: var(--muted); }
+
+  .code-block { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.78rem; background: rgba(0,0,0,.3); border: 1px solid var(--border); padding: 12px 14px; border-radius: 8px; color: var(--dev); overflow-x: auto; white-space: pre; line-height: 1.6; margin-top: 10px; }
+
+  .sep { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+  .to-next { text-align: center; padding: 10px 0; font-size: 0.85rem; color: var(--muted); }
+  .to-next a { color: var(--vsock); text-decoration: none; }
+  .to-next a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Virtio Devices</h1>
+  <p>src/devices/src/virtio/ — MMIO bus, transport layer, queue mechanics, and device drivers</p>
+</header>
+
+<nav>
+  <a href="index.html">Overview</a>
+  <a href="api.html">API Layer</a>
+  <a href="vmm.html">VMM Builder</a>
+  <a href="vcpu.html">vCPU Runtime</a>
+  <a href="memory.html">Memory</a>
+  <a href="devices.html" class="active">Virtio Devices</a>
+  <a href="vsock.html">Vsock / TSI</a>
+</nav>
+
+<div class="container">
+
+  <div class="section">
+    <h2>MMIO bus hierarchy <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/bus.rs#L81" target="_blank">bus.rs:81</a></h2>
+    <div class="bus-diagram">
+      <div style="text-align:center; margin-bottom:10px;">
+        <div class="bus-box b-guest" style="display:inline-block">Guest vCPU (MMIO exit)</div>
+      </div>
+      <div class="bus-connector">↓ KVM_EXIT_MMIO → MMIODeviceManager.dispatch(gpa) → Bus.get_device(addr) <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/bus.rs#L103" target="_blank">bus.rs:103</a></div>
+      <div class="b-mmio">MMIO Bus — BTreeMap&lt;(GPA range), Arc&lt;Mutex&lt;dyn BusDevice&gt;&gt;&gt; <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/bus.rs#L81" target="_blank">bus.rs:81</a></div>
+      <div class="bus-connector">↓ O(log n) range lookup → MmioTransport.read/write() <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/mmio.rs#L377" target="_blank">mmio.rs:377</a></div>
+      <div class="bus-row">
+        <div class="bus-box b-block">Block<br><small>dev 2</small></div>
+        <div class="bus-box b-net">Net<br><small>dev 1</small></div>
+        <div class="bus-box b-vsock">Vsock<br><small>dev 19</small></div>
+        <div class="bus-box b-gpu">GPU<br><small>dev 16</small></div>
+        <div class="bus-box b-con">Console<br><small>dev 3</small></div>
+        <div class="bus-box b-ent">Entropy<br><small>dev 4</small></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>MmioTransport — virtio MMIO wrapper <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/mmio.rs#L61" target="_blank">mmio.rs:61</a></h2>
+    <div class="code-block">MmioTransport  <a href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/mmio.rs#L61" style="color:var(--muted);font-size:0.7rem" target="_blank">mmio.rs:61</a>
+  ├─ device: Arc&lt;Mutex&lt;dyn VirtioDevice&gt;&gt;   // the actual device
+  ├─ queues: Vec&lt;Queue&gt;                       // RX, TX, event queues  <a href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/queue.rs#L324" style="color:var(--muted);font-size:0.7rem" target="_blank">queue.rs:324</a>
+  ├─ interrupt_status: AtomicUsize            // virtio interrupt flags
+  ├─ interrupt_evt: EventFd                  // signals host→guest IRQ
+  ├─ queue_evts: Vec&lt;EventFd&gt;               // guest→host queue kicks
+  └─ device_status: u32                      // feature negotiation state
+
+MMIO register map (4 KiB window per device):  <a href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/mmio.rs#L377" style="color:var(--muted);font-size:0.7rem" target="_blank">read:377</a>  <a href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/mmio.rs#L441" style="color:var(--muted);font-size:0.7rem" target="_blank">write:441</a>
+  0x000: MagicValue   0x74726976 ("virt")
+  0x004: Version      2
+  0x008: DeviceID     (block=2, net=1, vsock=19, …)
+  0x010: HostFeatures → device.features()
+  0x020: GuestFeatures← driver writes accepted features
+  0x030: QueueSel     select active queue
+  0x038: QueueMax     → max descriptors
+  0x044: QueueReady   ← driver signals queue is configured
+  0x050: QueueNotify  ← driver kicks queue (triggers EventFd)
+  0x060: InterruptStatus → interrupt_status
+  0x064: InterruptAck    ← driver clears interrupt
+  0x070: Status          ← driver writes DRIVER_OK etc.</div>
+  </div>
+
+  <hr class="sep">
+
+  <div class="section">
+    <h2>Virtqueue mechanics <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/queue.rs#L324" target="_blank">queue.rs:324</a></h2>
+    <div class="queue-diagram">
+      <div class="qd-header">
+        <div class="qd-col" style="background:rgba(57,208,216,.08)">
+          <h4>Descriptor Table <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/queue.rs#L197" target="_blank">:197</a></h4>
+          <p>Guest-allocated array of descriptors (addr, len, flags, next)</p>
+        </div>
+        <div class="qd-col" style="background:rgba(63,185,80,.08)">
+          <h4>Available Ring</h4>
+          <p>Guest writes head descriptor indices here to submit requests</p>
+        </div>
+        <div class="qd-col" style="background:rgba(255,166,87,.08)">
+          <h4>Used Ring <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/queue.rs#L502" target="_blank">add_used:502</a></h4>
+          <p>Host writes completed descriptor indices + byte count here</p>
+        </div>
+      </div>
+      <div class="qd-body">
+        <div class="qd-flow">
+          <div class="qd-step" style="background:rgba(63,185,80,.15);color:var(--api)">① Guest builds chain</div>
+          <span class="qd-arrow">→</span>
+          <div class="qd-step" style="background:rgba(63,185,80,.15);color:var(--api)">② Write avail.idx</div>
+          <span class="qd-arrow">→</span>
+          <div class="qd-step" style="background:rgba(57,208,216,.15);color:var(--dev)">③ Kick QUEUE_NOTIFY</div>
+          <span class="qd-arrow">→</span>
+          <div class="qd-step" style="background:rgba(57,208,216,.15);color:var(--dev)">④ Host dequeues <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/queue.rs#L452" target="_blank">pop:452</a></div>
+          <span class="qd-arrow">→</span>
+          <div class="qd-step" style="background:rgba(255,166,87,.15);color:var(--vsock)">⑤ Host writes used</div>
+          <span class="qd-arrow">→</span>
+          <div class="qd-step" style="background:rgba(188,140,255,.15);color:var(--mem)">⑥ Interrupt guest</div>
+        </div>
+        <p>Descriptors can be chained (NEXT flag) for scatter-gather I/O. WRITE flag marks host-writable descriptors (response buffers). The host uses DescriptorChain / DescIter <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/queue.rs#L197" target="_blank">queue.rs:197</a> to walk chains and distinguish readable from writable descriptors.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <div class="section">
+    <h2>Device catalogue</h2>
+    <div class="dev-grid" id="devGrid">
+
+      <div class="dev-card open">
+        <div class="dev-card-head">
+          <div class="dev-icon" style="background:rgba(63,185,80,.2)">💽</div>
+          <div class="dev-info"><h4>Block (virtio-blk) <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/vmm_config/block.rs#L1" target="_blank">block.rs</a></h4><span>device ID 2 · feature: blk</span></div>
+        </div>
+        <div class="dev-card-body">
+          <p>Provides a virtual disk backed by a host file or block device. The guest sees it as /dev/vda, vdb, …</p>
+          <ul>
+            <li>Request queue: one virtqueue</li>
+            <li>Op codes: IN, OUT, FLUSH, GET_ID</li>
+            <li>Worker thread for async I/O</li>
+            <li>Supports raw and qcow2 images</li>
+            <li>Read-only and writable modes</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dev-card open">
+        <div class="dev-card-head">
+          <div class="dev-icon" style="background:rgba(88,166,255,.2)">🌐</div>
+          <div class="dev-info"><h4>Network (virtio-net) <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/vmm_config/net.rs#L1" target="_blank">net.rs</a></h4><span>device ID 1 · feature: net</span></div>
+        </div>
+        <div class="dev-card-body">
+          <p>Ethernet device bridging guest and host networking.</p>
+          <ul>
+            <li>RX queue + TX queue (+ ctrl queue optional)</li>
+            <li>Linux: TAP fd backend</li>
+            <li>macOS: gvproxy / unix socket backend</li>
+            <li>TSO/UFO offload negotiation</li>
+            <li>MAC address from config</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dev-card open">
+        <div class="dev-card-head">
+          <div class="dev-icon" style="background:rgba(255,166,87,.2)">🔌</div>
+          <div class="dev-info"><h4>Vsock (virtio-vsock) <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/device.rs#L38" target="_blank">device.rs:38</a></h4><span>device ID 19 · always on</span></div>
+        </div>
+        <div class="dev-card-body">
+          <p>Guest↔host socket communication with transparent impersonation (TSI). See the Vsock page for deep-dive.</p>
+          <ul>
+            <li>RX <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/device.rs#L26" target="_blank">:26</a> + TX + event queue</li>
+            <li>TSI hijacks AF_INET and AF_UNIX</li>
+            <li>Muxer thread handles packet routing <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/muxer.rs#L99" target="_blank">muxer.rs:99</a></li>
+            <li>Flow control via credit packets</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dev-card open">
+        <div class="dev-card-head">
+          <div class="dev-icon" style="background:rgba(188,140,255,.2)">🎮</div>
+          <div class="dev-info"><h4>GPU (virtio-gpu)</h4><span>device ID 16 · feature: gpu</span></div>
+        </div>
+        <div class="dev-card-body">
+          <p>3D-accelerated GPU using the virgl protocol and shared memory for framebuffers.</p>
+          <ul>
+            <li>CMD queue + CURSOR queue</li>
+            <li>Virgl renderer on host side</li>
+            <li>SHM manager for resource buffers <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/device_manager/shm.rs#L19" target="_blank">shm.rs:19</a></li>
+            <li>Display backends: X11, Wayland, offscreen</li>
+            <li>OpenGL ES pass-through</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dev-card open">
+        <div class="dev-card-head">
+          <div class="dev-icon" style="background:rgba(57,208,216,.15)">📟</div>
+          <div class="dev-info"><h4>Console (virtio-console)</h4><span>device ID 3</span></div>
+        </div>
+        <div class="dev-card-body">
+          <p>Multiplexed serial console with multiple ports. Maps guest stdout/stderr/stdin to host file descriptors.</p>
+          <ul>
+            <li>One RX + TX queue pair per port</li>
+            <li>Control queue for port add/remove</li>
+            <li>Port 0: main console (ttyHVC0)</li>
+            <li>Additional ports for logging</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="dev-card open">
+        <div class="dev-card-head">
+          <div class="dev-icon" style="background:rgba(255,123,114,.15)">🎲</div>
+          <div class="dev-info"><h4>Entropy (virtio-rng)</h4><span>device ID 4</span></div>
+        </div>
+        <div class="dev-card-body">
+          <p>Seeds the guest kernel's CSPRNG from the host's /dev/urandom. Essential for fast guest boot (avoids entropy starvation).</p>
+          <ul>
+            <li>Single request queue</li>
+            <li>Guest requests N bytes of entropy</li>
+            <li>Host reads from /dev/urandom</li>
+            <li>No backend thread needed</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="to-next">flows into → <a href="vsock.html">Vsock / TSI</a></div>
+</div>
+
+<script>
+  document.getElementById('devGrid').querySelectorAll('.dev-card').forEach(card => {
+    card.querySelector('.dev-card-head').addEventListener('click', () => {
+      card.classList.toggle('open');
+    });
+  });
+</script>
+</body>
+</html>

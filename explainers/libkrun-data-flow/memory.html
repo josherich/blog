@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>libkrun — Memory Management</title>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --border: #30363d;
+    --text: #e6edf3; --muted: #8b949e;
+    --api: #3fb950; --vmm: #58a6ff; --vcpu: #ff7b72;
+    --mem: #bc8cff; --dev: #39d0d8; --vsock: #ffa657;
+    --accent: #bc8cff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+
+  header { padding: 24px 20px 16px; border-bottom: 1px solid var(--border); }
+  header h1 { font-size: 1.4rem; font-weight: 700; color: var(--mem); }
+  header p { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+
+  nav { display: flex; gap: 8px; padding: 12px 20px; border-bottom: 1px solid var(--border); overflow-x: auto; flex-wrap: wrap; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 0.8rem; padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border); white-space: nowrap; transition: all .2s; }
+  nav a:hover, nav a.active { color: var(--text); border-color: var(--mem); background: rgba(188,140,255,.1); }
+
+  .gh { display: inline-flex; align-items: center; gap: 3px; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.7rem; color: var(--muted); text-decoration: none; padding: 1px 6px; border-radius: 4px; border: 1px solid var(--border); margin-left: 6px; transition: all .15s; vertical-align: middle; }
+  .gh:hover { color: var(--text); border-color: var(--mem); background: rgba(188,140,255,.1); }
+  .gh::before { content: '⌥'; font-size: 0.65rem; }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+  .section { margin-bottom: 32px; }
+  .section h2 { font-size: 1.05rem; font-weight: 600; margin-bottom: 14px; border-left: 3px solid var(--accent); padding-left: 10px; }
+
+  /* Memory map */
+  .mem-map { display: flex; flex-direction: column; gap: 4px; }
+  .mem-region { border-radius: 8px; overflow: hidden; }
+  .mem-row { display: flex; align-items: center; cursor: pointer; transition: opacity .15s; min-height: 36px; border-radius: 8px; }
+  .mem-row:hover { opacity: .85; }
+  .mem-addr { width: 110px; flex-shrink: 0; font-family: monospace; font-size: 0.72rem; color: var(--muted); padding: 0 8px; text-align: right; line-height: 1.3; }
+  .mem-bar { flex: 1; display: flex; align-items: center; padding: 8px 12px; min-height: 36px; }
+  .mem-name { font-size: 0.82rem; font-weight: 600; }
+  .mem-note { font-size: 0.73rem; opacity: .75; margin-left: 8px; }
+  .r-fw    { background: rgba(255,123,114,.2);  color: var(--vcpu); }
+  .r-mmio  { background: rgba(57,208,216,.15);  color: var(--dev);  }
+  .r-gap   { background: rgba(48,54,61,.3);     color: var(--muted);}
+  .r-himem { background: rgba(88,166,255,.2);   color: var(--vmm);  }
+  .r-initrd{ background: rgba(255,166,87,.2);   color: var(--vsock);}
+  .r-kernel{ background: rgba(63,185,80,.2);    color: var(--api);  }
+  .r-shm   { background: rgba(188,140,255,.2);  color: var(--mem);  }
+  .r-low   { background: rgba(88,166,255,.12);  color: var(--vmm);  }
+  .r-zero  { background: rgba(48,54,61,.5);     color: var(--muted);}
+
+  /* Detail always visible below each row */
+  .mem-detail { padding: 10px 16px 12px 118px; font-size: 0.82rem; color: var(--muted); line-height: 1.6; border-bottom: 2px solid var(--bg); }
+  .mem-detail strong { color: var(--text); }
+  .mem-detail code { font-family: monospace; color: var(--dev); font-size: 0.8rem; }
+
+  /* Two column info */
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 540px) { .info-grid { grid-template-columns: 1fr; } }
+  .info-box { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .info-box h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; color: var(--mem); }
+  .info-box p { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+  .info-box ul { list-style: none; margin-top: 6px; }
+  .info-box ul li { font-size: 0.78rem; color: var(--muted); padding: 2px 0 2px 14px; position: relative; }
+  .info-box ul li::before { content: '·'; position: absolute; left: 0; color: var(--mem); }
+
+  .code-block { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.78rem; background: var(--surface); border: 1px solid var(--border); padding: 12px 14px; border-radius: 8px; color: var(--dev); overflow-x: auto; white-space: pre; line-height: 1.6; margin-top: 10px; }
+
+  .sep { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+  .to-next { text-align: center; padding: 10px 0; font-size: 0.85rem; color: var(--muted); }
+  .to-next a { color: var(--dev); text-decoration: none; }
+  .to-next a:hover { text-decoration: underline; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+  .leg { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: var(--muted); }
+  .leg-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Memory Management</h1>
+  <p>GuestMemoryMmap, SHM regions, physical address space layout</p>
+</header>
+
+<nav>
+  <a href="index.html">Overview</a>
+  <a href="api.html">API Layer</a>
+  <a href="vmm.html">VMM Builder</a>
+  <a href="vcpu.html">vCPU Runtime</a>
+  <a href="memory.html" class="active">Memory</a>
+  <a href="devices.html">Virtio Devices</a>
+  <a href="vsock.html">Vsock / TSI</a>
+</nav>
+
+<div class="container">
+
+  <div class="section">
+    <h2>x86-64 guest physical address space <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/builder.rs#L1513" target="_blank">builder.rs:1513</a></h2>
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:rgba(255,123,114,.5)"></div>Firmware</div>
+      <div class="leg"><div class="leg-dot" style="background:rgba(57,208,216,.5)"></div>MMIO</div>
+      <div class="leg"><div class="leg-dot" style="background:rgba(88,166,255,.4)"></div>RAM</div>
+      <div class="leg"><div class="leg-dot" style="background:rgba(188,140,255,.5)"></div>SHM</div>
+    </div>
+
+    <div class="mem-map">
+
+      <div class="mem-region">
+        <div class="mem-row r-fw">
+          <div class="mem-addr">0xF000_0000<br>–0xFFFF_FFFF</div>
+          <div class="mem-bar"><span class="mem-name">Firmware / BIOS</span><span class="mem-note">~256 MiB reserved</span></div>
+        </div>
+        <div class="mem-detail r-fw" style="background:rgba(255,123,114,.05)">
+          <strong>Firmware / BIOS region</strong> — top of 32-bit address space. On x86-64 this holds the BIOS ROM, ACPI tables, SMBIOS structures, MP tables, and the start trampoline. The payload can be the krunfw-embedded BIOS or an external UEFI firmware. Guest CPUs reset with CS:IP pointing into this region.
+        </div>
+      </div>
+
+      <div class="mem-region">
+        <div class="mem-row r-mmio">
+          <div class="mem-addr">0xFEC0_0000<br>–0xFEFF_FFFF</div>
+          <div class="mem-bar"><span class="mem-name">MMIO Device Space</span><span class="mem-note">virtio MMIO bars</span></div>
+        </div>
+        <div class="mem-detail r-mmio" style="background:rgba(57,208,216,.04)">
+          <strong>MMIO device space</strong> — each virtio device is assigned a 4 KiB (or larger) window here. The MMIO bus maps <code>Bus::insert(transport, base, len)</code> <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/bus.rs#L114" target="_blank">bus.rs:114</a> entries into a BTreeMap. Guest MMIO reads/writes to these addresses trigger KVM_EXIT_MMIO exits.
+        </div>
+      </div>
+
+      <div class="mem-region">
+        <div class="mem-row r-gap">
+          <div class="mem-addr">0xC000_0000<br>–0xFEBF_FFFF</div>
+          <div class="mem-bar"><span class="mem-name">PCI hole / gap</span><span class="mem-note">not RAM</span></div>
+        </div>
+        <div class="mem-detail" style="background:rgba(48,54,61,.15)">
+          <strong>PCI memory hole</strong> — the region between 3 GiB and the start of the MMIO window is left unmapped for PCI BARs and future device expansion. If the guest has more than 3 GiB of RAM, the remainder is placed in the high-RAM region above 4 GiB.
+        </div>
+      </div>
+
+      <div class="mem-region">
+        <div class="mem-row r-shm">
+          <div class="mem-addr">dynamic</div>
+          <div class="mem-bar"><span class="mem-name">Shared Memory (GPU / FS)</span><span class="mem-note">SHM manager</span></div>
+        </div>
+        <div class="mem-detail r-shm" style="background:rgba(188,140,255,.04)">
+          <strong>Shared memory regions</strong> — the SHM manager <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/device_manager/shm.rs#L19" target="_blank">shm.rs:19</a> allocates memfd-backed regions that are mapped into both host and guest address spaces. Used by: GPU device (virgl resource buffers, frame data), FS device (9P protocol buffers). Each region is registered with the hypervisor as an additional user memory region.
+        </div>
+      </div>
+
+      <div class="mem-region">
+        <div class="mem-row r-himem">
+          <div class="mem-addr">0x1_0000_0000<br>– mem_size</div>
+          <div class="mem-bar"><span class="mem-name">High RAM (&gt; 4 GiB)</span><span class="mem-note">if mem_size &gt; 3 GiB</span></div>
+        </div>
+        <div class="mem-detail r-himem" style="background:rgba(88,166,255,.04)">
+          <strong>High memory</strong> — if the VM is configured with more than 3 GiB of RAM, the remainder lives above the 4 GiB boundary. This avoids the 32-bit PCI hole. The E820 map (boot_params) advertises both low and high memory ranges to the guest kernel.
+        </div>
+      </div>
+
+      <div class="mem-region">
+        <div class="mem-row r-initrd">
+          <div class="mem-addr">near top of<br>low RAM</div>
+          <div class="mem-bar"><span class="mem-name">Initrd image</span><span class="mem-note">read_initrd_image()</span></div>
+        </div>
+        <div class="mem-detail r-initrd" style="background:rgba(255,166,87,.04)">
+          <strong>Initrd / initial ramdisk</strong> — loaded just below the top of low RAM. Its guest physical address and size are written into the kernel boot parameters (zero page) so the kernel can mount it as the initial root filesystem. The krunfw bundle includes a minimal initrd.
+        </div>
+      </div>
+
+      <div class="mem-region">
+        <div class="mem-row r-kernel">
+          <div class="mem-addr">0x0100_0000<br>(1 MiB)</div>
+          <div class="mem-bar"><span class="mem-name">Kernel image</span><span class="mem-note">kernel loader writes here</span></div>
+        </div>
+        <div class="mem-detail r-kernel" style="background:rgba(63,185,80,.04)">
+          <strong>Kernel load address</strong> — on x86-64 the kernel is loaded at 1 MiB (default bzImage load address). The kernel loader copies the compressed image, sets up the boot params (zero page at 0x7000), and the vCPU entry point is set to the kernel's 64-bit entry point.
+        </div>
+      </div>
+
+      <div class="mem-region">
+        <div class="mem-row r-low">
+          <div class="mem-addr">0x0001_0000<br>–0x000F_FFFF</div>
+          <div class="mem-bar"><span class="mem-name">Low RAM</span><span class="mem-note">boot params, GDT, zero page</span></div>
+        </div>
+        <div class="mem-detail r-low" style="background:rgba(88,166,255,.04)">
+          <strong>Low RAM</strong> — the first megabyte holds x86-specific boot structures: GDT, IDT, initial page tables, the boot_params (zero page) at 0x7000, and the kernel command line string. This region is mapped as regular RAM but written by the VMM before vCPU threads start.
+        </div>
+      </div>
+
+      <div class="mem-region">
+        <div class="mem-row r-zero">
+          <div class="mem-addr">0x0000_0000<br>–0x0000_FFFF</div>
+          <div class="mem-bar"><span class="mem-name">Reserved (zeroed)</span><span class="mem-note">IVT / BIOS data area</span></div>
+        </div>
+        <div class="mem-detail" style="background:rgba(48,54,61,.1)">
+          <strong>Reserved low memory</strong> — the first 64 KiB is zeroed and not used by the VMM. It covers the legacy real-mode IVT and BIOS data area. The Linux kernel skips this region when scanning the E820 map.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <div class="section">
+    <h2>GuestMemoryMmap internals</h2>
+    <div class="info-grid">
+      <div class="info-box">
+        <h4>Structure</h4>
+        <p>A Vec of (GuestAddress, MmapRegion) pairs from the vm-memory crate. Each pair maps a contiguous guest physical address range to an anonymous mmap.</p>
+        <ul>
+          <li>Backed by mmap(MAP_ANONYMOUS | MAP_PRIVATE)</li>
+          <li>Linux: optionally via memfd for vhost-user sharing</li>
+          <li>Registered with hypervisor as "user memory regions"</li>
+        </ul>
+      </div>
+      <div class="info-box">
+        <h4>Access helpers</h4>
+        <ul>
+          <li>read_obj&lt;T&gt;(gpa) — type-safe guest read</li>
+          <li>write_obj&lt;T&gt;(val, gpa) — type-safe guest write</li>
+          <li>get_host_address(gpa) — raw pointer for zero-copy</li>
+          <li>Atomic ops for virtqueue shared rings</li>
+          <li>All accesses bounds-checked against region list</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <div class="section">
+    <h2>SHM manager — shared memory for GPU / FS <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/device_manager/shm.rs#L19" target="_blank">shm.rs:19</a></h2>
+    <div class="code-block">ShmManager
+  ├─ regions: BTreeMap&lt;id, ShmRegion&gt;
+  │   └─ ShmRegion { host_addr, guest_addr, size, fd }
+  │
+  ├─ new(arch_info) → allocate initial regions  <a href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/device_manager/shm.rs#L27" style="color:var(--muted);font-size:0.7rem" target="_blank">shm.rs:27</a>
+  │   ├─ Linux: memfd_create() + mmap
+  │   └─ Registered via KVM_SET_USER_MEMORY_REGION
+  │
+  ├─ Used by GPU device:
+  │   └─ Virgl resource buffers mapped into SHM
+  │       guest reads/writes → directly visible to host virgl renderer
+  │
+  └─ Used by FS (9P) device:
+      └─ Protocol message buffers in shared region
+          avoids extra copy through virtqueue descriptors</div>
+  </div>
+
+  <div class="to-next">flows into → <a href="devices.html">Virtio Devices</a></div>
+</div>
+</body>
+</html>

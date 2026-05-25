@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LSP Integration — Zed Data Flow</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d1117; --surface: #161b22; --surface-2: #21262d;
+      --border: #30363d; --text: #e6edf3; --text-muted: #8b949e;
+      --mono: 'SF Mono','Cascadia Code','Fira Code','Consolas',monospace;
+      --radius: 8px; --accent: #facc15;
+    }
+    body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; font-size:16px; line-height:1.6; }
+    a { color:#58a6ff; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    code { font-family:var(--mono); font-size:0.85em; background:var(--surface-2); padding:1px 5px; border-radius:3px; color:#e6edf3; }
+
+    .site-hd { background:var(--surface); border-bottom:1px solid var(--border); padding:10px 16px; position:sticky; top:0; z-index:10; }
+    .hd-inner { max-width:760px; margin:0 auto; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+    .hd-back { color:var(--text-muted); font-size:14px; }
+    .hd-crumb { color:var(--text-muted); font-size:14px; flex:1; }
+    .hd-crumb strong { color:var(--text); }
+    .page-nav { display:flex; gap:6px; margin-left:auto; }
+    .page-nav a { padding:4px 10px; border:1px solid var(--border); border-radius:4px; font-size:13px; color:var(--text-muted); transition:all .15s; }
+    .page-nav a:hover { color:var(--text); border-color:#555; text-decoration:none; }
+
+    .hero { padding:40px 16px 32px; border-bottom:1px solid var(--border); background:linear-gradient(180deg,#1f1c0d80 0%,transparent 100%); }
+    .hero-inner { max-width:760px; margin:0 auto; }
+    .badge { display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; background:color-mix(in srgb,var(--accent) 12%,transparent); border:1px solid color-mix(in srgb,var(--accent) 25%,transparent); color:var(--accent); margin-bottom:14px; }
+    .badge-dot { width:6px; height:6px; border-radius:50%; background:var(--accent); }
+    h1 { font-size:clamp(22px,5vw,30px); font-weight:700; letter-spacing:-.5px; margin-bottom:8px; }
+    .hero-sub { color:var(--text-muted); font-size:15px; max-width:620px; }
+
+    .content { max-width:760px; margin:0 auto; }
+    .section { padding:28px 16px; border-bottom:1px solid var(--border); }
+    .section-title { font-size:17px; font-weight:600; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+    .section-title::before { content:''; display:block; width:3px; height:18px; background:var(--accent); border-radius:2px; }
+    p { color:var(--text-muted); font-size:14px; line-height:1.7; margin-bottom:10px; }
+    p:last-child { margin-bottom:0; }
+    p strong { color:var(--text); }
+
+    .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:12px; }
+    .card:last-child { margin-bottom:0; }
+    .card-hd { padding:11px 16px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:8px; background:var(--surface-2); }
+    .card-title { font-family:var(--mono); font-size:14px; font-weight:600; color:var(--accent); }
+    .card-loc a { font-size:12px; color:var(--text-muted); }
+    .card-loc a:hover { color:#58a6ff; }
+    .card-body { padding:14px 16px; }
+
+    .struct { font-family:var(--mono); font-size:12.5px; line-height:1.9; overflow-x:auto; white-space:pre; }
+    .kw { color:#ff79c6; }
+    .sname { color:#50fa7b; }
+    .field { color:#f8f8f2; }
+    .ftype { color:#8be9fd; }
+    .cmt { color:#6272a4; font-style:italic; }
+    .punct { color:#999; }
+
+    /* Timeline */
+    .timeline { display:flex; flex-direction:column; gap:0; margin:14px 0; position:relative; padding-left:32px; }
+    .timeline::before { content:''; position:absolute; left:11px; top:8px; bottom:8px; width:2px; background:var(--border); }
+    .tl-item { position:relative; margin-bottom:0; }
+    .tl-dot { position:absolute; left:-26px; top:4px; width:12px; height:12px; border-radius:50%; background:var(--accent); border:2px solid var(--bg); }
+    .tl-content { padding:0 0 16px; }
+    .tl-label { font-size:12px; font-family:var(--mono); color:var(--accent); font-weight:600; margin-bottom:2px; }
+    .tl-desc { font-size:13px; color:var(--text-muted); line-height:1.5; }
+
+    /* Message diagram */
+    .msg-flow { display:flex; gap:0; margin:14px 0; overflow-x:auto; }
+    .msg-col { flex:1; min-width:90px; }
+    .msg-actor { background:var(--surface-2); border:1px solid var(--border); border-radius:4px; padding:6px 8px; font-size:12px; font-family:var(--mono); text-align:center; color:var(--text-muted); margin-bottom:8px; }
+    .msg-actor.highlight { background:color-mix(in srgb,var(--accent) 12%,transparent); border-color:color-mix(in srgb,var(--accent) 30%,transparent); color:var(--accent); }
+    .msg-spacer { flex:0 0 24px; display:flex; align-items:center; justify-content:center; padding-top:4px; }
+    .msg-arrow { font-size:14px; color:var(--text-muted); }
+
+    /* Feature table */
+    .feat-table { width:100%; border-collapse:collapse; font-size:13px; }
+    .feat-table th { background:var(--surface-2); color:var(--text-muted); font-weight:600; padding:8px 12px; text-align:left; border:1px solid var(--border); font-size:12px; text-transform:uppercase; letter-spacing:.4px; }
+    .feat-table td { padding:8px 12px; border:1px solid var(--border); vertical-align:top; }
+    .feat-table td:first-child { font-family:var(--mono); color:var(--accent); font-size:12px; white-space:nowrap; }
+    .feat-table td:last-child { color:var(--text-muted); }
+
+    .ref-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; }
+    .ref-card { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:12px 14px; transition:border-color .15s; text-decoration:none; display:block; }
+    .ref-card:hover { border-color:#58a6ff; }
+    .ref-file { font-family:var(--mono); font-size:12px; color:#58a6ff; margin-bottom:4px; }
+    .ref-desc { font-size:12px; color:var(--text-muted); }
+
+    .callout { background:color-mix(in srgb,var(--accent) 8%,transparent); border:1px solid color-mix(in srgb,var(--accent) 20%,transparent); border-radius:6px; padding:12px 14px; font-size:13px; color:var(--text-muted); margin-top:14px; }
+    .callout strong { color:var(--accent); }
+
+    footer { text-align:center; padding:28px 16px; color:var(--text-muted); font-size:13px; border-top:1px solid var(--border); margin-top:16px; }
+  </style>
+</head>
+<body>
+
+<div class="site-hd">
+  <div class="hd-inner">
+    <a class="hd-back" href="index.html">← Overview</a>
+    <span class="hd-crumb">Stage 6 / <strong>LSP Integration</strong></span>
+    <nav class="page-nav">
+      <a href="buffer.html">← Buffer</a>
+      <a href="rendering.html">Rendering →</a>
+    </nav>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="badge"><span class="badge-dot"></span>Stage 6 of 7</div>
+    <h1>LSP Integration</h1>
+    <p class="hero-sub">Zed spawns per-project language server processes and communicates over <strong>JSON-RPC 2.0</strong>. After each buffer edit, the server is notified; diagnostics, completions, and hover data flow back asynchronously.</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- LanguageServer struct -->
+  <div class="section">
+    <div class="section-title">LanguageServer Struct</div>
+    <div class="card">
+      <div class="card-hd">
+        <span class="card-title">LanguageServer</span>
+        <span class="card-loc"><a href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/lsp/src/lsp.rs#L99" target="_blank">lsp.rs:99</a></span>
+      </div>
+      <div class="card-body">
+        <div class="struct">
+<span class="kw">pub struct</span> <span class="sname">LanguageServer</span> <span class="punct">{</span>
+    <span class="field">server_id</span><span class="punct">:</span>             <span class="ftype">LanguageServerId</span><span class="punct">,</span>
+    <span class="field">outbound_tx</span><span class="punct">:</span>           <span class="ftype">channel::Sender&lt;String&gt;</span><span class="punct">,</span>  <span class="cmt">// → server stdin</span>
+    <span class="field">notification_tx</span><span class="punct">:</span>       <span class="ftype">channel::Sender&lt;NotificationSerializer&gt;</span><span class="punct">,</span>
+    <span class="field">name</span><span class="punct">:</span>                  <span class="ftype">LanguageServerName</span><span class="punct">,</span>
+    <span class="field">capabilities</span><span class="punct">:</span>          <span class="ftype">RwLock&lt;ServerCapabilities&gt;</span><span class="punct">,</span>
+    <span class="field">notification_handlers</span><span class="punct">:</span> <span class="ftype">Arc&lt;Mutex&lt;HashMap&lt;&amp;'static str, Handler&gt;&gt;&gt;</span><span class="punct">,</span>
+    <span class="field">response_handlers</span><span class="punct">:</span>     <span class="ftype">Arc&lt;Mutex&lt;Option&lt;HashMap&lt;RequestId, Handler&gt;&gt;&gt;&gt;</span><span class="punct">,</span>
+    <span class="field">server</span><span class="punct">:</span>                <span class="ftype">Arc&lt;Mutex&lt;Option&lt;Child&gt;&gt;&gt;</span><span class="punct">,</span>  <span class="cmt">// spawned process</span>
+    <span class="field">workspace_folders</span><span class="punct">:</span>     <span class="ftype">Option&lt;Arc&lt;Mutex&lt;BTreeSet&lt;Uri&gt;&gt;&gt;&gt;</span><span class="punct">,</span>
+<span class="punct">}</span>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:10px">The server process is spawned with <code>std::process::Command</code>. Zed reads the server's stdout on a background thread, parses JSON-RPC messages, and dispatches them to the appropriate handler via the maps above.</p>
+  </div>
+
+  <!-- Lifecycle -->
+  <div class="section">
+    <div class="section-title">Server Lifecycle</div>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-label">initialize</div>
+          <div class="tl-desc">LspStore spawns the binary. Sends <code>initialize</code> request with workspace folders and client capabilities. Server responds with its own <code>ServerCapabilities</code>.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-label">initialized (notification)</div>
+          <div class="tl-desc">Client confirms it received capabilities. The server is now fully active.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-label">textDocument/didOpen (per buffer)</div>
+          <div class="tl-desc">When a buffer is first associated with this server, the full document content is sent. The server begins tracking changes.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-label">textDocument/didChange (per edit)</div>
+          <div class="tl-desc">After each buffer mutation, an incremental or full-content update is sent. The server re-analyzes and pushes fresh diagnostics via <code>textDocument/publishDiagnostics</code>.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-label">shutdown / exit</div>
+          <div class="tl-desc">When the project closes or the server crashes, <code>LspStore</code> sends the shutdown sequence and kills the process.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Document sync diagram -->
+  <div class="section">
+    <div class="section-title">Edit → Diagnostics Round-Trip</div>
+
+    <div class="msg-flow">
+      <div class="msg-col">
+        <div class="msg-actor highlight">Buffer</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:4px;text-align:center">edit applied</div>
+        <div style="margin-top:16px;font-size:12px;color:var(--text-muted);text-align:center">← diagnostics stored</div>
+        <div style="margin-top:16px;font-size:12px;color:var(--text-muted);text-align:center">cx.notify() → re-render</div>
+      </div>
+      <div class="msg-spacer"><div class="msg-arrow">→</div></div>
+      <div class="msg-col">
+        <div class="msg-actor">LspStore</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:4px;text-align:center">observes BufferEvent::Edited</div>
+        <div style="margin-top:16px;font-size:12px;color:var(--text-muted);text-align:center">receives publishDiagnostics</div>
+      </div>
+      <div class="msg-spacer"><div class="msg-arrow">→</div></div>
+      <div class="msg-col">
+        <div class="msg-actor">LanguageServer</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:4px;text-align:center">sends didChange</div>
+        <div style="margin-top:16px;font-size:12px;color:var(--text-muted);text-align:center;color:#facc15">← pushes diagnostics</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Async boundary:</strong> diagnostics arrive on an arbitrary background thread. The JSON-RPC receiver posts a foreground task that updates <code>Buffer::diagnostics</code> and calls <code>cx.notify()</code>, keeping all entity mutation single-threaded.
+    </div>
+  </div>
+
+  <!-- Features table -->
+  <div class="section">
+    <div class="section-title">LSP Feature Coverage</div>
+    <table class="feat-table">
+      <tr>
+        <th>Method</th>
+        <th>Direction</th>
+        <th>What Zed does with the result</th>
+      </tr>
+      <tr>
+        <td>textDocument/publishDiagnostics</td>
+        <td>Server → Client (push)</td>
+        <td>Stores in <code>Buffer::diagnostics</code>; rendered as inline underlines and gutter icons</td>
+      </tr>
+      <tr>
+        <td>textDocument/completion</td>
+        <td>Request/response</td>
+        <td>Populates the completion menu; items include edits, documentation, and kind icons</td>
+      </tr>
+      <tr>
+        <td>textDocument/hover</td>
+        <td>Request/response</td>
+        <td>Shown in a floating popover with markdown-rendered documentation</td>
+      </tr>
+      <tr>
+        <td>textDocument/definition</td>
+        <td>Request/response</td>
+        <td>Opens target file and jumps to the definition location</td>
+      </tr>
+      <tr>
+        <td>textDocument/rename</td>
+        <td>Request/response</td>
+        <td>Applies the returned <code>WorkspaceEdit</code> across all affected files</td>
+      </tr>
+      <tr>
+        <td>textDocument/formatting</td>
+        <td>Request/response</td>
+        <td>Applies text edits to buffer on save or via the Format action</td>
+      </tr>
+      <tr>
+        <td>textDocument/inlayHint</td>
+        <td>Request/response</td>
+        <td>Passed to <code>DisplayMap</code> as virtual inlay text between buffer characters</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Code refs -->
+  <div class="section">
+    <div class="section-title">Code References</div>
+    <div class="ref-grid">
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/lsp/src/lsp.rs#L99" target="_blank">
+        <div class="ref-file">lsp/src/lsp.rs:99</div>
+        <div class="ref-desc">LanguageServer struct &amp; JSON-RPC core</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/project/src/lsp_store.rs" target="_blank">
+        <div class="ref-file">project/src/lsp_store.rs</div>
+        <div class="ref-desc">LspStore — lifecycle &amp; routing</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/language/src/language.rs#L849" target="_blank">
+        <div class="ref-file">language/src/language.rs:849</div>
+        <div class="ref-desc">Language — LSP adapter config</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/language/src/buffer.rs#L98" target="_blank">
+        <div class="ref-file">language/src/buffer.rs:98</div>
+        <div class="ref-desc">Buffer::diagnostics field</div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <a href="buffer.html">← Buffer &amp; Language</a> &nbsp;·&nbsp;
+  Next: <a href="rendering.html">Rendering Pipeline →</a>
+</footer>
+
+</body>
+</html>

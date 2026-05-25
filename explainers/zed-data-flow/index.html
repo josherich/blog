@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zed Editor — Data Flow Architecture</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface-2: #21262d;
+      --border: #30363d;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --mono: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+      --radius: 8px;
+
+      --c1: #ff6b6b;
+      --c2: #c084fc;
+      --c3: #60a5fa;
+      --c4: #34d399;
+      --c5: #fb923c;
+      --c6: #facc15;
+      --c7: #f472b6;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    a { color: #58a6ff; }
+
+    header {
+      text-align: center;
+      padding: 48px 20px 36px;
+      background: linear-gradient(180deg, #13182080 0%, transparent 100%);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .logo-mark {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #388bfd 0%, #bc8cff 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+
+    .logo-name {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    h1 {
+      font-size: clamp(22px, 5vw, 34px);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+
+    .hero-sub {
+      color: var(--text-muted);
+      font-size: 15px;
+      margin-bottom: 24px;
+    }
+
+    .hero-note {
+      display: inline-block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 14px 16px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    nav a {
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      text-decoration: none;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    nav a:hover { color: var(--text); border-color: #555; }
+
+    main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 32px 16px 64px;
+    }
+
+    .flow-intro {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .flow-intro p {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .flow { display: flex; flex-direction: column; }
+
+    /* Stage card */
+    .stage {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--sc);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: border-color 0.15s;
+      overflow: hidden;
+    }
+
+    .stage:hover { border-color: var(--sc); }
+    .stage.open { border-color: var(--sc); }
+
+    .stage-hd {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 18px;
+      user-select: none;
+    }
+
+    .stage-num {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--sc);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #000;
+      flex-shrink: 0;
+    }
+
+    .stage-meta { flex: 1; min-width: 0; }
+
+    .stage-name {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .stage-tagline {
+      font-size: 13px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .stage-chevron {
+      color: var(--text-muted);
+      font-size: 18px;
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+
+
+    .stage-body {
+      max-height: 100%;
+      overflow: visible;
+    }
+
+    .stage-inner {
+      padding: 4px 18px 18px;
+      border-top: 1px solid var(--border);
+    }
+
+    .chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin: 12px 0 10px;
+    }
+
+    .chip {
+      padding: 2px 9px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 12px;
+      font-family: var(--mono);
+      color: var(--text-muted);
+    }
+
+    .types-heading {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      margin: 12px 0 6px;
+    }
+
+    .type-row {
+      display: flex;
+      gap: 10px;
+      align-items: baseline;
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+
+    .tn {
+      font-family: var(--mono);
+      color: var(--sc);
+      flex-shrink: 0;
+      min-width: 160px;
+    }
+
+    .td { color: var(--text-muted); }
+
+    .refs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .ref-a {
+      padding: 3px 9px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 12px;
+      font-family: var(--mono);
+      color: #58a6ff;
+      text-decoration: none;
+      transition: border-color 0.15s;
+    }
+
+    .ref-a:hover { border-color: #58a6ff; }
+
+    .detail-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 14px;
+      padding: 8px 16px;
+      background: var(--sc);
+      color: #000;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+
+    .detail-btn:hover { opacity: 0.85; }
+
+    .stage-desc-p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    /* Connectors */
+    .conn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 6px 0;
+      gap: 3px;
+    }
+
+    .conn-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--border);
+      animation: trickle 1.8s ease-in-out infinite;
+    }
+
+    .conn-dot:nth-child(2) { animation-delay: 0.3s; }
+    .conn-dot:nth-child(3) { animation-delay: 0.6s; }
+
+    @keyframes trickle {
+      0%, 100% { opacity: 0.2; transform: translateY(0); }
+      50% { opacity: 0.8; transform: translateY(2px); }
+    }
+
+    footer {
+      text-align: center;
+      padding: 28px 16px;
+      color: var(--text-muted);
+      font-size: 13px;
+      border-top: 1px solid var(--border);
+    }
+
+    footer a { color: #58a6ff; text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-mark">⚡</div>
+    <span class="logo-name">Zed</span>
+  </div>
+  <h1>Data Flow Architecture</h1>
+  <p class="hero-sub">Tracing a keystroke from OS event to GPU pixels</p>
+  <span class="hero-note">Commit <a href="https://github.com/zed-industries/zed/tree/13e7c11768" target="_blank" style="color:#58a6ff;text-decoration:none">13e7c11768</a> · Tap any stage to expand</span>
+</header>
+
+<nav>
+  <a href="gpui.html">GPUI Framework</a>
+  <a href="workspace.html">Workspace &amp; Project</a>
+  <a href="editor.html">Editor &amp; Actions</a>
+  <a href="buffer.html">Buffer &amp; Language</a>
+  <a href="lsp.html">LSP Integration</a>
+  <a href="rendering.html">Rendering Pipeline</a>
+</nav>
+
+<main>
+  <div class="flow-intro">
+    <p>Seven stages, each a tap away. Links open the full component breakdown.</p>
+  </div>
+
+  <div class="flow">
+
+    <!-- Stage 1 -->
+    <div class="stage open" style="--sc:var(--c1)">
+      <div class="stage-hd">
+        <div class="stage-num">1</div>
+        <div class="stage-meta">
+          <div class="stage-name">User Input</div>
+          <div class="stage-tagline">OS event arrives at the platform layer</div>
+        </div>
+        <div class="stage-chevron">›</div>
+      </div>
+      <div class="stage-body">
+        <div class="stage-inner">
+          <div class="chips">
+            <span class="chip">gpui_macos</span>
+            <span class="chip">gpui_linux</span>
+            <span class="chip">gpui_windows</span>
+          </div>
+          <p class="stage-desc-p">Platform-specific code (Cocoa/X11/Win32) intercepts OS events and converts them into GPUI's unified event types, then hands them off to the application event loop.</p>
+          <div class="types-heading">Key Types</div>
+          <div class="type-row"><span class="tn">KeyDownEvent</span><span class="td">Raw keystroke with modifiers</span></div>
+          <div class="type-row"><span class="tn">MouseDownEvent</span><span class="td">Click with position &amp; button</span></div>
+          <div class="type-row"><span class="tn">InputEvent</span><span class="td">IME composition text</span></div>
+          <div class="refs">
+            <a class="ref-a" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/gpui/src/keymap.rs" target="_blank">keymap.rs</a>
+            <a class="ref-a" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/gpui/src/app.rs#L2207" target="_blank">app.rs#L2207</a>
+          </div>
+          <a class="detail-btn" href="gpui.html#input">GPUI detail →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="conn"><div class="conn-dot"></div><div class="conn-dot"></div><div class="conn-dot"></div></div>
+
+    <!-- Stage 2 -->
+    <div class="stage open" style="--sc:var(--c2)">
+      <div class="stage-hd">
+        <div class="stage-num">2</div>
+        <div class="stage-meta">
+          <div class="stage-name">GPUI Event Dispatch</div>
+          <div class="stage-tagline">Keystroke resolved to an Action via Keymap</div>
+        </div>
+        <div class="stage-chevron">›</div>
+      </div>
+      <div class="stage-body">
+        <div class="stage-inner">
+          <div class="chips">
+            <span class="chip">gpui</span>
+          </div>
+          <p class="stage-desc-p"><code>App::dispatch_action()</code> routes actions through the focused element tree in capture then bubble phases. The keymap translates keystroke sequences like <code>ctrl-k</code> into typed action structs like <code>MoveToEndOfLine</code>.</p>
+          <div class="types-heading">Key Types</div>
+          <div class="type-row"><span class="tn">Application</span><span class="td">Root GPUI reference (app.rs:140)</span></div>
+          <div class="type-row"><span class="tn">App</span><span class="td">Global state: windows, entities (app.rs:596)</span></div>
+          <div class="type-row"><span class="tn">Keymap</span><span class="td">Bindings: keystroke → Action</span></div>
+          <div class="type-row"><span class="tn">Entity&lt;T&gt;</span><span class="td">Handle to reactive state</span></div>
+          <div class="refs">
+            <a class="ref-a" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/gpui/src/app.rs#L140" target="_blank">app.rs#L140</a>
+            <a class="ref-a" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/gpui/src/app.rs#L596" target="_blank">app.rs#L596</a>
+            <a class="ref-a" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/gpui/src/keymap.rs" target="_blank">keymap.rs</a>
+          </div>
+          <a class="detail-btn" href="gpui.html">GPUI detail →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="conn"><div class="conn-dot"></div><div class="conn-dot"></div><div class="conn-dot"></div></div>
+
+    <!-- Stage 3 -->
+    <div class="stage open" style="--sc:var(--c3)">
+      <div class="stage-hd">
+        <div class="stage-num">3</div>
+        <div class="stage-meta">
+          <div class="stage-name">Workspace &amp; Pane Routing</div>
+          <div class="stage-tagline">Action forwarded to the active editor item</div>
+        </div>
+        <div class="stage-chevron">›</div>
+      </div>
+      <div class="stage-body">
+        <div class="stage-inner">
+          <div class="chips">
+            <span class="chip">workspace</span>
+            <span class="chip">project</span>
+          </div>
+          <p class="stage-desc-p"><code>Workspace</code> orchestrates panes, docks, and the project. The active <code>Pane</code> holds a stack of items; the focused item (usually an <code>Editor</code>) receives the action. <code>Project</code> owns buffer and LSP lifetimes.</p>
+          <div class="types-heading">Key Types</div>
+          <div class="type-row"><span class="tn">Workspace</span><span class="td">Panes, docks, active project (ws.rs:1353)</span></div>
+          <div class="type-row"><span class="tn">Pane</span><span class="td">Tab container, routes to active item</span></div>
+          <div class="type-row"><span class="tn">Project</span><span class="td">Buffers, LSP servers, worktrees (proj.rs:213)</span></div>
+          <div class="refs">
+            <a class="ref-a" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/workspace/src/workspace.rs#L1353" target="_blank">workspace.rs#L1353</a>
+            <a class="ref-a" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/project/src/project.rs#L213" target="_blank">project.rs#L213</a>
+            <a class="ref-a" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/workspace/src/pane.rs" target="_blank">pane.rs</a>
+          </div>
+          <a class="detail-btn" href="workspace.html">Workspace detail →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="conn"><div class="conn-dot"></div><div class="conn-dot"></div><div class="conn-dot"></div></div>
+
+    <!-- Stage 4 -->
+    <div class="stage open" style="--sc:var(--c4)">
+      <div class="stage-hd">
+        <div class="stage-num">4</div>
+        <div class="stage-meta">
+          <div class="stage-name">Editor &amp; Action Handlers</div>
+          <div class="stage-tagline">Action mutates selections and buffer state</div>
+        </div>
+        <div class="stage-chevron">›</div>
+      </div>
+      <div class="stage-body">
+        <div class="stage-inner">
+          <div class="chips">
+            <span class="chip">editor</span>
+          </div>
+          <p class="stage-desc-p"><code>Editor</code> is the central editing component. <code>handle_input</code> processes typed text; action handlers update <code>SelectionsCollection</code> (cursors) and call <code>MultiBuffer::edit()</code> for text mutations. The <code>DisplayMap</code> tracks visual transforms.</p>
+          <div class="types-heading">Key Types</div>
+          <div class="type-row"><span class="tn">Editor</span><span class="td">Buffer, selections, scroll (editor.rs:883)</span></div>
+          <div class="type-row"><span class="tn">EditorElement</span><span class="td">Renders editor to scene (element.rs:198)</span></div>
+          <div class="type-row"><span class="tn">DisplayMap</span><span class="td">Wraps, folds, inlays, git diffs</span></div>
+          <div class="type-row"><span class="tn">SelectionsCollection</span><span class="td">All cursor &amp; selection ranges</span></div>
+          <div class="refs">
+            <a class="ref-a" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/editor/src/editor.rs#L883" target="_blank">editor.rs#L883</a>
+            <a class="ref-a" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/editor/src/input.rs#L66" target="_blank">input.rs#L66</a>
+            <a class="ref-a" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/editor/src/display_map.rs" target="_blank">display_map.rs</a>
+          </div>
+          <a class="detail-btn" href="editor.html">Editor detail →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="conn"><div class="conn-dot"></div><div class="conn-dot"></div><div class="conn-dot"></div></div>
+
+    <!-- Stage 5 -->
+    <div class="stage open" style="--sc:var(--c5)">
+      <div class="stage-hd">
+        <div class="stage-num">5</div>
+        <div class="stage-meta">
+          <div class="stage-name">Buffer &amp; Language</div>
+          <div class="stage-tagline">Text stored in CRDT; tree-sitter re-parses async</div>
+        </div>
+        <div class="stage-chevron">›</div>
+      </div>
+      <div class="stage-body">
+        <div class="stage-inner">
+          <div class="chips">
+            <span class="chip">language</span>
+            <span class="chip">multi_buffer</span>
+            <span class="chip">text</span>
+          </div>
+          <p class="stage-desc-p"><code>Buffer</code> wraps a CRDT <code>TextBuffer</code> and a tree-sitter <code>SyntaxMap</code>. Edits are applied transactionally; the syntax tree is invalidated and re-parsed on a background thread. <code>MultiBuffer</code> stitches multiple buffers into a single composite view with excerpt ranges and undo history.</p>
+          <div class="types-heading">Key Types</div>
+          <div class="type-row"><span class="tn">Buffer</span><span class="td">Text + syntax + diagnostics (buffer.rs:98)</span></div>
+          <div class="type-row"><span class="tn">MultiBuffer</span><span class="td">Composite of excerpts (multi_buffer.rs:73)</span></div>
+          <div class="type-row"><span class="tn">Language</span><span class="td">Grammar + LSP config (language.rs:849)</span></div>
+          <div class="type-row"><span class="tn">BufferSnapshot</span><span class="td">Immutable snapshot for rendering (buffer.rs:186)</span></div>
+          <div class="refs">
+            <a class="ref-a" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/language/src/buffer.rs#L98" target="_blank">buffer.rs#L98</a>
+            <a class="ref-a" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/multi_buffer/src/multi_buffer.rs#L73" target="_blank">multi_buffer.rs#L73</a>
+            <a class="ref-a" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/language/src/language.rs#L849" target="_blank">language.rs#L849</a>
+          </div>
+          <a class="detail-btn" href="buffer.html">Buffer detail →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="conn"><div class="conn-dot"></div><div class="conn-dot"></div><div class="conn-dot"></div></div>
+
+    <!-- Stage 6 -->
+    <div class="stage open" style="--sc:var(--c6)">
+      <div class="stage-hd">
+        <div class="stage-num">6</div>
+        <div class="stage-meta">
+          <div class="stage-name">LSP Integration</div>
+          <div class="stage-tagline">Language server notified; diagnostics flow back</div>
+        </div>
+        <div class="stage-chevron">›</div>
+      </div>
+      <div class="stage-body">
+        <div class="stage-inner">
+          <div class="chips">
+            <span class="chip">lsp</span>
+            <span class="chip">project</span>
+          </div>
+          <p class="stage-desc-p">After each buffer edit, <code>LspStore</code> sends a <code>textDocument/didChange</code> JSON-RPC notification to each registered <code>LanguageServer</code> process. The server replies asynchronously with diagnostics, which are stored back in the <code>Buffer</code> and trigger a re-render. Completions, hover, and go-to-definition follow the same request/response pattern.</p>
+          <div class="types-heading">Key Types</div>
+          <div class="type-row"><span class="tn">LanguageServer</span><span class="td">Spawned process + JSON-RPC (lsp.rs:99)</span></div>
+          <div class="type-row"><span class="tn">LspStore</span><span class="td">Manages server lifecycles</span></div>
+          <div class="type-row"><span class="tn">DiagnosticSet</span><span class="td">Per-server diagnostics on a buffer</span></div>
+          <div class="refs">
+            <a class="ref-a" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/lsp/src/lsp.rs#L99" target="_blank">lsp.rs#L99</a>
+            <a class="ref-a" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/project/src/lsp_store.rs" target="_blank">lsp_store.rs</a>
+          </div>
+          <a class="detail-btn" href="lsp.html">LSP detail →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="conn"><div class="conn-dot"></div><div class="conn-dot"></div><div class="conn-dot"></div></div>
+
+    <!-- Stage 7 -->
+    <div class="stage open" style="--sc:var(--c7)">
+      <div class="stage-hd">
+        <div class="stage-num">7</div>
+        <div class="stage-meta">
+          <div class="stage-name">Display Map &amp; GPU Rendering</div>
+          <div class="stage-tagline">Snapshot → elements → scene → WGPU → screen</div>
+        </div>
+        <div class="stage-chevron">›</div>
+      </div>
+      <div class="stage-body">
+        <div class="stage-inner">
+          <div class="chips">
+            <span class="chip">editor</span>
+            <span class="chip">gpui</span>
+            <span class="chip">gpui_wgpu</span>
+          </div>
+          <p class="stage-desc-p"><code>cx.notify()</code> schedules a redraw. GPUI calls each view's <code>render()</code>, building an element tree. <code>EditorElement::paint()</code> takes a <code>DisplaySnapshot</code>, converts lines to glyph positions, and emits quads/sprites into a <code>Scene</code>. The WGPU layer then batches these into draw calls submitted to Metal/Vulkan/DX12 and presents the framebuffer.</p>
+          <div class="types-heading">Key Types</div>
+          <div class="type-row"><span class="tn">DisplayMap</span><span class="td">Applies wraps, folds, inlays to buffer</span></div>
+          <div class="type-row"><span class="tn">EditorElement</span><span class="td">Paints lines, cursors, gutters (element.rs:9786)</span></div>
+          <div class="type-row"><span class="tn">Scene</span><span class="td">Accumulated GPU primitives (scene.rs:27)</span></div>
+          <div class="refs">
+            <a class="ref-a" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/editor/src/element.rs#L9786" target="_blank">element.rs#L9786</a>
+            <a class="ref-a" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/gpui/src/scene.rs#L27" target="_blank">scene.rs#L27</a>
+            <a class="ref-a" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/gpui_wgpu" target="_blank">gpui_wgpu/</a>
+          </div>
+          <a class="detail-btn" href="rendering.html">Rendering detail →</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- .flow -->
+</main>
+
+<footer>
+  Zed codebase · commit
+  <a href="https://github.com/zed-industries/zed/tree/13e7c11768" target="_blank">13e7c11768</a>
+</footer>
+
+</body>
+</html>

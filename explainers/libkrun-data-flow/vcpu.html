@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>libkrun — vCPU Runtime</title>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --border: #30363d;
+    --text: #e6edf3; --muted: #8b949e;
+    --api: #3fb950; --vmm: #58a6ff; --vcpu: #ff7b72;
+    --mem: #bc8cff; --dev: #39d0d8; --vsock: #ffa657;
+    --accent: #ff7b72;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+
+  header { padding: 24px 20px 16px; border-bottom: 1px solid var(--border); }
+  header h1 { font-size: 1.4rem; font-weight: 700; color: var(--vcpu); }
+  header p { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+
+  nav { display: flex; gap: 8px; padding: 12px 20px; border-bottom: 1px solid var(--border); overflow-x: auto; flex-wrap: wrap; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 0.8rem; padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border); white-space: nowrap; transition: all .2s; }
+  nav a:hover, nav a.active { color: var(--text); border-color: var(--vcpu); background: rgba(255,123,114,.1); }
+
+  .gh { display: inline-flex; align-items: center; gap: 3px; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.7rem; color: var(--muted); text-decoration: none; padding: 1px 6px; border-radius: 4px; border: 1px solid var(--border); margin-left: 6px; transition: all .15s; vertical-align: middle; }
+  .gh:hover { color: var(--text); border-color: var(--vcpu); background: rgba(255,123,114,.1); }
+  .gh::before { content: '⌥'; font-size: 0.65rem; }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+  .section { margin-bottom: 32px; }
+  .section h2 { font-size: 1.05rem; font-weight: 600; margin-bottom: 14px; border-left: 3px solid var(--accent); padding-left: 10px; }
+
+  /* Execution loop diagram */
+  .loop-diagram { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+  .loop-guest { border: 2px solid var(--vcpu); border-radius: 8px; padding: 12px 20px; display: inline-block; font-weight: 700; font-size: 0.95rem; color: var(--vcpu); background: rgba(255,123,114,.08); }
+  .loop-arrow { font-size: 1.4rem; color: var(--muted); margin: 6px 0; line-height: 1; text-align: center; }
+  .loop-exit-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 8px 0; }
+  .exit-badge { padding: 5px 12px; border-radius: 8px; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all .2s; border: 1px solid transparent; }
+  .exit-badge:hover { transform: scale(1.05); }
+  .exit-mmio  { background: rgba(57,208,216,.15);  color: var(--dev);   border-color: var(--dev); }
+  .exit-irq   { background: rgba(255,166,87,.15);  color: var(--vsock); border-color: var(--vsock); }
+  .exit-hlt   { background: rgba(255,123,114,.15); color: var(--vcpu);  border-color: var(--vcpu); }
+  .exit-intr  { background: rgba(188,140,255,.15); color: var(--mem);   border-color: var(--mem); }
+  .exit-detail { margin-top: 14px; text-align: left; padding: 14px 16px; background: rgba(0,0,0,.3); border-radius: 8px; font-size: 0.83rem; color: var(--muted); line-height: 1.6; border: 1px solid var(--border); }
+  .exit-detail strong { color: var(--text); }
+  .exit-detail code { font-family: monospace; color: var(--dev); font-size: 0.8rem; background: rgba(0,0,0,.3); padding: 0 4px; border-radius: 3px; }
+  /* All exit details shown by default — toggle hides */
+  .exit-detail { display: block; margin-bottom: 8px; }
+  .exit-badge.collapsed + .exit-detail { display: none; }
+
+  /* Thread model */
+  .thread-grid { display: flex; flex-direction: column; gap: 8px; }
+  .thread { display: flex; align-items: stretch; gap: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .thread-label { width: 90px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; text-align: center; padding: 8px; border-right: 1px solid var(--border); }
+  .thread-body { padding: 10px 14px; flex: 1; }
+  .thread-name { font-weight: 600; font-size: 0.85rem; margin-bottom: 3px; }
+  .thread-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.4; }
+  .t-vcpu  { background: rgba(255,123,114,.08); border-color: rgba(255,123,114,.3); }
+  .t-vcpu .thread-label { color: var(--vcpu); background: rgba(255,123,114,.1); }
+  .t-event { background: rgba(88,166,255,.08); border-color: rgba(88,166,255,.3); }
+  .t-event .thread-label { color: var(--vmm); background: rgba(88,166,255,.1); }
+  .t-dev   { background: rgba(57,208,216,.08); border-color: rgba(57,208,216,.3); }
+  .t-dev .thread-label { color: var(--dev); background: rgba(57,208,216,.1); }
+
+  /* Exit type table */
+  .exit-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  .exit-table th { text-align: left; padding: 8px 10px; border-bottom: 2px solid var(--border); color: var(--muted); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: .04em; }
+  .exit-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .exit-table tr:last-child td { border-bottom: none; }
+  .exit-table td:first-child { font-family: monospace; font-size: 0.78rem; color: var(--dev); white-space: nowrap; }
+  .exit-table td:nth-child(2) { color: var(--muted); line-height: 1.4; }
+
+  .sep { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+  .to-next { text-align: center; padding: 10px 0; font-size: 0.85rem; color: var(--muted); }
+  .to-next a { color: var(--mem); text-decoration: none; }
+  .to-next a:hover { text-decoration: underline; }
+
+  .code-block { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.78rem; background: var(--surface); border: 1px solid var(--border); padding: 12px 14px; border-radius: 8px; color: var(--dev); overflow-x: auto; white-space: pre; margin-top: 10px; line-height: 1.6; }
+
+  /* Exit details grid — all visible */
+  .exit-details-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>vCPU Runtime</h1>
+  <p>src/vmm/src/linux/vstate.rs — hypervisor execution loop and VM exit handling</p>
+</header>
+
+<nav>
+  <a href="index.html">Overview</a>
+  <a href="api.html">API Layer</a>
+  <a href="vmm.html">VMM Builder</a>
+  <a href="vcpu.html" class="active">vCPU Runtime</a>
+  <a href="memory.html">Memory</a>
+  <a href="devices.html">Virtio Devices</a>
+  <a href="vsock.html">Vsock / TSI</a>
+</nav>
+
+<div class="container">
+
+  <div class="section">
+    <h2>vCPU execution loop <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/linux/vstate.rs#L1571" target="_blank">vstate.rs:1571</a></h2>
+    <div class="loop-diagram">
+      <div style="text-align:center; margin-bottom:10px;">
+        <div class="loop-guest">Guest vCPU runs (KVM_RUN / hv_vcpu_run) <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/linux/vstate.rs#L1428" target="_blank">run_emulation:1428</a></div>
+      </div>
+      <div class="loop-arrow">↓ VM exit</div>
+      <div class="loop-exit-row">
+        <div class="exit-badge exit-mmio">MMIO Exit</div>
+        <div class="exit-badge exit-irq">Queue Kick</div>
+        <div class="exit-badge exit-hlt">HLT / Shutdown</div>
+        <div class="exit-badge exit-intr">Signal / Intr</div>
+      </div>
+
+      <div class="exit-details-grid">
+        <div class="exit-detail" style="border-color:rgba(57,208,216,.3)">
+          <strong>KVM_EXIT_MMIO</strong> <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/linux/vstate.rs#L1502" target="_blank">vstate.rs:1502</a> — the guest read or wrote to a guest-physical address in the MMIO window.<br><br>
+          Handler path: <code>VcpuExit::MmioRead/Write</code> → <code>MMIODeviceManager.dispatch_mmio(addr, data)</code> → <code>Bus.get_device(addr)</code> <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/bus.rs#L103" target="_blank">bus.rs:103</a> → <code>MmioTransport.read/write()</code> <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/mmio.rs#L377" target="_blank">mmio.rs:377</a> → device register access.<br><br>
+          This is how the guest driver negotiates features, submits queue kicks, and reads device status — all via MMIO reads/writes routed through this exit.
+        </div>
+
+        <div class="exit-detail" style="border-color:rgba(255,166,87,.3)">
+          <strong>Queue notification (EventFd)</strong> — the guest wrote to the QUEUE_NOTIFY MMIO register, which signals an EventFd. The EventManager wakes the device worker thread.<br><br>
+          Flow: guest write → <code>MmioTransport::write(QUEUE_NOTIFY)</code> → <code>queue_evts[n].write(1)</code> → EventManager wakes → device processes descriptors <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/queue.rs#L452" target="_blank">queue.rs:452</a> → marks used → <code>interrupt_evt.write(1)</code> → inject IRQ into vCPU.
+        </div>
+
+        <div class="exit-detail" style="border-color:rgba(255,123,114,.3)">
+          <strong>KVM_EXIT_HLT / KVM_EXIT_SHUTDOWN</strong> <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/linux/vstate.rs#L1514" target="_blank">vstate.rs:1514</a> — the guest executed HLT (x86) or a shutdown hypercall. The vCPU thread exits its loop, signals other vCPUs, and tears down the VM.<br><br>
+          On ARM: PSCI CPU_OFF / SYSTEM_OFF hypercalls route to <code>VcpuExit::SystemEvent</code> <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/linux/vstate.rs#L1532" target="_blank">vstate.rs:1532</a>. The VMM sends a shutdown signal to all other vCPU threads.
+        </div>
+
+        <div class="exit-detail" style="border-color:rgba(188,140,255,.3)">
+          <strong>Signal / KVM_EXIT_INTR</strong> — the vCPU was interrupted by a Unix signal (typically SIGUSR1 sent from the EventManager or another thread to wake the vCPU). The vCPU returns from <code>KVM_RUN</code>, processes pending events (injected IRQs, device work), then re-enters the guest.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Thread model</h2>
+    <div class="thread-grid">
+      <div class="thread t-vcpu">
+        <div class="thread-label">vCPU thread ×N</div>
+        <div class="thread-body">
+          <div class="thread-name">Vcpu::run() loop <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/linux/vstate.rs#L1571" target="_blank">vstate.rs:1571</a></div>
+          <div class="thread-desc">One OS thread per virtual CPU. Calls vcpu_fd.run() in a tight loop. Each iteration either completes without an exit (ideal case) or returns with a VcpuExit reason that must be handled before re-entering.</div>
+        </div>
+      </div>
+      <div class="thread t-event">
+        <div class="thread-label">Event thread ×1</div>
+        <div class="thread-body">
+          <div class="thread-name">EventManager epoll loop</div>
+          <div class="thread-desc">Main thread after build_microvm. Runs epoll_wait over all registered EventFds — virtio queue kicks, device interrupt signals, and process signals. Dispatches each event to the appropriate handler closure.</div>
+        </div>
+      </div>
+      <div class="thread t-dev">
+        <div class="thread-label">Device threads</div>
+        <div class="thread-body">
+          <div class="thread-name">Per-device worker (block, vsock, net)</div>
+          <div class="thread-desc">Some devices (block, vsock muxer <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/muxer.rs#L99" target="_blank">muxer.rs:99</a>) run their own threads to perform I/O without blocking the event loop. They communicate back via EventFds that the EventManager polls.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <div class="section">
+    <h2>VM exit type reference <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/linux/vstate.rs#L1428" target="_blank">run_emulation:1428</a></h2>
+    <table class="exit-table">
+      <thead>
+        <tr><th>Exit reason</th><th>What happened</th><th>Handler action</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>KVM_EXIT_MMIO <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/linux/vstate.rs#L1502" target="_blank">:1502</a></td>
+          <td>Guest accessed a guest-physical address outside RAM</td>
+          <td>Route to MmioTransport via Bus; complete read/write; resume</td>
+        </tr>
+        <tr>
+          <td>KVM_EXIT_IO <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/linux/vstate.rs#L1471" target="_blank">:1471</a></td>
+          <td>Guest executed IN/OUT port instruction (x86-64 only)</td>
+          <td>Route to legacy I/O bus (serial, CMOS, i8042); resume</td>
+        </tr>
+        <tr>
+          <td>KVM_EXIT_INTR</td>
+          <td>KVM_RUN interrupted by a signal to the vCPU thread</td>
+          <td>Check for pending work; re-enter KVM_RUN</td>
+        </tr>
+        <tr>
+          <td>KVM_EXIT_HLT <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/linux/vstate.rs#L1514" target="_blank">:1514</a></td>
+          <td>Guest executed HLT (x86) with no pending IRQ</td>
+          <td>Wait for interrupt kick before resuming</td>
+        </tr>
+        <tr>
+          <td>KVM_EXIT_SHUTDOWN <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/linux/vstate.rs#L1518" target="_blank">:1518</a></td>
+          <td>Guest triple-faulted or issued shutdown (e.g. ACPI off)</td>
+          <td>Signal all vCPU threads to stop; EventManager exits</td>
+        </tr>
+        <tr>
+          <td>KVM_EXIT_SYSTEM_EVENT <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/linux/vstate.rs#L1532" target="_blank">:1532</a></td>
+          <td>Guest issued PSCI reboot/poweroff (ARM)</td>
+          <td>Parse event type; trigger VM shutdown or reset</td>
+        </tr>
+        <tr>
+          <td>KVM_EXIT_FAIL_ENTRY <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/linux/vstate.rs#L1524" target="_blank">:1524</a></td>
+          <td>vCPU could not enter the guest (bad state)</td>
+          <td>Log hardware_entry_failure_reason; abort</td>
+        </tr>
+        <tr>
+          <td>HV_EXIT_REASON_VTIMER <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/macos/vstate.rs#L358" target="_blank">macos:358</a></td>
+          <td>Virtual timer fired (macOS HVF, ARM)</td>
+          <td>Inject virtual IRQ; resume</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="sep">
+
+  <div class="section">
+    <h2>Interrupt injection path</h2>
+    <div class="code-block">Device completes I/O
+    └─ interrupt_evt.write(1)               // EventFd signal
+         └─ EventManager wakes
+              └─ InterruptTransport::signal()
+                   └─ Linux: irqfd → KVM injects IRQ atomically
+                      macOS: hv_vcpu_interrupt() call  <a href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/macos/vstate.rs#L438" style="color:var(--muted);font-size:0.7rem" target="_blank">macos/vstate.rs:438</a>
+                           └─ vCPU picks up IRQ on next entry
+                                └─ Guest IRQ handler runs
+                                     └─ virtio driver reads used ring  <a href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/queue.rs#L502" style="color:var(--muted);font-size:0.7rem" target="_blank">queue.rs:502</a></div>
+  </div>
+
+  <div class="to-next">flows into → <a href="memory.html">Memory Management</a></div>
+</div>
+</body>
+</html>

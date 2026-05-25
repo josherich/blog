@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>libkrun — VMM Builder</title>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --border: #30363d;
+    --text: #e6edf3; --muted: #8b949e;
+    --api: #3fb950; --vmm: #58a6ff; --vcpu: #ff7b72;
+    --mem: #bc8cff; --dev: #39d0d8; --vsock: #ffa657;
+    --accent: #58a6ff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+
+  header { padding: 24px 20px 16px; border-bottom: 1px solid var(--border); }
+  header h1 { font-size: 1.4rem; font-weight: 700; color: var(--vmm); }
+  header p { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+
+  nav { display: flex; gap: 8px; padding: 12px 20px; border-bottom: 1px solid var(--border); overflow-x: auto; flex-wrap: wrap; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 0.8rem; padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border); white-space: nowrap; transition: all .2s; }
+  nav a:hover, nav a.active { color: var(--text); border-color: var(--vmm); background: rgba(88,166,255,.1); }
+
+  .gh { display: inline-flex; align-items: center; gap: 3px; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.7rem; color: var(--muted); text-decoration: none; padding: 1px 6px; border-radius: 4px; border: 1px solid var(--border); margin-left: 6px; transition: all .15s; vertical-align: middle; }
+  .gh:hover { color: var(--text); border-color: var(--vmm); background: rgba(88,166,255,.1); }
+  .gh::before { content: '⌥'; font-size: 0.65rem; }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+  .section { margin-bottom: 32px; }
+  .section h2 { font-size: 1.05rem; font-weight: 600; margin-bottom: 14px; border-left: 3px solid var(--accent); padding-left: 10px; }
+
+  /* Build steps */
+  .build-steps { display: flex; flex-direction: column; gap: 4px; }
+  .step { background: var(--surface); border: 1px solid var(--vmm); border-radius: 10px; overflow: hidden; cursor: pointer; transition: border-color .2s; }
+  .step-head { display: flex; align-items: center; gap: 12px; padding: 13px 16px; }
+  .step-num { width: 26px; height: 26px; border-radius: 50%; background: rgba(88,166,255,.15); color: var(--vmm); font-size: 0.8rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .step-name { font-weight: 600; font-size: 0.9rem; flex: 1; }
+  .step-file { font-size: 0.72rem; color: var(--muted); font-family: 'SFMono-Regular', Consolas, monospace; }
+  .step-caret { color: var(--muted); transition: transform .2s; }
+  .step:not(.open) .step-caret { transform: rotate(0deg); }
+  .step.open .step-caret { transform: rotate(90deg); }
+  .step-body { padding: 0 16px 14px 54px; border-top: 1px solid var(--border); }
+  .step:not(.open) .step-body { display: none; }
+  .step-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.6; margin-top: 10px; }
+  .step-code { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.78rem; background: #0d1117; padding: 8px 10px; border-radius: 6px; margin: 8px 0; color: var(--dev); overflow-x: auto; white-space: pre; }
+  .step-sub { margin-top: 8px; }
+  .step-sub li { font-size: 0.8rem; color: var(--muted); padding: 2px 0 2px 14px; position: relative; list-style: none; }
+  .step-sub li::before { content: '·'; position: absolute; left: 0; color: var(--vmm); }
+
+  /* Platform split */
+  .platform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 540px) { .platform-grid { grid-template-columns: 1fr; } }
+  .plat-box { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .plat-box h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; }
+  .plat-box ul { list-style: none; }
+  .plat-box ul li { font-size: 0.8rem; color: var(--muted); padding: 3px 0 3px 14px; position: relative; }
+  .plat-box ul li::before { content: '›'; position: absolute; left: 0; }
+  .linux { border-color: rgba(63,185,80,.4); }
+  .linux h4 { color: var(--api); }
+  .linux li::before { color: var(--api); }
+  .macos { border-color: rgba(88,166,255,.4); }
+  .macos h4 { color: var(--vmm); }
+  .macos li::before { color: var(--vmm); }
+
+  /* Payload tabs */
+  .payload-tabs { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .ptab { padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border); font-size: 0.8rem; cursor: pointer; color: var(--muted); background: transparent; transition: all .2s; }
+  .ptab.active { border-color: var(--vmm); color: var(--vmm); background: rgba(88,166,255,.1); }
+  .payload-content { display: none; background: rgba(0,0,0,.2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .payload-content.active { display: block; }
+  .payload-content p { font-size: 0.83rem; color: var(--muted); line-height: 1.5; }
+  .payload-content .path { font-family: monospace; color: var(--dev); font-size: 0.8rem; margin-top: 6px; }
+
+  .sep { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+  .to-next { text-align: center; padding: 10px 0; font-size: 0.85rem; color: var(--muted); }
+  .to-next a { color: var(--vcpu); text-decoration: none; }
+  .to-next a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<header>
+  <h1>VMM Builder</h1>
+  <p>src/vmm/src/builder.rs — orchestrates microVM creation from configuration</p>
+</header>
+
+<nav>
+  <a href="index.html">Overview</a>
+  <a href="api.html">API Layer</a>
+  <a href="vmm.html" class="active">VMM Builder</a>
+  <a href="vcpu.html">vCPU Runtime</a>
+  <a href="memory.html">Memory</a>
+  <a href="devices.html">Virtio Devices</a>
+  <a href="vsock.html">Vsock / TSI</a>
+</nav>
+
+<div class="container">
+
+  <div class="section">
+    <h2>build_microvm() — sequential steps <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/builder.rs#L563" target="_blank">builder.rs:563</a></h2>
+    <div class="build-steps" id="buildSteps">
+
+      <div class="step open">
+        <div class="step-head">
+          <div class="step-num">1</div>
+          <div class="step-name">choose_payload()</div>
+          <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/builder.rs#L532" target="_blank">builder.rs:532</a>
+          <span class="step-caret">›</span>
+        </div>
+        <div class="step-body">
+          <div class="step-desc">Selects how the guest will boot. Three options exist depending on what the caller configured.</div>
+          <div class="payload-tabs">
+            <div class="ptab active" data-target="p-bundle">krunfw bundle</div>
+            <div class="ptab" data-target="p-kernel">external kernel</div>
+            <div class="ptab" data-target="p-fw">firmware</div>
+          </div>
+          <div class="payload-content active" id="p-bundle">
+            <p>The default path. libkrunfw ships a pre-built kernel + initrd. krunfw_get_kernel() returns a slice of bytes already mapped into the process. Fastest to get started.</p>
+            <div class="path">source: krunfw crate → kernel bytes embedded in shared library</div>
+          </div>
+          <div class="payload-content" id="p-kernel">
+            <p>Caller provides a vmlinux ELF or bzImage path via krun_set_kernel(). The builder opens and maps the file, then loads it into guest RAM using the kernel module.</p>
+            <div class="path">source: caller-supplied file path in KernelConfig</div>
+          </div>
+          <div class="payload-content" id="p-fw">
+            <p>A UEFI or custom firmware binary. The builder maps it into the top of the guest physical address space (0xFFFFF000 on x86-64). Used for secure VM / TEE boots.</p>
+            <div class="path">source: VmResources.firmware_path</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step open">
+        <div class="step-head">
+          <div class="step-num">2</div>
+          <div class="step-name">create_guest_memory()</div>
+          <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/builder.rs#L1513" target="_blank">builder.rs:1513</a>
+          <span class="step-caret">›</span>
+        </div>
+        <div class="step-body">
+          <div class="step-desc">Allocates guest RAM as anonymous mmap regions and bundles them into a GuestMemoryMmap.</div>
+          <ul class="step-sub">
+            <li>Low RAM: 0x00000000 → min(mem_size, 3 GiB hole start)</li>
+            <li>High RAM (x86-64): 4 GiB → mem_size if guest RAM &gt; 3 GiB</li>
+            <li>Firmware slot (x86-64): fixed address at top of 32-bit space</li>
+            <li>Initrd: loaded into high memory via read_initrd_image()</li>
+            <li>Kernel / cmdline: written into low memory</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="step open">
+        <div class="step-head">
+          <div class="step-num">3</div>
+          <div class="step-name">setup_vm() — register memory with hypervisor</div>
+          <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/builder.rs#L1690" target="_blank">builder.rs:1690</a>
+          <span class="step-caret">›</span>
+        </div>
+        <div class="step-body">
+          <div class="step-desc">Opens the hypervisor handle and maps every GuestMemoryMmap region into the VM's physical address space.</div>
+          <div class="step-code">// Linux path
+KvmContext::new()           // open /dev/kvm
+Vm::new(kvm_fd)             // KVM_CREATE_VM ioctl  <a href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/linux/vstate.rs#L489" style="color:var(--muted);font-size:0.7rem" target="_blank">vstate.rs:489</a>
+vm.memory_init(guest_mem)   // KVM_SET_USER_MEMORY_REGION per region
+
+// macOS path
+HvfContext::new()           // Hypervisor.framework
+vm.memory_init(guest_mem)   // hv_vm_map() per region  <a href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/macos/vstate.rs#L94" style="color:var(--muted);font-size:0.7rem" target="_blank">vstate.rs:94</a></div>
+        </div>
+      </div>
+
+      <div class="step open">
+        <div class="step-head">
+          <div class="step-num">4</div>
+          <div class="step-name">setup_boot_loader() — arch tables</div>
+          <span class="step-file">src/arch/</span>
+          <span class="step-caret">›</span>
+        </div>
+        <div class="step-body">
+          <div class="step-desc">Writes architecture-specific boot structures into guest memory before vCPU threads start.</div>
+          <ul class="step-sub">
+            <li>x86-64: zero page (boot_params), GDT, IDT, BIOS/SMBIOS tables, E820 map</li>
+            <li>ARM: device tree blob (DTB) at fixed guest PA</li>
+            <li>RISC-V: device tree blob + SBI firmware setup</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="step open">
+        <div class="step-head">
+          <div class="step-num">5</div>
+          <div class="step-name">Create MMIO bus + register virtio devices</div>
+          <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/bus.rs#L114" target="_blank">bus.rs:114</a>
+          <span class="step-caret">›</span>
+        </div>
+        <div class="step-body">
+          <div class="step-desc">Constructs each enabled virtio device, wraps it in MmioTransport, and registers it on the MMIO bus. Device addresses are written into the guest's device tree / ACPI tables.</div>
+          <div class="step-code">// For each configured device:
+let device = Block::new(config)?;             // or Net, Vsock, Gpu…
+let transport = MmioTransport::new(device);   // virtio MMIO wrapper  <a href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/mmio.rs#L61" style="color:var(--muted);font-size:0.7rem" target="_blank">mmio.rs:61</a>
+mmio_bus.insert(transport, base_addr, len);   // register address range  <a href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/bus.rs#L114" style="color:var(--muted);font-size:0.7rem" target="_blank">bus.rs:114</a></div>
+          <ul class="step-sub">
+            <li>Block: one device per disk image; uses worker thread for async I/O</li>
+            <li>Net: TAP fd (Linux) or unix socket; RX/TX queues</li>
+            <li>Vsock: muxer thread + TSI port map <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/device.rs#L38" target="_blank">device.rs:38</a></li>
+            <li>GPU (optional): virgl context + SHM regions</li>
+            <li>Console: virtio-console with port multiplexing</li>
+            <li>Entropy: /dev/urandom passthrough</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="step open">
+        <div class="step-head">
+          <div class="step-num">6</div>
+          <div class="step-name">Create vCPU threads</div>
+          <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/linux/vstate.rs#L923" target="_blank">vstate.rs:923</a>
+          <span class="step-caret">›</span>
+        </div>
+        <div class="step-body">
+          <div class="step-desc">One OS thread is spawned per vCPU. Each thread configures CPU registers and then enters the hypervisor execution loop.</div>
+          <div class="step-code">for id in 0..vcpu_count {
+  let vcpu = vm.create_vcpu(id)?;
+  vcpu.configure_regs(entry_point, ...)?;  // RIP/PC, stack, flags
+  vcpu.configure_msr()?;                   // x86-64 MSRs
+  vcpu.configure_cpuid(kvm, vm)?;          // feature mask
+  thread::spawn(move || vcpu.run());       // → KVM_RUN / hv_vcpu_run  <a href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/linux/vstate.rs#L1571" style="color:var(--muted);font-size:0.7rem" target="_blank">vstate.rs:1571</a>
+}</div>
+        </div>
+      </div>
+
+      <div class="step open">
+        <div class="step-head">
+          <div class="step-num">7</div>
+          <div class="step-name">EventManager.run()</div>
+          <span class="step-file">src/polly/event_manager.rs</span>
+          <span class="step-caret">›</span>
+        </div>
+        <div class="step-body">
+          <div class="step-desc">The main thread enters an epoll loop. All EventFds (virtio queue kicks, interrupts, signals) are registered here. The loop exits only on VM shutdown or fatal error.</div>
+          <ul class="step-sub">
+            <li>Queue notify EventFds → wake device worker threads</li>
+            <li>Interrupt EventFds → inject IRQ into vCPU</li>
+            <li>SIGTERM / SIGINT → graceful VM shutdown</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <div class="section">
+    <h2>Platform backends</h2>
+    <div class="platform-grid">
+      <div class="plat-box linux">
+        <h4>Linux · KVM <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/linux/vstate.rs#L489" target="_blank">vstate.rs:489</a></h4>
+        <ul>
+          <li>Open /dev/kvm</li>
+          <li>KVM_CREATE_VM ioctl</li>
+          <li>KVM_SET_USER_MEMORY_REGION</li>
+          <li>KVM_CREATE_VCPU per thread</li>
+          <li>KVM_RUN in tight loop</li>
+          <li>KVM_EXIT_MMIO for device I/O</li>
+          <li>irqfd / ioeventfd (optional)</li>
+        </ul>
+      </div>
+      <div class="plat-box macos">
+        <h4>macOS · HVF <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/macos/vstate.rs#L94" target="_blank">vstate.rs:94</a></h4>
+        <ul>
+          <li>hv_vm_create()</li>
+          <li>hv_vm_map() per region</li>
+          <li>hv_vcpu_create() per thread</li>
+          <li>hv_vcpu_run() in loop</li>
+          <li>HV_EXIT_REASON_VTIMER exits</li>
+          <li>MMIO exits via exception bitmap</li>
+          <li>No irqfd — poll-based interrupts</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="to-next">flows into → <a href="vcpu.html">vCPU Runtime</a></div>
+</div>
+
+<script>
+  document.getElementById('buildSteps').querySelectorAll('.step').forEach(step => {
+    step.querySelector('.step-head').addEventListener('click', () => {
+      step.classList.toggle('open');
+    });
+  });
+
+  document.querySelectorAll('.ptab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.target;
+      const container = tab.closest('.step-body');
+      container.querySelectorAll('.ptab').forEach(t => t.classList.remove('active'));
+      container.querySelectorAll('.payload-content').forEach(c => c.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(target).classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

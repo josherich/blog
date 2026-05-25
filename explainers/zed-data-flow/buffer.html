@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buffer &amp; Language — Zed Data Flow</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d1117; --surface: #161b22; --surface-2: #21262d;
+      --border: #30363d; --text: #e6edf3; --text-muted: #8b949e;
+      --mono: 'SF Mono','Cascadia Code','Fira Code','Consolas',monospace;
+      --radius: 8px; --accent: #fb923c;
+    }
+    body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; font-size:16px; line-height:1.6; }
+    a { color:#58a6ff; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    code { font-family:var(--mono); font-size:0.85em; background:var(--surface-2); padding:1px 5px; border-radius:3px; color:#e6edf3; }
+
+    .site-hd { background:var(--surface); border-bottom:1px solid var(--border); padding:10px 16px; position:sticky; top:0; z-index:10; }
+    .hd-inner { max-width:760px; margin:0 auto; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+    .hd-back { color:var(--text-muted); font-size:14px; }
+    .hd-crumb { color:var(--text-muted); font-size:14px; flex:1; }
+    .hd-crumb strong { color:var(--text); }
+    .page-nav { display:flex; gap:6px; margin-left:auto; }
+    .page-nav a { padding:4px 10px; border:1px solid var(--border); border-radius:4px; font-size:13px; color:var(--text-muted); transition:all .15s; }
+    .page-nav a:hover { color:var(--text); border-color:#555; text-decoration:none; }
+
+    .hero { padding:40px 16px 32px; border-bottom:1px solid var(--border); background:linear-gradient(180deg,#1f160d80 0%,transparent 100%); }
+    .hero-inner { max-width:760px; margin:0 auto; }
+    .badge { display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; background:color-mix(in srgb,var(--accent) 12%,transparent); border:1px solid color-mix(in srgb,var(--accent) 25%,transparent); color:var(--accent); margin-bottom:14px; }
+    .badge-dot { width:6px; height:6px; border-radius:50%; background:var(--accent); }
+    h1 { font-size:clamp(22px,5vw,30px); font-weight:700; letter-spacing:-.5px; margin-bottom:8px; }
+    .hero-sub { color:var(--text-muted); font-size:15px; max-width:620px; }
+
+    .content { max-width:760px; margin:0 auto; }
+    .section { padding:28px 16px; border-bottom:1px solid var(--border); }
+    .section-title { font-size:17px; font-weight:600; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+    .section-title::before { content:''; display:block; width:3px; height:18px; background:var(--accent); border-radius:2px; }
+    p { color:var(--text-muted); font-size:14px; line-height:1.7; margin-bottom:10px; }
+    p:last-child { margin-bottom:0; }
+    p strong { color:var(--text); }
+
+    .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:12px; }
+    .card:last-child { margin-bottom:0; }
+    .card-hd { padding:11px 16px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:8px; background:var(--surface-2); }
+    .card-title { font-family:var(--mono); font-size:14px; font-weight:600; color:var(--accent); }
+    .card-loc a { font-size:12px; color:var(--text-muted); }
+    .card-loc a:hover { color:#58a6ff; }
+    .card-body { padding:14px 16px; }
+
+    .struct { font-family:var(--mono); font-size:12.5px; line-height:1.9; overflow-x:auto; white-space:pre; }
+    .kw { color:#ff79c6; }
+    .sname { color:#50fa7b; }
+    .field { color:#f8f8f2; }
+    .ftype { color:#8be9fd; }
+    .cmt { color:#6272a4; font-style:italic; }
+    .punct { color:#999; }
+
+    .flow-steps { display:flex; flex-direction:column; }
+    .flow-step { display:flex; gap:14px; align-items:flex-start; padding:12px 0; border-bottom:1px solid var(--border); }
+    .flow-step:last-child { border-bottom:none; }
+    .step-num { width:26px; height:26px; border-radius:50%; background:var(--accent); color:#000; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
+    .step-body { flex:1; }
+    .step-title { font-size:14px; font-weight:600; margin-bottom:3px; }
+    .step-desc { font-size:13px; color:var(--text-muted); line-height:1.5; }
+
+    .ref-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; }
+    .ref-card { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:12px 14px; transition:border-color .15s; text-decoration:none; display:block; }
+    .ref-card:hover { border-color:#58a6ff; }
+    .ref-file { font-family:var(--mono); font-size:12px; color:#58a6ff; margin-bottom:4px; }
+    .ref-desc { font-size:12px; color:var(--text-muted); }
+
+    .callout { background:color-mix(in srgb,var(--accent) 8%,transparent); border:1px solid color-mix(in srgb,var(--accent) 20%,transparent); border-radius:6px; padding:12px 14px; font-size:13px; color:var(--text-muted); margin-top:14px; }
+    .callout strong { color:var(--accent); }
+
+    /* Layer diagram */
+    .layers { display:flex; flex-direction:column; gap:3px; margin:16px 0; }
+    .layer { border-radius:5px; padding:10px 14px; font-size:13px; display:flex; align-items:center; justify-content:space-between; }
+    .layer-name { font-family:var(--mono); font-weight:600; }
+    .layer-desc { font-size:12px; color:var(--text-muted); }
+    .layer-l1 { background:color-mix(in srgb,var(--accent) 20%,transparent); border:1px solid color-mix(in srgb,var(--accent) 35%,transparent); }
+    .layer-l2 { background:color-mix(in srgb,var(--accent) 13%,transparent); border:1px solid color-mix(in srgb,var(--accent) 22%,transparent); }
+    .layer-l3 { background:color-mix(in srgb,var(--accent) 8%,transparent); border:1px solid color-mix(in srgb,var(--accent) 14%,transparent); }
+
+    footer { text-align:center; padding:28px 16px; color:var(--text-muted); font-size:13px; border-top:1px solid var(--border); margin-top:16px; }
+  </style>
+</head>
+<body>
+
+<div class="site-hd">
+  <div class="hd-inner">
+    <a class="hd-back" href="index.html">← Overview</a>
+    <span class="hd-crumb">Stage 5 / <strong>Buffer &amp; Language</strong></span>
+    <nav class="page-nav">
+      <a href="editor.html">← Editor</a>
+      <a href="lsp.html">LSP →</a>
+    </nav>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="badge"><span class="badge-dot"></span>Stage 5 of 7</div>
+    <h1>Buffer &amp; Language</h1>
+    <p class="hero-sub">Text lives in a CRDT <code>TextBuffer</code>, wrapped by <code>Buffer</code> (adds language, syntax tree, diagnostics), and optionally composed into a <code>MultiBuffer</code> (multiple excerpts, shared undo history).</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- Layer overview -->
+  <div class="section">
+    <div class="section-title">Text Storage Layers</div>
+    <div class="layers">
+      <div class="layer layer-l1">
+        <span class="layer-name">MultiBuffer</span>
+        <span class="layer-desc">Composite of one or more buffer excerpts + undo history</span>
+      </div>
+      <div class="layer layer-l2">
+        <span class="layer-name">Buffer</span>
+        <span class="layer-desc">Single file: text + syntax tree + diagnostics + language</span>
+      </div>
+      <div class="layer layer-l3">
+        <span class="layer-name">TextBuffer (CRDT)</span>
+        <span class="layer-desc">Rope of characters with operation log for collaborative editing</span>
+      </div>
+    </div>
+    <p>An <code>Editor</code> always owns a <code>MultiBuffer</code>. For normal single-file editing, the MultiBuffer wraps exactly one <code>Buffer</code> with a single excerpt covering the whole file.</p>
+  </div>
+
+  <!-- Buffer struct -->
+  <div class="section">
+    <div class="section-title">Buffer Struct</div>
+    <div class="card">
+      <div class="card-hd">
+        <span class="card-title">Buffer</span>
+        <span class="card-loc"><a href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/language/src/buffer.rs#L98" target="_blank">buffer.rs:98</a></span>
+      </div>
+      <div class="card-body">
+        <div class="struct">
+<span class="kw">pub struct</span> <span class="sname">Buffer</span> <span class="punct">{</span>
+    <span class="field">text</span><span class="punct">:</span>            <span class="ftype">TextBuffer</span><span class="punct">,</span>              <span class="cmt">// CRDT rope</span>
+    <span class="field">syntax_map</span><span class="punct">:</span>     <span class="ftype">Mutex&lt;SyntaxMap&gt;</span><span class="punct">,</span>        <span class="cmt">// tree-sitter parse state</span>
+    <span class="field">language</span><span class="punct">:</span>       <span class="ftype">Option&lt;Arc&lt;Language&gt;&gt;</span><span class="punct">,</span>
+    <span class="field">diagnostics</span><span class="punct">:</span>    <span class="ftype">TreeMap&lt;LanguageServerId, DiagnosticSet&gt;</span><span class="punct">,</span>
+    <span class="field">remote_selections</span><span class="punct">:</span> <span class="ftype">TreeMap&lt;ReplicaId, SelectionSet&gt;</span><span class="punct">,</span>
+    <span class="field">parse_status</span><span class="punct">:</span>   <span class="ftype">(watch::Sender&lt;ParseStatus&gt;, ...)</span><span class="punct">,</span>
+    <span class="field">reparse</span><span class="punct">:</span>        <span class="ftype">Option&lt;Task&lt;()&gt;&gt;</span><span class="punct">,</span>         <span class="cmt">// pending background parse</span>
+    <span class="field">file</span><span class="punct">:</span>            <span class="ftype">Option&lt;Arc&lt;dyn File&gt;&gt;</span><span class="punct">,</span>
+    <span class="field">saved_mtime</span><span class="punct">:</span>    <span class="ftype">Option&lt;MTime&gt;</span><span class="punct">,</span>
+<span class="punct">}</span>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top:12px">Every edit to <code>text</code> invalidates the syntax tree. A <code>background_spawn</code> task runs <code>SyntaxMap::reparse()</code> and then <strong>drops its result back onto the foreground</strong> by updating the <code>Buffer</code> entity and calling <code>cx.notify()</code>.</p>
+
+    <div class="card" style="margin-top:12px">
+      <div class="card-hd">
+        <span class="card-title">BufferSnapshot</span>
+        <span class="card-loc"><a href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/language/src/buffer.rs#L186" target="_blank">buffer.rs:186</a></span>
+      </div>
+      <div class="card-body">
+        <p style="margin:0;font-size:13px">An immutable, point-in-time copy of all buffer state. <code>EditorElement</code> takes a snapshot once per frame and uses it for rendering — changes during the frame don't affect what's painted. The snapshot owns the parsed tree and all diagnostics.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MultiBuffer -->
+  <div class="section">
+    <div class="section-title">MultiBuffer — Composite View</div>
+    <div class="card">
+      <div class="card-hd">
+        <span class="card-title">MultiBuffer</span>
+        <span class="card-loc"><a href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/multi_buffer/src/multi_buffer.rs#L73" target="_blank">multi_buffer.rs:73</a></span>
+      </div>
+      <div class="card-body">
+        <div class="struct">
+<span class="kw">pub struct</span> <span class="sname">MultiBuffer</span> <span class="punct">{</span>
+    <span class="field">buffers</span><span class="punct">:</span>   <span class="ftype">BTreeMap&lt;BufferId, BufferState&gt;</span><span class="punct">,</span>
+    <span class="field">excerpts</span><span class="punct">:</span>  <span class="ftype">RefCell&lt;MultiBufferSnapshot&gt;</span><span class="punct">,</span>
+    <span class="field">history</span><span class="punct">:</span>   <span class="ftype">History</span><span class="punct">,</span>     <span class="cmt">// unified undo/redo across all excerpts</span>
+    <span class="field">diffs</span><span class="punct">:</span>     <span class="ftype">HashMap&lt;BufferId, DiffState&gt;</span><span class="punct">,</span>
+<span class="punct">}</span>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:12px">Use-cases for MultiBuffer with multiple excerpts: <em>search results</em> (grep matches from many files shown inline), <em>go-to-definition</em> peek panel, and <em>multi-file refactor</em> previews.</p>
+  </div>
+
+  <!-- Language -->
+  <div class="section">
+    <div class="section-title">Language &amp; Syntax Parsing</div>
+    <div class="card">
+      <div class="card-hd">
+        <span class="card-title">Language</span>
+        <span class="card-loc"><a href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/language/src/language.rs#L849" target="_blank">language.rs:849</a></span>
+      </div>
+      <div class="card-body">
+        <div class="struct">
+<span class="kw">pub struct</span> <span class="sname">Language</span> <span class="punct">{</span>
+    <span class="field">id</span><span class="punct">:</span>               <span class="ftype">LanguageId</span><span class="punct">,</span>
+    <span class="field">config</span><span class="punct">:</span>           <span class="ftype">LanguageConfig</span><span class="punct">,</span>    <span class="cmt">// name, file extensions, LSP config</span>
+    <span class="field">grammar</span><span class="punct">:</span>          <span class="ftype">Option&lt;Arc&lt;Grammar&gt;&gt;</span><span class="punct">,</span>  <span class="cmt">// tree-sitter grammar</span>
+    <span class="field">context_provider</span><span class="punct">:</span> <span class="ftype">Option&lt;Arc&lt;dyn ContextProvider&gt;&gt;</span><span class="punct">,</span>
+<span class="punct">}</span>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top:12px">Languages are registered in <a href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/language/src/language_registry.rs" target="_blank">LanguageRegistry</a>. When a buffer's file path changes or content hints at a language (shebangs, magic bytes), the registry detects and assigns the right <code>Language</code>.</p>
+
+    <div class="section-title" style="margin-top:20px">Syntax Parse Flow</div>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Buffer edit applied</div>
+          <div class="step-desc"><code>TextBuffer</code> records the op and emits a range of changed bytes.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Syntax tree invalidated</div>
+          <div class="step-desc">The changed byte range is passed to <code>SyntaxMap::did_edit()</code>, marking the affected tree nodes as stale.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Background reparse launched</div>
+          <div class="step-desc"><code>cx.background_spawn</code> runs tree-sitter's incremental parser using the grammar. Only the stale subtrees are re-parsed.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Parse result written back</div>
+          <div class="step-desc">The new tree is stored in <code>Buffer::syntax_map</code>. <code>cx.notify()</code> triggers a re-render which picks up the updated token highlights.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Incremental parsing:</strong> tree-sitter only re-parses the changed subtree. For a 10,000-line file with a one-character edit, reparsing is typically sub-millisecond.
+    </div>
+  </div>
+
+  <!-- Code refs -->
+  <div class="section">
+    <div class="section-title">Code References</div>
+    <div class="ref-grid">
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/language/src/buffer.rs#L98" target="_blank">
+        <div class="ref-file">language/src/buffer.rs:98</div>
+        <div class="ref-desc">Buffer struct definition</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/language/src/buffer.rs#L186" target="_blank">
+        <div class="ref-file">language/src/buffer.rs:186</div>
+        <div class="ref-desc">BufferSnapshot — immutable state copy</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/multi_buffer/src/multi_buffer.rs#L73" target="_blank">
+        <div class="ref-file">multi_buffer/src/multi_buffer.rs:73</div>
+        <div class="ref-desc">MultiBuffer struct definition</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/language/src/language.rs#L849" target="_blank">
+        <div class="ref-file">language/src/language.rs:849</div>
+        <div class="ref-desc">Language struct — grammar + LSP config</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/language/src/language_registry.rs" target="_blank">
+        <div class="ref-file">language/src/language_registry.rs</div>
+        <div class="ref-desc">Language detection &amp; registry</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/language/src/syntax_map.rs" target="_blank">
+        <div class="ref-file">language/src/syntax_map.rs</div>
+        <div class="ref-desc">Tree-sitter incremental parse state</div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <a href="editor.html">← Editor &amp; Actions</a> &nbsp;·&nbsp;
+  Next: <a href="lsp.html">LSP Integration →</a>
+</footer>
+
+</body>
+</html>

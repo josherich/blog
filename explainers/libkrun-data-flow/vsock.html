@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>libkrun — Vsock / TSI</title>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --border: #30363d;
+    --text: #e6edf3; --muted: #8b949e;
+    --api: #3fb950; --vmm: #58a6ff; --vcpu: #ff7b72;
+    --mem: #bc8cff; --dev: #39d0d8; --vsock: #ffa657;
+    --accent: #ffa657;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+
+  header { padding: 24px 20px 16px; border-bottom: 1px solid var(--border); }
+  header h1 { font-size: 1.4rem; font-weight: 700; color: var(--vsock); }
+  header p { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+
+  nav { display: flex; gap: 8px; padding: 12px 20px; border-bottom: 1px solid var(--border); overflow-x: auto; flex-wrap: wrap; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 0.8rem; padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border); white-space: nowrap; transition: all .2s; }
+  nav a:hover, nav a.active { color: var(--text); border-color: var(--vsock); background: rgba(255,166,87,.1); }
+
+  .gh { display: inline-flex; align-items: center; gap: 3px; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.7rem; color: var(--muted); text-decoration: none; padding: 1px 6px; border-radius: 4px; border: 1px solid var(--border); margin-left: 6px; transition: all .15s; vertical-align: middle; }
+  .gh:hover { color: var(--text); border-color: var(--vsock); background: rgba(255,166,87,.1); }
+  .gh::before { content: '⌥'; font-size: 0.65rem; }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+  .section { margin-bottom: 32px; }
+  .section h2 { font-size: 1.05rem; font-weight: 600; margin-bottom: 14px; border-left: 3px solid var(--accent); padding-left: 10px; }
+
+  /* Architecture diagram */
+  .arch { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+  .arch-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin: 6px 0; }
+  .arch-box { padding: 10px 16px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; text-align: center; border: 1px solid transparent; min-width: 100px; }
+  .ab-guest { background: rgba(255,123,114,.15); color: var(--vcpu); border-color: var(--vcpu); }
+  .ab-drv   { background: rgba(57,208,216,.15);  color: var(--dev);  border-color: var(--dev); }
+  .ab-dev   { background: rgba(255,166,87,.2);   color: var(--vsock);border-color: var(--vsock); }
+  .ab-mux   { background: rgba(255,166,87,.15);  color: var(--vsock);border-color: rgba(255,166,87,.5); }
+  .ab-tsi   { background: rgba(188,140,255,.15); color: var(--mem);  border-color: var(--mem); }
+  .ab-host  { background: rgba(63,185,80,.15);   color: var(--api);  border-color: var(--api); }
+  .arch-conn { text-align: center; color: var(--muted); font-size: 0.82rem; padding: 4px 0; }
+  .arch-label { font-size: 0.7rem; color: var(--muted); text-align: center; margin-bottom: 4px; font-style: italic; }
+
+  /* TSI modes */
+  .tsi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 520px) { .tsi-grid { grid-template-columns: 1fr; } }
+  .tsi-box { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .tsi-box h4 { font-size: 0.88rem; font-weight: 600; margin-bottom: 8px; }
+  .tsi-box p { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+  .tsi-flag { font-family: monospace; font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; margin-right: 4px; }
+
+  /* Packet types — all open */
+  .packet-list { display: flex; flex-direction: column; gap: 6px; }
+  .pkt { background: var(--surface); border: 1px solid var(--vsock); border-radius: 8px; overflow: hidden; cursor: pointer; }
+  .pkt:not(.open) { border-color: var(--border); }
+  .pkt-head { display: flex; align-items: center; gap: 10px; padding: 10px 14px; }
+  .pkt-op { font-family: monospace; font-size: 0.78rem; font-weight: 700; padding: 2px 8px; border-radius: 5px; background: rgba(255,166,87,.2); color: var(--vsock); min-width: 160px; }
+  .pkt-brief { font-size: 0.82rem; color: var(--muted); flex: 1; }
+  .pkt-caret { color: var(--muted); transition: transform .2s; }
+  .pkt:not(.open) .pkt-caret { transform: rotate(0deg); }
+  .pkt.open .pkt-caret { transform: rotate(90deg); }
+  .pkt-body { padding: 0 14px 12px 14px; border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+  .pkt:not(.open) .pkt-body { display: none; }
+  .pkt-body p { margin-top: 8px; }
+
+  /* Data flow tabs */
+  .flow-box { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .flow-tabs { display: flex; border-bottom: 1px solid var(--border); }
+  .ftab { flex: 1; padding: 10px; text-align: center; font-size: 0.8rem; color: var(--muted); cursor: pointer; background: transparent; border: none; transition: all .2s; }
+  .ftab.active { color: var(--vsock); background: rgba(255,166,87,.08); border-bottom: 2px solid var(--vsock); }
+  .fcontent { display: none; padding: 16px; }
+  .fcontent.active { display: block; }
+  .flow-steps { list-style: none; counter-reset: step; }
+  .flow-steps li { counter-increment: step; display: flex; gap: 10px; padding: 6px 0; font-size: 0.82rem; color: var(--muted); border-bottom: 1px dashed var(--border); }
+  .flow-steps li:last-child { border-bottom: none; }
+  .flow-steps li::before { content: counter(step); min-width: 22px; height: 22px; border-radius: 50%; background: rgba(255,166,87,.2); color: var(--vsock); font-size: 0.72rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .flow-steps li strong { color: var(--text); }
+
+  .code-block { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.78rem; background: rgba(0,0,0,.3); border: 1px solid var(--border); padding: 12px 14px; border-radius: 8px; color: var(--dev); overflow-x: auto; white-space: pre; line-height: 1.6; margin-top: 10px; }
+
+  .sep { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+  .back { text-align: center; padding: 10px 0; font-size: 0.85rem; color: var(--muted); }
+  .back a { color: var(--dev); text-decoration: none; }
+  .back a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Vsock / TSI</h1>
+  <p>src/devices/src/virtio/vsock/ — guest↔host socket bridge with transparent impersonation</p>
+</header>
+
+<nav>
+  <a href="index.html">Overview</a>
+  <a href="api.html">API Layer</a>
+  <a href="vmm.html">VMM Builder</a>
+  <a href="vcpu.html">vCPU Runtime</a>
+  <a href="memory.html">Memory</a>
+  <a href="devices.html">Virtio Devices</a>
+  <a href="vsock.html" class="active">Vsock / TSI</a>
+</nav>
+
+<div class="container">
+
+  <div class="section">
+    <h2>Component architecture <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/device.rs#L38" target="_blank">device.rs:38</a></h2>
+    <div class="arch">
+      <div class="arch-label">GUEST</div>
+      <div class="arch-row">
+        <div class="arch-box ab-guest">Guest Application<br><small>socket() connect()</small></div>
+      </div>
+      <div class="arch-conn">↓ AF_INET / AF_UNIX syscall (TSI hijacks this)</div>
+      <div class="arch-row">
+        <div class="arch-box ab-drv">Guest vsock driver<br><small>AF_VSOCK</small></div>
+      </div>
+      <div class="arch-conn">↓ RX queue <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/device.rs#L26" target="_blank">:26</a> / TX virtqueues ↓</div>
+      <div style="border-top: 2px dashed rgba(255,166,87,.4); padding-top: 10px; margin-top: 4px;">
+        <div class="arch-label" style="color:var(--vsock)">HOST</div>
+        <div class="arch-row">
+          <div class="arch-box ab-dev">Vsock Device<br><small>virtio-vsock device 19</small></div>
+        </div>
+        <div class="arch-conn">↓ packet channel ↓</div>
+        <div class="arch-row">
+          <div class="arch-box ab-mux">VsockMuxer <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/muxer.rs#L99" target="_blank">muxer.rs:99</a><br><small>packet routing + credits</small></div>
+        </div>
+        <div class="arch-conn">↓ connection lookup ↓</div>
+        <div class="arch-row">
+          <div class="arch-box ab-tsi">TSI (Transparent Socket Impersonation)</div>
+        </div>
+        <div class="arch-conn">↓ real OS sockets ↓</div>
+        <div class="arch-row">
+          <div class="arch-box ab-host">Host Network / Unix Sockets</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>TSI modes (tsi_features bitmask) <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/libkrun/src/lib.rs#L2438" target="_blank">lib.rs:2438</a></h2>
+    <div class="tsi-grid">
+      <div class="tsi-box">
+        <h4 style="color:var(--mem)">HIJACK_INET</h4>
+        <span class="tsi-flag" style="background:rgba(188,140,255,.2);color:var(--mem)">bit 0</span>
+        <p>Intercepts AF_INET and AF_INET6 socket operations inside the guest kernel. connect() to a host IP:port is transparently bridged via a vsock tunnel to the actual host socket. Guest applications need zero modification.</p>
+      </div>
+      <div class="tsi-box">
+        <h4 style="color:var(--api)">HIJACK_UNIX</h4>
+        <span class="tsi-flag" style="background:rgba(63,185,80,.2);color:var(--api)">bit 1</span>
+        <p>Intercepts AF_UNIX socket operations. Guest connects to a unix socket path, TSI maps the path to a vsock port via the port map, and the muxer bridges to the real host unix socket.</p>
+      </div>
+    </div>
+    <div class="code-block" style="margin-top:12px">// TSI port map example (inside VsockMuxer)  <a href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/muxer.rs#L99" style="color:var(--muted);font-size:0.7rem" target="_blank">muxer.rs:99</a>
+tsi_port_map: HashMap&lt;GuestAddr, HostTarget&gt;
+  127.0.0.1:80  →  host_socket_fd (tcp)
+  /run/foo.sock →  host_unix_path (unix)</div>
+  </div>
+
+  <hr class="sep">
+
+  <div class="section">
+    <h2>Vsock packet types <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/mod.rs#L119" target="_blank">mod.rs:119</a></h2>
+    <div class="packet-list" id="packetList">
+
+      <div class="pkt open">
+        <div class="pkt-head">
+          <span class="pkt-op">OP_REQUEST (1) <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/muxer.rs#L539" target="_blank">process:539</a></span>
+          <span class="pkt-brief">Connection request (SYN)</span>
+          <span class="pkt-caret">›</span>
+        </div>
+        <div class="pkt-body">
+          <p>Guest initiates a connection to a host port. The muxer receives this packet, looks up the port in the TSI port map or connection table, and opens a real host socket. Responds with OP_RESPONSE on success.</p>
+        </div>
+      </div>
+
+      <div class="pkt open">
+        <div class="pkt-head">
+          <span class="pkt-op">OP_RESPONSE (2) <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/muxer.rs#L586" target="_blank">process:586</a></span>
+          <span class="pkt-brief">Connection accepted (SYN-ACK)</span>
+          <span class="pkt-caret">›</span>
+        </div>
+        <div class="pkt-body">
+          <p>Host (muxer) responds to a guest OP_REQUEST after successfully opening the host-side socket. Includes initial credit (buffer space) so data transfer can begin immediately.</p>
+        </div>
+      </div>
+
+      <div class="pkt open">
+        <div class="pkt-head">
+          <span class="pkt-op">OP_RST (3) <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/mod.rs#L123" target="_blank">mod.rs:123</a></span>
+          <span class="pkt-brief">Reset / abort connection</span>
+          <span class="pkt-caret">›</span>
+        </div>
+        <div class="pkt-body">
+          <p>Immediately tears down a connection. Sent when an error occurs (host socket closed unexpectedly, protocol violation, unknown connection). The reaper thread periodically cleans up connections in RST state.</p>
+        </div>
+      </div>
+
+      <div class="pkt open">
+        <div class="pkt-head">
+          <span class="pkt-op">OP_SHUTDOWN (4) <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/muxer.rs#L611" target="_blank">process:611</a></span>
+          <span class="pkt-brief">Half-close a connection</span>
+          <span class="pkt-caret">›</span>
+        </div>
+        <div class="pkt-body">
+          <p>Signals that one side has finished sending (SHUT_WR) or will stop receiving (SHUT_RD). Flags field indicates which directions are shutting down. Full shutdown requires both sides to signal.</p>
+        </div>
+      </div>
+
+      <div class="pkt open">
+        <div class="pkt-head">
+          <span class="pkt-op">OP_RW (5) <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/muxer.rs#L633" target="_blank">process:633</a></span>
+          <span class="pkt-brief">Data transfer in both directions</span>
+          <span class="pkt-caret">›</span>
+        </div>
+        <div class="pkt-body">
+          <p>Carries actual payload data. Guest TX: guest driver writes data to TX virtqueue → muxer reads → forwards to host socket. Guest RX: muxer reads from host socket → builds OP_RW packet → places in RX virtqueue → guest driver delivers to application.</p>
+        </div>
+      </div>
+
+      <div class="pkt open">
+        <div class="pkt-head">
+          <span class="pkt-op">OP_CREDIT_UPDATE (6) <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/muxer.rs#L619" target="_blank">process:619</a></span>
+          <span class="pkt-brief">Flow control — advertise buffer space</span>
+          <span class="pkt-caret">›</span>
+        </div>
+        <div class="pkt-body">
+          <p>Each side advertises how many bytes the peer can send (buf_alloc - fwd_cnt). The sender must not exceed the peer's advertised credit. Prevents buffer overflow without per-packet ACKs.</p>
+        </div>
+      </div>
+
+      <div class="pkt open">
+        <div class="pkt-head">
+          <span class="pkt-op">OP_CREDIT_REQUEST (7) <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/mod.rs#L131" target="_blank">mod.rs:131</a></span>
+          <span class="pkt-brief">Ask peer to send credit update</span>
+          <span class="pkt-caret">›</span>
+        </div>
+        <div class="pkt-body">
+          <p>Sent when a sender has run out of credit and needs to know if the peer has freed buffer space. The peer responds with OP_CREDIT_UPDATE.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <div class="section">
+    <h2>Data flow examples</h2>
+    <div class="flow-box">
+      <div class="flow-tabs">
+        <button class="ftab active" data-content="f-tcp">TCP connection (TSI)</button>
+        <button class="ftab" data-content="f-rx">Incoming data (RX)</button>
+        <button class="ftab" data-content="f-unix">Unix socket (TSI)</button>
+      </div>
+      <div class="fcontent active" id="f-tcp">
+        <ol class="flow-steps">
+          <li><strong>Guest app</strong> calls connect(127.0.0.1:8080)</li>
+          <li>TSI kernel hook intercepts the AF_INET syscall</li>
+          <li>Guest vsock driver sends <strong>OP_REQUEST</strong> packet on TX queue</li>
+          <li>Host Vsock Device dequeues TX descriptor <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/queue.rs#L452" target="_blank">queue.rs:452</a></li>
+          <li>Muxer receives packet → looks up 127.0.0.1:8080 in tsi_port_map <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/muxer.rs#L539" target="_blank">muxer.rs:539</a></li>
+          <li>Muxer opens a real TCP socket to host port 8080</li>
+          <li>Muxer sends <strong>OP_RESPONSE</strong> with credit → RX queue</li>
+          <li>Guest driver delivers SYN-ACK equivalent to the app's connect() call</li>
+          <li>Connection established; data flows via <strong>OP_RW</strong> packets</li>
+        </ol>
+      </div>
+      <div class="fcontent" id="f-rx">
+        <ol class="flow-steps">
+          <li>Host socket has data ready (muxer's epoll wakes)</li>
+          <li>Muxer reads up to available RX credit bytes from host socket</li>
+          <li>Muxer builds <strong>OP_RW</strong> packet with data payload <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/muxer.rs#L633" target="_blank">muxer.rs:633</a></li>
+          <li>Vsock Device places packet into guest RX virtqueue (used ring) <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/queue.rs#L502" target="_blank">queue.rs:502</a></li>
+          <li>Device signals interrupt EventFd</li>
+          <li>IRQ injected into guest vCPU</li>
+          <li>Guest vsock driver IRQ handler runs</li>
+          <li>Driver reads descriptor from RX used ring</li>
+          <li>Data is delivered to the guest application's socket buffer</li>
+          <li>Guest sends <strong>OP_CREDIT_UPDATE</strong> to advertise freed buffer space</li>
+        </ol>
+      </div>
+      <div class="fcontent" id="f-unix">
+        <ol class="flow-steps">
+          <li><strong>Guest app</strong> calls connect("/run/dbus/system_bus_socket")</li>
+          <li>TSI HIJACK_UNIX intercepts AF_UNIX syscall</li>
+          <li>TSI maps path to a vsock port via unix_port_map</li>
+          <li>Guest vsock driver sends <strong>OP_REQUEST</strong> to that port</li>
+          <li>Muxer looks up the unix socket path for that port <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/muxer.rs#L539" target="_blank">muxer.rs:539</a></li>
+          <li>Muxer connects to host's /run/dbus/system_bus_socket</li>
+          <li>Normal <strong>OP_RESPONSE</strong> → data flow begins</li>
+          <li>Guest IPC is transparently bridged to host D-Bus socket</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <div class="section">
+    <h2>Muxer internals <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/muxer.rs#L99" target="_blank">muxer.rs:99</a></h2>
+    <div class="code-block">VsockMuxer  <a href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/muxer.rs#L99" style="color:var(--muted);font-size:0.7rem" target="_blank">muxer.rs:99</a>
+  ├─ rxq: Arc&lt;Mutex&lt;MuxerRxQ&gt;&gt;              // packets queued for guest RX
+  │
+  ├─ process_tx(pkt):                       // guest → host  <a href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/muxer.rs#L703" style="color:var(--muted);font-size:0.7rem" target="_blank">dispatch:703</a>
+  │   match pkt.op {
+  │     OP_REQUEST  → open host socket, create connection  <a href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/muxer.rs#L539" style="color:var(--muted);font-size:0.7rem" target="_blank">:539</a>
+  │     OP_RW       → write pkt.data to host socket fd  <a href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/muxer.rs#L633" style="color:var(--muted);font-size:0.7rem" target="_blank">:633</a>
+  │     OP_SHUTDOWN → shutdown(host_fd, direction)  <a href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/muxer.rs#L611" style="color:var(--muted);font-size:0.7rem" target="_blank">:611</a>
+  │     OP_CREDIT_UPDATE → update peer_credit for conn  <a href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/muxer.rs#L619" style="color:var(--muted);font-size:0.7rem" target="_blank">:619</a>
+  │   }
+  │
+  └─ process_rx():                          // host → guest
+      for each readable host fd (epoll events):
+        read data → build OP_RW packet → push to rxq
+        if conn closed → push OP_RST</div>
+  </div>
+
+  <div class="back">← back to <a href="devices.html">Virtio Devices</a> · <a href="index.html">Overview</a></div>
+</div>
+
+<script>
+  document.getElementById('packetList').querySelectorAll('.pkt').forEach(pkt => {
+    pkt.querySelector('.pkt-head').addEventListener('click', () => {
+      pkt.classList.toggle('open');
+    });
+  });
+
+  document.querySelectorAll('.ftab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const contentId = tab.dataset.content;
+      document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.fcontent').forEach(c => c.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(contentId).classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

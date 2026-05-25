@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workspace &amp; Project — Zed Data Flow</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d1117; --surface: #161b22; --surface-2: #21262d;
+      --border: #30363d; --text: #e6edf3; --text-muted: #8b949e;
+      --mono: 'SF Mono','Cascadia Code','Fira Code','Consolas',monospace;
+      --radius: 8px; --accent: #60a5fa;
+    }
+    body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; font-size:16px; line-height:1.6; }
+    a { color:#58a6ff; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    code { font-family:var(--mono); font-size:0.85em; background:var(--surface-2); padding:1px 5px; border-radius:3px; color:#e6edf3; }
+
+    .site-hd { background:var(--surface); border-bottom:1px solid var(--border); padding:10px 16px; position:sticky; top:0; z-index:10; }
+    .hd-inner { max-width:760px; margin:0 auto; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+    .hd-back { color:var(--text-muted); font-size:14px; }
+    .hd-crumb { color:var(--text-muted); font-size:14px; flex:1; }
+    .hd-crumb strong { color:var(--text); }
+    .page-nav { display:flex; gap:6px; margin-left:auto; }
+    .page-nav a { padding:4px 10px; border:1px solid var(--border); border-radius:4px; font-size:13px; color:var(--text-muted); transition:all .15s; }
+    .page-nav a:hover { color:var(--text); border-color:#555; text-decoration:none; }
+
+    .hero { padding:40px 16px 32px; border-bottom:1px solid var(--border); background:linear-gradient(180deg,#0d1a2880 0%,transparent 100%); }
+    .hero-inner { max-width:760px; margin:0 auto; }
+    .badge { display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; background:color-mix(in srgb,var(--accent) 12%,transparent); border:1px solid color-mix(in srgb,var(--accent) 25%,transparent); color:var(--accent); margin-bottom:14px; }
+    .badge-dot { width:6px; height:6px; border-radius:50%; background:var(--accent); }
+    h1 { font-size:clamp(22px,5vw,30px); font-weight:700; letter-spacing:-.5px; margin-bottom:8px; }
+    .hero-sub { color:var(--text-muted); font-size:15px; max-width:620px; }
+
+    .content { max-width:760px; margin:0 auto; }
+    .section { padding:28px 16px; border-bottom:1px solid var(--border); }
+    .section-title { font-size:17px; font-weight:600; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+    .section-title::before { content:''; display:block; width:3px; height:18px; background:var(--accent); border-radius:2px; }
+    p { color:var(--text-muted); font-size:14px; line-height:1.7; margin-bottom:10px; }
+    p:last-child { margin-bottom:0; }
+    p strong { color:var(--text); }
+
+    .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:12px; }
+    .card:last-child { margin-bottom:0; }
+    .card-hd { padding:11px 16px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:8px; background:var(--surface-2); }
+    .card-title { font-family:var(--mono); font-size:14px; font-weight:600; color:var(--accent); }
+    .card-loc a { font-size:12px; color:var(--text-muted); }
+    .card-loc a:hover { color:#58a6ff; }
+    .card-body { padding:14px 16px; }
+
+    .struct { font-family:var(--mono); font-size:12.5px; line-height:1.9; overflow-x:auto; white-space:pre; }
+    .kw { color:#ff79c6; }
+    .sname { color:#50fa7b; }
+    .field { color:#f8f8f2; }
+    .ftype { color:#8be9fd; }
+    .cmt { color:#6272a4; font-style:italic; }
+    .punct { color:#999; }
+
+    .flow-steps { display:flex; flex-direction:column; gap:0; }
+    .flow-step { display:flex; gap:14px; align-items:flex-start; padding:12px 0; border-bottom:1px solid var(--border); }
+    .flow-step:last-child { border-bottom:none; }
+    .step-num { width:26px; height:26px; border-radius:50%; background:var(--accent); color:#000; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
+    .step-body { flex:1; }
+    .step-title { font-size:14px; font-weight:600; margin-bottom:3px; }
+    .step-desc { font-size:13px; color:var(--text-muted); line-height:1.5; }
+
+    /* Layout diagram */
+    .layout-diagram { display:grid; grid-template-columns:80px 1fr 80px; grid-template-rows:40px 1fr 40px; gap:4px; padding:16px; background:var(--surface-2); border-radius:6px; font-size:12px; text-align:center; color:var(--text-muted); margin:14px 0; min-height:200px; }
+    .ld-left { background:color-mix(in srgb,var(--accent) 15%,transparent); border:1px solid color-mix(in srgb,var(--accent) 30%,transparent); border-radius:4px; display:flex; align-items:center; justify-content:center; grid-column:1; grid-row:1/3; writing-mode:vertical-rl; transform:rotate(180deg); }
+    .ld-top { background:var(--surface); border:1px solid var(--border); border-radius:4px; display:flex; align-items:center; justify-content:center; grid-column:2; grid-row:1; }
+    .ld-center { background:var(--surface); border:2px solid var(--accent); border-radius:4px; display:flex; align-items:center; justify-content:center; grid-column:2; grid-row:2; font-size:14px; font-weight:600; color:var(--text); }
+    .ld-right { background:color-mix(in srgb,var(--accent) 15%,transparent); border:1px solid color-mix(in srgb,var(--accent) 30%,transparent); border-radius:4px; display:flex; align-items:center; justify-content:center; grid-column:3; grid-row:1/3; writing-mode:vertical-rl; }
+    .ld-bottom { background:var(--surface); border:1px solid var(--border); border-radius:4px; display:flex; align-items:center; justify-content:center; grid-column:1/4; grid-row:3; }
+
+    .ref-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; }
+    .ref-card { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:12px 14px; transition:border-color .15s; text-decoration:none; display:block; }
+    .ref-card:hover { border-color:#58a6ff; }
+    .ref-file { font-family:var(--mono); font-size:12px; color:#58a6ff; margin-bottom:4px; }
+    .ref-desc { font-size:12px; color:var(--text-muted); }
+
+    .callout { background:color-mix(in srgb,var(--accent) 8%,transparent); border:1px solid color-mix(in srgb,var(--accent) 20%,transparent); border-radius:6px; padding:12px 14px; font-size:13px; color:var(--text-muted); }
+    .callout strong { color:var(--accent); }
+
+    footer { text-align:center; padding:28px 16px; color:var(--text-muted); font-size:13px; border-top:1px solid var(--border); margin-top:16px; }
+  </style>
+</head>
+<body>
+
+<div class="site-hd">
+  <div class="hd-inner">
+    <a class="hd-back" href="index.html">← Overview</a>
+    <span class="hd-crumb">Stage 3 / <strong>Workspace &amp; Project</strong></span>
+    <nav class="page-nav">
+      <a href="gpui.html">← GPUI</a>
+      <a href="editor.html">Editor →</a>
+    </nav>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="badge"><span class="badge-dot"></span>Stage 3 of 7</div>
+    <h1>Workspace &amp; Project</h1>
+    <p class="hero-sub">The <code>Workspace</code> manages the visual shell — panes, docks, tabs. The <code>Project</code> owns all persistent state: buffers, language servers, worktrees, and collaboration state.</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- Layout diagram -->
+  <div class="section">
+    <div class="section-title">Window Layout Structure</div>
+    <p>A Zed window is a <code>Workspace</code>. Inside it, <strong>docks</strong> hold panels (file tree, terminal, AI panel) and the <strong>center</strong> holds a tree of <code>Pane</code>s, each of which can be split horizontally or vertically.</p>
+
+    <div class="layout-diagram">
+      <div class="ld-left">Left Dock</div>
+      <div class="ld-top">Status Bar / Toolbar</div>
+      <div class="ld-center">PaneGroup (center)<br><small style="color:var(--text-muted);font-weight:400">Pane | Pane<br>tabs of Editor items</small></div>
+      <div class="ld-right">Right Dock</div>
+      <div class="ld-bottom">Bottom Dock (terminal, diagnostics…)</div>
+    </div>
+  </div>
+
+  <!-- Workspace struct -->
+  <div class="section">
+    <div class="section-title">Workspace Struct</div>
+    <div class="card">
+      <div class="card-hd">
+        <span class="card-title">Workspace</span>
+        <span class="card-loc"><a href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/workspace/src/workspace.rs#L1353" target="_blank">workspace.rs:1353</a></span>
+      </div>
+      <div class="card-body">
+        <div class="struct">
+<span class="kw">pub struct</span> <span class="sname">Workspace</span> <span class="punct">{</span>
+    <span class="field">center</span><span class="punct">:</span>         <span class="ftype">PaneGroup</span><span class="punct">,</span>            <span class="cmt">// recursive pane layout</span>
+    <span class="field">left_dock</span><span class="punct">:</span>     <span class="ftype">Entity&lt;Dock&gt;</span><span class="punct">,</span>
+    <span class="field">bottom_dock</span><span class="punct">:</span>   <span class="ftype">Entity&lt;Dock&gt;</span><span class="punct">,</span>
+    <span class="field">right_dock</span><span class="punct">:</span>    <span class="ftype">Entity&lt;Dock&gt;</span><span class="punct">,</span>
+    <span class="field">panes</span><span class="punct">:</span>         <span class="ftype">Vec&lt;Entity&lt;Pane&gt;&gt;</span><span class="punct">,</span>
+    <span class="field">active_pane</span><span class="punct">:</span>   <span class="ftype">Entity&lt;Pane&gt;</span><span class="punct">,</span>       <span class="cmt">// currently focused</span>
+    <span class="field">project</span><span class="punct">:</span>       <span class="ftype">Entity&lt;Project&gt;</span><span class="punct">,</span>
+    <span class="field">status_bar</span><span class="punct">:</span>    <span class="ftype">Entity&lt;StatusBar&gt;</span><span class="punct">,</span>
+    <span class="field">modal_layer</span><span class="punct">:</span>   <span class="ftype">Entity&lt;ModalLayer&gt;</span><span class="punct">,</span>
+    <span class="field">notifications</span><span class="punct">:</span> <span class="ftype">Notifications</span><span class="punct">,</span>
+<span class="punct">}</span>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top:12px">Actions dispatched from GPUI arrive at the <strong>active pane</strong>, which forwards them to its active item. If the item handles the action, it stops there; otherwise it bubbles back up to the Workspace.</p>
+  </div>
+
+  <!-- Pane -->
+  <div class="section">
+    <div class="section-title">Pane — Tab Container</div>
+    <p>A <code>Pane</code> (<a href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/workspace/src/pane.rs" target="_blank">pane.rs</a>) is a tab strip backed by a list of <em>items</em> — anything that implements the <code>Item</code> trait: <code>Editor</code>, terminal views, diff views, etc. The active item fills the pane's content area.</p>
+
+    <div class="callout">
+      <strong>Routing rule:</strong> when GPUI dispatches an action, the focus chain is: <em>focused element inside active item → active item → pane → workspace → global handlers</em>. The first handler wins.
+    </div>
+  </div>
+
+  <!-- Project struct -->
+  <div class="section">
+    <div class="section-title">Project Struct</div>
+    <div class="card">
+      <div class="card-hd">
+        <span class="card-title">Project</span>
+        <span class="card-loc"><a href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/project/src/project.rs#L213" target="_blank">project.rs:213</a></span>
+      </div>
+      <div class="card-body">
+        <div class="struct">
+<span class="kw">pub struct</span> <span class="sname">Project</span> <span class="punct">{</span>
+    <span class="field">worktree_store</span><span class="punct">:</span>  <span class="ftype">Entity&lt;WorktreeStore&gt;</span><span class="punct">,</span>   <span class="cmt">// file system trees</span>
+    <span class="field">buffer_store</span><span class="punct">:</span>    <span class="ftype">Entity&lt;BufferStore&gt;</span><span class="punct">,</span>     <span class="cmt">// loaded buffers cache</span>
+    <span class="field">lsp_store</span><span class="punct">:</span>       <span class="ftype">Entity&lt;LspStore&gt;</span><span class="punct">,</span>        <span class="cmt">// language server manager</span>
+    <span class="field">git_store</span><span class="punct">:</span>       <span class="ftype">Entity&lt;GitStore&gt;</span><span class="punct">,</span>
+    <span class="field">task_store</span><span class="punct">:</span>      <span class="ftype">Entity&lt;TaskStore&gt;</span><span class="punct">,</span>
+    <span class="field">languages</span><span class="punct">:</span>       <span class="ftype">Arc&lt;LanguageRegistry&gt;</span><span class="punct">,</span>
+    <span class="field">fs</span><span class="punct">:</span>              <span class="ftype">Arc&lt;dyn Fs&gt;</span><span class="punct">,</span>             <span class="cmt">// real or fake FS (tests)</span>
+    <span class="field">collaborators</span><span class="punct">:</span>   <span class="ftype">HashMap&lt;PeerId, Collaborator&gt;</span><span class="punct">,</span>
+<span class="punct">}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- File open flow -->
+  <div class="section">
+    <div class="section-title">File-Open Data Flow</div>
+    <p>When a user opens a file (e.g. from the file tree or command palette), here is the path from disk to rendered text:</p>
+
+    <div class="flow-steps" style="margin-top:8px">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Workspace::open_path()</div>
+          <div class="step-desc">The workspace resolves the path against its <code>Project</code> and asks for a buffer.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Project::open_buffer()</div>
+          <div class="step-desc"><a href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/project/src/project.rs" target="_blank">project.rs</a> → <code>BufferStore::get_or_load()</code>. If the buffer is already cached, it's returned immediately; otherwise the file is read from <code>Fs</code>, a new <code>Buffer</code> entity is created, and language detection runs.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Language server notified</div>
+          <div class="step-desc"><code>LspStore</code> receives a <code>BufferOpened</code> event and sends <code>textDocument/didOpen</code> to each applicable language server.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Editor created &amp; placed in Pane</div>
+          <div class="step-desc">Workspace wraps the buffer in a <code>MultiBuffer</code>, creates an <code>Editor</code> entity, and adds it to the active <code>Pane</code>. The pane activates it, GPUI renders the editor.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Code refs -->
+  <div class="section">
+    <div class="section-title">Code References</div>
+    <div class="ref-grid">
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/workspace/src/workspace.rs#L1353" target="_blank">
+        <div class="ref-file">workspace/src/workspace.rs:1353</div>
+        <div class="ref-desc">Workspace struct definition</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/workspace/src/pane.rs" target="_blank">
+        <div class="ref-file">workspace/src/pane.rs</div>
+        <div class="ref-desc">Pane — tab container &amp; routing</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/project/src/project.rs#L213" target="_blank">
+        <div class="ref-file">project/src/project.rs:213</div>
+        <div class="ref-desc">Project struct definition</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/project/src/buffer_store.rs" target="_blank">
+        <div class="ref-file">project/src/buffer_store.rs</div>
+        <div class="ref-desc">Buffer caching &amp; loading</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/project/src/lsp_store.rs" target="_blank">
+        <div class="ref-file">project/src/lsp_store.rs</div>
+        <div class="ref-desc">Language server lifecycle manager</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/project/src/worktree_store.rs" target="_blank">
+        <div class="ref-file">project/src/worktree_store.rs</div>
+        <div class="ref-desc">File system tree management</div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <a href="gpui.html">← GPUI Framework</a> &nbsp;·&nbsp;
+  Next: <a href="editor.html">Editor &amp; Actions →</a>
+</footer>
+
+</body>
+</html>

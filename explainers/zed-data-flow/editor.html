@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editor &amp; Actions — Zed Data Flow</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d1117; --surface: #161b22; --surface-2: #21262d;
+      --border: #30363d; --text: #e6edf3; --text-muted: #8b949e;
+      --mono: 'SF Mono','Cascadia Code','Fira Code','Consolas',monospace;
+      --radius: 8px; --accent: #34d399;
+    }
+    body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; font-size:16px; line-height:1.6; }
+    a { color:#58a6ff; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    code { font-family:var(--mono); font-size:0.85em; background:var(--surface-2); padding:1px 5px; border-radius:3px; color:#e6edf3; }
+
+    .site-hd { background:var(--surface); border-bottom:1px solid var(--border); padding:10px 16px; position:sticky; top:0; z-index:10; }
+    .hd-inner { max-width:760px; margin:0 auto; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+    .hd-back { color:var(--text-muted); font-size:14px; }
+    .hd-crumb { color:var(--text-muted); font-size:14px; flex:1; }
+    .hd-crumb strong { color:var(--text); }
+    .page-nav { display:flex; gap:6px; margin-left:auto; }
+    .page-nav a { padding:4px 10px; border:1px solid var(--border); border-radius:4px; font-size:13px; color:var(--text-muted); transition:all .15s; }
+    .page-nav a:hover { color:var(--text); border-color:#555; text-decoration:none; }
+
+    .hero { padding:40px 16px 32px; border-bottom:1px solid var(--border); background:linear-gradient(180deg,#0d1f1880 0%,transparent 100%); }
+    .hero-inner { max-width:760px; margin:0 auto; }
+    .badge { display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; background:color-mix(in srgb,var(--accent) 12%,transparent); border:1px solid color-mix(in srgb,var(--accent) 25%,transparent); color:var(--accent); margin-bottom:14px; }
+    .badge-dot { width:6px; height:6px; border-radius:50%; background:var(--accent); }
+    h1 { font-size:clamp(22px,5vw,30px); font-weight:700; letter-spacing:-.5px; margin-bottom:8px; }
+    .hero-sub { color:var(--text-muted); font-size:15px; max-width:620px; }
+
+    .content { max-width:760px; margin:0 auto; }
+    .section { padding:28px 16px; border-bottom:1px solid var(--border); }
+    .section-title { font-size:17px; font-weight:600; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+    .section-title::before { content:''; display:block; width:3px; height:18px; background:var(--accent); border-radius:2px; }
+    p { color:var(--text-muted); font-size:14px; line-height:1.7; margin-bottom:10px; }
+    p:last-child { margin-bottom:0; }
+    p strong { color:var(--text); }
+
+    .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:12px; }
+    .card:last-child { margin-bottom:0; }
+    .card-hd { padding:11px 16px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:8px; background:var(--surface-2); }
+    .card-title { font-family:var(--mono); font-size:14px; font-weight:600; color:var(--accent); }
+    .card-loc a { font-size:12px; color:var(--text-muted); }
+    .card-loc a:hover { color:#58a6ff; }
+    .card-body { padding:14px 16px; }
+
+    .struct { font-family:var(--mono); font-size:12.5px; line-height:1.9; overflow-x:auto; white-space:pre; }
+    .kw { color:#ff79c6; }
+    .sname { color:#50fa7b; }
+    .field { color:#f8f8f2; }
+    .ftype { color:#8be9fd; }
+    .cmt { color:#6272a4; font-style:italic; }
+    .punct { color:#999; }
+
+    .flow-steps { display:flex; flex-direction:column; }
+    .flow-step { display:flex; gap:14px; align-items:flex-start; padding:12px 0; border-bottom:1px solid var(--border); }
+    .flow-step:last-child { border-bottom:none; }
+    .step-num { width:26px; height:26px; border-radius:50%; background:var(--accent); color:#000; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
+    .step-body { flex:1; }
+    .step-title { font-size:14px; font-weight:600; margin-bottom:3px; }
+    .step-desc { font-size:13px; color:var(--text-muted); line-height:1.5; }
+
+    .mini-flow { display:flex; flex-direction:column; gap:4px; margin:14px 0; }
+    .mf-node { background:var(--surface-2); border:1px solid var(--border); border-left:2px solid var(--accent); border-radius:5px; padding:9px 13px; font-size:13px; }
+    .mf-node strong { color:var(--accent); font-family:var(--mono); }
+    .mf-arrow { padding:0 16px; color:var(--text-muted); font-size:16px; }
+
+    .ref-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; }
+    .ref-card { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:12px 14px; transition:border-color .15s; text-decoration:none; display:block; }
+    .ref-card:hover { border-color:#58a6ff; }
+    .ref-file { font-family:var(--mono); font-size:12px; color:#58a6ff; margin-bottom:4px; }
+    .ref-desc { font-size:12px; color:var(--text-muted); }
+
+    .callout { background:color-mix(in srgb,var(--accent) 8%,transparent); border:1px solid color-mix(in srgb,var(--accent) 20%,transparent); border-radius:6px; padding:12px 14px; font-size:13px; color:var(--text-muted); }
+    .callout strong { color:var(--accent); }
+
+    /* Display map diagram */
+    .dm-table { width:100%; border-collapse:collapse; font-size:13px; }
+    .dm-table th { background:var(--surface-2); color:var(--text-muted); font-weight:600; padding:8px 12px; text-align:left; border:1px solid var(--border); font-size:12px; text-transform:uppercase; letter-spacing:.4px; }
+    .dm-table td { padding:8px 12px; border:1px solid var(--border); color:var(--text-muted); vertical-align:top; }
+    .dm-table td:first-child { font-family:var(--mono); color:var(--accent); font-size:12px; white-space:nowrap; }
+
+    footer { text-align:center; padding:28px 16px; color:var(--text-muted); font-size:13px; border-top:1px solid var(--border); margin-top:16px; }
+  </style>
+</head>
+<body>
+
+<div class="site-hd">
+  <div class="hd-inner">
+    <a class="hd-back" href="index.html">← Overview</a>
+    <span class="hd-crumb">Stage 4 / <strong>Editor &amp; Actions</strong></span>
+    <nav class="page-nav">
+      <a href="workspace.html">← Workspace</a>
+      <a href="buffer.html">Buffer →</a>
+    </nav>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="badge"><span class="badge-dot"></span>Stage 4 of 7</div>
+    <h1>Editor &amp; Actions</h1>
+    <p class="hero-sub"><code>Editor</code> is the central text-editing component. It receives actions from GPUI, translates them into cursor movements and buffer mutations, and drives the display pipeline through <code>DisplayMap</code>.</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- Editor struct -->
+  <div class="section">
+    <div class="section-title">Editor Struct (selected fields)</div>
+    <div class="card">
+      <div class="card-hd">
+        <span class="card-title">Editor</span>
+        <span class="card-loc"><a href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/editor/src/editor.rs#L883" target="_blank">editor.rs:883</a></span>
+      </div>
+      <div class="card-body">
+        <div class="struct">
+<span class="kw">pub struct</span> <span class="sname">Editor</span> <span class="punct">{</span>
+    <span class="cmt">// Core text state</span>
+    <span class="field">buffer</span><span class="punct">:</span>               <span class="ftype">Entity&lt;MultiBuffer&gt;</span><span class="punct">,</span>   <span class="cmt">// owns the text</span>
+    <span class="field">display_map</span><span class="punct">:</span>          <span class="ftype">Entity&lt;DisplayMap&gt;</span><span class="punct">,</span>
+    <span class="field">selections</span><span class="punct">:</span>           <span class="ftype">SelectionsCollection</span><span class="punct">,</span>  <span class="cmt">// all cursors/ranges</span>
+    <span class="field">scroll_manager</span><span class="punct">:</span>       <span class="ftype">ScrollManager</span><span class="punct">,</span>
+
+    <span class="cmt">// Input / interaction</span>
+    <span class="field">mode</span><span class="punct">:</span>                 <span class="ftype">EditorMode</span><span class="punct">,</span>            <span class="cmt">// full / single-line / auto-height</span>
+    <span class="field">snippet_stack</span><span class="punct">:</span>        <span class="ftype">InvalidationStack&lt;SnippetState&gt;</span><span class="punct">,</span>
+    <span class="field">columnar_selection</span><span class="punct">:</span>   <span class="ftype">Option&lt;ColumnarSelectionState&gt;</span><span class="punct">,</span>
+
+    <span class="cmt">// Language features</span>
+    <span class="field">completion_tasks</span><span class="punct">:</span>     <span class="ftype">Vec&lt;(CompletionId, Task&lt;()&gt;)&gt;</span><span class="punct">,</span>
+    <span class="field">signature_help_state</span><span class="punct">:</span> <span class="ftype">SignatureHelpState</span><span class="punct">,</span>
+    <span class="field">inline_diagnostics</span><span class="punct">:</span>   <span class="ftype">Vec&lt;(Anchor, InlineDiagnostic)&gt;</span><span class="punct">,</span>
+
+    <span class="cmt">// UI / gutter</span>
+    <span class="field">show_gutter</span><span class="punct">:</span>          <span class="ftype">bool</span><span class="punct">,</span>
+    <span class="field">show_line_numbers</span><span class="punct">:</span>    <span class="ftype">Option&lt;bool&gt;</span><span class="punct">,</span>
+    <span class="field">blink_manager</span><span class="punct">:</span>        <span class="ftype">Entity&lt;BlinkManager&gt;</span><span class="punct">,</span>
+<span class="punct">}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action dispatch -->
+  <div class="section">
+    <div class="section-title">Keystroke → Buffer Edit (Full Path)</div>
+    <p>Here is the complete chain from a keypress to a text change, using <strong>'a'</strong> typed at cursor position 10 as an example:</p>
+
+    <div class="flow-steps" style="margin-top:8px">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Keymap resolves 'a' → <code>Insert { text: "a" }</code></div>
+          <div class="step-desc">GPUI's <code>Keymap</code> looks up the keystroke in the active bindings. Most printable characters resolve to a generic <code>Insert</code> action. (See <a href="gpui.html">GPUI</a>.)</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title"><code>Editor::handle_input()</code></div>
+          <div class="step-desc"><a href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/editor/src/input.rs#L66" target="_blank">input.rs:66</a> — validates the input (IME, read-only check), then calls <code>self.insert(text, cx)</code>.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title"><code>Editor::insert()</code> — computes edits from selections</div>
+          <div class="step-desc">For each selection range (collapsed cursor = zero-width range at position 10), replaces the range with the typed text. Auto-pairs, snippets, and bracket-matching logic runs here.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title"><code>MultiBuffer::edit()</code> — transactional edit</div>
+          <div class="step-desc">The edit is grouped in a transaction for undo. <code>MultiBuffer</code> maps the display-space edit to excerpt coordinates and forwards to each underlying <code>Buffer</code>.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="step-title"><code>Buffer::edit()</code> — CRDT op applied</div>
+          <div class="step-desc">The CRDT <code>TextBuffer</code> records the insertion. Observers (syntax re-parser, LSP notifier) receive a <code>BufferEvent::Edited</code>. See <a href="buffer.html">Buffer &amp; Language</a>.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <div class="step-title">Selections advanced, <code>cx.notify()</code> called</div>
+          <div class="step-desc">The cursor advances past the inserted character. <code>cx.notify()</code> queues a re-render, which flows through the display pipeline. See <a href="rendering.html">Rendering</a>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action types -->
+  <div class="section">
+    <div class="section-title">Action Categories</div>
+    <p>Defined in <a href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/editor/src/actions.rs" target="_blank">actions.rs</a>. Actions are defined with the <code>actions!</code> macro for zero-data actions or <code>#[derive(Action)]</code> for actions with data.</p>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="struct">
+<span class="cmt">// Movement — zero data, registered as actions!(...)</span>
+<span class="ftype">MoveLeft, MoveRight, MoveUp, MoveDown</span>
+<span class="ftype">MoveToEndOfLine, MoveToBeginningOfLine</span>
+<span class="ftype">SelectAll, SelectLine</span>
+
+<span class="cmt">// Editing</span>
+<span class="ftype">DeleteToBeginningOfLine, DeleteToEndOfLine</span>
+<span class="ftype">Undo, Redo, Cut, Copy, Paste</span>
+
+<span class="cmt">// Language features</span>
+<span class="ftype">ShowCompletions, HoverAtCursor, GoToDefinition</span>
+<span class="ftype">Rename, Format, ToggleComments</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Display Map -->
+  <div class="section">
+    <div class="section-title">Display Map — Visual Transforms</div>
+    <p><code>DisplayMap</code> (<a href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/editor/src/display_map.rs" target="_blank">display_map.rs</a>) sits between the raw buffer and the rendered output. It answers questions like "where on screen does buffer position 42 appear?"</p>
+
+    <table class="dm-table" style="margin-top:12px">
+      <tr>
+        <th>Transform</th>
+        <th>What it does</th>
+      </tr>
+      <tr>
+        <td>Soft wrap</td>
+        <td>Splits long lines at the viewport edge — buffer line 1 might become display rows 1 and 2</td>
+      </tr>
+      <tr>
+        <td>Folding</td>
+        <td>Collapses a range (e.g. a function body) to a single placeholder row</td>
+      </tr>
+      <tr>
+        <td>Inlay hints</td>
+        <td>Inserts virtual text from LSP between buffer characters (type annotations, parameter names)</td>
+      </tr>
+      <tr>
+        <td>Git diff hunks</td>
+        <td>Inserts virtual lines for added/removed content from the current diff</td>
+      </tr>
+      <tr>
+        <td>Diagnostic messages</td>
+        <td>Appends inline error/warning text at end of line</td>
+      </tr>
+    </table>
+
+    <p style="margin-top:12px">The rendering code always works in <em>display-space</em> coordinates. Conversions between buffer and display space go through <code>DisplaySnapshot::buffer_point_to_display_point()</code> and the inverse.</p>
+  </div>
+
+  <!-- Code refs -->
+  <div class="section">
+    <div class="section-title">Code References</div>
+    <div class="ref-grid">
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/editor/src/editor.rs#L883" target="_blank">
+        <div class="ref-file">editor/src/editor.rs:883</div>
+        <div class="ref-desc">Editor struct definition</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/editor/src/input.rs#L66" target="_blank">
+        <div class="ref-file">editor/src/input.rs:66</div>
+        <div class="ref-desc">handle_input() — typed text entry</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/editor/src/actions.rs" target="_blank">
+        <div class="ref-file">editor/src/actions.rs</div>
+        <div class="ref-desc">All editor action definitions</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/editor/src/display_map.rs" target="_blank">
+        <div class="ref-file">editor/src/display_map.rs</div>
+        <div class="ref-desc">DisplayMap — visual coordinate transforms</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/editor/src/element.rs#L198" target="_blank">
+        <div class="ref-file">editor/src/element.rs:198</div>
+        <div class="ref-desc">EditorElement — renders editor to scene</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/editor/src/element.rs#L9786" target="_blank">
+        <div class="ref-file">editor/src/element.rs:9786</div>
+        <div class="ref-desc">Element trait impl for EditorElement</div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <a href="workspace.html">← Workspace &amp; Project</a> &nbsp;·&nbsp;
+  Next: <a href="buffer.html">Buffer &amp; Language →</a>
+</footer>
+
+</body>
+</html>

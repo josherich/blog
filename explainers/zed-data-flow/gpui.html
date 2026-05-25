@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GPUI Framework — Zed Data Flow</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d1117; --surface: #161b22; --surface-2: #21262d;
+      --border: #30363d; --text: #e6edf3; --text-muted: #8b949e;
+      --mono: 'SF Mono','Cascadia Code','Fira Code','Consolas',monospace;
+      --radius: 8px; --accent: #c084fc;
+    }
+    body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; font-size:16px; line-height:1.6; }
+    a { color:#58a6ff; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    code { font-family:var(--mono); font-size:0.85em; background:var(--surface-2); padding:1px 5px; border-radius:3px; color:#e6edf3; }
+
+    /* Site header */
+    .site-hd { background:var(--surface); border-bottom:1px solid var(--border); padding:10px 16px; position:sticky; top:0; z-index:10; }
+    .hd-inner { max-width:760px; margin:0 auto; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+    .hd-back { color:var(--text-muted); font-size:14px; }
+    .hd-crumb { color:var(--text-muted); font-size:14px; flex:1; }
+    .hd-crumb strong { color:var(--text); }
+    .page-nav { display:flex; gap:6px; margin-left:auto; }
+    .page-nav a { padding:4px 10px; border:1px solid var(--border); border-radius:4px; font-size:13px; color:var(--text-muted); transition:all .15s; }
+    .page-nav a:hover { color:var(--text); border-color:#555; text-decoration:none; }
+
+    /* Hero */
+    .hero { padding:40px 16px 32px; border-bottom:1px solid var(--border); background:linear-gradient(180deg,#16101f80 0%,transparent 100%); }
+    .hero-inner { max-width:760px; margin:0 auto; }
+    .badge { display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; background:color-mix(in srgb,var(--accent) 12%,transparent); border:1px solid color-mix(in srgb,var(--accent) 25%,transparent); color:var(--accent); margin-bottom:14px; }
+    .badge-dot { width:6px; height:6px; border-radius:50%; background:var(--accent); }
+    h1 { font-size:clamp(22px,5vw,30px); font-weight:700; letter-spacing:-.5px; margin-bottom:8px; }
+    .hero-sub { color:var(--text-muted); font-size:15px; max-width:620px; }
+
+    /* Content */
+    .content { max-width:760px; margin:0 auto; }
+    .section { padding:28px 16px; border-bottom:1px solid var(--border); }
+    .section-title { font-size:17px; font-weight:600; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+    .section-title::before { content:''; display:block; width:3px; height:18px; background:var(--accent); border-radius:2px; }
+    p { color:var(--text-muted); font-size:14px; line-height:1.7; margin-bottom:10px; }
+    p:last-child { margin-bottom:0; }
+    p strong { color:var(--text); }
+
+    /* Cards */
+    .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:12px; }
+    .card:last-child { margin-bottom:0; }
+    .card-hd { padding:11px 16px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:8px; background:var(--surface-2); }
+    .card-title { font-family:var(--mono); font-size:14px; font-weight:600; color:var(--accent); }
+    .card-loc { font-size:12px; color:var(--text-muted); }
+    .card-loc a { color:var(--text-muted); }
+    .card-loc a:hover { color:#58a6ff; }
+    .card-body { padding:14px 16px; }
+
+    /* Struct code block */
+    .struct { font-family:var(--mono); font-size:12.5px; line-height:1.9; overflow-x:auto; white-space:pre; }
+    .kw { color:#ff79c6; }
+    .sname { color:#50fa7b; }
+    .field { color:#f8f8f2; }
+    .ftype { color:#8be9fd; }
+    .cmt { color:#6272a4; font-style:italic; }
+    .punct { color:#999; }
+
+    /* Flow steps */
+    .flow-steps { display:flex; flex-direction:column; gap:0; }
+    .flow-step { display:flex; gap:14px; align-items:flex-start; padding:12px 0; border-bottom:1px solid var(--border); }
+    .flow-step:last-child { border-bottom:none; }
+    .step-num { width:26px; height:26px; border-radius:50%; background:var(--accent); color:#000; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
+    .step-body { flex:1; }
+    .step-title { font-size:14px; font-weight:600; margin-bottom:3px; }
+    .step-desc { font-size:13px; color:var(--text-muted); line-height:1.5; }
+
+    /* Ref grid */
+    .ref-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; }
+    .ref-card { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:12px 14px; transition:border-color .15s; text-decoration:none; display:block; }
+    .ref-card:hover { border-color:#58a6ff; }
+    .ref-file { font-family:var(--mono); font-size:12px; color:#58a6ff; margin-bottom:4px; }
+    .ref-desc { font-size:12px; color:var(--text-muted); }
+
+    /* Mini diagram */
+    .mini-flow { display:flex; flex-direction:column; gap:4px; }
+    .mf-node { background:var(--surface-2); border:1px solid var(--border); border-left:2px solid var(--accent); border-radius:5px; padding:9px 13px; font-size:13px; }
+    .mf-node strong { color:var(--accent); font-family:var(--mono); }
+    .mf-arrow { padding:0 16px; color:var(--text-muted); font-size:16px; }
+
+    /* Callout */
+    .callout { background:color-mix(in srgb,var(--accent) 8%,transparent); border:1px solid color-mix(in srgb,var(--accent) 20%,transparent); border-radius:6px; padding:12px 14px; font-size:13px; color:var(--text-muted); }
+    .callout strong { color:var(--accent); }
+
+    footer { text-align:center; padding:28px 16px; color:var(--text-muted); font-size:13px; border-top:1px solid var(--border); margin-top:16px; }
+  </style>
+</head>
+<body>
+
+<div class="site-hd">
+  <div class="hd-inner">
+    <a class="hd-back" href="index.html">← Overview</a>
+    <span class="hd-crumb">GPUI / <strong>Framework</strong></span>
+    <nav class="page-nav">
+      <a href="index.html">All</a>
+      <a href="workspace.html">Next →</a>
+    </nav>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="badge"><span class="badge-dot"></span>Foundation Layer</div>
+    <h1>GPUI — The UI Framework</h1>
+    <p class="hero-sub">GPUI is Zed's custom reactive UI framework. It provides the entity system, event/action dispatch, concurrency primitives, and the rendering loop that everything else is built on top of.</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- App Initialization -->
+  <div class="section" id="init">
+    <div class="section-title">Application Initialization</div>
+    <p>The entry point (<a href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/zed/src/main.rs#L193" target="_blank">main.rs:193</a>) creates an <code>Application</code>, registers global services, then calls <code>app.run()</code> which starts the platform event loop and hands control to GPUI.</p>
+
+    <div class="mini-flow" style="margin:16px 0">
+      <div class="mf-node"><strong>main()</strong> — sets up DB, session, HTTP client, language registry</div>
+      <div class="mf-arrow">↓</div>
+      <div class="mf-node"><strong>Application::new(platform)</strong> — wraps platform in <code>Rc&lt;AppCell&gt;</code></div>
+      <div class="mf-arrow">↓</div>
+      <div class="mf-node"><strong>app.run(|cx| { ... })</strong> — enters the OS event loop; closure opens the first workspace</div>
+      <div class="mf-arrow">↓</div>
+      <div class="mf-node"><strong>Platform event loop</strong> — continuously dispatches events until quit</div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd">
+        <span class="card-title">Application / App</span>
+        <span class="card-loc"><a href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/gpui/src/app.rs#L140" target="_blank">app.rs:140</a> / <a href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/gpui/src/app.rs#L596" target="_blank">:596</a></span>
+      </div>
+      <div class="card-body">
+        <div class="struct">
+<span class="cmt">// Root handle — cheaply cloneable Rc wrapper</span>
+<span class="kw">pub struct</span> <span class="sname">Application</span><span class="punct">(</span><span class="ftype">Rc&lt;AppCell&gt;</span><span class="punct">);</span>
+
+<span class="cmt">// The actual state, accessed via &amp;App / &amp;mut App</span>
+<span class="kw">pub struct</span> <span class="sname">App</span> <span class="punct">{</span>
+    <span class="field">platform</span><span class="punct">:</span>       <span class="ftype">Rc&lt;dyn Platform&gt;</span><span class="punct">,</span>   <span class="cmt">// macOS/Linux/Windows impl</span>
+    <span class="field">text_system</span><span class="punct">:</span>    <span class="ftype">Arc&lt;TextSystem&gt;</span><span class="punct">,</span>
+    <span class="field">windows</span><span class="punct">:</span>        <span class="ftype">HashMap&lt;WindowId, Window&gt;</span><span class="punct">,</span>
+    <span class="field">entities</span><span class="punct">:</span>       <span class="ftype">EntityMap</span><span class="punct">,</span>             <span class="cmt">// all live Entity&lt;T&gt; values</span>
+    <span class="field">globals</span><span class="punct">:</span>        <span class="ftype">HashMap&lt;TypeId, AnyBox&gt;</span><span class="punct">,</span>
+    <span class="field">pending_effects</span><span class="punct">:</span> <span class="ftype">VecDeque&lt;Effect&gt;</span><span class="punct">,</span>  <span class="cmt">// queued notify/emit effects</span>
+<span class="punct">}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Entity System -->
+  <div class="section" id="entities">
+    <div class="section-title">Entity System</div>
+    <p>All mutable application state lives in <strong>entities</strong>. An <code>Entity&lt;T&gt;</code> is a reference-counted handle to a value of type <code>T</code> stored inside GPUI's entity map. GPUI routes notifications and events through this system, ensuring the single-threaded UI loop has consistent state.</p>
+
+    <div class="callout" style="margin:14px 0">
+      <strong>Key rule:</strong> Never hold a borrow across an <code>.update()</code> call — GPUI will panic if two mutable borrows overlap. Use the inner <code>cx</code> provided by the closure, not the outer one.
+    </div>
+
+    <div class="card">
+      <div class="card-hd">
+        <span class="card-title">Entity&lt;T&gt; API</span>
+        <span class="card-loc"><a href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/gpui/src/app.rs" target="_blank">app.rs</a></span>
+      </div>
+      <div class="card-body">
+        <div class="struct">
+<span class="cmt">// Reading state</span>
+<span class="field">entity</span><span class="punct">.</span><span class="field">read</span><span class="punct">(</span><span class="field">cx</span><span class="punct">)</span>                          <span class="cmt">// → &amp;T</span>
+<span class="field">entity</span><span class="punct">.</span><span class="field">read_with</span><span class="punct">(</span><span class="field">cx</span><span class="punct">, |</span><span class="field">t</span><span class="punct">, </span><span class="field">cx</span><span class="punct">| ...)</span>          <span class="cmt">// → R</span>
+
+<span class="cmt">// Mutating state</span>
+<span class="field">entity</span><span class="punct">.</span><span class="field">update</span><span class="punct">(</span><span class="field">cx</span><span class="punct">, |</span><span class="field">t</span><span class="punct">: &amp;</span><span class="kw">mut</span> <span class="ftype">T</span><span class="punct">, </span><span class="field">cx</span><span class="punct">: &amp;</span><span class="kw">mut</span> <span class="ftype">Context&lt;T&gt;</span><span class="punct">| ...)</span>
+<span class="field">entity</span><span class="punct">.</span><span class="field">update_in</span><span class="punct">(</span><span class="field">cx</span><span class="punct">, |</span><span class="field">t</span><span class="punct">, </span><span class="field">window</span><span class="punct">, </span><span class="field">cx</span><span class="punct">| ...)</span>  <span class="cmt">// also takes Window</span>
+
+<span class="cmt">// Weak references (avoid memory leaks in cyclic structures)</span>
+<span class="field">entity</span><span class="punct">.</span><span class="field">downgrade</span><span class="punct">()</span>                       <span class="cmt">// → WeakEntity&lt;T&gt;</span>
+<span class="field">weak</span><span class="punct">.</span><span class="field">upgrade</span><span class="punct">(</span><span class="field">cx</span><span class="punct">)</span>                         <span class="cmt">// → Option&lt;Entity&lt;T&gt;&gt;</span>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top:12px">When state changes, call <code>cx.notify()</code> inside an <code>.update()</code> closure. GPUI queues a redraw for views that subscribe to this entity, and calls <code>cx.observe</code> callbacks.</p>
+  </div>
+
+  <!-- Input & Action Dispatch -->
+  <div class="section" id="input">
+    <div class="section-title">Input &amp; Action Dispatch</div>
+    <p>This is the path a keystroke takes before reaching any editor code:</p>
+
+    <div class="flow-steps" style="margin-top:8px">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Platform receives OS event</div>
+          <div class="step-desc">macOS <code>NSApplication</code> / Linux XCB / Windows message loop delivers a key-down event to GPUI's platform shim.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Keystroke → Action via Keymap</div>
+          <div class="step-desc"><a href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/gpui/src/keymap.rs" target="_blank">keymap.rs</a> matches the keystroke (and any pending chord state) against the active bindings. If matched, it produces a boxed <code>dyn Action</code> value.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">App::dispatch_action()</div>
+          <div class="step-desc"><a href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/gpui/src/app.rs#L2207" target="_blank">app.rs:2207</a> routes the action to the focused window. The dispatch travels through the element tree in <em>capture phase</em> (root → leaf) then <em>bubble phase</em> (leaf → root), calling <code>.on_action()</code> handlers registered on each element.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Action handler executes</div>
+          <div class="step-desc">The focused view's handler (e.g. <code>Editor::move_left</code>) is called. It mutates entity state and calls <code>cx.notify()</code> to schedule a re-render.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Concurrency -->
+  <div class="section" id="concurrency">
+    <div class="section-title">Concurrency Primitives</div>
+    <p>GPUI's rule: <strong>all entity access happens on one foreground thread</strong>. Background work runs on a separate thread pool and communicates results back via foreground tasks.</p>
+
+    <div class="card">
+      <div class="card-hd">
+        <span class="card-title">spawn / background_spawn</span>
+        <span class="card-loc"><a href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/gpui/src/app.rs" target="_blank">app.rs</a></span>
+      </div>
+      <div class="card-body">
+        <div class="struct">
+<span class="cmt">// Foreground task — has access to App / entities</span>
+<span class="kw">let</span> <span class="field">task</span> <span class="punct">= </span><span class="field">cx</span><span class="punct">.</span><span class="field">spawn</span><span class="punct">(</span><span class="kw">async move</span> <span class="punct">|</span><span class="kw">mut</span> <span class="field">cx</span><span class="punct">| {</span>
+    <span class="field">entity</span><span class="punct">.</span><span class="field">update</span><span class="punct">(&amp;</span><span class="kw">mut</span> <span class="field">cx</span><span class="punct">, |</span><span class="field">t</span><span class="punct">, </span><span class="field">cx</span><span class="punct">| { ... })?;</span>
+<span class="punct">});</span>
+
+<span class="cmt">// Background task — no entity access; returns a value</span>
+<span class="kw">let</span> <span class="field">result</span> <span class="punct">= </span><span class="field">cx</span><span class="punct">.</span><span class="field">background_spawn</span><span class="punct">(</span><span class="kw">async move</span> <span class="punct">{</span>
+    <span class="field">expensive_computation</span><span class="punct">()</span>  <span class="cmt">// runs on thread pool</span>
+<span class="punct">}).</span><span class="field">await</span><span class="punct">;</span>
+
+<span class="cmt">// Dropping a Task cancels it; detach to let it run forever</span>
+<span class="field">task</span><span class="punct">.</span><span class="field">detach_and_log_err</span><span class="punct">(</span><span class="field">cx</span><span class="punct">);</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:14px">
+      <strong>Pattern:</strong> syntax re-parsing runs in <code>background_spawn</code>. The result is sent back to a foreground <code>spawn</code> task that updates the <code>Buffer</code> entity and calls <code>cx.notify()</code>.
+    </div>
+  </div>
+
+  <!-- Rendering loop -->
+  <div class="section" id="render">
+    <div class="section-title">Rendering Loop</div>
+    <p>After <code>cx.notify()</code> is called, GPUI schedules a frame. On the next frame tick:</p>
+
+    <div class="flow-steps" style="margin-top:8px">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Render trait called</div>
+          <div class="step-desc">For each dirty view, GPUI calls <code>T::render(&amp;mut self, window, cx)</code> which returns an element tree.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Layout phase</div>
+          <div class="step-desc">GPUI performs a flexbox layout pass over the element tree, computing pixel bounds for each element.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Paint phase</div>
+          <div class="step-desc">Each element's <code>paint(bounds, scene, cx)</code> is called. Elements emit quads, glyphs, underlines, paths, and sprites into the <code>Scene</code>.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">WGPU submission</div>
+          <div class="step-desc">The <code>Scene</code> is handed to <code>gpui_wgpu</code>, which builds GPU draw calls and presents the framebuffer. See <a href="rendering.html">Rendering Pipeline</a>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Code References -->
+  <div class="section">
+    <div class="section-title">Code References</div>
+    <div class="ref-grid">
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/zed/src/main.rs#L193" target="_blank">
+        <div class="ref-file">crates/zed/src/main.rs:193</div>
+        <div class="ref-desc">Application entry point</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/gpui/src/app.rs#L140" target="_blank">
+        <div class="ref-file">crates/gpui/src/app.rs:140</div>
+        <div class="ref-desc">Application struct definition</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/gpui/src/app.rs#L596" target="_blank">
+        <div class="ref-file">crates/gpui/src/app.rs:596</div>
+        <div class="ref-desc">App struct — global state</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/gpui/src/app.rs#L2207" target="_blank">
+        <div class="ref-file">crates/gpui/src/app.rs:2207</div>
+        <div class="ref-desc">dispatch_action() routing</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/gpui/src/keymap.rs" target="_blank">
+        <div class="ref-file">crates/gpui/src/keymap.rs</div>
+        <div class="ref-desc">Keystroke → Action binding</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/gpui/src/element.rs#L51" target="_blank">
+        <div class="ref-file">crates/gpui/src/element.rs:51</div>
+        <div class="ref-desc">Element trait definition</div>
+      </a>
+    </div>
+  </div>
+
+</div><!-- .content -->
+
+<footer>
+  <a href="index.html">← Overview</a> &nbsp;·&nbsp;
+  Next: <a href="workspace.html">Workspace &amp; Project →</a>
+</footer>
+
+</body>
+</html>

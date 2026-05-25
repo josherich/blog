@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>libkrun — API Layer</title>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --border: #30363d;
+    --text: #e6edf3; --muted: #8b949e;
+    --api: #3fb950; --vmm: #58a6ff; --vcpu: #ff7b72;
+    --mem: #bc8cff; --dev: #39d0d8; --vsock: #ffa657;
+    --accent: #3fb950;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+
+  header { padding: 24px 20px 16px; border-bottom: 1px solid var(--border); }
+  header h1 { font-size: 1.4rem; font-weight: 700; color: var(--api); }
+  header p { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+
+  nav { display: flex; gap: 8px; padding: 12px 20px; border-bottom: 1px solid var(--border); overflow-x: auto; flex-wrap: wrap; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 0.8rem; padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border); white-space: nowrap; transition: all .2s; }
+  nav a:hover, nav a.active { color: var(--text); border-color: var(--api); background: rgba(63,185,80,.1); }
+
+  .gh { display: inline-flex; align-items: center; gap: 3px; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.7rem; color: var(--muted); text-decoration: none; padding: 1px 6px; border-radius: 4px; border: 1px solid var(--border); margin-left: 6px; transition: all .15s; vertical-align: middle; }
+  .gh:hover { color: var(--text); border-color: var(--api); background: rgba(63,185,80,.1); }
+  .gh::before { content: '⌥'; font-size: 0.65rem; }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+  .section { margin-bottom: 32px; }
+  .section h2 { font-size: 1.05rem; font-weight: 600; margin-bottom: 14px; border-left: 3px solid var(--accent); padding-left: 10px; }
+
+  /* Function list */
+  .fn-list { display: flex; flex-direction: column; gap: 8px; }
+  .fn-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; cursor: pointer; border-color: var(--api); }
+  .fn-head { display: flex; align-items: center; gap: 12px; padding: 12px 16px; user-select: none; }
+  .fn-tag { font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: rgba(63,185,80,.2); color: var(--api); }
+  .fn-name { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.9rem; font-weight: 600; flex: 1; }
+  .fn-caret { color: var(--muted); font-size: 0.8rem; transition: transform .2s; }
+  .fn-item:not(.open) .fn-caret { transform: rotate(0deg); }
+  .fn-item.open .fn-caret { transform: rotate(90deg); }
+  .fn-body { padding: 0 16px 14px; border-top: 1px solid var(--border); }
+  .fn-item:not(.open) .fn-body { display: none; }
+  .fn-sig { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.78rem; color: var(--muted); background: #0d1117; padding: 8px 10px; border-radius: 6px; margin: 10px 0; overflow-x: auto; white-space: pre; }
+  .fn-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.6; }
+  .fn-effect { margin-top: 8px; font-size: 0.78rem; color: var(--api); }
+
+  /* Lifecycle timeline */
+  .timeline { display: flex; flex-direction: column; }
+  .tl-item { display: flex; gap: 14px; padding-bottom: 20px; position: relative; }
+  .tl-left { display: flex; flex-direction: column; align-items: center; width: 28px; flex-shrink: 0; }
+  .tl-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--api); flex-shrink: 0; }
+  .tl-line { flex: 1; width: 2px; background: var(--border); margin-top: 2px; }
+  .tl-item:last-child .tl-line { display: none; }
+  .tl-content { flex: 1; padding-top: 0; }
+  .tl-phase { font-size: 0.7rem; color: var(--api); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 2px; }
+  .tl-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; }
+  .tl-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+
+  /* ContextConfig tree */
+  .struct-tree { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.82rem; }
+  .st-row { display: flex; gap: 8px; padding: 3px 0; }
+  .st-indent { margin-left: 20px; }
+  .st-key { color: var(--vcpu); }
+  .st-type { color: var(--dev); }
+  .st-comment { color: var(--muted); }
+
+  .to-next { text-align: center; padding: 10px 0; color: var(--muted); font-size: 0.85rem; }
+  .to-next a { color: var(--vmm); text-decoration: none; }
+  .to-next a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<header>
+  <h1>API Layer</h1>
+  <p>src/libkrun/src/lib.rs — C-exported interface consumed by host applications</p>
+</header>
+
+<nav>
+  <a href="index.html">Overview</a>
+  <a href="api.html" class="active">API Layer</a>
+  <a href="vmm.html">VMM Builder</a>
+  <a href="vcpu.html">vCPU Runtime</a>
+  <a href="memory.html">Memory</a>
+  <a href="devices.html">Virtio Devices</a>
+  <a href="vsock.html">Vsock / TSI</a>
+</nav>
+
+<div class="container">
+
+  <div class="section">
+    <h2>VM lifecycle — call order</h2>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div class="tl-content">
+          <div class="tl-phase">Create</div>
+          <div class="tl-title">krun_create_ctx() <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/libkrun/src/lib.rs#L517" target="_blank">lib.rs:517</a></div>
+          <div class="tl-desc">Allocates a new ContextConfig and inserts it into CTX_MAP <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/libkrun/src/lib.rs#L432" target="_blank">lib.rs:432</a>. Returns an integer context ID. Thread-safe via Mutex.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div class="tl-content">
+          <div class="tl-phase">Configure — VM resources</div>
+          <div class="tl-title">krun_set_vm_config(ctx_id, vcpu_count, mem_mib) <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/libkrun/src/lib.rs#L551" target="_blank">lib.rs:551</a></div>
+          <div class="tl-desc">Sets VmConfig inside VmResources. Controls how many vCPU threads to spawn and how much guest RAM to allocate.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div class="tl-content">
+          <div class="tl-phase">Configure — devices</div>
+          <div class="tl-title">krun_set_root_disk · krun_add_vsock · krun_set_net_cfg · … <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/libkrun/src/lib.rs#L836" target="_blank">lib.rs:836</a></div>
+          <div class="tl-desc">Each call mutates the appropriate sub-config inside ContextConfig. No VM exists yet — these are pure configuration.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div class="tl-content">
+          <div class="tl-phase">Configure — kernel / firmware</div>
+          <div class="tl-title">krun_set_kernel · krun_set_initrd · krun_set_root_path <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/libkrun/src/lib.rs#L582" target="_blank">lib.rs:582</a></div>
+          <div class="tl-desc">Point to the kernel bundle (from krunfw), an external vmlinux, or a firmware image. Architecture determines which paths are valid.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div class="tl-content">
+          <div class="tl-phase">Launch</div>
+          <div class="tl-title">krun_start_enter(ctx_id) <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/libkrun/src/lib.rs#L2632" target="_blank">lib.rs:2632</a></div>
+          <div class="tl-desc">Calls build_microvm(event_manager, &amp;vmr) then enters the EventManager run loop. <em>Does not return</em> until the VM shuts down. Spawns vCPU OS threads internally.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>ContextConfig — runtime state <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/libkrun/src/lib.rs#L137" target="_blank">lib.rs:137</a></h2>
+    <div class="struct-tree">
+      <div class="st-row"><span class="st-key">ContextConfig</span><span class="st-comment"> // global CTX_MAP[ctx_id]</span></div>
+      <div class="st-indent">
+        <div class="st-row"><span class="st-key">vmr</span><span class="st-comment">:&nbsp;</span><span class="st-type">VmResources</span><span class="st-comment">         // aggregates all device configs</span></div>
+        <div class="st-indent">
+          <div class="st-row"><span class="st-key">vm_config</span><span class="st-comment">:&nbsp;</span><span class="st-type">VmConfig</span><span class="st-comment">        // vcpu_count, mem_size_mib</span></div>
+          <div class="st-row"><span class="st-key">block_config</span><span class="st-comment">:&nbsp;</span><span class="st-type">Option&lt;BlockConfig&gt;</span></div>
+          <div class="st-row"><span class="st-key">net_config</span><span class="st-comment">:&nbsp;</span><span class="st-type">Option&lt;NetConfig&gt;</span></div>
+          <div class="st-row"><span class="st-key">vsock_config</span><span class="st-comment">:&nbsp;</span><span class="st-type">Option&lt;VsockConfig&gt;</span></div>
+          <div class="st-row"><span class="st-key">gpu_config</span><span class="st-comment">:&nbsp;</span><span class="st-type">Option&lt;GpuConfig&gt;</span></div>
+        </div>
+        <div class="st-row"><span class="st-key">kernel_config</span><span class="st-comment">:&nbsp;</span><span class="st-type">KernelConfig</span><span class="st-comment">       // path, cmdline</span></div>
+        <div class="st-row"><span class="st-key">initrd_config</span><span class="st-comment">:&nbsp;</span><span class="st-type">Option&lt;InitrdConfig&gt;</span></div>
+        <div class="st-row"><span class="st-key">display_backend</span><span class="st-comment">:&nbsp;</span><span class="st-type">DisplayBackend</span><span class="st-comment">     // X11 | Wayland | Off</span></div>
+        <div class="st-row"><span class="st-key">env</span><span class="st-comment">:&nbsp;</span><span class="st-type">Vec&lt;CString&gt;</span><span class="st-comment">             // environment variables</span></div>
+        <div class="st-row"><span class="st-key">args</span><span class="st-comment">:&nbsp;</span><span class="st-type">Vec&lt;CString&gt;</span><span class="st-comment">            // argv for guest process</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>API function reference</h2>
+    <div class="fn-list" id="fnList">
+
+      <div class="fn-item open">
+        <div class="fn-head">
+          <span class="fn-tag">CREATE</span>
+          <span class="fn-name">krun_create_ctx</span>
+          <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/libkrun/src/lib.rs#L517" target="_blank">lib.rs:517</a>
+          <span class="fn-caret">›</span>
+        </div>
+        <div class="fn-body">
+          <div class="fn-sig">pub extern "C" fn krun_create_ctx() -> i32</div>
+          <div class="fn-desc">Allocates a new ContextConfig with default values and inserts it into CTX_MAP. Returns the ctx_id on success, -errno on failure.</div>
+          <div class="fn-effect">Effect: CTX_MAP.insert(id, ContextConfig::default())</div>
+        </div>
+      </div>
+
+      <div class="fn-item open">
+        <div class="fn-head">
+          <span class="fn-tag">CONFIG</span>
+          <span class="fn-name">krun_set_vm_config</span>
+          <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/libkrun/src/lib.rs#L551" target="_blank">lib.rs:551</a>
+          <span class="fn-caret">›</span>
+        </div>
+        <div class="fn-body">
+          <div class="fn-sig">pub extern "C" fn krun_set_vm_config(ctx_id: u32, vcpu_count: u8, mem_size_mib: u32) -> i32</div>
+          <div class="fn-desc">Sets the number of vCPU threads and the amount of guest RAM. Must be called before krun_start_enter.</div>
+          <div class="fn-effect">Effect: ctx.vmr.vm_config = VmConfig { vcpu_count, mem_size_mib }</div>
+        </div>
+      </div>
+
+      <div class="fn-item open">
+        <div class="fn-head">
+          <span class="fn-tag">CONFIG</span>
+          <span class="fn-name">krun_set_root_disk</span>
+          <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/libkrun/src/lib.rs#L836" target="_blank">lib.rs:836</a>
+          <span class="fn-caret">›</span>
+        </div>
+        <div class="fn-body">
+          <div class="fn-sig">pub unsafe extern "C" fn krun_set_root_disk(ctx_id: u32, c_disk_path: *const c_char) -> i32</div>
+          <div class="fn-desc">Registers a virtio-blk device backed by a disk image file. The guest sees it as /dev/vda.</div>
+          <div class="fn-effect">Effect: ctx.vmr.block_config = Some(BlockConfig { path, is_root: true })</div>
+        </div>
+      </div>
+
+      <div class="fn-item open">
+        <div class="fn-head">
+          <span class="fn-tag">CONFIG</span>
+          <span class="fn-name">krun_add_vsock</span>
+          <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/libkrun/src/lib.rs#L2438" target="_blank">lib.rs:2438</a>
+          <span class="fn-caret">›</span>
+        </div>
+        <div class="fn-body">
+          <div class="fn-sig">pub extern "C" fn krun_add_vsock(ctx_id: u32, tsi_features: u32) -> i32</div>
+          <div class="fn-desc">Adds a vsock device with TSI (Transparent Socket Impersonation) flags. tsi_features controls which socket families are hijacked (INET, UNIX).</div>
+          <div class="fn-effect">Effect: ctx.vmr.vsock_config = Some(VsockConfig { tsi_features })</div>
+        </div>
+      </div>
+
+      <div class="fn-item open">
+        <div class="fn-head">
+          <span class="fn-tag">CONFIG</span>
+          <span class="fn-name">krun_set_display_backend</span>
+          <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/libkrun/src/lib.rs#L1517" target="_blank">lib.rs:1517</a>
+          <span class="fn-caret">›</span>
+        </div>
+        <div class="fn-body">
+          <div class="fn-sig">pub extern "C" fn krun_set_display_backend(ctx_id: u32, backend: u32) -> i32</div>
+          <div class="fn-desc">Selects the host-side display output: X11, Wayland, or offscreen rendering. Used together with the gpu feature flag.</div>
+          <div class="fn-effect">Effect: ctx.display_backend = DisplayBackend::from(backend)</div>
+        </div>
+      </div>
+
+      <div class="fn-item open">
+        <div class="fn-head">
+          <span class="fn-tag">LAUNCH</span>
+          <span class="fn-name">krun_start_enter</span>
+          <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/libkrun/src/lib.rs#L2632" target="_blank">lib.rs:2632</a>
+          <span class="fn-caret">›</span>
+        </div>
+        <div class="fn-body">
+          <div class="fn-sig">pub extern "C" fn krun_start_enter(ctx_id: u32) -> i32</div>
+          <div class="fn-desc">Builds the microVM, spawns vCPU threads, and enters the EventManager polling loop. This function does not return until the guest shuts down or an unrecoverable error occurs.</div>
+          <div class="fn-effect">Effect: build_microvm() → event_manager.run() [blocking]</div>
+        </div>
+      </div>
+
+      <div class="fn-item open">
+        <div class="fn-head">
+          <span class="fn-tag">DESTROY</span>
+          <span class="fn-name">krun_free_ctx</span>
+          <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/libkrun/src/lib.rs#L543" target="_blank">lib.rs:543</a>
+          <span class="fn-caret">›</span>
+        </div>
+        <div class="fn-body">
+          <div class="fn-sig">pub extern "C" fn krun_free_ctx(ctx_id: u32) -> i32</div>
+          <div class="fn-desc">Removes the ContextConfig from CTX_MAP, allowing all resources to be dropped. Should be called after krun_start_enter returns.</div>
+          <div class="fn-effect">Effect: CTX_MAP.remove(ctx_id)</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="to-next">flows into → <a href="vmm.html">VMM Builder</a></div>
+</div>
+
+<script>
+  document.getElementById('fnList').querySelectorAll('.fn-item').forEach(item => {
+    item.querySelector('.fn-head').addEventListener('click', () => {
+      item.classList.toggle('open');
+    });
+  });
+</script>
+</body>
+</html>

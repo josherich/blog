@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>libkrun — Architecture Overview</title>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --border: #30363d;
+    --text: #e6edf3; --muted: #8b949e;
+    --api: #3fb950; --vmm: #58a6ff; --vcpu: #ff7b72;
+    --mem: #bc8cff; --dev: #39d0d8; --vsock: #ffa657;
+    --flow: #f78166;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
+
+  header { padding: 24px 20px 16px; border-bottom: 1px solid var(--border); }
+  header h1 { font-size: 1.5rem; font-weight: 700; }
+  header p { color: var(--muted); font-size: 0.9rem; margin-top: 4px; }
+
+  nav { display: flex; gap: 8px; padding: 12px 20px; border-bottom: 1px solid var(--border); overflow-x: auto; flex-wrap: wrap; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 0.8rem; padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border); white-space: nowrap; transition: all .2s; }
+  nav a:hover, nav a.active { color: var(--text); border-color: var(--vmm); background: rgba(88,166,255,.1); }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+
+  /* GitHub link style used across all pages */
+  .gh { display: inline-flex; align-items: center; gap: 3px; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.7rem; color: var(--muted); text-decoration: none; padding: 1px 6px; border-radius: 4px; border: 1px solid var(--border); margin-left: 6px; transition: all .15s; vertical-align: middle; }
+  .gh:hover { color: var(--text); border-color: var(--vmm); background: rgba(88,166,255,.1); }
+  .gh::before { content: '⌥'; font-size: 0.65rem; }
+
+  .intro { margin-bottom: 28px; }
+  .intro p { color: var(--muted); line-height: 1.6; font-size: 0.95rem; }
+
+  .stack { display: flex; flex-direction: column; gap: 4px; margin-bottom: 32px; }
+  .layer { position: relative; padding: 16px 20px; border-radius: 10px; border: 1px solid; cursor: pointer; transition: all .25s; text-decoration: none; display: block; }
+  .layer:hover { transform: translateX(6px); }
+  .layer h3 { font-size: 1rem; font-weight: 600; margin-bottom: 2px; }
+  .layer p { font-size: 0.8rem; opacity: .75; }
+  .layer .badge { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 0.7rem; padding: 2px 8px; border-radius: 10px; opacity: .85; font-family: monospace; }
+  .l-api  { border-color: var(--api);   background: rgba(63,185,80,.07);  color: var(--api);  }
+  .l-vmm  { border-color: var(--vmm);   background: rgba(88,166,255,.07); color: var(--vmm);  }
+  .l-vcpu { border-color: var(--vcpu);  background: rgba(255,123,114,.07);color: var(--vcpu); }
+  .l-mem  { border-color: var(--mem);   background: rgba(188,140,255,.07);color: var(--mem);  }
+  .l-dev  { border-color: var(--dev);   background: rgba(57,208,216,.07); color: var(--dev);  }
+  .l-vsock{ border-color: var(--vsock); background: rgba(255,166,87,.07); color: var(--vsock);}
+  .l-api .badge  { background: rgba(63,185,80,.2); }
+  .l-vmm .badge  { background: rgba(88,166,255,.2); }
+  .l-vcpu .badge { background: rgba(255,123,114,.2); }
+  .l-mem .badge  { background: rgba(188,140,255,.2); }
+  .l-dev .badge  { background: rgba(57,208,216,.2); }
+  .l-vsock .badge{ background: rgba(255,166,87,.2); }
+
+  .arrow { text-align: center; color: var(--muted); font-size: 1.1rem; line-height: 1; }
+
+  .flow-section { margin-bottom: 32px; }
+  .flow-section h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 14px; color: var(--text); }
+
+  .flow-path { display: flex; flex-direction: column; gap: 0; }
+  .flow-step { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-left: 2px solid var(--border); padding-left: 20px; position: relative; }
+  .flow-step:last-child { border-left-color: transparent; }
+  .flow-step::before { content: ''; position: absolute; left: -6px; top: 18px; width: 10px; height: 10px; border-radius: 50%; background: var(--flow); box-shadow: 0 0 0 3px rgba(247,129,102,.2); }
+  .flow-step .step-label { font-size: 0.75rem; color: var(--muted); min-width: 80px; padding-top: 2px; }
+  .flow-step .step-body { flex: 1; }
+  .flow-step .step-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 2px; }
+  .flow-step .step-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; margin-bottom: 32px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .card h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; }
+  .card ul { list-style: none; }
+  .card ul li { font-size: 0.78rem; color: var(--muted); padding: 2px 0; padding-left: 14px; position: relative; }
+  .card ul li::before { content: '›'; position: absolute; left: 0; color: var(--dev); }
+
+  .platforms { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .plat { font-size: 0.72rem; padding: 3px 10px; border-radius: 10px; border: 1px solid var(--border); color: var(--muted); }
+
+  .section-sep { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+  footer { text-align: center; padding: 20px; color: var(--muted); font-size: 0.75rem; border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+<header>
+  <h1>libkrun</h1>
+  <p>Interactive data flow — microVM library architecture</p>
+</header>
+
+<nav>
+  <a href="index.html" class="active">Overview</a>
+  <a href="api.html">API Layer</a>
+  <a href="vmm.html">VMM Builder</a>
+  <a href="vcpu.html">vCPU Runtime</a>
+  <a href="memory.html">Memory</a>
+  <a href="devices.html">Virtio Devices</a>
+  <a href="vsock.html">Vsock / TSI</a>
+</nav>
+
+<div class="container">
+  <div class="intro">
+    <p>libkrun is a lightweight microVM library that uses KVM (Linux) or HVF (macOS) to run isolated workloads. Applications interact through a simple C API; internally, the library creates guest memory, initialises vCPUs, wires up virtio devices, and drives execution via an event loop.</p>
+    <div class="platforms">
+      <span class="plat">Linux · KVM</span>
+      <span class="plat">macOS · HVF</span>
+      <span class="plat">x86-64 · ARM · RISC-V</span>
+    </div>
+  </div>
+
+  <div class="flow-section">
+    <h2>Architecture layers — tap to explore</h2>
+    <div class="stack">
+      <a class="layer l-api" href="api.html">
+        <div class="badge">src/libkrun/src/lib.rs</div>
+        <h3>API Layer</h3>
+        <p>C-exported functions: krun_create_ctx · krun_set_vm_config · krun_start_enter</p>
+      </a>
+      <div class="arrow">↓</div>
+      <a class="layer l-vmm" href="vmm.html">
+        <div class="badge">src/vmm/src/builder.rs</div>
+        <h3>VMM Builder</h3>
+        <p>build_microvm() — memory allocation, device registration, vCPU init</p>
+      </a>
+      <div class="arrow">↓</div>
+      <a class="layer l-vcpu" href="vcpu.html">
+        <div class="badge">src/vmm/src/linux/vstate.rs</div>
+        <h3>vCPU Runtime</h3>
+        <p>Hypervisor execution loop, MMIO exit handling, interrupt injection</p>
+      </a>
+      <div class="arrow">↓</div>
+      <a class="layer l-mem" href="memory.html">
+        <div class="badge">vm-memory / device_manager/shm.rs</div>
+        <h3>Memory Management</h3>
+        <p>GuestMemoryMmap, SHM regions, firmware/kernel placement</p>
+      </a>
+      <div class="arrow">↓</div>
+      <a class="layer l-dev" href="devices.html">
+        <div class="badge">src/devices/src/virtio/</div>
+        <h3>Virtio Devices</h3>
+        <p>MMIO bus, MmioTransport, virtqueue mechanics — block, net, gpu, console</p>
+      </a>
+      <div class="arrow">↓</div>
+      <a class="layer l-vsock" href="vsock.html">
+        <div class="badge">src/devices/src/virtio/vsock/</div>
+        <h3>Vsock / TSI</h3>
+        <p>Guest↔host socket bridge with transparent socket impersonation</p>
+      </a>
+    </div>
+  </div>
+
+  <hr class="section-sep">
+
+  <div class="flow-section">
+    <h2>End-to-end startup flow</h2>
+    <div class="flow-path">
+      <div class="flow-step">
+        <span class="step-label" style="color:var(--api)">API</span>
+        <div class="step-body">
+          <div class="step-title">krun_create_ctx() <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/libkrun/src/lib.rs#L517" target="_blank">lib.rs:517</a></div>
+          <div class="step-desc">Returns an integer context ID. A ContextConfig struct is inserted into a global CTX_MAP keyed by that ID.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <span class="step-label" style="color:var(--api)">API</span>
+        <div class="step-body">
+          <div class="step-title">Configure vCPUs, RAM, devices <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/libkrun/src/lib.rs#L137" target="_blank">ContextConfig:137</a></div>
+          <div class="step-desc">krun_set_vm_config, krun_add_vsock, krun_set_root_disk, etc. populate ContextConfig.vmr (VmResources).</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <span class="step-label" style="color:var(--api)">API</span>
+        <div class="step-body">
+          <div class="step-title">krun_start_enter() <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/libkrun/src/lib.rs#L2632" target="_blank">lib.rs:2632</a></div>
+          <div class="step-desc">Kicks off EventManager creation and delegates to build_microvm().</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <span class="step-label" style="color:var(--vmm)">VMM</span>
+        <div class="step-body">
+          <div class="step-title">create_guest_memory() <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/builder.rs#L1513" target="_blank">builder.rs:1513</a></div>
+          <div class="step-desc">Allocates RAM regions via mmap. Kernel and initrd are loaded into the guest physical address space.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <span class="step-label" style="color:var(--vmm)">VMM</span>
+        <div class="step-body">
+          <div class="step-title">setup_vm() — register memory with hypervisor <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/builder.rs#L1690" target="_blank">builder.rs:1690</a></div>
+          <div class="step-desc">Opens /dev/kvm (Linux) or Hypervisor.framework (macOS). Memory regions are registered via KVM_SET_USER_MEMORY_REGION or HVF API.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <span class="step-label" style="color:var(--dev)">Devices</span>
+        <div class="step-body">
+          <div class="step-title">Create &amp; register virtio devices <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/bus.rs#L114" target="_blank">bus.rs:114</a></div>
+          <div class="step-desc">Each device is wrapped in MmioTransport and inserted into the MMIO Bus at its assigned guest-physical address range.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <span class="step-label" style="color:var(--vcpu)">vCPU</span>
+        <div class="step-body">
+          <div class="step-title">Spawn vCPU threads <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/linux/vstate.rs#L923" target="_blank">vstate.rs:923</a></div>
+          <div class="step-desc">One OS thread per virtual CPU. Each thread calls vcpu_fd.run() in a loop, returning on every VM exit.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <span class="step-label" style="color:var(--vcpu)">Runtime</span>
+        <div class="step-body">
+          <div class="step-title">EventManager.run() — steady-state loop <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/linux/vstate.rs#L1571" target="_blank">vstate.rs:1571</a></div>
+          <div class="step-desc">Polls EventFds from all sources: queue notifications, interrupts, signals. Routes each event to the appropriate handler.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-sep">
+
+  <div class="flow-section">
+    <h2>Key data structures</h2>
+    <div class="cards">
+      <div class="card">
+        <h4 style="color:var(--api)">ContextConfig <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/libkrun/src/lib.rs#L137" target="_blank">lib.rs:137</a></h4>
+        <ul><li>vmr: VmResources</li><li>vcpu_count, mem_size_mib</li><li>vsock_config, blk_config</li><li>kernel / firmware path</li></ul>
+      </div>
+      <div class="card">
+        <h4 style="color:var(--vmm)">Vmm <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/lib.rs#L1" target="_blank">vmm/lib.rs</a></h4>
+        <ul><li>guest_memory: GuestMemoryMmap</li><li>vcpus: Vec&lt;Vcpu&gt;</li><li>mmio_device_manager</li><li>event_manager</li></ul>
+      </div>
+      <div class="card">
+        <h4 style="color:var(--vcpu)">Vcpu <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/vmm/src/linux/vstate.rs#L923" target="_blank">vstate.rs:923</a></h4>
+        <ul><li>vcpu_fd (KVM / HVF fd)</li><li>registers, MSRs, CPUID</li><li>MMIO exit data buffer</li><li>thread join handle</li></ul>
+      </div>
+      <div class="card">
+        <h4 style="color:var(--mem)">GuestMemoryMmap</h4>
+        <ul><li>Vec of (GPA, mmap region)</li><li>read/write_obj helpers</li><li>Atomic access for rings</li><li>SHM manager for GPU/FS</li></ul>
+      </div>
+      <div class="card">
+        <h4 style="color:var(--dev)">MmioTransport <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/mmio.rs#L61" target="_blank">mmio.rs:61</a></h4>
+        <ul><li>device: Arc&lt;Mutex&lt;dyn VirtioDevice&gt;&gt;</li><li>queues: Vec&lt;Queue&gt;</li><li>interrupt_evt: EventFd</li><li>Features negotiation state</li></ul>
+      </div>
+      <div class="card">
+        <h4 style="color:var(--vsock)">VsockMuxer <a class="gh" href="https://github.com/containers/libkrun/blob/e67e5bb7558e566324917bbe3dc4877c87a9b70d/src/devices/src/virtio/vsock/muxer.rs#L99" target="_blank">muxer.rs:99</a></h4>
+        <ul><li>rx / tx / event queues</li><li>TSI port map</li><li>packet channel (host↔muxer)</li><li>reaper for dead connections</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-sep">
+
+  <div class="flow-section">
+    <h2>Optional feature flags</h2>
+    <div class="cards">
+      <div class="card"><h4>net</h4><ul><li>Virtio network</li><li>TAP / gvproxy backends</li></ul></div>
+      <div class="card"><h4>blk</h4><ul><li>Virtio block</li><li>Raw / qcow2 images</li></ul></div>
+      <div class="card"><h4>gpu</h4><ul><li>Virtio GPU</li><li>Virgl 3D acceleration</li></ul></div>
+      <div class="card"><h4>tee</h4><ul><li>AMD SEV / SNP</li><li>Intel TDX support</li></ul></div>
+      <div class="card"><h4>vhost-user</h4><ul><li>External device backends</li><li>Shared memory protocol</li></ul></div>
+      <div class="card"><h4>aws-nitro</h4><ul><li>Nitro enclave integration</li><li>NSM device support</li></ul></div>
+    </div>
+  </div>
+</div>
+
+<footer>libkrun data flow visualisation · <a href="https://github.com/containers/libkrun/tree/e67e5bb7558e566324917bbe3dc4877c87a9b70d" style="color:var(--muted)" target="_blank">containers/libkrun @ e67e5bb</a></footer>
+</body>
+</html>

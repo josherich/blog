@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rendering Pipeline — Zed Data Flow</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d1117; --surface: #161b22; --surface-2: #21262d;
+      --border: #30363d; --text: #e6edf3; --text-muted: #8b949e;
+      --mono: 'SF Mono','Cascadia Code','Fira Code','Consolas',monospace;
+      --radius: 8px; --accent: #f472b6;
+    }
+    body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; font-size:16px; line-height:1.6; }
+    a { color:#58a6ff; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    code { font-family:var(--mono); font-size:0.85em; background:var(--surface-2); padding:1px 5px; border-radius:3px; color:#e6edf3; }
+
+    .site-hd { background:var(--surface); border-bottom:1px solid var(--border); padding:10px 16px; position:sticky; top:0; z-index:10; }
+    .hd-inner { max-width:760px; margin:0 auto; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+    .hd-back { color:var(--text-muted); font-size:14px; }
+    .hd-crumb { color:var(--text-muted); font-size:14px; flex:1; }
+    .hd-crumb strong { color:var(--text); }
+    .page-nav { display:flex; gap:6px; margin-left:auto; }
+    .page-nav a { padding:4px 10px; border:1px solid var(--border); border-radius:4px; font-size:13px; color:var(--text-muted); transition:all .15s; }
+    .page-nav a:hover { color:var(--text); border-color:#555; text-decoration:none; }
+
+    .hero { padding:40px 16px 32px; border-bottom:1px solid var(--border); background:linear-gradient(180deg,#1f0d1880 0%,transparent 100%); }
+    .hero-inner { max-width:760px; margin:0 auto; }
+    .badge { display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; background:color-mix(in srgb,var(--accent) 12%,transparent); border:1px solid color-mix(in srgb,var(--accent) 25%,transparent); color:var(--accent); margin-bottom:14px; }
+    .badge-dot { width:6px; height:6px; border-radius:50%; background:var(--accent); }
+    h1 { font-size:clamp(22px,5vw,30px); font-weight:700; letter-spacing:-.5px; margin-bottom:8px; }
+    .hero-sub { color:var(--text-muted); font-size:15px; max-width:620px; }
+
+    .content { max-width:760px; margin:0 auto; }
+    .section { padding:28px 16px; border-bottom:1px solid var(--border); }
+    .section-title { font-size:17px; font-weight:600; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+    .section-title::before { content:''; display:block; width:3px; height:18px; background:var(--accent); border-radius:2px; }
+    p { color:var(--text-muted); font-size:14px; line-height:1.7; margin-bottom:10px; }
+    p:last-child { margin-bottom:0; }
+    p strong { color:var(--text); }
+
+    .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:12px; }
+    .card:last-child { margin-bottom:0; }
+    .card-hd { padding:11px 16px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:8px; background:var(--surface-2); }
+    .card-title { font-family:var(--mono); font-size:14px; font-weight:600; color:var(--accent); }
+    .card-loc a { font-size:12px; color:var(--text-muted); }
+    .card-loc a:hover { color:#58a6ff; }
+    .card-body { padding:14px 16px; }
+
+    .struct { font-family:var(--mono); font-size:12.5px; line-height:1.9; overflow-x:auto; white-space:pre; }
+    .kw { color:#ff79c6; }
+    .sname { color:#50fa7b; }
+    .field { color:#f8f8f2; }
+    .ftype { color:#8be9fd; }
+    .cmt { color:#6272a4; font-style:italic; }
+    .punct { color:#999; }
+
+    .flow-steps { display:flex; flex-direction:column; }
+    .flow-step { display:flex; gap:14px; align-items:flex-start; padding:12px 0; border-bottom:1px solid var(--border); }
+    .flow-step:last-child { border-bottom:none; }
+    .step-num { width:26px; height:26px; border-radius:50%; background:var(--accent); color:#000; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
+    .step-body { flex:1; }
+    .step-title { font-size:14px; font-weight:600; margin-bottom:3px; }
+    .step-desc { font-size:13px; color:var(--text-muted); line-height:1.5; }
+
+    /* Primitive types grid */
+    .prim-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:8px; margin:14px 0; }
+    .prim-card { background:var(--surface-2); border:1px solid var(--border); border-radius:5px; padding:10px 12px; }
+    .prim-name { font-family:var(--mono); font-size:12px; color:var(--accent); font-weight:600; margin-bottom:3px; }
+    .prim-desc { font-size:12px; color:var(--text-muted); line-height:1.3; }
+
+    /* Stack diagram */
+    .gpu-stack { display:flex; flex-direction:column; gap:2px; margin:14px 0; }
+    .gpu-layer { border-radius:5px; padding:10px 16px; font-size:13px; display:flex; align-items:center; justify-content:space-between; }
+    .gl-name { font-family:var(--mono); font-weight:600; }
+    .gl-note { font-size:12px; color:var(--text-muted); }
+    .gl-1 { background:color-mix(in srgb,var(--accent) 22%,transparent); border:1px solid color-mix(in srgb,var(--accent) 35%,transparent); }
+    .gl-2 { background:color-mix(in srgb,var(--accent) 15%,transparent); border:1px solid color-mix(in srgb,var(--accent) 22%,transparent); }
+    .gl-3 { background:color-mix(in srgb,var(--accent) 10%,transparent); border:1px solid color-mix(in srgb,var(--accent) 16%,transparent); }
+    .gl-4 { background:color-mix(in srgb,var(--accent) 6%,transparent); border:1px solid color-mix(in srgb,var(--accent) 10%,transparent); }
+
+    .ref-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; }
+    .ref-card { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:12px 14px; transition:border-color .15s; text-decoration:none; display:block; }
+    .ref-card:hover { border-color:#58a6ff; }
+    .ref-file { font-family:var(--mono); font-size:12px; color:#58a6ff; margin-bottom:4px; }
+    .ref-desc { font-size:12px; color:var(--text-muted); }
+
+    .callout { background:color-mix(in srgb,var(--accent) 8%,transparent); border:1px solid color-mix(in srgb,var(--accent) 20%,transparent); border-radius:6px; padding:12px 14px; font-size:13px; color:var(--text-muted); margin-top:14px; }
+    .callout strong { color:var(--accent); }
+
+    footer { text-align:center; padding:28px 16px; color:var(--text-muted); font-size:13px; border-top:1px solid var(--border); margin-top:16px; }
+  </style>
+</head>
+<body>
+
+<div class="site-hd">
+  <div class="hd-inner">
+    <a class="hd-back" href="index.html">← Overview</a>
+    <span class="hd-crumb">Stage 7 / <strong>Rendering Pipeline</strong></span>
+    <nav class="page-nav">
+      <a href="lsp.html">← LSP</a>
+      <a href="index.html">Overview</a>
+    </nav>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="badge"><span class="badge-dot"></span>Stage 7 of 7</div>
+    <h1>Rendering Pipeline</h1>
+    <p class="hero-sub">From <code>cx.notify()</code> to photons: GPUI calls each view's <code>render()</code>, performs layout, calls <code>paint()</code> which emits GPU primitives into a <code>Scene</code>, then <code>gpui_wgpu</code> submits batched draw calls to the GPU driver.</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- Frame lifecycle -->
+  <div class="section">
+    <div class="section-title">Frame Lifecycle</div>
+
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title"><code>cx.notify()</code> — schedule redraw</div>
+          <div class="step-desc">Any entity update (buffer edit, LSP result, cursor move) calls <code>cx.notify()</code>. GPUI queues a redraw for the affected window. Multiple notifies within the same event coalesce into one frame.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Render phase — build element tree</div>
+          <div class="step-desc">GPUI calls <code>Workspace::render(window, cx)</code> which recursively calls child views' <code>render()</code>. Each view returns an element tree — plain Rust data structures implementing the <code>Element</code> / <code>RenderOnce</code> traits. No drawing happens yet.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Layout phase — flexbox pass</div>
+          <div class="step-desc">GPUI performs a top-down flexbox layout, computing the pixel <code>Bounds</code> for every element. The layout algorithm runs entirely on the CPU in one pass over the tree.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Paint phase — emit primitives</div>
+          <div class="step-desc">Each element's <code>paint(bounds, scene, cx)</code> is called in tree order. Elements push draw commands (quads, glyphs, underlines, paths) into the <code>Scene</code>. <code>EditorElement::paint()</code> is the heaviest step — see below.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="step-title">GPU submission (gpui_wgpu)</div>
+          <div class="step-desc">The completed <code>Scene</code> is handed to <code>gpui_wgpu</code>, which sorts draw commands by layer/depth, batches them into WebGPU render passes, and submits to the platform GPU (Metal on macOS, Vulkan on Linux, DX12 on Windows).</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <div class="step-title">Present</div>
+          <div class="step-desc">The swap chain presents the completed framebuffer to the display. On macOS this syncs to the display's vsync via CAMetalLayer.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EditorElement::paint -->
+  <div class="section">
+    <div class="section-title">EditorElement::paint — What It Draws</div>
+    <p><a href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/editor/src/element.rs#L9786" target="_blank">element.rs:9786</a> implements the <code>Element</code> trait for the editor. Its <code>paint()</code> method is called once per frame with the editor's computed bounds.</p>
+    <p>It begins by taking a <strong><code>DisplaySnapshot</code></strong> — an immutable copy of all buffer, display-map, and diagnostic state — then works line by line through the visible rows:</p>
+
+    <div class="prim-grid">
+      <div class="prim-card">
+        <div class="prim-name">line background</div>
+        <div class="prim-desc">Highlighted current line, search matches, selection backgrounds — quads behind text</div>
+      </div>
+      <div class="prim-card">
+        <div class="prim-name">gutter</div>
+        <div class="prim-desc">Line numbers, git diff bars, breakpoint icons — left column quads + sprites</div>
+      </div>
+      <div class="prim-card">
+        <div class="prim-name">text glyphs</div>
+        <div class="prim-desc">Shaped glyphs from TextSystem, syntax-highlighted by token colour from the theme</div>
+      </div>
+      <div class="prim-card">
+        <div class="prim-name">inlay hints</div>
+        <div class="prim-desc">LSP virtual text in a dimmer colour, interleaved between buffer characters</div>
+      </div>
+      <div class="prim-card">
+        <div class="prim-name">cursors</div>
+        <div class="prim-desc">Blinking or steady cursor quads; multiple cursors drawn in the theme's cursor colour</div>
+      </div>
+      <div class="prim-card">
+        <div class="prim-name">underlines</div>
+        <div class="prim-desc">Error/warning squiggles from diagnostics; link underlines on hover</div>
+      </div>
+      <div class="prim-card">
+        <div class="prim-name">fold indicators</div>
+        <div class="prim-desc">Chevron icons in the gutter over foldable ranges</div>
+      </div>
+      <div class="prim-card">
+        <div class="prim-name">diff hunks</div>
+        <div class="prim-desc">Green/red bars and inline added/deleted text from git diff</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scene struct -->
+  <div class="section">
+    <div class="section-title">Scene — Accumulated GPU Primitives</div>
+    <div class="card">
+      <div class="card-hd">
+        <span class="card-title">Scene</span>
+        <span class="card-loc"><a href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/gpui/src/scene.rs#L27" target="_blank">scene.rs:27</a></span>
+      </div>
+      <div class="card-body">
+        <div class="struct">
+<span class="kw">pub struct</span> <span class="sname">Scene</span> <span class="punct">{</span>
+    <span class="field">paint_operations</span><span class="punct">:</span> <span class="ftype">Vec&lt;PaintOperation&gt;</span><span class="punct">,</span>
+    <span class="field">quads</span><span class="punct">:</span>            <span class="ftype">Vec&lt;Quad&gt;</span><span class="punct">,</span>            <span class="cmt">// filled rectangles (backgrounds, borders)</span>
+    <span class="field">paths</span><span class="punct">:</span>            <span class="ftype">Vec&lt;Path&lt;ScaledPixels&gt;&gt;</span><span class="punct">,</span> <span class="cmt">// vector paths</span>
+    <span class="field">underlines</span><span class="punct">:</span>       <span class="ftype">Vec&lt;Underline&gt;</span><span class="punct">,</span>
+    <span class="field">monochrome_sprites</span><span class="punct">:</span> <span class="ftype">Vec&lt;MonochromeSprite&gt;</span><span class="punct">,</span> <span class="cmt">// icon/glyph atlas lookups</span>
+    <span class="field">polychrome_sprites</span><span class="punct">:</span> <span class="ftype">Vec&lt;PolychromeSprite&gt;</span><span class="punct">,</span> <span class="cmt">// colour images</span>
+    <span class="field">surfaces</span><span class="punct">:</span>          <span class="ftype">Vec&lt;Surface&gt;</span><span class="punct">,</span>         <span class="cmt">// media surfaces (video frames)</span>
+<span class="punct">}</span>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:10px">Primitives are added to the scene in paint order (back to front). The WGPU layer re-sorts by z-order and merges adjacent primitives of the same type into batched draw calls, minimising GPU state changes.</p>
+  </div>
+
+  <!-- GPU stack -->
+  <div class="section">
+    <div class="section-title">WGPU Rendering Stack</div>
+    <p>All rendering goes through <a href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/gpui_wgpu" target="_blank">gpui_wgpu</a>, which abstracts over platform-specific GPU APIs:</p>
+
+    <div class="gpu-stack">
+      <div class="gpu-layer gl-1">
+        <span class="gl-name">Scene (GPUI)</span>
+        <span class="gl-note">Platform-agnostic primitives</span>
+      </div>
+      <div class="gpu-layer gl-2">
+        <span class="gl-name">gpui_wgpu renderer</span>
+        <span class="gl-note">Translates Scene → WebGPU commands, manages glyph atlas</span>
+      </div>
+      <div class="gpu-layer gl-3">
+        <span class="gl-name">wgpu crate</span>
+        <span class="gl-note">Safe Rust GPU API abstraction layer</span>
+      </div>
+      <div class="gpu-layer gl-4">
+        <span class="gl-name">Metal / Vulkan / DX12</span>
+        <span class="gl-note">Native GPU driver on macOS / Linux / Windows</span>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Glyph atlas:</strong> text glyphs are rasterized once into a shared GPU texture atlas. Each <code>MonochromeSprite</code> primitive is just a UV rectangle pointing into this atlas — no per-frame font rasterization unless the atlas overflows or the DPI changes.
+    </div>
+  </div>
+
+  <!-- Code refs -->
+  <div class="section">
+    <div class="section-title">Code References</div>
+    <div class="ref-grid">
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/gpui/src/element.rs#L51" target="_blank">
+        <div class="ref-file">gpui/src/element.rs:51</div>
+        <div class="ref-desc">Element trait — layout &amp; paint interface</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/editor/src/element.rs#L198" target="_blank">
+        <div class="ref-file">editor/src/element.rs:198</div>
+        <div class="ref-desc">EditorElement struct definition</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/editor/src/element.rs#L9786" target="_blank">
+        <div class="ref-file">editor/src/element.rs:9786</div>
+        <div class="ref-desc">Element impl for EditorElement (paint)</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/gpui/src/scene.rs#L27" target="_blank">
+        <div class="ref-file">gpui/src/scene.rs:27</div>
+        <div class="ref-desc">Scene struct — GPU primitive accumulator</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/gpui_wgpu" target="_blank">
+        <div class="ref-file">crates/gpui_wgpu/</div>
+        <div class="ref-desc">WGPU renderer — Scene → GPU commands</div>
+      </a>
+      <a class="ref-card" href="https://github.com/zed-industries/zed/blob/13e7c11768/crates/editor/src/display_map.rs" target="_blank">
+        <div class="ref-file">editor/src/display_map.rs</div>
+        <div class="ref-desc">DisplayMap — feeds DisplaySnapshot to paint</div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <a href="lsp.html">← LSP Integration</a> &nbsp;·&nbsp;
+  <a href="index.html">Back to Overview →</a>
+</footer>
+
+</body>
+</html>
