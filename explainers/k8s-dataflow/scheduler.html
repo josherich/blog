@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Scheduler — Kubernetes Data Flow</title>
+        <style>
+            :root {
+                --bg: #0d1117;
+                --surface: #161b22;
+                --surface2: #21262d;
+                --border: #30363d;
+                --text: #c9d1d9;
+                --muted: #8b949e;
+                --accent: #3fb950;
+                --blue: #58a6ff;
+                --yellow: #d29922;
+                --orange: #db6d28;
+                --purple: #bc8cff;
+                --red: #f85149;
+                --code-bg: #161b22;
+            }
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                background: var(--bg);
+                color: var(--text);
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
+                    Arial, sans-serif;
+                font-size: 15px;
+                line-height: 1.6;
+            }
+            header {
+                background: var(--surface);
+                border-bottom: 1px solid var(--border);
+                padding: 16px 24px;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+            header h1 {
+                font-size: 18px;
+                font-weight: 600;
+                color: var(--accent);
+            }
+            header p {
+                font-size: 13px;
+                color: var(--muted);
+                margin-top: 2px;
+            }
+            nav {
+                display: flex;
+                gap: 8px;
+                margin-top: 10px;
+                flex-wrap: wrap;
+            }
+            nav a {
+                color: var(--blue);
+                text-decoration: none;
+                font-size: 13px;
+                padding: 3px 10px;
+                border: 1px solid var(--border);
+                border-radius: 20px;
+                background: var(--surface2);
+                transition: background 0.15s;
+            }
+            nav a:hover {
+                background: var(--border);
+            }
+            nav a.active {
+                background: var(--accent);
+                color: #0d1117;
+                border-color: var(--accent);
+                font-weight: 600;
+            }
+            main {
+                max-width: 960px;
+                margin: 0 auto;
+                padding: 24px 16px 64px;
+            }
+            details {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                overflow: hidden;
+                margin-bottom: 14px;
+            }
+            summary {
+                padding: 14px 18px;
+                cursor: pointer;
+                font-weight: 600;
+                font-size: 15px;
+                list-style: none;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                user-select: none;
+            }
+            summary::-webkit-details-marker {
+                display: none;
+            }
+            summary::before {
+                content: "▶";
+                font-size: 11px;
+                color: var(--muted);
+                transition: transform 0.2s;
+                flex-shrink: 0;
+            }
+            details[open] > summary::before {
+                transform: rotate(90deg);
+            }
+            .detail-body {
+                padding: 14px 18px 18px;
+                border-top: 1px solid var(--border);
+            }
+            pre {
+                background: var(--code-bg);
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                padding: 14px;
+                font-family:
+                    "SFMono-Regular", Consolas, "Liberation Mono", Menlo,
+                    monospace;
+                font-size: 12px;
+                line-height: 1.6;
+                white-space: pre;
+                overflow-x: auto;
+                color: var(--text);
+                margin: 10px 0;
+            }
+            code {
+                font-family:
+                    "SFMono-Regular", Consolas, "Liberation Mono", Menlo,
+                    monospace;
+                font-size: 12px;
+                background: var(--surface2);
+                border: 1px solid var(--border);
+                border-radius: 4px;
+                padding: 1px 5px;
+                color: var(--accent);
+            }
+            .ref-link {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                font-size: 11px;
+                color: var(--muted);
+                text-decoration: none;
+                border: 1px solid var(--border);
+                border-radius: 4px;
+                padding: 2px 7px;
+                background: var(--surface2);
+                margin-top: 4px;
+                margin-right: 4px;
+                transition: border-color 0.15s;
+            }
+            .ref-link:hover {
+                border-color: var(--accent);
+                color: var(--accent);
+            }
+            .ref-link::before {
+                content: "⌗";
+                margin-right: 2px;
+            }
+            .step-list {
+                list-style: none;
+                counter-reset: steps;
+                padding-top: 4px;
+            }
+            .step-list li {
+                counter-increment: steps;
+                display: grid;
+                grid-template-columns: 28px 1fr;
+                gap: 10px;
+                margin-bottom: 18px;
+                align-items: start;
+            }
+            .step-list li::before {
+                content: counter(steps);
+                background: var(--surface2);
+                border: 1px solid var(--accent);
+                border-radius: 50%;
+                width: 28px;
+                height: 28px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+                font-weight: 600;
+                color: var(--accent);
+                flex-shrink: 0;
+            }
+            .step-content {
+                padding-top: 3px;
+            }
+            .step-title {
+                font-weight: 600;
+                font-size: 14px;
+                margin-bottom: 4px;
+            }
+            .step-desc {
+                color: var(--muted);
+                font-size: 13px;
+                margin-bottom: 6px;
+            }
+            h2.section-title {
+                font-size: 13px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                color: var(--muted);
+                margin: 28px 0 12px;
+                padding-bottom: 8px;
+                border-bottom: 1px solid var(--border);
+            }
+            .highlight-box {
+                background: #0e1f14;
+                border-left: 3px solid var(--accent);
+                border-radius: 0 6px 6px 0;
+                padding: 12px 14px;
+                margin-bottom: 14px;
+                font-size: 13px;
+                color: var(--muted);
+            }
+            .highlight-box strong {
+                color: var(--text);
+            }
+            .phase-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                gap: 10px;
+                margin: 14px 0;
+            }
+            .phase-card {
+                background: var(--surface2);
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                padding: 12px;
+            }
+            .phase-card h4 {
+                font-size: 12px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                margin-bottom: 6px;
+                color: var(--accent);
+            }
+            .phase-card ul {
+                list-style: none;
+                font-size: 12px;
+                color: var(--muted);
+            }
+            .phase-card ul li {
+                margin-bottom: 3px;
+            }
+            .phase-card ul li::before {
+                content: "· ";
+            }
+            .async-note {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                font-size: 11px;
+                font-weight: 700;
+                color: var(--yellow);
+                background: #2a1f08;
+                border: 1px solid #4a3510;
+                border-radius: 4px;
+                padding: 2px 8px;
+                margin-left: 8px;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>kube-scheduler — Data Flow</h1>
+            <p>
+                Filter, score, and bind unscheduled pods to nodes using a plugin
+                pipeline
+            </p>
+            <nav>
+                <a href="index.html">Overview</a>
+                <a href="apiserver.html">API Server</a>
+                <a href="scheduler.html" class="active">Scheduler</a>
+                <a href="kubelet.html">Kubelet</a>
+                <a href="controller-manager.html">Controller Manager</a>
+            </nav>
+        </header>
+        <main>
+            <h2 class="section-title">Startup</h2>
+
+            <details open>
+                <summary>
+                    main() → NewSchedulerCommand() → Setup() → Run()
+                </summary>
+                <div class="detail-body">
+                    <div class="highlight-box">
+                        The scheduler binary builds a
+                        <code>Scheduler</code> struct (with its plugin
+                        framework, cache, and queue) then enters the scheduling
+                        loop.
+                    </div>
+                    <ol class="step-list">
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">
+                                    main() — entry point
+                                </div>
+                                <pre>
+// cmd/kube-scheduler/scheduler.go L30
+func main() {
+    command := app.NewSchedulerCommand()
+    code := cli.Run(command)
+    os.Exit(code)
+}</pre
+                                >
+                                <a
+                                    class="ref-link"
+                                    href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/cmd/kube-scheduler/scheduler.go"
+                                    target="_blank"
+                                    >cmd/kube-scheduler/scheduler.go</a
+                                >
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">
+                                    NewSchedulerCommand() → runCommand()
+                                </div>
+                                <div class="step-desc">
+                                    Parses flags; <code>RunE</code> calls
+                                    <code>runCommand</code> which calls
+                                    <code>Setup()</code> to build the
+                                    <code>Scheduler</code> struct, then
+                                    <code>Run()</code>.
+                                </div>
+                                <pre>
+// cmd/kube-scheduler/app/server.go L93-171
+func NewSchedulerCommand(registryOptions ...Option) *cobra.Command {
+    RunE: func(cmd *cobra.Command, args []string) error {
+        return runCommand(cmd, opts, registryOptions...)  // L111
+    },
+}
+
+func runCommand(cmd *cobra.Command, opts *options.Options, ...) error {
+    cc, sched, err := Setup(ctx, opts, registryOptions...)  // L161
+    return Run(ctx, cc, sched)                              // L170
+}</pre
+                                >
+                                <a
+                                    class="ref-link"
+                                    href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/cmd/kube-scheduler/app/server.go#L93-L171"
+                                    target="_blank"
+                                    >server.go L93–171</a
+                                >
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">
+                                    sched.Run() — starts the scheduling loop
+                                </div>
+                                <div class="step-desc">
+                                    Starts the SchedulingQueue goroutines, then
+                                    launches <code>ScheduleOne</code> in a
+                                    dedicated goroutine via
+                                    <code>wait.UntilWithContext</code>.
+                                </div>
+                                <pre>
+// pkg/scheduler/scheduler.go L524-551
+func (sched *Scheduler) Run(ctx context.Context) {
+    sched.SchedulingQueue.Run(logger)   // starts queue flush goroutines
+
+    go wait.UntilWithContext(ctx, sched.ScheduleOne, 0)  // L538
+
+    &lt;-ctx.Done()
+    sched.SchedulingQueue.Close()
+}</pre
+                                >
+                                <a
+                                    class="ref-link"
+                                    href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/scheduler/scheduler.go#L524-L551"
+                                    target="_blank"
+                                    >scheduler.go L524–551</a
+                                >
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </details>
+
+            <h2 class="section-title">Scheduling Loop</h2>
+
+            <details open>
+                <summary>ScheduleOne() — one pod per call</summary>
+                <div class="detail-body">
+                    <div class="highlight-box">
+                        <strong>ScheduleOne</strong> is the top-level function
+                        called in a tight loop. It dequeues one pod and
+                        dispatches it to either the pod-group path (generic
+                        workload) or the standard single-pod path.
+                    </div>
+                    <pre>
+// pkg/scheduler/schedule_one.go L67-96
+func (sched *Scheduler) ScheduleOne(ctx context.Context) {
+    podInfo, err := sched.NextPod(logger)  // blocks until pod available
+    if podInfo == nil || podInfo.Pod == nil { return }
+
+    if sched.genericWorkloadEnabled &amp;&amp; podInfo.Pod.Spec.SchedulingGroup != nil {
+        sched.scheduleOnePodGroup(ctx, podGroupInfo)  // gang scheduling
+    } else {
+        sched.scheduleOnePod(ctx, podInfo)            // L94 — standard path
+    }
+}</pre
+                    >
+                    <a
+                        class="ref-link"
+                        href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/scheduler/schedule_one.go#L67-L96"
+                        target="_blank"
+                        >schedule_one.go L67–96</a
+                    >
+                </div>
+            </details>
+
+            <details open>
+                <summary>scheduleOnePod() — scheduling + async binding</summary>
+                <div class="detail-body">
+                    <div class="highlight-box">
+                        The synchronous
+                        <strong>scheduling cycle</strong> (filter + score +
+                        assume) is separated from the asynchronous
+                        <strong>binding cycle</strong> (permit + reserve +
+                        bind). This allows the scheduler to start the next pod's
+                        scheduling cycle while waiting for the bind RPC.
+                    </div>
+                    <pre>
+// pkg/scheduler/schedule_one.go L99-148
+func (sched *Scheduler) scheduleOnePod(ctx context.Context, podInfo *framework.QueuedPodInfo) {
+    fwk, _ := sched.frameworkForPod(pod)
+
+    state := framework.NewCycleState()             // L127 — fresh cycle state
+
+    // Synchronous: filter + score + assume
+    scheduleResult, assumedPodInfo, status :=
+        sched.schedulingCycle(schedulingCycleCtx, state, fwk, podInfo, start, podsToActivate)  // L140
+    if !status.IsSuccess() {
+        sched.FailureHandler(...)
+        return
+    }
+
+    // Asynchronous: permit + reserve + bind
+    go sched.runBindingCycle(ctx, state, fwk, scheduleResult, assumedPodInfo, start, podsToActivate)  // L147
+}</pre
+                    >
+                    <a
+                        class="ref-link"
+                        href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/scheduler/schedule_one.go#L99-L148"
+                        target="_blank"
+                        >schedule_one.go L99–148</a
+                    >
+                </div>
+            </details>
+
+            <details open>
+                <summary>
+                    schedulingCycle() — snapshot → filter/score → assume
+                </summary>
+                <div class="detail-body">
+                    <div class="highlight-box">
+                        The scheduling cycle takes a consistent snapshot of node
+                        state, runs the scheduling algorithm (filter then
+                        score), and optimistically "assumes" the pod is on the
+                        chosen node in the cache.
+                    </div>
+                    <pre>
+// pkg/scheduler/schedule_one.go L175-198
+func (sched *Scheduler) schedulingCycle(ctx, state, schedFramework, podInfo, ...) (...) {
+    // 1. Refresh node snapshot (copy from cache to read-only snapshot)
+    sched.Cache.UpdateSnapshot(klog.FromContext(ctx), sched.nodeInfoSnapshot)  // L183
+
+    // 2. Run filter plugins → score plugins → select node
+    scheduleResult, status := sched.schedulingAlgorithm(ctx, state, schedFramework, podInfo, start)  // L187
+
+    // 3. Assume: mark pod→node in cache before the bind RPC completes
+    assumedPodInfo, status := sched.prepareForBindingCycle(ctx, state, schedFramework, ...)  // L192
+    return scheduleResult, assumedPodInfo, nil
+}</pre
+                    >
+                    <a
+                        class="ref-link"
+                        href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/scheduler/schedule_one.go#L175-L198"
+                        target="_blank"
+                        >schedule_one.go L175–198</a
+                    >
+
+                    <div style="margin-top: 14px">
+                        <h4
+                            style="
+                                font-size: 13px;
+                                font-weight: 600;
+                                margin-bottom: 8px;
+                            "
+                        >
+                            Plugin extension points in the scheduling cycle
+                        </h4>
+                        <div class="phase-grid">
+                            <div class="phase-card">
+                                <h4>PreFilter</h4>
+                                <ul>
+                                    <li>InterPodAffinity</li>
+                                    <li>NodeAffinity</li>
+                                    <li>NodePorts</li>
+                                    <li>PodTopologySpread</li>
+                                </ul>
+                            </div>
+                            <div class="phase-card">
+                                <h4>Filter</h4>
+                                <ul>
+                                    <li>NodeUnschedulable</li>
+                                    <li>NodeResourcesFit</li>
+                                    <li>TaintToleration</li>
+                                    <li>VolumeBinding</li>
+                                </ul>
+                            </div>
+                            <div class="phase-card">
+                                <h4>Score</h4>
+                                <ul>
+                                    <li>LeastAllocated</li>
+                                    <li>NodeAffinity</li>
+                                    <li>InterPodAffinity</li>
+                                    <li>ImageLocality</li>
+                                </ul>
+                            </div>
+                            <div class="phase-card">
+                                <h4>Reserve / Bind</h4>
+                                <ul>
+                                    <li>VolumeBinding.Reserve</li>
+                                    <li>DefaultBinder</li>
+                                    <li>SchedulingGates</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <details open>
+                <summary>
+                    runBindingCycle()
+                    <span class="async-note">async goroutine</span> — permit →
+                    reserve → bind
+                </summary>
+                <div class="detail-body">
+                    <div class="highlight-box">
+                        The binding cycle runs in a goroutine so the main
+                        scheduling loop can start filtering the next pod
+                        immediately. It writes the final
+                        <code>spec.nodeName</code> to the API server.
+                    </div>
+                    <pre>
+// pkg/scheduler/schedule_one.go L151-170
+func (sched *Scheduler) runBindingCycle(ctx, state, schedFramework, scheduleResult,
+    assumedPodInfo, start, podsToActivate) {
+    bindingCycleCtx, cancel := context.WithCancel(ctx)
+    defer cancel()
+
+    // Runs: WaitOnPermit → PreBind → Bind → PostBind
+    status := sched.bindingCycle(bindingCycleCtx, state, schedFramework,
+        scheduleResult, assumedPodInfo, start, podsToActivate)  // L165
+    if !status.IsSuccess() {
+        sched.handleBindingCycleError(...)
+    }
+}</pre
+                    >
+                    <a
+                        class="ref-link"
+                        href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/scheduler/schedule_one.go#L151-L170"
+                        target="_blank"
+                        >schedule_one.go L151–170</a
+                    >
+                    <div
+                        style="
+                            margin-top: 12px;
+                            font-size: 13px;
+                            color: var(--muted);
+                        "
+                    >
+                        The <strong>DefaultBinder</strong> plugin sends a
+                        <code
+                            >POST
+                            /api/v1/namespaces/{ns}/pods/{name}/binding</code
+                        >
+                        request to the API server, which sets
+                        <code>spec.nodeName</code> and triggers the kubelet
+                        watch.
+                    </div>
+                </div>
+            </details>
+
+            <h2 class="section-title">Key Data Structures</h2>
+
+            <details open>
+                <summary>Scheduler struct — central state</summary>
+                <div class="detail-body">
+                    <pre>
+// pkg/scheduler/scheduler.go L68-125 (condensed)
+type Scheduler struct {
+    // In-memory view of node / pod state (updated from informers)
+    Cache internalcache.Cache
+
+    // Priority queue of pods waiting to be scheduled
+    SchedulingQueue internalqueue.SchedulingQueue
+
+    // Read-only consistent snapshot used during a scheduling cycle
+    nodeInfoSnapshot *internalcache.Snapshot
+
+    // Plugin framework profiles (one per scheduler name)
+    Profiles profile.Map
+
+    // Called when scheduling fails; handles re-queuing
+    FailureHandler FailureHandlerFn
+}</pre
+                    >
+                    <a
+                        class="ref-link"
+                        href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/scheduler/scheduler.go#L68-L125"
+                        target="_blank"
+                        >scheduler.go L68–125</a
+                    >
+                </div>
+            </details>
+        </main>
+    </body>
+</html>

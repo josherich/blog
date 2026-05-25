@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terraform Apply — Data Flow</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">
+      <svg width="16" height="16" viewBox="0 0 32 32" fill="none">
+        <path d="M12.042 6.858L19.5 11.13v8.246L12.042 15.1z" fill="#a78bfa"/>
+        <path d="M20.958 11.13l7.458 4.272V23.9l-7.458-4.272z" fill="#7c3aed"/>
+        <path d="M3.584 11.13L11.042 15.1v8.246L3.584 19.375z" fill="#6d28d9"/>
+      </svg>
+      Terraform Data Flow
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="init.html">Init</a></li>
+      <li><a href="config.html">Config</a></li>
+      <li><a href="plan.html">Plan</a></li>
+      <li><a href="apply.html" class="active">Apply</a></li>
+      <li><a href="providers.html">Providers</a></li>
+      <li><a href="state.html">State</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <header class="hero">
+    <p class="hero-label">Component · Apply</p>
+    <h1>terraform apply</h1>
+    <p class="hero-sub">
+      Reads the plan, builds an apply-specific graph, calls
+      <code>ApplyResourceChange</code> on each provider in dependency order,
+      and persists the resulting state.
+    </p>
+    <div class="hero-meta">
+      <span>CLI entry: <a href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/command/apply.go#L27" target="_blank" rel="noopener">command/apply.go:27</a></span>
+      <span>Engine: <a href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/terraform/context_apply.go#L81" target="_blank" rel="noopener">context_apply.go:81</a></span>
+    </div>
+  </header>
+
+  <!-- FLOW -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
+      Apply flow diagram
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <div class="pipeline">
+<pre>
+ApplyCommand.Run()  [command/apply.go:27]
+  │
+  ├─► If plan file provided:
+  │     planfile.OpenWrapped(path)  →  *planfile.WrappedPlanFile
+  │       Contains: *plans.Plan, config snapshot, prior state
+  │
+  ├─► PrepareBackend(planFile, args.State, args.ViewType)  [apply.go:195]
+  │     Verifies backend config matches plan's embedded backend
+  │
+  ├─► OperationRequest(be, view, …)  [apply.go:244]
+  │     Attaches plan file to operation request
+  │
+  └─► be.RunOperation(ctx, opReq)
+        │
+        └─► (local backend) runOperationWithConfig()
+              │
+              └─► Context.Apply(plan, config, opts)
+                    [context_apply.go:81]
+                    │
+                    ├─► applyGraph(plan, config, opts, validate)
+                    │     [context_apply.go:300]
+                    │     Apply-specific graph builder:
+                    │       NodeApplyableResourceInstance (create/update)
+                    │       NodeDestroyResourceInstance   (delete)
+                    │       NodeApplyableOutput
+                    │       NodeApplyableModuleCallOutput
+                    │       ProviderTransformer  (init/close lifecycle)
+                    │       ReferenceTransformer
+                    │       DestroyEdgeTransformer
+                    │
+                    ├── Walk — Apply Phase (concurrent, ≤10 goroutines)
+                    │     NodeApplyableResourceInstance.Execute():
+                    │       1. Look up ResourceInstanceChange in plan
+                    │       2. ctx.Provider(providerAddr)  →  providers.Interface
+                    │       3. providers.Interface.ApplyResourceChange(
+                    │              PlannedState: change.After,
+                    │              Config:       evaluated config body,
+                    │              PriorState:   change.Before,
+                    │              PlannedPrivate: change.Private)
+                    │          →  ApplyResourceChangeResponse{NewState, Private}
+                    │       4. SyncState.SetResourceInstanceCurrent(
+                    │              addr, newObj, providerAddr)
+                    │
+                    ├── NodeDestroyResourceInstance.Execute():
+                    │     providers.Interface.ApplyResourceChange(
+                    │         PlannedState: cty.NullVal,   ← signals destroy
+                    │         PriorState:   current state)
+                    │     SyncState.ForgetResourceInstanceAll(addr)
+                    │
+                    └─► statemgr.Full.WriteState(finalState)
+                          Backend-specific persistence:
+                            local:  write terraform.tfstate JSON
+                            remote: HTTP PUT to Terraform Cloud / S3 / etc.
+</pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- COMMAND ENTRY -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+      ApplyCommand entry
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/command/apply.go:19–100</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/command/apply.go#L19" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>type ApplyCommand struct {
+    Meta
+}
+
+func (c *ApplyCommand) Run(rawArgs []string) int {
+    // Parse args; detect if a plan file was provided
+    args, diags := arguments.ParseApply(rawArgs)
+    // ...
+
+    // Try to open a plan file if the last arg looks like one
+    planFile, diags := c.LoadPlanFile(args.PlanPath)
+    // planFile may be nil if running without a saved plan
+
+    // Set up the backend
+    be, beDiags := c.PrepareBackend(planFile, args.State, args.ViewType)
+    // ...
+
+    opReq, opDiags := c.OperationRequest(be, view, args.ViewType,
+        planFile, args.Operation, args.AutoApprove)
+    // ...
+
+    op, err := c.RunOperation(be, opReq)
+    // ...
+}</code></pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- CONTEXT.APPLY -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/></svg>
+      Context.Apply — core apply engine
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/terraform/context_apply.go:81–298</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/terraform/context_apply.go#L81" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>// Apply applies the changes described in the plan to the real infrastructure.
+// Returns the post-apply state.
+func (c *Context) Apply(
+    plan *plans.Plan,
+    config *configs.Config,
+    opts *ApplyOpts,
+) (*states.State, tfdiags.Diagnostics) {
+    state, _, diags := c.ApplyAndEval(plan, config, opts)
+    return state, diags
+}
+
+func (c *Context) ApplyAndEval(
+    plan *plans.Plan,
+    config *configs.Config,
+    opts *ApplyOpts,
+) (*states.State, *lang.Scope, tfdiags.Diagnostics) {
+    // Build the apply graph
+    graph, operation, diags := c.applyGraph(plan, config, opts, true)
+    // ...
+
+    // Walk the graph — this is where provider calls happen
+    walker, walkDiags := c.walk(graph, operation, &graphWalkOpts{
+        Config: config,
+        InputState: plan.PriorState,
+        Changes: plan.Changes,
+    })
+    diags = diags.Append(walkDiags)
+
+    return walker.State.Close(), walker.EvalScope(nil, nil, nil), diags
+}</code></pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- APPLY GRAPH -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z"/></svg>
+      Apply graph — key node types
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/terraform/context_apply.go:300</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/terraform/context_apply.go#L300" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>func (c *Context) applyGraph(
+    plan *plans.Plan,
+    config *configs.Config,
+    opts *ApplyOpts,
+    validate bool,
+) (*Graph, walkOperation, tfdiags.Diagnostics) {
+    // Selects ApplyGraphBuilder or DestroyPlanGraphBuilder
+    // based on plan.UIMode
+}</code></pre>
+      </div>
+
+      <h3>Node types in the apply graph</h3>
+      <ul>
+        <li>
+          <strong>NodeApplyableResourceInstance</strong> — handles <em>create</em> and <em>update</em>.
+          Calls <code>ApplyResourceChange</code> then writes the response into <code>SyncState</code>.
+        </li>
+        <li>
+          <strong>NodeDestroyResourceInstance</strong> — handles <em>delete</em>.
+          Calls <code>ApplyResourceChange</code> with a null proposed state, then removes the
+          instance from <code>SyncState</code>.
+        </li>
+        <li>
+          <strong>NodeApplyableOutput</strong> — evaluates output expressions and records
+          them in the state.
+        </li>
+        <li>
+          <strong>NodeApplyableModuleCallOutput</strong> — passes module output values
+          back to the calling module's scope.
+        </li>
+        <li>
+          <strong>nodeModuleExpand</strong> — handles <code>count</code> / <code>for_each</code>
+          expansion by registering instance keys with the <code>instances.Expander</code>.
+        </li>
+      </ul>
+
+      <div class="callout orange">
+        <p>
+          <strong>Create-before-destroy:</strong> When a resource requires replacement
+          (the plan contains <code>Action: Replace</code>), the apply graph inserts both
+          a create node and a destroy node with the create running first. The old instance
+          is temporarily stored in state as a "deposed" instance until the destroy completes.
+        </p>
+      </div>
+    </div>
+  </details>
+
+  <!-- STATE PERSISTENCE -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M3 12v3c0 1.657 3.134 3 7 3s7-1.343 7-3v-3c0 1.657-3.134 3-7 3s-7-1.343-7-3z"/><path d="M3 7v3c0 1.657 3.134 3 7 3s7-1.343 7-3V7c0 1.657-3.134 3-7 3S3 8.657 3 7z"/><path d="M17 5c0 1.657-3.134 3-7 3S3 6.657 3 5s3.134-3 7-3 7 1.343 7 3z"/></svg>
+      State persistence after apply
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <p>
+        After the graph walk completes, the final <code>*states.State</code> is flushed from
+        <code>SyncState</code> and written through the <code>statemgr.Full</code> interface.
+        The backend implementation decides how state is stored.
+      </p>
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/states/statemgr/full.go — statemgr.Full interface</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/states/statemgr" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>// Full combines all state management operations.
+type Full interface {
+    Reader
+    Writer
+    Refresher
+    Persister
+    Locker   // optional — backends that support locking
+}
+
+type Writer interface {
+    WriteState(*states.State) error
+}
+
+type Persister interface {
+    PersistState(*schemas.Schemas) error
+}
+
+// Locker provides advisory locking to prevent concurrent applies.
+type Locker interface {
+    Lock(info *LockInfo) (string, error)
+    Unlock(id string) error
+}</code></pre>
+      </div>
+
+      <h3>Backend implementations</h3>
+      <ul>
+        <li><strong>Local</strong> — writes <code>terraform.tfstate</code> (or the path from <code>-state</code>) as JSON</li>
+        <li><strong>Terraform Cloud / Enterprise</strong> — PUT to the workspace state API</li>
+        <li><strong>S3</strong> — <code>PutObject</code> to the configured bucket/key; DynamoDB for locking</li>
+        <li><strong>GCS, AzureRM, Consul, …</strong> — each implements <code>statemgr.Full</code></li>
+      </ul>
+
+      <div class="callout">
+        <p>
+          <strong>Partial failure safety:</strong> State is written after <em>each</em> successful
+          resource apply, not only at the end. If Terraform crashes mid-apply, the last-written
+          state still reflects all resources that were successfully applied, so a subsequent
+          <code>terraform apply</code> can pick up where it left off.
+        </p>
+      </div>
+    </div>
+  </details>
+
+  <!-- BACKEND INTERFACE -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M2 5a2 2 0 012-2h12a2 2 0 012 2v2a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm14 1a1 1 0 11-2 0 1 1 0 012 0zM2 13a2 2 0 012-2h12a2 2 0 012 2v2a2 2 0 01-2 2H4a2 2 0 01-2-2v-2zm14 1a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd"/></svg>
+      Backend interface
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/backend/backend.go:44</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/backend/backend.go#L44" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>// Backend defines the interface for Terraform backends.
+// Backends handle state storage and optionally remote operations.
+type Backend interface {
+    // ConfigSchema returns the schema for the backend's configuration.
+    ConfigSchema() *configschema.Block
+
+    // PrepareConfig validates configuration before Configure is called.
+    PrepareConfig(cty.Value) (cty.Value, tfdiags.Diagnostics)
+
+    // Configure initializes the backend with the given configuration.
+    Configure(cty.Value) tfdiags.Diagnostics
+
+    // StateMgr returns a state manager for the given workspace.
+    StateMgr(workspace string) (statemgr.Full, tfdiags.Diagnostics)
+
+    // DeleteWorkspace removes the given workspace and its state.
+    DeleteWorkspace(name string, force bool) tfdiags.Diagnostics
+
+    // Workspaces returns the list of existing workspaces.
+    Workspaces() ([]string, tfdiags.Diagnostics)
+}
+
+// OperationsBackend extends Backend with support for remote plan/apply.
+type OperationsBackend interface {
+    Backend
+    // RunOperation executes a plan or apply in the backend's context.
+    RunOperation(context.Context, *backendrun.Operation) (*backendrun.RunningOperation, error)
+}</code></pre>
+      </div>
+    </div>
+  </details>
+
+</div>
+</body>
+</html>

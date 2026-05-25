@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terraform Providers — Data Flow</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">
+      <svg width="16" height="16" viewBox="0 0 32 32" fill="none">
+        <path d="M12.042 6.858L19.5 11.13v8.246L12.042 15.1z" fill="#a78bfa"/>
+        <path d="M20.958 11.13l7.458 4.272V23.9l-7.458-4.272z" fill="#7c3aed"/>
+        <path d="M3.584 11.13L11.042 15.1v8.246L3.584 19.375z" fill="#6d28d9"/>
+      </svg>
+      Terraform Data Flow
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="init.html">Init</a></li>
+      <li><a href="config.html">Config</a></li>
+      <li><a href="plan.html">Plan</a></li>
+      <li><a href="apply.html">Apply</a></li>
+      <li><a href="providers.html" class="active">Providers</a></li>
+      <li><a href="state.html">State</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <header class="hero">
+    <p class="hero-label">Component · Providers</p>
+    <h1>Provider Plugin System</h1>
+    <p class="hero-sub">
+      Providers are external processes communicating over gRPC via stdin/stdout.
+      <code>GRPCProvider</code> implements <code>providers.Interface</code> by translating
+      Go method calls into protobuf RPC calls.
+    </p>
+    <div class="hero-meta">
+      <span>Interface: <a href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/providers/provider.go#L17" target="_blank" rel="noopener">providers/provider.go:17</a></span>
+      <span>gRPC impl: <a href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/plugin/grpc_provider.go#L53" target="_blank" rel="noopener">plugin/grpc_provider.go:53</a></span>
+    </div>
+  </header>
+
+  <!-- PLUGIN LIFECYCLE -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
+      Provider plugin lifecycle
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <div class="pipeline">
+<pre>
+┌─────────────────── Terraform process ─────────────────────────────────────┐
+│                                                                             │
+│  ProviderTransformer  →  NodeApplyableProvider.Execute()                   │
+│    │                                                                        │
+│    ├─► ctx.InitProvider(addr, config)                                       │
+│    │     └── contextPlugins.NewProviderInstance(addr)                       │
+│    │           └── providers.Factory()                                      │
+│    │                 │                                                       │
+│    │    ┌────────────┼─────────────────────────────────────────┐            │
+│    │    │  go-plugin │ launch subprocess                        │            │
+│    │    │            ▼                                          │            │
+│    │    │  os.StartProcess(providerBinaryPath)                  │            │
+│    │    │    ├── Provider writes a "ready" line to stdout       │            │
+│    │    │    │   containing its gRPC listener address           │            │
+│    │    │    └── go-plugin reads it → establishes gRPC conn     │            │
+│    │    │                                                       │            │
+│    │    │  Returns: *plugin.GRPCProvider                        │            │
+│    │    └─────────────────────────────────────────────────────-─┘            │
+│    │                                                                         │
+│    ├─► ctx.ConfigureProvider(addr, configVal)                                │
+│    │     └── GRPCProvider.ConfigureProvider(req)                             │
+│    │           →  proto.ProviderClient.ConfigureProvider(ctx, protoReq)     │
+│    │                                                                         │
+│    │   [plan walk] ──────────────────────────────────────────────────────── │
+│    │                                                                         │
+│    ├─► GRPCProvider.ReadResource(req)           [context_plan.go refresh]   │
+│    ├─► GRPCProvider.PlanResourceChange(req)     [context_plan.go plan]      │
+│    │                                                                         │
+│    │   [apply walk] ─────────────────────────────────────────────────────── │
+│    │                                                                         │
+│    ├─► GRPCProvider.ApplyResourceChange(req)    [context_apply.go apply]    │
+│    │                                                                         │
+│    └─► ctx.CloseProvider(addr)                                               │
+│          └── GRPCProvider.Close()  →  kill subprocess                       │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────── Provider subprocess (e.g. terraform-provider-aws) ──────────┐
+│                                                                               │
+│  Implements tfprotov6.ProviderServer (protobuf service)                       │
+│    ConfigureProvider  →  initialize AWS SDK client                            │
+│    ReadResource       →  call AWS API to get current state                   │
+│    PlanResourceChange →  diff desired vs current, validate                   │
+│    ApplyResourceChange→  call AWS API to create/update/delete                │
+│                                                                               │
+└───────────────────────────────────────────────────────────────────────────────┘
+</pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- providers.Interface -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm2 10a1 1 0 10-2 0v3a1 1 0 102 0v-3zm2-3a1 1 0 011 1v5a1 1 0 11-2 0v-5a1 1 0 011-1zm4-1a1 1 0 10-2 0v7a1 1 0 102 0V8z" clip-rule="evenodd"/></svg>
+      providers.Interface — the contract
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <p>
+        <code>providers.Interface</code> is the complete API surface Terraform exposes to
+        provider implementations. <code>GRPCProvider</code> implements it by marshalling
+        each call into protobuf and sending it over gRPC. Test doubles implement it directly
+        in memory.
+      </p>
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/providers/provider.go:17</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/providers/provider.go#L17" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>type Interface interface {
+    // ── Schema ──────────────────────────────────────────────────
+    // Returns schema for every resource type, data source, and the
+    // provider configuration block itself.
+    GetProviderSchema() GetProviderSchemaResponse
+
+    // ── Configuration ───────────────────────────────────────────
+    ValidateProviderConfig(ValidateProviderConfigRequest) ValidateProviderConfigResponse
+    ConfigureProvider(ConfigureProviderRequest) ConfigureProviderResponse
+
+    // ── Managed resources ───────────────────────────────────────
+    ValidateResourceConfig(ValidateResourceConfigRequest) ValidateResourceConfigResponse
+    UpgradeResourceState(UpgradeResourceStateRequest) UpgradeResourceStateResponse
+
+    // Called during refresh walk: read actual state from cloud API
+    ReadResource(ReadResourceRequest) ReadResourceResponse
+
+    // Called during plan walk: compute Before→After diff
+    PlanResourceChange(PlanResourceChangeRequest) PlanResourceChangeResponse
+
+    // Called during apply walk: make the change real
+    ApplyResourceChange(ApplyResourceChangeRequest) ApplyResourceChangeResponse
+
+    // ── Data sources ────────────────────────────────────────────
+    ValidateDataResourceConfig(ValidateDataResourceConfigRequest) ValidateDataResourceConfigResponse
+    ReadDataSource(ReadDataSourceRequest) ReadDataSourceResponse
+
+    // ── Import ──────────────────────────────────────────────────
+    ImportResourceState(ImportResourceStateRequest) ImportResourceStateResponse
+
+    // ── Ephemeral resources (credentials, tokens) ───────────────
+    OpenEphemeralResource(OpenEphemeralResourceRequest) OpenEphemeralResourceResponse
+    RenewEphemeralResource(RenewEphemeralResourceRequest) RenewEphemeralResourceResponse
+    CloseEphemeralResource(CloseEphemeralResourceRequest) CloseEphemeralResourceResponse
+
+    // ── Provider-defined functions ──────────────────────────────
+    CallFunction(CallFunctionRequest) CallFunctionResponse
+
+    // Stop cancels in-progress operations.
+    Stop() error
+
+    // Close shuts down the provider process.
+    Close() error
+}</code></pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- GRPCProvider -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z" clip-rule="evenodd"/></svg>
+      GRPCProvider — gRPC wrapper
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/plugin/grpc_provider.go:53</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/plugin/grpc_provider.go#L53" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>// GRPCProvider implements providers.Interface using a gRPC connection
+// to an out-of-process provider binary.
+type GRPCProvider struct {
+    // PluginClient manages the subprocess lifetime.
+    PluginClient *plugin.Client
+
+    // TestServer is non-nil only during in-process testing.
+    TestServer tfplugin6.ProviderServer
+
+    // Addr is the provider's registry address (for diagnostics).
+    Addr addrs.Provider
+
+    // gRPC client stub (generated from .proto file).
+    client tfplugin6.ProviderClient
+
+    // schema cache — fetched once with GetProviderSchema
+    mu     sync.Mutex
+    schema providers.ProviderSchema
+    // ...
+}</code></pre>
+      </div>
+
+      <h3>Core operations on GRPCProvider</h3>
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/plugin/grpc_provider.go:535, 620, 742</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/plugin/grpc_provider.go#L535" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>// ReadResource — used during the refresh phase.
+// Sends the current state to the provider and gets back the
+// actual current state from the cloud API.
+func (p *GRPCProvider) ReadResource(
+    r providers.ReadResourceRequest,
+) (resp providers.ReadResourceResponse) {
+    // Marshal cty.Value → protobuf DynamicValue
+    protoReq := &proto.ReadResource_Request{
+        TypeName:     r.TypeName,
+        CurrentState: &proto.DynamicValue{Msgpack: marshaledState},
+        Private:      r.Private,
+    }
+    protoResp, err := p.client.ReadResource(p.ctx, protoReq)
+    // Unmarshal protobuf DynamicValue → cty.Value
+    resp.NewState = unmarshalDynamicValue(protoResp.NewState, schema)
+    return resp
+}
+
+// PlanResourceChange — used during plan walk.
+// Provider computes what the resource will look like after apply,
+// filling in any computed attributes with known or unknown values.
+func (p *GRPCProvider) PlanResourceChange(
+    r providers.PlanResourceChangeRequest,
+) (resp providers.PlanResourceChangeResponse) {
+    // ...
+    protoResp, err := p.client.PlanResourceChange(p.ctx, protoReq)
+    // resp.PlannedState contains the After value (may have unknowns)
+    return resp
+}
+
+// ApplyResourceChange — used during apply walk.
+// Provider makes real API calls and returns the final state.
+func (p *GRPCProvider) ApplyResourceChange(
+    r providers.ApplyResourceChangeRequest,
+) (resp providers.ApplyResourceChangeResponse) {
+    // ...
+    protoResp, err := p.client.ApplyResourceChange(p.ctx, protoReq)
+    // resp.NewState contains actual post-apply resource state
+    return resp
+}</code></pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- REQUEST/RESPONSE TYPES -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/><path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z"/></svg>
+      Request / response types
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/providers/provider.go (request/response structs)</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/providers/provider.go" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>type PlanResourceChangeRequest struct {
+    TypeName          string
+    PriorState        cty.Value   // refreshed current state
+    ProposedNewState  cty.Value   // config evaluated to cty.Value
+    Config            cty.Value   // raw config (may include unknowns)
+    PriorPrivate      []byte      // opaque provider metadata from prior state
+    ProviderMeta      cty.Value
+}
+
+type PlanResourceChangeResponse struct {
+    PlannedState      cty.Value   // final desired state (may have unknowns)
+    RequiresReplace   cty.PathSet // attributes that force resource replacement
+    PlannedPrivate    []byte      // opaque metadata to pass to ApplyResourceChange
+    Diagnostics       tfdiags.Diagnostics
+}
+
+type ApplyResourceChangeRequest struct {
+    TypeName         string
+    PriorState       cty.Value    // the Before value from the plan
+    PlannedState     cty.Value    // the After value from the plan
+    Config           cty.Value
+    PlannedPrivate   []byte
+    ProviderMeta     cty.Value
+}
+
+type ApplyResourceChangeResponse struct {
+    NewState    cty.Value    // actual post-apply state
+    Private     []byte       // provider metadata to store in state
+    Diagnostics tfdiags.Diagnostics
+}</code></pre>
+      </div>
+
+      <div class="callout green">
+        <p>
+          <strong>Unknown values:</strong> During <code>PlanResourceChange</code>, a provider
+          may return <code>cty.DynamicVal</code> for attributes computed at apply time
+          (e.g., an EC2 instance ID). Terraform propagates these unknowns through the
+          expression evaluator so dependent resources also plan with unknowns.
+        </p>
+      </div>
+    </div>
+  </details>
+
+  <!-- FACTORY PATTERN -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/></svg>
+      Factory pattern &amp; reattach
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <p>
+        Providers are created lazily via a <code>providers.Factory</code> function.
+        The factory is stored in <code>contextPlugins</code> and called by
+        <code>EvalContext.InitProvider</code> the first time a provider is needed in the graph walk.
+      </p>
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/providers/provider.go (Factory type)</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/providers/provider.go" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>// Factory is a function that creates a new provider instance.
+// Called once per provider address per operation.
+type Factory func() (Interface, error)
+
+// FactoryFixed returns a factory that always returns the same instance.
+// Used in tests to inject mock providers.
+func FactoryFixed(p Interface) Factory {
+    return func() (Interface, error) { return p, nil }
+}</code></pre>
+      </div>
+
+      <p>
+        For local development, Terraform supports <strong>provider reattach</strong>:
+        a running provider process can be reused across multiple Terraform runs by
+        setting <code>TF_REATTACH_PROVIDERS</code>. The environment variable contains
+        a JSON map from provider address to gRPC listener address, read by
+        <code>getproviders/reattach</code>.
+      </p>
+    </div>
+  </details>
+
+</div>
+</body>
+</html>

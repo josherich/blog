@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terraform Plan + Graph — Data Flow</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">
+      <svg width="16" height="16" viewBox="0 0 32 32" fill="none">
+        <path d="M12.042 6.858L19.5 11.13v8.246L12.042 15.1z" fill="#a78bfa"/>
+        <path d="M20.958 11.13l7.458 4.272V23.9l-7.458-4.272z" fill="#7c3aed"/>
+        <path d="M3.584 11.13L11.042 15.1v8.246L3.584 19.375z" fill="#6d28d9"/>
+      </svg>
+      Terraform Data Flow
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="init.html">Init</a></li>
+      <li><a href="config.html">Config</a></li>
+      <li><a href="plan.html" class="active">Plan</a></li>
+      <li><a href="apply.html">Apply</a></li>
+      <li><a href="providers.html">Providers</a></li>
+      <li><a href="state.html">State</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <header class="hero">
+    <p class="hero-label">Component · Plan</p>
+    <h1>terraform plan</h1>
+    <p class="hero-sub">
+      Builds a dependency DAG, walks it twice (refresh then plan), and
+      serializes the resulting <code>*plans.Plan</code> to a binary file.
+      No infrastructure is modified.
+    </p>
+    <div class="hero-meta">
+      <span>CLI entry: <a href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/command/plan.go#L22" target="_blank" rel="noopener">command/plan.go:22</a></span>
+      <span>Engine: <a href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/terraform/context_plan.go#L180" target="_blank" rel="noopener">context_plan.go:180</a></span>
+    </div>
+  </header>
+
+  <!-- FLOW -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
+      Plan flow diagram
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <div class="pipeline">
+<pre>
+PlanCommand.Run()  [command/plan.go:22]
+  │
+  ├─► PrepareBackend(args.State, args.ViewType)  [plan.go:120]
+  │     └── Backend.StateMgr(workspace)
+  │           └── statemgr.Full.GetState()  →  prior *states.State
+  │
+  ├─► OperationRequest(be, view, …)  [plan.go:136]
+  │     Assembles backendrun.Operation:
+  │       ConfigDir, Variables, Targets, Destroy, RefreshOnly, …
+  │
+  └─► be.RunOperation(ctx, opReq)
+        │
+        └─► (local backend) runOperationWithConfig()
+              │
+              └─► Context.Plan(config, prevRunState, opts)
+                    [context_plan.go:180]
+                    │
+                    ├─► planWalk(config, prevRunState, opts)
+                    │     [context_plan.go:750]
+                    │     │
+                    │     ├─► GRAPH BUILD
+                    │     │     planGraphBuilder{...}.Build(addrs.RootModuleInstance)
+                    │     │     Runs GraphTransformer chain:
+                    │     │       RootVariableTransformer
+                    │     │       LocalTransformer
+                    │     │       ResourceTransformer        ← one node per resource
+                    │     │       OrphanResourceTransformer  ← resources in state but not config
+                    │     │       DataSourceTransformer
+                    │     │       OutputTransformer
+                    │     │       ModuleCallTransformer
+                    │     │       ProviderTransformer        ← closes provider lifecycle
+                    │     │       ReferenceTransformer       ← add edges for references
+                    │     │       DestroyEdgeTransformer     ← correct destroy ordering
+                    │     │       TargetsTransformer         ← prune for -target
+                    │     │       →  *terraform.Graph (DAG, validated for cycles)
+                    │     │
+                    │     ├─► REFRESH WALK (unless -refresh=false)
+                    │     │     c.walk(graph, walkPlanDestroy/walkPlan)
+                    │     │     Each NodeAbstractResourceInstance.Execute():
+                    │     │       providers.Interface.ReadResource(current state)
+                    │     │       →  refreshed *states.ResourceInstanceObjectSrc
+                    │     │       Write back to states.SyncState
+                    │     │
+                    │     └─► PLAN WALK
+                    │           c.walk(graph, walkPlan)
+                    │           Each NodePlannableResourceInstance.Execute():
+                    │             Evaluate config body  →  desired cty.Value
+                    │             providers.Interface.PlanResourceChange(
+                    │               priorState, config, proposedNewState)
+                    │             →  plans.ResourceInstanceChange{Before, After}
+                    │             Append to plans.ChangesSync
+                    │
+                    └─► Serialize: planfile.Writer  →  .tfplan (ZIP archive)
+                          Contents: plan proto, config snapshot,
+                                    state snapshot, lock file
+</pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- COMMAND ENTRY -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+      PlanCommand entry
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/command/plan.go:18–100</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/command/plan.go#L18" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>type PlanCommand struct {
+    Meta
+}
+
+func (c *PlanCommand) Run(rawArgs []string) int {
+    // Parse raw CLI args into strongly typed arguments struct
+    args, diags := arguments.ParsePlan(rawArgs)
+    // ...
+
+    // Initialize a backend (local or remote)
+    be, beDiags := c.PrepareBackend(args.State, args.ViewType)
+    // ...
+
+    // Build operation request with config, vars, targets…
+    opReq, opDiags := c.OperationRequest(be, view, args.ViewType,
+        args.Operation, args.OutPath, args.GenerateConfigPath)
+    // ...
+
+    // Delegate to backend — for local backend this runs Context.Plan()
+    op, err := c.RunOperation(be, opReq)
+    // ...
+}</code></pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- CONTEXT.PLAN -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/></svg>
+      Context.Plan — core planning engine
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/terraform/context_plan.go:180</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/terraform/context_plan.go#L180" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>// Plan generates an execution plan for the given configuration change.
+// prevRunState is the last-known state (after the previous apply or refresh).
+func (c *Context) Plan(
+    config *configs.Config,
+    prevRunState *states.State,
+    opts *PlanOpts,
+) (*plans.Plan, tfdiags.Diagnostics) {
+    plan, _, diags := c.PlanAndEval(config, prevRunState, opts)
+    return plan, diags
+}
+
+// PlanAndEval additionally returns a lang.Scope for post-plan expression
+// evaluation (used by some commands to show computed outputs).
+func (c *Context) PlanAndEval(
+    config *configs.Config,
+    prevRunState *states.State,
+    opts *PlanOpts,
+) (*plans.Plan, *lang.Scope, tfdiags.Diagnostics) {
+    switch opts.Mode {
+    case plans.NormalMode:
+        return c.plan(config, prevRunState, opts)
+    case plans.DestroyMode:
+        return c.destroyPlan(config, prevRunState, opts)
+    case plans.RefreshOnlyMode:
+        return c.refreshOnlyPlan(config, prevRunState, opts)
+    default:
+        panic(fmt.Sprintf("unsupported plan mode %s", opts.Mode))
+    }
+}</code></pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- GRAPH BUILDING -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z"/></svg>
+      DAG construction
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <p>
+        <code>BasicGraphBuilder</code> applies a sequence of <code>GraphTransformer</code> steps
+        to an initially empty graph. Each transformer adds vertices, edges, or both.
+        After all transformers run, a topological sort validates there are no cycles.
+      </p>
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/terraform/graph_builder.go:26</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/terraform/graph_builder.go#L26" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>// BasicGraphBuilder applies each Step in order to the graph,
+// then validates for cycles.
+type BasicGraphBuilder struct {
+    Steps               []GraphTransformer
+    Name                string
+    SkipGraphValidation bool
+}
+
+func (b *BasicGraphBuilder) Build(path addrs.ModuleInstance) (
+    *Graph, tfdiags.Diagnostics) {
+    g := &Graph{Path: path}
+    for _, step := range b.Steps {
+        if err := step.Transform(g); err != nil {
+            // ...
+        }
+    }
+    // Validate: topological sort to detect cycles
+    if !b.SkipGraphValidation {
+        if err := g.Validate(); err != nil { ... }
+    }
+    return g, diags
+}
+
+// GraphTransformer is the single-method interface for graph mutations.
+type GraphTransformer interface {
+    Transform(*Graph) error
+}</code></pre>
+      </div>
+
+      <h3>Key graph transformers (plan)</h3>
+      <ul>
+        <li><strong>RootVariableTransformer</strong> — adds a node for each <code>variable {}</code></li>
+        <li><strong>LocalTransformer</strong> — adds nodes for <code>locals {}</code> values</li>
+        <li><strong>ResourceTransformer</strong> — adds <code>NodePlannableResourceInstance</code> for each <code>resource {}</code></li>
+        <li><strong>OrphanResourceTransformer</strong> — adds destroy nodes for resources in state but absent from config</li>
+        <li><strong>DataSourceTransformer</strong> — adds nodes for <code>data {}</code> blocks</li>
+        <li><strong>OutputTransformer</strong> — adds <code>NodeApplyableOutput</code> nodes</li>
+        <li><strong>ProviderTransformer</strong> — connects resources to their provider node; adds init/close lifecycle</li>
+        <li><strong>ReferenceTransformer</strong> — adds dependency edges for every HCL expression reference</li>
+        <li><strong>DestroyEdgeTransformer</strong> — flips edges so destroy nodes run after dependents</li>
+        <li><strong>TargetsTransformer</strong> — prunes the graph when <code>-target</code> is specified</li>
+      </ul>
+    </div>
+  </details>
+
+  <!-- GRAPH WALK -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/></svg>
+      Graph walk — parallel execution
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/terraform/graph.go:21–37</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/terraform/graph.go#L21" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>// Graph extends dag.AcyclicGraph with a module-instance path label.
+type Graph struct {
+    dag.AcyclicGraph
+    Path addrs.ModuleInstance
+}
+
+// Walk executes all vertices in topological order, running up to
+// -parallelism goroutines concurrently. Returns combined diagnostics.
+func (g *Graph) Walk(walker GraphWalker) tfdiags.Diagnostics
+
+// GraphWalker drives the walk; ContextGraphWalker is the production impl.
+type GraphWalker interface {
+    EvalContext() EvalContext
+    enterScope(evalContextScope) EvalContext
+    exitScope(evalContextScope)
+    Execute(EvalContext, GraphNodeExecutable) tfdiags.Diagnostics
+}
+
+// Each node that wants to run logic implements GraphNodeExecutable.
+type GraphNodeExecutable interface {
+    Execute(ctx EvalContext, op walkOperation) tfdiags.Diagnostics
+}</code></pre>
+      </div>
+
+      <div class="callout">
+        <p>
+          <strong>Parallelism:</strong> The walk uses a semaphore (default 10) so at most
+          10 nodes execute simultaneously. A node is only dispatched after all its
+          dependencies complete successfully.
+        </p>
+      </div>
+    </div>
+  </details>
+
+  <!-- plans.Plan -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg>
+      plans.Plan — the output artifact
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/plans/plan.go:34</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/plans/plan.go#L34" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>type Plan struct {
+    UIMode             Mode              // NormalMode, DestroyMode, RefreshOnlyMode
+    VariableValues     map[string]DynamicValue
+    VariableMarks      map[string][]cty.PathValueMarks
+    Changes            *ChangesSrc       // resource and output changes
+    DriftedResources   []*ResourceInstanceChangeSrc
+    DeferredResources  []*DeferredResourceInstanceChangeSrc
+    Backend            *Backend          // persisted backend config
+    StateStore         *StateStore
+    Complete           bool              // true if nothing was deferred
+    Applyable          bool              // true if there are meaningful changes
+    // ...
+}</code></pre>
+      </div>
+
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/plans/changes.go:22 — Changes and ResourceInstanceChange</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/plans/changes.go#L22" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>// Changes is the top-level collection of all planned changes.
+type Changes struct {
+    Resources         []*ResourceInstanceChange
+    Queries           []*QueryInstance
+    ActionInvocations ActionInvocationInstances
+    Outputs           []*OutputChange
+}
+
+// ResourceInstanceChange records what will happen to one resource instance.
+type ResourceInstanceChange struct {  // [changes.go:327]
+    Addr         addrs.AbsResourceInstance
+    PrevRunAddr  addrs.AbsResourceInstance
+    ProviderAddr addrs.AbsProviderConfig
+    Change       Change               // Before, After cty.Value + Action
+    ActionReason ResourceInstanceChangeActionReason
+    Private      []byte               // opaque provider metadata
+}
+
+// Change carries the Action and the before/after values.
+type Change struct {
+    Action          Action   // Create, Read, Update, Delete, Replace, NoOp
+    Before          cty.Value
+    After           cty.Value
+    BeforeValMarks  []cty.PathValueMarks
+    AfterValMarks   []cty.PathValueMarks
+}</code></pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- PLAN FILE -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M4 3a2 2 0 100 4h12a2 2 0 100-4H4z"/><path fill-rule="evenodd" d="M3 8h14v7a2 2 0 01-2 2H5a2 2 0 01-2-2V8zm5 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
+      Plan file format
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <p>
+        The <code>*.tfplan</code> file is a ZIP archive containing several named entries.
+        <code>planfile.Writer</code> produces it; <code>planfile.Reader</code> reads it back
+        for <code>terraform apply</code>.
+      </p>
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/plans/planfile/  (ZIP contents)</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/plans/planfile" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>tfplan              ← protobuf-encoded plans.Plan
+tfstate             ← JSON-encoded prior state snapshot
+tfconfig/           ← snapshot of all *.tf files
+  root.json
+  modules/
+    vpc.json
+    ...
+.terraform.lock.hcl ← provider lock file at time of planning</code></pre>
+      </div>
+      <div class="callout green">
+        <p>
+          <strong>Why embed config and state?</strong> Apply reads the plan file in isolation.
+          Embedding the config snapshot guarantees apply uses exactly the same configuration
+          that was planned, even if files changed on disk between plan and apply.
+        </p>
+      </div>
+    </div>
+  </details>
+
+</div>
+</body>
+</html>

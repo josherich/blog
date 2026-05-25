@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>API Server — Kubernetes Data Flow</title>
+        <style>
+            :root {
+                --bg: #0d1117;
+                --surface: #161b22;
+                --surface2: #21262d;
+                --border: #30363d;
+                --text: #c9d1d9;
+                --muted: #8b949e;
+                --accent: #58a6ff;
+                --green: #3fb950;
+                --yellow: #d29922;
+                --orange: #db6d28;
+                --purple: #bc8cff;
+                --red: #f85149;
+                --code-bg: #161b22;
+            }
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                background: var(--bg);
+                color: var(--text);
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
+                    Arial, sans-serif;
+                font-size: 15px;
+                line-height: 1.6;
+            }
+            header {
+                background: var(--surface);
+                border-bottom: 1px solid var(--border);
+                padding: 16px 24px;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+            header h1 {
+                font-size: 18px;
+                font-weight: 600;
+                color: var(--accent);
+            }
+            header p {
+                font-size: 13px;
+                color: var(--muted);
+                margin-top: 2px;
+            }
+            nav {
+                display: flex;
+                gap: 8px;
+                margin-top: 10px;
+                flex-wrap: wrap;
+            }
+            nav a {
+                color: var(--accent);
+                text-decoration: none;
+                font-size: 13px;
+                padding: 3px 10px;
+                border: 1px solid var(--border);
+                border-radius: 20px;
+                background: var(--surface2);
+                transition: background 0.15s;
+            }
+            nav a:hover {
+                background: var(--border);
+            }
+            nav a.active {
+                background: var(--accent);
+                color: #0d1117;
+                border-color: var(--accent);
+                font-weight: 600;
+            }
+            main {
+                max-width: 960px;
+                margin: 0 auto;
+                padding: 24px 16px 64px;
+            }
+            details {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                overflow: hidden;
+                margin-bottom: 14px;
+            }
+            summary {
+                padding: 14px 18px;
+                cursor: pointer;
+                font-weight: 600;
+                font-size: 15px;
+                list-style: none;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                user-select: none;
+            }
+            summary::-webkit-details-marker {
+                display: none;
+            }
+            summary::before {
+                content: "▶";
+                font-size: 11px;
+                color: var(--muted);
+                transition: transform 0.2s;
+                flex-shrink: 0;
+            }
+            details[open] > summary::before {
+                transform: rotate(90deg);
+            }
+            .detail-body {
+                padding: 0 18px 18px;
+                border-top: 1px solid var(--border);
+                padding-top: 14px;
+            }
+            pre {
+                background: var(--code-bg);
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                padding: 14px;
+                font-family:
+                    "SFMono-Regular", Consolas, "Liberation Mono", Menlo,
+                    monospace;
+                font-size: 12px;
+                line-height: 1.6;
+                white-space: pre;
+                overflow-x: auto;
+                color: var(--text);
+                margin: 10px 0;
+            }
+            code {
+                font-family:
+                    "SFMono-Regular", Consolas, "Liberation Mono", Menlo,
+                    monospace;
+                font-size: 12px;
+                background: var(--surface2);
+                border: 1px solid var(--border);
+                border-radius: 4px;
+                padding: 1px 5px;
+                color: var(--accent);
+            }
+            .ref-link {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                font-size: 11px;
+                color: var(--muted);
+                text-decoration: none;
+                border: 1px solid var(--border);
+                border-radius: 4px;
+                padding: 2px 7px;
+                background: var(--surface2);
+                margin-top: 4px;
+                margin-right: 4px;
+                transition: border-color 0.15s;
+            }
+            .ref-link:hover {
+                border-color: var(--accent);
+                color: var(--accent);
+            }
+            .ref-link::before {
+                content: "⌗";
+                margin-right: 2px;
+            }
+            .step-list {
+                list-style: none;
+                counter-reset: steps;
+                padding-top: 4px;
+            }
+            .step-list li {
+                counter-increment: steps;
+                display: grid;
+                grid-template-columns: 28px 1fr;
+                gap: 10px;
+                margin-bottom: 18px;
+                align-items: start;
+            }
+            .step-list li::before {
+                content: counter(steps);
+                background: var(--surface2);
+                border: 1px solid var(--accent);
+                border-radius: 50%;
+                width: 28px;
+                height: 28px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+                font-weight: 600;
+                color: var(--accent);
+                flex-shrink: 0;
+            }
+            .step-content {
+                padding-top: 3px;
+            }
+            .step-title {
+                font-weight: 600;
+                font-size: 14px;
+                margin-bottom: 4px;
+            }
+            .step-desc {
+                color: var(--muted);
+                font-size: 13px;
+                margin-bottom: 6px;
+            }
+            h2.section-title {
+                font-size: 13px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                color: var(--muted);
+                margin: 28px 0 12px;
+                padding-bottom: 8px;
+                border-bottom: 1px solid var(--border);
+            }
+            .highlight-box {
+                background: #161f2e;
+                border-left: 3px solid var(--accent);
+                border-radius: 0 6px 6px 0;
+                padding: 12px 14px;
+                margin-bottom: 14px;
+                font-size: 13px;
+                color: var(--muted);
+            }
+            .highlight-box strong {
+                color: var(--text);
+            }
+            .chain {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+                margin: 10px 0;
+            }
+            .chain-row {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            .chain-box {
+                background: var(--surface2);
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                padding: 8px 14px;
+                font-size: 13px;
+                font-weight: 500;
+                flex: 1;
+                text-align: center;
+            }
+            .chain-box.layer1 {
+                border-color: var(--purple);
+            }
+            .chain-box.layer2 {
+                border-color: var(--accent);
+            }
+            .chain-box.layer3 {
+                border-color: var(--green);
+            }
+            .chain-arrow {
+                color: var(--muted);
+                font-size: 18px;
+                padding: 0 6px;
+            }
+            @media (max-width: 640px) {
+                .chain-row {
+                    flex-direction: column;
+                }
+                .chain-arrow {
+                    transform: rotate(90deg);
+                }
+            }
+            .pill {
+                display: inline-block;
+                font-size: 11px;
+                font-weight: 700;
+                padding: 1px 8px;
+                border-radius: 12px;
+                margin-right: 4px;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+            }
+            .pill-authn {
+                background: #1a3a26;
+                color: var(--green);
+            }
+            .pill-authz {
+                background: #1c3a5e;
+                color: var(--accent);
+            }
+            .pill-admit {
+                background: #2d1f54;
+                color: var(--purple);
+            }
+            .pill-store {
+                background: #3a2a10;
+                color: var(--yellow);
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>kube-apiserver — Data Flow</h1>
+            <p>
+                Central gateway: validates, stores, and serves all Kubernetes
+                objects
+            </p>
+            <nav>
+                <a href="index.html">Overview</a>
+                <a href="apiserver.html" class="active">API Server</a>
+                <a href="scheduler.html">Scheduler</a>
+                <a href="kubelet.html">Kubelet</a>
+                <a href="controller-manager.html">Controller Manager</a>
+            </nav>
+        </header>
+        <main>
+            <h2 class="section-title">Entry Point &amp; Startup</h2>
+
+            <details open>
+                <summary>main() → NewAPIServerCommand() → Run()</summary>
+                <div class="detail-body">
+                    <div class="highlight-box">
+                        The binary entry point wires a Cobra command. When the
+                        command executes, it completes options, builds a config,
+                        constructs the server chain, and starts serving.
+                    </div>
+                    <ol class="step-list">
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">main()</div>
+                                <div class="step-desc">
+                                    Creates and runs the Cobra command. Signal
+                                    context is wired at this level.
+                                </div>
+                                <pre>
+// cmd/kube-apiserver/apiserver.go L32-36
+func main() {
+    command := app.NewAPIServerCommand()
+    code := cli.Run(command)
+    os.Exit(code)
+}</pre
+                                >
+                                <a
+                                    class="ref-link"
+                                    href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/cmd/kube-apiserver/apiserver.go#L32-L36"
+                                    target="_blank"
+                                    >cmd/kube-apiserver/apiserver.go L32–36</a
+                                >
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">
+                                    NewAPIServerCommand() — parse flags, call
+                                    Run()
+                                </div>
+                                <div class="step-desc">
+                                    Registers all flags from
+                                    <code>ServerRunOptions</code>. The
+                                    <code>RunE</code> callback validates options
+                                    then calls
+                                    <code>Run(ctx, completedOptions)</code>.
+                                </div>
+                                <pre>
+// cmd/kube-apiserver/app/server.go L70-145
+func NewAPIServerCommand() *cobra.Command {
+    s := options.NewServerRunOptions()
+    // ...
+    RunE: func(cmd *cobra.Command, args []string) error {
+        completedOptions, err := s.Complete(ctx)
+        // validate options...
+        return Run(ctx, completedOptions)          // L117
+    },
+}</pre
+                                >
+                                <a
+                                    class="ref-link"
+                                    href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/cmd/kube-apiserver/app/server.go#L70-L145"
+                                    target="_blank"
+                                    >server.go L70–145</a
+                                >
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">
+                                    Run() — build config → server chain → serve
+                                </div>
+                                <div class="step-desc">
+                                    The core startup sequence:
+                                    <code>NewConfig</code> →
+                                    <code>Complete</code> →
+                                    <code>CreateServerChain</code> →
+                                    <code>PrepareRun</code> → <code>Run</code>.
+                                </div>
+                                <pre>
+// cmd/kube-apiserver/app/server.go L148-173
+func Run(ctx context.Context, opts options.CompletedOptions) error {
+    config, err := NewConfig(opts)         // builds all sub-configs
+    completed, err := config.Complete()
+    server, err := CreateServerChain(completed)  // L162
+    prepared, err := server.PrepareRun()
+    return prepared.Run(ctx)               // starts HTTP(S) listeners
+}</pre
+                                >
+                                <a
+                                    class="ref-link"
+                                    href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/cmd/kube-apiserver/app/server.go#L148-L173"
+                                    target="_blank"
+                                    >server.go L148–173</a
+                                >
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </details>
+
+            <h2 class="section-title">Server Chain</h2>
+
+            <details open>
+                <summary>CreateServerChain() — three-layer delegation</summary>
+                <div class="detail-body">
+                    <div class="highlight-box">
+                        The API server is actually
+                        <strong>three nested servers</strong> that delegate
+                        unknown requests down the chain. This allows CRDs
+                        (apiextensions), built-in APIs (kube), and aggregated
+                        APIs to coexist.
+                    </div>
+                    <div class="chain">
+                        <div class="chain-row">
+                            <div class="chain-box layer1">
+                                Aggregator (kube-aggregator) — handles
+                                aggregated APIs &amp; discovery
+                            </div>
+                        </div>
+                        <div class="chain-row" style="justify-content: center">
+                            <span class="chain-arrow">↓ delegates</span>
+                        </div>
+                        <div class="chain-row">
+                            <div class="chain-box layer2">
+                                KubeAPIServer — built-in resources (Pod,
+                                Service, Node, …)
+                            </div>
+                        </div>
+                        <div class="chain-row" style="justify-content: center">
+                            <span class="chain-arrow">↓ delegates</span>
+                        </div>
+                        <div class="chain-row">
+                            <div class="chain-box layer3">
+                                APIExtensionsServer — CustomResourceDefinitions
+                            </div>
+                        </div>
+                    </div>
+                    <pre>
+// cmd/kube-apiserver/app/server.go L176-197
+func CreateServerChain(config CompletedConfig) (*aggregatorapiserver.APIAggregator, error) {
+    apiExtensionsServer, err := config.ApiExtensions.New(
+        genericapiserver.NewEmptyDelegateWithCustomHandler(notFoundHandler))
+
+    kubeAPIServer, err := config.KubeAPIs.New(
+        apiExtensionsServer.GenericAPIServer)          // delegates to CRD server
+
+    aggregatorServer, err := controlplaneapiserver.CreateAggregatorServer(
+        config.Aggregator,
+        kubeAPIServer.ControlPlane.GenericAPIServer,   // delegates to kube server
+        ...)
+    return aggregatorServer, nil
+}</pre
+                    >
+                    <a
+                        class="ref-link"
+                        href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/cmd/kube-apiserver/app/server.go#L176-L197"
+                        target="_blank"
+                        >server.go L176–197</a
+                    >
+                </div>
+            </details>
+
+            <details open>
+                <summary>
+                    InstallAPIs() — registering REST storage per resource group
+                </summary>
+                <div class="detail-body">
+                    <div class="highlight-box">
+                        Each API group (core, apps, batch, …) exposes a
+                        <code>RESTStorageProvider</code>.
+                        <code>InstallAPIs</code> calls
+                        <code>NewRESTStorage()</code> on each provider to wire
+                        the HTTP routes to etcd-backed storage.
+                    </div>
+                    <pre>
+// pkg/controlplane/apiserver/apis.go L88-130 (approx)
+func (c *Config) InstallAPIs(s *genericapiserver.GenericAPIServer) error {
+    restStorageProviders := []RESTStorageProvider{
+        appsrest.StorageProvider{},
+        batchrest.StorageProvider{},
+        corerest.LegacyRESTStorageProvider{...},
+        // ... many more groups
+    }
+    for _, provider := range restStorageProviders {
+        groupInfo, err := provider.NewRESTStorage(apiResourceConfigSource, restOptionsGetter)
+        s.InstallAPIGroups(&groupInfo)
+    }
+}</pre
+                    >
+                    <a
+                        class="ref-link"
+                        href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/controlplane/apiserver/apis.go"
+                        target="_blank"
+                        >pkg/controlplane/apiserver/apis.go</a
+                    >
+                    <a
+                        class="ref-link"
+                        href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/registry/core/rest/storage_core.go"
+                        target="_blank"
+                        >pkg/registry/core/rest/storage_core.go</a
+                    >
+                </div>
+            </details>
+
+            <h2 class="section-title">Request Handling Pipeline</h2>
+
+            <details open>
+                <summary>
+                    Request filter chain — authn → authz → admission → storage
+                </summary>
+                <div class="detail-body">
+                    <div class="highlight-box">
+                        Every incoming HTTP request passes through a layered
+                        middleware chain before reaching the REST handler.
+                        Filters are composed in
+                        <code>k8s.io/apiserver/pkg/server</code>.
+                    </div>
+                    <ol class="step-list">
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">
+                                    <span class="pill pill-authn">Authn</span>
+                                    Authentication
+                                </div>
+                                <div class="step-desc">
+                                    Authenticator chain tries: client
+                                    certificates, bearer tokens (ServiceAccount
+                                    JWTs), OIDC tokens, webhook token review.
+                                    First success wins. On failure → 401.
+                                </div>
+                                <pre>
+// pkg/kubeapiserver/authenticator/config.go
+// Builds an authenticator.Request that chains:
+//   - x509.Authenticator        (client cert)
+//   - bearertoken.Authenticator (SA tokens, OIDC)
+//   - webhook.Authenticator     (TokenReview webhook)
+func (config Config) New() (authenticator.Request, ...) { ... }</pre
+                                >
+                                <a
+                                    class="ref-link"
+                                    href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/kubeapiserver/authenticator/config.go"
+                                    target="_blank"
+                                    >pkg/kubeapiserver/authenticator/config.go</a
+                                >
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">
+                                    <span class="pill pill-authz">Authz</span>
+                                    Authorization
+                                </div>
+                                <div class="step-desc">
+                                    Authorization chain (RBAC, Node, webhook)
+                                    checks whether the identified user may
+                                    perform the requested verb on the resource.
+                                    On failure → 403.
+                                </div>
+                                <pre>
+// pkg/kubeapiserver/authorizer/config.go
+// Chains: NodeAuthorizer, RBACAuthorizer, WebhookAuthorizer
+func (config Config) New(clusterRoleRegistry ...) (authorizer.Authorizer, ...) { ... }</pre
+                                >
+                                <a
+                                    class="ref-link"
+                                    href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/kubeapiserver/authorizer/config.go"
+                                    target="_blank"
+                                    >pkg/kubeapiserver/authorizer/config.go</a
+                                >
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">
+                                    <span class="pill pill-admit"
+                                        >Admission</span
+                                    >
+                                    Mutating &amp; Validating webhooks +
+                                    built-in plugins
+                                </div>
+                                <div class="step-desc">
+                                    Mutating plugins run first (may change the
+                                    object), then validating plugins. Built-in
+                                    plugins include LimitRanger, ResourceQuota,
+                                    ServiceAccount, PodSecurity,
+                                    NamespaceLifecycle.
+                                </div>
+                                <pre>
+// Built-in admission plugins are registered in:
+// plugin/pkg/admission/
+// pkg/admission/plugin/
+
+// Example: namespace lifecycle
+// pkg/admission/plugin/namespace/lifecycle/admission.go
+func (l *Lifecycle) Admit(ctx context.Context, a admission.Attributes, ...) error {
+    // reject requests to non-existent or terminating namespaces
+}</pre
+                                >
+                                <a
+                                    class="ref-link"
+                                    href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/admission/plugin/namespace/lifecycle/admission.go"
+                                    target="_blank"
+                                    >pkg/admission/plugin/namespace/lifecycle/admission.go</a
+                                >
+                                <a
+                                    class="ref-link"
+                                    href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/plugin/pkg/admission/"
+                                    target="_blank"
+                                    >plugin/pkg/admission/</a
+                                >
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">
+                                    <span class="pill pill-store">Store</span>
+                                    REST storage → etcd
+                                </div>
+                                <div class="step-desc">
+                                    The validated object is encoded
+                                    (JSON/protobuf) and written to etcd via the
+                                    generic registry. On success the API server
+                                    returns 201/200 to the client.
+                                </div>
+                                <pre>
+// pkg/registry/core/pod/storage/storage.go
+// REST embeds genericregistry.Store which uses
+// etcd3.store as the backend.
+type REST struct {
+    *genericregistry.Store
+    proxyTransport http.RoundTripper
+}
+
+func NewStorage(optsGetter generic.RESTOptionsGetter, ...) (*REST, ...) {
+    store := &amp;genericregistry.Store{
+        NewFunc:     func() runtime.Object { return &amp;api.Pod{} },
+        // ...
+    }
+    options := &amp;generic.StoreOptions{RESTOptions: optsGetter}
+    store.CompleteWithOptions(options)  // wires etcd backend
+}</pre
+                                >
+                                <a
+                                    class="ref-link"
+                                    href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/registry/core/pod/storage/storage.go"
+                                    target="_blank"
+                                    >pkg/registry/core/pod/storage/storage.go</a
+                                >
+                                <a
+                                    class="ref-link"
+                                    href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/registry/core/pod/strategy.go"
+                                    target="_blank"
+                                    >pkg/registry/core/pod/strategy.go</a
+                                >
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </details>
+
+            <h2 class="section-title">Watch &amp; Notification</h2>
+
+            <details open>
+                <summary>
+                    Watch — how controllers and schedulers get notified
+                </summary>
+                <div class="detail-body">
+                    <div class="highlight-box">
+                        The API server maintains an in-memory
+                        <strong>watch cache</strong>. On
+                        <code>GET /...?watch=true</code> it streams
+                        <code>ADDED / MODIFIED / DELETED</code> events to
+                        watchers. Controllers use
+                        <code>client-go</code> informers which multiplex a
+                        single watch stream.
+                    </div>
+                    <pre>
+// Every resource type supports Watch via genericregistry.Store:
+//
+//   GET /api/v1/pods?watch=true&amp;resourceVersion=12345
+//
+// The API server sends chunked HTTP/2 frames:
+//
+//   {"type":"ADDED","object":{"kind":"Pod","metadata":{...}}}
+//   {"type":"MODIFIED","object":{"kind":"Pod","metadata":{...}}}
+//   {"type":"DELETED","object":{"kind":"Pod","metadata":{...}}}
+//
+// client-go Informer (SharedIndexInformer) multiplexes this single
+// watch stream to all controllers that registered event handlers.</pre
+                    >
+                    <a
+                        class="ref-link"
+                        href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/staging/src/k8s.io/client-go/tools/cache/shared_informer.go"
+                        target="_blank"
+                        >staging/src/k8s.io/client-go/tools/cache/shared_informer.go</a
+                    >
+                </div>
+            </details>
+        </main>
+    </body>
+</html>

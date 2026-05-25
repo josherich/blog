@@ -1,0 +1,838 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Kubernetes Data Flow — Overview</title>
+        <style>
+            :root {
+                --bg: #0d1117;
+                --surface: #161b22;
+                --surface2: #21262d;
+                --border: #30363d;
+                --text: #c9d1d9;
+                --muted: #8b949e;
+                --accent: #58a6ff;
+                --green: #3fb950;
+                --yellow: #d29922;
+                --orange: #db6d28;
+                --purple: #bc8cff;
+                --red: #f85149;
+                --code-bg: #161b22;
+            }
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                background: var(--bg);
+                color: var(--text);
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
+                    Arial, sans-serif;
+                font-size: 15px;
+                line-height: 1.6;
+            }
+            header {
+                background: var(--surface);
+                border-bottom: 1px solid var(--border);
+                padding: 16px 24px;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+            header h1 {
+                font-size: 18px;
+                font-weight: 600;
+                color: var(--accent);
+            }
+            header p {
+                font-size: 13px;
+                color: var(--muted);
+                margin-top: 2px;
+            }
+            nav {
+                display: flex;
+                gap: 8px;
+                margin-top: 10px;
+                flex-wrap: wrap;
+            }
+            nav a {
+                color: var(--accent);
+                text-decoration: none;
+                font-size: 13px;
+                padding: 3px 10px;
+                border: 1px solid var(--border);
+                border-radius: 20px;
+                background: var(--surface2);
+                transition: background 0.15s;
+            }
+            nav a:hover {
+                background: var(--border);
+            }
+            nav a.active {
+                background: var(--accent);
+                color: #0d1117;
+                border-color: var(--accent);
+                font-weight: 600;
+            }
+            main {
+                max-width: 960px;
+                margin: 0 auto;
+                padding: 24px 16px 64px;
+            }
+            .flow-diagram {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                padding: 24px 16px;
+                margin-bottom: 32px;
+                overflow-x: auto;
+            }
+            .flow-diagram h2 {
+                font-size: 14px;
+                font-weight: 600;
+                color: var(--muted);
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                margin-bottom: 20px;
+            }
+            .pipeline {
+                display: flex;
+                align-items: center;
+                gap: 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .stage {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 4px;
+            }
+            .stage-box {
+                background: var(--surface2);
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                padding: 10px 14px;
+                text-align: center;
+                font-size: 13px;
+                font-weight: 500;
+                white-space: nowrap;
+                cursor: pointer;
+                transition:
+                    border-color 0.15s,
+                    background 0.15s;
+                text-decoration: none;
+                color: var(--text);
+                display: block;
+            }
+            .stage-box:hover {
+                border-color: var(--accent);
+                background: #1c2433;
+            }
+            .stage-box.apiserver {
+                border-color: var(--accent);
+            }
+            .stage-box.scheduler {
+                border-color: var(--green);
+            }
+            .stage-box.kubelet {
+                border-color: var(--orange);
+            }
+            .stage-box.controller {
+                border-color: var(--purple);
+            }
+            .stage-box.etcd {
+                border-color: var(--yellow);
+            }
+            .stage-label {
+                font-size: 11px;
+                color: var(--muted);
+            }
+            .arrow {
+                font-size: 18px;
+                color: var(--muted);
+                padding: 0 6px;
+                flex-shrink: 0;
+            }
+            .section {
+                margin-bottom: 28px;
+            }
+            details {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                overflow: hidden;
+                margin-bottom: 12px;
+            }
+            summary {
+                padding: 14px 18px;
+                cursor: pointer;
+                font-weight: 600;
+                font-size: 15px;
+                list-style: none;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                user-select: none;
+            }
+            summary::-webkit-details-marker {
+                display: none;
+            }
+            summary::before {
+                content: "▶";
+                font-size: 11px;
+                color: var(--muted);
+                transition: transform 0.2s;
+                flex-shrink: 0;
+            }
+            details[open] > summary::before {
+                transform: rotate(90deg);
+            }
+            .detail-body {
+                padding: 0 18px 18px;
+                border-top: 1px solid var(--border);
+            }
+            .step-list {
+                list-style: none;
+                counter-reset: steps;
+                padding-top: 14px;
+            }
+            .step-list li {
+                counter-increment: steps;
+                display: grid;
+                grid-template-columns: 28px 1fr;
+                gap: 10px;
+                margin-bottom: 14px;
+                align-items: start;
+            }
+            .step-list li::before {
+                content: counter(steps);
+                background: var(--surface2);
+                border: 1px solid var(--border);
+                border-radius: 50%;
+                width: 28px;
+                height: 28px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+                font-weight: 600;
+                color: var(--accent);
+                flex-shrink: 0;
+            }
+            .step-content {
+                padding-top: 4px;
+            }
+            .step-title {
+                font-weight: 600;
+                font-size: 14px;
+            }
+            .step-desc {
+                color: var(--muted);
+                font-size: 13px;
+                margin-top: 3px;
+            }
+            code {
+                font-family:
+                    "SFMono-Regular", Consolas, "Liberation Mono", Menlo,
+                    monospace;
+                font-size: 12px;
+                background: var(--surface2);
+                border: 1px solid var(--border);
+                border-radius: 4px;
+                padding: 1px 5px;
+                color: var(--accent);
+            }
+            pre {
+                background: var(--code-bg);
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                padding: 14px;
+                font-family:
+                    "SFMono-Regular", Consolas, "Liberation Mono", Menlo,
+                    monospace;
+                font-size: 12px;
+                line-height: 1.6;
+                white-space: pre;
+                overflow-x: auto;
+                color: var(--text);
+                margin: 10px 0;
+            }
+            .ref-link {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                font-size: 11px;
+                color: var(--muted);
+                text-decoration: none;
+                border: 1px solid var(--border);
+                border-radius: 4px;
+                padding: 2px 7px;
+                background: var(--surface2);
+                margin-top: 6px;
+                transition: border-color 0.15s;
+            }
+            .ref-link:hover {
+                border-color: var(--accent);
+                color: var(--accent);
+            }
+            .ref-link::before {
+                content: "⌗";
+            }
+            .tag {
+                display: inline-block;
+                font-size: 11px;
+                font-weight: 600;
+                padding: 1px 8px;
+                border-radius: 12px;
+                margin-right: 4px;
+            }
+            .tag-api {
+                background: #1c3a5e;
+                color: var(--accent);
+            }
+            .tag-sched {
+                background: #1a3a26;
+                color: var(--green);
+            }
+            .tag-kube {
+                background: #3a2010;
+                color: var(--orange);
+            }
+            .tag-ctrl {
+                background: #2d1f54;
+                color: var(--purple);
+            }
+            .grid-2 {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+                margin-top: 14px;
+            }
+            @media (max-width: 640px) {
+                .grid-2 {
+                    grid-template-columns: 1fr;
+                }
+                .pipeline {
+                    gap: 2px;
+                }
+                .arrow {
+                    display: none;
+                }
+                .stage {
+                    width: 100%;
+                }
+                .stage-box {
+                    width: 100%;
+                }
+            }
+            .component-card {
+                background: var(--surface2);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                padding: 14px;
+            }
+            .component-card h3 {
+                font-size: 14px;
+                font-weight: 600;
+                margin-bottom: 6px;
+            }
+            .component-card p {
+                font-size: 13px;
+                color: var(--muted);
+                margin-bottom: 8px;
+            }
+            .component-card a {
+                display: inline-block;
+                font-size: 12px;
+                color: var(--accent);
+                text-decoration: none;
+                font-weight: 600;
+            }
+            .badge {
+                font-size: 10px;
+                padding: 1px 6px;
+                border-radius: 10px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                margin-left: 6px;
+            }
+            .badge-control {
+                background: #1c3a5e;
+                color: var(--accent);
+            }
+            .badge-node {
+                background: #3a2010;
+                color: var(--orange);
+            }
+            h2.section-title {
+                font-size: 13px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                color: var(--muted);
+                margin-bottom: 12px;
+                padding-bottom: 8px;
+                border-bottom: 1px solid var(--border);
+            }
+            .highlight-box {
+                background: #161f2e;
+                border-left: 3px solid var(--accent);
+                border-radius: 0 6px 6px 0;
+                padding: 12px 14px;
+                margin: 14px 0;
+                font-size: 13px;
+                color: var(--muted);
+            }
+            .highlight-box strong {
+                color: var(--text);
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Kubernetes Data Flow</h1>
+            <p>
+                commit
+                <code
+                    style="
+                        background: none;
+                        border: none;
+                        padding: 0;
+                        font-size: 12px;
+                        color: var(--muted);
+                    "
+                    >c3c78e4355ac93436b4c95f39cf1ce576a3f8f41</code
+                >
+            </p>
+            <nav>
+                <a href="index.html" class="active">Overview</a>
+                <a href="apiserver.html">API Server</a>
+                <a href="scheduler.html">Scheduler</a>
+                <a href="kubelet.html">Kubelet</a>
+                <a href="controller-manager.html">Controller Manager</a>
+            </nav>
+        </header>
+        <main>
+            <div class="flow-diagram">
+                <h2>End-to-End Request Flow</h2>
+                <div class="pipeline">
+                    <div class="stage">
+                        <a href="apiserver.html" class="stage-box apiserver"
+                            >kubectl / client</a
+                        >
+                        <span class="stage-label">REST request</span>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="stage">
+                        <a href="apiserver.html" class="stage-box apiserver"
+                            >kube-apiserver</a
+                        >
+                        <span class="stage-label"
+                            >authn · authz · admission</span
+                        >
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="stage">
+                        <div class="stage-box etcd">etcd</div>
+                        <span class="stage-label">persisted state</span>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="stage">
+                        <a href="scheduler.html" class="stage-box scheduler"
+                            >kube-scheduler</a
+                        >
+                        <span class="stage-label">filter · score · bind</span>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="stage">
+                        <a href="kubelet.html" class="stage-box kubelet"
+                            >kubelet</a
+                        >
+                        <span class="stage-label">sync · CRI · volumes</span>
+                    </div>
+                </div>
+                <div style="margin-top: 18px; text-align: center">
+                    <span style="font-size: 12px; color: var(--muted)"
+                        >Controllers (ReplicaSet, Deployment, etc.) watch and
+                        reconcile via API server</span
+                    >
+                </div>
+                <div
+                    class="pipeline"
+                    style="margin-top: 10px; justify-content: center"
+                >
+                    <a
+                        href="apiserver.html"
+                        class="stage-box apiserver"
+                        style="font-size: 12px"
+                        >API Server watch</a
+                    >
+                    <div class="arrow">↔</div>
+                    <a
+                        href="controller-manager.html"
+                        class="stage-box controller"
+                        style="font-size: 12px"
+                        >kube-controller-manager</a
+                    >
+                </div>
+            </div>
+
+            <h2 class="section-title">High-Level Flow</h2>
+
+            <details open>
+                <summary>1 — User creates a Pod (kubectl apply)</summary>
+                <div class="detail-body">
+                    <div class="highlight-box">
+                        <strong>kubectl</strong> serializes the Pod manifest to
+                        JSON/protobuf and sends a
+                        <code>POST /api/v1/namespaces/{ns}/pods</code> request
+                        to the API server.
+                    </div>
+                    <ol class="step-list">
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">Authentication</div>
+                                <div class="step-desc">
+                                    The API server verifies the caller's
+                                    identity via client certificates, bearer
+                                    tokens, or webhook authenticators.
+                                </div>
+                                <a
+                                    class="ref-link"
+                                    href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/kubeapiserver/authenticator/config.go"
+                                    target="_blank"
+                                    >pkg/kubeapiserver/authenticator/config.go</a
+                                >
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">
+                                    Authorization (RBAC / webhook)
+                                </div>
+                                <div class="step-desc">
+                                    The request verb+resource+namespace is
+                                    checked against RBAC policies or external
+                                    webhook authorizers.
+                                </div>
+                                <a
+                                    class="ref-link"
+                                    href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/kubeapiserver/authorizer/config.go"
+                                    target="_blank"
+                                    >pkg/kubeapiserver/authorizer/config.go</a
+                                >
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">Admission Control</div>
+                                <div class="step-desc">
+                                    Mutating and validating admission webhooks
+                                    (plus built-in plugins like LimitRanger,
+                                    ResourceQuota) run before the object is
+                                    persisted.
+                                </div>
+                                <a
+                                    class="ref-link"
+                                    href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/admission/plugin/namespace/lifecycle/admission.go"
+                                    target="_blank"
+                                    >pkg/admission/plugin/namespace/lifecycle/admission.go</a
+                                >
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">etcd Write</div>
+                                <div class="step-desc">
+                                    The validated Pod object is serialized and
+                                    stored in etcd. The API server returns 201
+                                    Created to the client.
+                                </div>
+                                <a
+                                    class="ref-link"
+                                    href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/registry/core/pod/storage/storage.go"
+                                    target="_blank"
+                                    >pkg/registry/core/pod/storage/storage.go</a
+                                >
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </details>
+
+            <details open>
+                <summary>2 — Scheduler picks a node</summary>
+                <div class="detail-body">
+                    <div class="highlight-box">
+                        The scheduler maintains a <strong>watch</strong> on
+                        unscheduled pods (<code>spec.nodeName == ""</code>).
+                        When a new pod appears it enters the scheduling queue.
+                    </div>
+                    <ol class="step-list">
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">
+                                    Queue — pod enters ActiveQ
+                                </div>
+                                <div class="step-desc">
+                                    The scheduling queue prioritizes pods. The
+                                    scheduling goroutine blocks on
+                                    <code>NextPod()</code> until a pod is
+                                    dequeued.
+                                </div>
+                                <a
+                                    class="ref-link"
+                                    href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/scheduler/schedule_one.go#L67-L96"
+                                    target="_blank"
+                                    >schedule_one.go L67–96 ScheduleOne()</a
+                                >
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">
+                                    Filter phase — feasible nodes
+                                </div>
+                                <div class="step-desc">
+                                    Filter plugins (NodeAffinity,
+                                    NodeUnschedulable, PodTopologySpread, etc.)
+                                    prune infeasible nodes.
+                                </div>
+                                <a
+                                    class="ref-link"
+                                    href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/scheduler/schedule_one.go#L175-L198"
+                                    target="_blank"
+                                    >schedule_one.go L175–198
+                                    schedulingCycle()</a
+                                >
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">
+                                    Score phase — rank nodes
+                                </div>
+                                <div class="step-desc">
+                                    Score plugins assign numeric scores to each
+                                    feasible node. The node with the highest sum
+                                    wins.
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">
+                                    Bind — write nodeName to API server
+                                </div>
+                                <div class="step-desc">
+                                    The scheduler writes a
+                                    <code>Binding</code> object (or PATCH on the
+                                    Pod) setting <code>spec.nodeName</code>.
+                                    This triggers the kubelet.
+                                </div>
+                                <a
+                                    class="ref-link"
+                                    href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/scheduler/schedule_one.go#L150-L170"
+                                    target="_blank"
+                                    >schedule_one.go L150–170
+                                    runBindingCycle()</a
+                                >
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </details>
+
+            <details open>
+                <summary>3 — Kubelet runs the Pod</summary>
+                <div class="detail-body">
+                    <div class="highlight-box">
+                        Each kubelet watches pods where
+                        <code>spec.nodeName == thisNode</code>. When a pod lands
+                        it enters the pod-worker pipeline.
+                    </div>
+                    <ol class="step-list">
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">
+                                    syncLoop — multiplex sources
+                                </div>
+                                <div class="step-desc">
+                                    Merges updates from API server watch, static
+                                    pod files, and HTTP into a single
+                                    <code>configCh</code> channel.
+                                </div>
+                                <a
+                                    class="ref-link"
+                                    href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/kubelet/kubelet.go#L2630"
+                                    target="_blank"
+                                    >kubelet.go L2630 syncLoop()</a
+                                >
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">
+                                    Pod workers — concurrent SyncPod()
+                                </div>
+                                <div class="step-desc">
+                                    A per-pod goroutine calls
+                                    <code>SyncPod()</code> which mounts volumes,
+                                    pulls images, and drives the CRI to
+                                    create/start containers.
+                                </div>
+                                <a
+                                    class="ref-link"
+                                    href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/kubelet/kubelet.go#L2029"
+                                    target="_blank"
+                                    >kubelet.go L2029 SyncPod()</a
+                                >
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">
+                                    CRI call — container runtime
+                                </div>
+                                <div class="step-desc">
+                                    The Container Runtime Interface (containerd,
+                                    CRI-O) creates the sandbox and containers
+                                    via gRPC.
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">
+                                    PLEG — lifecycle events
+                                </div>
+                                <div class="step-desc">
+                                    The Pod Lifecycle Event Generator polls the
+                                    runtime and fires events (ContainerStarted,
+                                    ContainerDied) back into the sync loop.
+                                </div>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </details>
+
+            <details open>
+                <summary>4 — Controllers maintain desired state</summary>
+                <div class="detail-body">
+                    <div class="highlight-box">
+                        Controllers run in
+                        <strong>kube-controller-manager</strong>. Each
+                        controller watches one or more resource types via shared
+                        informers and reconciles actual state toward desired
+                        state.
+                    </div>
+                    <ol class="step-list">
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">
+                                    Shared informers — efficient watch
+                                </div>
+                                <div class="step-desc">
+                                    All controllers share a single API server
+                                    watch stream per resource type. Objects are
+                                    cached locally in a thread-safe store.
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">
+                                    Work queue — rate-limited reconcile
+                                </div>
+                                <div class="step-desc">
+                                    Event handlers enqueue changed object keys.
+                                    Worker goroutines dequeue and call the
+                                    reconcile function with backoff.
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">
+                                    ReplicaSet controller example
+                                </div>
+                                <div class="step-desc">
+                                    Counts running pods. If count &lt; replicas,
+                                    creates new pods via API server. If count
+                                    &gt; replicas, deletes excess pods.
+                                </div>
+                                <a
+                                    class="ref-link"
+                                    href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/controller/replicaset/replica_set.go"
+                                    target="_blank"
+                                    >pkg/controller/replicaset/replica_set.go</a
+                                >
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </details>
+
+            <h2 class="section-title" style="margin-top: 32px">Components</h2>
+            <div class="grid-2">
+                <div class="component-card">
+                    <h3 style="color: var(--accent)">
+                        kube-apiserver
+                        <span class="badge badge-control">control plane</span>
+                    </h3>
+                    <p>
+                        Central REST gateway. Validates, stores, and serves all
+                        Kubernetes objects. Every other component talks
+                        <em>only</em> to the API server — never directly to each
+                        other.
+                    </p>
+                    <a href="apiserver.html">Explore API Server flow →</a>
+                </div>
+                <div class="component-card">
+                    <h3 style="color: var(--green)">
+                        kube-scheduler
+                        <span class="badge badge-control">control plane</span>
+                    </h3>
+                    <p>
+                        Watches unscheduled pods and assigns them to nodes using
+                        a plugin-based filter/score pipeline. Writes the result
+                        as a <code>Binding</code> back to the API server.
+                    </p>
+                    <a href="scheduler.html">Explore Scheduler flow →</a>
+                </div>
+                <div class="component-card">
+                    <h3 style="color: var(--orange)">
+                        kubelet <span class="badge badge-node">node</span>
+                    </h3>
+                    <p>
+                        Node agent. Runs one per node. Watches pods assigned to
+                        its node and drives the container runtime (CRI) to match
+                        actual state to desired state.
+                    </p>
+                    <a href="kubelet.html">Explore Kubelet flow →</a>
+                </div>
+                <div class="component-card">
+                    <h3 style="color: var(--purple)">
+                        kube-controller-manager
+                        <span class="badge badge-control">control plane</span>
+                    </h3>
+                    <p>
+                        Hosts dozens of controllers (ReplicaSet, Deployment,
+                        Node lifecycle, ServiceAccount, …). Each runs an
+                        independent reconcile loop to maintain resource
+                        invariants.
+                    </p>
+                    <a href="controller-manager.html"
+                        >Explore Controller Manager flow →</a
+                    >
+                </div>
+            </div>
+        </main>
+    </body>
+</html>

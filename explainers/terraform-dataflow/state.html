@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terraform State — Data Flow</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">
+      <svg width="16" height="16" viewBox="0 0 32 32" fill="none">
+        <path d="M12.042 6.858L19.5 11.13v8.246L12.042 15.1z" fill="#a78bfa"/>
+        <path d="M20.958 11.13l7.458 4.272V23.9l-7.458-4.272z" fill="#7c3aed"/>
+        <path d="M3.584 11.13L11.042 15.1v8.246L3.584 19.375z" fill="#6d28d9"/>
+      </svg>
+      Terraform Data Flow
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="init.html">Init</a></li>
+      <li><a href="config.html">Config</a></li>
+      <li><a href="plan.html">Plan</a></li>
+      <li><a href="apply.html">Apply</a></li>
+      <li><a href="providers.html">Providers</a></li>
+      <li><a href="state.html" class="active">State</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <header class="hero">
+    <p class="hero-label">Component · State</p>
+    <h1>State Management</h1>
+    <p class="hero-sub">
+      <code>*states.State</code> is the ground truth of managed infrastructure.
+      <code>SyncState</code> wraps it with a <code>sync.RWMutex</code> for concurrent
+      graph walk access. Backends persist it between runs.
+    </p>
+    <div class="hero-meta">
+      <span>State struct: <a href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/states/state.go#L27" target="_blank" rel="noopener">states/state.go:27</a></span>
+      <span>SyncState: <a href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/states/sync.go#L36" target="_blank" rel="noopener">states/sync.go:36</a></span>
+    </div>
+  </header>
+
+  <!-- OBJECT MODEL -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
+      State object hierarchy
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <div class="pipeline">
+<pre>
+*states.State
+  │
+  ├── Modules: map[string]*Module            keyed by module instance address
+  │     e.g. "" (root), "module.vpc[0]", "module.network.module.subnets"
+  │
+  ├── RootOutputValues: map[string]*OutputValue
+  │
+  └── CheckResults: *CheckResults            results of check {} blocks
+
+*states.Module
+  │
+  ├── Addr: addrs.ModuleInstance
+  │
+  ├── Resources: map[string]*Resource        keyed by "type.name"
+  │     e.g. "aws_instance.web"
+  │
+  ├── OutputValues: map[string]cty.Value
+  │
+  └── LocalValues: map[string]cty.Value
+
+*states.Resource
+  │
+  ├── Addr: addrs.Resource
+  │
+  ├── EachMode: EachList | EachMap | NoEach  set by count / for_each
+  │
+  └── Instances: map[addrs.InstanceKey]*ResourceInstance
+        Keys: IntKey(0), IntKey(1)…  for count
+              StringKey("us-east-1")… for for_each
+
+*states.ResourceInstance
+  │
+  ├── Current: *ResourceInstanceObjectSrc   nil if only deposed instances
+  │
+  └── Deposed: map[DeposedKey]*ResourceInstanceObjectSrc
+        Non-empty only during a create-before-destroy replacement
+
+*states.ResourceInstanceObjectSrc
+  │
+  ├── SchemaVersion: uint64                 for UpgradeResourceState migrations
+  ├── AttrsJSON: []byte                     JSON-encoded attribute values
+  ├── AttrSensitivePaths: []cty.Path        paths of sensitive attributes
+  ├── Private: []byte                       opaque provider metadata
+  ├── Status: ObjectReady | ObjectTainted
+  └── Dependencies: []addrs.ConfigResource  other resources this depends on
+</pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- states.State -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg>
+      states.State struct
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/states/state.go:27</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/states/state.go#L27" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>// State is the top-level type for a Terraform state.
+// NOT goroutine-safe — use SyncState for concurrent access.
+type State struct {
+    // Modules maps module instance addresses to their state.
+    // The root module address is "".
+    Modules map[string]*Module
+
+    // RootOutputValues contains the root module's output values.
+    RootOutputValues map[string]*OutputValue
+
+    // CheckResults collects the results of check {} block assertions.
+    CheckResults *CheckResults
+}
+
+type Module struct {
+    Addr         addrs.ModuleInstance
+    Resources    map[string]*Resource
+    OutputValues map[string]*OutputValue
+    LocalValues  map[string]cty.Value
+}
+
+type Resource struct {
+    Addr      addrs.AbsResource
+    Instances map[addrs.InstanceKey]*ResourceInstance
+    EachMode  EachMode  // NoEach, EachList, EachMap
+    ProviderConfig addrs.AbsProviderConfig
+}
+
+type ResourceInstance struct {
+    Current *ResourceInstanceObjectSrc
+    Deposed map[DeposedKey]*ResourceInstanceObjectSrc
+}
+
+type ResourceInstanceObjectSrc struct {
+    SchemaVersion       uint64
+    AttrsJSON           []byte              // JSON-encoded cty.Value
+    AttrSensitivePaths  []cty.Path
+    Private             []byte
+    Status              ObjectStatus
+    Dependencies        []addrs.ConfigResource
+    CreateBeforeDestroy bool
+}</code></pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- SyncState -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg>
+      SyncState — thread-safe wrapper
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <p>
+        The graph walk executes up to 10 nodes concurrently. All state reads and writes
+        must go through <code>SyncState</code> to prevent data races. It uses
+        <code>sync.RWMutex</code>: writes hold the exclusive lock; reads hold the shared lock.
+      </p>
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/states/sync.go:36</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/states/sync.go#L36" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>// SyncState provides a goroutine-safe wrapper around *State.
+type SyncState struct {
+    state *State
+    lock  sync.RWMutex
+}
+
+// SetResourceInstanceCurrent is the primary write path during apply.
+// Called by NodeApplyableResourceInstance.Execute() after a successful
+// ApplyResourceChange call.
+func (s *SyncState) SetResourceInstanceCurrent(
+    addr    addrs.AbsResourceInstance,
+    obj     *ResourceInstanceObjectSrc,
+    provider addrs.AbsProviderConfig,
+) {
+    s.lock.Lock()
+    defer s.lock.Unlock()
+    // ... mutate s.state
+}
+
+// ResourceInstanceObject reads a single instance for the plan walk.
+// Uses a read lock so multiple goroutines can read concurrently.
+func (s *SyncState) ResourceInstanceObject(
+    addr addrs.AbsResourceInstance,
+    gen Generation,
+) *ResourceInstanceObjectSrc {
+    s.lock.RLock()
+    defer s.lock.RUnlock()
+    // ...
+}
+
+// ForgetResourceInstanceAll removes all instances of a resource.
+// Called by NodeDestroyResourceInstance after a successful destroy.
+func (s *SyncState) ForgetResourceInstanceAll(addr addrs.AbsResourceInstance)
+
+// Close returns the underlying *State, removing the SyncState wrapper.
+// Called at the end of Apply to hand the final state to the caller.
+func (s *SyncState) Close() *State</code></pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- SERIALIZATION -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M3 12v3c0 1.657 3.134 3 7 3s7-1.343 7-3v-3c0 1.657-3.134 3-7 3s-7-1.343-7-3z"/><path d="M3 7v3c0 1.657 3.134 3 7 3s7-1.343 7-3V7c0 1.657-3.134 3-7 3S3 8.657 3 7z"/><path d="M17 5c0 1.657-3.134 3-7 3S3 6.657 3 5s3.134-3 7-3 7 1.343 7 3z"/></svg>
+      State serialization — terraform.tfstate
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <p>
+        <code>*states.State</code> is serialized to JSON by <code>statefile.Write</code>
+        in <code>internal/states/statefile/</code>. The format version is
+        incremented when breaking changes are made; older formats are upgraded
+        on read via migration functions.
+      </p>
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">terraform.tfstate (example, v4 format)</code>
+        </div>
+        <pre><code>{
+  "version": 4,
+  "terraform_version": "1.9.0",
+  "serial": 42,
+  "lineage": "abc123...",
+  "outputs": {
+    "vpc_id": { "value": "vpc-0abc", "type": "string" }
+  },
+  "resources": [
+    {
+      "module": "module.network",
+      "mode": "managed",
+      "type": "aws_vpc",
+      "name": "main",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "id":         "vpc-0abc123",
+            "cidr_block": "10.0.0.0/16",
+            "tags":       { "Name": "main" }
+          },
+          "sensitive_attributes": [],
+          "private": "base64encodedproviderdata=="
+        }
+      ]
+    }
+  ]
+}</code></pre>
+      </div>
+
+      <h3>Serial and lineage</h3>
+      <ul>
+        <li><strong>lineage</strong> — a UUID generated when the state is first created. Two state files with different lineages are considered unrelated and Terraform will refuse to merge them.</li>
+        <li><strong>serial</strong> — monotonically increasing integer. The backend increments it on every write and uses it for optimistic concurrency control (a write with a stale serial is rejected).</li>
+      </ul>
+    </div>
+  </details>
+
+  <!-- STATE IN PLAN VS APPLY -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"/></svg>
+      State lifecycle across plan and apply
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <div class="pipeline">
+<pre>
+PLAN PHASE
+  Backend.StateMgr(workspace).GetState()
+    └─► *states.State  (prevRunState)
+          │
+          ├── Passed to Context.Plan() as prevRunState
+          │
+          ├── REFRESH WALK:
+          │   SyncState wraps a copy of prevRunState
+          │   providers.ReadResource() → update each resource's attrs
+          │   → refreshedState  (stored as plan.PriorState)
+          │
+          └── PLAN WALK:
+              SyncState holds refreshedState (read-only during plan)
+              Changes are collected in plans.ChangesSync (separate from state)
+              → *plans.Plan.Changes  (delta, not new state)
+
+PLAN FILE: embeds prevRunState as "tfstate"
+
+APPLY PHASE
+  planfile.ReadStateFile()  →  prevRunState from plan time
+    │
+    └── Passed to Context.Apply()
+          SyncState starts with copy of prevRunState
+          │
+          ├── For each resource in plan.Changes:
+          │     ApplyResourceChange() → new cty.Value
+          │     SyncState.SetResourceInstanceCurrent(addr, newObj)
+          │
+          └── SyncState.Close()  →  *states.State  (finalState)
+                │
+                └── statemgr.Full.WriteState(finalState)
+                      statemgr.Full.PersistState()
+                        └── Backend writes terraform.tfstate
+</pre>
+      </div>
+
+      <div class="callout orange">
+        <p>
+          <strong>State locking:</strong> Before writing state, the backend calls
+          <code>statemgr.Locker.Lock()</code>. If another Terraform operation holds the lock,
+          this blocks until it is released (or times out). The local backend uses a
+          <code>.terraform.tfstate.lock.info</code> file; cloud backends use native locking
+          (DynamoDB, Consul, etc.).
+        </p>
+      </div>
+    </div>
+  </details>
+
+  <!-- DEPOSED INSTANCES -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"/></svg>
+      Deposed instances — create-before-destroy
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <p>
+        When a resource has <code>lifecycle { create_before_destroy = true }</code>
+        and its plan contains a replacement, the apply walk:
+      </p>
+      <ol class="steps">
+        <li>Creates the new instance; stores it as <strong>Current</strong>.</li>
+        <li>Moves the old instance to <strong>Deposed</strong> with a generated <code>DeposedKey</code>.</li>
+        <li>Destroys the deposed instance; removes it from state.</li>
+      </ol>
+      <p>
+        If Terraform crashes between steps 2 and 3, the next apply finds the deposed
+        instance in state and re-runs the destroy step. This ensures the old instance
+        is eventually cleaned up without losing the new one.
+      </p>
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/states/resource.go (DeposedKey)</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/states/resource.go" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>// DeposedKey identifies an older object that has been replaced but not yet
+// destroyed. It is a random 8-character hex string.
+type DeposedKey string
+
+// NotDeposed is the zero value; indicates an instance is not deposed.
+const NotDeposed = DeposedKey("")
+
+// NewDeposedKey generates a random DeposedKey for a replacement.
+func NewDeposedKey() DeposedKey {
+    // generates 4 random bytes → 8-char hex string
+}
+
+type ResourceInstance struct {
+    // Current is the live instance; nil during a pending destroy.
+    Current *ResourceInstanceObjectSrc
+
+    // Deposed holds replaced-but-not-yet-destroyed instances.
+    // Normally empty; non-empty only between create and destroy
+    // steps of a create_before_destroy replacement.
+    Deposed map[DeposedKey]*ResourceInstanceObjectSrc
+}</code></pre>
+      </div>
+    </div>
+  </details>
+
+</div>
+</body>
+</html>

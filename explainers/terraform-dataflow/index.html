@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terraform Data Flow — Overview</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">
+      <svg width="16" height="16" viewBox="0 0 32 32" fill="none">
+        <path d="M12.042 6.858L19.5 11.13v8.246L12.042 15.1z" fill="#a78bfa"/>
+        <path d="M20.958 11.13l7.458 4.272V23.9l-7.458-4.272z" fill="#7c3aed"/>
+        <path d="M3.584 11.13L11.042 15.1v8.246L3.584 19.375z" fill="#6d28d9"/>
+        <path d="M12.042 23.9l7.458 4.272V36.42l-7.458-4.272z" fill="#5b21b6"/>
+      </svg>
+      Terraform Data Flow
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Overview</a></li>
+      <li><a href="init.html">Init</a></li>
+      <li><a href="config.html">Config</a></li>
+      <li><a href="plan.html">Plan</a></li>
+      <li><a href="apply.html">Apply</a></li>
+      <li><a href="providers.html">Providers</a></li>
+      <li><a href="state.html">State</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <header class="hero">
+    <p class="hero-label">Architecture Reference</p>
+    <h1>Terraform Data Flow</h1>
+    <p class="hero-sub">
+      End-to-end walkthrough of how Terraform processes configuration,
+      builds a dependency graph, plans changes, and applies them via provider plugins.
+    </p>
+    <div class="hero-meta">
+      <span>Repo: <a href="https://github.com/hashicorp/terraform" target="_blank" rel="noopener">hashicorp/terraform</a></span>
+      <span>Commit: <a href="https://github.com/hashicorp/terraform/tree/a2ad11c4f14ceea1e81c81a56c44428fc4110f20" target="_blank" rel="noopener">a2ad11c</a></span>
+      <span>Language: Go</span>
+    </div>
+  </header>
+
+  <!-- FULL PIPELINE -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h4a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
+      Complete Data Flow Pipeline
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <div class="pipeline">
+<pre>
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  CLI Entry  ·  main.go:realMain()  →  initCommands()  →  cli.CLI.Run()      │
+└──────────────────────────────────────┬──────────────────────────────────────┘
+                                       │
+          ┌────────────────────────────┼───────────────────────────┐
+          │                            │                           │
+          ▼                            ▼                           ▼
+┌──────────────────┐        ┌──────────────────┐       ┌──────────────────┐
+│  terraform init  │        │  terraform plan  │       │  terraform apply │
+└────────┬─────────┘        └────────┬─────────┘       └────────┬─────────┘
+         │                           │                           │
+         ▼                           ▼                           ▼
+
+── INIT ──────────────────────────────────────────────────────────────────────
+
+  InitCommand.Run()
+    │
+    ├─► installModules()
+    │     └─► ModuleInstaller.InstallModules()
+    │           ├── Walk module calls in *configs.Module
+    │           ├── Resolve versions from registry
+    │           ├── Download & cache to .terraform/modules/
+    │           └── Write .terraform/modules/modules.json
+    │
+    ├─► getProviders()
+    │     ├── getproviders.Source.AvailableVersions()
+    │     ├── Resolve constraints → Lock file
+    │     ├── Download binaries to .terraform/providers/
+    │     └── Verify checksums
+    │
+    └─► depsfile.Locks  →  .terraform.lock.hcl
+
+── CONFIG LOAD ───────────────────────────────────────────────────────────────
+
+  configload.Loader.LoadConfig(dir)
+    │
+    ├─► Parse *.tf files with HCL2 parser
+    ├─► Build *configs.Module  (resources, vars, outputs, providers…)
+    └─► configs.BuildConfig(rootMod, walker, loader)
+          ├── Recursively walks ModuleCalls
+          ├── Loads each child *configs.Module
+          └─► *configs.Config  (tree of modules)
+
+── PLAN ──────────────────────────────────────────────────────────────────────
+
+  PlanCommand.Run()
+    │
+    ├─► PrepareBackend()  →  backend.Backend.StateMgr()  →  prior *states.State
+    ├─► OperationRequest()
+    └─► backend.RunOperation()
+          └─► Context.Plan(config, prevRunState, opts)
+                │
+                ├─► planWalk()
+                │     ├── BasicGraphBuilder.Build()
+                │     │     └── GraphTransformers (ResourceTransformer,
+                │     │         ReferenceTransformer, ProviderTransformer…)
+                │     │         →  *terraform.Graph (DAG)
+                │     │
+                │     ├── Walk — Refresh Phase
+                │     │     └── NodeAbstractResourceInstance.Execute()
+                │     │           └─► providers.Interface.ReadResource()
+                │     │
+                │     └── Walk — Plan Phase
+                │           └── NodePlannableResourceInstance.Execute()
+                │                 └─► providers.Interface.PlanResourceChange()
+                │                       →  plans.ResourceInstanceChange
+                │
+                └─► *plans.Plan  →  planfile.Writer  →  .tfplan (ZIP)
+
+── APPLY ─────────────────────────────────────────────────────────────────────
+
+  ApplyCommand.Run()
+    │
+    ├─► PrepareBackend()
+    ├─► OperationRequest()
+    └─► backend.RunOperation()
+          └─► Context.Apply(plan, config, opts)
+                │
+                ├─► applyGraph()
+                │     └── Build apply-specific DAG
+                │
+                ├── Walk — Apply Phase
+                │     └── NodeApplyableResourceInstance.Execute()
+                │           └─► providers.Interface.ApplyResourceChange()
+                │                 →  updated resource object (cty.Value)
+                │
+                ├─► states.SyncState.SetResourceInstanceCurrent()
+                │     └── Thread-safe state mutation
+                │
+                └─► statemgr.Full.WriteState(*states.State)
+                      └── Backend persists state to local file / remote API
+</pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- PHASES -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/></svg>
+      Three-Phase Model
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <h3>Init — Dependency Resolution</h3>
+      <p>
+        <code>terraform init</code> prepares the working directory. It resolves and installs
+        external modules and provider plugins, writes a lock file, and leaves the workspace
+        ready for subsequent commands. No infrastructure is touched.
+      </p>
+      <div class="callout green">
+        <p><strong>Output artifacts:</strong> <code>.terraform/modules/</code>, <code>.terraform/providers/</code>, <code>.terraform.lock.hcl</code></p>
+      </div>
+
+      <hr class="divider">
+
+      <h3>Plan — Declarative Diff</h3>
+      <p>
+        <code>terraform plan</code> loads the HCL configuration into a <code>*configs.Config</code>
+        tree, then builds a dependency graph. Two graph walks occur:
+      </p>
+      <ol>
+        <li><strong>Refresh:</strong> calls <code>ReadResource</code> on each provider to reconcile
+          stored state against real infrastructure.</li>
+        <li><strong>Plan:</strong> calls <code>PlanResourceChange</code> to diff desired vs. actual,
+          producing a list of <code>ResourceInstanceChange</code> objects.</li>
+      </ol>
+      <p>The resulting <code>*plans.Plan</code> is serialized to a binary plan file for auditability.</p>
+      <div class="callout orange">
+        <p><strong>Key invariant:</strong> The plan is fully deterministic and serializable — apply
+        reads the same plan object without re-evaluating configuration.</p>
+      </div>
+
+      <hr class="divider">
+
+      <h3>Apply — State Mutation</h3>
+      <p>
+        <code>terraform apply</code> loads the plan, builds an apply-specific graph, and
+        walks it in dependency order. Each resource node calls <code>ApplyResourceChange</code>
+        on its provider, receives the resulting state, and writes it into
+        <code>states.SyncState</code>. The final state is persisted via the backend.
+      </p>
+      <div class="callout">
+        <p><strong>Concurrency:</strong> the graph walk executes up to 10 nodes in parallel
+        (controlled by <code>-parallelism</code> flag). <code>SyncState</code> uses an
+        <code>sync.RWMutex</code> for safe concurrent writes.</p>
+      </div>
+    </div>
+  </details>
+
+  <!-- COMPONENT REFERENCE TABLE -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm2 10a1 1 0 10-2 0v3a1 1 0 102 0v-3zm2-3a1 1 0 011 1v5a1 1 0 11-2 0v-5a1 1 0 011-1zm4-1a1 1 0 10-2 0v7a1 1 0 102 0V8z" clip-rule="evenodd"/></svg>
+      Key Entry Points
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <div class="ref-table-wrap">
+        <table class="ref-table">
+          <thead>
+            <tr>
+              <th>Operation</th>
+              <th>Command Entry</th>
+              <th>Core Engine</th>
+              <th>Key Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Init</strong></td>
+              <td><code>command/init.go:50</code><br><a href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/command/init.go#L50" target="_blank" rel="noopener">↗ GitHub</a></td>
+              <td><code>initwd/module_install.go:35</code><br><a href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/initwd/module_install.go#L35" target="_blank" rel="noopener">↗ GitHub</a></td>
+              <td><code>ModuleInstaller</code></td>
+            </tr>
+            <tr>
+              <td><strong>Config Load</strong></td>
+              <td colspan="2"><code>configs/config_build.go:30</code><br><a href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/configs/config_build.go#L30" target="_blank" rel="noopener">↗ GitHub</a></td>
+              <td><code>*configs.Config</code></td>
+            </tr>
+            <tr>
+              <td><strong>Plan</strong></td>
+              <td><code>command/plan.go:22</code><br><a href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/command/plan.go#L22" target="_blank" rel="noopener">↗ GitHub</a></td>
+              <td><code>terraform/context_plan.go:180</code><br><a href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/terraform/context_plan.go#L180" target="_blank" rel="noopener">↗ GitHub</a></td>
+              <td><code>*plans.Plan</code></td>
+            </tr>
+            <tr>
+              <td><strong>Apply</strong></td>
+              <td><code>command/apply.go:27</code><br><a href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/command/apply.go#L27" target="_blank" rel="noopener">↗ GitHub</a></td>
+              <td><code>terraform/context_apply.go:81</code><br><a href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/terraform/context_apply.go#L81" target="_blank" rel="noopener">↗ GitHub</a></td>
+              <td><code>*states.State</code></td>
+            </tr>
+            <tr>
+              <td><strong>Providers</strong></td>
+              <td colspan="2"><code>providers/provider.go:17</code><br><a href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/providers/provider.go#L17" target="_blank" rel="noopener">↗ GitHub</a></td>
+              <td><code>providers.Interface</code></td>
+            </tr>
+            <tr>
+              <td><strong>State</strong></td>
+              <td colspan="2"><code>states/state.go:27</code><br><a href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/states/state.go#L27" target="_blank" rel="noopener">↗ GitHub</a></td>
+              <td><code>*states.State</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+
+  <!-- COMPONENT CARDS -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+      Component Deep-Dives
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <div class="cards">
+        <a class="card" href="init.html">
+          <span class="card-icon">⚙️</span>
+          <div class="card-title">Init</div>
+          <div class="card-desc">Module installation, provider download, lock file generation</div>
+        </a>
+        <a class="card" href="config.html">
+          <span class="card-icon">📄</span>
+          <div class="card-title">Configuration</div>
+          <div class="card-desc">HCL parsing, module tree, Config &amp; Module structs</div>
+        </a>
+        <a class="card" href="plan.html">
+          <span class="card-icon">📊</span>
+          <div class="card-title">Plan + Graph</div>
+          <div class="card-desc">DAG construction, graph transformers, refresh &amp; plan walks</div>
+        </a>
+        <a class="card" href="apply.html">
+          <span class="card-icon">🚀</span>
+          <div class="card-title">Apply</div>
+          <div class="card-desc">Apply graph walk, provider calls, state mutation &amp; persistence</div>
+        </a>
+        <a class="card" href="providers.html">
+          <span class="card-icon">🔌</span>
+          <div class="card-title">Providers</div>
+          <div class="card-desc">Plugin subprocess model, gRPC, providers.Interface</div>
+        </a>
+        <a class="card" href="state.html">
+          <span class="card-icon">💾</span>
+          <div class="card-title">State</div>
+          <div class="card-desc">State structure, SyncState, backend persistence</div>
+        </a>
+      </div>
+    </div>
+  </details>
+
+  <!-- KEY PATTERNS -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/></svg>
+      Architectural Patterns
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <h3>1 · Graph-Based Execution</h3>
+      <p>
+        All three phases (refresh, plan, apply) use a directed acyclic graph (DAG).
+        <code>BasicGraphBuilder</code> accepts a slice of <code>GraphTransformer</code> steps that
+        progressively add nodes and edges. The final graph is topologically sorted and walked
+        concurrently up to the parallelism limit.
+      </p>
+
+      <h3>2 · Interface-Driven Design</h3>
+      <p>
+        Three core interfaces decouple the engine from implementations:
+        <code>Backend</code> (state storage), <code>providers.Interface</code> (cloud APIs),
+        and <code>EvalContext</code> (expression evaluation environment). This makes unit-testing
+        the core engine straightforward.
+      </p>
+
+      <h3>3 · Separation of Plan and Apply</h3>
+      <p>
+        The plan is a serializable, inspectable artifact. Apply reads it without re-evaluating
+        HCL. This enables the review-before-apply workflow and means remote execution environments
+        (Terraform Cloud) can apply plans generated elsewhere.
+      </p>
+
+      <h3>4 · cty Value System</h3>
+      <p>
+        All values flowing through the evaluator, provider calls, and state are typed using
+        <code>cty.Value</code> from the <code>go-cty</code> library. It supports unknown values
+        (for speculative planning), null, and sensitive-marked values without special-casing.
+      </p>
+
+      <h3>5 · Thread-Safe State</h3>
+      <p>
+        <code>states.SyncState</code> wraps <code>*states.State</code> with a
+        <code>sync.RWMutex</code>. The apply graph walk runs nodes in parallel; all state writes
+        go through <code>SyncState</code> methods to prevent races.
+      </p>
+
+      <h3>6 · Provider-as-Process</h3>
+      <p>
+        Providers are separate executables communicating over gRPC via stdin/stdout.
+        <code>plugin.GRPCProvider</code> implements <code>providers.Interface</code> by
+        translating Go method calls into protobuf RPC calls. Terraform manages the provider
+        process lifecycle (start, keep-alive, shutdown).
+      </p>
+    </div>
+  </details>
+
+</div>
+</body>
+</html>

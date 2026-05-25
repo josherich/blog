@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terraform Configuration Loading — Data Flow</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">
+      <svg width="16" height="16" viewBox="0 0 32 32" fill="none">
+        <path d="M12.042 6.858L19.5 11.13v8.246L12.042 15.1z" fill="#a78bfa"/>
+        <path d="M20.958 11.13l7.458 4.272V23.9l-7.458-4.272z" fill="#7c3aed"/>
+        <path d="M3.584 11.13L11.042 15.1v8.246L3.584 19.375z" fill="#6d28d9"/>
+      </svg>
+      Terraform Data Flow
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="init.html">Init</a></li>
+      <li><a href="config.html" class="active">Config</a></li>
+      <li><a href="plan.html">Plan</a></li>
+      <li><a href="apply.html">Apply</a></li>
+      <li><a href="providers.html">Providers</a></li>
+      <li><a href="state.html">State</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <header class="hero">
+    <p class="hero-label">Component · Configuration</p>
+    <h1>Configuration Loading</h1>
+    <p class="hero-sub">
+      HCL files are parsed into an in-memory module tree rooted at
+      <code>*configs.Config</code>. This tree feeds both the plan and apply engines.
+    </p>
+    <div class="hero-meta">
+      <span>Package: <a href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/configs" target="_blank" rel="noopener">internal/configs</a></span>
+    </div>
+  </header>
+
+  <!-- FLOW -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
+      Configuration loading flow
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <div class="pipeline">
+<pre>
+configload.Loader.LoadConfig(rootDir)
+  │
+  ├─► Parser.LoadConfigDir(rootDir)
+  │     ├── Glob *.tf and *.tf.json files in dir
+  │     ├── hclsyntax.ParseConfig() for each .tf file (native syntax)
+  │     ├── json.Parse() for each .tf.json file (JSON syntax)
+  │     └── Merge body into *configs.Module
+  │           Fields: Variables, Locals, Outputs, ManagedResources,
+  │                   DataResources, ModuleCalls, ProviderConfigs,
+  │                   RequiredProviders, Backend, CloudConfig,
+  │                   Moved, Import, Checks, ...
+  │
+  └─► configs.BuildConfig(rootMod, walker, loader)  [config_build.go:30]
+        │
+        ├── Create root *Config node
+        ├── For each rootMod.ModuleCalls:
+        │     walker.LoadModule(call.SourceAddr, call.VersionConstraint)
+        │       └── Returns child *configs.Module (from .terraform/modules/)
+        │     Recurse: BuildConfig(childMod, walker, loader)
+        │     Attach as root.Children[call.Name]
+        │
+        ├─► FinalizeConfig(cfg, walker, loader)  [config_build.go:46]
+        │     ├── Resolve provider inheritance
+        │     ├── Validate provider references
+        │     └── Check for cycles in module tree
+        │
+        └─► *configs.Config  (full module tree, ready for planning)
+</pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- configs.Config -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm2 10a1 1 0 10-2 0v3a1 1 0 102 0v-3zm2-3a1 1 0 011 1v5a1 1 0 11-2 0v-5a1 1 0 011-1zm4-1a1 1 0 10-2 0v7a1 1 0 102 0V8z" clip-rule="evenodd"/></svg>
+      configs.Config — module tree node
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <p>
+        <code>*configs.Config</code> represents one node in the module call tree.
+        The root node's <code>Root</code> field points to itself.
+        <code>Children</code> maps each <code>module</code> block label to its own
+        <code>*Config</code> subtree.
+      </p>
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/configs/config.go:32</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/configs/config.go#L32" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>type Config struct {
+    // Root is the root node of the whole config tree.
+    // (points to self for the root module)
+    Root *Config
+
+    // Parent is nil for the root module.
+    Parent *Config
+
+    // Path is the sequence of module calls to reach this node,
+    // e.g. addrs.Module{"network", "vpc"} for module.network.module.vpc
+    Path addrs.Module
+
+    // Children maps the local module call name → child *Config.
+    Children map[string]*Config
+
+    // Module is the parsed contents of this directory's *.tf files.
+    Module *Module
+
+    // CallRange is the source range of the module {} block that
+    // instantiated this node (empty for root).
+    CallRange hcl.Range
+
+    // SourceAddr is the parsed source address (registry, git, local).
+    SourceAddr addrs.ModuleSource
+
+    // Version is the exact version selected for registry modules.
+    Version *version.Version
+}</code></pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- configs.Module -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/></svg>
+      configs.Module — parsed HCL contents
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <p>
+        <code>*configs.Module</code> holds everything parsed from a single module directory.
+        The graph builder reads this to create nodes for each resource, variable, output, etc.
+      </p>
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/configs/module.go (key fields)</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/configs/module.go" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>type Module struct {
+    // Identifiers
+    SourceDir string
+
+    // variable {} blocks  →  map[name]*Variable
+    Variables map[string]*Variable
+
+    // locals {} block  →  map[name]*Local
+    Locals map[string]*Local
+
+    // output {} blocks  →  map[name]*Output
+    Outputs map[string]*Output
+
+    // resource "type" "name" {}  →  map["type.name"]*ManagedResource
+    ManagedResources map[string]*Resource
+
+    // data "type" "name" {}  →  map["data.type.name"]*Resource
+    DataResources map[string]*Resource
+
+    // module "name" {}  →  map[name]*ModuleCall
+    ModuleCalls map[string]*ModuleCall
+
+    // provider "name" {}  →  map[name]*Provider
+    ProviderConfigs map[string]*Provider
+
+    // terraform { required_providers {} }
+    ProviderRequirements map[addrs.Provider]providerreqs.Requirements
+
+    // terraform { backend {} } or terraform { cloud {} }
+    Backend     *Backend
+    CloudConfig *CloudConfig
+
+    // moved {}, import {}, check {} blocks
+    Moved   []*Moved
+    Import  []*Import
+    Checks  map[string]*Check
+}</code></pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- BuildConfig -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/></svg>
+      BuildConfig — recursive module tree assembly
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <p>
+        <code>BuildConfig</code> assembles the flat collection of parsed modules into a tree
+        by following each <code>module {}</code> call recursively. The
+        <code>ModuleWalker</code> interface abstracts how child modules are located
+        (filesystem walk in production, mock in tests).
+      </p>
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/configs/config_build.go:30</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/configs/config_build.go#L30" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>// BuildConfig constructs a configs.Config from an already-loaded root
+// module. The walker is called to load child modules on demand.
+func BuildConfig(root *Module, walker ModuleWalker,
+    loader MockDataLoader) (*Config, hcl.Diagnostics)
+
+// FinalizeConfig resolves inter-module provider assignments.
+func FinalizeConfig(cfg *Config, walker ModuleWalker,
+    loader MockDataLoader) hcl.Diagnostics
+
+// ModuleWalker is called for each module {} call encountered.
+type ModuleWalker interface {
+    LoadModule(req *ModuleRequest) (*Module, *version.Version, hcl.Diagnostics)
+}
+
+type ModuleRequest struct {
+    Name               string              // module call label
+    Path               addrs.Module        // path to the calling module
+    SourceAddr         addrs.ModuleSource  // parsed source address
+    VersionConstraint  VersionConstraint   // from version = "..."
+    Parent             *Config
+    CallRange          hcl.Range
+}</code></pre>
+      </div>
+
+      <div class="callout green">
+        <p>
+          <strong>Post-build:</strong> the returned <code>*configs.Config</code> is passed
+          directly to <code>Context.Plan()</code> and <code>Context.Apply()</code>. The graph
+          builder walks <code>Config.Children</code> recursively to create graph nodes for
+          every resource across all modules.
+        </p>
+      </div>
+    </div>
+  </details>
+
+  <!-- EXPRESSION EVALUATION -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6.672 1.911a1 1 0 10-1.932.518l.259.966a1 1 0 001.932-.518l-.26-.966zM2.429 4.74a1 1 0 10-.517 1.932l.966.259a1 1 0 00.517-1.932l-.966-.26zm8.814-.569a1 1 0 00-1.415-1.414l-.707.707a1 1 0 101.415 1.414l.707-.707zm-7.071 7.072l.707-.707A1 1 0 003.465 9.12l-.708.707a1 1 0 001.415 1.415zm3.2-5.171a1 1 0 00-1.3 1.3l4 10a1 1 0 001.823.075l1.38-2.759 3.018 3.02a1 1 0 001.414-1.415l-3.019-3.02 2.76-1.379a1 1 0 00-.076-1.822l-10-4z" clip-rule="evenodd"/></svg>
+      Expression evaluation (Evaluator)
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <p>
+        The <code>Evaluator</code> resolves HCL expressions at walk time, supplying
+        values for variables, locals, resource attributes, and module outputs via
+        the <code>EvalContext</code> interface. Unknown values (<code>cty.DynamicVal</code>)
+        are propagated during plan when a value cannot be determined until apply.
+      </p>
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/terraform/evaluate.go:32</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/terraform/evaluate.go#L32" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>type Evaluator struct {
+    Operation      walkOperation         // walkPlan, walkApply, etc.
+    Meta           *ContextMeta
+    Config         *configs.Config       // full module tree
+    Instances      *instances.Expander   // track count/for_each expansions
+    NamedValues    *namedvals.State      // var/local/output values
+    EphemeralResources *ephemeral.Resources
+    Deferrals      *deferring.Deferred
+    Plugins        *contextPlugins       // available providers
+    State          *states.SyncState     // current state
+    Changes        *plans.ChangesSync    // planned changes so far
+    PrevRunState   *states.SyncState     // state before refresh
+    ExternalInputs cty.Value
+}
+
+// GetInputVariable resolves a variable reference like var.region.
+// Returns cty.DynamicVal if the value is unknown at plan time.
+func (e *Evaluator) GetInputVariable(addr addrs.InputVariable,
+    module addrs.ModuleInstance) (cty.Value, tfdiags.Diagnostics)</code></pre>
+      </div>
+    </div>
+  </details>
+
+</div>
+</body>
+</html>

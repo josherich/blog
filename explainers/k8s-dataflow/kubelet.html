@@ -1,0 +1,669 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Kubelet — Kubernetes Data Flow</title>
+        <style>
+            :root {
+                --bg: #0d1117;
+                --surface: #161b22;
+                --surface2: #21262d;
+                --border: #30363d;
+                --text: #c9d1d9;
+                --muted: #8b949e;
+                --accent: #db6d28;
+                --blue: #58a6ff;
+                --green: #3fb950;
+                --yellow: #d29922;
+                --purple: #bc8cff;
+                --red: #f85149;
+                --code-bg: #161b22;
+            }
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                background: var(--bg);
+                color: var(--text);
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
+                    Arial, sans-serif;
+                font-size: 15px;
+                line-height: 1.6;
+            }
+            header {
+                background: var(--surface);
+                border-bottom: 1px solid var(--border);
+                padding: 16px 24px;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+            header h1 {
+                font-size: 18px;
+                font-weight: 600;
+                color: var(--accent);
+            }
+            header p {
+                font-size: 13px;
+                color: var(--muted);
+                margin-top: 2px;
+            }
+            nav {
+                display: flex;
+                gap: 8px;
+                margin-top: 10px;
+                flex-wrap: wrap;
+            }
+            nav a {
+                color: var(--blue);
+                text-decoration: none;
+                font-size: 13px;
+                padding: 3px 10px;
+                border: 1px solid var(--border);
+                border-radius: 20px;
+                background: var(--surface2);
+                transition: background 0.15s;
+            }
+            nav a:hover {
+                background: var(--border);
+            }
+            nav a.active {
+                background: var(--accent);
+                color: #0d1117;
+                border-color: var(--accent);
+                font-weight: 600;
+            }
+            main {
+                max-width: 960px;
+                margin: 0 auto;
+                padding: 24px 16px 64px;
+            }
+            details {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                overflow: hidden;
+                margin-bottom: 14px;
+            }
+            summary {
+                padding: 14px 18px;
+                cursor: pointer;
+                font-weight: 600;
+                font-size: 15px;
+                list-style: none;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                user-select: none;
+            }
+            summary::-webkit-details-marker {
+                display: none;
+            }
+            summary::before {
+                content: "▶";
+                font-size: 11px;
+                color: var(--muted);
+                transition: transform 0.2s;
+                flex-shrink: 0;
+            }
+            details[open] > summary::before {
+                transform: rotate(90deg);
+            }
+            .detail-body {
+                padding: 14px 18px 18px;
+                border-top: 1px solid var(--border);
+            }
+            pre {
+                background: var(--code-bg);
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                padding: 14px;
+                font-family:
+                    "SFMono-Regular", Consolas, "Liberation Mono", Menlo,
+                    monospace;
+                font-size: 12px;
+                line-height: 1.6;
+                white-space: pre;
+                overflow-x: auto;
+                color: var(--text);
+                margin: 10px 0;
+            }
+            code {
+                font-family:
+                    "SFMono-Regular", Consolas, "Liberation Mono", Menlo,
+                    monospace;
+                font-size: 12px;
+                background: var(--surface2);
+                border: 1px solid var(--border);
+                border-radius: 4px;
+                padding: 1px 5px;
+                color: var(--accent);
+            }
+            .ref-link {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                font-size: 11px;
+                color: var(--muted);
+                text-decoration: none;
+                border: 1px solid var(--border);
+                border-radius: 4px;
+                padding: 2px 7px;
+                background: var(--surface2);
+                margin-top: 4px;
+                margin-right: 4px;
+                transition: border-color 0.15s;
+            }
+            .ref-link:hover {
+                border-color: var(--accent);
+                color: var(--accent);
+            }
+            .ref-link::before {
+                content: "⌗";
+                margin-right: 2px;
+            }
+            .step-list {
+                list-style: none;
+                counter-reset: steps;
+                padding-top: 4px;
+            }
+            .step-list li {
+                counter-increment: steps;
+                display: grid;
+                grid-template-columns: 28px 1fr;
+                gap: 10px;
+                margin-bottom: 18px;
+                align-items: start;
+            }
+            .step-list li::before {
+                content: counter(steps);
+                background: var(--surface2);
+                border: 1px solid var(--accent);
+                border-radius: 50%;
+                width: 28px;
+                height: 28px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+                font-weight: 600;
+                color: var(--accent);
+                flex-shrink: 0;
+            }
+            .step-content {
+                padding-top: 3px;
+            }
+            .step-title {
+                font-weight: 600;
+                font-size: 14px;
+                margin-bottom: 4px;
+            }
+            .step-desc {
+                color: var(--muted);
+                font-size: 13px;
+                margin-bottom: 6px;
+            }
+            h2.section-title {
+                font-size: 13px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                color: var(--muted);
+                margin: 28px 0 12px;
+                padding-bottom: 8px;
+                border-bottom: 1px solid var(--border);
+            }
+            .highlight-box {
+                background: #1e1208;
+                border-left: 3px solid var(--accent);
+                border-radius: 0 6px 6px 0;
+                padding: 12px 14px;
+                margin-bottom: 14px;
+                font-size: 13px;
+                color: var(--muted);
+            }
+            .highlight-box strong {
+                color: var(--text);
+            }
+            .source-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                gap: 10px;
+                margin: 14px 0;
+            }
+            .source-card {
+                background: var(--surface2);
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                padding: 12px;
+                text-align: center;
+                font-size: 13px;
+                font-weight: 500;
+            }
+            .source-card .label {
+                font-size: 11px;
+                color: var(--muted);
+                margin-top: 4px;
+            }
+            .arrow-down {
+                text-align: center;
+                color: var(--muted);
+                font-size: 20px;
+                margin: 6px 0;
+            }
+            .async-note {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                font-size: 11px;
+                font-weight: 700;
+                color: var(--yellow);
+                background: #2a1f08;
+                border: 1px solid #4a3510;
+                border-radius: 4px;
+                padding: 2px 8px;
+                margin-left: 8px;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>kubelet — Data Flow</h1>
+            <p>
+                Node agent: drives the container runtime to match actual pod
+                state to desired state
+            </p>
+            <nav>
+                <a href="index.html">Overview</a>
+                <a href="apiserver.html">API Server</a>
+                <a href="scheduler.html">Scheduler</a>
+                <a href="kubelet.html" class="active">Kubelet</a>
+                <a href="controller-manager.html">Controller Manager</a>
+            </nav>
+        </header>
+        <main>
+            <h2 class="section-title">Startup</h2>
+
+            <details open>
+                <summary>main() → RunKubelet() → Kubelet.Run()</summary>
+                <div class="detail-body">
+                    <div class="highlight-box">
+                        The kubelet startup path is layered: the binary entry
+                        point → <code>RunKubelet</code> which creates the
+                        <code>Kubelet</code> struct →
+                        <code>startKubelet</code> which launches all background
+                        loops.
+                    </div>
+                    <ol class="step-list">
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">
+                                    main() — entry point
+                                </div>
+                                <pre>
+// cmd/kubelet/kubelet.go L36
+func main() {
+    command := app.NewKubeletCommand(ctx)
+    code := cli.Run(command)
+    os.Exit(code)
+}</pre
+                                >
+                                <a
+                                    class="ref-link"
+                                    href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/cmd/kubelet/kubelet.go"
+                                    target="_blank"
+                                    >cmd/kubelet/kubelet.go</a
+                                >
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">
+                                    RunKubelet() — create + start
+                                </div>
+                                <div class="step-desc">
+                                    Creates the Kubelet instance via
+                                    <code>createAndInitKubelet()</code> then
+                                    hands it off to <code>startKubelet()</code>.
+                                </div>
+                                <pre>
+// cmd/kubelet/app/server.go L1234-1288 (condensed)
+func RunKubelet(ctx context.Context, kubeServer *options.KubeletServer, ...) error {
+    k, err := createAndInitKubelet(ctx, kubeServer, ...)  // L1263
+    startKubelet(ctx, k, podCfg, ...)                     // L1284
+    return nil
+}</pre
+                                >
+                                <a
+                                    class="ref-link"
+                                    href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/cmd/kubelet/app/server.go#L1234-L1288"
+                                    target="_blank"
+                                    >server.go L1234–1288</a
+                                >
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">
+                                    startKubelet() — launch all services
+                                </div>
+                                <pre>
+// cmd/kubelet/app/server.go L1290-1304
+func startKubelet(ctx context.Context, k kubelet.Bootstrap, podCfg *config.PodConfig, ...) {
+    go k.Run(ctx, podCfg.Updates())  // L1292 — main pod sync loop
+    go k.ListenAndServe(...)         // L1296 — HTTPS kubelet API
+    go k.ListenAndServeReadOnly(...) // L1299 — read-only HTTP
+    go k.ListenAndServePodResources(...)  // L1302 — DRA resources
+}</pre
+                                >
+                                <a
+                                    class="ref-link"
+                                    href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/cmd/kubelet/app/server.go#L1290-L1304"
+                                    target="_blank"
+                                    >server.go L1290–1304</a
+                                >
+                            </div>
+                        </li>
+                        <li>
+                            <div class="step-content">
+                                <div class="step-title">
+                                    Kubelet.Run() — module init + syncLoop
+                                </div>
+                                <div class="step-desc">
+                                    Initializes all subsystems (imageManager,
+                                    secretManager, probeManager, …), starts
+                                    background managers, then enters the main
+                                    <code>syncLoop</code>.
+                                </div>
+                                <pre>
+// pkg/kubelet/kubelet.go L1858-~1977 (condensed)
+func (kl *Kubelet) Run(ctx context.Context, updates &lt;-chan kubetypes.PodUpdate) {
+    kl.initializeModules(ctx)       // L1899 — imageManager, secretManager, …
+    kl.allocationManager.Run(ctx)   // L1911 — DRA allocation
+    kl.volumeManager.Run(...)       // L1915 — volume attach/mount
+
+    // Status update goroutines:
+    go kl.syncNodeStatus(ctx)       // periodic node status
+    go kl.fastStatusUpdateOnce(ctx)
+    go kl.nodeLeaseController.Run(ctx)
+
+    kl.statusManager.Start()        // L1958
+    kl.pleg.Start(...)              // L1966 — Pod Lifecycle Event Generator
+    kl.syncLoop(ctx, updates, kl)   // L1977 — never returns
+}</pre
+                                >
+                                <a
+                                    class="ref-link"
+                                    href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/kubelet/kubelet.go#L1858"
+                                    target="_blank"
+                                    >kubelet.go L1858</a
+                                >
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </details>
+
+            <h2 class="section-title">Main Reconciliation Loop</h2>
+
+            <details open>
+                <summary>syncLoop() — multiplex three pod sources</summary>
+                <div class="detail-body">
+                    <div class="highlight-box">
+                        <strong>syncLoop</strong> never returns. It selects over
+                        multiple channels and dispatches pod events to the
+                        appropriate handler. The three config sources are merged
+                        into a single <code>configCh</code> by
+                        <code>makePodSourceConfig</code>.
+                    </div>
+
+                    <div class="source-grid">
+                        <div class="source-card">
+                            <div>API Server watch</div>
+                            <div class="label">primary source</div>
+                        </div>
+                        <div class="source-card">
+                            <div>Static pod files</div>
+                            <div class="label">/etc/kubernetes/manifests</div>
+                        </div>
+                        <div class="source-card">
+                            <div>HTTP endpoint</div>
+                            <div class="label">--manifest-url flag</div>
+                        </div>
+                    </div>
+                    <div class="arrow-down">↓ merged into configCh</div>
+
+                    <pre>
+// pkg/kubelet/kubelet.go L2630-2671
+func (kl *Kubelet) syncLoop(ctx context.Context,
+    updates &lt;-chan kubetypes.PodUpdate, handler SyncHandler) {
+
+    syncTicker      := time.NewTicker(time.Second)
+    housekeepingTicker := time.NewTicker(housekeepingPeriod)
+    plegCh          := kl.pleg.Watch()  // L2640 — PLEG events
+
+    for {
+        if err := kl.runtimeState.runtimeErrors(); err != nil {
+            time.Sleep(duration)  // exponential backoff on runtime errors
+            continue
+        }
+        if !kl.syncLoopIteration(ctx, updates, handler,
+            syncTicker.C, housekeepingTicker.C, plegCh) {  // L2666
+            break
+        }
+    }
+}</pre
+                    >
+                    <a
+                        class="ref-link"
+                        href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/kubelet/kubelet.go#L2630"
+                        target="_blank"
+                        >kubelet.go L2630</a
+                    >
+                </div>
+            </details>
+
+            <details open>
+                <summary>
+                    syncLoopIteration() — select on channels, dispatch handlers
+                </summary>
+                <div class="detail-body">
+                    <div class="highlight-box">
+                        Each channel type maps to a specific handler. The config
+                        channel carries pod ADD/UPDATE/REMOVE/RECONCILE/DELETE
+                        events. The PLEG channel carries container lifecycle
+                        events. The sync ticker triggers periodic re-sync of
+                        running pods.
+                    </div>
+                    <pre>
+// pkg/kubelet/kubelet.go L2705-L~2800 (condensed)
+func (kl *Kubelet) syncLoopIteration(ctx context.Context,
+    configCh &lt;-chan kubetypes.PodUpdate,
+    handler SyncHandler,
+    syncCh, housekeepingCh &lt;-chan time.Time,
+    plegCh &lt;-chan *pleg.PodLifecycleEvent) bool {
+
+    select {
+    case u, open := &lt;-configCh:  // pod config change
+        switch u.Op {
+        case kubetypes.ADD:
+            handler.HandlePodAdditions(ctx, u.Pods)     // L2724
+        case kubetypes.UPDATE:
+            handler.HandlePodUpdates(ctx, u.Pods)       // L2727
+        case kubetypes.REMOVE:
+            handler.HandlePodRemoves(ctx, u.Pods)       // L2730
+        case kubetypes.RECONCILE:
+            handler.HandlePodReconcile(ctx, u.Pods)     // L2733
+        case kubetypes.DELETE:
+            handler.HandlePodUpdates(ctx, u.Pods)
+        }
+    case e := &lt;-plegCh:          // container lifecycle event
+        if e.Type == pleg.ContainerDied { ... }
+        handler.HandlePodSyncs(ctx, []*v1.Pod{pod})
+    case &lt;-syncCh:                // periodic re-sync ticker
+        podsToSync := kl.getPodsToSync()
+        handler.HandlePodSyncs(ctx, podsToSync)
+    case &lt;-housekeepingCh:        // garbage collect old containers/volumes
+        kl.HandlePodCleanups(ctx)
+    }
+    return true
+}</pre
+                    >
+                    <a
+                        class="ref-link"
+                        href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/kubelet/kubelet.go#L2705"
+                        target="_blank"
+                        >kubelet.go L2705</a
+                    >
+                </div>
+            </details>
+
+            <h2 class="section-title">Pod Sync</h2>
+
+            <details open>
+                <summary>
+                    SyncPod() — reconcile a single pod against the runtime
+                </summary>
+                <div class="detail-body">
+                    <div class="highlight-box">
+                        <strong>SyncPod</strong> is the core reconcile function.
+                        It is called by pod workers (one goroutine per pod) and
+                        ensures volumes are mounted, secrets pulled, and the
+                        container runtime matches the desired pod spec.
+                    </div>
+                    <pre>
+// pkg/kubelet/kubelet.go L2029 (signature)
+func (kl *Kubelet) SyncPod(
+    ctx context.Context,
+    updateType kubetypes.SyncPodType,
+    pod, mirrorPod *v1.Pod,
+    podStatus *kubecontainer.PodStatus,
+) (isTerminal bool, postSync func(), err error) {
+
+    // 1. Compute pod status
+    // 2. Update status manager (reflects to API server)
+    // 3. Kill pod if it should not be running
+    // 4. Ensure network namespace / sandbox exists (via CRI RunPodSandbox)
+    // 5. Pull images for all containers
+    // 6. Mount volumes (call volume manager)
+    // 7. Create &amp; start containers (via CRI CreateContainer / StartContainer)
+}</pre
+                    >
+                    <a
+                        class="ref-link"
+                        href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/kubelet/kubelet.go#L2029"
+                        target="_blank"
+                        >kubelet.go L2029</a
+                    >
+                </div>
+            </details>
+
+            <h2 class="section-title">Supporting Subsystems</h2>
+
+            <details open>
+                <summary>PLEG — Pod Lifecycle Event Generator</summary>
+                <div class="detail-body">
+                    <div class="highlight-box">
+                        PLEG polls the container runtime (via CRI
+                        <code>ListPodSandbox</code> /
+                        <code>ListContainers</code>) and diffs the result
+                        against its previous snapshot. Detected changes become
+                        <code>PodLifecycleEvent</code> values on
+                        <code>plegCh</code>.
+                    </div>
+                    <pre>
+// pkg/kubelet/pleg/generic.go (abbreviated)
+type GenericPLEG struct {
+    runtime kubecontainer.Runtime
+    eventChannel chan *PodLifecycleEvent
+    podRecords   podRecords   // previous state snapshot
+}
+
+func (g *GenericPLEG) relist(ctx context.Context) {
+    pods, _ := g.runtime.GetPods(ctx, true)  // CRI list call
+    for _, pod := range pods {
+        for _, container := range pod.Containers {
+            // diff old vs new state → emit event
+            g.updateEvents(pod.ID, generateEvents(container, ...))
+        }
+    }
+}
+// Events: ContainerStarted, ContainerDied, ContainerRemoved, ContainerChanged</pre
+                    >
+                    <a
+                        class="ref-link"
+                        href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/kubelet/pleg/generic.go"
+                        target="_blank"
+                        >pkg/kubelet/pleg/generic.go</a
+                    >
+                </div>
+            </details>
+
+            <details open>
+                <summary>
+                    Volume Manager — attach, mount, and track volumes
+                </summary>
+                <div class="detail-body">
+                    <div class="highlight-box">
+                        The volume manager runs a reconcile loop that ensures
+                        volumes required by scheduled pods are attached (via the
+                        API server's node object) and mounted (locally on the
+                        node) before SyncPod is allowed to create containers.
+                    </div>
+                    <pre>
+// pkg/kubelet/volumemanager/volume_manager.go
+// Two goroutines:
+//   desiredStateOfWorldPopulator — watches pods, populates desired volumes
+//   reconciler — diffs actual vs desired, issues attach/detach/mount/unmount
+
+func (vm *volumeManager) Run(sourcesReady config.SourcesReady, stopCh &lt;-chan struct{}) {
+    go vm.desiredStateOfWorldPopulator.Run(sourcesReady, stopCh)
+    go vm.reconciler.Run(stopCh)
+}</pre
+                    >
+                    <a
+                        class="ref-link"
+                        href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/kubelet/volumemanager/volume_manager.go"
+                        target="_blank"
+                        >pkg/kubelet/volumemanager/volume_manager.go</a
+                    >
+                </div>
+            </details>
+
+            <details open>
+                <summary>
+                    Status Manager — reflect pod status to API server
+                </summary>
+                <div class="detail-body">
+                    <div class="highlight-box">
+                        The status manager owns the authoritative in-memory pod
+                        status on the node and periodically PATCHes it back to
+                        the API server so controllers and kubectl can observe
+                        actual container state.
+                    </div>
+                    <pre>
+// pkg/kubelet/status/status_manager.go
+// Maintains a map: pod UID → versionedPodStatus
+// Flushes changes to API server via:
+//   client.CoreV1().Pods(ns).UpdateStatus(ctx, pod, ...)
+type Manager interface {
+    SetPodStatus(pod *v1.Pod, status v1.PodStatus)
+    SetContainerReadiness(podUID types.UID, containerID kubecontainer.ContainerID, ready bool)
+    Start()
+}</pre
+                    >
+                    <a
+                        class="ref-link"
+                        href="https://github.com/kubernetes/kubernetes/blob/c3c78e4355ac93436b4c95f39cf1ce576a3f8f41/pkg/kubelet/status/status_manager.go"
+                        target="_blank"
+                        >pkg/kubelet/status/status_manager.go</a
+                    >
+                </div>
+            </details>
+        </main>
+    </body>
+</html>

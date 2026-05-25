@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terraform Init — Data Flow</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">
+      <svg width="16" height="16" viewBox="0 0 32 32" fill="none">
+        <path d="M12.042 6.858L19.5 11.13v8.246L12.042 15.1z" fill="#a78bfa"/>
+        <path d="M20.958 11.13l7.458 4.272V23.9l-7.458-4.272z" fill="#7c3aed"/>
+        <path d="M3.584 11.13L11.042 15.1v8.246L3.584 19.375z" fill="#6d28d9"/>
+      </svg>
+      Terraform Data Flow
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="init.html" class="active">Init</a></li>
+      <li><a href="config.html">Config</a></li>
+      <li><a href="plan.html">Plan</a></li>
+      <li><a href="apply.html">Apply</a></li>
+      <li><a href="providers.html">Providers</a></li>
+      <li><a href="state.html">State</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <header class="hero">
+    <p class="hero-label">Component · Init</p>
+    <h1>terraform init</h1>
+    <p class="hero-sub">
+      Prepares the working directory by installing modules and provider plugins,
+      then writing a dependency lock file. No cloud APIs are called for infrastructure.
+    </p>
+    <div class="hero-meta">
+      <span>Entry: <a href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/command/init.go#L50" target="_blank" rel="noopener">command/init.go:50</a></span>
+    </div>
+  </header>
+
+  <!-- FLOW DIAGRAM -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
+      Init Flow Diagram
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <div class="pipeline">
+<pre>
+InitCommand.Run()  [command/init.go:50]
+  │
+  ├─► Parse flags & arguments
+  ├─► c.initConfigLoader()        — create configload.Loader
+  ├─► loadConfig(path)            — parse *.tf files in dir
+  │
+  ├─── MODULES ───────────────────────────────────────────────────
+  │    installModules(ctx, path, testsDir, upgrade)
+  │      └─► ModuleInstaller.InstallModules()  [initwd/module_install.go:66]
+  │            │
+  │            ├── Walk root *configs.Module.ModuleCalls
+  │            │     Each ModuleCall has a Source (registry, git, local)
+  │            │     and a VersionConstraint
+  │            │
+  │            ├── For registry sources:
+  │            │     registry.Client.ModuleVersions()  →  available versions
+  │            │     Select highest version matching constraint
+  │            │     registry.Client.ModuleLocation()  →  download URL
+  │            │
+  │            ├── Download & unpack to .terraform/modules/<key>/
+  │            │
+  │            ├── Recurse into child modules (BFS)
+  │            │
+  │            └── Write .terraform/modules/modules.json
+  │                  { "Modules": [ { "Key": ".", "Source": "...", "Dir": "..." } ] }
+  │
+  ├─── PROVIDERS ─────────────────────────────────────────────────
+  │    getProviders(ctx, config, state, upgrade)
+  │      │
+  │      ├─► Build requirements map from *configs.Config
+  │      │     RequiredProvider blocks  →  map[addrs.Provider]version.Constraints
+  │      │
+  │      ├─► getproviders.Source.AvailableVersions(provider)
+  │      │     Default: Terraform Registry  registry.terraform.io
+  │      │     Alternatives: local mirror, network mirror
+  │      │
+  │      ├─► Version selection (highest matching all constraints)
+  │      │
+  │      ├─► getproviders.Source.PackageMeta(provider, version, platform)
+  │      │     →  download URL + expected SHA256
+  │      │
+  │      ├─► HTTP download  →  .terraform/providers/registry.terraform.io/…/
+  │      │
+  │      └─► Verify SHA256 checksum
+  │
+  └─── LOCK FILE ─────────────────────────────────────────────────
+       depsfile.Locks.SetProviderLocked(provider, version, hashes)
+         └─► Write .terraform.lock.hcl
+               provider "registry.terraform.io/hashicorp/aws" {
+                 version     = "5.0.0"
+                 constraints = ">= 4.0, < 6.0"
+                 hashes      = [ "h1:...", "zh:..." ]
+               }
+</pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- COMMAND ENTRY POINT -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+      InitCommand entry point
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <p>
+        The <code>InitCommand</code> struct lives in <code>internal/command/init.go</code>.
+        Its <code>Run</code> method is the first thing called after the CLI routes
+        <code>terraform init</code>.
+      </p>
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/command/init.go:44–111</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/command/init.go#L44" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>type InitCommand struct {
+    Meta
+    // ...
+}
+
+func (c *InitCommand) Run(args []string) int {
+    // Parse flags (upgrade, backend, reconfigure, etc.)
+    // ...
+
+    // Load configuration from the target directory
+    path, err := modulePath(args)
+    // ...
+
+    // Install modules from source addresses in config
+    installAbort, installDiags := c.installModules(ctx, path, testsDir,
+        upgrade, false, hooks)
+    diags = diags.Append(installDiags)
+    if installAbort || diags.HasErrors() {
+        return 1
+    }
+    // ...
+}</code></pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- MODULE INSTALLER -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"/></svg>
+      ModuleInstaller — module resolution
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <p>
+        <code>ModuleInstaller</code> in <code>internal/initwd/module_install.go</code> is
+        responsible for walking the module call graph and downloading each external module
+        into the local <code>.terraform/modules/</code> cache.
+      </p>
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/initwd/module_install.go:35–64</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/initwd/module_install.go#L35" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>type ModuleInstaller struct {
+    modsDir     string             // .terraform/modules/
+    loader      *configload.Loader
+    reg         *registry.Client
+    // caches of registry responses
+    registryPackageVersions map[addrs.ModuleRegistryPackage]*response.ModuleVersions
+    registryPackageSources  map[addrs.ModuleRegistryPackage]map[string]*response.ModuleSource
+    // ...
+}
+
+// InstallModules walks the module call graph breadth-first,
+// downloading each remote source into modsDir.
+func (i *ModuleInstaller) InstallModules(
+    ctx context.Context,
+    rootDir string,
+    testsDir string,
+    upgrade bool,
+    installErrsOnly bool,
+    hooks ModuleInstallHooks,
+) (*configs.Config, tfdiags.Diagnostics)</code></pre>
+      </div>
+
+      <h3>Module source types</h3>
+      <ul>
+        <li><strong>Registry:</strong> <code>registry.terraform.io/namespace/module/provider</code> — fetched via the Terraform Registry API</li>
+        <li><strong>Git:</strong> <code>git::https://…</code> — cloned with go-getter</li>
+        <li><strong>HTTP/S3/GCS:</strong> archive downloaded and extracted via go-getter</li>
+        <li><strong>Local:</strong> relative path like <code>./modules/vpc</code> — symlinked or copied</li>
+      </ul>
+
+      <h3>Output: modules.json</h3>
+      <p>After installation, the module manifest is written to <code>.terraform/modules/modules.json</code>.
+      The config loader reads this at runtime to locate each module's source directory.</p>
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">.terraform/modules/modules.json (example)</code>
+        </div>
+        <pre><code>{
+  "Modules": [
+    {
+      "Key":    "",
+      "Source": "",
+      "Dir":    "."
+    },
+    {
+      "Key":    "vpc",
+      "Source": "registry.terraform.io/terraform-aws-modules/vpc/aws",
+      "Version": "5.1.0",
+      "Dir":    ".terraform/modules/vpc"
+    }
+  ]
+}</code></pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- PROVIDER DOWNLOAD -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M2 9.5A3.5 3.5 0 005.5 13H9v2.586l-1.293-1.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 15.586V13h2.5a4.5 4.5 0 10-.616-8.958 4.002 4.002 0 10-7.753 1.977A3.5 3.5 0 002 9.5z" clip-rule="evenodd"/></svg>
+      Provider discovery &amp; download
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <p>
+        Provider binaries are discovered via the <code>getproviders.Source</code> interface
+        and cached in <code>.terraform/providers/</code>. The default source is the
+        Terraform Registry at <code>registry.terraform.io</code>.
+      </p>
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/getproviders/package_authentication.go + source interfaces</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/getproviders" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>// Source is the interface for provider package discovery.
+// Implementations: RegistrySource, FilesystemMirrorSource, MultiSource.
+type Source interface {
+    AvailableVersions(ctx context.Context, provider addrs.Provider) (
+        VersionList, Warnings, error)
+
+    PackageMeta(ctx context.Context, provider addrs.Provider,
+        version Version, target Platform) (PackageMeta, error)
+}
+
+// PackageMeta describes a single provider binary package.
+type PackageMeta struct {
+    Provider         addrs.Provider
+    Version          Version
+    TargetPlatform   Platform         // e.g. "linux_amd64"
+    Filename         string
+    Location         PackageLocation  // URL or local path
+    Authentication   PackageAuthentication
+}</code></pre>
+      </div>
+
+      <h3>Provider cache layout</h3>
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">.terraform/providers/ (directory structure)</code>
+        </div>
+        <pre><code>.terraform/providers/
+└── registry.terraform.io/
+    └── hashicorp/
+        └── aws/
+            └── 5.0.0/
+                └── darwin_arm64/
+                    └── terraform-provider-aws_v5.0.0_x5</code></pre>
+      </div>
+    </div>
+  </details>
+
+  <!-- LOCK FILE -->
+  <details open>
+    <summary>
+      <svg class="summary-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
+      Dependency lock file
+      <svg class="summary-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+    </summary>
+    <div class="section-body">
+      <p>
+        After resolving and downloading providers, <code>init</code> writes
+        <code>.terraform.lock.hcl</code> using <code>depsfile.Locks</code>.
+        This file should be committed to version control to ensure reproducible installs.
+      </p>
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">internal/depsfile/locks.go</code>
+          <a class="code-ref-link" href="https://github.com/hashicorp/terraform/blob/a2ad11c4f14ceea1e81c81a56c44428fc4110f20/internal/depsfile/locks.go" target="_blank" rel="noopener">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            GitHub
+          </a>
+        </div>
+        <pre><code>// Locks records the locked provider selections.
+type Locks struct {
+    providers   map[addrs.Provider]*ProviderLock
+    // ...
+}
+
+type ProviderLock struct {
+    addr        addrs.Provider
+    version     getproviders.Version
+    constraints getproviders.VersionConstraints
+    hashes      []getproviders.Hash
+}</code></pre>
+      </div>
+
+      <div class="code-ref">
+        <div class="code-ref-header">
+          <code class="code-ref-path">.terraform.lock.hcl (example)</code>
+        </div>
+        <pre><code>provider "registry.terraform.io/hashicorp/aws" {
+  version     = "5.0.0"
+  constraints = ">= 4.0.0, < 6.0.0"
+  hashes = [
+    "h1:AbCdEf...",
+    "zh:1234567890abcdef...",
+  ]
+}</code></pre>
+      </div>
+
+      <div class="callout">
+        <p>
+          <strong>Two hash formats:</strong>
+          <code>h1:</code> is a hash of the zip archive contents (used for the current platform).
+          <code>zh:</code> is a hash of a list of hashes for all platforms — used to verify
+          cross-platform consistency in CI environments.
+        </p>
+      </div>
+    </div>
+  </details>
+
+</div>
+</body>
+</html>
