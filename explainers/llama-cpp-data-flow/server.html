@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTTP Server — llama.cpp Data Flow</title>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --surface2: #21262d;
+    --border: #30363d; --text: #c9d1d9; --text-dim: #8b949e;
+    --blue: #58a6ff; --green: #3fb950; --orange: #d29922;
+    --red: #f85149; --purple: #bc8cff;
+    --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 15px; line-height: 1.6; padding: 16px;
+    max-width: 900px; margin: 0 auto;
+  }
+  nav { margin-bottom: 20px; font-size: 0.85rem; color: var(--text-dim); }
+  nav a { color: var(--blue); text-decoration: none; }
+  nav a:hover { text-decoration: underline; }
+  h1 { font-size: 1.6rem; color: #fff; margin-bottom: 6px; }
+  h2 { font-size: 1.15rem; color: var(--blue); margin: 24px 0 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+  h3 { font-size: 0.95rem; color: var(--orange); margin: 14px 0 8px; }
+  p { margin-bottom: 10px; }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .subtitle { color: var(--text-dim); font-size: 0.88rem; margin-bottom: 20px; }
+
+  details {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; margin-bottom: 12px; overflow: hidden;
+  }
+  summary {
+    padding: 13px 16px; cursor: pointer; font-weight: 600; color: #fff;
+    display: flex; align-items: center; gap: 8px; user-select: none; list-style: none;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before { content: '▶'; font-size: 0.7rem; color: var(--text-dim); transition: transform 0.2s; }
+  details[open] summary::before { transform: rotate(90deg); }
+  .details-body { padding: 0 16px 16px; }
+
+  pre {
+    background: #0d1117; border: 1px solid var(--border); border-radius: 6px;
+    padding: 14px; overflow-x: auto; font-family: var(--font-mono);
+    font-size: 0.82rem; line-height: 1.5; white-space: pre; margin: 10px 0;
+  }
+  code {
+    font-family: var(--font-mono); font-size: 0.85em;
+    background: var(--surface2); padding: 2px 5px; border-radius: 3px; color: var(--orange);
+  }
+  pre code { background: none; padding: 0; color: inherit; }
+
+  .ref-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+  .ref-link {
+    display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; font-size: 0.8rem; color: var(--blue); text-decoration: none;
+  }
+  .ref-link:hover { border-color: var(--blue); text-decoration: none; }
+  .ref-link.gh { color: var(--green); }
+  .ref-link.gh:hover { border-color: var(--green); }
+
+  .info-box {
+    background: #0c1929; border: 1px solid #1f6feb; border-radius: 6px;
+    padding: 12px 14px; margin: 10px 0; font-size: 0.88rem;
+  }
+  .info-box strong { color: var(--blue); }
+
+  /* Slot diagram */
+  .slot-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px; margin: 14px 0;
+  }
+  .slot-card {
+    background: var(--surface2); border: 2px solid var(--border);
+    border-radius: 6px; padding: 10px; text-align: center; font-family: var(--font-mono);
+    font-size: 0.82rem;
+  }
+  .slot-card.busy { border-color: var(--orange); }
+  .slot-card.prefill { border-color: var(--blue); }
+  .slot-card.generating { border-color: var(--green); }
+  .slot-card.idle { opacity: 0.5; }
+  .slot-label { font-size: 0.7rem; color: var(--text-dim); margin-bottom: 4px; }
+  .slot-state { font-weight: 700; color: #fff; }
+  .slot-tok { font-size: 0.72rem; color: var(--text-dim); margin-top: 3px; }
+
+  /* Route table */
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.84rem; }
+  th { background: var(--surface2); color: var(--text); padding: 8px 10px; text-align: left; border-bottom: 2px solid var(--border); }
+  td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  td:first-child { font-family: var(--font-mono); color: var(--green); white-space: nowrap; }
+  td:nth-child(2) { color: var(--blue); }
+
+  @media (max-width: 600px) {
+    body { font-size: 14px; padding: 12px; }
+    h1 { font-size: 1.3rem; }
+    pre { font-size: 0.75rem; }
+    .slot-grid { grid-template-columns: 1fr 1fr; }
+    table { font-size: 0.75rem; }
+    td:first-child { white-space: normal; }
+  }
+</style>
+</head>
+<body>
+
+<nav><a href="index.html">← Overview</a> · <a href="sampling.html">Sampling</a> · HTTP Server</nav>
+
+<h1>HTTP Server</h1>
+<p class="subtitle">How the llama.cpp server turns HTTP requests into batched inference and streamed responses.</p>
+
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/tools/server/server.cpp">tools/server/server.cpp</a>
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/tools/server/server-context.cpp">tools/server/server-context.cpp</a>
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/tools/server/server-http.cpp">tools/server/server-http.cpp</a>
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/tools/server/README.md">Server README</a>
+</div>
+
+<h2>HTTP API Routes</h2>
+
+<table>
+  <tr><th>Route</th><th>Purpose</th><th>Returns</th></tr>
+  <tr><td>POST /v1/completions</td><td>OpenAI-compatible text completion</td><td>JSON / SSE stream</td></tr>
+  <tr><td>POST /v1/chat/completions</td><td>Chat completion (messages format)</td><td>JSON / SSE stream</td></tr>
+  <tr><td>POST /v1/embeddings</td><td>Compute token embeddings</td><td>float[] JSON</td></tr>
+  <tr><td>POST /v1/rerank</td><td>Score and rank documents vs query</td><td>float[] JSON</td></tr>
+  <tr><td>GET  /v1/models</td><td>List loaded models</td><td>JSON model list</td></tr>
+  <tr><td>POST /tokenize</td><td>Tokenize text (debug/inspection)</td><td>token ID array</td></tr>
+  <tr><td>POST /detokenize</td><td>Convert token IDs to text</td><td>string</td></tr>
+  <tr><td>GET  /health</td><td>Server status and slot availability</td><td>JSON</td></tr>
+  <tr><td>GET  /metrics</td><td>Prometheus-format metrics</td><td>text/plain</td></tr>
+  <tr><td>GET  /slots</td><td>Current slot state (debug)</td><td>JSON</td></tr>
+</table>
+
+<h2>Architecture: Slots for Parallel Inference</h2>
+<p>The server maintains a fixed pool of <strong>slots</strong>, where each slot handles one concurrent inference request. The number of slots is set by <code>--parallel N</code> (default 1). All slots share the same llama_context and KV cache, but each has its own sampler chain, token buffer, and generation state.</p>
+
+<div class="slot-grid">
+  <div class="slot-card busy">
+    <div class="slot-label">slot 0</div>
+    <div class="slot-state" style="color:var(--orange)">PREFILL</div>
+    <div class="slot-tok">tok 0/512</div>
+  </div>
+  <div class="slot-card generating">
+    <div class="slot-label">slot 1</div>
+    <div class="slot-state" style="color:var(--green)">GENERATING</div>
+    <div class="slot-tok">tok 42/200</div>
+  </div>
+  <div class="slot-card generating">
+    <div class="slot-label">slot 2</div>
+    <div class="slot-state" style="color:var(--green)">GENERATING</div>
+    <div class="slot-tok">tok 7/100</div>
+  </div>
+  <div class="slot-card idle">
+    <div class="slot-label">slot 3</div>
+    <div class="slot-state">IDLE</div>
+    <div class="slot-tok">—</div>
+  </div>
+</div>
+
+<div class="info-box">
+  <strong>Continuous batching</strong>: Each server tick, all active slots contribute tokens to a shared <code>llama_batch</code>. After <code>llama_decode()</code>, each slot independently samples its next token. New requests can start filling idle slots immediately, without waiting for other requests to finish — this is the key to high throughput serving.
+</div>
+
+<h2>Request Lifecycle</h2>
+
+<details open>
+<summary>1. HTTP request arrives — JSON parsing and task queuing</summary>
+<div class="details-body">
+<pre>// tools/server/server-http.cpp — route handler for POST /v1/chat/completions
+
+svr.Post("/v1/chat/completions", [&](const Request & req, Response & res) {
+    // Parse JSON body
+    json body = json::parse(req.body);
+
+    // Build server_task from request
+    server_task task;
+    task.type   = SERVER_TASK_TYPE_INFERENCE;
+    task.params = parse_sampling_params(body);  // temperature, top-p, etc.
+    task.prompt = apply_chat_template(body["messages"]);  // Jinja → string
+    task.id     = unique_id();
+
+    // Queue for the inference thread
+    queue_tasks.post(task);
+
+    // If streaming (stream=true), set up SSE response
+    if (body.value("stream", false)) {
+        res.set_chunked_content_provider("text/event-stream", stream_handler);
+    } else {
+        // Blocking: wait for result future
+        auto result = task.result_future.get();
+        res.set_content(result.to_json(), "application/json");
+    }
+});</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/tools/server/server-http.cpp">server-http.cpp</a>
+</div>
+</div>
+</details>
+
+<details open>
+<summary>2. Chat template application — messages → prompt string</summary>
+<div class="details-body">
+<p>Chat APIs send a <code>messages</code> array (<code>[{role:"user", content:"Hello"}]</code>). The server uses the model's built-in Jinja2 chat template (stored in GGUF metadata) to render this into the prompt string the model expects.</p>
+<pre>// tools/server/server-context.cpp
+// common/chat.cpp — chat template rendering
+
+// The template renders something like (Llama-3 format):
+// &lt;|begin_of_text|&gt;
+// &lt;|start_header_id|&gt;user&lt;|end_header_id|&gt;
+// Hello
+// &lt;|eot_id|&gt;
+// &lt;|start_header_id|&gt;assistant&lt;|end_header_id|&gt;
+//                    ↑ no closing tag — model generates from here
+
+// This rendered string is then tokenized normally:
+std::string prompt = apply_template(model, messages, /*add_gen_prompt=*/true);
+std::vector&lt;llama_token&gt; prompt_tokens = tokenize(vocab, prompt, true, true);</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/common/jinja/README.md">Jinja template engine README</a>
+</div>
+</div>
+</details>
+
+<details open>
+<summary>3. Slot assignment and KV cache allocation</summary>
+<div class="details-body">
+<pre>// tools/server/server-context.cpp — update_slots()
+
+// Find an available slot:
+server_slot * slot = find_idle_slot();
+if (!slot) {
+    // All slots busy — queue the task, retry next tick
+    queue_tasks.defer(task);
+    return;
+}
+
+// Assign the task to the slot:
+slot->task       = task;
+slot->state      = SLOT_STATE_PROCESSING_PROMPT;
+slot->n_decoded  = 0;
+slot->smpl       = common_sampler_init(model, task.params);
+
+// Allocate KV cache space for this sequence:
+// Each slot gets a unique seq_id; KV slots are assigned from the pool
+llama_memory_seq_rm(ctx->memory, slot->id, -1, -1);  // clear any old state
+// KV slots will be reserved during the first llama_decode() call</pre>
+</div>
+</details>
+
+<details open>
+<summary>4. The main inference loop — continuous batching</summary>
+<div class="details-body">
+<p>The server runs a tight loop on the inference thread. Each iteration builds one batch from all active slots and executes it together — this is continuous batching.</p>
+<pre>// tools/server/server-context.cpp — inference loop (simplified)
+
+while (server_running) {
+    // PHASE 1: Build batch from all active slots
+    llama_batch_clear(batch);
+
+    for (server_slot & slot : slots) {
+        if (slot.state == SLOT_STATE_PROCESSING_PROMPT) {
+            // Add next chunk of prompt tokens to batch
+            for (llama_token tok : slot.prompt_tokens) {
+                llama_batch_add(batch, tok, slot.n_past, {slot.id}, false);
+                slot.n_past++;
+            }
+            // Mark last token to compute logits (for sampling):
+            batch.logits[batch.n_tokens - 1] = true;
+
+        } else if (slot.state == SLOT_STATE_GENERATING) {
+            // Add the previously sampled token as next input
+            llama_batch_add(batch, slot.last_token, slot.n_past, {slot.id}, true);
+            slot.n_past++;
+        }
+    }
+
+    if (batch.n_tokens == 0) {
+        // Nothing to process — wait for new tasks
+        wait_for_tasks();
+        continue;
+    }
+
+    // PHASE 2: Execute the full batch in one decode call
+    int ret = llama_decode(ctx, batch);  // → runs transformer, fills logits
+
+    // PHASE 3: Sample next token for each generating slot
+    for (server_slot & slot : slots) {
+        if (!needs_sampling(slot)) continue;
+
+        // Find the logit index for this slot's last token:
+        int32_t idx = slot.logit_index;
+
+        // Sample:
+        llama_token id = common_sampler_sample(slot.smpl, ctx, idx);
+        common_sampler_accept(slot.smpl, id, true);
+
+        // Convert to text and send:
+        std::string piece = token_to_piece(vocab, id);
+        slot.generated_text += piece;
+        send_stream_chunk(slot, piece);  // SSE: "data: {delta: piece}\n\n"
+
+        // Check stop conditions:
+        if (llama_vocab_is_eog(vocab, id) ||
+            slot.n_decoded >= slot.params.n_predict ||
+            slot.generated_text.ends_with(slot.params.stop)) {
+            slot.state = SLOT_STATE_DONE;
+            send_stream_done(slot);
+        } else {
+            slot.last_token = id;
+            // Slot stays in GENERATING state for next tick
+        }
+    }
+}</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/tools/server/server-context.cpp">server-context.cpp — main loop</a>
+</div>
+</div>
+</details>
+
+<h2>KV Cache Reuse (Prompt Caching)</h2>
+
+<details open>
+<summary>How the server reuses cached prompt prefixes</summary>
+<div class="details-body">
+<p>If two requests share a common prompt prefix (e.g., a system prompt), the server can reuse the KV cache from the first request for the second, skipping the expensive prefill for the shared part.</p>
+<pre>// tools/server/server-context.cpp — slot assignment with cache lookup
+
+// When assigning a new task to a slot:
+// 1. Tokenize the full prompt
+// 2. Compare with any existing slot's prompt tokens
+// 3. If a prefix matches, reuse that slot's KV cache state:
+
+int n_matching = count_matching_prefix(new_tokens, slot->prompt_tokens);
+
+if (n_matching > 0) {
+    // Truncate KV cache to the matching length:
+    llama_memory_seq_rm(ctx->memory, new_seq_id,
+                        n_matching, -1);  // keep [0..n_matching]
+    slot->n_past = n_matching;  // start generating from here
+    // Only process the non-cached suffix of the prompt
+}
+
+// This is critical for system prompt reuse:
+// Request 1: [system_prompt + "What is 2+2?"]  → full prefill
+// Request 2: [system_prompt + "What is Paris?"] → only prefill "What is Paris?"
+//                                                  system_prompt comes from cache</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/tools/server/server-context.cpp">server-context.cpp</a>
+</div>
+</div>
+</details>
+
+<h2>Speculative Decoding</h2>
+
+<details open>
+<summary>Draft model acceleration for faster generation</summary>
+<div class="details-body">
+<p>The server supports speculative decoding: a small "draft" model generates N candidate tokens cheaply, then the large "target" model verifies them in one batched forward pass. Accepted tokens are free; only rejections cost the full model's time.</p>
+<pre>// Speculative decoding flow (server-context.cpp):
+// Requires: --model (target) + --model-draft (small fast model)
+
+// Each generation step:
+// 1. Draft model generates N tokens cheaply (e.g. N=8):
+//    draft_tokens = [t1, t2, t3, t4, t5, t6, t7, t8]
+
+// 2. Target model processes all N+1 tokens in ONE batch:
+//    target_batch = [last_accepted, t1, t2, ..., t8]
+//    target_logits = llama_decode(ctx_tgt, target_batch)
+
+// 3. Verify each draft token:
+//    for i in 0..N:
+//      if sample(target_logits[i]) == draft_tokens[i]:
+//        accept → free token!
+//      else:
+//        reject → sample from target_logits[i] instead
+//        → stop verification, discard remaining drafts
+
+// Expected speedup: 2-4× if draft model is accurate
+// Key condition: draft model must use same vocabulary as target
+
+// Server flags:
+// --model-draft path/to/small.gguf
+// --draft-max 8           # max draft tokens per step
+// --draft-min 5           # min to bother drafting
+// --draft-p-min 0.9       # only draft if probability high enough</pre>
+<div class="ref-list">
+  <a class="ref-link" href="https://arxiv.org/abs/2211.17192">Speculative Decoding paper (Leviathan 2022)</a>
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/tools/server/server-context.cpp">server-context.cpp — speculative decode</a>
+</div>
+</div>
+</details>
+
+<h2>Streaming Response (SSE)</h2>
+
+<details open>
+<summary>How tokens are streamed back to the client</summary>
+<div class="details-body">
+<p>When the client sends <code>"stream": true</code>, the server uses Server-Sent Events (SSE). Each generated token is sent as a separate SSE event immediately, enabling the client to display text as it's generated.</p>
+<pre>// SSE format (OpenAI-compatible):
+// Each token delta:
+data: {"id":"cmpl-xyz","object":"chat.completion.chunk","model":"llama3",
+       "choices":[{"delta":{"content":" Paris"},"index":0}]}
+
+// Final event:
+data: {"id":"cmpl-xyz","object":"chat.completion.chunk","model":"llama3",
+       "choices":[{"delta":{},"finish_reason":"stop","index":0}],
+       "usage":{"prompt_tokens":25,"completion_tokens":12}}
+
+data: [DONE]
+
+// The server sends each piece as soon as it's sampled:
+// llama_token → piece string → HTTP chunk → SSE event
+// Latency from "token sampled" to "client receives": ~1ms + network RTT</pre>
+
+<pre>// Non-streaming response (stream=false):
+// Server accumulates all generated tokens before responding:
+{
+  "id": "cmpl-xyz",
+  "object": "chat.completion",
+  "model": "llama3",
+  "choices": [{
+    "message": {"role": "assistant", "content": "The capital of France is Paris."},
+    "finish_reason": "stop",
+    "index": 0
+  }],
+  "usage": {
+    "prompt_tokens": 25,
+    "completion_tokens": 12,
+    "total_tokens": 37
+  }
+}</pre>
+</div>
+</details>
+
+<h2>Thread Architecture</h2>
+
+<details open>
+<summary>How threads are organized in the server</summary>
+<div class="details-body">
+<pre>// Server thread layout:
+
+// HTTP threads (httplib thread pool, default 8):
+//   Accept connections, parse JSON, queue tasks, send responses
+//   These never call llama_decode() — they just enqueue + wait
+
+// Inference thread (single, dedicated):
+//   Runs the main inference loop
+//   The ONLY thread that calls llama_decode()
+//   Eliminates race conditions on KV cache and context state
+//   All slot management happens here
+
+// Queue: task_queue (thread-safe)
+//   HTTP threads → produce server_task
+//   Inference thread → consume server_task, produce results
+
+// Result queue:
+//   Inference thread → produce results (token chunks, final responses)
+//   HTTP threads → consume results (send SSE chunks to clients)
+
+// Internal llama_decode() uses its own threadpool:
+//   CPU computation: n_threads (set in context params)
+//   This threadpool is separate from the HTTP threads above</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/tools/server/server.cpp">server.cpp — thread setup</a>
+</div>
+</div>
+</details>
+
+<h2>server_slot — State Machine</h2>
+
+<details open>
+<summary>The full lifecycle of a request slot</summary>
+<div class="details-body">
+<pre>// State transitions for server_slot:
+
+IDLE
+  │  (new task assigned, tokens loaded)
+  ▼
+PROCESSING_PROMPT
+  │  prompt tokens added to batch, n chunks processed
+  │  (all prompt tokens decoded, logits available for last token)
+  ▼
+GENERATING
+  │  one new token sampled per tick
+  │  token appended to generated_text, sent as SSE chunk
+  │  (EOS token OR n_predict reached OR stop string matched)
+  ▼
+DONE
+  │  final usage stats computed, response completed
+  ▼
+IDLE  (slot ready for next request)
+
+// In PROCESSING_PROMPT, if prompt is longer than n_batch:
+// Multiple ticks process the prompt in chunks:
+// Tick 1: tokens[0..511]    → llama_decode() → no sampling
+// Tick 2: tokens[512..1023] → llama_decode() → no sampling
+// ...
+// Final prompt tick: last chunk → llama_decode() → sample first output token</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/tools/server/server-context.cpp">server-context.cpp — slot state machine</a>
+</div>
+</div>
+</details>
+
+<p style="margin-top:16px;">This completes the full loop. Each generated token feeds back into the batch for the next decode step, continuing until the model emits EOS or the max token limit is reached.</p>
+<div class="ref-list">
+  <a class="ref-link" href="index.html">← Overview</a>
+  <a class="ref-link" href="tokenization.html">Tokenization</a>
+  <a class="ref-link" href="graph.html">Computation Graph</a>
+  <a class="ref-link" href="backends.html">Backends</a>
+  <a class="ref-link" href="sampling.html">Sampling</a>
+</div>
+
+</body>
+</html>

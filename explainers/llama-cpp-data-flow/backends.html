@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GGML Backends — llama.cpp Data Flow</title>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --surface2: #21262d;
+    --border: #30363d; --text: #c9d1d9; --text-dim: #8b949e;
+    --blue: #58a6ff; --green: #3fb950; --orange: #d29922;
+    --red: #f85149; --purple: #bc8cff;
+    --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 15px; line-height: 1.6; padding: 16px;
+    max-width: 900px; margin: 0 auto;
+  }
+  nav { margin-bottom: 20px; font-size: 0.85rem; color: var(--text-dim); }
+  nav a { color: var(--blue); text-decoration: none; }
+  nav a:hover { text-decoration: underline; }
+  h1 { font-size: 1.6rem; color: #fff; margin-bottom: 6px; }
+  h2 { font-size: 1.15rem; color: var(--blue); margin: 24px 0 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+  h3 { font-size: 0.95rem; color: var(--orange); margin: 14px 0 8px; }
+  p { margin-bottom: 10px; }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .subtitle { color: var(--text-dim); font-size: 0.88rem; margin-bottom: 20px; }
+
+  details {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; margin-bottom: 12px; overflow: hidden;
+  }
+  summary {
+    padding: 13px 16px; cursor: pointer; font-weight: 600; color: #fff;
+    display: flex; align-items: center; gap: 8px; user-select: none; list-style: none;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before { content: '▶'; font-size: 0.7rem; color: var(--text-dim); transition: transform 0.2s; }
+  details[open] summary::before { transform: rotate(90deg); }
+  .details-body { padding: 0 16px 16px; }
+
+  pre {
+    background: #0d1117; border: 1px solid var(--border); border-radius: 6px;
+    padding: 14px; overflow-x: auto; font-family: var(--font-mono);
+    font-size: 0.82rem; line-height: 1.5; white-space: pre; margin: 10px 0;
+  }
+  code {
+    font-family: var(--font-mono); font-size: 0.85em;
+    background: var(--surface2); padding: 2px 5px; border-radius: 3px; color: var(--orange);
+  }
+  pre code { background: none; padding: 0; color: inherit; }
+
+  .ref-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+  .ref-link {
+    display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; font-size: 0.8rem; color: var(--blue); text-decoration: none;
+  }
+  .ref-link:hover { border-color: var(--blue); text-decoration: none; }
+  .ref-link.gh { color: var(--green); }
+  .ref-link.gh:hover { border-color: var(--green); }
+
+  .info-box {
+    background: #0c1929; border: 1px solid #1f6feb; border-radius: 6px;
+    padding: 12px 14px; margin: 10px 0; font-size: 0.88rem;
+  }
+  .info-box strong { color: var(--blue); }
+
+  /* Backend table */
+  .backend-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 10px; margin: 14px 0;
+  }
+  .backend-card {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 14px;
+  }
+  .backend-card .b-name { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .backend-card .b-platform { font-size: 0.75rem; color: var(--green); margin-bottom: 6px; font-family: var(--font-mono); }
+  .backend-card .b-desc { font-size: 0.82rem; color: var(--text-dim); }
+  .backend-card .b-file { font-size: 0.75rem; color: var(--blue); margin-top: 8px; font-family: var(--font-mono); }
+
+  /* Scheduler diagram */
+  .sched-diagram {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 16px; margin: 14px 0; font-family: var(--font-mono);
+    font-size: 0.82rem; line-height: 1.8; white-space: pre; overflow-x: auto;
+  }
+
+  /* Quantization table */
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.84rem; }
+  th { background: var(--surface2); color: var(--text); padding: 8px 10px; text-align: left; border-bottom: 2px solid var(--border); }
+  td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  td:first-child { font-family: var(--font-mono); color: var(--orange); }
+  td:nth-child(2) { color: var(--blue); font-family: var(--font-mono); }
+
+  @media (max-width: 600px) {
+    body { font-size: 14px; padding: 12px; }
+    h1 { font-size: 1.3rem; }
+    pre { font-size: 0.75rem; }
+    .backend-grid { grid-template-columns: 1fr; }
+    table { font-size: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav><a href="index.html">← Overview</a> · <a href="graph.html">Graph</a> · GGML Backends · <a href="sampling.html">Sampling →</a></nav>
+
+<h1>GGML Backends</h1>
+<p class="subtitle">How the scheduler maps computation graph nodes to CPU, CUDA, Metal, and Vulkan device kernels.</p>
+
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/ggml/src/ggml-backend.cpp">ggml-backend.cpp</a>
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/ggml/include/ggml-backend.h">ggml-backend.h</a>
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/ggml/src/ggml-cuda/">ggml-cuda/</a>
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/ggml/src/ggml-metal/">ggml-metal/</a>
+</div>
+
+<h2>Available Backends</h2>
+
+<div class="backend-grid">
+  <div class="backend-card">
+    <div class="b-name">CPU</div>
+    <div class="b-platform">x86-64 / ARM / WASM</div>
+    <div class="b-desc">Multi-threaded with SIMD kernels. Supports AVX2, AVX-512 (x86), NEON, SVE (ARM). Always available as fallback.</div>
+    <div class="b-file">ggml/src/ggml-cpu/</div>
+  </div>
+  <div class="backend-card">
+    <div class="b-name">CUDA</div>
+    <div class="b-platform">NVIDIA GPUs</div>
+    <div class="b-desc">Primary GPU backend. Highly optimized CUDA kernels for all major ops. Supports cuBLAS for gemm.</div>
+    <div class="b-file">ggml/src/ggml-cuda/</div>
+  </div>
+  <div class="backend-card">
+    <div class="b-name">Metal</div>
+    <div class="b-platform">Apple Silicon / macOS</div>
+    <div class="b-desc">Apple GPU backend via Metal API. Excellent performance on M-series chips. Supports all quantization types.</div>
+    <div class="b-file">ggml/src/ggml-metal/</div>
+  </div>
+  <div class="backend-card">
+    <div class="b-name">Vulkan</div>
+    <div class="b-platform">AMD / Intel / cross-platform</div>
+    <div class="b-desc">Cross-platform GPU compute. Good for AMD GPUs on Linux/Windows where ROCm isn't available.</div>
+    <div class="b-file">ggml/src/ggml-vulkan/</div>
+  </div>
+  <div class="backend-card">
+    <div class="b-name">ROCm (HIP)</div>
+    <div class="b-platform">AMD GPUs</div>
+    <div class="b-desc">Uses the same CUDA codebase compiled with HIP. Close to CUDA performance on RDNA3.</div>
+    <div class="b-file">ggml/src/ggml-cuda/ (HIP build)</div>
+  </div>
+  <div class="backend-card">
+    <div class="b-name">SYCL</div>
+    <div class="b-platform">Intel Arc / oneAPI</div>
+    <div class="b-desc">Intel GPU acceleration via SYCL + oneMKL. Targets Intel Arc discrete and integrated GPUs.</div>
+    <div class="b-file">ggml/src/ggml-sycl/</div>
+  </div>
+</div>
+
+<h2>Backend Abstraction Layer</h2>
+
+<details open>
+<summary>ggml_backend — the device interface</summary>
+<div class="details-body">
+<p>Each backend implements a common interface via vtable-like function pointers. The rest of llama.cpp never calls CUDA or Metal directly — it calls through this interface.</p>
+<pre>// ggml/include/ggml-backend.h
+
+// A backend = a device + its allocator + its compute engine
+typedef struct ggml_backend * ggml_backend_t;
+
+// Core operations every backend implements:
+struct ggml_backend_i {
+    const char * (*get_name)(ggml_backend_t backend);
+
+    // Allocate a tensor's data on this device:
+    void (*buffer_alloc)(ggml_backend_buffer_t buf, struct ggml_tensor * t);
+
+    // Execute a computation graph on this backend:
+    enum ggml_status (*graph_compute)(
+        ggml_backend_t backend,
+        struct ggml_cgraph * cgraph);
+
+    // Async copy: host ↔ device
+    void (*tensor_set)(ggml_backend_t, struct ggml_tensor *, const void * data, size_t offset, size_t size);
+    void (*tensor_get)(ggml_backend_t, const struct ggml_tensor *, void * data, size_t offset, size_t size);
+
+    // Synchronize (wait for all async ops to complete):
+    void (*synchronize)(ggml_backend_t backend);
+};</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/ggml/include/ggml-backend.h">ggml-backend.h</a>
+</div>
+</div>
+</details>
+
+<details open>
+<summary>ggml_backend_sched — the multi-device scheduler</summary>
+<div class="details-body">
+<p>The scheduler is the key piece enabling split inference across devices. It inspects the full graph, decides which device handles each node, allocates memory on the right device, and inserts copy nodes where tensors cross device boundaries.</p>
+<pre>// ggml/src/ggml-backend.cpp
+
+// Create scheduler with list of backends (in priority order):
+ggml_backend_t backends[] = { cuda_backend, cpu_backend };
+ggml_backend_sched_t sched =
+    ggml_backend_sched_new(backends, /*n_backends=*/2, max_nodes);
+
+// Assign: the scheduler calls each backend's can_compute(node) function.
+// CUDA backend takes: MUL_MAT, ROPE, SOFT_MAX, NORM, SILU, ADD, ...
+// CPU backend takes: ops not supported by GPU, or ops on CPU-only tensors.
+
+// Execute the full graph:
+ggml_backend_sched_graph_compute(sched, cgraph);</pre>
+
+<div class="sched-diagram">
+ggml_cgraph (all nodes)
+       │
+       ▼
+ ggml_backend_sched
+  ┌────────────────────────────────────────────┐
+  │  For each node:                            │
+  │    if CUDA backend can_compute(node):      │
+  │      assign → CUDA                         │
+  │    else:                                   │
+  │      assign → CPU                          │
+  │                                            │
+  │  For tensors that cross device boundary:   │
+  │    insert ggml_cpy node (device transfer)  │
+  └────────────────────────────────────────────┘
+       │
+  ┌────┴────┐
+  │         │
+ CUDA      CPU
+ kernels   threads</div>
+
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/ggml/src/ggml-backend.cpp">ggml-backend.cpp — ggml_backend_sched</a>
+</div>
+</div>
+</details>
+
+<h2>GPU Layer Offloading</h2>
+
+<details open>
+<summary>n_gpu_layers — partial model on GPU</summary>
+<div class="details-body">
+<p>Models too large to fit in VRAM can be split: the first N layers go to GPU, the rest stay on CPU. This is controlled by <code>n_gpu_layers</code> in <code>llama_model_params</code>.</p>
+<pre>// include/llama.h#L291
+struct llama_model_params {
+    int32_t n_gpu_layers;  // how many transformer layers to offload to GPU
+                           // -1 = all, 0 = CPU only
+
+    enum llama_split_mode split_mode;
+    // LLAMA_SPLIT_MODE_NONE  = single GPU
+    // LLAMA_SPLIT_MODE_LAYER = split layers across GPUs
+    // LLAMA_SPLIT_MODE_ROW   = split individual tensors row-wise
+};
+
+// At model load, each layer's tensors are allocated on the assigned device:
+// layers[0..n_gpu_layers-1]  → CUDA/Metal buffer
+// layers[n_gpu_layers..end]  → CPU buffer
+// tok_embd, output           → follow last GPU or CPU</pre>
+
+<p>During a forward pass with split layers, the scheduler automatically inserts CPU↔GPU transfer nodes at layer boundaries. The hidden state tensor travels GPU→CPU→GPU as it crosses from offloaded to non-offloaded layers.</p>
+
+<h3>Multi-GPU splitting</h3>
+<pre>// LLAMA_SPLIT_MODE_LAYER: round-robin across GPUs
+// GPU 0: layers 0..15
+// GPU 1: layers 16..31
+
+// LLAMA_SPLIT_MODE_ROW: each GPU holds part of every weight matrix
+// GPU 0: W[:n_embd/2, :]
+// GPU 1: W[n_embd/2:, :]
+// Requires NCCL for all-reduce across GPUs</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/include/llama.h#L291">llama.h#L291 — llama_model_params</a>
+</div>
+</div>
+</details>
+
+<h2>Quantization Types</h2>
+<p>llama.cpp stores model weights in quantized formats to reduce memory and increase throughput. The backend handles dequantization on-the-fly during matrix multiplication.</p>
+
+<details open>
+<summary>Supported quantization formats and their trade-offs</summary>
+<div class="details-body">
+<table>
+  <tr>
+    <th>Type</th><th>Bits/weight</th><th>Size vs F32</th><th>Notes</th>
+  </tr>
+  <tr><td>F32</td><td>32</td><td>1×</td><td>Full precision, largest</td></tr>
+  <tr><td>F16</td><td>16</td><td>0.5×</td><td>Standard GPU inference dtype</td></tr>
+  <tr><td>BF16</td><td>16</td><td>0.5×</td><td>Better range, same size as F16</td></tr>
+  <tr><td>Q8_0</td><td>8</td><td>0.25×</td><td>Near-lossless, good for KV cache</td></tr>
+  <tr><td>Q4_K_M</td><td>~4.5</td><td>~0.14×</td><td>Best quality/size for most models</td></tr>
+  <tr><td>Q4_0</td><td>4</td><td>0.125×</td><td>Faster, slightly lower quality</td></tr>
+  <tr><td>Q3_K_M</td><td>~3.4</td><td>~0.11×</td><td>Very small, some quality loss</td></tr>
+  <tr><td>Q2_K</td><td>~2.5</td><td>~0.08×</td><td>Extreme compression, noticeable quality drop</td></tr>
+  <tr><td>IQ4_XS</td><td>~4.25</td><td>~0.13×</td><td>Importance-matrix quant, better than Q4_0</td></tr>
+</table>
+<p><strong>K-quants</strong> (Q4_K, Q5_K, Q6_K): group weights into blocks of 256, store a per-block scale + min value. Better quality than uniform quantization at same bit width.</p>
+<pre>// ggml/include/ggml.h#L389 — quantization types enum
+enum ggml_type {
+    GGML_TYPE_F32  = 0,
+    GGML_TYPE_F16  = 1,
+    GGML_TYPE_Q4_0 = 2,
+    GGML_TYPE_Q4_1 = 3,
+    GGML_TYPE_Q5_0 = 6,
+    GGML_TYPE_Q5_1 = 7,
+    GGML_TYPE_Q8_0 = 8,
+    // ... K-quants:
+    GGML_TYPE_Q2_K = 10,
+    GGML_TYPE_Q3_K = 11,
+    GGML_TYPE_Q4_K = 12,
+    GGML_TYPE_Q5_K = 13,
+    GGML_TYPE_Q6_K = 14,
+    // imatrix quants:
+    GGML_TYPE_IQ4_XS = 22,
+    // ...
+};</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/ggml/include/ggml.h#L389">ggml.h#L389 — ggml_type</a>
+</div>
+</div>
+</details>
+
+<h2>CPU Backend: Threading and SIMD</h2>
+
+<details open>
+<summary>How CPU kernels parallelize matrix multiplication</summary>
+<div class="details-body">
+<p>The CPU backend uses a threadpool. Each <code>ggml_mul_mat</code> is split into row blocks, one per thread. Within each thread, SIMD intrinsics handle the inner loop.</p>
+<pre>// ggml/src/ggml-cpu/ contains type-specific kernels:
+//
+// ggml_vec_dot_q4_0_q8_0(): dot product of Q4_0 × Q8_0 vectors
+//   → depack 4-bit weights to 8-bit
+//   → multiply-accumulate with 8-bit inputs
+//   → uses AVX2: _mm256_maddubs_epi16, _mm256_madd_epi16
+//
+// ggml_vec_dot_f32(): F32 dot product
+//   → AVX2: _mm256_fmadd_ps
+//   → ARM NEON: vfmaq_f32
+
+// Thread count set in llama_context_params.n_threads
+// (default: physical core count)
+
+// For prompt processing (large batch): n_threads_batch is used
+// For single-token generation: n_threads is used
+// Recommendation: n_threads = physical cores, n_threads_batch = all cores</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/ggml/src/ggml-cpu/">ggml/src/ggml-cpu/</a>
+</div>
+</div>
+</details>
+
+<h2>CUDA Backend: Key Kernels</h2>
+
+<details open>
+<summary>How CUDA accelerates the main operations</summary>
+<div class="details-body">
+<pre>// ggml/src/ggml-cuda/ — major kernel files:
+//
+// mmq.cu         — quantized matrix multiplication (MUL_MAT with Q types)
+// mul_mat_vec.cu — matrix-vector product (single token generation)
+// softmax.cu     — attention softmax with causal mask
+// rope.cu        — rotary position embedding
+// norm.cu        — RMS normalization
+// fattn/         — Flash Attention kernel variants
+//   fattn-vec.cuh  — vector attention (prefill with small batch)
+//   fattn-tile.cuh — tiled attention (large batch prefill)
+
+// Key insight: llama.cpp uses different kernels for:
+// PREFILL (processing full prompt):
+//   batch size = n_tokens (e.g. 512)
+//   uses large GEMM (batched matmul) kernels → high GPU utilization
+//
+// GENERATION (one new token per step):
+//   batch size = 1 (or small with parallel requests)
+//   uses GEMV (matrix-vector) kernels → bandwidth bound, not compute bound</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/ggml/src/ggml-cuda/">ggml/src/ggml-cuda/</a>
+</div>
+</div>
+</details>
+
+<h2>Metal Backend (Apple Silicon)</h2>
+
+<details open>
+<summary>How Apple GPU kernels work</summary>
+<div class="details-body">
+<pre>// ggml/src/ggml-metal/ggml-metal.m — Objective-C Metal interface
+// ggml/src/ggml-metal/ggml-metal.metal — MSL shader kernels
+
+// Metal shaders for key operations:
+// kernel_mul_mat_q4_0_f32 — Q4_0 × F32 matmul
+// kernel_mul_mat_f16_f32  — F16 × F32 matmul
+// kernel_soft_max         — causal softmax
+// kernel_rope_norm        — RoPE with normalization
+// kernel_rms_norm         — RMS normalization
+
+// Apple Silicon advantage: unified memory
+// CPU and GPU share the same physical RAM → no PCIe transfer overhead
+// Model weights loaded once into memory, GPU accesses them directly
+
+// Flash Attention on Metal:
+// kernel_flash_attn_ext_f16 — tiled flash attention kernel
+// Very efficient on M-series due to large GPU L2 cache</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/ggml/src/ggml-metal/">ggml/src/ggml-metal/</a>
+</div>
+</div>
+</details>
+
+<h2>Memory Layout and mmap</h2>
+
+<details open>
+<summary>How model weights are loaded efficiently</summary>
+<div class="details-body">
+<p>llama.cpp memory-maps (<code>mmap</code>) the GGUF file by default. This means weight tensors point directly into the mapped file pages — no upfront copy into RAM. Pages are loaded on demand by the OS as the GPU reads them.</p>
+<pre>// src/llama-model.cpp — model loading
+
+// Default: use_mmap=true
+// Weight tensor data pointers → mmap'd file pages
+// OS loads pages lazily when GPU DMA-reads them
+
+// When use_mmap=false:
+// All tensors explicitly copied to heap
+// Slower startup but avoids page-fault latency during inference
+
+// For GPU offloading:
+// CPU-resident tensors: mmap pages (or heap copy)
+// GPU-resident tensors: allocated in VRAM, weights copied during load
+//   (ggml_backend_tensor_set copies from host mmap → device VRAM)
+
+// Memory pinning: for faster host→GPU transfers, CPU buffers
+// can be pinned (CUDA: cudaHostRegister) to enable DMA</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/src/llama-model.cpp">llama-model.cpp</a>
+</div>
+</div>
+</details>
+
+<p style="margin-top:16px;">After device kernels execute and logits are on CPU, sampling selects the next token.</p>
+<div class="ref-list">
+  <a class="ref-link" href="sampling.html">→ Sampling Pipeline</a>
+  <a class="ref-link" href="graph.html">← Computation Graph</a>
+</div>
+
+</body>
+</html>

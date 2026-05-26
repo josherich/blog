@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vLLM — Sampler &amp; Token Generation</title>
+<style>
+  :root{--bg:#0d1117;--bg2:#161b22;--bg3:#1c2128;--border:#30363d;--text:#e6edf3;--text2:#8b949e;--blue:#58a6ff;--green:#3fb950;--orange:#d29922;--purple:#bc8cff;--red:#f85149;--code-bg:#161b22}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:16px;line-height:1.6}
+  header{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 20px;position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  header h1{font-size:18px;color:var(--blue)}
+  nav{display:flex;gap:10px;flex-wrap:wrap}
+  nav a{color:var(--text2);text-decoration:none;font-size:13px;padding:4px 10px;border-radius:6px;border:1px solid var(--border)}
+  nav a:hover,nav a.active{color:var(--blue);border-color:var(--blue)}
+  main{max-width:960px;margin:0 auto;padding:24px 16px 60px}
+  h2{color:var(--blue);font-size:22px;margin:32px 0 12px;border-bottom:1px solid var(--border);padding-bottom:8px}
+  h3{color:var(--green);font-size:17px;margin:24px 0 10px}
+  h4{color:var(--orange);font-size:15px;margin:18px 0 8px}
+  p{margin:10px 0}
+  a{color:var(--blue)}
+  .card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;margin:16px 0}
+  .card-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+  .card-header h3{margin:0}
+  .toggle-btn{background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer;padding:0 4px;line-height:1}
+  .card-body{margin-top:14px}
+  .card-body.hidden{display:none}
+  pre,code{font-family:'Cascadia Code','Fira Code','JetBrains Mono',monospace;font-size:13px}
+  pre{background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:14px;overflow-x:auto;white-space:pre;margin:12px 0;line-height:1.5}
+  code{background:var(--code-bg);border:1px solid var(--border);border-radius:4px;padding:2px 6px;font-size:12px}
+  pre code{background:none;border:none;padding:0}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th{background:var(--bg3);color:var(--text2);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+  td{padding:8px 12px;border-bottom:1px solid var(--border)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+  @media(max-width:600px){.grid2{grid-template-columns:1fr}}
+  .section-intro{background:linear-gradient(135deg,#1f2d3d,#0d1117);border:1px solid var(--blue);border-radius:10px;padding:18px 22px;margin:16px 0 28px}
+  .section-intro h2{border:none;margin:0 0 8px;padding:0}
+  .insight{background:var(--bg3);border-left:3px solid var(--orange);padding:12px 16px;border-radius:0 6px 6px 0;margin:14px 0}
+  .insight p{margin:0;font-size:14px}
+  .pipeline-step{display:flex;gap:12px;align-items:flex-start;padding:12px;background:var(--bg3);border-radius:8px;margin:8px 0}
+  .step-num{width:28px;height:28px;border-radius:50%;background:#1f6feb;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0}
+  .step-body{flex:1}
+  .step-title{color:var(--green);font-weight:600;font-size:15px}
+  .step-desc{color:var(--text);font-size:14px;margin-top:3px}
+</style>
+</head>
+<body>
+<header>
+  <h1>vLLM Internals</h1>
+  <nav>
+    <a href="index.html">Overview</a>
+    <a href="01-entry-points.html">Entry Points</a>
+    <a href="02-engine.html">Engine</a>
+    <a href="03-scheduler.html">Scheduler</a>
+    <a href="04-kv-cache.html">KV Cache</a>
+    <a href="05-execution.html">Execution</a>
+    <a href="06-attention.html">Attention</a>
+    <a href="07-sampling.html" class="active">Sampling</a>
+  </nav>
+</header>
+<main>
+  <div class="section-intro">
+    <h2>Sampler &amp; Token Generation</h2>
+    <p>After the transformer computes logits (unnormalized log-probabilities over the vocabulary), the sampler converts them into the next token. This step implements temperature, top-p, top-k, penalties, and all other sampling strategies.</p>
+  </div>
+
+  <h2>Sampling Pipeline</h2>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Sampler.forward() — Step by Step</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>Source: <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/sample/sampler.py" target="_blank">vllm/v1/sample/sampler.py</a></p>
+      <p>Runs on GPU, batched over all sequences in one call:</p>
+      <div class="pipeline-step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Select relevant logits</div>
+          <div class="step-desc">Pick only the last token's logits for each sequence. Logits shape: <code>[num_decode_tokens, vocab_size]</code></div>
+        </div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Compute logprobs (optional)</div>
+          <div class="step-desc">If <code>logprobs > 0</code>: <code>log_softmax(logits)</code> → keep top-N per token. Stored for user inspection.</div>
+        </div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Apply repetition penalty</div>
+          <div class="step-desc">Penalize tokens that already appear in the output. Logits for seen tokens are divided by <code>repetition_penalty</code> (if &gt; 1) or multiplied (if &lt; 1).</div>
+        </div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Apply presence &amp; frequency penalty</div>
+          <div class="step-desc">
+            <code>logit -= presence_penalty</code> for any token seen ≥ 1 time.<br>
+            <code>logit -= frequency_penalty × count</code> proportional to occurrence count.
+          </div>
+        </div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="step-title">Temperature scaling</div>
+          <div class="step-desc"><code>logits /= temperature</code>. Low temp → peaked distribution (more deterministic). High temp → flat distribution (more creative).</div>
+        </div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <div class="step-title">Top-K filtering</div>
+          <div class="step-desc">Zero out all logits except the top-K. Forces model to choose among only the most likely tokens.</div>
+        </div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">7</div>
+        <div class="step-body">
+          <div class="step-title">Top-P (nucleus) filtering</div>
+          <div class="step-desc">Sort tokens by probability, accumulate until cumulative probability ≥ top_p, zero out the rest. Adapts to the distribution's entropy.</div>
+        </div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">8</div>
+        <div class="step-body">
+          <div class="step-title">Softmax → Sample</div>
+          <div class="step-desc"><code>probs = softmax(logits)</code>, then <code>torch.multinomial(probs, 1)</code>. For greedy (temp=0), use <code>argmax</code>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Code: Sampler.forward()</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <pre><code>class Sampler(nn.Module):
+    def forward(
+        self,
+        logits: torch.Tensor,            # [num_decode_seqs, vocab_size]
+        sampling_metadata: SamplingMetadata,
+    ) -> SamplerOutput:
+
+        # Gather per-request sampling parameters as batched tensors
+        temperatures = sampling_metadata.temperature   # [num_seqs]
+        top_ps       = sampling_metadata.top_p
+        top_ks       = sampling_metadata.top_k
+
+        # Step 3-4: Apply penalties
+        logits = self._apply_penalties(logits, sampling_metadata)
+
+        # Step 5: Temperature scaling
+        # Zero temperature → greedy (handled separately)
+        is_greedy = temperatures == 0
+        logits[~is_greedy] /= temperatures[~is_greedy].unsqueeze(1)
+
+        # Step 6: Top-K
+        if (top_ks != vocab_size).any():
+            logits = _apply_top_k(logits, top_ks)
+
+        # Step 7: Top-P (nucleus)
+        if (top_ps < 1.0).any():
+            logits = _apply_top_p(logits, top_ps)
+
+        # Step 8: Sample
+        probs = torch.softmax(logits, dim=-1)
+        sampled = torch.multinomial(probs, num_samples=1).squeeze(1)
+        # Greedy override
+        sampled[is_greedy] = logits[is_greedy].argmax(dim=-1)
+
+        return SamplerOutput(sampled_tokens=sampled, logprobs=...)</code></pre>
+    </div>
+  </div>
+
+  <h2>Sampling Strategies</h2>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Temperature, Top-P, Top-K Explained</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <table>
+        <tr><th>Strategy</th><th>Config</th><th>Behavior</th></tr>
+        <tr><td>Greedy</td><td><code>temperature=0</code></td><td>Always pick the highest-probability token. Deterministic, no creativity.</td></tr>
+        <tr><td>Temperature</td><td><code>temperature=0.8</code></td><td>Soften the distribution. 1.0 = unchanged, &lt;1 = sharper, &gt;1 = flatter.</td></tr>
+        <tr><td>Top-K</td><td><code>top_k=50</code></td><td>Only consider the 50 most likely tokens at each step.</td></tr>
+        <tr><td>Nucleus (top-p)</td><td><code>top_p=0.9</code></td><td>Consider the smallest set of tokens covering 90% cumulative probability.</td></tr>
+        <tr><td>Beam search</td><td><code>best_of=4, use_beam_search=True</code></td><td>Keep 4 partial sequences, pick the highest joint probability completion.</td></tr>
+      </table>
+      <pre><code># Top-P nucleus sampling (implementation sketch)
+def _apply_top_p(logits, top_p):
+    # Sort logits descending
+    sorted_logits, sorted_indices = torch.sort(logits, descending=True, dim=-1)
+    cumulative_probs = torch.cumsum(torch.softmax(sorted_logits, -1), dim=-1)
+
+    # Remove tokens once cumulative prob exceeds top_p
+    sorted_mask = cumulative_probs - softmax(sorted_logits) > top_p
+    sorted_logits[sorted_mask] = -inf
+
+    # Scatter back to original order
+    logits.scatter_(1, sorted_indices, sorted_logits)
+    return logits</code></pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>SamplingMetadata</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>Source: <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/sample/metadata.py" target="_blank">vllm/v1/sample/metadata.py</a></p>
+      <p>Per-sequence sampling configuration as GPU tensors. Constructed by the model runner from <code>SamplingParams</code> before calling the sampler:</p>
+      <pre><code>@dataclass
+class SamplingMetadata:
+    # Per-sequence sampling config (broadcast from SamplingParams)
+    temperature: torch.Tensor         # [num_seqs]
+    top_p: torch.Tensor
+    top_k: torch.Tensor
+    min_p: torch.Tensor
+    repetition_penalty: torch.Tensor
+    frequency_penalty: torch.Tensor
+    presence_penalty: torch.Tensor
+
+    # Token IDs for penalty computation (which tokens appeared so far)
+    output_token_ids: list[list[int]]
+    prompt_token_ids: list[list[int]]
+
+    # Which token IDs to compute logprobs for (if requested)
+    logprob_token_ids: list[list[int]] | None
+
+    # Seeds for reproducible sampling
+    generators: list[torch.Generator | None]</code></pre>
+    </div>
+  </div>
+
+  <h2>Structured Output &amp; Constrained Decoding</h2>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Logit Processors &amp; Grammar Constraints</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>vLLM supports structured generation (JSON, grammar, regex) by masking invalid tokens at each step. The integration uses <a href="https://github.com/mlc-ai/xgrammar" target="_blank">xgrammar</a> or <a href="https://github.com/microsoft/guidance" target="_blank">guidance</a>.</p>
+      <pre><code># Structured output via SamplingParams
+from vllm.sampling_params import GuidedDecodingParams
+
+params = SamplingParams(
+    guided_decoding=GuidedDecodingParams(
+        json={"type": "object", "properties": {"name": {"type": "string"}}}
+    )
+)
+# At each step, invalid tokens get logit = -inf
+# Only tokens that could legally appear next in valid JSON are kept</code></pre>
+      <p>The <code>StructuredOutputManager</code> in the engine core maintains a finite-state machine per request. Before sampling, it generates a <em>logit bias mask</em> marking which tokens are valid at the current grammar state. This mask is applied to logits before temperature scaling.</p>
+    </div>
+  </div>
+
+  <h2>Speculative Decoding</h2>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Rejection Sampler</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>Source: <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/sample/rejection_sampler.py" target="_blank">vllm/v1/sample/rejection_sampler.py</a></p>
+      <p>Speculative decoding uses a small <em>draft model</em> to propose several tokens ahead, then verifies them with the large <em>target model</em> in one pass. This can achieve near-target-model quality at draft-model speed.</p>
+      <pre><code># Speculative decoding flow:
+# 1. Draft model proposes K tokens [t1, t2, t3, t4, t5]
+#    with draft probabilities [q1, q2, q3, q4, q5]
+#
+# 2. Target model computes probabilities for all K+1 positions
+#    [p1, p2, p3, p4, p5, p6] in one forward pass
+#
+# 3. Rejection sampler accepts/rejects each draft token:
+for i in range(K):
+    accept_prob = min(1.0, target_probs[i] / draft_probs[i])
+    if random() < accept_prob:
+        accept token t_i
+    else:
+        # Reject: sample from corrected distribution
+        corrected = max(0, target_probs[i] - draft_probs[i])
+        sample from corrected / sum(corrected)
+        break  # stop at first rejection</code></pre>
+      <div class="insight">
+        <p>When the draft model and target model agree (draft_prob ≈ target_prob), acceptance rate is high and throughput approaches <em>K × target model decode speed</em>. vLLM supports n-gram, EAGLE, and DFlash draft models.</p>
+      </div>
+    </div>
+  </div>
+
+  <h2>Stop Conditions</h2>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>When to Stop Generating</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>After each sampled token, the scheduler checks stop conditions:</p>
+      <table>
+        <tr><th>Condition</th><th>FinishReason</th><th>Trigger</th></tr>
+        <tr><td>EOS token sampled</td><td><code>STOP</code></td><td>Sampled token ∈ <code>stop_token_ids</code> (or EOS by default)</td></tr>
+        <tr><td>Stop string match</td><td><code>STOP</code></td><td>Detokenized output contains a string from <code>stop</code></td></tr>
+        <tr><td>Max tokens reached</td><td><code>LENGTH</code></td><td><code>len(output_token_ids) >= max_tokens</code></td></tr>
+        <tr><td>Max model len</td><td><code>LENGTH</code></td><td>Prompt + output ≥ <code>max_model_len</code></td></tr>
+        <tr><td>Client abort</td><td><code>ABORT</code></td><td>HTTP disconnect / <code>abort_request()</code> called</td></tr>
+      </table>
+      <p>Stop-string detection happens in the output processor (CPU-side), not in the sampler (GPU-side). The token sequence is detokenized and checked against stop strings after each iteration.</p>
+    </div>
+  </div>
+
+</main>
+<script>
+function toggleCard(h){const b=h.nextElementSibling,btn=h.querySelector('.toggle-btn');if(b.classList.contains('hidden')){b.classList.remove('hidden');btn.textContent='−';}else{b.classList.add('hidden');btn.textContent='+';}}
+</script>
+</body>
+</html>

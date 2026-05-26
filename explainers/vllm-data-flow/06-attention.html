@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vLLM — Attention &amp; KV Backends</title>
+<style>
+  :root{--bg:#0d1117;--bg2:#161b22;--bg3:#1c2128;--border:#30363d;--text:#e6edf3;--text2:#8b949e;--blue:#58a6ff;--green:#3fb950;--orange:#d29922;--purple:#bc8cff;--red:#f85149;--code-bg:#161b22}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:16px;line-height:1.6}
+  header{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 20px;position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  header h1{font-size:18px;color:var(--blue)}
+  nav{display:flex;gap:10px;flex-wrap:wrap}
+  nav a{color:var(--text2);text-decoration:none;font-size:13px;padding:4px 10px;border-radius:6px;border:1px solid var(--border)}
+  nav a:hover,nav a.active{color:var(--blue);border-color:var(--blue)}
+  main{max-width:960px;margin:0 auto;padding:24px 16px 60px}
+  h2{color:var(--blue);font-size:22px;margin:32px 0 12px;border-bottom:1px solid var(--border);padding-bottom:8px}
+  h3{color:var(--green);font-size:17px;margin:24px 0 10px}
+  h4{color:var(--orange);font-size:15px;margin:18px 0 8px}
+  p{margin:10px 0}
+  a{color:var(--blue)}
+  .card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;margin:16px 0}
+  .card-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+  .card-header h3{margin:0}
+  .toggle-btn{background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer;padding:0 4px;line-height:1}
+  .card-body{margin-top:14px}
+  .card-body.hidden{display:none}
+  pre,code{font-family:'Cascadia Code','Fira Code','JetBrains Mono',monospace;font-size:13px}
+  pre{background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:14px;overflow-x:auto;white-space:pre;margin:12px 0;line-height:1.5}
+  code{background:var(--code-bg);border:1px solid var(--border);border-radius:4px;padding:2px 6px;font-size:12px}
+  pre code{background:none;border:none;padding:0}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th{background:var(--bg3);color:var(--text2);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+  td{padding:8px 12px;border-bottom:1px solid var(--border)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+  @media(max-width:600px){.grid2{grid-template-columns:1fr}}
+  .section-intro{background:linear-gradient(135deg,#1f2d3d,#0d1117);border:1px solid var(--blue);border-radius:10px;padding:18px 22px;margin:16px 0 28px}
+  .section-intro h2{border:none;margin:0 0 8px;padding:0}
+  .insight{background:var(--bg3);border-left:3px solid var(--orange);padding:12px 16px;border-radius:0 6px 6px 0;margin:14px 0}
+  .insight p{margin:0;font-size:14px}
+  .attn-eq{background:var(--bg3);border-radius:8px;padding:20px;text-align:center;font-size:18px;margin:16px 0;letter-spacing:1px;color:var(--text)}
+  .attn-eq span{color:var(--blue)}
+  .matrix-vis{display:inline-grid;gap:2px;margin:16px auto;display:block;text-align:center}
+  .cell{width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;border-radius:2px}
+</style>
+</head>
+<body>
+<header>
+  <h1>vLLM Internals</h1>
+  <nav>
+    <a href="index.html">Overview</a>
+    <a href="01-entry-points.html">Entry Points</a>
+    <a href="02-engine.html">Engine</a>
+    <a href="03-scheduler.html">Scheduler</a>
+    <a href="04-kv-cache.html">KV Cache</a>
+    <a href="05-execution.html">Execution</a>
+    <a href="06-attention.html" class="active">Attention</a>
+    <a href="07-sampling.html">Sampling</a>
+  </nav>
+</header>
+<main>
+  <div class="section-intro">
+    <h2>Attention Layer &amp; Backends</h2>
+    <p>Attention is the hottest path in the model. vLLM separates the <em>logical</em> attention layer (what it computes) from the <em>backend</em> (how it computes it). The backend is chosen based on hardware and phase (prefill vs. decode).</p>
+    <p style="margin-top:8px;font-size:13px;color:var(--text2)">References: <a href="https://arxiv.org/abs/2205.14135" target="_blank">FlashAttention</a> | <a href="https://arxiv.org/abs/2307.08691" target="_blank">FlashAttention-2</a> | <a href="https://github.com/flashinfer-ai/flashinfer" target="_blank">FlashInfer</a></p>
+  </div>
+
+  <h2>Attention Basics</h2>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Multi-Head Attention with KV Cache</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <div class="attn-eq">
+        Attn(Q, K, V) = softmax( <span>Q·Kᵀ</span> / √dₖ ) · V
+      </div>
+      <p>In standard attention, Q, K, V all come from the current input. In autoregressive decoding, only Q is new (the current token); K and V come from the KV cache (all prior tokens).</p>
+      <pre><code># Attention layer in vLLM model (e.g., LlamaAttention)
+class LlamaAttention(nn.Module):
+    def forward(self, hidden_states, kv_cache, attn_metadata):
+        # Project to Q, K, V
+        q = self.q_proj(hidden_states)  # [seq_len, num_heads * head_dim]
+        k = self.k_proj(hidden_states)  # [seq_len, num_kv_heads * head_dim]
+        v = self.v_proj(hidden_states)
+
+        # Apply rotary positional embeddings to Q, K
+        q, k = self.rotary_emb(positions, q, k)
+
+        # Paged attention — reads from and writes to kv_cache blocks
+        output = self.attn(q, k, v, kv_cache, attn_metadata)
+
+        return self.o_proj(output)   # [seq_len, hidden_dim]</code></pre>
+      <h4>Grouped Query Attention (GQA)</h4>
+      <p>Modern models (Llama 3, Gemma, Mistral) use GQA: fewer KV heads than Q heads. For example, Llama-3-8B has 32 Q heads but only 8 KV heads. This reduces KV cache size by 4× while maintaining most model quality.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Attention Class — Logical Layer</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>Source: <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/model_executor/layers/attention/attention.py" target="_blank">vllm/model_executor/layers/attention/attention.py</a></p>
+      <p>The <code>Attention</code> class is platform-agnostic. It delegates to a backend via the <code>AttentionBackend</code> interface:</p>
+      <pre><code>class Attention(nn.Module, AttentionLayerBase):
+    def __init__(self, num_heads, head_size, scale, ...):
+        self.backend = get_attn_backend(
+            num_heads, head_size, ..., vllm_config
+        )
+        self.impl = self.backend.get_impl_cls()()
+
+    def forward(
+        self,
+        query: torch.Tensor,     # [num_tokens, num_heads * head_dim]
+        key: torch.Tensor,       # [num_tokens, num_kv_heads * head_dim]
+        value: torch.Tensor,
+        kv_cache: torch.Tensor,  # the physical GPU cache tensor
+        attn_metadata: AttentionMetadata,
+    ) -> torch.Tensor:
+        # Write new K, V into the kv_cache at positions from attn_metadata
+        # Then compute attention over all cached positions
+        return self.impl.forward(query, key, value, kv_cache, attn_metadata)</code></pre>
+    </div>
+  </div>
+
+  <h2>Attention Backends</h2>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Backend Selection</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>Source: <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/attention/backend.py" target="_blank">vllm/v1/attention/backend.py</a></p>
+      <table>
+        <tr><th>Backend</th><th>Best For</th><th>Notes</th></tr>
+        <tr>
+          <td><code>FlashInferBackend</code></td>
+          <td>NVIDIA A100/H100, decode</td>
+          <td>Fastest decode via paged KV; supports ragged batches natively</td>
+        </tr>
+        <tr>
+          <td><code>FlashAttentionBackend</code></td>
+          <td>NVIDIA, prefill</td>
+          <td>Optimal for long-context prefill; uses tiling to stay in SRAM</td>
+        </tr>
+        <tr>
+          <td><code>XFormersBackend</code></td>
+          <td>Older NVIDIA, AMD</td>
+          <td>Fallback; uses xformers memory-efficient attention</td>
+        </tr>
+        <tr>
+          <td><code>TritonBackend</code></td>
+          <td>AMD ROCm</td>
+          <td>Pure Triton kernel; portable across GPU architectures</td>
+        </tr>
+        <tr>
+          <td><code>TRTLLMBackend</code></td>
+          <td>NVIDIA, TensorRT</td>
+          <td>TensorRT-LLM kernels for highest throughput on Hopper</td>
+        </tr>
+      </table>
+      <div class="insight">
+        <p>vLLM can use different backends for prefill and decode within the same model. FlashAttention for prefill (better for long sequences) and FlashInfer for decode (better for short queries over long KV).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>FlashInfer — Paged Decode</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p><a href="https://github.com/flashinfer-ai/flashinfer" target="_blank">FlashInfer</a> is purpose-built for paged KV cache inference. Its key advantage over standard FlashAttention is native support for non-contiguous (paged) K/V memory via block tables.</p>
+      <pre><code># FlashInfer decode kernel (conceptual):
+# For each query token q_i (one per decoding request):
+#   For each logical KV block b_j in block_table[i]:
+#     phys_block = block_table[i][b_j]
+#     k_slice = kv_cache[phys_block, :, :]   # tokens in this block
+#     v_slice = kv_cache[phys_block, :, :]
+#     partial_attn += softmax(q_i · k_slice^T) · v_slice
+#   output[i] = partial_attn  (flash-style: online softmax)</code></pre>
+      <p>FlashInfer uses a <em>workspace-based API</em> where the block tables and sequence lengths are pre-registered in a <code>BatchDecodeWithPagedKVCacheWrapper</code>, allowing the kernel to be replayed with low overhead each iteration.</p>
+      <pre><code># vLLM's use of FlashInfer
+from flashinfer import BatchDecodeWithPagedKVCacheWrapper
+
+wrapper = BatchDecodeWithPagedKVCacheWrapper(workspace_buffer)
+wrapper.plan(
+    indptr=seq_indptr,
+    indices=block_tables_flat,
+    last_page_len=last_page_lengths,
+    num_qo_heads=num_q_heads,
+    num_kv_heads=num_kv_heads,
+    head_dim=head_dim,
+    page_size=block_size,
+)
+output = wrapper.run(query, kv_cache)</code></pre>
+    </div>
+  </div>
+
+  <h2>AttentionMetadata</h2>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Per-Iteration Attention State</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>Source: <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/attention/backend.py" target="_blank">vllm/v1/attention/backend.py</a></p>
+      <p>Constructed by <code>_prepare_inputs()</code> in the model runner. Carries all per-batch metadata needed by the attention kernel:</p>
+      <pre><code>@dataclass
+class AttentionMetadata:
+    # Which tokens are in prefill vs. decode phase
+    num_prefill_tokens: int
+    num_decode_tokens: int
+
+    # Sequence lengths (including cache)
+    seq_lens: list[int]           # total context length per seq
+    query_lens: list[int]         # how many query tokens per seq
+
+    # Block table: [num_seqs, max_blocks_per_seq]
+    # Maps logical block index → physical GPU block ID
+    block_tables: torch.Tensor
+
+    # For prefill: causal mask indices
+    # For decode: page sizes, indptr arrays for FlashInfer
+
+    # Slot mapping: where to write new K/V values in the cache
+    slot_mapping: torch.Tensor    # [num_tokens] → flat cache index</code></pre>
+      <h4>Slot Mapping</h4>
+      <p>When new tokens arrive (prefill or decode), their K and V values must be written into the physical KV cache at the right position. The <em>slot mapping</em> translates each input token's logical position to a flat index into the physical cache tensor:</p>
+      <pre><code># Example: 2 blocks of size 4, request at position 6
+# logical position 6 → block 1 (positions 4-7) → offset 2
+# physical block ID = block_table[req][1] = 7
+# slot = 7 * block_size + 2 = 7 * 4 + 2 = 30
+slot_mapping[token_idx] = 30  # write K/V here in the flat cache</code></pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Prefill vs. Decode Paths</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>The attention kernel behaves differently depending on the phase:</p>
+      <div class="grid2">
+        <div style="background:var(--bg3);border-radius:8px;padding:14px;border:1px solid #1f6feb">
+          <div style="color:#58a6ff;font-weight:600;margin-bottom:8px">Prefill</div>
+          <p style="font-size:14px">Q, K, V all from the prompt. Causal mask (can't attend to future tokens). Compute-bound. Uses FlashAttention (tiled SRAM computation). Sequence length can be thousands of tokens.</p>
+        </div>
+        <div style="background:var(--bg3);border-radius:8px;padding:14px;border:1px solid #1a7f37">
+          <div style="color:#3fb950;font-weight:600;margin-bottom:8px">Decode</div>
+          <p style="font-size:14px">Q is one new token per sequence. K, V come from the cache. Bandwidth-bound (need to read all cached K/V). Uses FlashInfer (paged gather). query_len=1 per sequence.</p>
+        </div>
+      </div>
+      <pre><code># In the model runner, the batch contains BOTH:
+# - Prefill tokens (contiguous block at the front of input_ids)
+# - Decode tokens (one token per decoding request, at the end)
+#
+# input_ids = [pref0, pref1, pref2, pref3, dec0, dec1]
+#                  ← prefill (4 tok) →  ← decode (2 tok) →
+#
+# Attention handles them separately:
+if num_prefill_tokens > 0:
+    prefill_output = flash_attn(q_prefill, k_prefill, v_prefill, ...)
+if num_decode_tokens > 0:
+    decode_output = flashinfer_paged_decode(q_decode, kv_cache, block_tables, ...)</code></pre>
+    </div>
+  </div>
+
+</main>
+<script>
+function toggleCard(h){const b=h.nextElementSibling,btn=h.querySelector('.toggle-btn');if(b.classList.contains('hidden')){b.classList.remove('hidden');btn.textContent='−';}else{b.classList.add('hidden');btn.textContent='+';}}
+</script>
+</body>
+</html>

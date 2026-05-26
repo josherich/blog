@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tokenization — llama.cpp Data Flow</title>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --surface2: #21262d;
+    --border: #30363d; --text: #c9d1d9; --text-dim: #8b949e;
+    --blue: #58a6ff; --green: #3fb950; --orange: #d29922;
+    --red: #f85149; --purple: #bc8cff; --cyan: #39d353;
+    --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 15px; line-height: 1.6; padding: 16px;
+    max-width: 900px; margin: 0 auto;
+  }
+  nav { margin-bottom: 20px; font-size: 0.85rem; color: var(--text-dim); }
+  nav a { color: var(--blue); text-decoration: none; }
+  nav a:hover { text-decoration: underline; }
+  h1 { font-size: 1.6rem; color: #fff; margin-bottom: 6px; }
+  h2 { font-size: 1.15rem; color: var(--blue); margin: 24px 0 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+  h3 { font-size: 0.95rem; color: var(--orange); margin: 14px 0 8px; }
+  p { margin-bottom: 10px; }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .subtitle { color: var(--text-dim); font-size: 0.88rem; margin-bottom: 20px; }
+
+  details {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; margin-bottom: 12px; overflow: hidden;
+  }
+  summary {
+    padding: 13px 16px; cursor: pointer; font-weight: 600; color: #fff;
+    display: flex; align-items: center; gap: 8px; user-select: none; list-style: none;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before { content: '▶'; font-size: 0.7rem; color: var(--text-dim); transition: transform 0.2s; }
+  details[open] summary::before { transform: rotate(90deg); }
+  .details-body { padding: 0 16px 16px; }
+
+  pre {
+    background: #0d1117; border: 1px solid var(--border); border-radius: 6px;
+    padding: 14px; overflow-x: auto; font-family: var(--font-mono);
+    font-size: 0.82rem; line-height: 1.5; white-space: pre; margin: 10px 0;
+  }
+  code {
+    font-family: var(--font-mono); font-size: 0.85rem;
+    background: var(--surface2); padding: 2px 5px; border-radius: 3px; color: var(--orange);
+  }
+  pre code { background: none; padding: 0; color: inherit; }
+
+  .ref-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+  .ref-link {
+    display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; font-size: 0.8rem; color: var(--blue); text-decoration: none;
+  }
+  .ref-link:hover { border-color: var(--blue); text-decoration: none; }
+  .ref-link.gh { color: var(--green); }
+  .ref-link.gh:hover { border-color: var(--green); }
+
+  /* Token visualization */
+  .token-demo {
+    display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; align-items: center;
+  }
+  .token-box {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 4px; overflow: hidden; font-family: var(--font-mono);
+    font-size: 0.82rem;
+  }
+  .token-text { padding: 4px 8px; color: var(--text); background: #1c2128; }
+  .token-id { padding: 2px 8px; color: var(--blue); font-size: 0.75rem; background: #0d1117; border-top: 1px solid var(--border); }
+  .arrow { color: var(--text-dim); font-size: 1.2rem; }
+
+  /* Tokenizer type grid */
+  .type-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px; margin: 12px 0;
+  }
+  .type-card {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; padding: 12px;
+  }
+  .type-card .type-name { font-weight: 600; color: #fff; font-size: 0.9rem; margin-bottom: 4px; }
+  .type-card .type-desc { font-size: 0.8rem; color: var(--text-dim); }
+  .type-card .type-models { font-size: 0.75rem; color: var(--green); margin-top: 4px; font-family: var(--font-mono); }
+
+  .info-box {
+    background: #0c1929; border: 1px solid #1f6feb; border-radius: 6px;
+    padding: 12px 14px; margin: 10px 0; font-size: 0.88rem;
+  }
+  .info-box strong { color: var(--blue); }
+  .warn-box {
+    background: #271d04; border: 1px solid #9e6a03; border-radius: 6px;
+    padding: 12px 14px; margin: 10px 0; font-size: 0.88rem;
+  }
+  .warn-box strong { color: var(--orange); }
+
+  @media (max-width: 600px) {
+    body { font-size: 14px; padding: 12px; }
+    h1 { font-size: 1.3rem; }
+    .type-grid { grid-template-columns: 1fr 1fr; }
+    pre { font-size: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav><a href="index.html">← Overview</a> · Tokenization · <a href="graph.html">Graph →</a></nav>
+
+<h1>Tokenization</h1>
+<p class="subtitle">Converting a raw text string into a sequence of integer token IDs — and back again.</p>
+
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/src/llama-vocab.cpp">src/llama-vocab.cpp</a>
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/src/llama-vocab.h">src/llama-vocab.h</a>
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/include/llama.h#L1125">llama.h#L1125 — llama_tokenize()</a>
+  <a class="ref-link" href="https://arxiv.org/abs/1508.07909">BPE paper (Sennrich 2016)</a>
+  <a class="ref-link" href="https://arxiv.org/abs/1808.06226">SentencePiece paper</a>
+</div>
+
+<h2>What is a Token?</h2>
+<p>Language models don't operate on characters or words — they operate on <strong>tokens</strong>: variable-length subword units chosen to balance vocabulary size against sequence length. The mapping between strings and token IDs is fixed after training.</p>
+
+<div class="info-box">
+  <strong>Why subword tokenization?</strong> Pure character models need very long sequences; pure word models can't handle rare or novel words. BPE and SentencePiece find a middle ground: common words become single tokens, rare words split into meaningful pieces. "tokenization" → ["token", "ization"].
+</div>
+
+<h2>Tokenizer Types in llama.cpp</h2>
+<p>The tokenizer type is stored in the GGUF file and read at model load time. llama.cpp supports 6+ types covering essentially all modern LLM families.</p>
+
+<div class="type-grid">
+  <div class="type-card">
+    <div class="type-name">BPE</div>
+    <div class="type-desc">Byte-Pair Encoding. Merges the most frequent adjacent byte pairs iteratively until vocab size is reached.</div>
+    <div class="type-models">GPT-2, GPT-4, LLaMA-3, Qwen, Mistral</div>
+  </div>
+  <div class="type-card">
+    <div class="type-name">SPM</div>
+    <div class="type-desc">SentencePiece Model. Treats input as raw bytes, language-agnostic, supports byte fallback for unknown chars.</div>
+    <div class="type-models">LLaMA-1/2, Gemma, T5</div>
+  </div>
+  <div class="type-card">
+    <div class="type-name">WPM</div>
+    <div class="type-desc">WordPiece. Similar to BPE but uses a likelihood criterion instead of frequency for merges.</div>
+    <div class="type-models">BERT, DistilBERT</div>
+  </div>
+  <div class="type-card">
+    <div class="type-name">UGM</div>
+    <div class="type-desc">Unigram Language Model. Trains a probabilistic model, prunes the vocabulary to size.</div>
+    <div class="type-models">T5, mT5, ALBERT</div>
+  </div>
+  <div class="type-card">
+    <div class="type-name">RWKV</div>
+    <div class="type-desc">Greedy tokenizer. Simple and fast, used by RWKV models.</div>
+    <div class="type-models">RWKV</div>
+  </div>
+  <div class="type-card">
+    <div class="type-name">NONE</div>
+    <div class="type-desc">No tokenizer — model expects raw token IDs (embeddings only mode).</div>
+    <div class="type-models">Embedding models</div>
+  </div>
+</div>
+
+<h2>Tokenization Example</h2>
+
+<p>How "Hello world" gets tokenized with a LLaMA-3 BPE vocabulary:</p>
+<div class="token-demo">
+  <span style="color:var(--text-dim); font-family:var(--font-mono)">"Hello world"</span>
+  <span class="arrow">→</span>
+  <div class="token-box"><div class="token-text">Hello</div><div class="token-id">9906</div></div>
+  <div class="token-box"><div class="token-text"> world</div><div class="token-id">1917</div></div>
+</div>
+<p>Notice the space is part of the token " world" — BPE encodes whitespace as part of the following token, which is why the leading space matters for correct round-tripping.</p>
+
+<h2>API: Tokenize &amp; Detokenize</h2>
+
+<details open>
+<summary>llama_tokenize() — text → token IDs</summary>
+<div class="details-body">
+<pre>// include/llama.h#L1125
+LLAMA_API int32_t llama_tokenize(
+    const struct llama_vocab * vocab,
+    const char * text,
+    int32_t      text_len,
+    llama_token * tokens,     // output array
+    int32_t       n_tokens_max,
+    bool          add_special, // add BOS token at start?
+    bool          parse_special); // treat &lt;|im_start|&gt; etc as tokens?</pre>
+<p>Returns the number of tokens written. Call with <code>tokens=NULL</code> to query the count first.</p>
+<pre>// Usage pattern:
+int n = llama_tokenize(vocab, text, -1, NULL, 0, true, false);  // query count
+std::vector&lt;llama_token&gt; ids(n);
+llama_tokenize(vocab, text, -1, ids.data(), n, true, false);</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/include/llama.h#L1125">llama.h#L1125</a>
+</div>
+</div>
+</details>
+
+<details open>
+<summary>llama_token_to_piece() — token ID → text</summary>
+<div class="details-body">
+<pre>// include/llama.h#L1147
+LLAMA_API int32_t llama_token_to_piece(
+    const struct llama_vocab * vocab,
+    llama_token   token,
+    char        * buf,
+    int32_t       length,
+    int32_t       lstrip,    // strip leading spaces
+    bool          special);  // render special tokens as text?
+
+// Returns number of bytes written.
+// Negative return = buffer too small (abs value = needed size)</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/include/llama.h#L1147">llama.h#L1147</a>
+</div>
+</div>
+</details>
+
+<h2>Internal Tokenization Flow (BPE)</h2>
+
+<details open>
+<summary>Step-by-step: how BPE tokenizes a string</summary>
+<div class="details-body">
+<p>BPE tokenization is a two-stage greedy process:</p>
+<h3>Stage 1: Pre-tokenization (regex splitting)</h3>
+<p>The raw string is first split by a regex pattern (model-specific) into "words". For GPT-2/LLaMA-3 style BPE, this separates punctuation, handles whitespace, and prevents merges across word boundaries.</p>
+<pre>// Example regex (simplified GPT-2 pattern):
+// "(?i:'s|'t|'re|'ve|'m|'ll|'d)|[^\r\n\p{L}\p{N}]?\p{L}+|..."
+// "Hello world!" → ["Hello", " world", "!"]</pre>
+
+<h3>Stage 2: BPE merge sequence</h3>
+<p>Each pre-token is converted to UTF-8 bytes, then the BPE merge rules (learned during training) are applied greedily in priority order:</p>
+<pre>// "Hello" as bytes: ['H','e','l','l','o']
+// Merge table lookup (highest priority first):
+// ('H','e') → 'He'       → ['He','l','l','o']
+// ('l','l') → 'll'       → ['He','ll','o']
+// ('He','ll') → 'Hell'   → ['Hell','o']
+// ('Hell','o') → 'Hello' → ['Hello']   ← single token!
+
+// Result: token_id for "Hello" = 9906</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/src/llama-vocab.cpp">llama-vocab.cpp — llm_tokenizer_bpe</a>
+  <a class="ref-link" href="https://arxiv.org/abs/1508.07909">BPE for NMT (Sennrich 2016)</a>
+</div>
+</div>
+</details>
+
+<details open>
+<summary>SentencePiece (SPM) differences</summary>
+<div class="details-body">
+<p>SPM doesn't pre-tokenize on whitespace — it treats the whole input as a byte sequence. It uses a Viterbi algorithm to find the optimal segmentation according to a unigram language model, then applies BPE-like merges.</p>
+<pre>// SPM special handling:
+// 1. Normalizes unicode (NFKC or custom rules)
+// 2. Adds '▁' (U+2581) before each word to encode spaces
+// 3. Byte fallback: unknown bytes → &lt;0xHH&gt; tokens
+
+// "Hello world" with SPM:
+// → ['▁Hello', '▁world']   (if both are in vocab)
+// → ['▁He', 'llo', '▁world']  (if 'Hello' not in vocab)</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/src/llama-vocab.cpp">llama-vocab.cpp — llm_tokenizer_spm</a>
+  <a class="ref-link" href="https://github.com/google/sentencepiece">google/sentencepiece</a>
+</div>
+</div>
+</details>
+
+<h2>Special Tokens</h2>
+
+<details open>
+<summary>BOS, EOS, PAD and chat template tokens</summary>
+<div class="details-body">
+<p>Every model defines special tokens stored in the GGUF vocabulary metadata. These are not learnable subwords but reserved IDs with specific semantic meaning.</p>
+<pre>// include/llama.h — special token accessors
+LLAMA_API llama_token llama_vocab_bos(const struct llama_vocab * vocab); // begin-of-sequence
+LLAMA_API llama_token llama_vocab_eos(const struct llama_vocab * vocab); // end-of-sequence
+LLAMA_API llama_token llama_vocab_eot(const struct llama_vocab * vocab); // end-of-turn
+LLAMA_API llama_token llama_vocab_sep(const struct llama_vocab * vocab); // separator
+
+// Check if token signals end of generation:
+LLAMA_API bool llama_vocab_is_eog(const struct llama_vocab * vocab, llama_token token);</pre>
+<p>Chat-format models (instruct/assistant variants) additionally use role-delimiter tokens like <code>&lt;|im_start|&gt;</code>, <code>&lt;|im_end|&gt;</code>, <code>[INST]</code>, <code>&lt;|eot_id|&gt;</code>. These are encoded by the <strong>chat template</strong> (Jinja2-based, stored in the GGUF metadata).</p>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/include/llama.h#L1080">llama.h#L1080 — special token queries</a>
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/common/jinja/README.md">Jinja template engine</a>
+</div>
+</div>
+</details>
+
+<h2>Vocabulary Structure in GGUF</h2>
+
+<details open>
+<summary>How tokenizer data is stored in the model file</summary>
+<div class="details-body">
+<p>The GGUF file format stores tokenizer data as key-value metadata entries. These are loaded before any tensors.</p>
+<pre>// GGUF metadata keys for vocabulary:
+"tokenizer.ggml.model"        → "gpt2" | "llama" | "bert" | ...
+"tokenizer.ggml.tokens"       → array of token strings (length = n_vocab)
+"tokenizer.ggml.scores"       → array of log-probabilities (for SPM)
+"tokenizer.ggml.token_type"   → NORMAL | UNKNOWN | CONTROL | USER_DEFINED | BYTE
+"tokenizer.ggml.merges"       → BPE merge rules (ordered by priority)
+"tokenizer.ggml.bos_token_id" → integer
+"tokenizer.ggml.eos_token_id" → integer
+"tokenizer.chat_template"     → Jinja2 template string</pre>
+<p>At load time, <code>llama_vocab</code> builds hash maps from token strings to IDs and vice versa, plus the merge priority table for BPE.</p>
+<div class="ref-list">
+  <a class="ref-link" href="https://github.com/ggml-org/ggml/blob/master/docs/gguf.md">GGUF format spec</a>
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/src/llama-vocab.cpp">llama-vocab.cpp — llama_vocab::load()</a>
+</div>
+</div>
+</details>
+
+<h2>What Happens After Tokenization</h2>
+<p>The integer token IDs produced here are placed into <code>llama_batch.token[]</code>. During the forward pass, each token ID is used as an index into the <code>tok_embd</code> weight matrix to retrieve that token's learned embedding vector — the first step of the transformer computation.</p>
+<div class="ref-list">
+  <a class="ref-link" href="graph.html">→ Computation Graph &amp; Transformer</a>
+</div>
+
+</body>
+</html>

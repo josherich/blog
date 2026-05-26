@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vLLM — KV Cache &amp; PagedAttention</title>
+<style>
+  :root{--bg:#0d1117;--bg2:#161b22;--bg3:#1c2128;--border:#30363d;--text:#e6edf3;--text2:#8b949e;--blue:#58a6ff;--green:#3fb950;--orange:#d29922;--purple:#bc8cff;--red:#f85149;--code-bg:#161b22}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:16px;line-height:1.6}
+  header{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 20px;position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  header h1{font-size:18px;color:var(--blue)}
+  nav{display:flex;gap:10px;flex-wrap:wrap}
+  nav a{color:var(--text2);text-decoration:none;font-size:13px;padding:4px 10px;border-radius:6px;border:1px solid var(--border)}
+  nav a:hover,nav a.active{color:var(--blue);border-color:var(--blue)}
+  main{max-width:960px;margin:0 auto;padding:24px 16px 60px}
+  h2{color:var(--blue);font-size:22px;margin:32px 0 12px;border-bottom:1px solid var(--border);padding-bottom:8px}
+  h3{color:var(--green);font-size:17px;margin:24px 0 10px}
+  h4{color:var(--orange);font-size:15px;margin:18px 0 8px}
+  p{margin:10px 0}
+  a{color:var(--blue)}
+  .card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;margin:16px 0}
+  .card-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+  .card-header h3{margin:0}
+  .toggle-btn{background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer;padding:0 4px;line-height:1}
+  .card-body{margin-top:14px}
+  .card-body.hidden{display:none}
+  pre,code{font-family:'Cascadia Code','Fira Code','JetBrains Mono',monospace;font-size:13px}
+  pre{background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:14px;overflow-x:auto;white-space:pre;margin:12px 0;line-height:1.5}
+  code{background:var(--code-bg);border:1px solid var(--border);border-radius:4px;padding:2px 6px;font-size:12px}
+  pre code{background:none;border:none;padding:0}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th{background:var(--bg3);color:var(--text2);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+  td{padding:8px 12px;border-bottom:1px solid var(--border)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+  @media(max-width:600px){.grid2{grid-template-columns:1fr}}
+  .section-intro{background:linear-gradient(135deg,#1f2d3d,#0d1117);border:1px solid var(--blue);border-radius:10px;padding:18px 22px;margin:16px 0 28px}
+  .section-intro h2{border:none;margin:0 0 8px;padding:0}
+  .mem-vis{display:flex;gap:2px;flex-wrap:wrap;margin:16px 0}
+  .mem-block{width:48px;height:48px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;text-align:center;line-height:1.2}
+  .mb-free{background:var(--bg3);border:1px dashed var(--border);color:var(--text2)}
+  .mb-req1{background:#1f3a5f;border:1px solid #58a6ff;color:#58a6ff}
+  .mb-req2{background:#1a3a1f;border:1px solid #3fb950;color:#3fb950}
+  .mb-req3{background:#3a2a10;border:1px solid #d29922;color:#d29922}
+  .mb-shared{background:#2a1a3a;border:1px solid #bc8cff;color:#bc8cff}
+  .insight{background:var(--bg3);border-left:3px solid var(--orange);padding:12px 16px;border-radius:0 6px 6px 0;margin:14px 0}
+  .insight p{margin:0;font-size:14px}
+</style>
+</head>
+<body>
+<header>
+  <h1>vLLM Internals</h1>
+  <nav>
+    <a href="index.html">Overview</a>
+    <a href="01-entry-points.html">Entry Points</a>
+    <a href="02-engine.html">Engine</a>
+    <a href="03-scheduler.html">Scheduler</a>
+    <a href="04-kv-cache.html" class="active">KV Cache</a>
+    <a href="05-execution.html">Execution</a>
+    <a href="06-attention.html">Attention</a>
+    <a href="07-sampling.html">Sampling</a>
+  </nav>
+</header>
+<main>
+  <div class="section-intro">
+    <h2>KV Cache &amp; PagedAttention</h2>
+    <p>The KV cache stores the key and value tensors computed during attention, so they aren't recomputed each step. PagedAttention manages this cache in fixed-size pages — the central innovation of vLLM.</p>
+    <p style="margin-top:8px;font-size:13px;color:var(--text2)">Reference: <a href="https://arxiv.org/abs/2309.06180" target="_blank">PagedAttention paper (SOSP 2023)</a> | <a href="https://blog.vllm.ai/2023/06/20/vllm.html" target="_blank">vLLM blog post</a></p>
+  </div>
+
+  <h2>The KV Cache Problem</h2>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Why the KV Cache Needs Special Management</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>During autoregressive decoding, at each step the model must attend over all prior tokens. The key (K) and value (V) projections of those tokens are stored in the <strong>KV cache</strong> to avoid recomputation.</p>
+      <pre><code># Memory per token (per layer):
+#   K tensor:  [num_kv_heads, head_dim] × dtype_bytes
+#   V tensor:  [num_kv_heads, head_dim] × dtype_bytes
+#
+# Example: Llama-3-8B, FP16
+#   num_layers=32, num_kv_heads=8, head_dim=128
+#   Per token: 2 × 8 × 128 × 2 bytes × 32 layers = 131,072 bytes ≈ 128 KB
+#   For a 4096-token context: 4096 × 128 KB = 512 MB just for one request</code></pre>
+      <p>With many concurrent requests, naive per-request pre-allocation wastes memory: you must reserve worst-case (max_model_len) tokens even if the request only uses a fraction. This leads to <strong>fragmentation</strong> — like reserving a 4096-token block for a 50-token request.</p>
+      <div class="insight"><p>PagedAttention borrows the <em>virtual memory + paging</em> concept from OS design. Physical GPU memory is divided into equal-sized pages (blocks); requests reference logical pages that map to physical ones via a page table.</p></div>
+    </div>
+  </div>
+
+  <h2>PagedAttention</h2>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Block-Based Memory Layout</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>The GPU KV cache is a fixed tensor allocated once at startup:</p>
+      <pre><code># Physical KV cache tensors (one per layer, per device)
+# Shape: [num_gpu_blocks, block_size, num_kv_heads, head_dim]
+kv_cache_K = torch.empty(
+    (num_gpu_blocks, block_size, num_kv_heads, head_dim),
+    dtype=cache_dtype, device="cuda"
+)
+kv_cache_V = torch.empty_like(kv_cache_K)</code></pre>
+      <p>Each <strong>block</strong> holds <code>block_size</code> tokens (default: 16). Requests are assigned blocks dynamically. The block table (a mapping from logical page to physical block ID) is passed to the attention kernel each step.</p>
+      <p>Visual: GPU KV cache pool (24 blocks, 3 active requests):</p>
+      <div class="mem-vis">
+        <div class="mem-block mb-req1">A0</div><div class="mem-block mb-req1">A1</div><div class="mem-block mb-req1">A2</div>
+        <div class="mem-block mb-req2">B0</div><div class="mem-block mb-req2">B1</div>
+        <div class="mem-block mb-req3">C0</div><div class="mem-block mb-req3">C1</div><div class="mem-block mb-req3">C2</div><div class="mem-block mb-req3">C3</div>
+        <div class="mem-block mb-free">free</div><div class="mem-block mb-free">free</div><div class="mem-block mb-free">free</div>
+        <div class="mem-block mb-free">free</div><div class="mem-block mb-free">free</div><div class="mem-block mb-free">free</div>
+      </div>
+      <p style="font-size:13px;color:var(--text2)">Blue=Request A, Green=Request B, Orange=Request C. Blocks are non-contiguous in physical memory but appear contiguous to the attention kernel via the block table.</p>
+      <pre><code># Block table for request A:
+# Logical page 0 → physical block 2
+# Logical page 1 → physical block 7
+# Logical page 2 → physical block 15
+block_table_A = [2, 7, 15]
+
+# The attention kernel uses this to gather K/V:
+for logical_page, phys_block in enumerate(block_table_A):
+    kv_cache[phys_block]  # physical access</code></pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Prefix Caching (Automatic KV Reuse)</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>When multiple requests share the same prefix (e.g., a system prompt or a long document in RAG), vLLM avoids re-computing KV values for those tokens by <em>sharing blocks</em>.</p>
+      <pre><code># Block hashing for prefix caching
+# Each full block gets a content hash:
+#   hash(prefix_hash, token_ids_in_block) → BlockHash
+
+# Request A: [system_prompt...] + "Q: What is 2+2?"
+# Request B: [system_prompt...] + "Q: Tell me a joke"
+#
+# Shared:  blocks 0, 1, 2 (system_prompt blocks)
+# Unique:  block 3 (question-specific tokens)</code></pre>
+      <p>When a new request arrives, the scheduler checks if its prompt prefix matches any cached block hashes. Matched blocks are <em>shared</em> (reference counted) — no new allocation needed for those tokens.</p>
+      <div class="mem-vis">
+        <div class="mem-block mb-shared">SYS 0</div>
+        <div class="mem-block mb-shared">SYS 1</div>
+        <div class="mem-block mb-shared">SYS 2</div>
+        <div class="mem-block mb-req1">A-Q</div>
+        <div class="mem-block mb-req2">B-Q</div>
+        <div class="mem-block mb-free">free</div>
+      </div>
+      <p style="font-size:13px;color:var(--text2)">Purple = shared prefix blocks. Both requests A and B reference the same physical blocks for the system prompt.</p>
+      <p>Source: <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/core/kv_cache_utils.py" target="_blank">vllm/v1/core/kv_cache_utils.py</a></p>
+    </div>
+  </div>
+
+  <h2>KVCacheManager</h2>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Block Allocator</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>Source: <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/core/kv_cache_manager.py" target="_blank">vllm/v1/core/kv_cache_manager.py</a></p>
+      <p>The <code>KVCacheManager</code> is a pure Python block allocator. It runs on CPU (inside the scheduler) and manages logical block IDs, block hashes, and reference counts. The GPU tensors themselves are untouched here.</p>
+      <pre><code>class KVCacheManager:
+    def __init__(self, kv_cache_config: KVCacheConfig, ...):
+        self.num_gpu_blocks = kv_cache_config.num_gpu_blocks
+        self.block_size = kv_cache_config.block_size
+        # Free list — available block IDs
+        self.free_block_ids: list[int] = list(range(self.num_gpu_blocks))
+        # Block metadata indexed by block_id
+        self.blocks: dict[int, KVCacheBlock] = {}
+        # Hash → block_id (for prefix cache hits)
+        self.hash_to_block: dict[BlockHash, int] = {}
+
+    def allocate_slots(
+        self,
+        request: Request,
+        num_new_tokens: int,
+    ) -> KVCacheBlocks | None:
+        # Returns None if not enough blocks available
+        # Assigns block IDs to request, updates block table
+        ...
+
+    def free(self, request: Request) -> None:
+        # Decrement reference counts, return blocks to free list
+        # Hashed blocks stay in cache (evicted LRU when needed)
+        ...</code></pre>
+      <h4>KVCacheBlock</h4>
+      <pre><code>@dataclass
+class KVCacheBlock:
+    block_id: int
+    block_hash: BlockHash | None   # None = not yet hashed (partial block)
+    ref_count: int                  # shared = ref_count > 1
+    is_null: bool                   # sentinel for padding
+    token_count: int                # tokens stored in this block</code></pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>KVCacheConfig &amp; KVCacheSpec</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>Source: <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/kv_cache_interface.py" target="_blank">vllm/v1/kv_cache_interface.py</a></p>
+      <pre><code>@dataclass
+class KVCacheConfig:
+    num_gpu_blocks: int          # total physical blocks on GPU
+    num_cpu_blocks: int          # for CPU swap (offloading)
+    block_size: int              # tokens per block (default 16)
+    kv_cache_groups: list[KVCacheGroupSpec]  # per model component
+
+# KVCacheSpec variants describe the attention type:
+class FullAttentionSpec(KVCacheSpec):
+    # Standard transformer: full sequence attention
+    block_size: int
+    num_kv_heads: int
+    head_size: int
+    dtype: torch.dtype
+
+class SlidingWindowSpec(KVCacheSpec):
+    # Mistral-style: only attend to last `window_size` tokens
+    window_size: int
+    ...
+
+class CrossAttentionSpec(KVCacheSpec):
+    # Encoder-decoder: attend to fixed encoder output
+    ...</code></pre>
+      <p>Different model architectures (Llama = full, Mistral = sliding window, T5 = cross-attention) use different specs, allowing the KV cache manager to allocate correctly for each.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Memory Profiling &amp; Block Count Determination</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>At startup, vLLM runs a <em>memory profiling pass</em> to determine how many KV cache blocks fit in available GPU memory:</p>
+      <pre><code># In Worker.determine_num_available_blocks():
+# 1. Run model with dummy input to measure activation peak memory
+dummy_output = model_runner.profile_run()
+
+# 2. Free memory after profiling pass
+torch.cuda.empty_cache()
+free_gpu_memory, total_gpu_memory = torch.cuda.mem_get_info()
+
+# 3. Reserve fraction for KV cache
+kv_cache_memory = free_gpu_memory * gpu_memory_utilization
+
+# 4. Compute how many blocks fit
+bytes_per_block = (
+    block_size * num_layers * num_kv_heads * head_dim * 2  # K+V
+    * dtype.itemsize
+)
+num_gpu_blocks = int(kv_cache_memory // bytes_per_block)</code></pre>
+      <p>The <code>gpu_memory_utilization</code> parameter (default: 0.9) controls what fraction of GPU memory is reserved for KV cache. Setting it too high risks OOM from PyTorch activation memory.</p>
+    </div>
+  </div>
+
+</main>
+<script>
+function toggleCard(h){const b=h.nextElementSibling,btn=h.querySelector('.toggle-btn');if(b.classList.contains('hidden')){b.classList.remove('hidden');btn.textContent='−';}else{b.classList.add('hidden');btn.textContent='+';}}
+</script>
+</body>
+</html>

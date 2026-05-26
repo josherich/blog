@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>llama.cpp — Inference Data Flow</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #21262d;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --text-dim: #8b949e;
+    --blue: #58a6ff;
+    --green: #3fb950;
+    --orange: #d29922;
+    --red: #f85149;
+    --purple: #bc8cff;
+    --cyan: #39d353;
+    --accent: #1f6feb;
+    --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    padding: 16px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  h1 { font-size: 1.8rem; color: #fff; margin-bottom: 8px; }
+  h2 { font-size: 1.2rem; color: var(--blue); margin: 24px 0 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+  h3 { font-size: 1rem; color: var(--orange); margin: 16px 0 8px; }
+  p { margin-bottom: 10px; color: var(--text); }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .subtitle { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 24px; }
+
+  /* Pipeline flow */
+  .pipeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 24px 0;
+  }
+  .pipeline-step {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+  .pipeline-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 24px;
+    flex-shrink: 0;
+  }
+  .connector-line {
+    width: 2px;
+    background: var(--border);
+    flex: 1;
+    min-height: 16px;
+  }
+  .connector-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--blue);
+    background: var(--bg);
+    flex-shrink: 0;
+  }
+  .pipeline-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    flex: 1;
+    margin: 4px 0;
+    transition: border-color 0.2s;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .pipeline-card:hover {
+    border-color: var(--blue);
+    text-decoration: none;
+  }
+  .pipeline-card .step-num {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    margin-bottom: 2px;
+  }
+  .pipeline-card .step-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .pipeline-card .step-desc {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    line-height: 1.4;
+  }
+  .pipeline-card .step-data {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--green);
+    margin-top: 6px;
+  }
+  .step-1 .connector-dot { border-color: #58a6ff; }
+  .step-2 .connector-dot { border-color: #3fb950; }
+  .step-3 .connector-dot { border-color: #d29922; }
+  .step-4 .connector-dot { border-color: #bc8cff; }
+  .step-5 .connector-dot { border-color: #f85149; }
+  .step-6 .connector-dot { border-color: #39d353; }
+  .step-7 .connector-dot { border-color: #58a6ff; }
+  .step-8 .connector-dot { border-color: #3fb950; }
+  .step-9 .connector-dot { border-color: #d29922; }
+
+  /* Nav cards */
+  .nav-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+    margin: 24px 0;
+  }
+  .nav-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s, transform 0.1s;
+    display: block;
+  }
+  .nav-card:hover {
+    border-color: var(--blue);
+    transform: translateY(-1px);
+    text-decoration: none;
+  }
+  .nav-card .nav-icon { font-size: 1.5rem; margin-bottom: 8px; }
+  .nav-card .nav-title { font-weight: 600; color: #fff; margin-bottom: 4px; }
+  .nav-card .nav-desc { font-size: 0.83rem; color: var(--text-dim); }
+  .nav-card .nav-file {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--blue);
+    margin-top: 8px;
+  }
+
+  /* Details */
+  details {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  summary {
+    padding: 14px 16px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
+    list-style: none;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before {
+    content: '▶';
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  details[open] summary::before { transform: rotate(90deg); }
+  .details-body { padding: 0 16px 16px; }
+
+  /* Code */
+  pre {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    line-height: 1.5;
+    white-space: pre;
+    margin: 10px 0;
+  }
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    background: var(--surface2);
+    padding: 2px 5px;
+    border-radius: 3px;
+    color: var(--orange);
+  }
+  pre code { background: none; padding: 0; color: inherit; }
+
+  /* Badges */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin: 2px;
+  }
+  .badge-blue { background: #1f3350; color: var(--blue); border: 1px solid #1f6feb; }
+  .badge-green { background: #0d2a16; color: var(--green); border: 1px solid #238636; }
+  .badge-orange { background: #271d04; color: var(--orange); border: 1px solid #9e6a03; }
+  .badge-purple { background: #1d1040; color: var(--purple); border: 1px solid #6e40c9; }
+
+  /* Ref links */
+  .ref-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+  .ref-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.8rem;
+    color: var(--blue);
+    text-decoration: none;
+  }
+  .ref-link:hover { border-color: var(--blue); text-decoration: none; }
+  .ref-link.gh { color: var(--green); }
+  .ref-link.gh:hover { border-color: var(--green); }
+
+  .tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: var(--surface2);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+  }
+
+  .info-box {
+    background: #0c1929;
+    border: 1px solid #1f6feb;
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin: 10px 0;
+    font-size: 0.88rem;
+    color: var(--text);
+  }
+  .info-box strong { color: var(--blue); }
+
+  @media (max-width: 600px) {
+    body { font-size: 14px; padding: 12px; }
+    h1 { font-size: 1.4rem; }
+    .nav-grid { grid-template-columns: 1fr; }
+    pre { font-size: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<h1>llama.cpp — Inference Data Flow</h1>
+<p class="subtitle">How text goes from input string to generated tokens, step by step through the stack.</p>
+
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/tree/35c9b1f39ebe5a7bb83986d64415a079218be78d">Source @ 35c9b1f</a>
+  <a class="ref-link" href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a>
+  <a class="ref-link" href="https://github.com/ggml-org/ggml/blob/master/docs/gguf.md">GGUF Format</a>
+</div>
+
+<h2>Full Pipeline</h2>
+<p>Every inference in llama.cpp follows this sequence. Click a step to explore its component page.</p>
+
+<div class="pipeline">
+
+  <div class="pipeline-step step-1">
+    <div class="pipeline-connector"><div class="connector-dot"></div><div class="connector-line"></div></div>
+    <a class="pipeline-card" href="server.html">
+      <div class="step-num">STEP 0</div>
+      <div class="step-title">HTTP Request / CLI Input</div>
+      <div class="step-desc">A POST to <code>/v1/chat/completions</code> or CLI args arrive at the server. JSON is parsed into a <code>server_task</code> and queued for processing.</div>
+      <div class="step-data">"What is the capital of France?" → server_task{prompt, params}</div>
+    </a>
+  </div>
+
+  <div class="pipeline-step step-2">
+    <div class="pipeline-connector"><div class="connector-line"></div><div class="connector-dot"></div><div class="connector-line"></div></div>
+    <a class="pipeline-card" href="tokenization.html">
+      <div class="step-num">STEP 1 — Tokenization</div>
+      <div class="step-title">Text → Token IDs</div>
+      <div class="step-desc">The prompt string is split by the vocabulary tokenizer (BPE, SentencePiece, etc.) into integer token IDs. Each ID maps to a learned embedding vector.</div>
+      <div class="step-data">"Hello world" → [1, 15043, 3186]</div>
+    </a>
+  </div>
+
+  <div class="pipeline-step step-3">
+    <div class="pipeline-connector"><div class="connector-line"></div><div class="connector-dot"></div><div class="connector-line"></div></div>
+    <a class="pipeline-card" href="graph.html">
+      <div class="step-num">STEP 2 — Batch Preparation</div>
+      <div class="step-title">Token IDs → llama_batch</div>
+      <div class="step-desc">Token IDs are packaged into a <code>llama_batch</code> along with positions, sequence IDs, and logit flags. Multiple sequences can share a batch (parallel inference).</div>
+      <div class="step-data">batch.token=[…], batch.pos=[0,1,2], batch.logits=[0,0,1]</div>
+    </a>
+  </div>
+
+  <div class="pipeline-step step-4">
+    <div class="pipeline-connector"><div class="connector-line"></div><div class="connector-dot"></div><div class="connector-line"></div></div>
+    <a class="pipeline-card" href="graph.html">
+      <div class="step-num">STEP 3 — Graph Building</div>
+      <div class="step-title">llama_batch → ggml_cgraph</div>
+      <div class="step-desc">The model architecture (LLaMA, Qwen, Mistral, …) builds a lazy computation graph: embedding lookup → 32 transformer layers (attention + FFN) → output projection. No computation yet.</div>
+      <div class="step-data">ggml_cgraph{1847 nodes} describing full forward pass</div>
+    </a>
+  </div>
+
+  <div class="pipeline-step step-5">
+    <div class="pipeline-connector"><div class="connector-line"></div><div class="connector-dot"></div><div class="connector-line"></div></div>
+    <a class="pipeline-card" href="backends.html">
+      <div class="step-num">STEP 4 — Backend Execution</div>
+      <div class="step-title">ggml_cgraph → device kernels</div>
+      <div class="step-desc">The backend scheduler assigns each graph node to a device (CPU / CUDA / Metal). Kernels execute: matrix multiplications, attention softmax, RoPE encoding, RMS norm, SiLU activation.</div>
+      <div class="step-data">W_q @ x → CUDA kernel / CPU SIMD / Metal shader</div>
+    </a>
+  </div>
+
+  <div class="pipeline-step step-6">
+    <div class="pipeline-connector"><div class="connector-line"></div><div class="connector-dot"></div><div class="connector-line"></div></div>
+    <a class="pipeline-card" href="graph.html">
+      <div class="step-num">STEP 5 — Logits Extraction</div>
+      <div class="step-title">hidden state → logits [n_vocab]</div>
+      <div class="step-desc">After all layers, the final hidden state is projected to vocabulary size. Only logits for tokens marked in <code>batch.logits</code> are copied from device to host.</div>
+      <div class="step-data">logits[128256] — one float per vocab token</div>
+    </a>
+  </div>
+
+  <div class="pipeline-step step-7">
+    <div class="pipeline-connector"><div class="connector-line"></div><div class="connector-dot"></div><div class="connector-line"></div></div>
+    <a class="pipeline-card" href="sampling.html">
+      <div class="step-num">STEP 6 — Sampling</div>
+      <div class="step-title">logits → next token ID</div>
+      <div class="step-desc">A sampler chain filters logits: temperature scaling, top-K, top-P nucleus, repetition penalty. A categorical draw picks the next token ID from the filtered distribution.</div>
+      <div class="step-data">logits[128256] → top-K/P → temp → sample → token_id=4521</div>
+    </a>
+  </div>
+
+  <div class="pipeline-step step-8">
+    <div class="pipeline-connector"><div class="connector-line"></div><div class="connector-dot"></div><div class="connector-line"></div></div>
+    <a class="pipeline-card" href="tokenization.html">
+      <div class="step-num">STEP 7 — Detokenization</div>
+      <div class="step-title">token ID → text piece</div>
+      <div class="step-desc">The sampled token ID is converted back to a string via the vocabulary. The piece is appended to the output buffer and streamed to the client.</div>
+      <div class="step-data">token_id=4521 → " Paris"</div>
+    </a>
+  </div>
+
+  <div class="pipeline-step step-9">
+    <div class="pipeline-connector"><div class="connector-line"></div><div class="connector-dot"></div></div>
+    <a class="pipeline-card" href="server.html">
+      <div class="step-num">STEP 8 — Loop / Stop</div>
+      <div class="step-title">Autoregressive generation</div>
+      <div class="step-desc">Steps 2–7 repeat: the new token becomes the next batch input. KV-cache stores past key/value tensors so only the new token is processed each step. Stops on EOS or max tokens.</div>
+      <div class="step-data">KV cache grows by 1 row per step — O(1) compute per new token</div>
+    </a>
+  </div>
+
+</div>
+
+<h2>Component Pages</h2>
+<div class="nav-grid">
+  <a class="nav-card" href="tokenization.html">
+    <div class="nav-icon">🔤</div>
+    <div class="nav-title">Tokenization</div>
+    <div class="nav-desc">BPE / SentencePiece / WordPiece — how text becomes integers and back.</div>
+    <div class="nav-file">src/llama-vocab.cpp</div>
+  </a>
+  <a class="nav-card" href="graph.html">
+    <div class="nav-icon">🧮</div>
+    <div class="nav-title">Computation Graph & Transformer</div>
+    <div class="nav-desc">Lazy graph construction, embedding lookup, attention, FFN, KV cache.</div>
+    <div class="nav-file">src/llama-graph.cpp · src/llama-context.cpp</div>
+  </a>
+  <a class="nav-card" href="backends.html">
+    <div class="nav-icon">⚡</div>
+    <div class="nav-title">GGML Backends</div>
+    <div class="nav-desc">How the scheduler maps graph nodes to CPU, CUDA, Metal, Vulkan kernels.</div>
+    <div class="nav-file">ggml/src/ggml-backend.cpp · ggml/src/ggml-cuda/</div>
+  </a>
+  <a class="nav-card" href="sampling.html">
+    <div class="nav-icon">🎲</div>
+    <div class="nav-title">Sampling Pipeline</div>
+    <div class="nav-desc">Temperature, top-K, top-P, repetition penalty, Mirostat — the sampler chain.</div>
+    <div class="nav-file">src/llama-sampler.cpp</div>
+  </a>
+  <a class="nav-card" href="server.html">
+    <div class="nav-icon">🌐</div>
+    <div class="nav-title">HTTP Server</div>
+    <div class="nav-desc">Request routing, slot management, prompt processing, streaming responses.</div>
+    <div class="nav-file">tools/server/server.cpp · tools/server/server-context.cpp</div>
+  </a>
+</div>
+
+<h2>Key Data Structures</h2>
+
+<details open>
+<summary>llama_model — loaded weights</summary>
+<div class="details-body">
+<p>Opaque struct holding all model tensors (embeddings, attention matrices, FFN weights) plus hyperparameters loaded from the GGUF file. Shared across contexts and never mutated after load.</p>
+<pre>// include/llama.h — forward declaration only (opaque)
+struct llama_model;   // ← allocated by llama_model_load_from_file()
+
+// Key hyperparameters exposed via llama_model_* accessors:
+//   llama_model_n_embd()   → embedding dimension (e.g. 4096)
+//   llama_model_n_layer()  → transformer depth (e.g. 32)
+//   llama_model_n_head()   → attention heads
+//   llama_model_n_vocab()  → vocabulary size</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/include/llama.h#L62">llama.h#L62 — declaration</a>
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/src/llama-model.cpp">llama-model.cpp — implementation</a>
+</div>
+</div>
+</details>
+
+<details open>
+<summary>llama_context — inference state</summary>
+<div class="details-body">
+<p>Holds the KV cache, logits buffer, backend scheduler, and all per-request state. One context per inference session; multiple contexts can share a model.</p>
+<pre>// include/llama.h#L336 — context parameters
+struct llama_context_params {
+    uint32_t n_ctx;        // token context window (default 512)
+    uint32_t n_batch;      // max tokens per llama_decode() call
+    uint32_t n_ubatch;     // physical micro-batch size
+    uint32_t n_threads;    // threads for CPU ops
+    enum ggml_type type_k; // KV cache key dtype (F16 default)
+    enum ggml_type type_v; // KV cache value dtype
+    bool     flash_attn;   // use flash attention kernel
+    // ...
+};</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/include/llama.h#L336">llama.h#L336 — context params</a>
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/src/llama-context.cpp">llama-context.cpp</a>
+</div>
+</div>
+</details>
+
+<details open>
+<summary>llama_batch — one decode call's input</summary>
+<div class="details-body">
+<p>All data needed for a single <code>llama_decode()</code> call. Can contain multiple tokens from multiple sequences simultaneously.</p>
+<pre>// include/llama.h#L240
+typedef struct llama_batch {
+    int32_t       n_tokens;   // total tokens in this batch
+    llama_token * token;      // token IDs   [n_tokens]
+    float       * embd;       // embeddings  [n_tokens * n_embd] (or NULL)
+    llama_pos   * pos;        // positions   [n_tokens]
+    int32_t     * n_seq_id;   // seq count   [n_tokens]
+    llama_seq_id** seq_id;    // seq IDs     [n_tokens]
+    int8_t      * logits;     // want logits?[n_tokens]  1=yes, 0=no
+} llama_batch;</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/include/llama.h#L240">llama.h#L240 — llama_batch</a>
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/include/llama.h#L912">llama.h#L912 — llama_batch_get_one()</a>
+</div>
+</div>
+</details>
+
+<details open>
+<summary>ggml_tensor — the fundamental compute unit</summary>
+<div class="details-body">
+<p>Every weight matrix and intermediate activation is a <code>ggml_tensor</code>. Tensors are nodes in the computation graph; their <code>src[]</code> pointers form the graph edges. No computation happens at construction time.</p>
+<pre>// ggml/include/ggml.h#L666
+struct ggml_tensor {
+    enum ggml_type type;       // F32, F16, Q4_0, Q8_0, ...
+    int64_t ne[4];             // dimensions [cols, rows, batch, batch2]
+    size_t  nb[4];             // byte strides per dimension
+    enum ggml_op op;           // NONE | MUL_MAT | SOFT_MAX | ROPE | ...
+    struct ggml_tensor * src[GGML_MAX_SRC]; // input tensors (graph edges)
+    void  * data;              // raw data pointer (on device)
+    char    name[GGML_MAX_NAME];
+};</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/ggml/include/ggml.h#L666">ggml.h#L666 — ggml_tensor</a>
+</div>
+</div>
+</details>
+
+<h2>Minimal Inference Example</h2>
+
+<details open>
+<summary>Complete C API call sequence</summary>
+<div class="details-body">
+<p>This is the skeleton every llama.cpp-based program follows. The server and CLI examples wrap this pattern.</p>
+<pre>// 1. Init
+llama_backend_init();                               // llama.h#L449
+
+// 2. Load model from GGUF file
+llama_model_params mparams = llama_model_default_params();
+mparams.n_gpu_layers = 35;                          // offload to GPU
+struct llama_model * model =
+    llama_model_load_from_file("model.gguf", mparams); // llama.h#L484
+
+// 3. Create inference context
+llama_context_params cparams = llama_context_default_params();
+cparams.n_ctx    = 4096;
+cparams.n_batch  = 512;
+struct llama_context * ctx =
+    llama_init_from_model(model, cparams);           // llama.h#L509
+
+// 4. Tokenize
+const char * prompt = "Hello, world!";
+int n_tokens = llama_tokenize(                       // llama.h#L1125
+    llama_model_get_vocab(model),
+    prompt, strlen(prompt),
+    tokens, max_tokens, true, false);
+
+// 5. Create sampler chain
+struct llama_sampler * smpl =
+    llama_sampler_chain_init(llama_sampler_chain_default_params());
+llama_sampler_chain_add(smpl, llama_sampler_init_top_k(50));
+llama_sampler_chain_add(smpl, llama_sampler_init_top_p(0.9, 1));
+llama_sampler_chain_add(smpl, llama_sampler_init_temp(0.8));
+llama_sampler_chain_add(smpl, llama_sampler_init_dist(LLAMA_DEFAULT_SEED));
+
+// 6. Prefill prompt (process all prompt tokens at once)
+struct llama_batch batch = llama_batch_get_one(tokens, n_tokens);
+llama_decode(ctx, batch);                            // llama.h#L953
+
+// 7. Autoregressive generation loop
+for (int i = 0; i < max_new_tokens; i++) {
+    llama_token id =
+        llama_sampler_sample(smpl, ctx, -1);         // llama.h#L1481
+    if (llama_vocab_is_eog(llama_model_get_vocab(model), id)) break;
+
+    // Print the token
+    char piece[32];
+    llama_token_to_piece(llama_model_get_vocab(model), id, piece, 32, 0, true);
+    printf("%s", piece);
+
+    // Feed sampled token back as next input
+    llama_sampler_accept(smpl, id);
+    batch = llama_batch_get_one(&id, 1);
+    llama_decode(ctx, batch);                        // KV cache grows +1
+}
+
+// 8. Cleanup
+llama_sampler_free(smpl);
+llama_free(ctx);
+llama_model_free(model);
+llama_backend_free();</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/examples/simple/simple.cpp">examples/simple/simple.cpp</a>
+</div>
+</div>
+</details>
+
+<h2>Architecture and File Map</h2>
+<details open>
+<summary>Key source files</summary>
+<div class="details-body">
+<pre>llama.cpp/
+├── include/llama.h            ← Public C API (all structs & functions)
+├── src/
+│   ├── llama.cpp              ← Thin wrappers → internal implementations
+│   ├── llama-model.cpp        ← GGUF loading, architecture dispatch
+│   ├── llama-context.cpp      ← decode(), KV cache, logits extraction
+│   ├── llama-graph.cpp        ← ggml_cgraph construction per architecture
+│   ├── llama-batch.cpp        ← Batch splitting into micro-batches
+│   ├── llama-vocab.cpp        ← Tokenizer (BPE / SPM / WPM / UGM / RWKV)
+│   ├── llama-sampler.cpp      ← Sampler chain implementations
+│   └── models/llama*.cpp      ← Per-architecture graph builders
+├── ggml/
+│   ├── include/ggml.h         ← Tensor API (ggml_tensor, all ops)
+│   ├── src/ggml.c             ← CPU tensor math, graph executor
+│   ├── src/ggml-backend.cpp   ← Backend abstraction & scheduler
+│   ├── src/ggml-cpu/          ← SIMD kernels (AVX2, NEON, …)
+│   ├── src/ggml-cuda/         ← CUDA kernels
+│   └── src/ggml-metal/        ← Metal shaders
+└── tools/server/
+    ├── server.cpp             ← HTTP server entry point
+    ├── server-context.cpp     ← Inference loop, slot management
+    └── server-http.cpp        ← Route handlers, JSON I/O</pre>
+</div>
+</details>
+
+</body>
+</html>

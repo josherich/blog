@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vLLM — Executor, Worker &amp; Model Runner</title>
+<style>
+  :root{--bg:#0d1117;--bg2:#161b22;--bg3:#1c2128;--border:#30363d;--text:#e6edf3;--text2:#8b949e;--blue:#58a6ff;--green:#3fb950;--orange:#d29922;--purple:#bc8cff;--red:#f85149;--code-bg:#161b22}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:16px;line-height:1.6}
+  header{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 20px;position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  header h1{font-size:18px;color:var(--blue)}
+  nav{display:flex;gap:10px;flex-wrap:wrap}
+  nav a{color:var(--text2);text-decoration:none;font-size:13px;padding:4px 10px;border-radius:6px;border:1px solid var(--border)}
+  nav a:hover,nav a.active{color:var(--blue);border-color:var(--blue)}
+  main{max-width:960px;margin:0 auto;padding:24px 16px 60px}
+  h2{color:var(--blue);font-size:22px;margin:32px 0 12px;border-bottom:1px solid var(--border);padding-bottom:8px}
+  h3{color:var(--green);font-size:17px;margin:24px 0 10px}
+  h4{color:var(--orange);font-size:15px;margin:18px 0 8px}
+  p{margin:10px 0}
+  a{color:var(--blue)}
+  .card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;margin:16px 0}
+  .card-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+  .card-header h3{margin:0}
+  .toggle-btn{background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer;padding:0 4px;line-height:1}
+  .card-body{margin-top:14px}
+  .card-body.hidden{display:none}
+  pre,code{font-family:'Cascadia Code','Fira Code','JetBrains Mono',monospace;font-size:13px}
+  pre{background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:14px;overflow-x:auto;white-space:pre;margin:12px 0;line-height:1.5}
+  code{background:var(--code-bg);border:1px solid var(--border);border-radius:4px;padding:2px 6px;font-size:12px}
+  pre code{background:none;border:none;padding:0}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th{background:var(--bg3);color:var(--text2);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+  td{padding:8px 12px;border-bottom:1px solid var(--border)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+  @media(max-width:600px){.grid2{grid-template-columns:1fr}}
+  .section-intro{background:linear-gradient(135deg,#1f2d3d,#0d1117);border:1px solid var(--blue);border-radius:10px;padding:18px 22px;margin:16px 0 28px}
+  .section-intro h2{border:none;margin:0 0 8px;padding:0}
+  .flow{display:flex;flex-direction:column;align-items:center;gap:0;margin:20px 0}
+  .flow-node{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 18px;text-align:center;width:100%;max-width:560px}
+  .flow-node .nt{color:var(--blue);font-weight:600;font-size:15px}
+  .flow-node .nf{color:var(--text2);font-size:12px;font-family:monospace;margin-top:3px}
+  .flow-node .nd{color:var(--text);font-size:13px;margin-top:5px}
+  .flow-arrow{color:var(--text2);font-size:22px;line-height:1.2;margin:2px 0}
+  .insight{background:var(--bg3);border-left:3px solid var(--orange);padding:12px 16px;border-radius:0 6px 6px 0;margin:14px 0}
+  .insight p{margin:0;font-size:14px}
+  .gpu-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:16px 0}
+  @media(max-width:500px){.gpu-grid{grid-template-columns:repeat(2,1fr)}}
+  .gpu-box{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px;text-align:center;font-size:13px}
+  .gpu-box .gpu-title{color:var(--blue);font-weight:600}
+  .gpu-box .gpu-sub{color:var(--text2);font-size:11px;margin-top:4px}
+</style>
+</head>
+<body>
+<header>
+  <h1>vLLM Internals</h1>
+  <nav>
+    <a href="index.html">Overview</a>
+    <a href="01-entry-points.html">Entry Points</a>
+    <a href="02-engine.html">Engine</a>
+    <a href="03-scheduler.html">Scheduler</a>
+    <a href="04-kv-cache.html">KV Cache</a>
+    <a href="05-execution.html" class="active">Execution</a>
+    <a href="06-attention.html">Attention</a>
+    <a href="07-sampling.html">Sampling</a>
+  </nav>
+</header>
+<main>
+  <div class="section-intro">
+    <h2>Executor, Worker &amp; Model Runner</h2>
+    <p>The execution layer runs the actual transformer model. It has three tiers: the <strong>Executor</strong> abstracts distribution strategy, the <strong>Worker</strong> manages one device (GPU), and the <strong>ModelRunner</strong> runs the model forward pass and sampling on that device.</p>
+  </div>
+
+  <h2>Execution Tier Architecture</h2>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Three-Tier Stack</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <div class="flow">
+        <div class="flow-node">
+          <div class="nt">Executor</div>
+          <div class="nf">vllm/v1/executor/abstract.py</div>
+          <div class="nd">Distribution strategy (single/multi-GPU/Ray). Broadcasts SchedulerOutput to all workers.</div>
+        </div>
+        <div class="flow-arrow">↓ calls execute_model() on each worker</div>
+        <div class="flow-node">
+          <div class="nt">Worker (per device)</div>
+          <div class="nf">vllm/v1/worker/gpu_worker.py</div>
+          <div class="nd">Owns one GPU. Manages model, KV cache tensors, communicators.</div>
+        </div>
+        <div class="flow-arrow">↓ calls model_runner.execute_model()</div>
+        <div class="flow-node">
+          <div class="nt">LLMModelRunner</div>
+          <div class="nf">vllm/v1/worker/gpu_model_runner.py</div>
+          <div class="nd">Prepares inputs, runs transformer forward pass, samples next tokens.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Executor</h2>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Executor Implementations</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>Source: <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/executor/abstract.py" target="_blank">vllm/v1/executor/abstract.py</a></p>
+      <p>The executor is selected at startup based on <code>parallel_config.distributed_executor_backend</code>:</p>
+      <table>
+        <tr><th>Executor</th><th>Backend</th><th>When</th></tr>
+        <tr><td><code>UniProcExecutor</code></td><td>in-process</td><td>Single GPU, debugging</td></tr>
+        <tr><td><code>MultiprocExecutor</code></td><td>multiprocessing</td><td>Multi-GPU on one node (default)</td></tr>
+        <tr><td><code>RayDistributedExecutor</code></td><td>Ray</td><td>Multi-node cluster</td></tr>
+        <tr><td><code>ExternalLauncherExecutor</code></td><td>external</td><td>Custom launcher (Kubernetes, SLURM)</td></tr>
+      </table>
+      <pre><code>class Executor(ABC):
+    @classmethod
+    def get_class(cls, vllm_config: VllmConfig) -> type["Executor"]:
+        backend = vllm_config.parallel_config.distributed_executor_backend
+        if backend == "mp":
+            return MultiprocExecutor
+        elif backend == "ray":
+            return RayDistributedExecutor
+        ...
+
+    @abstractmethod
+    def execute_model(
+        self, scheduler_output: SchedulerOutput
+    ) -> ModelRunnerOutput:
+        # Broadcast input to all workers, gather outputs
+        ...</code></pre>
+      <h4>Tensor Parallelism</h4>
+      <p>For large models split across multiple GPUs (TP), the executor launches one worker per GPU. Workers communicate via NCCL <code>all_reduce</code> during the forward pass (after each attention and MLP layer). The scheduler only talks to <em>rank 0</em>; it gathers outputs from rank 0 as well.</p>
+      <div class="gpu-grid">
+        <div class="gpu-box"><div class="gpu-title">GPU 0 (rank 0)</div><div class="gpu-sub">Heads 0-7 + LM Head</div></div>
+        <div class="gpu-box"><div class="gpu-title">GPU 1 (rank 1)</div><div class="gpu-sub">Heads 8-15</div></div>
+        <div class="gpu-box"><div class="gpu-title">GPU 2 (rank 2)</div><div class="gpu-sub">Heads 16-23</div></div>
+        <div class="gpu-box"><div class="gpu-title">GPU 3 (rank 3)</div><div class="gpu-sub">Heads 24-31</div></div>
+      </div>
+      <p style="font-size:13px;color:var(--text2)">Each GPU holds a shard of all transformer layers. After each layer, an all_reduce gathers partial sums across GPUs.</p>
+    </div>
+  </div>
+
+  <h2>Worker</h2>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>GPU Worker</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>Source: <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/worker/gpu_worker.py" target="_blank">vllm/v1/worker/gpu_worker.py</a> | <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/worker/worker_base.py" target="_blank">worker_base.py</a></p>
+      <p>One worker process per GPU. Lifecycle:</p>
+      <pre><code>class GPUWorker(WorkerBase):
+    def init_device(self):
+        # Set CUDA device, init distributed group (NCCL)
+        torch.cuda.set_device(self.local_rank)
+        dist.init_process_group(backend="nccl", ...)
+        self.gpu_model_runner = LLMModelRunner(self.vllm_config, ...)
+
+    def load_model(self):
+        # Download from HuggingFace, load weights into GPU tensors
+        self.gpu_model_runner.load_model()
+
+    def initialize_cache(self, num_gpu_blocks: int):
+        # Allocate KV cache tensors on GPU
+        self.gpu_model_runner.initialize_kv_cache(num_gpu_blocks)
+
+    def compile_or_warm_up_model(self):
+        # Run dummy inference to trigger torch.compile / CUDA graph capture
+        self.gpu_model_runner.capture_model()
+
+    def execute_model(
+        self,
+        scheduler_output: SchedulerOutput,
+    ) -> ModelRunnerOutput:
+        return self.gpu_model_runner.execute_model(scheduler_output)</code></pre>
+    </div>
+  </div>
+
+  <h2>LLMModelRunner</h2>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Model Forward Pass</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>Source: <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/worker/gpu_model_runner.py" target="_blank">vllm/v1/worker/gpu_model_runner.py</a></p>
+      <p><code>LLMModelRunner</code> is the core of GPU-side execution. It prepares the input tensors from the scheduler's abstract description and runs them through the model.</p>
+      <pre><code>class LLMModelRunner(nn.Module):
+    def execute_model(
+        self, scheduler_output: SchedulerOutput
+    ) -> ModelRunnerOutput:
+        # 1. Build input tensors from scheduler description
+        input_ids, positions, attn_metadata = self._prepare_inputs(scheduler_output)
+
+        # 2. Forward pass through transformer
+        hidden_states = self.model(
+            input_ids=input_ids,
+            positions=positions,
+            kv_caches=self.kv_cache,
+            attn_metadata=attn_metadata,
+        )
+
+        # 3. Select only the *last* hidden state per sequence (for sampling)
+        #    (prefill tokens don't produce output tokens)
+        logits = self.compute_logits(hidden_states, scheduler_output)
+
+        # 4. Sample next tokens
+        sampler_output = self.sampler(logits, sampling_metadata)
+
+        return ModelRunnerOutput(
+            sampled_token_ids=sampler_output.sampled_tokens,
+            logprobs=sampler_output.logprobs,
+        )</code></pre>
+      <h4>_prepare_inputs()</h4>
+      <p>This method converts the human-readable <code>SchedulerOutput</code> into flat tensors the model can consume:</p>
+      <pre><code>def _prepare_inputs(self, scheduler_output: SchedulerOutput):
+    # input_ids: [total_tokens] — all prompt + decode tokens concatenated
+    # positions: [total_tokens] — position indices for RoPE
+    # block_tables: [num_seqs, max_blocks] — KV cache lookup table
+    # seq_lens: [num_seqs] — actual length of each sequence
+    # query_lens: [num_seqs] — how many query tokens each seq contributes
+    #
+    # Example (2 requests: prefill=4tok, decode=1tok):
+    # input_ids = [p0, p1, p2, p3, d0]
+    # positions  = [ 0,  1,  2,  3,  7]  # d0 is at position 7
+    # seq_lens   = [4,  8]
+    # query_lens = [4,  1]   # req0 contributes 4 queries, req1 contributes 1
+    ...</code></pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>CUDA Graph Execution</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>For decode-only steps (no prefill), vLLM captures CUDA graphs to eliminate Python overhead and kernel launch latency.</p>
+      <pre><code># During warm-up (capture phase):
+for batch_size in [1, 2, 4, 8, 16, 32, ...]:
+    # Capture the decode-only forward pass for this batch size
+    with torch.cuda.graph(self.graphs[batch_size]):
+        output = model(dummy_input_of_size(batch_size))
+    self.graphs[batch_size] = graph  # store
+
+# During inference (replay phase):
+if is_decode_only and batch_size in self.graphs:
+    # Update input buffer in-place
+    self.input_ids_buf[:batch_size] = input_ids
+    # Replay graph — no Python overhead, ~10-30% throughput gain
+    self.graphs[batch_size].replay()
+    return self.output_buf[:batch_size]
+else:
+    # Eager mode for prefill or unseen batch sizes
+    return model(input_ids, ...)</code></pre>
+      <div class="insight"><p>CUDA graphs eliminate per-kernel launch overhead (~5-10µs per kernel). For small decode batches where GPU compute is minimal, this overhead dominates — graphs make it nearly zero.</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>ModelRunnerOutput</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>Source: <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/outputs.py" target="_blank">vllm/v1/outputs.py</a></p>
+      <pre><code>@dataclass
+class ModelRunnerOutput:
+    # One token ID per sequence (the newly sampled token)
+    sampled_token_ids: torch.Tensor   # shape: [num_seqs]
+    # Log-probabilities (only if requested by SamplingParams)
+    logprobs: LogprobsTensors | None
+    # Optional: hidden states for embedding tasks
+    hidden_states: torch.Tensor | None
+    # Output from KV transfer connector (disaggregated prefill/decode)
+    kv_connector_output: KVConnectorOutput | None</code></pre>
+      <p>This is collected from all workers (only rank 0 returns meaningful sampled tokens). The scheduler's <code>update_from_output()</code> consumes it to update request state and emit <code>EngineCoreOutput</code>.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Pipeline Parallelism</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>With pipeline parallelism (PP), layers are split across GPUs in sequence. GPU 0 runs layers 0-7, GPU 1 runs 8-15, etc. The activation (hidden states) is passed between GPUs via point-to-point sends/receives.</p>
+      <pre><code># PP communication: send/recv between adjacent ranks
+# GPU 0 → GPU 1: hidden_states after layer 7
+dist.send(hidden_states, dst=next_rank)
+# GPU 1 receives:
+hidden_states = dist.recv(src=prev_rank)</code></pre>
+      <p>PP is useful for very large models that don't fit on a single node even with TP. TP+PP can be combined (e.g., TP=4, PP=2 for a 8-GPU setup).</p>
+    </div>
+  </div>
+
+</main>
+<script>
+function toggleCard(h){const b=h.nextElementSibling,btn=h.querySelector('.toggle-btn');if(b.classList.contains('hidden')){b.classList.remove('hidden');btn.textContent='−';}else{b.classList.add('hidden');btn.textContent='+';}}
+</script>
+</body>
+</html>

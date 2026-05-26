@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vLLM — Scheduler &amp; Continuous Batching</title>
+<style>
+  :root{--bg:#0d1117;--bg2:#161b22;--bg3:#1c2128;--border:#30363d;--text:#e6edf3;--text2:#8b949e;--blue:#58a6ff;--green:#3fb950;--orange:#d29922;--purple:#bc8cff;--red:#f85149;--code-bg:#161b22}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:16px;line-height:1.6}
+  header{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 20px;position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  header h1{font-size:18px;color:var(--blue)}
+  nav{display:flex;gap:10px;flex-wrap:wrap}
+  nav a{color:var(--text2);text-decoration:none;font-size:13px;padding:4px 10px;border-radius:6px;border:1px solid var(--border)}
+  nav a:hover,nav a.active{color:var(--blue);border-color:var(--blue)}
+  main{max-width:960px;margin:0 auto;padding:24px 16px 60px}
+  h2{color:var(--blue);font-size:22px;margin:32px 0 12px;border-bottom:1px solid var(--border);padding-bottom:8px}
+  h3{color:var(--green);font-size:17px;margin:24px 0 10px}
+  h4{color:var(--orange);font-size:15px;margin:18px 0 8px}
+  p{margin:10px 0}
+  a{color:var(--blue)}
+  .card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;margin:16px 0}
+  .card-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+  .card-header h3{margin:0}
+  .toggle-btn{background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer;padding:0 4px;line-height:1}
+  .card-body{margin-top:14px}
+  .card-body.hidden{display:none}
+  pre,code{font-family:'Cascadia Code','Fira Code','JetBrains Mono',monospace;font-size:13px}
+  pre{background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:14px;overflow-x:auto;white-space:pre;margin:12px 0;line-height:1.5}
+  code{background:var(--code-bg);border:1px solid var(--border);border-radius:4px;padding:2px 6px;font-size:12px}
+  pre code{background:none;border:none;padding:0}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th{background:var(--bg3);color:var(--text2);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+  td{padding:8px 12px;border-bottom:1px solid var(--border)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+  @media(max-width:600px){.grid2{grid-template-columns:1fr}}
+  .section-intro{background:linear-gradient(135deg,#1f2d3d,#0d1117);border:1px solid var(--blue);border-radius:10px;padding:18px 22px;margin:16px 0 28px}
+  .section-intro h2{border:none;margin:0 0 8px;padding:0}
+  .batch-vis{display:flex;gap:4px;flex-wrap:wrap;margin:16px 0;align-items:flex-end}
+  .batch-token{width:36px;height:36px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600}
+  .tok-prefill{background:#1f6feb;color:#fff}
+  .tok-decode{background:#1a7f37;color:#fff}
+  .tok-label{font-size:12px;color:var(--text2);margin-bottom:4px}
+  .insight{background:var(--bg3);border-left:3px solid var(--orange);padding:12px 16px;border-radius:0 6px 6px 0;margin:14px 0}
+  .insight p{margin:0;font-size:14px}
+</style>
+</head>
+<body>
+<header>
+  <h1>vLLM Internals</h1>
+  <nav>
+    <a href="index.html">Overview</a>
+    <a href="01-entry-points.html">Entry Points</a>
+    <a href="02-engine.html">Engine</a>
+    <a href="03-scheduler.html" class="active">Scheduler</a>
+    <a href="04-kv-cache.html">KV Cache</a>
+    <a href="05-execution.html">Execution</a>
+    <a href="06-attention.html">Attention</a>
+    <a href="07-sampling.html">Sampling</a>
+  </nav>
+</header>
+<main>
+  <div class="section-intro">
+    <h2>Scheduler &amp; Continuous Batching</h2>
+    <p>The scheduler is the brain of vLLM. Each engine iteration it decides: which requests to run, how many tokens to process, and which KV cache blocks to allocate. Its decisions directly determine throughput and latency.</p>
+    <p style="margin-top:8px; font-size:13px; color:var(--text2);">Reference: <a href="https://arxiv.org/abs/2305.13048" target="_blank">Orca: Continuous Batching (OSDI 2022)</a> — the paper that introduced iteration-level scheduling for LLMs</p>
+  </div>
+
+  <h2>Continuous Batching</h2>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Why Continuous Batching?</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>Traditional static batching waits for a full batch of requests to arrive, processes them all to completion, then accepts new ones. GPU utilization collapses when some requests finish early.</p>
+      <p>Continuous (or iteration-level) batching evaluates each request one token at a time and allows requests to join or leave at any iteration boundary:</p>
+      <pre><code># Static batching (naive):
+Iteration 1-50:  [req-A(50tok), req-B(50tok), req-C(50tok)]   # all 3 run
+# req-A finishes at iter 20, req-B at iter 35 → GPU underutilized 20-50
+
+# Continuous batching (vLLM):
+Iter 1-20:  [req-A, req-B, req-C]
+Iter 21:    [req-D joins, req-A left]   # immediate!
+Iter 21-35: [req-B, req-C, req-D]
+Iter 36:    [req-E joins, req-B left]
+...</code></pre>
+      <div class="insight"><p>vLLM achieves 20–24× higher throughput than naive batching on long-context workloads (per the <a href="https://arxiv.org/abs/2309.06180" target="_blank">PagedAttention paper</a>).</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Prefill vs. Decode Tokens</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>In one scheduler step, two types of tokens can appear in the same batch:</p>
+      <div class="grid2">
+        <div style="background:var(--bg3);border-radius:8px;padding:14px;border:1px solid #1f6feb">
+          <div style="color:#58a6ff;font-weight:600;margin-bottom:8px">Prefill tokens</div>
+          <p style="font-size:14px">Processing the user's <em>input</em> prompt. Produces KV cache entries for all prompt tokens in one shot. Compute-bound (parallelizable across the prompt length).</p>
+        </div>
+        <div style="background:var(--bg3);border-radius:8px;padding:14px;border:1px solid #1a7f37">
+          <div style="color:#3fb950;font-weight:600;margin-bottom:8px">Decode tokens</div>
+          <p style="font-size:14px">Generating <em>output</em> tokens one at a time. Each new token attends over all prior KV cache. Memory-bandwidth bound.</p>
+        </div>
+      </div>
+      <p style="margin-top:12px">With <strong>Chunked Prefill</strong>, long prompts are split into chunks of <code>max_num_scheduled_tokens</code> tokens and interleaved with decode steps, preventing any single prefill from monopolizing the GPU.</p>
+      <pre><code># Example: scheduler_config
+SchedulerConfig(
+    max_num_seqs=256,              # max concurrent requests
+    max_num_batched_tokens=8192,   # max total tokens per step
+    enable_chunked_prefill=True,   # interleave prefill chunks with decode
+    max_num_partial_prefills=1,    # max simultaneous chunked-prefill requests
+)</code></pre>
+    </div>
+  </div>
+
+  <h2>Scheduler Internals</h2>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Scheduler.schedule() — Step by Step</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>Source: <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/core/sched/scheduler.py" target="_blank">vllm/v1/core/sched/scheduler.py</a></p>
+      <p>Called once per engine iteration. Returns a <code>SchedulerOutput</code> describing exactly what the model runner should execute.</p>
+      <pre><code>def schedule(self) -> SchedulerOutput:
+    # Phase 1: Resume cached (prefix-hit) requests
+    #   These reuse previously computed KV blocks — no re-prefill needed
+    cached_requests = self._schedule_cached_requests()
+
+    # Phase 2: Schedule running (decode) requests
+    #   Each needs 1 new KV block allocated for the next token
+    running_scheduled = self._schedule_running_requests()
+
+    # Phase 3: Prefill new requests from the queue
+    #   Allocate KV blocks for prompt tokens
+    #   Subject to: max_num_batched_tokens, max_num_seqs, available blocks
+    new_requests = self._schedule_new_requests()
+
+    return SchedulerOutput(
+        new_requests=new_requests,
+        cached_requests=cached_requests,
+        scheduled_running_reqs=running_scheduled,
+        num_scheduled_tokens=total_tokens,
+        ...
+    )</code></pre>
+      <h4>Scheduling constraints checked</h4>
+      <table>
+        <tr><th>Constraint</th><th>Config field</th><th>Purpose</th></tr>
+        <tr><td>Max concurrent sequences</td><td><code>max_num_seqs</code></td><td>Prevents OOM from too many KV caches</td></tr>
+        <tr><td>Max tokens per step</td><td><code>max_num_batched_tokens</code></td><td>Bounds GPU memory for activations</td></tr>
+        <tr><td>Available KV blocks</td><td>runtime</td><td>Can't schedule if no blocks available</td></tr>
+        <tr><td>Max model len</td><td><code>max_model_len</code></td><td>Request can't exceed context window</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>SchedulerOutput</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>Source: <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/core/sched/output.py" target="_blank">vllm/v1/core/sched/output.py</a></p>
+      <p>This is the contract between the scheduler and the executor. It describes the full batch for one iteration.</p>
+      <pre><code>@dataclass
+class SchedulerOutput:
+    # New requests starting their prefill phase
+    new_requests: list[NewRequestData]
+    # Requests resuming from full prefix cache hit
+    cached_requests: list[CachedRequestData]
+    # Requests in ongoing decode phase
+    scheduled_running_reqs: list[RunningRequestData]
+
+    # Total token count (prefill + decode) for this step
+    num_scheduled_tokens: dict[str, int]  # request_id → tokens
+
+    # KV cache block assignments per request
+    # Shape: (num_requests,) of block ID lists
+    # Used by attention kernel to look up K/V values
+    block_ids: dict[str, list[int]]
+
+    # Preempted requests (evicted due to memory pressure)
+    preempted_reqs: list[str]
+
+@dataclass
+class NewRequestData:
+    request_id: str
+    prompt_token_ids: list[int]
+    prompt_embeds: torch.Tensor | None
+    mm_features: list[MultiModalFeatureSpec]
+    sampling_params: SamplingParams
+    block_ids: list[int]        # allocated KV blocks
+    num_computed_tokens: int    # 0 for fresh requests</code></pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>RequestQueue</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>Source: <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/core/sched/request_queue.py" target="_blank">vllm/v1/core/sched/request_queue.py</a></p>
+      <p>Manages the queue of waiting requests. Supports pluggable scheduling policies:</p>
+      <table>
+        <tr><th>Policy</th><th>Description</th></tr>
+        <tr><td>FCFS</td><td>First-come first-served (default). Prevents starvation.</td></tr>
+        <tr><td>Priority</td><td>User-assigned priority scores. Useful for SLA tiers.</td></tr>
+      </table>
+      <pre><code>class RequestQueue:
+    def __init__(self, scheduler_config: SchedulerConfig):
+        self._waiting: deque[Request] = deque()
+        self._policy = get_policy(scheduler_config.policy)
+
+    def add_request(self, request: Request) -> None:
+        self._waiting.append(request)
+
+    def pop_next_request(self) -> Request | None:
+        # Policy-specific selection
+        return self._policy.get_priority(self._waiting)</code></pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Preemption &amp; Memory Pressure</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>When GPU KV cache is exhausted, the scheduler must free blocks to make room for new prefills. It does this by preempting running requests.</p>
+      <pre><code># Preemption strategy: recompute (re-prefill)
+# 1. Pick lowest-priority running request
+# 2. Free its KV blocks
+# 3. Move it back to WAITING status
+# 4. When it's re-scheduled, full prefill runs again
+
+# Alternative: swap to CPU (not default in V1)
+# KV blocks moved to CPU DRAM, swapped back when resources free up</code></pre>
+      <div class="insight">
+        <p>The re-computation approach avoids PCIe CPU↔GPU transfer overhead but wastes prefill compute. For long prompts, prefix caching softens this — only the non-cached suffix is recomputed.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>update_from_output() — Feedback Loop</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>After each model execution, the scheduler is updated with results. This closes the loop.</p>
+      <pre><code>def update_from_output(
+    self,
+    scheduler_output: SchedulerOutput,
+    model_runner_output: ModelRunnerOutput,
+) -> list[EngineCoreOutput]:
+    outputs = []
+    for request_id, new_token_id in zip(
+        scheduler_output.scheduled_ids,
+        model_runner_output.sampled_token_ids
+    ):
+        request = self.running[request_id]
+        request.output_token_ids.append(new_token_id)
+        request.num_computed_tokens += scheduler_output.num_scheduled_tokens[request_id]
+
+        # Check stop conditions
+        if self._should_stop(request, new_token_id):
+            self._free_request(request)    # releases KV blocks
+            outputs.append(EngineCoreOutput(
+                request_id=request_id,
+                new_token_ids=[new_token_id],
+                finish_reason=FinishReason.STOP,
+            ))
+        else:
+            outputs.append(EngineCoreOutput(
+                request_id=request_id,
+                new_token_ids=[new_token_id],
+                finish_reason=None,  # still running
+            ))
+    return outputs</code></pre>
+    </div>
+  </div>
+
+</main>
+<script>
+function toggleCard(h){const b=h.nextElementSibling,btn=h.querySelector('.toggle-btn');if(b.classList.contains('hidden')){b.classList.remove('hidden');btn.textContent='−';}else{b.classList.add('hidden');btn.textContent='+';}}
+</script>
+</body>
+</html>

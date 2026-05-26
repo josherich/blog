@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vLLM — Engine Layer</title>
+<style>
+  :root{--bg:#0d1117;--bg2:#161b22;--bg3:#1c2128;--border:#30363d;--text:#e6edf3;--text2:#8b949e;--blue:#58a6ff;--green:#3fb950;--orange:#d29922;--purple:#bc8cff;--red:#f85149;--code-bg:#161b22}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:16px;line-height:1.6}
+  header{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 20px;position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  header h1{font-size:18px;color:var(--blue)}
+  nav{display:flex;gap:10px;flex-wrap:wrap}
+  nav a{color:var(--text2);text-decoration:none;font-size:13px;padding:4px 10px;border-radius:6px;border:1px solid var(--border);transition:all 0.15s}
+  nav a:hover,nav a.active{color:var(--blue);border-color:var(--blue)}
+  main{max-width:960px;margin:0 auto;padding:24px 16px 60px}
+  h2{color:var(--blue);font-size:22px;margin:32px 0 12px;border-bottom:1px solid var(--border);padding-bottom:8px}
+  h3{color:var(--green);font-size:17px;margin:24px 0 10px}
+  h4{color:var(--orange);font-size:15px;margin:18px 0 8px}
+  p{margin:10px 0}
+  a{color:var(--blue)}
+  .card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;margin:16px 0}
+  .card-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+  .card-header h3,.card-header h4{margin:0}
+  .toggle-btn{background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer;padding:0 4px;line-height:1}
+  .card-body{margin-top:14px}
+  .card-body.hidden{display:none}
+  pre,code{font-family:'Cascadia Code','Fira Code','JetBrains Mono',monospace;font-size:13px}
+  pre{background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:14px;overflow-x:auto;white-space:pre;margin:12px 0;line-height:1.5}
+  code{background:var(--code-bg);border:1px solid var(--border);border-radius:4px;padding:2px 6px;font-size:12px}
+  pre code{background:none;border:none;padding:0}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th{background:var(--bg3);color:var(--text2);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+  td{padding:8px 12px;border-bottom:1px solid var(--border)}
+  .flow{display:flex;flex-direction:column;align-items:center;gap:0;margin:20px 0}
+  .flow-node{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 18px;text-align:center;width:100%;max-width:560px}
+  .flow-node .nt{color:var(--blue);font-weight:600;font-size:15px}
+  .flow-node .nf{color:var(--text2);font-size:12px;font-family:monospace;margin-top:3px}
+  .flow-node .nd{color:var(--text);font-size:13px;margin-top:5px}
+  .flow-arrow{color:var(--text2);font-size:22px;line-height:1.2;margin:2px 0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+  @media(max-width:600px){.grid2{grid-template-columns:1fr}}
+  .section-intro{background:linear-gradient(135deg,#1f2d3d,#0d1117);border:1px solid var(--blue);border-radius:10px;padding:18px 22px;margin:16px 0 28px}
+  .section-intro h2{border:none;margin:0 0 8px;padding:0}
+  .box{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px;margin:12px 0}
+</style>
+</head>
+<body>
+<header>
+  <h1>vLLM Internals</h1>
+  <nav>
+    <a href="index.html">Overview</a>
+    <a href="01-entry-points.html">Entry Points</a>
+    <a href="02-engine.html" class="active">Engine</a>
+    <a href="03-scheduler.html">Scheduler</a>
+    <a href="04-kv-cache.html">KV Cache</a>
+    <a href="05-execution.html">Execution</a>
+    <a href="06-attention.html">Attention</a>
+    <a href="07-sampling.html">Sampling</a>
+  </nav>
+</header>
+<main>
+  <div class="section-intro">
+    <h2>Engine Layer</h2>
+    <p>The engine is the central orchestrator. It owns the request lifecycle, drives the scheduler, dispatches work to the executor, and coordinates the iterative generation loop. Two layers exist: the <strong>EngineCore</strong> (compute-side) and the <strong>front-end</strong> (LLMEngine / AsyncLLM), connected via IPC.</p>
+  </div>
+
+  <h2>Architecture: Two-Process Split</h2>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Front End vs. Engine Core</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>In production, vLLM separates the HTTP/user-facing front end from the GPU-facing engine core into distinct processes. This prevents Python GIL contention and lets the engine loop run uninterrupted.</p>
+      <pre><code>┌──────────────────────────────────┐    IPC (msgspec over socket)
+│  FRONT-END PROCESS               │◄──────────────────────────────►
+│  LLMEngine / AsyncLLM            │
+│  ├─ InputProcessor               │    ┌──────────────────────────┐
+│  ├─ OutputProcessor              │    │  ENGINE-CORE PROCESS     │
+│  └─ EngineCoreClient (proxy)     │    │  EngineCore              │
+└──────────────────────────────────┘    │  ├─ Scheduler            │
+                                        │  ├─ KVCacheManager       │
+                                        │  └─ Executor → Workers   │
+                                        └──────────────────────────┘
+
+Single-process fallback: both sides run in one process (debugging/testing)
+Ray mode: engine core lives on Ray actors</code></pre>
+      <p>The boundary is <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/engine/core_client.py" target="_blank"><code>EngineCoreClient</code></a>. On the client side it serializes <code>EngineCoreRequest</code> structs; on the server side <code>EngineCore</code> deserializes and processes them.</p>
+    </div>
+  </div>
+
+  <h2>EngineCore</h2>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>EngineCore — The Main Loop</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>Source: <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/engine/core.py" target="_blank">vllm/v1/engine/core.py</a></p>
+      <p><code>EngineCore</code> is instantiated once. It holds the scheduler, executor, and KV cache config. Its <code>step()</code> method is the main generation loop — called repeatedly until all requests are done.</p>
+      <pre><code>class EngineCore:
+    def __init__(self, vllm_config: VllmConfig, ...):
+        self.scheduler = Scheduler(vllm_config, ...)
+        self.model_executor = Executor.get_class(vllm_config)(vllm_config)
+        self.kv_cache_config: KVCacheConfig = self._init_kv_cache()
+
+    def add_request(self, request: EngineCoreRequest) -> None:
+        # Deserialize and hand to scheduler
+        self.scheduler.add_request(Request.from_engine_core_request(request))
+
+    def step(self) -> tuple[dict[str, EngineCoreOutputs], bool]:
+        # 1. Scheduler decides what to run this iteration
+        scheduler_output = self.scheduler.schedule()
+
+        # 2. Executor runs the model (may span multiple GPUs)
+        model_output = self.model_executor.execute_model(scheduler_output)
+
+        # 3. Scheduler updates state from results (free blocks, mark done)
+        engine_core_outputs = self.scheduler.update_from_output(
+            scheduler_output, model_output
+        )
+        return engine_core_outputs, self.scheduler.has_unfinished_requests()</code></pre>
+      <h4>Initialization sequence</h4>
+      <div class="flow">
+        <div class="flow-node"><div class="nt">EngineCore.__init__</div></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-node"><div class="nt">Executor.get_class(vllm_config)</div><div class="nd">Select: UniProc / Multiproc / Ray / External</div></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-node"><div class="nt">executor.determine_num_available_blocks()</div><div class="nd">GPU memory profiling to decide KV cache size</div></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-node"><div class="nt">executor.initialize_cache(num_gpu_blocks)</div><div class="nd">Allocate GPU KV cache tensors</div></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-node"><div class="nt">Scheduler(vllm_config, kv_cache_config)</div><div class="nd">Ready to accept requests</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Request Lifecycle in EngineCore</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>Requests move through states managed by <code>Request</code> (<a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/request.py" target="_blank">vllm/v1/request.py</a>):</p>
+      <pre><code>class RequestStatus(enum.Enum):
+    WAITING        = "waiting"    # in request queue
+    RUNNING        = "running"    # being processed this step
+    PREEMPTED      = "preempted"  # evicted due to memory pressure
+    FINISHED_STOP  = "finished_stop"
+    FINISHED_LENGTH = "finished_length"
+    FINISHED_ABORT = "finished_abort"
+
+class Request:
+    request_id: str
+    prompt_token_ids: list[int]
+    sampling_params: SamplingParams
+    status: RequestStatus
+
+    # Tracking progress
+    num_computed_tokens: int   # tokens whose KV is in cache
+    output_token_ids: list[int]
+    stop_reason: int | str | None</code></pre>
+      <div class="flow">
+        <div class="flow-node"><div class="nt">WAITING</div><div class="nd">In RequestQueue, awaiting scheduler pickup</div></div>
+        <div class="flow-arrow">↓ scheduler.schedule() picks it</div>
+        <div class="flow-node"><div class="nt">RUNNING</div><div class="nd">Assigned KV blocks, included in current batch</div></div>
+        <div class="flow-arrow">↓ EOS / max_tokens / stop string hit</div>
+        <div class="flow-node"><div class="nt">FINISHED_*</div><div class="nd">Blocks freed, EngineCoreOutput emitted</div></div>
+      </div>
+      <p>Under memory pressure, RUNNING → PREEMPTED (blocks reclaimed) → WAITING (requeued for re-prefill).</p>
+    </div>
+  </div>
+
+  <h2>EngineCoreClient — IPC Layer</h2>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Cross-Process Communication</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>Source: <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/engine/core_client.py" target="_blank">vllm/v1/engine/core_client.py</a></p>
+      <p>The client abstracts the communication mechanism. vLLM supports multiple backends:</p>
+      <table>
+        <tr><th>Mode</th><th>Class</th><th>Use Case</th></tr>
+        <tr><td>In-process</td><td><code>UniProcEngineCoreClient</code></td><td>Debugging, single-GPU, tests</td></tr>
+        <tr><td>Multiprocessing</td><td><code>MPClient</code></td><td>Default multi-GPU on single node</td></tr>
+        <tr><td>Ray</td><td><code>RayClient</code></td><td>Multi-node distributed serving</td></tr>
+        <tr><td>External launcher</td><td><code>ExternalLauncherClient</code></td><td>Kubernetes / custom orchestration</td></tr>
+      </table>
+      <h4>Serialization</h4>
+      <pre><code># msgspec is used for zero-copy binary serialization
+import msgspec
+
+encoder = msgspec.msgpack.Encoder()
+decoder = msgspec.msgpack.Decoder(EngineCoreRequest)
+
+# Send: front end → engine core
+wire_bytes = encoder.encode(engine_core_request)
+socket.send(wire_bytes)
+
+# Receive: engine core → front end
+engine_core_request = decoder.decode(socket.recv())</code></pre>
+      <p><a href="https://github.com/jcrist/msgspec" target="_blank">msgspec</a> is 10-100x faster than pickle or JSON for structured data, crucial for high-QPS scenarios where serialization overhead matters.</p>
+    </div>
+  </div>
+
+  <h2>LLMEngine (Sync) &amp; AsyncLLM (Async)</h2>
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>LLMEngine — Synchronous Wrapper</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>Source: <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/engine/llm_engine.py" target="_blank">vllm/v1/engine/llm_engine.py</a></p>
+      <p><code>LLMEngine</code> is the sync wrapper used by the offline <code>LLM</code> class. It drives the engine core in a loop.</p>
+      <pre><code>class LLMEngine:
+    def __init__(self, vllm_config: VllmConfig):
+        self.engine_core = EngineCoreClient.get_class(vllm_config)(vllm_config)
+        self.input_processor = InputProcessor(vllm_config, ...)
+        self.output_processor = OutputProcessor(...)
+
+    def add_request(self, request_id: str, prompt, params):
+        engine_request = self.input_processor.process(prompt, params, ...)
+        self.engine_core.add_request(engine_request)
+
+    def step(self) -> list[RequestOutput]:
+        # Drive one engine iteration
+        engine_core_outputs, has_more = self.engine_core.step()
+        return self.output_processor.process_outputs(engine_core_outputs)
+
+    def has_unfinished_requests(self) -> bool: ...
+    def abort_request(self, request_id: str): ...</code></pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Configuration — VllmConfig</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>Source: <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/config/vllm.py" target="_blank">vllm/config/vllm.py</a></p>
+      <p><code>VllmConfig</code> is the central configuration object passed everywhere. It composes all sub-configs:</p>
+      <pre><code>class VllmConfig:
+    model_config: ModelConfig           # model, dtype, quantization
+    cache_config: CacheConfig           # block_size, num_gpu_blocks
+    parallel_config: ParallelConfig     # tensor/pipeline parallelism
+    scheduler_config: SchedulerConfig   # max_num_seqs, max_num_batched_tokens
+    device_config: DeviceConfig         # cuda, cpu, tpu, …
+    speculative_config: SpeculativeConfig
+    attention_config: AttentionConfig   # backend choice
+    compilation_config: CompilationConfig  # CUDA graphs, torch.compile
+    observability_config: ObservabilityConfig
+    kv_transfer_config: KVTransferConfig | None  # disaggregated prefill/decode</code></pre>
+    </div>
+  </div>
+
+</main>
+<script>
+function toggleCard(h){const b=h.nextElementSibling,btn=h.querySelector('.toggle-btn');if(b.classList.contains('hidden')){b.classList.remove('hidden');btn.textContent='−';}else{b.classList.add('hidden');btn.textContent='+';}}
+</script>
+</body>
+</html>

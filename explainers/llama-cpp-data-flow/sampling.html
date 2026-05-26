@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sampling Pipeline — llama.cpp Data Flow</title>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --surface2: #21262d;
+    --border: #30363d; --text: #c9d1d9; --text-dim: #8b949e;
+    --blue: #58a6ff; --green: #3fb950; --orange: #d29922;
+    --red: #f85149; --purple: #bc8cff;
+    --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 15px; line-height: 1.6; padding: 16px;
+    max-width: 900px; margin: 0 auto;
+  }
+  nav { margin-bottom: 20px; font-size: 0.85rem; color: var(--text-dim); }
+  nav a { color: var(--blue); text-decoration: none; }
+  nav a:hover { text-decoration: underline; }
+  h1 { font-size: 1.6rem; color: #fff; margin-bottom: 6px; }
+  h2 { font-size: 1.15rem; color: var(--blue); margin: 24px 0 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+  h3 { font-size: 0.95rem; color: var(--orange); margin: 14px 0 8px; }
+  p { margin-bottom: 10px; }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .subtitle { color: var(--text-dim); font-size: 0.88rem; margin-bottom: 20px; }
+
+  details {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; margin-bottom: 12px; overflow: hidden;
+  }
+  summary {
+    padding: 13px 16px; cursor: pointer; font-weight: 600; color: #fff;
+    display: flex; align-items: center; gap: 8px; user-select: none; list-style: none;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before { content: '▶'; font-size: 0.7rem; color: var(--text-dim); transition: transform 0.2s; }
+  details[open] summary::before { transform: rotate(90deg); }
+  .details-body { padding: 0 16px 16px; }
+
+  pre {
+    background: #0d1117; border: 1px solid var(--border); border-radius: 6px;
+    padding: 14px; overflow-x: auto; font-family: var(--font-mono);
+    font-size: 0.82rem; line-height: 1.5; white-space: pre; margin: 10px 0;
+  }
+  code {
+    font-family: var(--font-mono); font-size: 0.85em;
+    background: var(--surface2); padding: 2px 5px; border-radius: 3px; color: var(--orange);
+  }
+  pre code { background: none; padding: 0; color: inherit; }
+
+  .ref-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+  .ref-link {
+    display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; font-size: 0.8rem; color: var(--blue); text-decoration: none;
+  }
+  .ref-link:hover { border-color: var(--blue); text-decoration: none; }
+  .ref-link.gh { color: var(--green); }
+  .ref-link.gh:hover { border-color: var(--green); }
+
+  .info-box {
+    background: #0c1929; border: 1px solid #1f6feb; border-radius: 6px;
+    padding: 12px 14px; margin: 10px 0; font-size: 0.88rem;
+  }
+  .info-box strong { color: var(--blue); }
+
+  /* Chain diagram */
+  .chain {
+    display: flex; flex-direction: column; gap: 0; margin: 14px 0;
+  }
+  .chain-node {
+    display: flex; align-items: stretch; gap: 0;
+  }
+  .chain-left {
+    display: flex; flex-direction: column; align-items: center;
+    width: 20px; flex-shrink: 0;
+  }
+  .chain-line { width: 2px; background: var(--border); flex: 1; min-height: 12px; }
+  .chain-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    border: 2px solid var(--blue); background: var(--bg); flex-shrink: 0;
+  }
+  .chain-card {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; padding: 10px 14px; flex: 1; margin: 3px 0;
+  }
+  .chain-card .cn-title { font-weight: 600; color: #fff; font-size: 0.9rem; }
+  .chain-card .cn-math { font-family: var(--font-mono); font-size: 0.78rem; color: var(--green); margin: 3px 0; }
+  .chain-card .cn-effect { font-size: 0.82rem; color: var(--text-dim); }
+  .chain-card .cn-param { font-family: var(--font-mono); font-size: 0.75rem; color: var(--orange); }
+
+  /* Distribution visual */
+  .dist-bar { display: flex; align-items: flex-end; gap: 2px; height: 60px; margin: 10px 0; }
+  .bar {
+    flex: 1; border-radius: 2px 2px 0 0;
+    transition: height 0.3s, opacity 0.3s;
+  }
+  .bar.active { background: var(--blue); }
+  .bar.filtered { background: var(--border); opacity: 0.3; }
+  .bar.selected { background: var(--green); }
+  .dist-label { display: flex; gap: 2px; font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-dim); }
+  .dist-label span { flex: 1; text-align: center; overflow: hidden; }
+
+  @media (max-width: 600px) {
+    body { font-size: 14px; padding: 12px; }
+    h1 { font-size: 1.3rem; }
+    pre { font-size: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav><a href="index.html">← Overview</a> · <a href="backends.html">Backends</a> · Sampling · <a href="server.html">Server →</a></nav>
+
+<h1>Sampling Pipeline</h1>
+<p class="subtitle">How raw logits become the next token: the composable sampler chain.</p>
+
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/src/llama-sampler.cpp">src/llama-sampler.cpp</a>
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/include/llama.h#L1190">llama.h#L1190 — sampler API</a>
+  <a class="ref-link" href="https://arxiv.org/abs/1904.09751">Top-P Sampling (Holtzman 2019)</a>
+  <a class="ref-link" href="https://arxiv.org/abs/2007.14966">Mirostat (Basu 2021)</a>
+</div>
+
+<h2>The Sampler Chain Pattern</h2>
+<p>llama.cpp uses a <strong>composable chain</strong> of samplers. Each sampler in the chain receives the current token candidates array, optionally filters or transforms it, and passes it to the next. The last sampler in the chain must be a "selecting" sampler that returns a single token ID.</p>
+
+<div class="info-box">
+  <strong>Why a chain?</strong> Different use cases want different combinations: code generation wants greedy (temperature=0); creative writing wants high temperature + top-P; chat assistants want repetition penalty + top-K + temperature. The chain pattern lets you compose exactly what you need without writing custom logic.
+</div>
+
+<h2>API: Building and Using a Chain</h2>
+
+<details open>
+<summary>llama_sampler_chain_init() and the full interface</summary>
+<div class="details-body">
+<pre>// include/llama.h#L1190 — sampler interface
+
+// Core sampler vtable (every sampler implements some of these):
+struct llama_sampler_i {
+    const char * (*name)  (const struct llama_sampler * smpl);
+    void         (*accept)(struct llama_sampler * smpl, llama_token token);
+    void         (*apply) (struct llama_sampler * smpl,
+                           llama_token_data_array * cur_p); // ← filters candidates
+    void         (*reset) (struct llama_sampler * smpl);
+    void         (*free)  (struct llama_sampler * smpl);
+};
+
+// llama_token_data_array: the candidates being filtered
+typedef struct llama_token_data_array {
+    llama_token_data * data;   // array of {id, logit, p} for each token
+    size_t   size;             // current number of candidates (shrinks as filtered)
+    int64_t  selected;         // index of selected token (-1 if not yet sampled)
+    bool     sorted;           // true if sorted by probability (descending)
+} llama_token_data_array;</pre>
+
+<pre>// Build a typical chat sampler chain:
+struct llama_sampler * smpl =
+    llama_sampler_chain_init(llama_sampler_chain_default_params());
+
+llama_sampler_chain_add(smpl, llama_sampler_init_repetition_penalty(
+    llama_model_get_vocab(model), last_n=64, penalty=1.1f, freq_pen=0.f, pres_pen=0.f));
+llama_sampler_chain_add(smpl, llama_sampler_init_top_k(40));
+llama_sampler_chain_add(smpl, llama_sampler_init_top_p(0.95f, 1));
+llama_sampler_chain_add(smpl, llama_sampler_init_temp(0.8f));
+llama_sampler_chain_add(smpl, llama_sampler_init_dist(LLAMA_DEFAULT_SEED));
+//                                                    ↑ final selector: sample from distribution
+
+// During generation loop:
+llama_token id = llama_sampler_sample(smpl, ctx, -1);  // -1 = last token's logits
+llama_sampler_accept(smpl, id);  // update repetition state</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/include/llama.h#L1481">llama.h#L1481 — llama_sampler_sample()</a>
+</div>
+</div>
+</details>
+
+<h2>Sampler Chain Execution Flow</h2>
+
+<div class="chain">
+  <div class="chain-node">
+    <div class="chain-left"><div class="chain-dot" style="border-color:var(--orange)"></div><div class="chain-line"></div></div>
+    <div class="chain-card">
+      <div class="cn-title">1. Get logits from context</div>
+      <div class="cn-math">logits[n_vocab]  (float32, raw unnormalized scores)</div>
+      <div class="cn-effect">llama_get_logits_ith(ctx, idx) → float* of length n_vocab</div>
+    </div>
+  </div>
+  <div class="chain-node">
+    <div class="chain-left"><div class="chain-line"></div><div class="chain-dot" style="border-color:var(--red)"></div><div class="chain-line"></div></div>
+    <div class="chain-card">
+      <div class="cn-title">2. Repetition Penalty</div>
+      <div class="cn-math">logit[t] /= penalty  if token t appeared in last_n tokens</div>
+      <div class="cn-effect">Reduces probability of recently generated tokens to prevent loops</div>
+      <div class="cn-param">penalty=1.1, last_n=64, freq_penalty, presence_penalty</div>
+    </div>
+  </div>
+  <div class="chain-node">
+    <div class="chain-left"><div class="chain-line"></div><div class="chain-dot" style="border-color:var(--blue)"></div><div class="chain-line"></div></div>
+    <div class="chain-card">
+      <div class="cn-title">3. Top-K Filter</div>
+      <div class="cn-math">keep top K tokens by logit value; discard the rest</div>
+      <div class="cn-effect">Removes long-tail low-probability tokens. Hard cutoff.</div>
+      <div class="cn-param">k=40 typical. k=1 = greedy. k=0 = disabled.</div>
+    </div>
+  </div>
+  <div class="chain-node">
+    <div class="chain-left"><div class="chain-line"></div><div class="chain-dot" style="border-color:var(--purple)"></div><div class="chain-line"></div></div>
+    <div class="chain-card">
+      <div class="cn-title">4. Top-P (Nucleus Sampling)</div>
+      <div class="cn-math">softmax → sort ↓ → keep tokens until Σp ≥ p_threshold</div>
+      <div class="cn-effect">Dynamically adjusts cutoff: removes candidates beyond the "nucleus" of the distribution</div>
+      <div class="cn-param">p=0.95, min_keep=1</div>
+    </div>
+  </div>
+  <div class="chain-node">
+    <div class="chain-left"><div class="chain-line"></div><div class="chain-dot" style="border-color:var(--orange)"></div><div class="chain-line"></div></div>
+    <div class="chain-card">
+      <div class="cn-title">5. Temperature</div>
+      <div class="cn-math">logit[i] /= T  (then re-softmax at sample time)</div>
+      <div class="cn-effect">T&lt;1: sharper (more confident), T&gt;1: flatter (more random), T=0: greedy</div>
+      <div class="cn-param">temp=0.8</div>
+    </div>
+  </div>
+  <div class="chain-node">
+    <div class="chain-left"><div class="chain-line"></div><div class="chain-dot" style="border-color:var(--green)"></div></div>
+    <div class="chain-card">
+      <div class="cn-title">6. Categorical Sample (dist)</div>
+      <div class="cn-math">softmax → cumsum → binary search on random uniform draw</div>
+      <div class="cn-effect">Selects one token ID from the filtered, temperature-scaled distribution</div>
+      <div class="cn-param">seed (for reproducibility)</div>
+    </div>
+  </div>
+</div>
+
+<h2>Individual Sampler Deep Dives</h2>
+
+<details open>
+<summary>Temperature — the most important parameter</summary>
+<div class="details-body">
+<p>Temperature controls the <em>sharpness</em> of the output distribution. Dividing logits by T before softmax is equivalent to raising each probability to the power 1/T and renormalizing.</p>
+<pre>// src/llama-sampler.cpp — llama_sampler_init_temp
+// Applied in apply():
+for (size_t i = 0; i &lt; cur_p->size; i++) {
+    cur_p->data[i].logit /= temp;  // scale logits
+}
+// Softmax happens at the selection step
+
+// Effect:
+// temp=0.0 → greedy (argmax, deterministic)
+// temp=0.5 → sharper than softmax, less variety
+// temp=1.0 → raw softmax probabilities
+// temp=2.0 → flatter, more random
+// temp&gt;10  → nearly uniform → essentially random token selection</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/src/llama-sampler.cpp">llama-sampler.cpp — temp sampler</a>
+</div>
+</div>
+</details>
+
+<details open>
+<summary>Top-P Nucleus Sampling</summary>
+<div class="details-body">
+<p>The "nucleus" is the minimal set of tokens whose cumulative probability exceeds p. This adapts to the model's confidence: when the model is very sure (peaked distribution), the nucleus is small; when uncertain, it's large.</p>
+<pre>// Pseudocode for top-p:
+// 1. Compute softmax of all logits
+// 2. Sort tokens by probability, descending
+// 3. Walk down the sorted list, accumulating probability
+// 4. Stop when cumulative sum >= p
+// 5. Zero out all tokens beyond the cutoff
+
+float cumsum = 0.0f;
+for (size_t i = 0; i &lt; sorted_size; i++) {
+    cumsum += probs[i];
+    if (cumsum >= p && i + 1 >= min_keep) {
+        cur_p->size = i + 1;  // keep only top i+1 tokens
+        break;
+    }
+}</pre>
+<div class="ref-list">
+  <a class="ref-link" href="https://arxiv.org/abs/1904.09751">The Curious Case of Neural Text Degeneration (Holtzman 2019)</a>
+</div>
+</div>
+</details>
+
+<details open>
+<summary>Repetition Penalty (+ frequency and presence penalty)</summary>
+<div class="details-body">
+<p>Three related penalties discourage the model from repeating tokens from recent context. The token history is tracked via <code>llama_sampler_accept()</code> after each generation step.</p>
+<pre>// For each token t in the candidate list:
+// if t appeared in the last `penalty_last_n` tokens:
+//
+//   Base penalty (multiplicative):
+//   logit[t] = (logit[t] >= 0) ? logit[t] / penalty_repeat
+//                               : logit[t] * penalty_repeat
+//
+//   Frequency penalty (subtractive, scales with count):
+//   logit[t] -= count(t) * penalty_freq
+//
+//   Presence penalty (subtractive, binary — just appeared or not):
+//   logit[t] -= penalty_present  (if t appeared at all in window)
+
+// Typical values:
+// penalty_repeat  = 1.1  (10% reduction per occurrence)
+// penalty_freq    = 0.0  (disabled by default)
+// penalty_present = 0.0  (disabled by default)</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/src/llama-sampler.cpp">llama-sampler.cpp — penalties</a>
+</div>
+</div>
+</details>
+
+<details open>
+<summary>Min-P sampling</summary>
+<div class="details-body">
+<p>Min-P (introduced 2023) is an alternative to Top-P. Instead of a fixed cumulative threshold, it removes tokens whose probability is below <code>min_p × max_prob</code>. This scales the cutoff with the model's confidence.</p>
+<pre>// float max_prob = max of all softmax probabilities
+// Keep token t if: prob[t] >= min_p * max_prob
+//
+// Example:
+// max_prob = 0.6 (model very confident)
+// min_p    = 0.1
+// cutoff   = 0.06  → removes all tokens with prob < 6%
+//
+// max_prob = 0.05 (model unsure)
+// cutoff   = 0.005 → much more permissive
+
+// Benefit: behaves like greedy when confident,
+//          like broad sampling when uncertain</pre>
+<div class="ref-list">
+  <a class="ref-link" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/src/llama-sampler.cpp">llama-sampler.cpp — min_p</a>
+</div>
+</div>
+</details>
+
+<details open>
+<summary>Mirostat — entropy-targeting sampler</summary>
+<div class="details-body">
+<p>Mirostat maintains a target perplexity (entropy) across generated tokens. It dynamically adjusts temperature each step to keep the "surprise level" of generation stable, avoiding both repetitive and incoherent text.</p>
+<pre>// Mirostat v2 algorithm (Basu 2021):
+// target_surprise τ = 3.0  (target perplexity per token)
+// η = 0.1                  (learning rate for τ adjustment)
+// μ = 2τ                   (initial sampling parameter)
+
+// Each step:
+// 1. Sort tokens by probability
+// 2. Find k = min tokens such that sum of top-k exceeds threshold μ
+// 3. Sample from top-k
+// 4. Compute surprise s = -log2(p_selected)
+// 5. Update: μ = μ - η * (s - τ)
+//    → if sampled token was surprising: lower μ next step (more focused)
+//    → if too predictable: raise μ (more diverse)</pre>
+<div class="ref-list">
+  <a class="ref-link" href="https://arxiv.org/abs/2007.14966">Mirostat paper (Basu 2021)</a>
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/src/llama-sampler.cpp">llama-sampler.cpp — mirostat_v2</a>
+</div>
+</div>
+</details>
+
+<details open>
+<summary>Greedy sampling — deterministic argmax</summary>
+<div class="details-body">
+<pre>// llama_sampler_init_greedy()
+// Selects the token with highest logit value unconditionally
+// Equivalent to temperature → 0
+
+// apply():
+int64_t best = 0;
+for (size_t i = 1; i &lt; cur_p->size; i++) {
+    if (cur_p->data[i].logit > cur_p->data[best].logit) best = i;
+}
+cur_p->selected = best;
+
+// Used for: code generation, structured output, beam search
+// Problem: can get stuck in repetition loops (use repetition penalty)</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/include/llama.h#L1280">llama.h#L1280 — llama_sampler_init_greedy()</a>
+</div>
+</div>
+</details>
+
+<h2>Grammar-Constrained Sampling</h2>
+
+<details open>
+<summary>Forcing structured output with GBNF grammars</summary>
+<div class="details-body">
+<p>llama.cpp includes a sampler that enforces a GBNF (GGML BNF) grammar. It maintains a parser state machine and sets logits to -infinity for any token that would produce an invalid continuation.</p>
+<pre>// Grammar sampler — applied BEFORE top-K/P/temp to constrain the space
+struct llama_sampler * grammar =
+    llama_sampler_init_grammar(llama_model_get_vocab(model),
+                               grammar_str,    // GBNF grammar text
+                               "root");        // start rule
+
+// During apply(), the grammar parser:
+// 1. Identifies which tokens are valid next tokens given the current parse state
+// 2. Sets logit = -INFINITY for all invalid tokens
+// 3. The subsequent top-K/P samplers then only see valid tokens
+
+// Example GBNF for JSON object with "name" field:
+// root   ::= "{" ws "\"name\"" ws ":" ws string ws "}"
+// string ::= "\"" char* "\""
+// char   ::= [a-zA-Z0-9 ]</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/grammars/">grammars/ — example GBNF files</a>
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/docs/development/parsing.md">docs/development/parsing.md</a>
+</div>
+</div>
+</details>
+
+<h2>After Sampling</h2>
+<p>The selected <code>token_id</code> is returned from <code>llama_sampler_sample()</code>. The caller must then:</p>
+<pre>// 1. Accept the token into the sampler's history (for repetition tracking):
+llama_sampler_accept(smpl, token_id);
+
+// 2. Convert to text:
+char piece[64];
+llama_token_to_piece(vocab, token_id, piece, sizeof(piece), 0, true);
+// → " Paris"
+
+// 3. Feed back for next step:
+struct llama_batch next_batch = llama_batch_get_one(&token_id, 1);
+llama_decode(ctx, next_batch);  // KV cache grows +1, computes new logits</pre>
+
+<div class="ref-list">
+  <a class="ref-link" href="server.html">→ HTTP Server (orchestration)</a>
+  <a class="ref-link" href="tokenization.html">← Tokenization (detokenize)</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computation Graph & Transformer — llama.cpp Data Flow</title>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --surface2: #21262d;
+    --border: #30363d; --text: #c9d1d9; --text-dim: #8b949e;
+    --blue: #58a6ff; --green: #3fb950; --orange: #d29922;
+    --red: #f85149; --purple: #bc8cff;
+    --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 15px; line-height: 1.6; padding: 16px;
+    max-width: 900px; margin: 0 auto;
+  }
+  nav { margin-bottom: 20px; font-size: 0.85rem; color: var(--text-dim); }
+  nav a { color: var(--blue); text-decoration: none; }
+  nav a:hover { text-decoration: underline; }
+  h1 { font-size: 1.6rem; color: #fff; margin-bottom: 6px; }
+  h2 { font-size: 1.15rem; color: var(--blue); margin: 24px 0 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+  h3 { font-size: 0.95rem; color: var(--orange); margin: 14px 0 8px; }
+  p { margin-bottom: 10px; }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .subtitle { color: var(--text-dim); font-size: 0.88rem; margin-bottom: 20px; }
+
+  details {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; margin-bottom: 12px; overflow: hidden;
+  }
+  summary {
+    padding: 13px 16px; cursor: pointer; font-weight: 600; color: #fff;
+    display: flex; align-items: center; gap: 8px; user-select: none; list-style: none;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before { content: '▶'; font-size: 0.7rem; color: var(--text-dim); transition: transform 0.2s; }
+  details[open] summary::before { transform: rotate(90deg); }
+  .details-body { padding: 0 16px 16px; }
+
+  pre {
+    background: #0d1117; border: 1px solid var(--border); border-radius: 6px;
+    padding: 14px; overflow-x: auto; font-family: var(--font-mono);
+    font-size: 0.82rem; line-height: 1.5; white-space: pre; margin: 10px 0;
+  }
+  code {
+    font-family: var(--font-mono); font-size: 0.85em;
+    background: var(--surface2); padding: 2px 5px; border-radius: 3px; color: var(--orange);
+  }
+  pre code { background: none; padding: 0; color: inherit; }
+
+  .ref-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+  .ref-link {
+    display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; font-size: 0.8rem; color: var(--blue); text-decoration: none;
+  }
+  .ref-link:hover { border-color: var(--blue); text-decoration: none; }
+  .ref-link.gh { color: var(--green); }
+  .ref-link.gh:hover { border-color: var(--green); }
+
+  .info-box {
+    background: #0c1929; border: 1px solid #1f6feb; border-radius: 6px;
+    padding: 12px 14px; margin: 10px 0; font-size: 0.88rem;
+  }
+  .info-box strong { color: var(--blue); }
+
+  /* Transformer layer diagram */
+  .layer-diagram {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 16px; margin: 14px 0; overflow-x: auto;
+  }
+  .layer-block {
+    display: flex; align-items: center; gap: 10px; margin: 6px 0; flex-wrap: wrap;
+  }
+  .block-label {
+    font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600;
+    padding: 4px 10px; border-radius: 4px; white-space: nowrap; flex-shrink: 0;
+  }
+  .block-blue { background: #1f3350; color: var(--blue); border: 1px solid #1f6feb; }
+  .block-green { background: #0d2a16; color: var(--green); border: 1px solid #238636; }
+  .block-orange { background: #271d04; color: var(--orange); border: 1px solid #9e6a03; }
+  .block-purple { background: #1d1040; color: var(--purple); border: 1px solid #6e40c9; }
+  .block-red { background: #2d0f12; color: var(--red); border: 1px solid #6e1a1f; }
+  .block-arrow { color: var(--text-dim); font-size: 1rem; }
+  .block-shape { font-size: 0.72rem; color: var(--text-dim); font-family: var(--font-mono); }
+
+  .dim-label {
+    display: inline-block; font-family: var(--font-mono); font-size: 0.75rem;
+    color: var(--purple); background: #1d1040; padding: 1px 6px;
+    border-radius: 3px; border: 1px solid #6e40c9; margin: 2px;
+  }
+
+  @media (max-width: 600px) {
+    body { font-size: 14px; padding: 12px; }
+    h1 { font-size: 1.3rem; }
+    pre { font-size: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav><a href="index.html">← Overview</a> · <a href="tokenization.html">Tokenization</a> · Computation Graph · <a href="backends.html">Backends →</a></nav>
+
+<h1>Computation Graph &amp; Transformer</h1>
+<p class="subtitle">How llama.cpp builds a lazy computation graph for the transformer forward pass, then executes it.</p>
+
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/src/llama-graph.cpp">src/llama-graph.cpp</a>
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/src/llama-context.cpp">src/llama-context.cpp</a>
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/ggml/include/ggml.h">ggml/include/ggml.h</a>
+  <a class="ref-link" href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a>
+  <a class="ref-link" href="https://arxiv.org/abs/2104.09864">RoPE paper</a>
+  <a class="ref-link" href="https://arxiv.org/abs/1910.07467">RMSNorm paper</a>
+  <a class="ref-link" href="https://arxiv.org/abs/2002.05202">SwiGLU / GLU Variants</a>
+</div>
+
+<h2>The Two-Phase Design: Build then Execute</h2>
+<p>ggml uses a <strong>deferred computation</strong> model. When you call <code>ggml_mul_mat(ctx, a, b)</code>, no math happens — instead a <code>ggml_tensor</code> node is created with <code>op=MUL_MAT</code> and pointers to its inputs. The full transformer is described as a DAG of such nodes. Only when you call <code>ggml_graph_compute()</code> does execution begin.</p>
+
+<div class="info-box">
+  <strong>Why lazy graphs?</strong> The scheduler can inspect the entire graph before running it, enabling: optimal memory allocation, node assignment to the best device (CPU/GPU), kernel fusion, and graph caching to avoid rebuild cost on subsequent decode steps.
+</div>
+
+<h2>ggml_tensor — The Graph Node</h2>
+
+<details open>
+<summary>ggml_tensor structure — shape, operation, and data pointer</summary>
+<div class="details-body">
+<pre>// ggml/include/ggml.h#L666
+struct ggml_tensor {
+    enum ggml_type type;    // F32 | F16 | BF16 | Q4_0 | Q8_0 | ...
+                            //   determines per-element byte size
+
+    int64_t ne[4];          // shape: [cols, rows, batch, batch2]
+                            //   ne[0]=cols is contiguous (innermost)
+                            //   e.g. a 4096x4096 matrix: ne={4096,4096,1,1}
+
+    size_t  nb[4];          // byte strides: nb[0]=element_size, nb[1]=row_bytes, ...
+                            //   enables non-contiguous views without copying
+
+    enum ggml_op op;        // NONE | MUL_MAT | ADD | SOFT_MAX | ROPE | NORM | ...
+
+    struct ggml_tensor * src[GGML_MAX_SRC];  // input tensors → graph edges
+                                              //   src[0], src[1] for binary ops
+
+    void * data;            // pointer to raw bytes (on CPU or device)
+    char   name[64];        // human-readable for debugging
+};</pre>
+<p><span class="dim-label">ne[4]</span> = dimensions. For a 2D weight matrix W of shape (n_embd × n_vocab): <code>ne = {n_embd, n_vocab, 1, 1}</code>.</p>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/ggml/include/ggml.h#L666">ggml.h#L666 — ggml_tensor</a>
+</div>
+</div>
+</details>
+
+<h2>The llama_decode() Entry Point</h2>
+
+<details open>
+<summary>What happens when you call llama_decode(ctx, batch)</summary>
+<div class="details-body">
+<pre>// include/llama.h#L953
+LLAMA_API int32_t llama_decode(
+    struct llama_context * ctx,
+    struct llama_batch     batch);
+
+// Internal call chain (src/llama-context.cpp):
+// llama_decode()
+//   → ctx->decode(batch)
+//     → memory->init_batch(ubatch)   // allocate KV cache slots
+//     → build_graph(ubatch)          // construct ggml_cgraph
+//     → ggml_backend_sched_graph_compute(sched, gf)  // execute
+//     → extract logits from output tensor</pre>
+<p><strong>Batch splitting</strong>: if <code>n_tokens &gt; n_ubatch</code>, the batch is split into micro-batches and decoded sequentially. The KV cache is updated after each micro-batch.</p>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/src/llama-context.cpp">llama-context.cpp — decode()</a>
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/include/llama.h#L953">llama.h#L953</a>
+</div>
+</div>
+</details>
+
+<h2>Transformer Architecture (LLaMA-style)</h2>
+<p>The computation graph for each forward pass implements the decoder-only transformer. Each layer applies attention and FFN with residual connections.</p>
+
+<div class="layer-diagram">
+  <div class="layer-block">
+    <span class="block-label block-blue">Token IDs</span>
+    <span class="block-arrow">→</span>
+    <span class="block-label block-green">tok_embd lookup</span>
+    <span class="block-arrow">→</span>
+    <span class="block-shape">[n_tokens, n_embd]</span>
+  </div>
+  <div style="margin: 4px 0; color: var(--text-dim); font-size: 0.8rem; padding-left: 8px;">↓ repeated × n_layer</div>
+  <div class="layer-block">
+    <span class="block-label block-orange">RMSNorm</span>
+    <span class="block-arrow">→</span>
+    <span class="block-label block-blue">Q, K, V projections</span>
+    <span class="block-arrow">→</span>
+    <span class="block-label block-purple">RoPE</span>
+    <span class="block-arrow">→</span>
+    <span class="block-label block-green">Attention + KV cache</span>
+  </div>
+  <div class="layer-block" style="padding-left: 20px;">
+    <span class="block-label block-blue">O projection</span>
+    <span class="block-arrow">→</span>
+    <span class="block-label block-red">+ residual</span>
+  </div>
+  <div class="layer-block">
+    <span class="block-label block-orange">RMSNorm</span>
+    <span class="block-arrow">→</span>
+    <span class="block-label block-blue">FFN: gate, up</span>
+    <span class="block-arrow">→</span>
+    <span class="block-label block-purple">SiLU × up</span>
+    <span class="block-arrow">→</span>
+    <span class="block-label block-blue">down</span>
+    <span class="block-arrow">→</span>
+    <span class="block-label block-red">+ residual</span>
+  </div>
+  <div style="margin: 4px 0; color: var(--text-dim); font-size: 0.8rem; padding-left: 8px;">↓</div>
+  <div class="layer-block">
+    <span class="block-label block-orange">final RMSNorm</span>
+    <span class="block-arrow">→</span>
+    <span class="block-label block-green">output projection</span>
+    <span class="block-arrow">→</span>
+    <span class="block-shape">[n_outputs, n_vocab]  ← logits</span>
+  </div>
+</div>
+
+<h2>Graph Construction: Key Operations</h2>
+
+<details open>
+<summary>1. Embedding lookup — token IDs → vectors</summary>
+<div class="details-body">
+<pre>// src/llama-graph.cpp — llm_graph_input_embd
+
+// tok_embd: weight matrix [n_embd, n_vocab] (transposed for efficiency)
+// For each token in the batch, gather its row:
+struct ggml_tensor * inpL = ggml_get_rows(ctx, model.tok_embd, inp_tokens);
+// inpL shape: [n_embd, n_tokens]  — each col is one token's embedding</pre>
+<p><code>ggml_get_rows</code> is essentially an embedding lookup: it gathers the rows of <code>tok_embd</code> at the indices given by <code>inp_tokens</code> (the token IDs from the batch). No matrix multiply — just indexed copies.</p>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/ggml/include/ggml.h">ggml.h — ggml_get_rows()</a>
+</div>
+</div>
+</details>
+
+<details open>
+<summary>2. RMSNorm — normalize hidden states</summary>
+<div class="details-body">
+<p>RMSNorm replaces LayerNorm in LLaMA-family models. It normalizes by RMS (root-mean-square) without subtracting the mean, which is cheaper and empirically as good.</p>
+<pre>// Formula: x_norm = x / rms(x) * weight
+// where rms(x) = sqrt(mean(x²) + ε)
+
+// ggml/include/ggml.h#L1370
+struct ggml_tensor * ggml_rms_norm(
+    struct ggml_context * ctx,
+    struct ggml_tensor  * a,
+    float                 eps);
+
+// In graph builder:
+struct ggml_tensor * cur = ggml_rms_norm(ctx0, inpL, hparams.f_norm_rms_eps);
+cur = ggml_mul(ctx0, cur, model.layers[il].attn_norm);  // scale by weight</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/ggml/include/ggml.h#L1370">ggml.h#L1370 — ggml_rms_norm()</a>
+  <a class="ref-link" href="https://arxiv.org/abs/1910.07467">RMSNorm paper (Zhang 2019)</a>
+</div>
+</div>
+</details>
+
+<details open>
+<summary>3. Multi-Head Attention with RoPE</summary>
+<div class="details-body">
+<h3>Q, K, V Projections</h3>
+<pre>// Project hidden state to Q, K, V
+// Weight shapes: W_q [n_embd_head_k * n_head, n_embd]
+//                W_k [n_embd_head_k * n_kv,   n_embd]
+//                W_v [n_embd_head_v * n_kv,   n_embd]
+
+struct ggml_tensor * Q = ggml_mul_mat(ctx0, model.layers[il].wq, cur);
+struct ggml_tensor * K = ggml_mul_mat(ctx0, model.layers[il].wk, cur);
+struct ggml_tensor * V = ggml_mul_mat(ctx0, model.layers[il].wv, cur);</pre>
+
+<h3>RoPE — Rotary Position Embedding</h3>
+<p>Instead of adding positional encodings to embeddings, RoPE rotates Q and K vectors by an angle proportional to their position. This gives the dot product Q·K a natural position-dependent phase, enabling better length generalization.</p>
+<pre>// ggml/include/ggml.h#L1772
+// Rotates each pair of dimensions by angle = pos * θ^(-2i/d)
+struct ggml_tensor * ggml_rope(
+    struct ggml_context * ctx,
+    struct ggml_tensor  * a,    // Q or K tensor
+    struct ggml_tensor  * b,    // positions vector
+    int                   n_dims,
+    int                   mode); // GGML_ROPE_TYPE_NEOX for LLaMA
+
+Q = ggml_rope(ctx0, Q, inp_pos, n_rot, rope_type);
+K = ggml_rope(ctx0, K, inp_pos, n_rot, rope_type);</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/ggml/include/ggml.h#L1772">ggml.h#L1772 — ggml_rope()</a>
+  <a class="ref-link" href="https://arxiv.org/abs/2104.09864">RoPE paper (Su 2021)</a>
+</div>
+
+<h3>KV Cache and Attention Score</h3>
+<pre>// Store K, V into the KV cache for this layer + sequence position
+// (KV cache is a pre-allocated tensor; we write into it at the right offset)
+ggml_build_forward_expand(gf, ggml_cpy(ctx0, K, k_cache_view));
+ggml_build_forward_expand(gf, ggml_cpy(ctx0, V, v_cache_view));
+
+// Retrieve all cached K, V (past + current positions)
+struct ggml_tensor * K_all = kv_cache.k_layer[il]; // [n_embd_gqa, n_ctx]
+struct ggml_tensor * V_all = kv_cache.v_layer[il]; // [n_ctx, n_embd_gqa]
+
+// Attention: softmax(Q @ K^T / sqrt(d_k)) @ V
+// ggml_mul_mat handles: Q [n_head, n_tokens, head_dim]
+//                  x K^T [n_kv, n_ctx, head_dim]^T
+//                  = scores [n_head, n_tokens, n_ctx]
+struct ggml_tensor * KQ = ggml_mul_mat(ctx0, K_all, Q);
+// Scale by 1/sqrt(head_dim):
+KQ = ggml_soft_max_ext(ctx0, KQ, mask, scale, max_bias);
+// Weighted sum of V:
+struct ggml_tensor * KQV = ggml_mul_mat(ctx0, V_all, KQ);</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/ggml/include/ggml.h#L1716">ggml.h#L1716 — ggml_soft_max()</a>
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/ggml/include/ggml.h#L1417">ggml.h#L1417 — ggml_mul_mat()</a>
+  <a class="ref-link" href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a>
+  <a class="ref-link" href="https://arxiv.org/abs/2205.14135">FlashAttention</a>
+</div>
+</div>
+</details>
+
+<details open>
+<summary>4. Feed-Forward Network with SwiGLU</summary>
+<div class="details-body">
+<p>LLaMA uses SwiGLU (a gated variant of SiLU) instead of the original FFN. The intermediate dimension is typically 2.67× the embedding dimension, and two projections gate each other multiplicatively.</p>
+<pre>// SwiGLU FFN:
+// ffn_out = (SiLU(x @ W_gate) * (x @ W_up)) @ W_down
+
+struct ggml_tensor * gate = ggml_mul_mat(ctx0, model.layers[il].ffn_gate, cur);
+struct ggml_tensor * up   = ggml_mul_mat(ctx0, model.layers[il].ffn_up,   cur);
+
+gate = ggml_silu(ctx0, gate);       // SiLU(x) = x * sigmoid(x)
+                                    // ggml/include/ggml.h#L1184
+struct ggml_tensor * ffn_inp = ggml_mul(ctx0, gate, up);  // element-wise
+
+struct ggml_tensor * ffn_out =
+    ggml_mul_mat(ctx0, model.layers[il].ffn_down, ffn_inp);</pre>
+<p>For a LLaMA-7B: <code>n_embd=4096</code>, <code>n_ff=11008</code>. The three FFN matrices are: gate [4096×11008], up [4096×11008], down [11008×4096]. These are the largest tensors per layer.</p>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/ggml/include/ggml.h#L1184">ggml.h#L1184 — ggml_silu()</a>
+  <a class="ref-link" href="https://arxiv.org/abs/2002.05202">SwiGLU / GLU Variants (Noam Shazeer)</a>
+</div>
+</div>
+</details>
+
+<details open>
+<summary>5. Output projection → logits</summary>
+<div class="details-body">
+<pre>// After all layers, apply final norm + project to vocab
+struct ggml_tensor * result_norm = ggml_rms_norm(ctx0, cur, eps);
+result_norm = ggml_mul(ctx0, result_norm, model.output_norm);
+
+// output: [n_embd, n_vocab] weight matrix
+struct ggml_tensor * result_output =
+    ggml_mul_mat(ctx0, model.output, result_norm);
+// Shape: [n_vocab, n_tokens]
+
+// Only compute logits for tokens with batch.logits[i] != 0
+// (usually just the last token during generation)</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/src/llama-graph.cpp">llama-graph.cpp — build output</a>
+</div>
+</div>
+</details>
+
+<h2>KV Cache</h2>
+
+<details open>
+<summary>How the KV cache enables O(1) per-token cost</summary>
+<div class="details-body">
+<p>Without a KV cache, processing the N-th token would require recomputing attention over all N past tokens — O(N²) total work. The KV cache stores key and value tensors from all past positions so only the <em>new</em> token's Q is computed each step.</p>
+<pre>// KV cache layout (per layer):
+// K cache: [n_embd_gqa, n_ctx, n_layer]  dtype = type_k (F16 default)
+// V cache: [n_ctx, n_embd_gqa, n_layer]  dtype = type_v
+
+// During prefill (processing the prompt):
+//   Write K, V for positions 0..n_prompt-1 into the cache
+
+// During generation (one new token at a time):
+//   Write K, V for position n_prompt+i at step i
+//   Read full K_cache[0..n_prompt+i], V_cache[0..n_prompt+i]
+//   Compute attention of new Q against ALL cached K
+
+// Memory: 2 * n_layer * n_ctx * n_embd_gqa * sizeof(dtype)
+// LLaMA-7B (F16, 4096 ctx): 2 * 32 * 4096 * 1024 * 2 = 512 MB</pre>
+<p>The context manages KV cache <strong>slots</strong> per sequence. Multiple sequences share the same physical cache with different slot assignments, enabling true parallel inference (the server uses this for batching requests).</p>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/src/llama-kv-cache.cpp">src/llama-kv-cache.cpp</a>
+  <a class="ref-link" href="https://arxiv.org/abs/2205.14135">FlashAttention (efficient attention)</a>
+</div>
+</div>
+</details>
+
+<h2>Logits Extraction</h2>
+
+<details open>
+<summary>How output is copied from device to host</summary>
+<div class="details-body">
+<p>After graph execution, the logits tensor lives on the backend device (GPU memory for CUDA/Metal). They must be copied to CPU RAM before the sampler can use them.</p>
+<pre>// src/llama-context.cpp — after ggml_backend_sched_graph_compute():
+
+// t_logits is the output tensor from the graph
+struct ggml_tensor * t_logits = /* last node in graph */;
+
+// Async copy from device → host
+ggml_backend_tensor_get_async(backend, t_logits, logits_ptr, offset, size);
+
+// For the server: logits for ALL sequences' last tokens are stored:
+// ctx->logits[i * n_vocab .. (i+1)*n_vocab]  for each output token i
+
+// Access via public API:
+float * llama_get_logits_ith(struct llama_context * ctx, int32_t i);</pre>
+<div class="ref-list">
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/include/llama.h#L988">llama.h#L988 — llama_get_logits()</a>
+  <a class="ref-link gh" href="https://github.com/ggml-org/llama.cpp/blob/35c9b1f39ebe5a7bb83986d64415a079218be78d/src/llama-context.cpp">llama-context.cpp</a>
+</div>
+</div>
+</details>
+
+<h2>Grouped-Query Attention (GQA) &amp; MLA</h2>
+
+<details open>
+<summary>How modern attention variants differ from vanilla MHA</summary>
+<div class="details-body">
+<p>LLaMA-2+, Mistral, Qwen2, etc. use <strong>Grouped Query Attention (GQA)</strong>: fewer K/V heads than Q heads. This drastically reduces KV cache size and memory bandwidth without much quality loss.</p>
+<pre>// Vanilla MHA: n_head_kv == n_head
+// GQA:         n_head_kv &lt; n_head  (e.g. n_head=32, n_head_kv=8)
+// MQA:         n_head_kv == 1       (extreme case of GQA)
+
+// In llama-graph.cpp, K and V are expanded by repeating heads:
+K = ggml_repeat(ctx0, K, Q);  // broadcast K from n_kv to n_head
+V = ggml_repeat(ctx0, V, Q);
+
+// DeepSeek uses MLA (Multi-head Latent Attention):
+// Compresses K/V into a low-rank latent space → even smaller cache</pre>
+<div class="ref-list">
+  <a class="ref-link" href="https://arxiv.org/abs/2305.13245">GQA paper (Ainslie 2023)</a>
+  <a class="ref-link" href="https://arxiv.org/abs/2405.04434">DeepSeek-V2 MLA</a>
+</div>
+</div>
+</details>
+
+<p style="margin-top:16px;">Once logits are on the CPU, they're passed to the sampling pipeline.</p>
+<div class="ref-list">
+  <a class="ref-link" href="sampling.html">→ Sampling Pipeline</a>
+  <a class="ref-link" href="backends.html">→ GGML Backends (how kernels run)</a>
+</div>
+
+</body>
+</html>

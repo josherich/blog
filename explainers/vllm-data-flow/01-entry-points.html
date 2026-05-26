@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vLLM — Entry Points & I/O Pipeline</title>
+<style>
+  :root { --bg:#0d1117;--bg2:#161b22;--bg3:#1c2128;--border:#30363d;--text:#e6edf3;--text2:#8b949e;--blue:#58a6ff;--green:#3fb950;--orange:#d29922;--purple:#bc8cff;--red:#f85149;--code-bg:#161b22; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:16px;line-height:1.6}
+  header{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 20px;position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  header h1{font-size:18px;color:var(--blue)}
+  nav{display:flex;gap:10px;flex-wrap:wrap}
+  nav a{color:var(--text2);text-decoration:none;font-size:13px;padding:4px 10px;border-radius:6px;border:1px solid var(--border);transition:all 0.15s}
+  nav a:hover,nav a.active{color:var(--blue);border-color:var(--blue)}
+  main{max-width:960px;margin:0 auto;padding:24px 16px 60px}
+  h2{color:var(--blue);font-size:22px;margin:32px 0 12px;border-bottom:1px solid var(--border);padding-bottom:8px}
+  h3{color:var(--green);font-size:17px;margin:24px 0 10px}
+  h4{color:var(--orange);font-size:15px;margin:18px 0 8px}
+  p{margin:10px 0}
+  a{color:var(--blue)}
+  .card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;margin:16px 0}
+  .card-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+  .card-header h3,.card-header h4{margin:0}
+  .toggle-btn{background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer;padding:0 4px;line-height:1}
+  .card-body{margin-top:14px}
+  .card-body.hidden{display:none}
+  pre,code{font-family:'Cascadia Code','Fira Code','JetBrains Mono',monospace;font-size:13px}
+  pre{background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:14px;overflow-x:auto;white-space:pre;margin:12px 0;line-height:1.5}
+  code{background:var(--code-bg);border:1px solid var(--border);border-radius:4px;padding:2px 6px;font-size:12px}
+  pre code{background:none;border:none;padding:0}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th{background:var(--bg3);color:var(--text2);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+  td{padding:8px 12px;border-bottom:1px solid var(--border)}
+  .badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600;margin-right:6px}
+  .badge-blue{background:#1f6feb;color:#fff}
+  .badge-green{background:#1a7f37;color:#fff}
+  .badge-orange{background:#9a6700;color:#fff}
+  .flow{display:flex;flex-direction:column;align-items:center;gap:0;margin:20px 0}
+  .flow-node{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 18px;text-align:center;width:100%;max-width:520px}
+  .flow-node .nt{color:var(--blue);font-weight:600;font-size:15px}
+  .flow-node .nf{color:var(--text2);font-size:12px;font-family:monospace;margin-top:3px}
+  .flow-node .nd{color:var(--text);font-size:13px;margin-top:5px}
+  .flow-arrow{color:var(--text2);font-size:22px;line-height:1.2;margin:2px 0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+  @media(max-width:600px){.grid2{grid-template-columns:1fr}}
+  .hl-blue{color:var(--blue)} .hl-green{color:var(--green)} .hl-orange{color:var(--orange)} .hl-purple{color:var(--purple)}
+  .field-table td:first-child{color:var(--orange);font-family:monospace;font-size:12px}
+  .field-table td:nth-child(2){color:var(--purple);font-family:monospace;font-size:12px}
+  .section-intro{background:linear-gradient(135deg,#1f2d3d,#0d1117);border:1px solid var(--blue);border-radius:10px;padding:18px 22px;margin:16px 0 28px}
+  .section-intro h2{border:none;margin:0 0 8px;padding:0}
+</style>
+</head>
+<body>
+<header>
+  <h1>vLLM Internals</h1>
+  <nav>
+    <a href="index.html">Overview</a>
+    <a href="01-entry-points.html" class="active">Entry Points</a>
+    <a href="02-engine.html">Engine</a>
+    <a href="03-scheduler.html">Scheduler</a>
+    <a href="04-kv-cache.html">KV Cache</a>
+    <a href="05-execution.html">Execution</a>
+    <a href="06-attention.html">Attention</a>
+    <a href="07-sampling.html">Sampling</a>
+  </nav>
+</header>
+<main>
+  <div class="section-intro">
+    <h2>Entry Points &amp; I/O Pipeline</h2>
+    <p>How a user request enters vLLM, gets preprocessed, dispatched to the engine, and how the raw model output is converted back into readable text. This layer is pure orchestration — no GPU code here.</p>
+  </div>
+
+  <h2>Entry Points</h2>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>LLM — Offline Inference</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>The <code>LLM</code> class in <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/entrypoints/llm.py" target="_blank"><code>vllm/entrypoints/llm.py</code></a> is the primary user-facing class for offline (batch) inference. It wraps the V1 <code>LLMEngine</code> and exposes a simple <code>generate()</code> interface.</p>
+      <pre><code># Typical usage
+from vllm import LLM, SamplingParams
+
+llm = LLM(model="meta-llama/Meta-Llama-3-8B")
+outputs = llm.generate(
+    ["Tell me a joke", "What is 2+2?"],
+    SamplingParams(temperature=0.8, max_tokens=100)
+)
+for o in outputs:
+    print(o.outputs[0].text)</code></pre>
+      <h4>How generate() works internally</h4>
+      <p>The call chain for offline inference is synchronous:</p>
+      <div class="flow">
+        <div class="flow-node"><div class="nt">LLM.generate(prompts, sampling_params)</div><div class="nf">vllm/entrypoints/llm.py</div></div>
+        <div class="flow-arrow">↓ _validate_and_add_requests()</div>
+        <div class="flow-node"><div class="nt">InputProcessor.process()</div><div class="nf">vllm/v1/engine/input_processor.py</div><div class="nd">Tokenize + build EngineCoreRequest per prompt</div></div>
+        <div class="flow-arrow">↓ engine_core.add_request()</div>
+        <div class="flow-node"><div class="nt">LLMEngine.step() loop</div><div class="nf">vllm/v1/engine/llm_engine.py</div><div class="nd">Runs until all requests finish</div></div>
+        <div class="flow-arrow">↓ OutputProcessor.process_outputs()</div>
+        <div class="flow-node"><div class="nt">List[RequestOutput]</div><div class="nf">vllm/outputs.py</div><div class="nd">Decoded text + metadata returned to caller</div></div>
+      </div>
+      <p>Source: <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/entrypoints/llm.py" target="_blank">vllm/entrypoints/llm.py</a></p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>AsyncLLM — Online Serving</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p><a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/engine/async_llm.py" target="_blank"><code>AsyncLLM</code></a> is used for online serving. It runs the engine loop in a background thread and exposes an async generator per request, enabling simultaneous concurrent requests and streaming.</p>
+      <pre><code># AsyncLLM drives the OpenAI-compatible API server
+class AsyncLLM:
+    async def generate(
+        self,
+        prompt: PromptType,
+        sampling_params: SamplingParams,
+        request_id: str,
+    ) -> AsyncGenerator[RequestOutput, None]:
+        # Yields RequestOutput for each new token
+        ...
+
+    def _run_engine_loop(self):
+        # Background thread: calls engine_core.step() continuously
+        while True:
+            outputs = self.engine_core.step()
+            self._process_outputs(outputs)</code></pre>
+      <h4>Concurrency model</h4>
+      <p>The engine runs in a dedicated thread. Each <code>generate()</code> call is a Python async generator that receives its results via a per-request queue. This decouples the engine's sync execution from the async HTTP handler.</p>
+      <p>Source: <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/engine/async_llm.py" target="_blank">vllm/v1/engine/async_llm.py</a></p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>OpenAI-Compatible API Server</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>The HTTP API server is in <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/entrypoints/openai/" target="_blank"><code>vllm/entrypoints/openai/</code></a>. It uses FastAPI and handles <code>/v1/completions</code>, <code>/v1/chat/completions</code>, and other OpenAI-compatible endpoints.</p>
+      <pre><code># Start the server
+vllm serve meta-llama/Meta-Llama-3-8B
+
+# Under the hood:
+#   FastAPI app → AsyncLLM.generate() → streaming SSE response</code></pre>
+      <p>The server creates one <code>AsyncLLM</code> instance shared across all requests. Each HTTP request becomes a unique <code>request_id</code> in the engine.</p>
+    </div>
+  </div>
+
+  <h2>Input Processing</h2>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>InputProcessor</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>Source: <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/engine/input_processor.py" target="_blank">vllm/v1/engine/input_processor.py</a></p>
+      <p>Converts a user's raw prompt (string or token IDs) into an <code>EngineCoreRequest</code>. This is the first transformation in the pipeline.</p>
+      <h4>Steps performed</h4>
+      <ol style="padding-left:20px; margin:10px 0; line-height:2;">
+        <li>Tokenize the prompt string → <code>list[int]</code></li>
+        <li>Preprocess multimodal inputs (images, audio) → <code>MultiModalFeatureSpec</code></li>
+        <li>Validate <code>SamplingParams</code> against model config</li>
+        <li>Resolve LoRA adapter request</li>
+        <li>Wrap everything in <code>EngineCoreRequest</code></li>
+      </ol>
+      <h4>EngineCoreRequest fields</h4>
+      <pre><code># vllm/v1/engine/__init__.py
+class EngineCoreRequest(msgspec.Struct):
+    request_id: str
+    prompt_token_ids: list[int] | None
+    mm_features: list[MultiModalFeatureSpec]  # images, audio, etc.
+    sampling_params: SamplingParams | None
+    pooling_params: PoolingParams | None
+    arrival_time: float
+    lora_request: LoRARequest | None
+    prompt_embeds: torch.Tensor | None        # for embedding-level inputs
+    prompt_is_token_ids: list[bool] | None    # position mask for mixed</code></pre>
+      <p>This struct uses <a href="https://github.com/jcrist/msgspec" target="_blank">msgspec</a> for zero-copy serialization when requests cross process boundaries (e.g. from HTTP server process to engine process).</p>
+    </div>
+  </div>
+
+  <h2>Output Processing</h2>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>OutputProcessor</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>Source: <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/engine/output_processor.py" target="_blank">vllm/v1/engine/output_processor.py</a></p>
+      <p>Converts <code>EngineCoreOutput</code> (raw token IDs from the engine) into <code>RequestOutput</code> (decoded text for the user). This runs on the front-end side.</p>
+      <h4>EngineCoreOutput → RequestOutput transformation</h4>
+      <pre><code># Per-iteration result from the engine (one per request)
+class EngineCoreOutput(msgspec.Struct):
+    request_id: str
+    new_token_ids: list[int]          # tokens produced this iteration
+    new_logprobs: LogprobsLists | None
+    finish_reason: FinishReason | None  # STOP | LENGTH | ABORT | ERROR
+    stop_reason: int | str | None
+
+# User-facing output
+class RequestOutput:
+    request_id: str
+    prompt: str
+    prompt_token_ids: list[int]
+    outputs: list[CompletionOutput]   # one per beam / sample
+    finished: bool
+    metrics: RequestMetrics
+
+class CompletionOutput:
+    text: str                         # decoded text (accumulated)
+    token_ids: list[int]
+    cumulative_logprob: float | None
+    logprobs: SampleLogprobs | None
+    finish_reason: str | None         # "stop" | "length" | "abort"</code></pre>
+      <h4>Detokenization</h4>
+      <p>The output processor maintains an <strong>incremental detokenizer</strong> per request. Rather than decoding the entire sequence each iteration, it appends new tokens and handles multi-byte characters and special tokens correctly.</p>
+      <p>Source: <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/outputs.py" target="_blank">vllm/outputs.py</a> | <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/engine/__init__.py" target="_blank">vllm/v1/engine/__init__.py</a></p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>SamplingParams — User Configuration</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>Source: <a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/sampling_params.py" target="_blank">vllm/sampling_params.py</a></p>
+      <p>Controls how the model generates text. Passed in by the user and propagated all the way to the sampler.</p>
+      <table class="field-table">
+        <tr><th>Field</th><th>Type</th><th>Effect</th></tr>
+        <tr><td>temperature</td><td>float</td><td>Randomness; 0 = greedy, 1 = softmax, >1 = flatter</td></tr>
+        <tr><td>top_p</td><td>float</td><td>Nucleus sampling — keep top tokens summing to top_p probability</td></tr>
+        <tr><td>top_k</td><td>int</td><td>Keep only top-k tokens before sampling</td></tr>
+        <tr><td>max_tokens</td><td>int</td><td>Maximum new tokens to generate</td></tr>
+        <tr><td>stop</td><td>list[str]</td><td>Stop when any of these strings appear in the output</td></tr>
+        <tr><td>stop_token_ids</td><td>list[int]</td><td>Stop on specific token IDs (e.g. EOS)</td></tr>
+        <tr><td>repetition_penalty</td><td>float</td><td>Penalize repeated tokens (1.0 = no penalty)</td></tr>
+        <tr><td>presence_penalty</td><td>float</td><td>Penalize tokens already present in output</td></tr>
+        <tr><td>frequency_penalty</td><td>float</td><td>Penalize tokens proportionally to frequency</td></tr>
+        <tr><td>seed</td><td>int | None</td><td>Random seed for reproducibility</td></tr>
+        <tr><td>logprobs</td><td>int | None</td><td>Return top-N logprobs per token</td></tr>
+        <tr><td>n</td><td>int</td><td>Number of completions to generate</td></tr>
+        <tr><td>best_of</td><td>int</td><td>Generate this many and return the best n</td></tr>
+        <tr><td>guided_decoding</td><td>GuidedDecodingParams</td><td>Constrained decoding (JSON, grammar, regex)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Full I/O Pipeline Summary</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <pre><code># --- FRONT END (CPU, per-request) ---
+
+User: llm.generate(prompt="Hello", SamplingParams(max_tokens=50))
+
+InputProcessor.process(prompt, sampling_params, request_id)
+  → tokenizer.encode(prompt) → [15043, ...]       # Hugging Face tokenizer
+  → build EngineCoreRequest(
+        request_id="req-001",
+        prompt_token_ids=[15043, ...],
+        sampling_params=SamplingParams(...),
+        arrival_time=time.monotonic()
+    )
+
+EngineCoreClient.add_request(engine_core_request)
+  → serialize with msgspec → send over IPC socket  # if multiprocessing
+
+# --- BACK END (Engine loop, potentially separate process) ---
+
+EngineCore.add_request(engine_core_request)
+  → Scheduler.add_request(Request(...))
+
+# ... many iterations later, engine calls ...
+
+EngineCore.step()
+  → scheduler.schedule() → SchedulerOutput
+  → executor.execute_model(scheduler_output) → ModelRunnerOutput
+  → [extract EngineCoreOutput per request]
+
+# --- FRONT END (output side) ---
+
+OutputProcessor.process_outputs([engine_core_output, ...])
+  → incremental_detokenizer.decode(new_token_ids)
+  → RequestOutput(
+        request_id="req-001",
+        outputs=[CompletionOutput(text=" world!", token_ids=[995, 0])],
+        finished=True
+    )
+
+# Returned to user or streamed via SSE</code></pre>
+    </div>
+  </div>
+
+</main>
+<script>
+function toggleCard(header) {
+  const body = header.nextElementSibling;
+  const btn = header.querySelector('.toggle-btn');
+  if (body.classList.contains('hidden')) { body.classList.remove('hidden'); btn.textContent='−'; }
+  else { body.classList.add('hidden'); btn.textContent='+'; }
+}
+</script>
+</body>
+</html>

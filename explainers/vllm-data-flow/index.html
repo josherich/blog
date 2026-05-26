@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vLLM Architecture — Overview</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg2: #161b22;
+    --bg3: #1c2128;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text2: #8b949e;
+    --blue: #58a6ff;
+    --green: #3fb950;
+    --orange: #d29922;
+    --purple: #bc8cff;
+    --red: #f85149;
+    --teal: #39d353;
+    --code-bg: #161b22;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  header {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  header h1 { font-size: 18px; color: var(--blue); }
+  nav { display: flex; gap: 10px; flex-wrap: wrap; }
+  nav a {
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 13px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    transition: all 0.15s;
+  }
+  nav a:hover, nav a.active { color: var(--blue); border-color: var(--blue); }
+  main { max-width: 960px; margin: 0 auto; padding: 24px 16px 60px; }
+  h2 { color: var(--blue); font-size: 22px; margin: 32px 0 12px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  h3 { color: var(--green); font-size: 17px; margin: 24px 0 10px; }
+  h4 { color: var(--orange); font-size: 15px; margin: 18px 0 8px; }
+  p { margin: 10px 0; color: var(--text); }
+  a { color: var(--blue); }
+  a:hover { text-decoration: underline; }
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px 0;
+  }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+  }
+  .card-header h3, .card-header h4 { margin: 0; }
+  .toggle-btn {
+    background: none;
+    border: none;
+    color: var(--text2);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0 4px;
+    line-height: 1;
+    transition: transform 0.2s;
+  }
+  .card-body { margin-top: 14px; }
+  .card-body.hidden { display: none; }
+  pre, code {
+    font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', monospace;
+    font-size: 13px;
+  }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px;
+    overflow-x: auto;
+    white-space: pre;
+    margin: 12px 0;
+    line-height: 1.5;
+  }
+  code {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 12px;
+  }
+  pre code { background: none; border: none; padding: 0; }
+  .flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin: 24px 0;
+  }
+  .flow-node {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 20px;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .flow-node:hover { border-color: var(--blue); }
+  .flow-node a { text-decoration: none; color: inherit; display: block; }
+  .flow-node .node-title { color: var(--blue); font-weight: 600; font-size: 15px; }
+  .flow-node .node-file { color: var(--text2); font-size: 12px; font-family: monospace; margin-top: 4px; }
+  .flow-node .node-desc { color: var(--text); font-size: 13px; margin-top: 6px; }
+  .flow-arrow {
+    color: var(--text2);
+    font-size: 22px;
+    line-height: 1.2;
+    margin: 2px 0;
+  }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-right: 6px;
+  }
+  .badge-blue { background: #1f6feb; color: #fff; }
+  .badge-green { background: #1a7f37; color: #fff; }
+  .badge-orange { background: #9a6700; color: #fff; }
+  .badge-purple { background: #6e40c9; color: #fff; }
+  .badge-red { background: #b91c1c; color: #fff; }
+  .grid2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  @media (max-width: 600px) { .grid2 { grid-template-columns: 1fr; } }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  th {
+    background: var(--bg3);
+    color: var(--text2);
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  td code { font-size: 11px; }
+  .ref-list { list-style: none; }
+  .ref-list li { padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .ref-list li:last-child { border-bottom: none; }
+  .tag { color: var(--text2); font-size: 12px; }
+  .highlight-blue { color: var(--blue); }
+  .highlight-green { color: var(--green); }
+  .highlight-orange { color: var(--orange); }
+  .highlight-purple { color: var(--purple); }
+  .intro-banner {
+    background: linear-gradient(135deg, #1f2d3d, #0d1117);
+    border: 1px solid var(--blue);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 16px 0 32px;
+  }
+  .intro-banner h2 { border: none; margin: 0 0 10px; padding: 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>vLLM Internals</h1>
+  <nav>
+    <a href="index.html" class="active">Overview</a>
+    <a href="01-entry-points.html">Entry Points</a>
+    <a href="02-engine.html">Engine</a>
+    <a href="03-scheduler.html">Scheduler</a>
+    <a href="04-kv-cache.html">KV Cache</a>
+    <a href="05-execution.html">Execution</a>
+    <a href="06-attention.html">Attention</a>
+    <a href="07-sampling.html">Sampling</a>
+  </nav>
+</header>
+
+<main>
+  <div class="intro-banner">
+    <h2>vLLM Architecture Overview</h2>
+    <p>An in-depth walkthrough of how vLLM processes a request end-to-end — from the user's prompt to the generated tokens. Each section links to the actual source code on GitHub.</p>
+    <p style="margin-top:10px; color: var(--text2); font-size:13px;">
+      Source: <a href="https://github.com/vllm-project/vllm/tree/d400445">vllm @ d400445</a> &nbsp;|&nbsp;
+      Paper: <a href="https://arxiv.org/abs/2309.06180">Efficient Memory Management with PagedAttention (SOSP 2023)</a>
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>What is vLLM?</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <p>vLLM is a high-throughput LLM inference engine built around three core insights:</p>
+      <div class="grid2">
+        <div style="background:var(--bg3); border-radius:8px; padding:14px; border: 1px solid var(--border);">
+          <div class="highlight-blue" style="font-weight:600; margin-bottom:6px;">PagedAttention</div>
+          <p style="font-size:14px;">Manages KV cache memory in fixed-size <em>pages</em> (blocks), like virtual memory in an OS. Eliminates fragmentation and enables sharing of prompt prefixes across requests.</p>
+        </div>
+        <div style="background:var(--bg3); border-radius:8px; padding:14px; border: 1px solid var(--border);">
+          <div class="highlight-green" style="font-weight:600; margin-bottom:6px;">Continuous Batching</div>
+          <p style="font-size:14px;">Requests are processed iteration-by-iteration. New requests join and finished ones leave at each step, keeping GPU utilization high without waiting for a full batch.</p>
+        </div>
+        <div style="background:var(--bg3); border-radius:8px; padding:14px; border: 1px solid var(--border);">
+          <div class="highlight-orange" style="font-weight:600; margin-bottom:6px;">Chunked Prefill</div>
+          <p style="font-size:14px;">Long prompts are split into chunks and interleaved with decode steps, balancing latency and throughput rather than blocking on prefill.</p>
+        </div>
+        <div style="background:var(--bg3); border-radius:8px; padding:14px; border: 1px solid var(--border);">
+          <div class="highlight-purple" style="font-weight:600; margin-bottom:6px;">Prefix Caching</div>
+          <p style="font-size:14px;">Identical prompt prefixes share KV cache blocks via content hashing. Repeated system prompts or RAG contexts are computed only once.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2>End-to-End Data Flow</h2>
+
+  <div class="flow">
+    <div class="flow-node">
+      <a href="01-entry-points.html">
+        <div class="node-title">User Code</div>
+        <div class="node-file">LLM.generate(prompt, SamplingParams)</div>
+        <div class="node-desc">Offline: <code>LLM</code> class &nbsp;|&nbsp; Online: OpenAI-compatible HTTP API</div>
+      </a>
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-node">
+      <a href="01-entry-points.html">
+        <div class="node-title">Input Processor</div>
+        <div class="node-file">vllm/v1/engine/input_processor.py</div>
+        <div class="node-desc">Tokenize · multimodal preprocessing · build <code>EngineCoreRequest</code></div>
+      </a>
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-node">
+      <a href="02-engine.html">
+        <div class="node-title">EngineCore</div>
+        <div class="node-file">vllm/v1/engine/core.py</div>
+        <div class="node-desc">Central orchestrator — coordinates Scheduler → Executor → post-processing</div>
+      </a>
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-node">
+      <a href="03-scheduler.html">
+        <div class="node-title">Scheduler</div>
+        <div class="node-file">vllm/v1/core/sched/scheduler.py</div>
+        <div class="node-desc">Batches requests · allocates KV cache blocks · emits <code>SchedulerOutput</code></div>
+      </a>
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-node">
+      <a href="05-execution.html">
+        <div class="node-title">Executor → Worker → ModelRunner</div>
+        <div class="node-file">vllm/v1/executor/ · vllm/v1/worker/gpu_model_runner.py</div>
+        <div class="node-desc">Distributed execution · model forward pass · CUDA graphs</div>
+      </a>
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-node">
+      <a href="06-attention.html">
+        <div class="node-title">Attention Layer + KV Cache</div>
+        <div class="node-file">vllm/model_executor/layers/attention/attention.py</div>
+        <div class="node-desc">PagedAttention · FlashInfer · block tables · prefill vs. decode</div>
+      </a>
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-node">
+      <a href="07-sampling.html">
+        <div class="node-title">Sampler</div>
+        <div class="node-file">vllm/v1/sample/sampler.py</div>
+        <div class="node-desc">Temperature · top-p/k · penalties · sample next token</div>
+      </a>
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-node">
+      <a href="01-entry-points.html">
+        <div class="node-title">Output Processor</div>
+        <div class="node-file">vllm/v1/engine/output_processor.py</div>
+        <div class="node-desc">Detokenize · assemble <code>RequestOutput</code> · stream to caller</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Key Data Structures</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <table>
+        <tr>
+          <th>Struct</th>
+          <th>Direction</th>
+          <th>File</th>
+          <th>Purpose</th>
+        </tr>
+        <tr>
+          <td><code>SamplingParams</code></td>
+          <td><span class="badge badge-blue">in</span></td>
+          <td><a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/sampling_params.py" target="_blank">sampling_params.py</a></td>
+          <td>User-facing: temperature, top_p, max_tokens, stop…</td>
+        </tr>
+        <tr>
+          <td><code>EngineCoreRequest</code></td>
+          <td><span class="badge badge-blue">in</span></td>
+          <td><a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/engine/__init__.py" target="_blank">v1/engine/__init__.py</a></td>
+          <td>Serializable IPC request (msgspec)</td>
+        </tr>
+        <tr>
+          <td><code>Request</code></td>
+          <td><span class="badge badge-orange">internal</span></td>
+          <td><a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/request.py" target="_blank">v1/request.py</a></td>
+          <td>Scheduler-internal state with lifecycle tracking</td>
+        </tr>
+        <tr>
+          <td><code>SchedulerOutput</code></td>
+          <td><span class="badge badge-orange">internal</span></td>
+          <td><a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/core/sched/output.py" target="_blank">v1/core/sched/output.py</a></td>
+          <td>Batch description + block assignments sent to executor</td>
+        </tr>
+        <tr>
+          <td><code>ModelRunnerOutput</code></td>
+          <td><span class="badge badge-orange">internal</span></td>
+          <td><a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/outputs.py" target="_blank">v1/outputs.py</a></td>
+          <td>Raw logits + sampled tokens from device</td>
+        </tr>
+        <tr>
+          <td><code>EngineCoreOutput</code></td>
+          <td><span class="badge badge-green">out</span></td>
+          <td><a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/v1/engine/__init__.py" target="_blank">v1/engine/__init__.py</a></td>
+          <td>Per-request new tokens + finish reason</td>
+        </tr>
+        <tr>
+          <td><code>RequestOutput</code></td>
+          <td><span class="badge badge-green">out</span></td>
+          <td><a href="https://github.com/vllm-project/vllm/blob/d400445/vllm/outputs.py" target="_blank">outputs.py</a></td>
+          <td>User-facing: decoded text, logprobs, metrics</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Source Layout</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <pre>vllm/
+├── entrypoints/          # LLM, OpenAI API, gRPC server
+│   ├── llm.py            # Offline inference class
+│   └── openai/           # HTTP API server (FastAPI)
+├── v1/                   # V1 engine (production)
+│   ├── engine/
+│   │   ├── core.py       # EngineCore orchestrator
+│   │   ├── core_client.py# IPC client / proxy
+│   │   ├── async_llm.py  # Async engine (online serving)
+│   │   ├── llm_engine.py # Sync engine (offline)
+│   │   ├── input_processor.py
+│   │   └── output_processor.py
+│   ├── core/
+│   │   ├── sched/
+│   │   │   ├── scheduler.py     # Main scheduler
+│   │   │   ├── output.py        # SchedulerOutput
+│   │   │   └── request_queue.py
+│   │   ├── kv_cache_manager.py  # Block allocator
+│   │   └── kv_cache_utils.py
+│   ├── executor/         # Distributed execution adapters
+│   ├── worker/
+│   │   ├── gpu_worker.py
+│   │   └── gpu_model_runner.py  # Model forward + sampling
+│   ├── sample/
+│   │   ├── sampler.py
+│   │   └── rejection_sampler.py
+│   ├── attention/backend.py
+│   └── kv_cache_interface.py
+├── model_executor/
+│   ├── layers/attention/ # Attention layer with paged KV
+│   └── model_loader.py
+├── config/
+│   └── vllm.py           # VllmConfig (central config)
+├── sampling_params.py
+└── outputs.py</pre>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>Class Responsibility Map</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <table>
+        <tr><th>Class</th><th>File</th><th>Role</th></tr>
+        <tr><td><code>LLM</code></td><td><a href="01-entry-points.html">entry-points</a></td><td>User API — offline inference</td></tr>
+        <tr><td><code>AsyncLLM</code></td><td><a href="01-entry-points.html">entry-points</a></td><td>User API — online async serving</td></tr>
+        <tr><td><code>EngineCore</code></td><td><a href="02-engine.html">engine</a></td><td>Orchestrates scheduler + executor each step</td></tr>
+        <tr><td><code>Scheduler</code></td><td><a href="03-scheduler.html">scheduler</a></td><td>Batches requests, manages KV allocation</td></tr>
+        <tr><td><code>KVCacheManager</code></td><td><a href="04-kv-cache.html">kv-cache</a></td><td>PagedAttention block allocation</td></tr>
+        <tr><td><code>Executor</code></td><td><a href="05-execution.html">execution</a></td><td>Dispatches to workers (single/multi/Ray)</td></tr>
+        <tr><td><code>LLMModelRunner</code></td><td><a href="05-execution.html">execution</a></td><td>Model forward pass, CUDA graphs</td></tr>
+        <tr><td><code>Attention</code></td><td><a href="06-attention.html">attention</a></td><td>QKV attention with paged KV cache</td></tr>
+        <tr><td><code>Sampler</code></td><td><a href="07-sampling.html">sampling</a></td><td>Token sampling from logits</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <h3>External References</h3>
+      <button class="toggle-btn">−</button>
+    </div>
+    <div class="card-body">
+      <ul class="ref-list">
+        <li><a href="https://arxiv.org/abs/2309.06180" target="_blank">PagedAttention Paper (SOSP 2023)</a> <span class="tag">— core memory management idea</span></li>
+        <li><a href="https://blog.vllm.ai/2023/06/20/vllm.html" target="_blank">vLLM Blog: High-throughput LLM Serving</a> <span class="tag">— PagedAttention motivation</span></li>
+        <li><a href="https://arxiv.org/abs/2211.17192" target="_blank">FlashAttention (Dao et al., 2022)</a> <span class="tag">— IO-efficient attention kernel</span></li>
+        <li><a href="https://arxiv.org/abs/2307.08691" target="_blank">FlashAttention-2</a> <span class="tag">— improved parallelism</span></li>
+        <li><a href="https://github.com/flashinfer-ai/flashinfer" target="_blank">FlashInfer</a> <span class="tag">— attention kernel used by vLLM for decode</span></li>
+        <li><a href="https://arxiv.org/abs/2305.13048" target="_blank">Orca: Continuous Batching (OSDI 2022)</a> <span class="tag">— iteration-level scheduling idea</span></li>
+        <li><a href="https://docs.vllm.ai/en/latest/" target="_blank">vLLM Documentation</a> <span class="tag">— official docs</span></li>
+        <li><a href="https://github.com/vllm-project/vllm/tree/d400445" target="_blank">vLLM Source @ d400445</a> <span class="tag">— pinned commit for all code links</span></li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<script>
+function toggleCard(header) {
+  const body = header.nextElementSibling;
+  const btn = header.querySelector('.toggle-btn');
+  if (body.classList.contains('hidden')) {
+    body.classList.remove('hidden');
+    btn.textContent = '−';
+  } else {
+    body.classList.add('hidden');
+    btn.textContent = '+';
+  }
+}
+</script>
+</body>
+</html>
