@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Model API</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand"><strong>Model API</strong><span>Request building and stream parsing</span></div>
+      <nav class="nav" aria-label="Component pages">
+        <a href="../index.html">Overview</a>
+        <a href="cli-startup.html">CLI Startup</a>
+        <a href="repl-input.html">REPL Input</a>
+        <a href="query-loop.html">Query Loop</a>
+        <a href="model-api.html" aria-current="page">Model API</a>
+        <a href="tools-permissions.html">Tools and Permissions</a>
+        <a href="mcp.html">MCP</a>
+        <a href="state-rendering.html">State and Rendering</a>
+      </nav>
+    </aside>
+    <main class="content">
+      <div class="topbar">
+        <div>
+          <h1>Model API</h1>
+          <p class="lead">The model adapter converts internal messages, tools, thinking settings, system prompt blocks, and cache metadata into an Anthropic Messages API request. It then turns streaming protocol events back into assistant messages and raw stream events for the query loop.</p>
+        </div>
+        <div class="controls">
+          <input type="search" placeholder="Filter blocks" aria-label="Filter blocks" data-search>
+          <button type="button" data-expand-all>Expand all</button>
+          <button type="button" data-collapse-all>Collapse all</button>
+        </div>
+      </div>
+      <p class="meta" data-search-count></p>
+
+      <section class="section panel searchable">
+        <h2>Adapter flow</h2>
+        <pre><code>queryModelWithStreaming()
+  wrap queryModel() in streaming VCR
+
+queryModel()
+  resolve model and beta flags
+  map Tool objects to API schemas
+  normalize internal messages
+  build system prompt blocks
+  paramsFromContext()
+  anthropic.beta.messages.create({ stream: true })
+  for each stream event:
+    collect text, thinking, signatures, tool input JSON
+    on content_block_stop: yield AssistantMessage
+    on message_delta: update usage and stop reason
+    yield raw stream_event</code></pre>
+      </section>
+
+      <section class="section stack">
+        <details open class="searchable">
+          <summary>The wrapper keeps streaming observable</summary>
+          <div class="details-body">
+            <p><code>queryModelWithStreaming</code> is a thin wrapper around <code>queryModel</code> that records streaming behavior through a VCR layer. The query loop depends on the adapter yielding useful events while the response is still in progress.</p>
+            <p><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/api/claude.ts#L752-L780">Code reference: queryModelWithStreaming</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Internal tools become API tool schemas</summary>
+          <div class="details-body">
+            <p>The adapter resolves the model, beta flags, previous request state, advisor/tool-search settings, and tool schemas. Built-in and MCP tools have already been normalized to the same local <code>Tool</code> shape, so this layer can map them into Anthropic-compatible tool schema objects.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/api/claude.ts#L1017-L1126">Model resolution and request preparation</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/api/claude.ts#L1231-L1267">Tool schema mapping and message normalization</a></li>
+            </ul>
+            <p>External references: <a href="https://docs.anthropic.com/en/api/messages">Anthropic Messages API</a> and <a href="https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview">Anthropic tool use</a>.</p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>System prompt blocks and cache control are explicit</summary>
+          <div class="details-body">
+            <p>The adapter builds system prompt blocks separately from user messages. The request builder can attach cache-control metadata, include thinking settings, output config, metadata, speed options, and context management configuration.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/api/claude.ts#L1375-L1396">System prompt and allTools setup</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/api/claude.ts#L1538-L1728">paramsFromContext request construction</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/api/claude.ts#L3213-L3237">System prompt blocks with cache control</a></li>
+            </ul>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>The API call is a streamed Messages request</summary>
+          <div class="details-body">
+            <p>The adapter creates an Anthropic client and calls <code>anthropic.beta.messages.create</code> with <code>stream: true</code>, an abort signal, and headers. This is wrapped with retry handling.</p>
+            <p><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/api/claude.ts#L1777-L1836">Code reference: streamed API call with retry</a></p>
+            <p>External reference: <a href="https://docs.anthropic.com/en/docs/build-with-claude/streaming">Anthropic streaming</a>.</p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Stream parsing yields assistant messages incrementally</summary>
+          <div class="details-body">
+            <p>The stream handler accumulates text, thinking, signatures, tool_use JSON input, and server tool_use input. When a content block stops, it creates and yields an assistant message. Message deltas mutate usage and stop reason on the last yielded message, while raw stream events are also yielded for telemetry and UI consumers.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/api/claude.ts#L1995-L2171">Content block accumulation</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/api/claude.ts#L2171-L2211">Yield AssistantMessage on block stop</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/api/claude.ts#L2213-L2293">message_delta usage and stop reason updates</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/api/claude.ts#L2299-L2303">raw stream_event yield</a></li>
+            </ul>
+          </div>
+        </details>
+      </section>
+
+      <footer class="footer">
+        <p><a href="../index.html">Back to overview</a></p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

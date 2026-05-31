@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>State and Rendering</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand"><strong>State and Rendering</strong><span>Ink, React, AppState</span></div>
+      <nav class="nav" aria-label="Component pages">
+        <a href="../index.html">Overview</a>
+        <a href="cli-startup.html">CLI Startup</a>
+        <a href="repl-input.html">REPL Input</a>
+        <a href="query-loop.html">Query Loop</a>
+        <a href="model-api.html">Model API</a>
+        <a href="tools-permissions.html">Tools and Permissions</a>
+        <a href="mcp.html">MCP</a>
+        <a href="state-rendering.html" aria-current="page">State and Rendering</a>
+      </nav>
+    </aside>
+    <main class="content">
+      <div class="topbar">
+        <div>
+          <h1>State and rendering</h1>
+          <p class="lead">The UI runs as a React and Ink terminal app. AppState is stored in a small external store, React reads it through <code>useSyncExternalStore</code>, and query events update transcript, permissions, MCP state, notifications, and render state as the session runs.</p>
+        </div>
+        <div class="controls">
+          <input type="search" placeholder="Filter blocks" aria-label="Filter blocks" data-search>
+          <button type="button" data-expand-all>Expand all</button>
+          <button type="button" data-collapse-all>Collapse all</button>
+        </div>
+      </div>
+      <p class="meta" data-search-count></p>
+
+      <section class="section panel searchable">
+        <h2>Rendering and state flow</h2>
+        <pre><code>renderAndRun()
+  render(&lt;App&gt;&lt;REPL /&gt;&lt;/App&gt;)
+  start deferred prefetch work
+  waitUntilExit()
+
+ink render()
+  ThemeProvider wraps tree
+  Ink.createRoot creates terminal renderer
+  Ink.render updates reconciler container
+
+AppStateProvider
+  createStore(initialState)
+  provide store through React context
+
+useAppState(selector)
+  useSyncExternalStore(store.subscribe, snapshot)
+  re-render when selected value changes</code></pre>
+      </section>
+
+      <section class="section stack">
+        <details open class="searchable">
+          <summary>renderAndRun owns the terminal lifecycle</summary>
+          <div class="details-body">
+            <p><code>renderAndRun</code> renders the root element, starts deferred prefetch work, waits until the UI exits, and then performs graceful shutdown. This keeps startup work and terminal cleanup in one lifecycle boundary.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/interactiveHelpers.tsx#L94-L103">renderAndRun lifecycle</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/replLauncher.tsx#L12-L22">launchRepl uses renderAndRun</a></li>
+            </ul>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>The Ink wrapper sets up the React terminal renderer</summary>
+          <div class="details-body">
+            <p>The local Ink wrapper adds the theme provider and creates a root. The root creates an Ink instance, exposes render, unmount, clear, and waitUntilExit methods, and ultimately renders through a reconciler container wired to terminal streams.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/ink.ts#L18-L30">ThemeProvider wrapper</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/ink/root.ts#L127-L155">createRoot methods</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/ink/ink.tsx#L1442-L1550">Ink.render, unmount, waitUntilExit</a></li>
+            </ul>
+            <p>External reference: <a href="https://github.com/vadimdemedes/ink">Ink terminal UI</a>.</p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>AppState is broad but explicit</summary>
+          <div class="details-body">
+            <p><code>AppState</code> includes tool permission context, bridge state, MCP data, plugin data, notifications, elicitation state, thinking state, prompt suggestions, hooks, and more. The default state constructor initializes these pieces so the REPL can assume the shape exists.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/state/AppStateStore.ts#L89-L140">Core AppState fields</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/state/AppStateStore.ts#L173-L231">Mutable MCP, plugin, notification, and hook state</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/state/AppStateStore.ts#L456-L541">Default state construction</a></li>
+            </ul>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>The external store keeps UI subscription simple</summary>
+          <div class="details-body">
+            <p>The store implementation is intentionally small: <code>getState</code>, <code>setState</code>, and <code>subscribe</code>. <code>AppStateProvider</code> creates the store once, then <code>useAppState</code> uses <code>useSyncExternalStore</code> to subscribe to selected values.</p>
+            <pre><code>store = createStore(initialState)
+setState(fn)
+  state = fn(state)
+  listeners.forEach(listener)
+
+useAppState(selector)
+  useSyncExternalStore(
+    store.subscribe,
+    () =&gt; selector(store.getState())
+  )</code></pre>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/state/store.ts#L4-L34">External store implementation</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/state/AppState.tsx#L37-L57">AppStateProvider</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/state/AppState.tsx#L142-L172">useAppState and useSetAppState</a></li>
+            </ul>
+            <p>External reference: <a href="https://react.dev/reference/react/useSyncExternalStore">React useSyncExternalStore</a>.</p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>The App wrapper provides runtime context</summary>
+          <div class="details-body">
+            <p>The top-level App component wraps children with frame-rate, stats, and AppState providers. Downstream components can then update shared state as model events arrive, MCP connections change, permissions are requested, and prompt suggestions are calculated.</p>
+            <p><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/components/App.tsx#L20-L40">Code reference: App provider wrapper</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Fresh state reads prevent stale tool context</summary>
+          <div class="details-body">
+            <p>The REPL constructs <code>ToolUseContext</code> from current store values when a query begins. This is important for long-running terminal sessions because MCP clients, permission context, resources, and app callbacks can change after the REPL component first rendered.</p>
+            <p><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/screens/REPL.tsx#L2382-L2523">Code reference: fresh ToolUseContext from current state</a></p>
+          </div>
+        </details>
+      </section>
+
+      <footer class="footer">
+        <p><a href="../index.html">Back to overview</a></p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

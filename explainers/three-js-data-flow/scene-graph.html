@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Three.js Deep Dive — Scene Graph</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --surface2: #21262d; --border: #30363d;
+    --text: #e6edf3; --muted: #8b949e; --accent: #58a6ff; --green: #3fb950;
+    --orange: #d29922; --purple: #bc8cff; --red: #f85149;
+    --font-mono: 'Courier New', Courier, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 15px; line-height: 1.6; }
+  nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 20px; position: sticky; top: 0; z-index: 100; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  nav .logo { font-weight: 700; color: var(--accent); margin-right: 12px; font-size: 16px; white-space: nowrap; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 13px; padding: 4px 10px; border-radius: 6px; border: 1px solid transparent; white-space: nowrap; }
+  nav a:hover, nav a.active { color: var(--text); border-color: var(--border); background: var(--surface2); }
+  main { max-width: 900px; margin: 0 auto; padding: 32px 20px 80px; }
+  h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+  h2 { font-size: 20px; font-weight: 600; margin: 32px 0 12px; color: var(--accent); }
+  h3 { font-size: 16px; font-weight: 600; margin: 20px 0 8px; color: var(--orange); }
+  p { margin-bottom: 12px; }
+  .muted { color: var(--muted); font-size: 14px; }
+  a { color: var(--accent); }
+  details { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 16px; overflow: hidden; }
+  summary { padding: 14px 18px; cursor: pointer; font-weight: 600; font-size: 15px; list-style: none; display: flex; align-items: center; gap: 8px; user-select: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary::before { content: '▶'; font-size: 10px; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; }
+  details[open] > summary::before { transform: rotate(90deg); }
+  summary:hover { background: var(--surface2); }
+  .details-body { padding: 0 18px 18px; }
+  pre { background: #010409 !important; border: 1px solid var(--border); border-radius: 6px; padding: 16px; overflow-x: auto; margin: 12px 0; }
+  code.hljs { background: #010409 !important; padding: 0; }
+  pre code { white-space: pre; font-family: var(--font-mono); font-size: 13px; }
+  :not(pre) > code { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; font-family: var(--font-mono); font-size: 13px; color: var(--purple); }
+  .flow-diagram { background: #010409; border: 1px solid var(--border); border-radius: 8px; padding: 20px; font-family: var(--font-mono); font-size: 13px; overflow-x: auto; line-height: 1.8; white-space: pre; }
+  .prop-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+  .prop-table th { background: var(--surface2); text-align: left; padding: 8px 12px; border: 1px solid var(--border); color: var(--muted); font-weight: 600; }
+  .prop-table td { padding: 8px 12px; border: 1px solid var(--border); vertical-align: top; }
+  .prop-table td:first-child { font-family: var(--font-mono); color: var(--purple); white-space: nowrap; }
+  .prop-table tr:hover td { background: var(--surface2); }
+  .gh-link { font-size: 12px; font-family: var(--font-mono); color: var(--muted); text-decoration: none; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; }
+  .gh-link:hover { color: var(--accent); }
+  .note { background: #1c2128; border-left: 3px solid var(--orange); padding: 12px 16px; border-radius: 0 6px 6px 0; margin: 12px 0; font-size: 14px; }
+  @media (max-width: 600px) { h1 { font-size: 22px; } h2 { font-size: 17px; } .flow-diagram { font-size: 11px; } nav { padding: 10px 12px; } }
+</style>
+</head>
+<body>
+<nav>
+  <span class="logo">Three.js Deep Dive</span>
+  <a href="index.html">Overview</a>
+  <a href="scene-graph.html" class="active">Scene Graph</a>
+  <a href="geometry.html">Geometry</a>
+  <a href="material-shader.html">Material &amp; Shader</a>
+  <a href="camera.html">Camera</a>
+  <a href="renderer.html">Renderer</a>
+</nav>
+
+<main>
+  <h1>Scene Graph</h1>
+  <p class="muted">How three.js organizes 3D objects in a parent–child hierarchy and computes world-space transforms through the tree.</p>
+
+  <details open>
+    <summary>The Tree Structure</summary>
+    <div class="details-body">
+      <p>Three.js uses a <strong>scene graph</strong>: a tree of <code>Object3D</code> nodes. Every visible thing — meshes, lights, cameras — is an Object3D. The scene itself is the root node.</p>
+      <div class="flow-diagram"><span style="color:#58a6ff">Scene</span>  (root)
+  │
+  ├── <span style="color:#3fb950">Group</span>  "car"
+  │     ├── <span style="color:#d29922">Mesh</span>  "body"      ← geometry + material
+  │     ├── <span style="color:#d29922">Mesh</span>  "wheel_FL"
+  │     └── <span style="color:#d29922">Mesh</span>  "wheel_FR"
+  │
+  ├── <span style="color:#bc8cff">DirectionalLight</span>
+  └── <span style="color:#58a6ff">PerspectiveCamera</span>
+
+Each node has:
+  position / rotation / scale   → local transform
+  matrix                        → composed local transform (4×4)
+  matrixWorld                   → absolute world transform (4×4)</div>
+
+      <p>This means moving the "car" Group automatically moves all its children in world space. This is how articulated objects, vehicle wheels, character limbs etc. work.</p>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Object3D — The Base Class <a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/core/Object3D.js" target="_blank">Object3D.js</a></summary>
+    <div class="details-body">
+      <p>Every object in the scene graph extends <code>Object3D</code>. It provides transforms, hierarchy, visibility, and lifecycle events.</p>
+
+      <h3>Identity &amp; Hierarchy Properties</h3>
+      <table class="prop-table">
+        <tr><th>Property</th><th>Line</th><th>Description</th></tr>
+        <tr><td>id</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/core/Object3D.js#L79" target="_blank">L79</a></td><td>Auto-incrementing integer ID unique across the session</td></tr>
+        <tr><td>uuid</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/core/Object3D.js#L87" target="_blank">L87</a></td><td>UUID for serialization (stays stable across export/import)</td></tr>
+        <tr><td>name</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/core/Object3D.js#L95" target="_blank">L95</a></td><td>Optional string name for getObjectByName() lookup</td></tr>
+        <tr><td>parent</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/core/Object3D.js#L121" target="_blank">L121</a></td><td>Reference to the parent Object3D (null for scene root)</td></tr>
+        <tr><td>children</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/core/Object3D.js#L128" target="_blank">L128</a></td><td>Array of child Object3Ds — this forms the tree</td></tr>
+      </table>
+
+      <h3>Transform Properties</h3>
+      <table class="prop-table">
+        <tr><th>Property</th><th>Line</th><th>Description</th></tr>
+        <tr><td>position</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/core/Object3D.js#L168" target="_blank">L168</a></td><td>Vector3 — local translation relative to parent</td></tr>
+        <tr><td>rotation</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/core/Object3D.js#L180" target="_blank">L180</a></td><td>Euler — local rotation in radians (XYZ order by default)</td></tr>
+        <tr><td>quaternion</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/core/Object3D.js#L191" target="_blank">L191</a></td><td>Quaternion — same rotation as <code>rotation</code>, kept in sync automatically</td></tr>
+        <tr><td>scale</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/core/Object3D.js#L203" target="_blank">L203</a></td><td>Vector3 — local scale (1, 1, 1) = no scaling</td></tr>
+        <tr><td>matrix</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/core/Object3D.js#L233" target="_blank">L233</a></td><td>Matrix4 — composed local transform: position × rotation × scale</td></tr>
+        <tr><td>matrixWorld</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/core/Object3D.js#L241" target="_blank">L241</a></td><td>Matrix4 — absolute world transform: parent.matrixWorld × matrix</td></tr>
+        <tr><td>matrixAutoUpdate</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/core/Object3D.js#L253" target="_blank">L253</a></td><td>If true, <code>matrix</code> is recomputed each frame from position/rotation/scale</td></tr>
+        <tr><td>matrixWorldAutoUpdate</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/core/Object3D.js#L265" target="_blank">L265</a></td><td>If true, <code>matrixWorld</code> is recomputed when the scene graph updates</td></tr>
+      </table>
+
+      <h3>Visibility &amp; Rendering Properties</h3>
+      <table class="prop-table">
+        <tr><th>Property</th><th>Line</th><th>Description</th></tr>
+        <tr><td>visible</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/core/Object3D.js#L291" target="_blank">L291</a></td><td>If false, object and all children are skipped during render traversal</td></tr>
+        <tr><td>layers</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/core/Object3D.js#L283" target="_blank">L283</a></td><td>Bitmask — object is rendered only if camera.layers matches any bit</td></tr>
+        <tr><td>renderOrder</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/core/Object3D.js#L327" target="_blank">L327</a></td><td>Integer — overrides Z-sort for this object. Higher = rendered later</td></tr>
+        <tr><td>castShadow</td><td>—</td><td>Whether this object contributes to shadow maps</td></tr>
+        <tr><td>receiveShadow</td><td>—</td><td>Whether this object receives shadows from the shadow map</td></tr>
+      </table>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Building the Tree: add() and remove() <a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/core/Object3D.js#L746" target="_blank">L746</a></summary>
+    <div class="details-body">
+      <pre><code class="language-javascript">// scene.add(mesh) calls Object3D.add() on the scene node:
+add( object ) {
+  // Prevent adding self
+  if ( object === this ) throw new Error( ... );
+
+  // If object has an existing parent, remove it first
+  if ( object.parent !== null ) object.removeFromParent();
+
+  // Set bi-directional links
+  object.parent = this;         // child knows its parent
+  this.children.push( object ); // parent knows its children
+
+  // Fire events so listeners can react
+  object.dispatchEvent( _addedEvent );
+  this.dispatchEvent( _childaddedEvent );
+
+  return this; // chainable
+}
+
+// Removal is the mirror image:
+remove( object ) {
+  const index = this.children.indexOf( object );
+  if ( index !== -1 ) {
+    object.parent = null;
+    this.children.splice( index, 1 );
+    object.dispatchEvent( _removedEvent );
+    this.dispatchEvent( _childremovedEvent );
+  }
+  return this;
+}</code></pre>
+      <div class="note">No GPU work happens on add/remove. The tree is pure JavaScript — GPU resources are allocated lazily on first render.</div>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Transform Composition: Local → World Space</summary>
+    <div class="details-body">
+      <p>Each node stores a <em>local</em> transform (relative to its parent) and a <em>world</em> transform (absolute in scene space). The renderer needs world transforms to place vertices correctly.</p>
+      <div class="flow-diagram"><span style="color:#58a6ff">updateMatrix()</span>  — runs when matrixAutoUpdate = true
+  matrix = compose( position, quaternion, scale )
+         = T × R × S   (4×4 matrix multiply)
+
+<span style="color:#3fb950">updateMatrixWorld( force )</span>  — recursive, called once per render
+  if (parent exists):
+    matrixWorld = parent.matrixWorld × matrix   ← chain of transforms
+  else:
+    matrixWorld = matrix                         ← root node
+
+  for each child:
+    child.updateMatrixWorld()                    ← depth-first traversal</div>
+
+      <pre><code class="language-javascript">// In Object3D.js — the actual implementation
+updateMatrixWorld( force ) {
+  if ( this.matrixAutoUpdate ) this.updateMatrix();
+
+  if ( this.matrixWorldNeedsUpdate || force ) {
+    if ( this.matrixWorldAutoUpdate ) {
+      if ( this.parent === null ) {
+        this.matrixWorld.copy( this.matrix );
+      } else {
+        // Multiply parent's world matrix by local matrix
+        this.matrixWorld.multiplyMatrices(
+          this.parent.matrixWorld,
+          this.matrix
+        );
+      }
+    }
+    this.matrixWorldNeedsUpdate = false;
+    force = true; // propagate to children
+  }
+
+  const children = this.children;
+  for ( let i = 0, l = children.length; i < l; i++ ) {
+    children[ i ].updateMatrixWorld( force );
+  }
+}</code></pre>
+
+      <p>The key insight: <strong>matrixWorld is a product of all ancestor transforms</strong>. Moving a parent automatically repositions all descendants, because their matrixWorld is recomputed from the new parent.matrixWorld.</p>
+
+      <h3>Why Quaternions, Not Euler Angles?</h3>
+      <p>Euler angles (rotation.x/y/z) are easy to use but suffer from <strong>gimbal lock</strong> — certain rotations can lose a degree of freedom. Quaternions represent rotation as a 4D unit vector and compose without gimbal lock. Three.js keeps both in sync: setting <code>rotation</code> updates <code>quaternion</code> and vice versa, but internally uses quaternions for <code>matrix</code> composition.</p>
+      <ul>
+        <li><a href="https://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/transforms/index.htm" target="_blank">Euclidean Space — Quaternion Transforms</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Gimbal_lock" target="_blank">Wikipedia — Gimbal Lock</a></li>
+      </ul>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Scene — The Root Node <a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/scenes/Scene.js" target="_blank">Scene.js</a></summary>
+    <div class="details-body">
+      <p><code>Scene</code> extends <code>Object3D</code> and adds renderer hints. It is the tree root passed to <code>renderer.render(scene, camera)</code>.</p>
+
+      <table class="prop-table">
+        <tr><th>Property</th><th>Line</th><th>Description</th></tr>
+        <tr><td>isScene</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/scenes/Scene.js#L26" target="_blank">L26</a></td><td>Type discriminator — renderer checks this to validate input</td></tr>
+        <tr><td>background</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/scenes/Scene.js#L40" target="_blank">L40</a></td><td>Color, Texture, or CubeTexture drawn behind everything else</td></tr>
+        <tr><td>environment</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/scenes/Scene.js#L50" target="_blank">L50</a></td><td>CubeTexture/Texture used for PBR environment lighting (IBL)</td></tr>
+        <tr><td>fog</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/scenes/Scene.js#L59" target="_blank">L59</a></td><td>Fog or FogExp2 — if set, fog uniforms are sent to every shader that supports it</td></tr>
+        <tr><td>overrideMaterial</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/scenes/Scene.js#L113" target="_blank">L113</a></td><td>If set, ALL objects use this material instead of their own (useful for depth/normal passes)</td></tr>
+      </table>
+
+      <h3>How overrideMaterial Works</h3>
+      <p>In <code>renderObjects()</code> in WebGLRenderer, before calling <code>renderObject()</code>, the renderer checks:</p>
+      <pre><code class="language-javascript">// WebGLRenderer.js — inside renderObjects()
+const overrideMaterial = scene.isScene
+  ? scene.overrideMaterial
+  : null;
+
+// Each object renders with override if set
+const material = overrideMaterial !== null
+  ? overrideMaterial
+  : renderItem.material;
+
+renderObject( object, scene, camera, geometry, material, group );</code></pre>
+      <p>This is how shadow map rendering works — an override <code>MeshDepthMaterial</code> replaces every object's real material for the shadow pass.</p>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Traversal Utilities</summary>
+    <div class="details-body">
+      <pre><code class="language-javascript">// Walk the tree depth-first
+scene.traverse( object => {
+  console.log( object.name );
+});
+
+// Find by name (stops at first match)
+const wheel = scene.getObjectByName( 'wheel_FL' );
+
+// Find all objects matching a condition
+const meshes = [];
+scene.traverseVisible( obj => {
+  if ( obj.isMesh ) meshes.push( obj );
+});
+
+// Walk ancestors up to root
+mesh.traverseAncestors( ancestor => {
+  console.log( ancestor.name );
+});</code></pre>
+      <div class="note"><strong>traverse() visits ALL nodes including invisible ones.</strong> Use <code>traverseVisible()</code> if you only care about rendered objects — it skips subtrees where <code>visible === false</code>.</div>
+    </div>
+  </details>
+
+  <details open>
+    <summary>External References</summary>
+    <div class="details-body">
+      <ul>
+        <li><a href="https://en.wikipedia.org/wiki/Scene_graph" target="_blank">Wikipedia — Scene Graph</a> — the general pattern, not three.js-specific</li>
+        <li><a href="https://threejs.org/docs/#api/en/core/Object3D" target="_blank">Three.js Docs — Object3D</a></li>
+        <li><a href="https://threejs.org/manual/#en/scenegraph" target="_blank">Three.js Manual — Scene Graph</a> — visual diagrams of the hierarchy</li>
+        <li><a href="https://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/" target="_blank">Euclidean Space — Quaternion to Matrix</a></li>
+        <li><a href="https://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/" target="_blank">OpenGL Tutorial — Model/View/Projection Matrices</a></li>
+      </ul>
+    </div>
+  </details>
+</main>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

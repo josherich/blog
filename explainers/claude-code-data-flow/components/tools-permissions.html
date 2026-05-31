@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tools and Permissions</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand"><strong>Tools and Permissions</strong><span>Validation, hooks, approval, execution</span></div>
+      <nav class="nav" aria-label="Component pages">
+        <a href="../index.html">Overview</a>
+        <a href="cli-startup.html">CLI Startup</a>
+        <a href="repl-input.html">REPL Input</a>
+        <a href="query-loop.html">Query Loop</a>
+        <a href="model-api.html">Model API</a>
+        <a href="tools-permissions.html" aria-current="page">Tools and Permissions</a>
+        <a href="mcp.html">MCP</a>
+        <a href="state-rendering.html">State and Rendering</a>
+      </nav>
+    </aside>
+    <main class="content">
+      <div class="topbar">
+        <div>
+          <h1>Tools and permissions</h1>
+          <p class="lead">The tool system has three layers: a registry that builds the available tool pool, orchestration that decides safe execution order, and execution that validates input, runs hooks, asks for permission, calls the tool, and turns results back into model messages.</p>
+        </div>
+        <div class="controls">
+          <input type="search" placeholder="Filter blocks" aria-label="Filter blocks" data-search>
+          <button type="button" data-expand-all>Expand all</button>
+          <button type="button" data-collapse-all>Collapse all</button>
+        </div>
+      </div>
+      <p class="meta" data-search-count></p>
+
+      <section class="section panel searchable">
+        <h2>Execution flow</h2>
+        <pre><code>assembleToolPool()
+  built-in tools + MCP tools
+  deny filters
+  stable sort for prompt cache
+  dedupe by name
+
+streaming or regular executor
+  find tool by name
+  validate input with zod schema
+  run PreToolUse hooks
+  ask permission when needed
+  tool.call(input, context)
+  map result to tool_result user message
+  return contextModifier if needed</code></pre>
+      </section>
+
+      <section class="section stack">
+        <details open class="searchable">
+          <summary>The Tool type is the common interface</summary>
+          <div class="details-body">
+            <p>A tool includes a prompt-visible name and description, input schemas, execution metadata, permission behavior, concurrency/read-only/destructive/open-world hints, MCP metadata when applicable, and a <code>call</code> method. <code>ToolUseContext</code> passes abort state, app state accessors, permission callbacks, UI callbacks, read-file state, and MCP resources into tool calls.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/Tool.ts#L158-L230">ToolUseContext</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/Tool.ts#L358-L455">Tool type and lookup</a></li>
+            </ul>
+            <p>External reference: <a href="https://zod.dev/">Zod</a>, used for schema validation concepts.</p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Tool pool assembly merges built-ins and MCP</summary>
+          <div class="details-body">
+            <p><code>getAllBaseTools</code> defines the core local tools. <code>getTools</code> filters by mode, deny rules, REPL availability, and tool enablement. <code>assembleToolPool</code> then combines built-ins and MCP tools, applies deny filters, sorts partitions for prompt-cache stability, and deduplicates by name.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/tools.ts#L200-L250">Base tools</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/tools.ts#L271-L327">Tool filtering</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/tools.ts#L329-L367">Tool pool assembly</a></li>
+            </ul>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Orchestration separates concurrent and serial work</summary>
+          <div class="details-body">
+            <p><code>runTools</code> partitions tool uses into concurrency-safe and serial groups. Safe tools can run together under a concurrency limit, while unsafe tools run exclusively. The streaming executor performs a similar check while the model is still streaming, so safe tool work can begin before the whole assistant message is complete.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/tools/toolOrchestration.ts#L19-L82">runTools orchestration</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/tools/toolOrchestration.ts#L86-L176">Partition and concurrent execution</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/tools/StreamingToolExecutor.ts#L80-L150">Streaming executor queue and concurrency</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/tools/StreamingToolExecutor.ts#L207-L240">Abort and interrupt behavior</a></li>
+            </ul>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>runToolUse is validation plus policy plus call</summary>
+          <div class="details-body">
+            <p><code>runToolUse</code> resolves the tool name, handles unknown tools, validates input with the tool schema, runs speculative classifiers and pre-tool hooks, asks the permission layer, produces denied tool_result messages when needed, executes <code>tool.call</code> when allowed, and maps the result into a user tool_result message.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/tools/toolExecution.ts#L337-L410">Tool lookup and unknown tool handling</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/tools/toolExecution.ts#L599-L680">Schema validation</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/tools/toolExecution.ts#L800-L862">PreToolUse hooks</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/tools/toolExecution.ts#L916-L930">Permission resolution</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/tools/toolExecution.ts#L995-L1103">Denied result handling</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/tools/toolExecution.ts#L1207-L1222">Allowed tool call</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/tools/toolExecution.ts#L1403-L1473">tool_result message creation</a></li>
+            </ul>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Permission requests are model policy plus interactive UI</summary>
+          <div class="details-body">
+            <p><code>useCanUseTool</code> handles deny and ask cases, coordinator and worker behavior, speculative bash classification, and interactive permission handling. The permission context can log decisions, persist them, abort, cancel, and let permission request hooks allow or deny. The interactive handler pushes a <code>ToolUseConfirm</code> item to app state, which the permissions UI renders.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/hooks/useCanUseTool.tsx#L55-L170">useCanUseTool decision flow</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/hooks/toolPermission/PermissionContext.ts#L96-L172">PermissionContext actions</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/hooks/toolPermission/PermissionContext.ts#L216-L260">PermissionRequest hooks</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/hooks/toolPermission/handlers/interactiveHandler.ts#L92-L230">Interactive permission queue item</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/components/permissions/PermissionRequest.tsx#L47-L120">Permission request UI mapping</a></li>
+            </ul>
+            <p>External reference: <a href="https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview">Anthropic tool use</a>.</p>
+          </div>
+        </details>
+      </section>
+
+      <footer class="footer">
+        <p><a href="../index.html">Back to overview</a></p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

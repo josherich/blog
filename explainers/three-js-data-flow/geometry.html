@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Three.js Deep Dive — Geometry</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --surface2: #21262d; --border: #30363d;
+    --text: #e6edf3; --muted: #8b949e; --accent: #58a6ff; --green: #3fb950;
+    --orange: #d29922; --purple: #bc8cff; --red: #f85149;
+    --font-mono: 'Courier New', Courier, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 15px; line-height: 1.6; }
+  nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 20px; position: sticky; top: 0; z-index: 100; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  nav .logo { font-weight: 700; color: var(--accent); margin-right: 12px; font-size: 16px; white-space: nowrap; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 13px; padding: 4px 10px; border-radius: 6px; border: 1px solid transparent; white-space: nowrap; }
+  nav a:hover, nav a.active { color: var(--text); border-color: var(--border); background: var(--surface2); }
+  main { max-width: 900px; margin: 0 auto; padding: 32px 20px 80px; }
+  h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+  h2 { font-size: 20px; font-weight: 600; margin: 32px 0 12px; color: var(--accent); }
+  h3 { font-size: 16px; font-weight: 600; margin: 20px 0 8px; color: var(--orange); }
+  p { margin-bottom: 12px; }
+  .muted { color: var(--muted); font-size: 14px; }
+  a { color: var(--accent); }
+  details { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 16px; overflow: hidden; }
+  summary { padding: 14px 18px; cursor: pointer; font-weight: 600; font-size: 15px; list-style: none; display: flex; align-items: center; gap: 8px; user-select: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary::before { content: '▶'; font-size: 10px; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; }
+  details[open] > summary::before { transform: rotate(90deg); }
+  summary:hover { background: var(--surface2); }
+  .details-body { padding: 0 18px 18px; }
+  pre { background: #010409 !important; border: 1px solid var(--border); border-radius: 6px; padding: 16px; overflow-x: auto; margin: 12px 0; }
+  code.hljs { background: #010409 !important; padding: 0; }
+  pre code { white-space: pre; font-family: var(--font-mono); font-size: 13px; }
+  :not(pre) > code { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; font-family: var(--font-mono); font-size: 13px; color: var(--purple); }
+  .flow-diagram { background: #010409; border: 1px solid var(--border); border-radius: 8px; padding: 20px; font-family: var(--font-mono); font-size: 13px; overflow-x: auto; line-height: 1.8; white-space: pre; }
+  .prop-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+  .prop-table th { background: var(--surface2); text-align: left; padding: 8px 12px; border: 1px solid var(--border); color: var(--muted); font-weight: 600; }
+  .prop-table td { padding: 8px 12px; border: 1px solid var(--border); vertical-align: top; }
+  .prop-table td:first-child { font-family: var(--font-mono); color: var(--purple); white-space: nowrap; }
+  .prop-table tr:hover td { background: var(--surface2); }
+  .gh-link { font-size: 12px; font-family: var(--font-mono); color: var(--muted); text-decoration: none; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; }
+  .gh-link:hover { color: var(--accent); }
+  .note { background: #1c2128; border-left: 3px solid var(--orange); padding: 12px 16px; border-radius: 0 6px 6px 0; margin: 12px 0; font-size: 14px; }
+  .memory-layout { display: flex; flex-wrap: wrap; gap: 2px; margin: 12px 0; font-family: var(--font-mono); font-size: 12px; }
+  .mem-cell { background: var(--surface2); border: 1px solid var(--border); padding: 6px 10px; border-radius: 4px; text-align: center; }
+  .mem-cell .label { color: var(--muted); font-size: 10px; display: block; }
+  .mem-cell.pos { border-color: var(--accent); color: var(--accent); }
+  .mem-cell.norm { border-color: var(--green); color: var(--green); }
+  .mem-cell.uv { border-color: var(--orange); color: var(--orange); }
+  @media (max-width: 600px) { h1 { font-size: 22px; } h2 { font-size: 17px; } .flow-diagram { font-size: 11px; } nav { padding: 10px 12px; } }
+</style>
+</head>
+<body>
+<nav>
+  <span class="logo">Three.js Deep Dive</span>
+  <a href="index.html">Overview</a>
+  <a href="scene-graph.html">Scene Graph</a>
+  <a href="geometry.html" class="active">Geometry</a>
+  <a href="material-shader.html">Material &amp; Shader</a>
+  <a href="camera.html">Camera</a>
+  <a href="renderer.html">Renderer</a>
+</nav>
+
+<main>
+  <h1>Geometry (BufferGeometry)</h1>
+  <p class="muted">How vertex data lives in typed arrays, gets structured into named attributes, and is uploaded to GPU buffers for rendering.</p>
+
+  <details open>
+    <summary>The Core Idea</summary>
+    <div class="details-body">
+      <p>A <code>BufferGeometry</code> is a collection of named <strong>attributes</strong> — each attribute is a flat typed array (like <code>Float32Array</code>) that holds per-vertex data. The GPU reads these arrays directly from Video RAM.</p>
+      <div class="flow-diagram"><span style="color:#58a6ff">JavaScript (CPU)</span>                           <span style="color:#3fb950">GPU (VRAM)</span>
+
+BufferGeometry
+  attributes.position  →  Float32Array([x,y,z, x,y,z, ...])  →  VBO (GL_ARRAY_BUFFER)
+  attributes.normal    →  Float32Array([nx,ny,nz, ...])        →  VBO
+  attributes.uv        →  Float32Array([u,v, u,v, ...])        →  VBO
+  index                →  Uint16Array([0,1,2, 1,3,2, ...])     →  IBO (GL_ELEMENT_ARRAY_BUFFER)
+
+All VBOs + attribute pointers are wrapped in a <span style="color:#d29922">VAO (Vertex Array Object)</span>
+so the GPU can recall the whole layout with a single bind.</div>
+    </div>
+  </details>
+
+  <details open>
+    <summary>BufferGeometry Structure <a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/core/BufferGeometry.js" target="_blank">BufferGeometry.js</a></summary>
+    <div class="details-body">
+      <table class="prop-table">
+        <tr><th>Property</th><th>Line</th><th>Description</th></tr>
+        <tr><td>index</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/core/BufferGeometry.js#L101" target="_blank">L101</a></td><td>BufferAttribute (Uint16/Uint32Array) — triangle connectivity. Each trio of values is one triangle's vertex indices.</td></tr>
+        <tr><td>attributes</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/core/BufferGeometry.js#L131" target="_blank">L131</a></td><td>Object mapping name → BufferAttribute. Well-known names: <code>position</code>, <code>normal</code>, <code>uv</code>, <code>color</code>, <code>tangent</code>, <code>skinIndex</code>, <code>skinWeight</code>.</td></tr>
+        <tr><td>morphAttributes</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/core/BufferGeometry.js#L141" target="_blank">L141</a></td><td>Object mapping name → BufferAttribute[] — delta values for each morph target (blend shapes).</td></tr>
+        <tr><td>drawRange</td><td>—</td><td>Object {start, count} — default {start:0, count:Infinity}. Renders only a subset of vertices/indices, useful for streaming or partial update.</td></tr>
+        <tr><td>groups</td><td>—</td><td>Array of {start, count, materialIndex} — enables multi-material meshes. Each group is rendered with its own material.</td></tr>
+        <tr><td>boundingBox</td><td>—</td><td>Box3 — axis-aligned bounding box, used for frustum culling when computed.</td></tr>
+        <tr><td>boundingSphere</td><td>—</td><td>Sphere — bounding sphere for culling. Auto-computed on first render if null.</td></tr>
+      </table>
+
+      <h3>Core Methods</h3>
+      <pre><code class="language-javascript">// Set an attribute (also triggers GPU upload on next render)
+geometry.setAttribute( 'position',
+  new THREE.BufferAttribute( new Float32Array([...]), 3 ) // 3 = itemSize (x,y,z)
+);
+
+// Retrieve an attribute
+const pos = geometry.getAttribute( 'position' );
+
+// Set the index buffer
+geometry.setIndex( new THREE.BufferAttribute(
+  new Uint16Array([ 0,1,2, 1,3,2 ]), 1
+));
+
+// Mark the position attribute as needing GPU re-upload
+geometry.getAttribute('position').needsUpdate = true;
+
+// Render only vertices 10–99
+geometry.drawRange.start = 10;
+geometry.drawRange.count = 90;
+
+// Free CPU + GPU memory
+geometry.dispose();</code></pre>
+    </div>
+  </details>
+
+  <details open>
+    <summary>BufferAttribute — Per-Vertex Arrays <a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/core/BufferAttribute.js" target="_blank">BufferAttribute.js</a></summary>
+    <div class="details-body">
+      <p>A <code>BufferAttribute</code> wraps a typed array and tells three.js how to interpret it for the GPU.</p>
+      <pre><code class="language-javascript">// Triangle with 3 vertices, each having (x, y, z)
+const positions = new Float32Array([
+  // vertex 0      vertex 1       vertex 2
+     0,  1, 0,   -1, -1, 0,    1, -1, 0
+]);
+
+const attr = new THREE.BufferAttribute(
+  positions,  // the typed array
+  3           // itemSize: how many values per vertex (3 = vec3)
+);
+// attr.count = 3 (positions.length / itemSize)
+// attr.array = positions (the raw typed array)
+// attr.itemSize = 3</code></pre>
+
+      <h3>Memory Layout</h3>
+      <p>Data is interleaved or separate. Three.js uses <strong>separate arrays</strong> by default (one per attribute). The memory layout for 3 vertices looks like:</p>
+      <div class="memory-layout">
+        <div class="mem-cell pos">x₀<span class="label">pos</span></div>
+        <div class="mem-cell pos">y₀<span class="label">pos</span></div>
+        <div class="mem-cell pos">z₀<span class="label">pos</span></div>
+        <div class="mem-cell pos">x₁<span class="label">pos</span></div>
+        <div class="mem-cell pos">y₁<span class="label">pos</span></div>
+        <div class="mem-cell pos">z₁<span class="label">pos</span></div>
+        <div class="mem-cell pos">x₂<span class="label">pos</span></div>
+        <div class="mem-cell pos">y₂<span class="label">pos</span></div>
+        <div class="mem-cell pos">z₂<span class="label">pos</span></div>
+      </div>
+      <div class="memory-layout">
+        <div class="mem-cell norm">nx₀<span class="label">normal</span></div>
+        <div class="mem-cell norm">ny₀<span class="label">normal</span></div>
+        <div class="mem-cell norm">nz₀<span class="label">normal</span></div>
+        <div class="mem-cell norm">nx₁<span class="label">normal</span></div>
+        <div class="mem-cell norm">ny₁<span class="label">normal</span></div>
+        <div class="mem-cell norm">nz₁<span class="label">normal</span></div>
+        <div class="mem-cell norm">nx₂<span class="label">normal</span></div>
+        <div class="mem-cell norm">ny₂<span class="label">normal</span></div>
+        <div class="mem-cell norm">nz₂<span class="label">normal</span></div>
+      </div>
+      <div class="memory-layout">
+        <div class="mem-cell uv">u₀<span class="label">uv</span></div>
+        <div class="mem-cell uv">v₀<span class="label">uv</span></div>
+        <div class="mem-cell uv">u₁<span class="label">uv</span></div>
+        <div class="mem-cell uv">v₁<span class="label">uv</span></div>
+        <div class="mem-cell uv">u₂<span class="label">uv</span></div>
+        <div class="mem-cell uv">v₂<span class="label">uv</span></div>
+      </div>
+
+      <h3>Key Properties</h3>
+      <table class="prop-table">
+        <tr><th>Property</th><th>Description</th></tr>
+        <tr><td>array</td><td>The raw typed array (Float32Array, Int16Array, Uint8Array, etc.)</td></tr>
+        <tr><td>itemSize</td><td>Components per vertex: 1=float, 2=vec2, 3=vec3, 4=vec4</td></tr>
+        <tr><td>count</td><td>Number of vertices: array.length / itemSize</td></tr>
+        <tr><td>normalized</td><td>If true, integer values are mapped to [0,1] or [-1,1] range on GPU</td></tr>
+        <tr><td>needsUpdate</td><td>Set to true to re-upload this buffer to GPU on next render</td></tr>
+        <tr><td>usage</td><td>GL hint: StaticDrawUsage (default), DynamicDrawUsage, StreamDrawUsage</td></tr>
+        <tr><td>updateRange</td><td>{offset, count} — partial buffer update. Only re-uploads a slice of the array.</td></tr>
+      </table>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Indexed vs Non-Indexed Geometry</summary>
+    <div class="details-body">
+      <p>Without an index buffer, each triangle requires 3 unique vertices. With indexing, vertices can be <strong>shared</strong> between triangles:</p>
+      <div class="flow-diagram"><span style="color:#f85149">Non-indexed:</span>  6 vertices for a quad (2 triangles)
+  positions: [v0, v1, v2,  v1, v3, v2]   ← v1, v2 duplicated
+
+<span style="color:#3fb950">Indexed:</span>  4 vertices + 6 indices
+  positions: [v0, v1, v2, v3]            ← 4 unique vertices
+  index:     [0,1,2,  1,3,2]             ← two triangles sharing v1 and v2
+
+<span style="color:#58a6ff">Savings:</span>  fewer vertices = less memory, less vertex shader executions
+  GPU caches recently-processed vertices (post-T&amp;L cache) using the index</div>
+
+      <p>For a sphere with 1000 segments, vertex sharing reduces vertex count by ~50% and enables the GPU's built-in vertex cache.</p>
+      <ul>
+        <li><a href="https://www.opengl.org/wiki/Vertex_Specification#Vertex_Array_Object" target="_blank">OpenGL Wiki — Vertex Array Objects</a></li>
+        <li><a href="https://www.khronos.org/opengl/wiki/Vertex_Specification" target="_blank">Khronos — Vertex Specification</a></li>
+      </ul>
+    </div>
+  </details>
+
+  <details open>
+    <summary>How Geometry Reaches the GPU</summary>
+    <div class="details-body">
+      <p>Three.js uploads geometry lazily — on the first render call for a given geometry+material+object combination.</p>
+      <div class="flow-diagram">renderBufferDirect()
+  ↓
+bindingStates.setup( object, material, program, geometry, index )
+  ↓
+  ├─ Lookup or create a VAO (Vertex Array Object) for this combination
+  │
+  ├─ For each attribute the shader needs:
+  │   ├─ WebGLAttributes.update( attribute )     ← create/update GPU buffer
+  │   │     ├─ gl.createBuffer()
+  │   │     ├─ gl.bindBuffer( GL_ARRAY_BUFFER, buffer )
+  │   │     └─ gl.bufferData( GL_ARRAY_BUFFER, attribute.array, usage )
+  │   │
+  │   └─ gl.vertexAttribPointer( location, itemSize, type, normalized, stride, offset )
+  │         ↑ tells the GPU: "attribute at location X starts at this offset, has this size"
+  │
+  └─ If geometry has an index:
+      WebGLAttributes.update( index )
+      gl.bindBuffer( GL_ELEMENT_ARRAY_BUFFER, indexBuffer )
+
+On subsequent renders: just gl.bindVertexArray( vao ) — one call</div>
+
+      <div class="note"><strong>needsUpdate</strong>: Setting <code>attribute.needsUpdate = true</code> triggers a new <code>gl.bufferData()</code> or <code>gl.bufferSubData()</code> on the next render. For partial updates set <code>attribute.updateRange = {offset, count}</code> first.</div>
+
+      <h3>BufferAttribute Usage Hints</h3>
+      <pre><code class="language-javascript">// Static mesh (default) — uploaded once, rarely changed
+geometry.getAttribute('position').usage = THREE.StaticDrawUsage;
+// → gl.bufferData(..., gl.STATIC_DRAW)
+
+// Animated/morphing mesh — re-uploaded frequently
+geometry.getAttribute('position').usage = THREE.DynamicDrawUsage;
+// → gl.bufferData(..., gl.DYNAMIC_DRAW)
+
+// Per-frame streaming (particles, etc.)
+geometry.getAttribute('position').usage = THREE.StreamDrawUsage;
+// → gl.bufferData(..., gl.STREAM_DRAW)</code></pre>
+
+      <p>These hints tell the GPU driver how to allocate VRAM (which memory pool to use), affecting upload speed and rendering throughput.</p>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Multi-Material Geometry (Groups)</summary>
+    <div class="details-body">
+      <p>A geometry can be split into groups, each rendered with a different material. This is used for models with separate textures on different parts (e.g. a car body and its windows).</p>
+      <pre><code class="language-javascript">// Define groups (ranges of the index buffer)
+geometry.addGroup( 0, 36, 0 );   // indices 0-35 → material[0]
+geometry.addGroup( 36, 12, 1 );  // indices 36-47 → material[1]
+
+// Mesh with multiple materials
+const mesh = new THREE.Mesh( geometry, [
+  new THREE.MeshStandardMaterial({ color: 0xff0000 }),  // index 0
+  new THREE.MeshStandardMaterial({ color: 0x0000ff }),  // index 1
+]);</code></pre>
+
+      <p>The renderer calls <code>renderBufferDirect()</code> once per group, with the corresponding material. Each call becomes a separate draw call on the GPU.</p>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Built-in Geometry Generators</summary>
+    <div class="details-body">
+      <p>Three.js includes generators that produce BufferGeometry with pre-computed attributes:</p>
+      <pre><code class="language-javascript">// BoxGeometry — generates position, normal, uv attributes + index
+const box = new THREE.BoxGeometry( 1, 1, 1 );
+
+// SphereGeometry — sphere with lat/lon segments
+const sphere = new THREE.SphereGeometry( 0.5, 32, 16 );
+
+// PlaneGeometry — flat plane in XZ
+const plane = new THREE.PlaneGeometry( 10, 10, 100, 100 );
+
+// Custom: build your own
+const geom = new THREE.BufferGeometry();
+geom.setAttribute( 'position', new THREE.BufferAttribute(
+  new Float32Array([ 0,1,0, -1,-1,0, 1,-1,0 ]), 3
+));
+// Normals are optional but required for lighting
+geom.computeVertexNormals(); // auto-compute from faces</code></pre>
+
+      <ul>
+        <li><a href="https://threejs.org/docs/#api/en/core/BufferGeometry" target="_blank">Three.js Docs — BufferGeometry</a></li>
+        <li><a href="https://webglfundamentals.org/webgl/lessons/webgl-attributes.html" target="_blank">WebGL Fundamentals — Attributes</a></li>
+        <li><a href="https://www.khronos.org/opengl/wiki/Vertex_Buffer_Object" target="_blank">Khronos — Vertex Buffer Objects</a></li>
+      </ul>
+    </div>
+  </details>
+</main>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

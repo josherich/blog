@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MCP Integration</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand"><strong>MCP Integration</strong><span>Servers to local Tool objects</span></div>
+      <nav class="nav" aria-label="Component pages">
+        <a href="../index.html">Overview</a>
+        <a href="cli-startup.html">CLI Startup</a>
+        <a href="repl-input.html">REPL Input</a>
+        <a href="query-loop.html">Query Loop</a>
+        <a href="model-api.html">Model API</a>
+        <a href="tools-permissions.html">Tools and Permissions</a>
+        <a href="mcp.html" aria-current="page">MCP</a>
+        <a href="state-rendering.html">State and Rendering</a>
+      </nav>
+    </aside>
+    <main class="content">
+      <div class="topbar">
+        <div>
+          <h1>MCP integration</h1>
+          <p class="lead">MCP support connects configured servers, fetches their tools, commands, skills, and resources, adapts tools to the same local <code>Tool</code> interface used by built-ins, and keeps AppState current as connections change.</p>
+        </div>
+        <div class="controls">
+          <input type="search" placeholder="Filter blocks" aria-label="Filter blocks" data-search>
+          <button type="button" data-expand-all>Expand all</button>
+          <button type="button" data-collapse-all>Collapse all</button>
+        </div>
+      </div>
+      <p class="meta" data-search-count></p>
+
+      <section class="section panel searchable">
+        <h2>MCP flow</h2>
+        <pre><code>useManageMCPConnections()
+  read dynamic MCP config
+  getMcpToolsCommandsAndResources()
+    connectToServer()
+    fetchToolsForClient()
+    fetch commands, skills, resources
+  batch AppState update by server
+
+fetchToolsForClient()
+  client.request(tools/list)
+  for each MCP tool:
+    create local Tool {
+      name, description, inputJSONSchema, mcpInfo,
+      concurrency/readOnly/destructive/openWorld hints,
+      checkPermissions,
+      call()
+    }
+
+Tool.call()
+  ensure connected client
+  call MCP tools/call
+  support progress and URL elicitation retry
+  return tool result for query loop</code></pre>
+      </section>
+
+      <section class="section stack">
+        <details open class="searchable">
+          <summary>Clients expose roots and elicitation capabilities</summary>
+          <div class="details-body">
+            <p>The MCP client is created with capabilities such as roots and elicitation. The roots handler returns the current working directory, allowing a server to understand the workspace context it is serving. Connection setup uses timeout handling and logs success metadata, then exposes capabilities, server version, and instructions.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/mcp/client.ts#L985-L1018">Client capabilities and roots handler</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/mcp/client.ts#L1048-L1089">Connect with timeout</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/mcp/client.ts#L1157-L1186">Capabilities, version, and instructions</a></li>
+            </ul>
+            <p>External reference: <a href="https://modelcontextprotocol.io/docs/getting-started/intro">Model Context Protocol intro</a>.</p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>MCP tools are adapted into local Tool objects</summary>
+          <div class="details-body">
+            <p><code>fetchToolsForClient</code> calls the MCP <code>tools/list</code> method. Each returned server tool is mapped to a local tool with a namespaced name, MCP metadata, annotations for concurrency and safety, the server-provided input JSON schema, a passthrough permission policy, and a <code>call</code> method.</p>
+            <p>That adapter is the key integration point: after this mapping, the query loop and tool execution engine do not need to care whether the tool was built in or came from a server.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/mcp/client.ts#L1743-L1755">tools/list request</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/mcp/client.ts#L1765-L1813">Map MCP tool to local Tool</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/mcp/client.ts#L1814-L1832">MCP tool permissions</a></li>
+            </ul>
+            <p>External reference: <a href="https://modelcontextprotocol.io/specification/2025-03-26/server/tools">MCP server tools specification</a>.</p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Calling an MCP tool supports progress and elicitation</summary>
+          <div class="details-body">
+            <p>The local tool <code>call</code> implementation ensures the MCP client is connected, invokes the server through <code>callMCPToolWithUrlElicitationRetry</code>, supports progress events, and returns the result to the normal tool_result path. URL elicitation retry lets a server ask for missing information and retry the operation.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/mcp/client.ts#L1833-L1881">MCP Tool.call wrapper</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/mcp/client.ts#L2813-L3027">URL elicitation retry</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/mcp/client.ts#L3029-L3123">MCP tools/call</a></li>
+            </ul>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Connection state is batched into AppState</summary>
+          <div class="details-body">
+            <p><code>useManageMCPConnections</code> reads configured servers, handles channel permission callbacks, connects and fetches server data, then batches AppState updates by server. When a server reconnects or changes state, its tools, commands, skills, resources, and connection metadata are replaced as a unit.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/mcp/client.ts#L2226-L2371">Fetch MCP tools, commands, and resources</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/mcp/useManageMCPConnections.ts#L143-L200">Connection hook setup</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/mcp/useManageMCPConnections.ts#L216-L290">Batched AppState updates</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/mcp/useManageMCPConnections.ts#L310-L410">Connected server handlers and reconnects</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/services/mcp/MCPConnectionManager.tsx#L37-L72">MCPConnectionManager context</a></li>
+            </ul>
+          </div>
+        </details>
+      </section>
+
+      <footer class="footer">
+        <p><a href="../index.html">Back to overview</a></p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

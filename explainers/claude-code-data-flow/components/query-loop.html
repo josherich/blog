@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Query Loop</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand"><strong>Query Loop</strong><span>Streaming turn coordinator</span></div>
+      <nav class="nav" aria-label="Component pages">
+        <a href="../index.html">Overview</a>
+        <a href="cli-startup.html">CLI Startup</a>
+        <a href="repl-input.html">REPL Input</a>
+        <a href="query-loop.html" aria-current="page">Query Loop</a>
+        <a href="model-api.html">Model API</a>
+        <a href="tools-permissions.html">Tools and Permissions</a>
+        <a href="mcp.html">MCP</a>
+        <a href="state-rendering.html">State and Rendering</a>
+      </nav>
+    </aside>
+    <main class="content">
+      <div class="topbar">
+        <div>
+          <h1>Query loop</h1>
+          <p class="lead">The query loop is the central coordinator for a model turn. It receives normalized messages and runtime services from the REPL, streams the model response, starts tool execution as soon as complete tool_use blocks arrive, appends tool_result messages, and decides whether to continue or stop.</p>
+        </div>
+        <div class="controls">
+          <input type="search" placeholder="Filter blocks" aria-label="Filter blocks" data-search>
+          <button type="button" data-expand-all>Expand all</button>
+          <button type="button" data-collapse-all>Collapse all</button>
+        </div>
+      </div>
+      <p class="meta" data-search-count></p>
+
+      <section class="section panel searchable">
+        <h2>Loop shape</h2>
+        <pre><code>query(params)
+  yield* queryLoop(params)
+  mark consumed queued commands complete
+
+queryLoop(params)
+  initialize deps and runtime config once
+  state = { messages, tools, assistantMessages, toolResults }
+  while true:
+    prepare messagesForQuery and prompt context
+    stream model response
+    for each completed assistant/tool_use block:
+      yield to UI
+      add tool_use to streaming executor
+    drain tool results
+    if no tool follow-up:
+      run recovery or stop logic
+      return
+    refresh tools
+    state = state plus assistant messages and tool_result messages</code></pre>
+      </section>
+
+      <section class="section stack">
+        <details open class="searchable">
+          <summary>QueryParams is the handoff contract</summary>
+          <div class="details-body">
+            <p><code>QueryParams</code> carries the conversation, prompt, tools, MCP tools, context callbacks, abort signal, model, permission and tool contexts, and other session options. This is where REPL state becomes model-loop input.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/query.ts#L181-L199">QueryParams type</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/query.ts#L219-L239">query wrapper</a></li>
+            </ul>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Initialization snapshots dependencies and runtime gates</summary>
+          <div class="details-body">
+            <p>At startup, the loop picks production dependencies such as the model streaming adapter, compactors, and UUID generator. It also snapshots query config values, initializes mutable loop state, schedules memory prefetching, and enters the turn loop.</p>
+            <p>Snapshotting configuration up front avoids a single model turn changing behavior because a later render or settings update changed a runtime flag mid-stream.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/query.ts#L241-L307">queryLoop initialization</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/query/deps.ts#L21-L39">Production dependencies</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/query/config.ts#L15-L45">Runtime config snapshot</a></li>
+            </ul>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Each iteration builds the model request</summary>
+          <div class="details-body">
+            <p>Before calling the model, the loop builds the current message list, prepares skill prefetch state, tracks query metadata, and computes a tool-result budget. The actual model call prepends user context to the messages, passes the system prompt and thinking config, includes current tools and MCP tools, and forwards model and tracking options.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/query.ts#L307-L380">Per-iteration setup</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/query.ts#L650-L708">Streaming model call</a></li>
+            </ul>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Assistant stream events become UI events and tool jobs</summary>
+          <div class="details-body">
+            <p>As assistant content arrives, the loop backfills observable tool inputs for display, withholds recoverable errors, appends assistant messages and tool_use blocks, and starts the streaming tool executor. After model streaming finishes, it drains any completed tool results and yields them back to the REPL.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/query.ts#L742-L845">Assistant messages and streaming tool executor</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/query.ts#L847-L862">Completed streaming tool results</a></li>
+            </ul>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Recovery paths are part of the loop</summary>
+          <div class="details-body">
+            <p>The loop handles fallback model warnings, prompt-too-long and media recovery, maximum output continuation, stop hooks, aborts, token budget continuation, and max-turn termination. These branches matter because they decide whether the next state should keep going, retry with changed inputs, or complete the user turn.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/query.ts#L893-L951">Fallback model path</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/query.ts#L999-L1052">Post-sampling hooks and abort handling</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/query.ts#L1062-L1357">No-tool follow-up and completion logic</a></li>
+            </ul>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Tool results create the next model input</summary>
+          <div class="details-body">
+            <p>If tool_use blocks require follow-up, the loop yields tool result messages and updates context. It also handles queued mid-turn attachments after tool calls, filters slash commands out of that path, attaches memory and skill prefetches, refreshes tools between turns, and creates the next loop state.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/query.ts#L1360-L1409">Run or drain tools and yield results</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/query.ts#L1547-L1589">Queued command attachments after tools</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/query.ts#L1659-L1670">Tool refresh between turns</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/query.ts#L1704-L1728">Next state and max turns</a></li>
+            </ul>
+          </div>
+        </details>
+      </section>
+
+      <footer class="footer">
+        <p><a href="../index.html">Back to overview</a></p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

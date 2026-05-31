@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Three.js Deep Dive — Renderer Pipeline</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --surface2: #21262d; --border: #30363d;
+    --text: #e6edf3; --muted: #8b949e; --accent: #58a6ff; --green: #3fb950;
+    --orange: #d29922; --purple: #bc8cff; --red: #f85149;
+    --font-mono: 'Courier New', Courier, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 15px; line-height: 1.6; }
+  nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 20px; position: sticky; top: 0; z-index: 100; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  nav .logo { font-weight: 700; color: var(--accent); margin-right: 12px; font-size: 16px; white-space: nowrap; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 13px; padding: 4px 10px; border-radius: 6px; border: 1px solid transparent; white-space: nowrap; }
+  nav a:hover, nav a.active { color: var(--text); border-color: var(--border); background: var(--surface2); }
+  main { max-width: 900px; margin: 0 auto; padding: 32px 20px 80px; }
+  h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+  h2 { font-size: 20px; font-weight: 600; margin: 32px 0 12px; color: var(--accent); }
+  h3 { font-size: 16px; font-weight: 600; margin: 20px 0 8px; color: var(--orange); }
+  p { margin-bottom: 12px; }
+  .muted { color: var(--muted); font-size: 14px; }
+  a { color: var(--accent); }
+  details { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 16px; overflow: hidden; }
+  summary { padding: 14px 18px; cursor: pointer; font-weight: 600; font-size: 15px; list-style: none; display: flex; align-items: center; gap: 8px; user-select: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary::before { content: '▶'; font-size: 10px; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; }
+  details[open] > summary::before { transform: rotate(90deg); }
+  summary:hover { background: var(--surface2); }
+  .details-body { padding: 0 18px 18px; }
+  pre { background: #010409 !important; border: 1px solid var(--border); border-radius: 6px; padding: 16px; overflow-x: auto; margin: 12px 0; }
+  code.hljs { background: #010409 !important; padding: 0; }
+  pre code { white-space: pre; font-family: var(--font-mono); font-size: 13px; }
+  :not(pre) > code { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; font-family: var(--font-mono); font-size: 13px; color: var(--purple); }
+  .flow-diagram { background: #010409; border: 1px solid var(--border); border-radius: 8px; padding: 20px; font-family: var(--font-mono); font-size: 13px; overflow-x: auto; line-height: 1.8; white-space: pre; }
+  .prop-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+  .prop-table th { background: var(--surface2); text-align: left; padding: 8px 12px; border: 1px solid var(--border); color: var(--muted); font-weight: 600; }
+  .prop-table td { padding: 8px 12px; border: 1px solid var(--border); vertical-align: top; }
+  .prop-table td:first-child { font-family: var(--font-mono); color: var(--purple); white-space: nowrap; }
+  .prop-table tr:hover td { background: var(--surface2); }
+  .gh-link { font-size: 12px; font-family: var(--font-mono); color: var(--muted); text-decoration: none; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; }
+  .gh-link:hover { color: var(--accent); }
+  .note { background: #1c2128; border-left: 3px solid var(--orange); padding: 12px 16px; border-radius: 0 6px 6px 0; margin: 12px 0; font-size: 14px; }
+  .pipeline-step { border: 1px solid var(--border); border-radius: 8px; margin: 8px 0; overflow: hidden; }
+  .pipeline-step-header { background: var(--surface2); padding: 10px 16px; display: flex; align-items: center; gap: 10px; font-weight: 600; }
+  .step-num { background: var(--accent); color: #000; font-weight: 700; border-radius: 4px; padding: 2px 8px; font-size: 12px; font-family: var(--font-mono); }
+  .step-phase { font-size: 12px; color: var(--muted); font-family: var(--font-mono); }
+  .pipeline-step-body { padding: 12px 16px; font-size: 13px; color: var(--muted); }
+  @media (max-width: 600px) { h1 { font-size: 22px; } h2 { font-size: 17px; } .flow-diagram { font-size: 11px; } nav { padding: 10px 12px; } }
+</style>
+</head>
+<body>
+<nav>
+  <span class="logo">Three.js Deep Dive</span>
+  <a href="index.html">Overview</a>
+  <a href="scene-graph.html">Scene Graph</a>
+  <a href="geometry.html">Geometry</a>
+  <a href="material-shader.html">Material &amp; Shader</a>
+  <a href="camera.html">Camera</a>
+  <a href="renderer.html" class="active">Renderer</a>
+</nav>
+
+<main>
+  <h1>WebGLRenderer Pipeline</h1>
+  <p class="muted">The complete journey from <code>renderer.render(scene, camera)</code> to <code>gl.drawElements()</code> — every subsystem that fires and in what order.</p>
+
+  <details open>
+    <summary>WebGLRenderer Overview <a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/renderers/WebGLRenderer.js" target="_blank">WebGLRenderer.js</a></summary>
+    <div class="details-body">
+      <p><code>WebGLRenderer</code> is the orchestrator of the entire pipeline — it owns the WebGL context, manages all GPU state, coordinates shader compilation, and drives the render loop.</p>
+      <p>At construction it initializes ~20 sub-systems:</p>
+      <pre><code class="language-javascript">const renderer = new THREE.WebGLRenderer({ antialias: true });
+
+// Internally creates:
+// WebGLBufferRenderer   — calls gl.drawArrays / gl.drawElements
+// WebGLIndexedBufferRenderer
+// WebGLAttributes       — uploads BufferAttributes to GPU
+// WebGLBindingStates    — manages VAOs (vertex array objects)
+// WebGLTextures         — uploads textures, manages texture units
+// WebGLPrograms         — compiles and caches GLSL shader programs
+// WebGLRenderLists      — opaque/transparent object sorting
+// WebGLRenderStates     — per-render light & shadow state
+// WebGLShadowMap        — renders shadow depth maps
+// WebGLState            — thin wrapper around gl.enable/disable/blend/depth
+// WebGLUniforms         — uploads uniform values to shader programs
+// ...and more</code></pre>
+    </div>
+  </details>
+
+  <details open>
+    <summary>The render() Method — Full Pipeline <a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/renderers/WebGLRenderer.js#L1609" target="_blank">L1609</a></summary>
+    <div class="details-body">
+
+      <div class="pipeline-step">
+        <div class="pipeline-step-header"><span class="step-num">1</span> Validation <span class="step-phase">L1611–1618</span></div>
+        <div class="pipeline-step-body">Guard clauses: is the camera actually a Camera? Is the WebGL context lost (device GPU reset)? If either check fails, return immediately. Context loss is recoverable — three.js fires a <code>webglcontextlost</code> event and stops rendering until restored.</div>
+      </div>
+
+      <div class="pipeline-step">
+        <div class="pipeline-step-header"><span class="step-num">2</span> Matrix Update <span class="step-phase">L1635–1659</span></div>
+        <div class="pipeline-step-body">
+          <code>scene.updateMatrixWorld()</code> walks the entire scene graph and recomputes every node's <code>matrixWorld</code> (see <a href="scene-graph.html">Scene Graph</a>). Then <code>camera.updateMatrixWorld()</code> adds the view matrix. Finally the combined VP matrix is built and the frustum planes are extracted.
+          <pre><code class="language-javascript">scene.updateMatrixWorld();
+camera.updateMatrixWorld();
+
+// VP matrix for frustum culling:
+_projScreenMatrix.multiplyMatrices(
+  camera.projectionMatrix,
+  camera.matrixWorldInverse
+);
+_frustum.setFromProjectionMatrix( _projScreenMatrix );</code></pre>
+        </div>
+      </div>
+
+      <div class="pipeline-step">
+        <div class="pipeline-step-header"><span class="step-num">3</span> Render State Init <span class="step-phase">L1652–1667</span></div>
+        <div class="pipeline-step-body">A <code>RenderState</code> object (holding light data) and a <code>RenderList</code> (the sorted draw list) are retrieved from pool caches (keyed by scene + camera depth). Both are reset/initialized. A stack is used so nested render calls (e.g. rendering to a texture inside a render) work correctly.</div>
+      </div>
+
+      <div class="pipeline-step">
+        <div class="pipeline-step-header"><span class="step-num">4</span> Scene Traversal — projectObject() <span class="step-phase">L1681 → <a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/renderers/WebGLRenderer.js#L1831" target="_blank">L1831</a></span></div>
+        <div class="pipeline-step-body">
+          Depth-first recursive walk of the scene tree. For each node:
+          <pre><code class="language-javascript">function projectObject( object, camera, groupOrder, sortObjects ) {
+  if ( !object.visible ) return; // skip invisible subtrees
+
+  // Layer test (camera.layers bitmask)
+  const visible = object.layers.test( camera.layers );
+
+  if ( visible ) {
+    if ( object.isLight ) {
+      currentRenderState.addLight( object );  // collect for lighting
+    } else if ( object.isMesh || object.isLine || object.isPoints ) {
+      // Frustum cull via bounding sphere
+      if ( !_frustum.intersectsObject( object ) ) return;
+
+      // Compute clip-space Z for depth sorting
+      _vector4.setFromMatrixPosition( object.matrixWorld );
+      _vector4.applyMatrix4( _projScreenMatrix );
+      const z = _vector4.z; // depth in clip space
+
+      // Push to opaque / transmissive / transparent list
+      currentRenderList.push(
+        object, geometry, material, groupOrder, z, group
+      );
+    }
+  }
+
+  // Recurse regardless of layer (children may be on different layers)
+  for ( let i = 0; i < object.children.length; i++ ) {
+    projectObject( object.children[i], camera, groupOrder, sortObjects );
+  }
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="pipeline-step">
+        <div class="pipeline-step-header"><span class="step-num">5</span> Render List Sorting <span class="step-phase">L1685–1689</span></div>
+        <div class="pipeline-step-body">
+          <pre><code class="language-javascript">if ( sortObjects ) {
+  currentRenderList.sort( _opaqueSort, _transparentSort );
+}
+
+// _opaqueSort: groupOrder → renderOrder → z ASC → id
+// _transparentSort: groupOrder → renderOrder → z DESC → id</code></pre>
+          Opaque objects sorted front-to-back: early Z-rejection saves fragment shader work on obscured pixels. Transparent objects sorted back-to-front: required for correct alpha blending (painter's algorithm).
+        </div>
+      </div>
+
+      <div class="pipeline-step">
+        <div class="pipeline-step-header"><span class="step-num">6</span> Shadow Pass <span class="step-phase">L1706</span></div>
+        <div class="pipeline-step-body">
+          <code>shadowMap.render(shadowsArray, scene, camera)</code> — for each shadow-casting light:<br>
+          1. Set the render target to the light's shadow map texture (depth buffer)<br>
+          2. Render the scene using <code>MeshDepthMaterial</code> (overrideMaterial) from the light's point of view<br>
+          3. The resulting depth texture is later sampled in the main pass to test whether each fragment is in shadow<br>
+          This is done <em>before</em> the main pass so shadow maps are ready when lighting uniforms are computed.
+        </div>
+      </div>
+
+      <div class="pipeline-step">
+        <div class="pipeline-step-header"><span class="step-num">7</span> Light Setup <span class="step-phase">L1723</span></div>
+        <div class="pipeline-step-body"><code>currentRenderState.setupLights()</code> compiles the collected lights into flat arrays ready for uniform upload: ambient sum, directional light array, point light array, etc. This happens once per render call, not per object.</div>
+      </div>
+
+      <div class="pipeline-step">
+        <div class="pipeline-step-header"><span class="step-num">8</span> Main Scene Render — renderScene() <span class="step-phase">L1757 → <a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/renderers/WebGLRenderer.js#L1949" target="_blank">L1949</a></span></div>
+        <div class="pipeline-step-body">
+          Iterates through the three lists in order:
+          <pre><code class="language-javascript">renderObjects( currentRenderList.opaque,       scene, camera );
+renderObjects( currentRenderList.transmissive,  scene, camera );
+renderObjects( currentRenderList.transparent,   scene, camera );</code></pre>
+          Opaque first (Z-prepass benefit), then transmissive (objects with refraction), then transparent (alpha-blended).
+        </div>
+      </div>
+
+      <div class="pipeline-step">
+        <div class="pipeline-step-header"><span class="step-num">9</span> renderObject() — Per-Object Setup <span class="step-phase"><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/renderers/WebGLRenderer.js#L2124" target="_blank">L2124</a></span></div>
+        <div class="pipeline-step-body">
+          <pre><code class="language-javascript">function renderObject( object, scene, camera, geometry, material, group ) {
+  object.onBeforeRender( renderer, scene, camera, geometry, material, group );
+
+  // Compute model-view and normal matrices (CPU side, once per object)
+  object.modelViewMatrix.multiplyMatrices(
+    camera.matrixWorldInverse,
+    object.matrixWorld
+  );
+  object.normalMatrix.getNormalMatrix( object.modelViewMatrix );
+
+  // Get or compile shader program
+  const program = setProgram( camera, scene, geometry, material, object );
+
+  // Double-sided transparency needs two passes
+  if ( material.transparent && material.side === DoubleSide ) {
+    // Pass 1: BackSide
+    material.side = BackSide;
+    renderBufferDirect( camera, scene, geometry, material, object, group );
+    // Pass 2: FrontSide
+    material.side = FrontSide;
+    renderBufferDirect( camera, scene, geometry, material, object, group );
+    material.side = DoubleSide; // restore
+  } else {
+    renderBufferDirect( camera, scene, geometry, material, object, group );
+  }
+
+  object.onAfterRender( renderer, scene, camera, geometry, material, group );
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="pipeline-step">
+        <div class="pipeline-step-header"><span class="step-num">10</span> renderBufferDirect() — GPU Draw Call <span class="step-phase"><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/renderers/WebGLRenderer.js#L1184" target="_blank">L1184</a></span></div>
+        <div class="pipeline-step-body">
+          <pre><code class="language-javascript">// 1. Apply GL state (depth, blend, stencil, face culling)
+state.setMaterial( material, frontFaceCW );
+
+// 2. Bind geometry's VAO; upload any dirty attributes
+bindingStates.setup( object, material, program, geometry, index );
+
+// 3. Upload uniforms to the active program
+// (matrices, material params, lights, textures, shadows)
+program.getUniforms().upload( gl, uniformsList, camera );
+
+// 4. Determine draw range
+const drawStart = Math.max( drawRange.start, group?.start ?? 0 );
+const drawCount = Math.min( drawRange.count, group?.count ?? Infinity );
+
+// 5. Execute the draw call
+if ( index !== null ) {
+  // Indexed geometry: vertices can be shared between triangles
+  renderer.renderInstances( drawStart, drawCount, instanceCount );
+  // → gl.drawElementsInstanced( mode, count, type, offset, instanceCount )
+  // → or gl.drawElements( mode, count, type, offset )
+} else {
+  // Non-indexed: sequential vertices
+  renderer.render( drawStart, drawCount );
+  // → gl.drawArrays( mode, first, count )
+}</code></pre>
+          The primitive mode is: <code>gl.TRIANGLES</code> for Mesh, <code>gl.LINES</code>/<code>gl.LINE_STRIP</code> for Line, <code>gl.POINTS</code> for Points.
+        </div>
+      </div>
+
+    </div>
+  </details>
+
+  <details open>
+    <summary>Animation Loop <a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/renderers/webgl/WebGLAnimation.js" target="_blank">WebGLAnimation.js</a></summary>
+    <div class="details-body">
+      <p><code>renderer.setAnimationLoop(callback)</code> wraps <code>requestAnimationFrame</code>. The callback receives the current timestamp in milliseconds.</p>
+      <pre><code class="language-javascript">// Internal WebGLAnimation.js
+let animationLoop = null;
+let requestId = null;
+
+function onAnimationFrame( time, frame ) {
+  animationLoop( time, frame );
+  requestId = xr.isPresenting
+    ? xr.getSession().requestAnimationFrame( onAnimationFrame )
+    : requestAnimationFrame( onAnimationFrame );
+}
+
+// Public API:
+renderer.setAnimationLoop( callback ) {
+  animationLoop = callback;
+  if ( callback === null ) {
+    cancelAnimationFrame( requestId );
+  } else {
+    requestId = requestAnimationFrame( onAnimationFrame );
+  }
+}</code></pre>
+
+      <p>In XR (VR/AR) mode, <code>xr.getSession().requestAnimationFrame</code> is used instead — it syncs with the headset's display refresh rate and provides an <code>XRFrame</code> with pose data.</p>
+
+      <div class="note">The timestamp passed to your callback is the same <code>DOMHighResTimeStamp</code> that <code>requestAnimationFrame</code> provides — milliseconds since page load, with sub-millisecond precision. This is why the README example divides by 1000 or 2000 to get slow rotation speeds.</div>
+    </div>
+  </details>
+
+  <details open>
+    <summary>RenderList — How Objects Are Sorted <a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/renderers/webgl/WebGLRenderLists.js" target="_blank">WebGLRenderLists.js</a></summary>
+    <div class="details-body">
+      <div class="flow-diagram">WebGLRenderList {
+  renderItems[]    ← reusable pool (avoids GC pressure)
+  opaque[]         ← objects with transparent=false
+  transmissive[]   ← objects with transmission > 0 (glass)
+  transparent[]    ← objects with transparent=true (alpha blend)
+}
+
+Each render item:
+  {
+    id,           // auto-increment
+    object,       // the Object3D
+    geometry,     // its BufferGeometry
+    material,     // the Material to render with
+    groupOrder,   // from parent Group's renderOrder
+    renderOrder,  // from object.renderOrder
+    z,            // clip-space depth (used for sorting)
+    group         // geometry group (for multi-material)
+  }
+
+Opaque sort:    groupOrder → renderOrder → z ASC    → id
+Transparent sort: groupOrder → renderOrder → z DESC → id</div>
+
+      <p>The pool reuse (renderItems[]) avoids creating new objects each frame, which would stress the garbage collector and cause frame time spikes.</p>
+    </div>
+  </details>
+
+  <details open>
+    <summary>WebGL State Management <a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/renderers/webgl/WebGLState.js" target="_blank">WebGLState.js</a></summary>
+    <div class="details-body">
+      <p>WebGL has expensive state-change calls. <code>WebGLState</code> shadows all GL state in JavaScript and only calls the WebGL API when the value actually changes:</p>
+      <pre><code class="language-javascript">// WebGLState.js — example: setBlending
+function setBlending( blending, blendEquation, blendSrc, blendDst, ... ) {
+  if ( blending === NoBlending ) {
+    if ( currentBlendingEnabled ) {
+      gl.disable( gl.BLEND );      // only calls GL if state changed
+      currentBlendingEnabled = false;
+    }
+    return;
+  }
+
+  if ( ! currentBlendingEnabled ) {
+    gl.enable( gl.BLEND );
+    currentBlendingEnabled = true;
+  }
+
+  if ( blending !== currentBlending || ... ) {
+    // Only update if different from last draw
+    gl.blendEquationSeparate( ... );
+    gl.blendFuncSeparate( ... );
+    currentBlending = blending;
+  }
+}</code></pre>
+
+      <p>This pattern is applied to: blend mode, depth test/write, stencil, face culling, line width, scissor, viewport, and more. It's a critical optimization — redundant GL state changes are one of the top causes of WebGL performance issues.</p>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Render Targets — Rendering Off-Screen</summary>
+    <div class="details-body">
+      <p>A <code>WebGLRenderTarget</code> redirects rendering into a texture instead of the canvas. This is the foundation for post-processing, shadow maps, reflections, and SSAO.</p>
+      <pre><code class="language-javascript">// Create a render target (texture)
+const target = new THREE.WebGLRenderTarget( 512, 512, {
+  minFilter: THREE.LinearFilter,
+  magFilter: THREE.NearestFilter,
+  format: THREE.RGBAFormat,
+});
+
+// Render scene into the texture
+renderer.setRenderTarget( target );
+renderer.render( scene, camera );
+
+// Back to canvas
+renderer.setRenderTarget( null );
+renderer.render( scene, camera );
+
+// Use the texture
+const material = new THREE.MeshBasicMaterial({ map: target.texture });</code></pre>
+
+      <p>Internally, three.js binds the render target's framebuffer object (FBO) before rendering. The FBO directs draw output to the attached texture instead of the default framebuffer (canvas).</p>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Key Renderer Configuration</summary>
+    <div class="details-body">
+      <table class="prop-table">
+        <tr><th>Option / Method</th><th>Description</th></tr>
+        <tr><td>antialias: true</td><td>Request MSAA from the browser. Smooths triangle edges but increases GPU memory.</td></tr>
+        <tr><td>setPixelRatio(ratio)</td><td>Scale canvas for HiDPI screens. Use <code>Math.min(window.devicePixelRatio, 2)</code> — 3× and 4× are wasteful.</td></tr>
+        <tr><td>setSize(w, h)</td><td>Resize the canvas and WebGL viewport.</td></tr>
+        <tr><td>shadowMap.enabled = true</td><td>Enable shadow rendering. Also set <code>light.castShadow</code> and <code>mesh.castShadow</code> / <code>receiveShadow</code>.</td></tr>
+        <tr><td>shadowMap.type</td><td>PCFSoftShadowMap (default soft), VSMShadowMap (variance, blurrable), BasicShadowMap (hard edges, cheap).</td></tr>
+        <tr><td>outputColorSpace</td><td>SRGBColorSpace (default) — ensures textures and output match sRGB display expectations.</td></tr>
+        <tr><td>toneMapping</td><td>ACESFilmicToneMapping (cinematic), LinearToneMapping (none), ReinhardToneMapping — for HDR → LDR conversion.</td></tr>
+        <tr><td>sortObjects</td><td>Default true. Set false only if you manage draw order entirely via renderOrder yourself.</td></tr>
+      </table>
+    </div>
+  </details>
+
+  <details open>
+    <summary>External References</summary>
+    <div class="details-body">
+      <ul>
+        <li><a href="https://webglfundamentals.org/webgl/lessons/webgl-how-it-works.html" target="_blank">WebGL Fundamentals — How It Works</a></li>
+        <li><a href="https://www.khronos.org/opengl/wiki/Rendering_Pipeline_Overview" target="_blank">Khronos — OpenGL Rendering Pipeline Overview</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/WebGL_best_practices" target="_blank">MDN — WebGL Best Practices</a> — state changes, draw calls, buffer updates</li>
+        <li><a href="https://learnopengl.com/Advanced-OpenGL/Framebuffers" target="_blank">LearnOpenGL — Framebuffers</a> — render-to-texture foundation</li>
+        <li><a href="https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping" target="_blank">LearnOpenGL — Shadow Mapping</a></li>
+        <li><a href="https://threejs.org/docs/#api/en/renderers/WebGLRenderer" target="_blank">Three.js Docs — WebGLRenderer</a></li>
+        <li><a href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/renderers/webgl/WebGLState.js" target="_blank">src/renderers/webgl/WebGLState.js</a> — GL state shadow</li>
+        <li><a href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/renderers/webgl/WebGLPrograms.js" target="_blank">src/renderers/webgl/WebGLPrograms.js</a> — shader cache &amp; compilation</li>
+      </ul>
+    </div>
+  </details>
+</main>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

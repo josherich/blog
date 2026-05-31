@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>REPL Input</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand"><strong>REPL Input</strong><span>Prompt to QueryParams</span></div>
+      <nav class="nav" aria-label="Component pages">
+        <a href="../index.html">Overview</a>
+        <a href="cli-startup.html">CLI Startup</a>
+        <a href="repl-input.html" aria-current="page">REPL Input</a>
+        <a href="query-loop.html">Query Loop</a>
+        <a href="model-api.html">Model API</a>
+        <a href="tools-permissions.html">Tools and Permissions</a>
+        <a href="mcp.html">MCP</a>
+        <a href="state-rendering.html">State and Rendering</a>
+      </nav>
+    </aside>
+    <main class="content">
+      <div class="topbar">
+        <div>
+          <h1>REPL input</h1>
+          <p class="lead">The input path protects the running turn. It handles local UI actions immediately, queues user text when the model is busy, expands attachments, and only calls the model when input processing says a query is required.</p>
+        </div>
+        <div class="controls">
+          <input type="search" placeholder="Filter blocks" aria-label="Filter blocks" data-search>
+          <button type="button" data-expand-all>Expand all</button>
+          <button type="button" data-collapse-all>Collapse all</button>
+        </div>
+      </div>
+      <p class="meta" data-search-count></p>
+
+      <section class="section panel searchable">
+        <h2>Input flow</h2>
+        <pre><code>PromptInput local submit
+  validate visible state and suggestion state
+  route direct member message or leader submit
+
+handlePromptSubmit
+  execute local JSX commands immediately when possible
+  queue input if model or external loading is active
+  reserve query guard
+  process queued commands in order
+
+processUserInput
+  normalize content
+  load files and images
+  run slash command or bash path
+  produce user message and shouldQuery flag
+
+REPL.onQueryImpl
+  build tool context
+  collect prompt context
+  call query()</code></pre>
+      </section>
+
+      <section class="section stack">
+        <details open class="searchable">
+          <summary>PromptInput is the first gate</summary>
+          <div class="details-body">
+            <p><code>PromptInput</code> is a UI component, but its submit handler already has workflow responsibilities. It trims input, checks whether a footer or selection state should intercept the action, accepts prompt suggestions, handles direct member messages, blocks empty input, and routes either to an active agent or the leader submit handler.</p>
+            <p><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/components/PromptInput/PromptInput.tsx#L984-L1105">Code reference: PromptInput submit path</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>The submit handler owns queue safety</summary>
+          <div class="details-body">
+            <p><code>handlePromptSubmit</code> turns raw input into controlled work. It validates exit commands and pasted text, runs local JSX slash commands while a query is active, queues normal input if the model is already busy, and reserves the query guard before the main processing loop starts.</p>
+            <p>The important design is that direct input is converted into a <code>QueuedCommand</code>. That means typed prompts and command-triggered prompts share the same execution path and preserve order.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/utils/handlePromptSubmit.ts#L174-L216">Input validation and pasted text expansion</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/utils/handlePromptSubmit.ts#L227-L310">Immediate local JSX command dispatch</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/utils/handlePromptSubmit.ts#L313-L386">Queueing during active work</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/utils/handlePromptSubmit.ts#L396-L472">Query guard reservation</a></li>
+            </ul>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Queue processor drains when safe</summary>
+          <div class="details-body">
+            <p><code>useQueueProcessor</code> subscribes to the external query guard and command queue. It drains queued work only when the app is not already querying and there is no local JSX command UI blocking progress.</p>
+            <p>This keeps queued prompts from interleaving with unfinished tool results or permission screens.</p>
+            <p><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/hooks/useQueueProcessor.ts#L16-L60">Code reference: queue processor subscription and drain condition</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>processUserInput normalizes the request</summary>
+          <div class="details-body">
+            <p>The processor accepts strings and content blocks, resizes image inputs, loads file attachments, respects bridge-safe slash command overrides, and dispatches to bash, slash command, or text prompt handling.</p>
+            <p>Regular text goes to <code>processTextPrompt</code>, which creates a user message, includes images and attachments, and returns <code>shouldQuery: true</code>. Slash commands can be local, local JSX, or prompt-based commands that load prompt text, allowed tools, attachments, and command permissions.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/utils/processUserInput/processUserInput.ts#L281-L347">Content normalization and image resizing</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/utils/processUserInput/processUserInput.ts#L498-L546">Attachments, bash, and slash routing</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/utils/processUserInput/processTextPrompt.ts#L19-L100">Text prompt result</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/utils/processUserInput/processSlashCommand.tsx#L309-L384">Slash command parsing</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/utils/processUserInput/processSlashCommand.tsx#L796-L889">Prompt slash command output</a></li>
+            </ul>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>REPL builds fresh execution context</summary>
+          <div class="details-body">
+            <p>When <code>onQueryImpl</code> runs, the REPL computes tools from current state, not stale props. It assembles the tool pool, merges and filters tools, resolves agent tools, and builds <code>ToolUseContext</code> with current MCP clients, resources, permissions, app state accessors, UI callbacks, and file read state.</p>
+            <p>Then it gathers diagnostics, title state, allowed-tool overrides, user context, system context, and command-generated settings before calling <code>query(...)</code>. Returned events are passed to <code>onQueryEvent</code>, then the REPL resets per-turn state and runs <code>onTurnComplete</code>.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/screens/REPL.tsx#L2382-L2523">Fresh tool and ToolUseContext construction</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/screens/REPL.tsx#L2661-L2854">onQueryImpl model handoff</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/screens/REPL.tsx#L3142-L3235">REPL onSubmit entry</a></li>
+            </ul>
+          </div>
+        </details>
+      </section>
+
+      <footer class="footer">
+        <p><a href="../index.html">Back to overview</a></p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

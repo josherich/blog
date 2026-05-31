@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Claude Code Data Flow Overview</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script src="assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>Claude Code Data Flow</strong>
+        <span>Commit 6f6f12b</span>
+      </div>
+      <nav class="nav" aria-label="Component pages">
+        <a href="index.html" aria-current="page">Overview</a>
+        <a href="components/cli-startup.html">CLI Startup</a>
+        <a href="components/repl-input.html">REPL Input</a>
+        <a href="components/query-loop.html">Query Loop</a>
+        <a href="components/model-api.html">Model API</a>
+        <a href="components/tools-permissions.html">Tools and Permissions</a>
+        <a href="components/mcp.html">MCP</a>
+        <a href="components/state-rendering.html">State and Rendering</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="topbar">
+        <div>
+          <h1>Overview: from terminal input to streamed tool results</h1>
+          <p class="lead">This walkthrough follows the cloned <code>tanbiralam/claude-code</code> repository at commit <code>6f6f12b37f529488b10e53928dd5508bb93535c7</code>. It explains the runtime data flow, the shared state objects, and how the main components cooperate during an interactive turn.</p>
+        </div>
+        <div class="controls">
+          <input type="search" placeholder="Filter blocks" aria-label="Filter blocks" data-search>
+          <button type="button" data-expand-all>Expand all</button>
+          <button type="button" data-collapse-all>Collapse all</button>
+        </div>
+      </div>
+      <p class="meta" data-search-count></p>
+
+      <section class="section panel searchable">
+        <h2>One turn in the system</h2>
+        <p>The main path is a streaming loop. Terminal input becomes a normalized message, the REPL builds context and tool availability, the model streams assistant blocks, and any tool_use block becomes a local or MCP tool call. Tool results are appended as user messages and the loop repeats until the assistant stops or a recovery path takes over.</p>
+        <div class="flow">
+          <button class="flow-step" data-flow-step="bootstrap">
+            <span class="step-label">1. Bootstrap</span>
+            <span><code>src/entrypoints/cli.tsx</code> handles cheap flags and special modes before importing the heavier CLI.</span>
+          </button>
+          <button class="flow-step" data-flow-step="main">
+            <span class="step-label">2. Main command setup</span>
+            <span><code>src/main.tsx</code> loads config, auth, policy, settings, MCP config, and session options.</span>
+          </button>
+          <button class="flow-step" data-flow-step="repl">
+            <span class="step-label">3. Interactive root</span>
+            <span><code>launchRepl</code> dynamically imports the Ink app and REPL screen, then renders the terminal UI.</span>
+          </button>
+          <button class="flow-step" data-flow-step="input">
+            <span class="step-label">4. Prompt submission</span>
+            <span><code>PromptInput</code> and <code>handlePromptSubmit</code> validate text, route commands, and queue work safely.</span>
+          </button>
+          <button class="flow-step" data-flow-step="process">
+            <span class="step-label">5. Input processing</span>
+            <span><code>processUserInput</code> converts slash commands, bash shortcuts, files, images, and text into message content.</span>
+          </button>
+          <button class="flow-step" data-flow-step="query">
+            <span class="step-label">6. Query loop</span>
+            <span><code>query</code> snapshots runtime config, calls the model, yields stream events, and decides whether to continue.</span>
+          </button>
+          <button class="flow-step" data-flow-step="tools">
+            <span class="step-label">7. Tool execution</span>
+            <span>Tool_use blocks flow through validation, hooks, permissions, local calls or MCP calls, then tool_result messages.</span>
+          </button>
+          <button class="flow-step" data-flow-step="state">
+            <span class="step-label">8. UI and state updates</span>
+            <span>AppState, transcript messages, permission queues, MCP state, and render state are updated as events arrive.</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="section grid">
+        <details open class="searchable" data-flow-target="bootstrap">
+          <summary>Bootstrap is a selective importer</summary>
+          <div class="details-body">
+            <p>The CLI entrypoint starts by handling paths that do not need the full application: <code>--version</code>, system prompt dump, MCP native hosts, daemon modes, background sessions, worktree helpers, and bare mode. Only after those checks does it import <code>../main.js</code> and call <code>cliMain()</code>.</p>
+            <pre><code>node starts cli.tsx
+  if cheap flag or special mode: execute fast path and exit
+  else:
+    start early input capture
+    import ../main.js
+    await cliMain(process.argv)</code></pre>
+            <p><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/entrypoints/cli.tsx#L28-L42">Code reference: cli.tsx fast flag path</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable" data-flow-target="main">
+          <summary>Main builds the session contract</summary>
+          <div class="details-body">
+            <p><code>src/main.tsx</code> defines the Commander program and uses a <code>preAction</code> phase for cross-cutting setup: MDM settings, keychain migration, init, title, telemetry sinks, plugin directories, user migrations, policy, settings sync, and remote config.</p>
+            <p>The default command then collects options such as prompt, print mode, model, permission mode, MCP config, allowed tools, denied tools, plugin directories, and input/output formats.</p>
+            <p><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/main.tsx#L905-L1006">Code reference: main preAction and command options</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable" data-flow-target="repl">
+          <summary>The interactive app is loaded late</summary>
+          <div class="details-body">
+            <p>The REPL is not imported by the entrypoint. <code>replLauncher.tsx</code> dynamically imports <code>App</code> and <code>REPL</code>, then <code>renderAndRun</code> creates the Ink root, starts deferred prefetch work, and waits until the terminal UI exits.</p>
+            <p><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/replLauncher.tsx#L12-L22">Code reference: launchRepl dynamic imports</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable" data-flow-target="input">
+          <summary>Input is queued before it is queried</summary>
+          <div class="details-body">
+            <p><code>PromptInput</code> performs local UI checks, accepts suggestions, routes direct member messages, and then calls the submitted handler. <code>handlePromptSubmit</code> turns the input into a queued command, enforces active-query rules, handles immediate local JSX commands, reserves the query guard, and runs <code>processUserInput</code>.</p>
+            <p><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/utils/handlePromptSubmit.ts#L396-L596">Code reference: queued command execution</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable" data-flow-target="process">
+          <summary>Input processing decides if the model is needed</summary>
+          <div class="details-body">
+            <p><code>processUserInput</code> normalizes strings and content blocks, loads attachments, handles bash shortcuts and slash commands, and returns a result that includes <code>shouldQuery</code>. Text prompts produce a user message and set <code>shouldQuery: true</code>; some slash commands are local and do not call the model.</p>
+            <p><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/utils/processUserInput/processUserInput.ts#L517-L586">Code reference: bash, slash, and text routing</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable" data-flow-target="query">
+          <summary>The query loop is the runtime coordinator</summary>
+          <div class="details-body">
+            <p><code>query()</code> delegates to <code>queryLoop()</code>. Each iteration prepares system and user context, calls the streaming model adapter, yields assistant chunks, hands completed tool_use blocks to a streaming executor, appends tool results, refreshes available tools, and loops with the new state.</p>
+            <p><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/query.ts#L241-L307">Code reference: queryLoop initialization</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable" data-flow-target="tools">
+          <summary>Tools are normal objects plus permission policy</summary>
+          <div class="details-body">
+            <p>A tool has a name, schema, prompt-facing description, concurrency metadata, permission behavior, and a <code>call</code> method. MCP tools are adapted into the same shape, so the query loop can execute built-in and server-provided tools through the same orchestration path.</p>
+            <p><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/Tool.ts#L358-L455">Code reference: Tool type</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable" data-flow-target="state">
+          <summary>App state is an external store</summary>
+          <div class="details-body">
+            <p>The UI uses a small external store with <code>getState</code>, <code>setState</code>, and <code>subscribe</code>. React components read it through <code>useSyncExternalStore</code>. REPL code deliberately grabs current store values when constructing tool context, so MCP clients, permission state, and resources stay fresh during a long session.</p>
+            <p><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/state/AppState.tsx#L142-L172">Code reference: useAppState external store subscription</a></p>
+          </div>
+        </details>
+      </section>
+
+      <section class="section searchable">
+        <h2>Main data objects</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Object</th>
+                <th>Role</th>
+                <th>Where it appears</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>AppState</code></td>
+                <td>Terminal UI and runtime state: permissions, MCP state, notifications, prompt suggestions, plugin state, bridge state, and thinking state.</td>
+                <td><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/state/AppStateStore.ts#L89-L140">AppStateStore.ts</a></td>
+              </tr>
+              <tr>
+                <td><code>QueuedCommand</code></td>
+                <td>A normalized unit of user input waiting for processing or model execution.</td>
+                <td><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/utils/handlePromptSubmit.ts#L353-L386">handlePromptSubmit.ts</a></td>
+              </tr>
+              <tr>
+                <td><code>ProcessUserInputResult</code></td>
+                <td>The decision from input processing: local command only, model query needed, attachments, allowed tools, and command permissions.</td>
+                <td><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/utils/processUserInput/processUserInput.ts#L517-L586">processUserInput.ts</a></td>
+              </tr>
+              <tr>
+                <td><code>ToolUseContext</code></td>
+                <td>Runtime services passed into tools: abort controller, permission callbacks, state accessors, MCP clients, resources, UI hooks, and file read state.</td>
+                <td><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/Tool.ts#L158-L230">Tool.ts</a></td>
+              </tr>
+              <tr>
+                <td><code>Tool</code></td>
+                <td>The common interface for built-in tools and MCP tools.</td>
+                <td><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/Tool.ts#L358-L455">Tool.ts</a></td>
+              </tr>
+              <tr>
+                <td><code>QueryParams</code></td>
+                <td>The query-loop contract: messages, prompt, tools, MCP data, callbacks, model, abort signal, and runtime options.</td>
+                <td><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/query.ts#L181-L199">query.ts</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section grid searchable">
+        <div class="panel">
+          <h2>Component pages</h2>
+          <ul>
+            <li><a href="components/cli-startup.html">CLI Startup</a>: entrypoint, Commander setup, app launch.</li>
+            <li><a href="components/repl-input.html">REPL Input</a>: prompt submission, queues, slash commands, attachments.</li>
+            <li><a href="components/query-loop.html">Query Loop</a>: streaming turn loop and recovery paths.</li>
+            <li><a href="components/model-api.html">Model API</a>: Anthropic request creation and stream event parsing.</li>
+            <li><a href="components/tools-permissions.html">Tools and Permissions</a>: local tools, hooks, approval flow, execution.</li>
+            <li><a href="components/mcp.html">MCP</a>: server connections and MCP tool adaptation.</li>
+            <li><a href="components/state-rendering.html">State and Rendering</a>: Ink, AppState, and UI updates.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h2>External references</h2>
+          <ul>
+            <li><a href="https://docs.anthropic.com/en/api/messages">Anthropic Messages API</a></li>
+            <li><a href="https://docs.anthropic.com/en/docs/build-with-claude/streaming">Anthropic streaming</a></li>
+            <li><a href="https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview">Anthropic tool use</a></li>
+            <li><a href="https://modelcontextprotocol.io/docs/getting-started/intro">Model Context Protocol intro</a></li>
+            <li><a href="https://modelcontextprotocol.io/specification/2025-03-26/server/tools">MCP server tools specification</a></li>
+            <li><a href="https://react.dev/reference/react/useSyncExternalStore">React useSyncExternalStore</a></li>
+            <li><a href="https://github.com/vadimdemedes/ink">Ink terminal UI</a></li>
+            <li><a href="https://github.com/tj/commander.js">Commander.js</a></li>
+            <li><a href="https://zod.dev/">Zod</a></li>
+            <li><a href="https://opentelemetry.io/docs/concepts/signals/traces/">OpenTelemetry traces</a></li>
+          </ul>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>All code references are GitHub permalinks pinned to commit <code>6f6f12b37f529488b10e53928dd5508bb93535c7</code>.</p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

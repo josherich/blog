@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CLI Startup</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand"><strong>CLI Startup</strong><span>Entrypoint to REPL launch</span></div>
+      <nav class="nav" aria-label="Component pages">
+        <a href="../index.html">Overview</a>
+        <a href="cli-startup.html" aria-current="page">CLI Startup</a>
+        <a href="repl-input.html">REPL Input</a>
+        <a href="query-loop.html">Query Loop</a>
+        <a href="model-api.html">Model API</a>
+        <a href="tools-permissions.html">Tools and Permissions</a>
+        <a href="mcp.html">MCP</a>
+        <a href="state-rendering.html">State and Rendering</a>
+      </nav>
+    </aside>
+    <main class="content">
+      <div class="topbar">
+        <div>
+          <h1>CLI startup</h1>
+          <p class="lead">Startup is optimized around doing the least possible work until the path requires the full application. The entrypoint handles cheap exits and daemon/native-host modes first, then imports the full CLI and eventually launches the interactive Ink REPL.</p>
+        </div>
+        <div class="controls">
+          <input type="search" placeholder="Filter blocks" aria-label="Filter blocks" data-search>
+          <button type="button" data-expand-all>Expand all</button>
+          <button type="button" data-collapse-all>Collapse all</button>
+        </div>
+      </div>
+      <p class="meta" data-search-count></p>
+
+      <section class="section panel searchable">
+        <h2>Startup flow</h2>
+        <pre><code>src/entrypoints/cli.tsx
+  handle zero-import paths
+  handle daemon, native host, remote control, background, worktree paths
+  configure bare mode
+  startEarlyInputCapture()
+  import ../main.js
+  cliMain()
+
+src/main.tsx
+  build Commander program
+  preAction global setup
+  default command parses session options
+  create AppState and SessionConfig
+  launchRepl() for interactive paths
+
+src/replLauncher.tsx
+  import App and REPL
+  renderAndRun(&lt;App&gt;&lt;REPL /&gt;&lt;/App&gt;)</code></pre>
+      </section>
+
+      <section class="section stack">
+        <details open class="searchable">
+          <summary>Entrypoint fast paths</summary>
+          <div class="details-body">
+            <p>The entrypoint explicitly documents that it should avoid eager imports. Its first branch handles <code>--version</code> without loading the app. It has similar early paths for dumping the system prompt, Chrome or computer-use native host behavior, daemon workers, remote control, background sessions, worktree and tmux helpers, and <code>--bare</code> environment setup.</p>
+            <p>This matters because the interactive app pulls in React, Ink, tools, MCP clients, settings, telemetry, and model code. Avoiding that cost for simple control-plane commands keeps startup fast and reduces side effects for special modes.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/entrypoints/cli.tsx#L28-L42">Fast path and version handling</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/entrypoints/cli.tsx#L72-L105">Native host and daemon fast paths</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/entrypoints/cli.tsx#L247-L298">Worktree, bare mode, and main import</a></li>
+            </ul>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Commander and global setup</summary>
+          <div class="details-body">
+            <p><code>run()</code> creates the Commander program. The global <code>preAction</code> stage performs setup that every normal command needs: MDM and keychain reads, initialization, terminal title, log sinks, plugin paths, migrations, feature and policy loading, and settings sync.</p>
+            <p>The default command registers most user-facing runtime inputs: <code>--print</code>, <code>--append-system-prompt</code>, <code>--output-format</code>, <code>--input-format</code>, <code>--allowedTools</code>, <code>--disallowedTools</code>, <code>--mcp-config</code>, <code>--permission-mode</code>, <code>--model</code>, and plugin or settings switches.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/main.tsx#L884-L903">Program creation</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/main.tsx#L905-L967">preAction setup</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/main.tsx#L968-L1006">Default command options</a></li>
+            </ul>
+            <p>External reference: <a href="https://github.com/tj/commander.js">Commander.js</a>.</p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Initial state and session config</summary>
+          <div class="details-body">
+            <p>Before launch, <code>main.tsx</code> builds initial app state and a session config. The session config is the handoff object that ties together commands, MCP commands, initial tools, MCP clients, dynamic MCP config, system prompt settings, thinking config, debug flags, and lifecycle callbacks such as <code>onTurnComplete</code>.</p>
+            <pre><code>sessionConfig = {
+  commands,
+  mcpCommands,
+  initialTools,
+  mcpClients,
+  dynamicMcpConfig,
+  systemPrompt,
+  thinkingConfig,
+  onTurnComplete
+}</code></pre>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/main.tsx#L3000-L3035">Initial app state</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/main.tsx#L3071-L3090">Session config fields</a></li>
+            </ul>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Interactive launch paths</summary>
+          <div class="details-body">
+            <p>The app can enter the REPL from several paths: continuing a previous conversation, running remote-control flows, resuming a session, or starting a fresh session. These paths converge on <code>launchRepl</code>, which loads the UI modules and passes them into <code>renderAndRun</code>.</p>
+            <ul>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/main.tsx#L3133-L3146">Continue flow launch</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/main.tsx#L3478-L3502">Remote flow launch</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/main.tsx#L3733-L3745">Resume flow launch</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/main.tsx#L3761-L3806">Fresh session launch</a></li>
+              <li><a href="https://github.com/tanbiralam/claude-code/blob/6f6f12b37f529488b10e53928dd5508bb93535c7/src/replLauncher.tsx#L12-L22">launchRepl</a></li>
+            </ul>
+          </div>
+        </details>
+      </section>
+
+      <footer class="footer">
+        <p><a href="../index.html">Back to overview</a></p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

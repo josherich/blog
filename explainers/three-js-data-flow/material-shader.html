@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Three.js Deep Dive — Material &amp; Shader</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --surface2: #21262d; --border: #30363d;
+    --text: #e6edf3; --muted: #8b949e; --accent: #58a6ff; --green: #3fb950;
+    --orange: #d29922; --purple: #bc8cff; --red: #f85149;
+    --font-mono: 'Courier New', Courier, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 15px; line-height: 1.6; }
+  nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 20px; position: sticky; top: 0; z-index: 100; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  nav .logo { font-weight: 700; color: var(--accent); margin-right: 12px; font-size: 16px; white-space: nowrap; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 13px; padding: 4px 10px; border-radius: 6px; border: 1px solid transparent; white-space: nowrap; }
+  nav a:hover, nav a.active { color: var(--text); border-color: var(--border); background: var(--surface2); }
+  main { max-width: 900px; margin: 0 auto; padding: 32px 20px 80px; }
+  h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+  h2 { font-size: 20px; font-weight: 600; margin: 32px 0 12px; color: var(--accent); }
+  h3 { font-size: 16px; font-weight: 600; margin: 20px 0 8px; color: var(--orange); }
+  p { margin-bottom: 12px; }
+  .muted { color: var(--muted); font-size: 14px; }
+  a { color: var(--accent); }
+  details { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 16px; overflow: hidden; }
+  summary { padding: 14px 18px; cursor: pointer; font-weight: 600; font-size: 15px; list-style: none; display: flex; align-items: center; gap: 8px; user-select: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary::before { content: '▶'; font-size: 10px; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; }
+  details[open] > summary::before { transform: rotate(90deg); }
+  summary:hover { background: var(--surface2); }
+  .details-body { padding: 0 18px 18px; }
+  pre { background: #010409 !important; border: 1px solid var(--border); border-radius: 6px; padding: 16px; overflow-x: auto; margin: 12px 0; }
+  code.hljs { background: #010409 !important; padding: 0; }
+  pre code { white-space: pre; font-family: var(--font-mono); font-size: 13px; }
+  :not(pre) > code { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; font-family: var(--font-mono); font-size: 13px; color: var(--purple); }
+  .flow-diagram { background: #010409; border: 1px solid var(--border); border-radius: 8px; padding: 20px; font-family: var(--font-mono); font-size: 13px; overflow-x: auto; line-height: 1.8; white-space: pre; }
+  .prop-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+  .prop-table th { background: var(--surface2); text-align: left; padding: 8px 12px; border: 1px solid var(--border); color: var(--muted); font-weight: 600; }
+  .prop-table td { padding: 8px 12px; border: 1px solid var(--border); vertical-align: top; }
+  .prop-table td:first-child { font-family: var(--font-mono); color: var(--purple); white-space: nowrap; }
+  .prop-table tr:hover td { background: var(--surface2); }
+  .gh-link { font-size: 12px; font-family: var(--font-mono); color: var(--muted); text-decoration: none; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; }
+  .gh-link:hover { color: var(--accent); }
+  .note { background: #1c2128; border-left: 3px solid var(--orange); padding: 12px 16px; border-radius: 0 6px 6px 0; margin: 12px 0; font-size: 14px; }
+  .mat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 12px 0; }
+  .mat-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 12px; font-size: 13px; }
+  .mat-card strong { color: var(--accent); display: block; margin-bottom: 4px; }
+  @media (max-width: 600px) { h1 { font-size: 22px; } h2 { font-size: 17px; } .flow-diagram { font-size: 11px; } nav { padding: 10px 12px; } }
+</style>
+</head>
+<body>
+<nav>
+  <span class="logo">Three.js Deep Dive</span>
+  <a href="index.html">Overview</a>
+  <a href="scene-graph.html">Scene Graph</a>
+  <a href="geometry.html">Geometry</a>
+  <a href="material-shader.html" class="active">Material &amp; Shader</a>
+  <a href="camera.html">Camera</a>
+  <a href="renderer.html">Renderer</a>
+</nav>
+
+<main>
+  <h1>Material &amp; Shader System</h1>
+  <p class="muted">How materials describe appearance, how three.js compiles GLSL shaders from chunks, and how uniforms (light data, textures, matrices) reach the GPU program.</p>
+
+  <details open>
+    <summary>The Big Picture: Material → GPU Program</summary>
+    <div class="details-body">
+      <div class="flow-diagram"><span style="color:#58a6ff">Material (JavaScript object)</span>
+  { color, roughness, metalness, map, normalMap, ... }
+              ↓
+<span style="color:#3fb950">getProgram( material, scene, object )</span>  [WebGLRenderer.js L2155]
+  ├─ Build a cache key:
+  │   materialType + lightConfig + fog? + shadows? + skinning? + ...
+  ├─ Cache hit? → reuse compiled program
+  └─ Cache miss:
+       ├─ Assemble shader source from #include chunks
+       ├─ Call material.onBeforeCompile( parameters ) ← user hook
+       ├─ gl.createShader()   × 2  (vertex + fragment)
+       ├─ gl.compileShader()  × 2
+       ├─ gl.createProgram()
+       ├─ gl.attachShader()   × 2
+       └─ gl.linkProgram()
+              ↓
+<span style="color:#d29922">WebGL Program (lives on GPU)</span>
+  Uniform locations extracted with gl.getUniformLocation()
+  Attribute locations extracted with gl.getAttribLocation()
+              ↓
+Per-draw: setUniforms() + bindVertexArray() + gl.drawElements()</div>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Material Base Class <a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/materials/Material.js" target="_blank">Material.js</a></summary>
+    <div class="details-body">
+      <p>All materials extend <code>Material</code>. It defines the GPU rendering state: blending, depth, stencil, culling.</p>
+
+      <h3>Appearance</h3>
+      <table class="prop-table">
+        <tr><th>Property</th><th>Line</th><th>Description</th></tr>
+        <tr><td>opacity</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/materials/Material.js#L109" target="_blank">L109</a></td><td>Alpha value 0.0–1.0. Only effective when <code>transparent = true</code></td></tr>
+        <tr><td>transparent</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/materials/Material.js#L122" target="_blank">L122</a></td><td>If true, alpha blending is enabled and object is sorted back-to-front</td></tr>
+        <tr><td>side</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/materials/Material.js#L86" target="_blank">L86</a></td><td>FrontSide (default) / BackSide / DoubleSide — which triangle faces to render</td></tr>
+        <tr><td>wireframe</td><td>—</td><td>Render triangles as line outlines (uses gl.LINES instead of gl.TRIANGLES)</td></tr>
+        <tr><td>alphaTest</td><td>—</td><td>Discard fragments with alpha below this threshold (avoids sort cost for foliage)</td></tr>
+      </table>
+
+      <h3>Blending</h3>
+      <table class="prop-table">
+        <tr><th>Property</th><th>Line</th><th>Description</th></tr>
+        <tr><td>blending</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/materials/Material.js#L78" target="_blank">L78</a></td><td>NormalBlending (default), AdditiveBlending, MultiplyBlending, SubtractiveBlending, CustomBlending</td></tr>
+        <tr><td>blendSrc / blendDst</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/materials/Material.js#L141" target="_blank">L141</a></td><td>GL blend factors used when blending = CustomBlending</td></tr>
+        <tr><td>blendEquation</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/materials/Material.js#L157" target="_blank">L157</a></td><td>AddEquation (default), SubtractEquation, ReverseSubtractEquation, MinEquation, MaxEquation</td></tr>
+      </table>
+
+      <h3>Depth Buffer</h3>
+      <table class="prop-table">
+        <tr><th>Property</th><th>Line</th><th>Description</th></tr>
+        <tr><td>depthTest</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/materials/Material.js#L218" target="_blank">L218</a></td><td>If true, fragment is discarded if it fails the Z test (default: true)</td></tr>
+        <tr><td>depthWrite</td><td><a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/materials/Material.js#L229" target="_blank">L229</a></td><td>If false, fragments don't update the Z-buffer (used for transparent objects)</td></tr>
+        <tr><td>depthFunc</td><td>—</td><td>LessEqualDepth (default), LessDepth, GreaterDepth, etc.</td></tr>
+      </table>
+
+      <h3>Hooks</h3>
+      <table class="prop-table">
+        <tr><th>Property</th><th>Description</th></tr>
+        <tr><td>onBeforeCompile(parameters, renderer)</td><td>Called before GLSL compilation. Modify <code>parameters.vertexShader</code> / <code>parameters.fragmentShader</code> to inject custom code.</td></tr>
+        <tr><td>onBeforeRender(renderer, scene, camera, geometry, object, group)</td><td>Called before each draw — use to update uniforms dynamically.</td></tr>
+        <tr><td>onAfterRender(...)</td><td>Called after each draw — cleanup or state restore.</td></tr>
+        <tr><td>customProgramCacheKey()</td><td>Return a string to add to the cache key — required when your onBeforeCompile changes shader source based on state.</td></tr>
+      </table>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Built-in Material Types</summary>
+    <div class="details-body">
+      <div class="mat-grid">
+        <div class="mat-card"><strong>MeshBasicMaterial</strong>Flat color or texture, <em>no lighting</em>. Cheapest option. Good for unlit UI elements or debug.</div>
+        <div class="mat-card"><strong>MeshLambertMaterial</strong>Diffuse-only lighting (Lambertian reflectance). Per-vertex lighting calculation — fast but not physically accurate.</div>
+        <div class="mat-card"><strong>MeshPhongMaterial</strong>Diffuse + specular highlights (Blinn-Phong). Per-fragment — accurate highlights, still not PBR.</div>
+        <div class="mat-card"><strong>MeshStandardMaterial</strong>Physically-based rendering (PBR). Roughness + metalness workflow. IBL support via <code>scene.environment</code>.</div>
+        <div class="mat-card"><strong>MeshPhysicalMaterial</strong>Extends Standard with transmission, clearcoat, iridescence, sheenColor — for glass, car paint, fabric.</div>
+        <div class="mat-card"><strong>MeshDepthMaterial</strong>Encodes depth to RGBA. Used internally for shadow maps.</div>
+        <div class="mat-card"><strong>ShaderMaterial</strong>Full custom GLSL vertex + fragment shaders. You write everything.</div>
+        <div class="mat-card"><strong>RawShaderMaterial</strong>Like ShaderMaterial but three.js doesn't inject any built-in uniforms or defines — absolute control.</div>
+      </div>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Shader Chunk System — How Built-in Shaders are Assembled</summary>
+    <div class="details-body">
+      <p>Three.js doesn't write monolithic GLSL files. Instead it composes shaders from small named <strong>chunks</strong> using <code>#include &lt;chunk_name&gt;</code> directives.</p>
+      <pre><code class="language-glsl">// Simplified excerpt: MeshStandardMaterial vertex shader
+#include &lt;common&gt;
+#include &lt;uv_pars_vertex&gt;
+#include &lt;normal_pars_vertex&gt;
+#include &lt;shadowmap_pars_vertex&gt;
+
+void main() {
+  #include &lt;uv_vertex&gt;
+  #include &lt;beginnormal_vertex&gt;
+  #include &lt;defaultnormal_vertex&gt;
+  #include &lt;begin_vertex&gt;
+  #include &lt;project_vertex&gt;       // ← clips position to screen
+  #include &lt;shadowmap_vertex&gt;
+}</code></pre>
+
+      <p>Each chunk is a string stored in <a href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/renderers/shaders/ShaderChunk.js" target="_blank">ShaderChunk.js</a>. The renderer replaces <code>#include</code> directives with the chunk source before compilation.</p>
+
+      <h3>Why This Design?</h3>
+      <p>Chunks let <code>onBeforeCompile</code> hooks surgically inject code:</p>
+      <pre><code class="language-javascript">material.onBeforeCompile = ( shader ) => {
+  // Add a custom uniform
+  shader.uniforms.myTime = { value: 0 };
+
+  // Inject code into a specific chunk's slot
+  shader.vertexShader = shader.vertexShader.replace(
+    '#include &lt;begin_vertex&gt;',
+    `
+    #include &lt;begin_vertex&gt;
+    // Vertex displacement using wave
+    transformed.y += sin( position.x * 5.0 + myTime ) * 0.1;
+    `
+  );
+};
+
+// Update the uniform each frame
+material.userData.shader = null;
+material.onBeforeCompile = ( shader ) => {
+  material.userData.shader = shader;
+};
+// In animate():
+if ( material.userData.shader ) {
+  material.userData.shader.uniforms.myTime.value = performance.now() / 1000;
+}</code></pre>
+
+      <div class="note">When using <code>onBeforeCompile</code> with state-dependent logic, implement <code>customProgramCacheKey()</code> to return a unique string per variant — otherwise the renderer reuses a cached program compiled with different code.</div>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Program Cache &amp; Variants <a class="gh-link" href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/renderers/WebGLRenderer.js#L2155" target="_blank">getProgram L2155</a></summary>
+    <div class="details-body">
+      <p>Three.js never compiles duplicate programs. The cache key encodes every factor that changes shader code:</p>
+      <div class="flow-diagram">Cache key components:
+  material.type            (e.g. "MeshStandardMaterial")
+  material.customProgramCacheKey()
+  numDirectionalLights     (adds defines: NUM_DIR_LIGHTS=2)
+  numPointLights
+  numSpotLights
+  numHemiLights
+  numDirLightShadows       (adds: USE_SHADOWMAP, shadowmap code)
+  scene.fog type           (adds: USE_FOG / USE_FOGEXP2)
+  object.isSkinnedMesh     (adds: USE_SKINNING)
+  geometry morphAttributes (adds: USE_MORPHTARGETS)
+  material.instancingCount (adds: USE_INSTANCING)
+  material.map?            (adds: USE_MAP)
+  material.normalMap?      (adds: USE_NORMALMAP)
+  ... ~50 more flags</div>
+
+      <p>This means adding a single point light causes all materials to recompile (one-time cost, then cached). The cache survives across frames but is per-scene and per-camera-depth-level.</p>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Uniforms — How Data Reaches the Shader</summary>
+    <div class="details-body">
+      <p>Uniforms are variables that are constant for a single draw call but can change between draws. Three.js uploads them via the <code>WebGLUniforms</code> system.</p>
+      <pre><code class="language-javascript">// For MeshStandardMaterial, three.js sends ~40+ uniforms automatically:
+//   Matrices:
+//     modelMatrix, viewMatrix, projectionMatrix, normalMatrix
+//   Material appearance:
+//     diffuse (color), roughness, metalness, opacity
+//   Textures (each bound to a texture unit):
+//     map, roughnessMap, metalnessMap, normalMap, aoMap, ...
+//   Lighting (from RenderState):
+//     ambientLightColor
+//     directionalLights[N] { direction, color }
+//     directionalLightShadows[N] { shadowBias, shadowMapSize, ... }
+//     directionalShadowMap[N]  (sampler2D)
+//     directionalShadowMatrix[N] (mat4)
+//     pointLights[N], spotLights[N], ...
+//   Environment:
+//     envMap (samplerCube), envMapIntensity
+//   Fog:
+//     fogColor, fogNear, fogFar (or fogDensity for FogExp2)</code></pre>
+
+      <h3>Custom Uniforms in ShaderMaterial</h3>
+      <pre><code class="language-javascript">const material = new THREE.ShaderMaterial({
+  uniforms: {
+    time:  { value: 0.0 },
+    color: { value: new THREE.Color( 0xff0000 ) },
+    tex:   { value: new THREE.TextureLoader().load('img.png') },
+  },
+  vertexShader: `
+    uniform float time;
+    void main() {
+      vec3 pos = position;
+      pos.y += sin( pos.x + time ) * 0.1;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4( pos, 1.0 );
+    }
+  `,
+  fragmentShader: `
+    uniform vec3 color;
+    void main() {
+      gl_FragColor = vec4( color, 1.0 );
+    }
+  `,
+});
+
+// Animate:
+function animate( t ) {
+  material.uniforms.time.value = t / 1000;
+  renderer.render( scene, camera );
+}</code></pre>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Lighting Data Flow: Lights → Shader Uniforms</summary>
+    <div class="details-body">
+      <div class="flow-diagram">During projectObject() traversal:
+  Light objects → currentRenderState.addLight( light )
+
+currentRenderState.setupLights()
+  └─ Accumulates:
+      ambientLightColor += ambient lights
+      directional[] += {direction, color} per DirectionalLight
+      point[]       += {position, color, distance, decay} per PointLight
+      spot[]        += {position, direction, angle, ...} per SpotLight
+      hemi[]        += {skyColor, groundColor, direction} per HemisphereLight
+
+renderObject() → setProgram() → uniforms.upload()
+  └─ For each light type:
+      gl.uniform3f( ambientLightColorLoc, r, g, b )
+      gl.uniform3fv( directionalLightsLoc, flattenedDirectionals )
+      gl.uniformMatrix4fv( shadowMatrixLoc, shadowMatrices )
+      gl.bindTexture( GL_TEXTURE_2D, shadowMapTexture )  ← sampler2D</div>
+
+      <ul>
+        <li><a href="https://learnopengl.com/Lighting/Basic-Lighting" target="_blank">LearnOpenGL — Basic Lighting</a></li>
+        <li><a href="https://learnopengl.com/PBR/Theory" target="_blank">LearnOpenGL — PBR Theory</a></li>
+        <li><a href="https://threejs.org/docs/#api/en/materials/ShaderMaterial" target="_blank">Three.js Docs — ShaderMaterial</a></li>
+      </ul>
+    </div>
+  </details>
+
+  <details open>
+    <summary>External References</summary>
+    <div class="details-body">
+      <ul>
+        <li><a href="https://www.khronos.org/opengl/wiki/GLSL_Object" target="_blank">Khronos — GLSL Shader Objects</a> — compile/link lifecycle</li>
+        <li><a href="https://webglfundamentals.org/webgl/lessons/webgl-shaders-and-glsl.html" target="_blank">WebGL Fundamentals — Shaders and GLSL</a></li>
+        <li><a href="https://learnopengl.com/Advanced-OpenGL/Blending" target="_blank">LearnOpenGL — Blending</a></li>
+        <li><a href="https://threejs.org/docs/#api/en/materials/MeshStandardMaterial" target="_blank">Three.js Docs — MeshStandardMaterial</a></li>
+        <li><a href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/renderers/shaders/ShaderLib.js" target="_blank">src/renderers/shaders/ShaderLib.js</a> — built-in shader entry points</li>
+        <li><a href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/renderers/shaders/ShaderChunk.js" target="_blank">src/renderers/shaders/ShaderChunk.js</a> — all chunk names &amp; sources</li>
+      </ul>
+    </div>
+  </details>
+</main>
+<script>hljs.highlightAll();</script>
+</body>
+</html>

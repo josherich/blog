@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Three.js Deep Dive — Overview</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #21262d;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --orange: #d29922;
+    --purple: #bc8cff;
+    --red: #f85149;
+    --font-mono: 'Courier New', Courier, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 15px; line-height: 1.6; }
+
+  nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 20px; position: sticky; top: 0; z-index: 100; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  nav .logo { font-weight: 700; color: var(--accent); margin-right: 12px; font-size: 16px; white-space: nowrap; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 13px; padding: 4px 10px; border-radius: 6px; border: 1px solid transparent; white-space: nowrap; }
+  nav a:hover, nav a.active { color: var(--text); border-color: var(--border); background: var(--surface2); }
+
+  main { max-width: 900px; margin: 0 auto; padding: 32px 20px 80px; }
+  h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+  h2 { font-size: 20px; font-weight: 600; margin: 32px 0 12px; color: var(--accent); }
+  h3 { font-size: 16px; font-weight: 600; margin: 20px 0 8px; color: var(--orange); }
+  p { margin-bottom: 12px; color: var(--text); }
+  .muted { color: var(--muted); font-size: 14px; }
+  a { color: var(--accent); }
+
+  details { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 16px; overflow: hidden; }
+  summary { padding: 14px 18px; cursor: pointer; font-weight: 600; font-size: 15px; list-style: none; display: flex; align-items: center; gap: 8px; user-select: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary::before { content: '▶'; font-size: 10px; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; }
+  details[open] > summary::before { transform: rotate(90deg); }
+  summary:hover { background: var(--surface2); }
+  .details-body { padding: 0 18px 18px; }
+
+  pre { background: #010409 !important; border: 1px solid var(--border); border-radius: 6px; padding: 16px; overflow-x: auto; margin: 12px 0; }
+  code.hljs { background: #010409 !important; padding: 0; }
+  pre code { white-space: pre; font-family: var(--font-mono); font-size: 13px; }
+  :not(pre) > code { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; font-family: var(--font-mono); font-size: 13px; color: var(--purple); }
+
+  .flow-diagram { background: #010409; border: 1px solid var(--border); border-radius: 8px; padding: 20px; font-family: var(--font-mono); font-size: 13px; overflow-x: auto; line-height: 1.8; white-space: pre; }
+  .flow-step { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin: 8px 0; display: flex; gap: 12px; align-items: flex-start; }
+  .flow-num { background: var(--accent); color: #000; font-weight: 700; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 13px; }
+  .flow-content { flex: 1; }
+  .flow-title { font-weight: 600; margin-bottom: 4px; }
+  .flow-desc { color: var(--muted); font-size: 13px; }
+
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 16px 0; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; text-decoration: none; display: block; transition: border-color 0.2s; }
+  .card:hover { border-color: var(--accent); }
+  .card-title { font-weight: 700; font-size: 15px; color: var(--accent); margin-bottom: 6px; }
+  .card-file { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+  .card-desc { font-size: 13px; color: var(--muted); }
+
+  .badge { display: inline-block; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; font-size: 12px; font-family: var(--font-mono); margin: 2px; }
+  .badge.green { color: var(--green); border-color: var(--green); }
+  .badge.blue { color: var(--accent); border-color: var(--accent); }
+  .badge.orange { color: var(--orange); border-color: var(--orange); }
+
+  .ref-list { list-style: none; }
+  .ref-list li { padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .ref-list li:last-child { border-bottom: none; }
+
+  @media (max-width: 600px) {
+    h1 { font-size: 22px; }
+    h2 { font-size: 17px; }
+    .flow-diagram { font-size: 11px; }
+    nav { padding: 10px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="logo">Three.js Deep Dive</span>
+  <a href="index.html" class="active">Overview</a>
+  <a href="scene-graph.html">Scene Graph</a>
+  <a href="geometry.html">Geometry</a>
+  <a href="material-shader.html">Material &amp; Shader</a>
+  <a href="camera.html">Camera</a>
+  <a href="renderer.html">Renderer</a>
+</nav>
+
+<main>
+  <h1>Three.js Architecture Overview</h1>
+  <p class="muted">How a 3D scene flows from JavaScript objects to GPU pixels — tracing the data path through every major subsystem.</p>
+
+  <details open>
+    <summary>What Three.js Is</summary>
+    <div class="details-body">
+      <p>Three.js is a <strong>scene graph abstraction</strong> over WebGL. It manages the full pipeline from high-level objects (meshes, lights, cameras) down to raw GPU draw calls, shader compilation, and buffer uploads.</p>
+      <p>The entry-point pattern from the README:</p>
+      <pre><code class="language-javascript">import * as THREE from 'three';
+
+// Scene graph
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(70, width / height, 0.01, 10);
+camera.position.z = 1;
+
+// Geometry + Material → Mesh
+const geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
+const material = new THREE.MeshNormalMaterial();
+const mesh = new THREE.Mesh(geometry, material);
+scene.add(mesh);
+
+// Renderer: orchestrates the whole pipeline
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(width, height);
+renderer.setAnimationLoop(animate);
+document.body.appendChild(renderer.domElement);
+
+function animate(time) {
+  mesh.rotation.x = time / 2000;
+  mesh.rotation.y = time / 1000;
+  renderer.render(scene, camera); // ← everything happens here
+}</code></pre>
+      <p>Every call to <code>renderer.render(scene, camera)</code> triggers the full pipeline described in this documentation.</p>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Architecture Map</summary>
+    <div class="details-body">
+      <p>The major subsystems and their relationships:</p>
+      <div class="flow-diagram"><span style="color:#58a6ff">USER CODE</span>
+  scene.add(mesh)          renderer.render(scene, camera)
+      │                              │
+      ▼                              ▼
+<span style="color:#3fb950">SCENE GRAPH                    WEBGL RENDERER</span>
+  Scene                          │
+    └─ Object3D (hierarchy)      ├─ 1. updateMatrixWorld()    ← scene traversal + matrix calc
+        ├─ Mesh                  ├─ 2. projectObject()        ← visibility / frustum cull
+        │   ├─ BufferGeometry    ├─ 3. RenderList.sort()      ← opaque front→back, transparent back→front
+        │   └─ Material          ├─ 4. shadowMap.render()     ← depth pass for shadows
+        ├─ Light                 ├─ 5. renderScene()          ← opaque → transmissive → transparent
+        └─ Camera                │     └─ renderObject()
+                                 │           ├─ getProgram()  ← compile/cache GLSL shaders
+                                 │           ├─ setUniforms() ← lights, textures, matrices
+<span style="color:#d29922">GPU                             │           └─ bindingStates.setup() ← VAO, attribute pointers</span>
+  WebGL Context ←──────────────  └─ 6. gl.drawElements()     ← actual GPU draw call
+  Shader Program
+  Vertex Buffer (VBO)
+  Index Buffer (IBO)
+  Vertex Array Object (VAO)
+  Framebuffer / Texture</div>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Data Flow: Step by Step</summary>
+    <div class="details-body">
+      <div class="flow-step">
+        <div class="flow-num">1</div>
+        <div class="flow-content">
+          <div class="flow-title">Scene Graph Construction</div>
+          <div class="flow-desc">User creates <code>Scene</code>, <code>Mesh</code> (geometry + material), and <code>Camera</code>. <code>scene.add(mesh)</code> sets parent/child links in the Object3D tree. No GPU work yet — this is all JavaScript object management.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">2</div>
+        <div class="flow-content">
+          <div class="flow-title">Matrix Hierarchy Update</div>
+          <div class="flow-desc"><code>scene.updateMatrixWorld()</code> walks the tree depth-first, composing each node's local transform (position × rotation × scale) into a world-space <code>matrixWorld</code>. The camera also gets a <code>matrixWorldInverse</code> (the view matrix) and <code>projectionMatrix</code>.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">3</div>
+        <div class="flow-content">
+          <div class="flow-title">Scene Traversal & Culling</div>
+          <div class="flow-desc"><code>projectObject()</code> walks the scene graph recursively. Each Mesh is checked against the camera frustum and layer mask. Visible objects are pushed into a <code>RenderList</code> categorized as opaque, transmissive, or transparent, with their clip-space Z depth recorded.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">4</div>
+        <div class="flow-content">
+          <div class="flow-title">Render List Sorting</div>
+          <div class="flow-desc">Opaque objects sort front-to-back (Z ascending) to maximize early Z-rejection on the GPU. Transparent objects sort back-to-front (Z descending) so alpha blending composites correctly. Within each group, objects sort by material ID to reduce GPU state changes.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">5</div>
+        <div class="flow-content">
+          <div class="flow-title">Shadow Pass</div>
+          <div class="flow-desc">For each shadow-casting light, the scene is rendered from the light's perspective into a depth texture (shadow map). Later, the main render samples this texture to determine which fragments are in shadow.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">6</div>
+        <div class="flow-content">
+          <div class="flow-title">Shader Program Compilation &amp; Caching</div>
+          <div class="flow-desc"><code>getProgram()</code> computes a cache key from the material type, light configuration, fog, skinning, and other state. If no cached program exists, it compiles GLSL vertex and fragment shaders from built-in chunks, links them, and stores the result.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">7</div>
+        <div class="flow-content">
+          <div class="flow-title">Uniform Upload &amp; Vertex Binding</div>
+          <div class="flow-desc">Per-draw uniforms (model/view/projection matrices, material color, textures, light data) are written to the GPU. Vertex attributes (position, normal, UV) are bound via a Vertex Array Object (VAO) that maps BufferAttribute arrays to shader attribute slots.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">8</div>
+        <div class="flow-content">
+          <div class="flow-title">GPU Draw Call</div>
+          <div class="flow-desc"><code>gl.drawElements()</code> (indexed) or <code>gl.drawArrays()</code> (non-indexed) fires. The vertex shader runs per vertex, the rasterizer interpolates, and the fragment shader runs per pixel. Output goes to the canvas (or a render target for post-processing).</div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Component Pages</summary>
+    <div class="details-body">
+      <div class="card-grid">
+        <a class="card" href="scene-graph.html">
+          <div class="card-title">Scene Graph</div>
+          <div class="card-file">src/scenes/Scene.js · src/core/Object3D.js</div>
+          <div class="card-desc">How objects are organized in a hierarchy, how transforms compose from local to world space, and how the tree is built and modified.</div>
+        </a>
+        <a class="card" href="geometry.html">
+          <div class="card-title">Geometry</div>
+          <div class="card-file">src/core/BufferGeometry.js · BufferAttribute.js</div>
+          <div class="card-desc">How vertex data (positions, normals, UVs) is stored in typed arrays, uploaded to GPU buffers, and indexed for triangle connectivity.</div>
+        </a>
+        <a class="card" href="material-shader.html">
+          <div class="card-title">Material &amp; Shader</div>
+          <div class="card-file">src/materials/Material.js · WebGLPrograms.js</div>
+          <div class="card-desc">How materials define appearance, how GLSL shaders are compiled and cached, and how uniforms (lights, textures, matrices) reach the GPU.</div>
+        </a>
+        <a class="card" href="camera.html">
+          <div class="card-title">Camera</div>
+          <div class="card-file">src/cameras/PerspectiveCamera.js</div>
+          <div class="card-desc">How view and projection matrices are computed, how the frustum is derived for culling, and how the camera fits into the scene graph.</div>
+        </a>
+        <a class="card" href="renderer.html">
+          <div class="card-title">Renderer Pipeline</div>
+          <div class="card-file">src/renderers/WebGLRenderer.js</div>
+          <div class="card-desc">The full orchestration: scene traversal, render list, sorting, shadow pass, draw calls, and how every subsystem connects here.</div>
+        </a>
+      </div>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Key Concepts &amp; External References</summary>
+    <div class="details-body">
+      <h3>Scene Graph</h3>
+      <ul class="ref-list">
+        <li><a href="https://en.wikipedia.org/wiki/Scene_graph" target="_blank">Wikipedia — Scene Graph</a> — tree data structure for spatial organization of objects</li>
+        <li><a href="https://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/" target="_blank">OpenGL Tutorial — Matrices</a> — how model/view/projection transforms work</li>
+        <li><a href="https://threejs.org/docs/#api/en/core/Object3D" target="_blank">Three.js Docs — Object3D</a> — official API reference</li>
+      </ul>
+      <h3>Rendering Pipeline</h3>
+      <ul class="ref-list">
+        <li><a href="https://webglfundamentals.org/webgl/lessons/webgl-how-it-works.html" target="_blank">WebGL Fundamentals — How it Works</a> — vertex/fragment shader pipeline explained visually</li>
+        <li><a href="https://www.khronos.org/opengl/wiki/Rendering_Pipeline_Overview" target="_blank">Khronos — Rendering Pipeline Overview</a> — authoritative GPU pipeline reference</li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/WebGL_best_practices" target="_blank">MDN — WebGL Best Practices</a> — state changes, batching, draw call costs</li>
+      </ul>
+      <h3>Math</h3>
+      <ul class="ref-list">
+        <li><a href="https://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/" target="_blank">Euclidean Space — Quaternion to Matrix</a> — how rotation is stored and composed</li>
+        <li><a href="https://en.wikipedia.org/wiki/Viewing_frustum" target="_blank">Wikipedia — Viewing Frustum</a> — the volume used for frustum culling</li>
+        <li><a href="https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/opengl-perspective-projection-matrix.html" target="_blank">Scratchapixel — Projection Matrix</a> — math behind perspective projection</li>
+      </ul>
+      <h3>Transparency &amp; Sorting</h3>
+      <ul class="ref-list">
+        <li><a href="https://learnopengl.com/Advanced-OpenGL/Blending" target="_blank">LearnOpenGL — Blending</a> — why transparent objects must sort back-to-front</li>
+        <li><a href="https://developer.nvidia.com/content/depth-precision-visualized" target="_blank">NVIDIA — Depth Precision</a> — near/far plane impact on Z-buffer precision</li>
+      </ul>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Source Code Entry Points</summary>
+    <div class="details-body">
+      <p>All links are permalinks to commit <code>d59cf621</code>.</p>
+      <ul class="ref-list">
+        <li><a href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/Three.js" target="_blank">src/Three.js</a> — main module export</li>
+        <li><a href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/core/Object3D.js" target="_blank">src/core/Object3D.js</a> — base class for all scene objects</li>
+        <li><a href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/scenes/Scene.js" target="_blank">src/scenes/Scene.js</a> — scene container</li>
+        <li><a href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/core/BufferGeometry.js" target="_blank">src/core/BufferGeometry.js</a> — vertex data container</li>
+        <li><a href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/materials/Material.js" target="_blank">src/materials/Material.js</a> — material base class</li>
+        <li><a href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/cameras/PerspectiveCamera.js" target="_blank">src/cameras/PerspectiveCamera.js</a> — perspective projection</li>
+        <li><a href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/renderers/WebGLRenderer.js" target="_blank">src/renderers/WebGLRenderer.js</a> — main renderer (3700+ lines)</li>
+        <li><a href="https://github.com/mrdoob/three.js/blob/d59cf621fbdc7ee35068008fd5007a3b2653e881/src/renderers/webgl/WebGLAnimation.js" target="_blank">src/renderers/webgl/WebGLAnimation.js</a> — animation loop</li>
+      </ul>
+    </div>
+  </details>
+</main>
+
+<script>hljs.highlightAll();</script>
+</body>
+</html>
