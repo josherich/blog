@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>raylib — rtextures (Images &amp; Textures)</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="brand" href="index.html">raylib Data Flow</a>
+  <a href="index.html">Overview</a>
+  <a href="rcore.html">rcore</a>
+  <a href="rlgl.html">rlgl</a>
+  <a href="rshapes.html">rshapes</a>
+  <a href="rtextures.html" class="active">rtextures</a>
+  <a href="rtext.html">rtext</a>
+  <a href="rmodels.html">rmodels</a>
+  <a href="raudio.html">raudio</a>
+</nav>
+
+<main>
+  <h1 class="page-title">rtextures — Images, Textures &amp; Render Targets</h1>
+  <p class="page-subtitle"><code>src/rtextures.c</code> handles CPU-side image data (<code>Image</code>), GPU textures (<code>Texture2D</code>), cubemaps, render textures (FBOs), and the <code>DrawTexture*</code> family.</p>
+
+  <details open>
+    <summary>Data Types</summary>
+    <div class="details-body">
+      <table>
+        <thead>
+          <tr><th>Type</th><th>Where it lives</th><th>Lifecycle</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Image</code></td><td>CPU RAM (<code>image.data</code>)</td><td><code>LoadImage</code> → manipulate pixels → <code>UnloadImage</code></td></tr>
+          <tr><td><code>Texture2D</code></td><td>GPU (<code>texture.id</code> = OpenGL texture name)</td><td><code>LoadTextureFromImage</code> → draw → <code>UnloadTexture</code></td></tr>
+          <tr><td><code>RenderTexture2D</code></td><td>GPU FBO + color texture</td><td><code>LoadRenderTexture</code> → <code>BeginTextureMode</code> → <code>UnloadRenderTexture</code></td></tr>
+        </tbody>
+      </table>
+      <p>The typical load path decodes a file to CPU memory first, then uploads once to the GPU:</p>
+      <pre><code>Texture2D LoadTexture(const char *fileName)
+{
+    Image image = LoadImage(fileName);       // stb_image / custom decoders
+    Texture2D texture = LoadTextureFromImage(image);
+    UnloadImage(image);                      // free CPU copy
+    return texture;
+}</code></pre>
+      <a class="src-link" href="https://github.com/raysan5/raylib/blob/22509ab2d4b1e1b9b8fb874c05b08ae9a26d44d8/src/rtextures.c#L4118-L4150">LoadTexture / LoadTextureFromImage</a>
+    </div>
+  </details>
+
+  <details open>
+    <summary>CPU → GPU Upload</summary>
+    <div class="details-body">
+      <pre><code>Texture2D LoadTextureFromImage(Image image)
+{
+    texture.id = rlLoadTexture(
+        image.data, image.width, image.height,
+        image.format, image.mipmaps);
+    texture.width = image.width;
+    texture.height = image.height;
+    return texture;
+}</code></pre>
+      <p><code>rlLoadTexture</code> (inside rlgl) calls <code>glGenTextures</code>, <code>glTexImage2D</code>, sets filtering/wrap, and optionally generates mipmaps. Compressed formats (DXT, ETC, ASTC) pass through when supported.</p>
+      <a class="src-link" href="https://github.com/raysan5/raylib/blob/22509ab2d4b1e1b9b8fb874c05b08ae9a26d44d8/src/rtextures.c#L4135-L4150">LoadTextureFromImage</a>
+      <p>Image loading uses bundled <a href="https://github.com/nothings/stb">stb_image</a> and related decoders in <code>src/external/</code>.</p>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Drawing Textures (2D Quad Path)</summary>
+    <div class="details-body">
+      <div class="flow-diagram">DrawTexture(texture, x, y, tint)
+  → DrawTextureEx → DrawTexturePro
+      │
+      ├─ compute destination quad (position, scale, rotation, origin)
+      ├─ map source Rectangle → UV coordinates
+      │
+      ├─ rlSetTexture(texture.id)
+      ├─ rlBegin(RL_QUADS)
+      │     per vertex: rlColor4ub(tint) rlTexCoord2f(u,v) rlVertex2f(x,y)
+      └─ rlEnd()</div>
+      <p><code>DrawTexturePro</code> is the general form used internally by text rendering and sprite sheets. It handles negative width/height flips and arbitrary sub-rectangles.</p>
+      <a class="src-link" href="https://github.com/raysan5/raylib/blob/22509ab2d4b1e1b9b8fb874c05b08ae9a26d44d8/src/rtextures.c#L4512-L4600">DrawTexturePro</a>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Render Textures (Off-Screen)</summary>
+    <div class="details-body">
+      <p><code>LoadRenderTexture</code> creates an FBO with a color texture attachment (and depth renderbuffer for 3D content). Drawing flow:</p>
+      <pre><code>RenderTexture2D target = LoadRenderTexture(800, 600);
+
+BeginTextureMode(target);    // rcore: bind FBO, set ortho viewport
+    ClearBackground(BLANK);
+    DrawCircle(400, 300, 100, RED);   // renders into target.texture
+EndTextureMode();            // rcore: restore default framebuffer
+
+DrawTexture(target.texture, 0, 0, WHITE);  // blit to screen</code></pre>
+      <a class="src-link" href="https://github.com/raysan5/raylib/blob/22509ab2d4b1e1b9b8fb874c05b08ae9a26d44d8/src/rtextures.c#L4260-L4320">LoadRenderTexture</a>
+      <a class="src-link" href="https://github.com/raysan5/raylib/blob/22509ab2d4b1e1b9b8fb874c05b08ae9a26d44d8/src/rcore.c#L996-L1040">BeginTextureMode / EndTextureMode</a>
+      <p>Note: OpenGL FBO origin is bottom-left; raylib's <code>LoadRenderTexture</code> flips the Y texture coordinate when drawing so it appears upright on screen.</p>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Image Processing (CPU)</summary>
+    <div class="details-body">
+      <p>Before or instead of GPU upload, rtextures provides CPU pixel operations:</p>
+      <ul>
+        <li><code>ImageResize</code>, <code>ImageCrop</code>, <code>ImageFormat</code> — format conversion</li>
+        <li><code>ImageDrawPixel</code>, <code>ImageDrawRectangle</code> — CPU compositing</li>
+        <li><code>GenImageColor</code>, <code>GenImageGradient*</code> — procedural images</li>
+        <li><code>ExportImage</code> — write PNG via stb_image_write</li>
+      </ul>
+      <p>These operate on raw <code>image.data</code> bytes and never touch rlgl until you call <code>LoadTextureFromImage</code>.</p>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Connections</summary>
+    <div class="details-body">
+      <ul>
+        <li><a href="rtext.html">rtext</a> builds font atlases as <code>Texture2D</code> and draws glyphs via <code>DrawTexturePro</code></li>
+        <li><a href="rmodels.html">rmodels</a> binds textures as material maps in 3D shaders (separate from 2D batch)</li>
+        <li><a href="rlgl.html">rlgl</a> owns <code>rlLoadTexture</code>, FBO helpers, and batch flushing on texture bind</li>
+        <li><a href="rcore.html">rcore</a> manages FBO viewport switching during <code>BeginTextureMode</code></li>
+      </ul>
+    </div>
+  </details>
+
+  <details open>
+    <summary>External References</summary>
+    <div class="details-body">
+      <ul class="ref-list">
+        <li><a href="https://www.khronos.org/opengl/wiki/Texture">OpenGL Wiki — Texture</a></li>
+        <li><a href="https://www.khronos.org/opengl/wiki/Framebuffer_Object">OpenGL Wiki — Framebuffer Object</a></li>
+        <li><a href="https://github.com/nothings/stb/blob/master/stb_image.h">stb_image</a> — default image decoder</li>
+        <li><a href="https://www.raylib.com/examples.html">raylib examples — textures category</a></li>
+      </ul>
+    </div>
+  </details>
+</main>
+
+</body>
+</html>
