@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RDD &amp; Lineage — Spark Data Flow</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>Apache Spark Data Flow</strong>
+        <span>apache/spark @ <code>583e5bb</code></span>
+      </div>
+      <nav class="nav" aria-label="Component pages">
+        <a href="../index.html">Overview</a>
+        <a href="driver-and-context.html">Driver &amp; SparkContext</a>
+        <a href="rdd-and-lineage.html" aria-current="page">RDD &amp; Lineage</a>
+        <a href="scheduler.html">DAG &amp; Task Scheduling</a>
+        <a href="execution-and-memory.html">Executor, Storage &amp; Memory</a>
+        <a href="shuffle.html">Shuffle</a>
+        <a href="spark-sql-catalyst.html">Spark SQL &amp; Catalyst</a>
+        <a href="structured-streaming.html">Structured Streaming</a>
+        <a href="cluster-deploy.html">Cluster &amp; Deploy</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="topbar">
+        <div>
+          <h1>RDDs: the lineage that defines a computation</h1>
+          <p class="lead">The Resilient Distributed Dataset is Spark's foundational abstraction. Even DataFrames and SQL ultimately compile down to RDDs. Understanding the five properties, the lazy graph they form, and the difference between narrow and wide dependencies explains almost everything about how Spark schedules and recovers work.</p>
+        </div>
+        <div class="controls">
+          <input type="search" placeholder="Filter blocks" aria-label="Filter blocks" data-search>
+          <button type="button" data-expand-all>Expand all</button>
+          <button type="button" data-collapse-all>Collapse all</button>
+        </div>
+      </div>
+      <p class="meta" data-search-count></p>
+
+      <section class="section panel searchable">
+        <h2>An RDD is a recipe, not a table</h2>
+        <p>An RDD does not hold data. It is an immutable description of <em>how to compute</em> a partitioned collection from its parents. The source comment lists the five properties that every RDD answers; all scheduling decisions are derived from them.</p>
+        <pre><code>Internally, each RDD is characterized by five main properties:
+
+  - A list of partitions                       getPartitions
+  - A function for computing each split         compute(partition, ctx)
+  - A list of dependencies on other RDDs        getDependencies
+  - Optionally, a Partitioner for key-value     partitioner
+  - Optionally, preferred locations per split   getPreferredLocations</code></pre>
+        <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/rdd/RDD.scala#L69-L83">RDD.scala L69-L83 — the five properties</a></p>
+        <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/rdd/RDD.scala#L84-L139">RDD.scala L84-L139 — the abstract class and the five methods/fields</a></p>
+      </section>
+
+      <section class="section panel searchable">
+        <h2>Lineage: a chain of small wrappers</h2>
+        <pre><code>sc.textFile("data")        HadoopRDD          partitions = HDFS splits
+   .map(parse)        →    MapPartitionsRDD   OneToOneDependency
+   .filter(valid)     →    MapPartitionsRDD   OneToOneDependency
+   .map(toPair)       →    MapPartitionsRDD   OneToOneDependency
+   .reduceByKey(_+_)  →    ShuffledRDD        ShuffleDependency  ◄── stage boundary
+   .collect()              ACTION             triggers a job</code></pre>
+        <p>Each transformation returns a new RDD that points back at its parent. The arrows are <code>Dependency</code> objects. A single-parent RDD gets a <code>OneToOneDependency</code> automatically through the convenience constructor.</p>
+        <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/rdd/RDD.scala#L102-L104">RDD.scala L102-L104 — one-to-one parent constructor</a></p>
+      </section>
+
+      <section class="section grid">
+        <details open class="searchable">
+          <summary>Transformations build the graph (lazy)</summary>
+          <div class="details-body">
+            <p>A transformation never touches data on the cluster. <code>map</code> cleans the user function and wraps the parent in a <code>MapPartitionsRDD</code> whose <code>compute</code> simply applies <code>iter.map(cleanF)</code> to the parent's iterator. Because the new RDD keeps the same number of partitions and depends one-to-one on its parent, it can be pipelined with neighbours into a single stage.</p>
+            <pre><code>def map[U](f: T =&gt; U): RDD[U] = {
+  val cleanF = sc.clean(f)
+  new MapPartitionsRDD[U, T](this,
+    (context, pid, iter) =&gt; iter.map(cleanF))
+}</code></pre>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/rdd/RDD.scala#L424-L450">RDD.scala L424-L450 — map and filter</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Actions launch jobs (eager)</summary>
+          <div class="details-body">
+            <p>Actions are the only operations that cross the driver boundary. <code>collect</code> runs a job that turns each partition into an array and concatenates them on the driver; <code>count</code> sums per-partition sizes; <code>reduce</code> merges per-partition reductions. All of them call <code>sc.runJob</code>.</p>
+            <pre><code>def collect(): Array[T] = {
+  val results = sc.runJob(this, iter =&gt; iter.toArray)
+  Array.concat(results: _*)
+}</code></pre>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/rdd/RDD.scala#L1072-L1076">RDD.scala L1072-L1076 — collect</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/rdd/RDD.scala#L1146-L1167">RDD.scala L1146-L1167 — reduce</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Narrow vs. shuffle dependencies</summary>
+          <div class="details-body">
+            <p>The <code>Dependency</code> type is the single most important fact about an RDD edge. A <code>NarrowDependency</code> means each child partition needs only a few specific parent partitions, so the work can be pipelined locally. A <code>ShuffleDependency</code> means a child partition may need data from <em>every</em> parent partition, which requires a network exchange and forces a stage boundary.</p>
+            <pre><code>NarrowDependency.getParents(childPartitionId): Seq[Int]
+  // OneToOneDependency: child i ← parent i  (map, filter)
+  // RangeDependency:    contiguous ranges    (union)
+
+ShuffleDependency
+  // registers a shuffleId + shuffleHandle with the ShuffleManager
+  // carries the Partitioner that decides the reducer for each key</code></pre>
+            <p>Creating a <code>ShuffleDependency</code> immediately registers the shuffle with the shuffle manager, allocating a <code>shuffleId</code> — the shuffle is "planned" the moment the lineage is built, even though no bytes move until execution.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/Dependency.scala#L46-L61">Dependency.scala L46-L61 — NarrowDependency</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/Dependency.scala#L83-L138">Dependency.scala L83-L138 — ShuffleDependency and shuffle registration</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Partitions and the Partitioner</summary>
+          <div class="details-body">
+            <p>A <code>Partition</code> is just a serializable index identifying one slice of an RDD; it is the unit of task parallelism. For key/value RDDs, a <code>Partitioner</code> maps each key to a partition id and therefore decides how many reducers a shuffle has and where each key lands. <code>HashPartitioner</code> (the default) uses <code>key.hashCode mod numPartitions</code>; <code>RangePartitioner</code> samples the data to build sorted bounds for <code>sortByKey</code>.</p>
+            <p>Choosing a good partitioner is the main lever for avoiding skew and unnecessary shuffles: if two RDDs already share a partitioner, a join between them can be narrow.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/Partition.scala#L23-L33">Partition.scala L23-L33 — the Partition trait</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/Partitioner.scala#L114-L132">Partitioner.scala L114-L132 — HashPartitioner</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>iterator: compute, cache, or checkpoint</summary>
+          <div class="details-body">
+            <p>When a task needs a partition it calls <code>RDD.iterator</code>. This is the decision point between recomputation and reuse: if the RDD is persisted, it goes through <code>getOrCompute</code> (which asks the local <code>BlockManager</code> for a cached block, computing and storing it on a miss); otherwise it calls <code>computeOrReadCheckpoint</code>, which either reads a materialized checkpoint or finally calls the subclass's <code>compute</code>.</p>
+            <pre><code>final def iterator(split, context): Iterator[T] =
+  if (storageLevel != NONE) getOrCompute(split, context)   // cache path
+  else                      computeOrReadCheckpoint(split, context)</code></pre>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/rdd/RDD.scala#L334-L409">RDD.scala L334-L409 — iterator, computeOrReadCheckpoint, getOrCompute</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>persist / cache and fault tolerance</summary>
+          <div class="details-body">
+            <p><code>cache()</code> is <code>persist(MEMORY_ONLY)</code>. Persisting only sets a storage level and registers the RDD with the context; the data is materialized the first time a partition is computed, after which <code>getOrCompute</code> finds it in the block manager. Lineage is what makes this safe: if a cached partition is lost, Spark recomputes it from its parents rather than failing the job. This recompute-from-lineage property is the "Resilient" in RDD.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/rdd/RDD.scala#L186-L205">RDD.scala L186-L205 — persist and cache</a></p>
+          </div>
+        </details>
+      </section>
+
+      <section class="section panel searchable">
+        <h2>Why this matters downstream</h2>
+        <p>The lineage graph is the input to the <code>DAGScheduler</code>. It walks dependencies backward from the action: narrow edges are folded into the current stage, and every shuffle edge becomes a boundary. So the way you write transformations — particularly which ones introduce shuffles — directly determines the number of stages, the amount of network traffic, and the recovery behaviour of your job. Continue to <a href="scheduler.html">DAG &amp; Task Scheduling</a> to see the graph become stages and tasks.</p>
+      </section>
+
+      <section class="section grid searchable">
+        <div class="panel">
+          <h2>Key takeaways</h2>
+          <ul>
+            <li>An RDD stores a recipe (five properties), not data.</li>
+            <li>Transformations are lazy graph-building; actions are eager and call <code>runJob</code>.</li>
+            <li>Narrow dependencies pipeline; shuffle dependencies create stage boundaries.</li>
+            <li>The partitioner controls reducer count, key placement, and shuffle-free joins.</li>
+            <li>Lineage enables recomputation, which is Spark's fault-tolerance mechanism.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h2>External references</h2>
+          <ul>
+            <li><a href="https://people.csail.mit.edu/matei/papers/2012/nsdi_spark.pdf">RDD paper (NSDI 2012)</a></li>
+            <li><a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html#resilient-distributed-datasets-rdds">RDD programming guide</a></li>
+            <li><a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html#rdd-persistence">RDD persistence levels</a></li>
+          </ul>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>Code references are GitHub permalinks pinned to commit <code>583e5bb0010b52a0201a092985b09b0b2c264a6a</code>.</p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

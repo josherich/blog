@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Executor, Storage &amp; Memory — Spark Data Flow</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>Apache Spark Data Flow</strong>
+        <span>apache/spark @ <code>583e5bb</code></span>
+      </div>
+      <nav class="nav" aria-label="Component pages">
+        <a href="../index.html">Overview</a>
+        <a href="driver-and-context.html">Driver &amp; SparkContext</a>
+        <a href="rdd-and-lineage.html">RDD &amp; Lineage</a>
+        <a href="scheduler.html">DAG &amp; Task Scheduling</a>
+        <a href="execution-and-memory.html" aria-current="page">Executor, Storage &amp; Memory</a>
+        <a href="shuffle.html">Shuffle</a>
+        <a href="spark-sql-catalyst.html">Spark SQL &amp; Catalyst</a>
+        <a href="structured-streaming.html">Structured Streaming</a>
+        <a href="cluster-deploy.html">Cluster &amp; Deploy</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="topbar">
+        <div>
+          <h1>Executors: running tasks, storing blocks, managing memory</h1>
+          <p class="lead">An executor is a JVM that does the actual work. It receives tasks, runs them on a thread pool, serves and caches data through its <code>BlockManager</code>, and shares a fixed memory budget between computation and storage. This page follows a task into an executor and explains the unified memory model.</p>
+        </div>
+        <div class="controls">
+          <input type="search" placeholder="Filter blocks" aria-label="Filter blocks" data-search>
+          <button type="button" data-expand-all>Expand all</button>
+          <button type="button" data-collapse-all>Collapse all</button>
+        </div>
+      </div>
+      <p class="meta" data-search-count></p>
+
+      <section class="section panel searchable">
+        <h2>What happens when a task lands</h2>
+        <pre><code>(RPC) LaunchTask
+   │
+   ▼
+CoarseGrainedExecutorBackend.receive  → decode TaskDescription
+   │
+   ▼
+Executor.launchTask  → new TaskRunner → threadPool.execute
+   │
+   ▼
+TaskRunner.run
+   ├─ report TaskState.RUNNING
+   ├─ updateDependencies (fetch jars/files)
+   ├─ deserialize the Task with closureSerializer
+   ├─ task.run(...)              ◄── calls RDD.iterator / shuffle writer
+   ├─ serialize the result
+   └─ statusUpdate(FINISHED, result)   (inline, or via BlockManager if large)</code></pre>
+      </section>
+
+      <section class="section grid">
+        <details open class="searchable">
+          <summary>CoarseGrainedExecutorBackend — the RPC endpoint</summary>
+          <div class="details-body">
+            <p>This is the object the driver talks to. On <code>RegisteredExecutor</code> it creates the <code>Executor</code>; on <code>LaunchTask</code> it decodes the serialized <code>TaskDescription</code> and calls <code>executor.launchTask</code>; and it forwards every task <code>statusUpdate</code> back to the driver. It is the thin networking shell around the real worker.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/executor/CoarseGrainedExecutorBackend.scala#L167-L188">CoarseGrainedExecutorBackend.scala L167-L188 — receiving LaunchTask</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Executor and TaskRunner — the work loop</summary>
+          <div class="details-body">
+            <p>The <code>Executor</code> owns a cached thread pool, the <code>BlockManager</code>, and a heartbeat loop. Each task becomes a <code>TaskRunner</code> (a <code>Runnable</code>) submitted to the pool, so an executor runs as many concurrent tasks as it has cores. <code>launchTask</code> registers the runner in <code>runningTasks</code> and submits it.</p>
+            <p>Inside <code>TaskRunner.run</code>, the task binary is deserialized, the actual computation is invoked, and block locks plus task memory are released in a <code>finally</code> block no matter what.</p>
+            <pre><code>val value = Utils.tryWithSafeFinally {
+  task.run(taskAttemptId = taskId, attemptNumber = ...,
+           metricsSystem = env.metricsSystem, ...)
+} {
+  env.blockManager.releaseAllLocksForTask(taskId)   // always runs
+}</code></pre>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/executor/Executor.scala#L551-L601">Executor.scala L551-L601 — launchTask</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/executor/Executor.scala#L849-L896">Executor.scala L849-L896 — deserialize &amp; run</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Returning results and heartbeats</summary>
+          <div class="details-body">
+            <p>Small results travel inline in the status update. If a result exceeds <code>spark.task.maxDirectResultSize</code> it is stored in the <code>BlockManager</code> and only an <code>IndirectTaskResult</code> handle is sent; if it exceeds <code>spark.driver.maxResultSize</code> it is dropped with an error. Meanwhile a periodic heartbeat reports liveness and per-task metrics to the driver's <code>HeartbeatReceiver</code>; repeated heartbeat failures cause the executor to exit.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/executor/Executor.scala#L940-L1029">Executor.scala L940-L1029 — result delivery</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/executor/Executor.scala#L1518-L1565">Executor.scala L1518-L1565 — reportHeartBeat</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>BlockManager — the per-node data service</summary>
+          <div class="details-body">
+            <p>A <code>BlockManager</code> runs on every node and is the universal data layer: it stores cached RDD partitions, broadcast variables, and shuffle blocks, serving them locally or fetching them from peers. <code>get</code> tries the local memory store, then the local disk store, then remote nodes. <code>put</code> writes to memory first and spills to disk when configured. A driver-side <code>BlockManagerMaster</code> tracks where every block lives cluster-wide.</p>
+            <pre><code>get(blockId)  = getLocalValues  orElse  getRemoteValues
+putIterator   → doPutIterator → memory first, then disk if allowed</code></pre>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/storage/BlockManager.scala#L182-L194">BlockManager.scala L182-L194 — class</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/storage/BlockManager.scala#L1347-L1359">BlockManager.scala L1347-L1359 — get</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Unified memory: execution and storage share one pool</summary>
+          <div class="details-body">
+            <p>The <code>UnifiedMemoryManager</code> draws a <em>soft</em> boundary between two kinds of memory. <strong>Execution memory</strong> is used transiently for shuffles, joins, sorts, and aggregations. <strong>Storage memory</strong> holds cached blocks. Either side can borrow from the other when it has spare capacity — with one asymmetry: storage that has borrowed execution memory can be evicted when execution needs it back, but execution memory is never evicted by storage.</p>
+            <p>The source comment states the defaults exactly:</p>
+            <pre><code>shared region = (heap - 300MB) * spark.memory.fraction      // default 0.6
+storage region within it      * spark.memory.storageFraction // default 0.5
+⇒ storage ≈ 0.6 * 0.5 = 0.3 of the heap by default
+   300MB is RESERVED_SYSTEM_MEMORY_BYTES</code></pre>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/memory/UnifiedMemoryManager.scala#L34-L57">UnifiedMemoryManager.scala L34-L57 — the model and fractions</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/memory/UnifiedMemoryManager.scala#L134-L248">UnifiedMemoryManager.scala L134-L248 — acquireExecution / acquireStorage</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>MemoryStore and DiskStore — the two tiers</summary>
+          <div class="details-body">
+            <p>The <code>MemoryStore</code> keeps blocks in a <code>LinkedHashMap</code> (so eviction is LRU) as either deserialized object arrays or serialized byte buffers. It "unrolls" an iterator gradually, requesting more memory as it goes, so a single huge partition cannot blow the heap. When memory is tight, the eviction handler spills blocks to the <code>DiskStore</code>, which writes them to local files via the <code>DiskBlockManager</code>. This memory-then-disk tiering is exactly what storage levels like <code>MEMORY_AND_DISK</code> select.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/storage/memory/MemoryStore.scala#L82-L88">MemoryStore.scala L82-L88 — class</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/storage/memory/MemoryStore.scala#L190-L248">MemoryStore.scala L190-L248 — putIterator unrolling</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/storage/DiskStore.scala#L45-L115">DiskStore.scala L45-L115 — disk persistence</a></p>
+          </div>
+        </details>
+      </section>
+
+      <section class="section panel searchable">
+        <h2>The memory budget, visualized</h2>
+        <pre><code>┌──────────────────────────── executor JVM heap ───────────────────────────┐
+│ reserved 300MB │            spark.memory.fraction = 0.6 of (heap-300MB)    │
+│  (system)      │  ┌───────────────────────────┬─────────────────────────┐ │
+│                │  │   storage (cache blocks)   │   execution (shuffle,   │ │
+│                │  │   storageFraction = 0.5    │   sort, join, agg)      │ │
+│                │  └───────────────────────────┴─────────────────────────┘ │
+│                │       ◄── soft, borrowable boundary ──►                   │
+│   user memory (objects you allocate) = remaining ~0.4 of (heap-300MB)      │
+└───────────────────────────────────────────────────────────────────────────┘</code></pre>
+        <p>Spilling is normal and healthy: when execution memory is exhausted, sorts and aggregations spill sorted runs to disk rather than failing. Frequent spilling is the signal to add memory or partitions.</p>
+      </section>
+
+      <section class="section grid searchable">
+        <div class="panel">
+          <h2>Key takeaways</h2>
+          <ul>
+            <li>An executor runs one <code>TaskRunner</code> per core on a shared thread pool.</li>
+            <li>The <code>BlockManager</code> is the single store for cache, broadcast, and shuffle blocks.</li>
+            <li>Execution and storage share one budget; storage is evictable, execution is not.</li>
+            <li>Caching tiers through memory then disk; spilling to disk prevents out-of-memory failures.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h2>External references</h2>
+          <ul>
+            <li><a href="https://spark.apache.org/docs/latest/tuning.html#memory-management-overview">Memory management overview</a></li>
+            <li><a href="https://spark.apache.org/docs/latest/configuration.html#memory-management">Memory configuration</a></li>
+            <li><a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html#rdd-persistence">Storage levels</a></li>
+          </ul>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>Code references are GitHub permalinks pinned to commit <code>583e5bb0010b52a0201a092985b09b0b2c264a6a</code>.</p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

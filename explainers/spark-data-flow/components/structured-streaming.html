@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Structured Streaming — Spark Data Flow</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>Apache Spark Data Flow</strong>
+        <span>apache/spark @ <code>583e5bb</code></span>
+      </div>
+      <nav class="nav" aria-label="Component pages">
+        <a href="../index.html">Overview</a>
+        <a href="driver-and-context.html">Driver &amp; SparkContext</a>
+        <a href="rdd-and-lineage.html">RDD &amp; Lineage</a>
+        <a href="scheduler.html">DAG &amp; Task Scheduling</a>
+        <a href="execution-and-memory.html">Executor, Storage &amp; Memory</a>
+        <a href="shuffle.html">Shuffle</a>
+        <a href="spark-sql-catalyst.html">Spark SQL &amp; Catalyst</a>
+        <a href="structured-streaming.html" aria-current="page">Structured Streaming</a>
+        <a href="cluster-deploy.html">Cluster &amp; Deploy</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="topbar">
+        <div>
+          <h1>Structured Streaming: a stream as an unbounded table</h1>
+          <p class="lead">Structured Streaming reuses the entire SQL engine. A streaming query is executed as a series of small batches: each trigger reads new offsets, runs an ordinary query over just the new data, and commits the result transactionally. A write-ahead log and a commit log make the whole thing fault-tolerant and exactly-once for supported sinks.</p>
+        </div>
+        <div class="controls">
+          <input type="search" placeholder="Filter blocks" aria-label="Filter blocks" data-search>
+          <button type="button" data-expand-all>Expand all</button>
+          <button type="button" data-collapse-all>Collapse all</button>
+        </div>
+      </div>
+      <p class="meta" data-search-count></p>
+
+      <section class="section panel searchable">
+        <h2>The micro-batch loop</h2>
+        <pre><code>df.writeStream...start()
+   │
+   ▼
+StreamingQueryManager.createQuery → MicroBatchExecution → StreamExecution.start()
+   │
+   ▼  dedicated query-execution thread runs runActivatedStream()
+   │
+   ╭───────────────────────── per trigger ─────────────────────────╮
+   │ 1. poll each Source for its latest offset                      │
+   │ 2. write those offsets to the OFFSET LOG (write-ahead)         │
+   │ 3. build a normal QueryExecution over [lastOffset, newOffset)  │
+   │ 4. run the batch → write results to the Sink                   │
+   │ 5. write the batch id to the COMMIT LOG                        │
+   │ 6. tell sources they may discard committed data               │
+   ╰────────────────────────────────────────────────────────────────╯
+   (repeat until stopped)</code></pre>
+      </section>
+
+      <section class="section grid">
+        <details open class="searchable">
+          <summary>From writeStream to a running query</summary>
+          <div class="details-body">
+            <p>Calling <code>start()</code> on a <code>DataStreamWriter</code> resolves the checkpoint location and trigger, then asks the <code>StreamingQueryManager</code> to create the query. The manager picks the engine: a <code>ContinuousExecution</code> for a continuous trigger with a v2 sink, otherwise a <code>MicroBatchExecution</code> (the default). It then starts the query's dedicated thread.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/sql/core/src/main/scala/org/apache/spark/sql/classic/DataStreamWriter.scala#L304-L333">DataStreamWriter.scala L304-L333 — startQuery</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/sql/core/src/main/scala/org/apache/spark/sql/classic/StreamingQueryManager.scala#L177-L257">StreamingQueryManager.scala L177-L257 — createQuery picks the engine</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>StreamExecution — the engine base</summary>
+          <div class="details-body">
+            <p><code>StreamExecution</code> is the abstract base for streaming query execution. It owns the checkpoint metadata, the offset and commit logs, and the lifecycle state. Crucially it runs the query on its own <code>UninterruptibleThread</code> (<code>queryExecutionThread</code>) to avoid interrupt-related hangs in source clients, repeatedly attempting batches until the query is stopped.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/sql/core/src/main/scala/org/apache/spark/sql/execution/streaming/runtime/StreamExecution.scala#L74-L84">StreamExecution.scala L74-L84 — class</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/sql/core/src/main/scala/org/apache/spark/sql/execution/streaming/runtime/StreamExecution.scala#L282-L358">StreamExecution.scala L282-L358 — runStream activation loop</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>MicroBatchExecution — one trigger at a time</summary>
+          <div class="details-body">
+            <p><code>runActivatedStream</code> drives a <code>TriggerExecutor</code> that calls <code>executeOneBatch</code> on each tick. A batch constructs the next offsets, runs the batch if there is new data or pending state cleanup, then advances the batch id. The default <code>ProcessingTimeExecutor</code> simply loops, running a batch and sleeping until the next interval.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/sql/core/src/main/scala/org/apache/spark/sql/execution/streaming/runtime/MicroBatchExecution.scala#L592-L687">MicroBatchExecution.scala L592-L687 — runActivatedStream &amp; executeOneBatch</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>runBatch — a normal query over new data</summary>
+          <div class="details-body">
+            <p>The heart of the design: <code>runBatch</code> asks each source for the records between the committed offset and the new offset, rewires those into the logical plan, builds an <code>IncrementalExecution</code> (the same Catalyst pipeline, extended with stateful-operator rules), and writes the output to the sink. The streaming "magic" is mostly bookkeeping around an otherwise ordinary batch query.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/sql/core/src/main/scala/org/apache/spark/sql/execution/streaming/runtime/MicroBatchExecution.scala#L1017-L1250">MicroBatchExecution.scala L1017-L1250 — runBatch</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Offsets, the WAL, and exactly-once</summary>
+          <div class="details-body">
+            <p>Fault tolerance comes from two append-only logs in the checkpoint directory. The <strong>offset log</strong> records, <em>before</em> a batch runs, exactly which input range that batch will process (a write-ahead log). The <strong>commit log</strong> records, <em>after</em> a batch succeeds, that the batch is durably complete. On restart the engine compares the two: if the last batch was written to the offset log but not the commit log, it re-runs it. Combined with idempotent sinks, this yields end-to-end exactly-once processing.</p>
+            <pre><code>offsets/   ← OffsetSeqLog : "batch N will read up to these offsets"   (BEFORE)
+commits/   ← CommitLog    : "batch N completed"                      (AFTER)
+state/     ← versioned state store for stateful operators
+metadata/  ← stream id</code></pre>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/sql/core/src/main/scala/org/apache/spark/sql/execution/streaming/runtime/MicroBatchExecution.scala#L1257-L1275">MicroBatchExecution.scala L1257-L1275 — markMicroBatchStart (offset WAL)</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/sql/core/src/main/scala/org/apache/spark/sql/execution/streaming/checkpointing/HDFSMetadataLog.scala#L205-L246">HDFSMetadataLog.scala L205-L246 — atomic write (temp-then-rename)</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Sources and sinks</summary>
+          <div class="details-body">
+            <p>A <code>Source</code> exposes <code>getOffset</code> (the latest available position), <code>getBatch(start, end)</code> (the data in a range), and <code>commit(end)</code> (permission to discard). A <code>Sink</code> exposes an idempotent <code>addBatch(batchId, data)</code>. These small contracts (and their v2 equivalents) are what let connectors like Kafka, files, and Delta plug into the same execution loop with consistent recovery semantics.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/sql/core/src/main/scala/org/apache/spark/sql/execution/streaming/Source.scala#L32-L67">Source.scala L32-L67</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/sql/core/src/main/scala/org/apache/spark/sql/execution/streaming/Sink.scala#L34-L47">Sink.scala L34-L47</a></p>
+          </div>
+        </details>
+      </section>
+
+      <section class="section panel searchable">
+        <h2>Continuous processing (the other engine)</h2>
+        <p>For the lowest latency, a <code>ContinuousExecution</code> runs long-lived tasks that process records as they arrive, checkpointing progress by <em>epoch</em> rather than by discrete batches. It is a separate code path selected only for a continuous trigger with a compatible v2 sink; the micro-batch engine remains the default and the most widely used.</p>
+        <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/sql/core/src/main/scala/org/apache/spark/sql/execution/streaming/continuous/ContinuousExecution.scala#L49-L57">ContinuousExecution.scala L49-L57</a></p>
+      </section>
+
+      <section class="section grid searchable">
+        <div class="panel">
+          <h2>Key takeaways</h2>
+          <ul>
+            <li>A streaming query is a loop of ordinary batch queries over new input ranges.</li>
+            <li>The offset log is written before a batch; the commit log after — this ordering enables replay.</li>
+            <li>Idempotent sinks plus the two logs give end-to-end exactly-once semantics.</li>
+            <li>Continuous mode trades the batch model for epoch-based low-latency processing.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h2>External references</h2>
+          <ul>
+            <li><a href="https://dl.acm.org/doi/10.1145/3242153.3242155">Structured Streaming paper (SIGMOD 2018)</a></li>
+            <li><a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html">Structured Streaming guide</a></li>
+            <li><a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#fault-tolerance-semantics">Fault-tolerance semantics</a></li>
+          </ul>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>Code references are GitHub permalinks pinned to commit <code>583e5bb0010b52a0201a092985b09b0b2c264a6a</code>.</p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
