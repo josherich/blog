@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spark SQL &amp; Catalyst — Spark Data Flow</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>Apache Spark Data Flow</strong>
+        <span>apache/spark @ <code>583e5bb</code></span>
+      </div>
+      <nav class="nav" aria-label="Component pages">
+        <a href="../index.html">Overview</a>
+        <a href="driver-and-context.html">Driver &amp; SparkContext</a>
+        <a href="rdd-and-lineage.html">RDD &amp; Lineage</a>
+        <a href="scheduler.html">DAG &amp; Task Scheduling</a>
+        <a href="execution-and-memory.html">Executor, Storage &amp; Memory</a>
+        <a href="shuffle.html">Shuffle</a>
+        <a href="spark-sql-catalyst.html" aria-current="page">Spark SQL &amp; Catalyst</a>
+        <a href="structured-streaming.html">Structured Streaming</a>
+        <a href="cluster-deploy.html">Cluster &amp; Deploy</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="topbar">
+        <div>
+          <h1>Spark SQL: from a query to an RDD of rows</h1>
+          <p class="lead">DataFrames and SQL do not bypass the engine you have already seen — they compile down to it. The Catalyst optimizer rewrites a tree of relational operators through well-defined phases, Tungsten generates tight Java code, and the result is an <code>RDD[InternalRow]</code> scheduled exactly like any other job.</p>
+        </div>
+        <div class="controls">
+          <input type="search" placeholder="Filter blocks" aria-label="Filter blocks" data-search>
+          <button type="button" data-expand-all>Expand all</button>
+          <button type="button" data-collapse-all>Collapse all</button>
+        </div>
+      </div>
+      <p class="meta" data-search-count></p>
+
+      <section class="section panel searchable">
+        <h2>The query pipeline</h2>
+        <pre><code>SQL text / DataFrame ops
+   │  parse
+   ▼
+Unresolved LogicalPlan
+   │  Analyzer        (resolve tables, columns, functions, types)
+   ▼
+Analyzed LogicalPlan
+   │  Optimizer       (predicate pushdown, column pruning, constant folding, ...)
+   ▼
+Optimized LogicalPlan
+   │  SparkPlanner    (strategies map logical → physical operators)
+   ▼
+SparkPlan (physical)
+   │  preparations    (EnsureRequirements adds shuffles, CollapseCodegenStages, AQE)
+   ▼
+executedPlan
+   │  execute()
+   ▼
+RDD[InternalRow]  ──► the scheduler, stages, tasks (same as everything else)</code></pre>
+        <p>Each arrow is a lazy phase in <code>QueryExecution</code>; an action on a <code>Dataset</code> forces <code>executedPlan</code>, which pulls all the earlier phases.</p>
+      </section>
+
+      <section class="section grid">
+        <details open class="searchable">
+          <summary>SparkSession and Dataset — lazy by construction</summary>
+          <div class="details-body">
+            <p><code>SparkSession.sql(...)</code> parses text into an unresolved <code>LogicalPlan</code> and wraps it in a <code>Dataset</code> via <code>Dataset.ofRows</code>. A <code>Dataset</code> is just a <code>QueryExecution</code> plus an <code>Encoder</code>; every DataFrame transformation produces a new logical plan. Nothing runs until an action like <code>collect</code> calls <code>withAction</code>, which forces the executed plan and collects rows.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/sql/core/src/main/scala/org/apache/spark/sql/classic/SparkSession.scala#L528-L559">SparkSession.scala L528-L559 — sql()</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/sql/core/src/main/scala/org/apache/spark/sql/classic/Dataset.scala#L110-L138">Dataset.scala L110-L138 — ofRows</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>QueryExecution — the phase orchestrator</summary>
+          <div class="details-body">
+            <p>Each phase is a <code>lazy val</code>: <code>analyzed</code>, <code>optimizedPlan</code>, <code>sparkPlan</code>, <code>executedPlan</code>, and finally <code>toRdd</code>. Accessing one forces the previous, so the whole pipeline runs on demand and the planning time of each phase is tracked separately.</p>
+            <pre><code>analyzed       = analyzer.executeAndCheck(logical)
+optimizedPlan  = optimizer.executeAndTrack(withCachedData)
+sparkPlan      = createSparkPlan(planner, optimizedPlan)
+executedPlan   = prepareForExecution(preparations, sparkPlan)
+toRdd          = new SQLExecutionRDD(executedPlan.execute(), conf)</code></pre>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/sql/core/src/main/scala/org/apache/spark/sql/execution/QueryExecution.scala#L313-L394">QueryExecution.scala L313-L394 — optimized, spark, executed, toRdd</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>TreeNode and Rule — Catalyst's whole foundation</summary>
+          <div class="details-body">
+            <p>Every plan, expression, and data type in Catalyst is a <code>TreeNode</code>: an immutable node with children. All transformations are expressed as <code>transformDown</code>/<code>transformUp</code> traversals that return a rewritten tree. A <code>Rule</code> is a single rewrite step (<code>apply(tree): tree</code>), and the <code>RuleExecutor</code> runs batches of rules until they reach a fixed point. This tiny abstraction is why adding an optimization is just writing a new rule.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/sql/catalyst/src/main/scala/org/apache/spark/sql/catalyst/trees/TreeNode.scala#L70-L75">TreeNode.scala L70-L75 — base node</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/sql/catalyst/src/main/scala/org/apache/spark/sql/catalyst/rules/Rule.scala#L24-L35">Rule.scala L24-L35 — Rule</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Analyzer — resolving the unresolved</summary>
+          <div class="details-body">
+            <p>The parser produces a plan full of <code>UnresolvedRelation</code> and <code>UnresolvedAttribute</code> placeholders. The <code>Analyzer</code> (a <code>RuleExecutor</code>) consults the catalog to bind table and column references, resolve functions, add casts for type coercion, and validate the result. Its output is a fully typed, analyzed logical plan.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/sql/catalyst/src/main/scala/org/apache/spark/sql/catalyst/analysis/Analyzer.scala#L300-L309">Analyzer.scala L300-L309 — class</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/sql/catalyst/src/main/scala/org/apache/spark/sql/catalyst/analysis/Analyzer.scala#L506-L609">Analyzer.scala L506-L609 — resolution batches</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Optimizer — cost-agnostic rewrites</summary>
+          <div class="details-body">
+            <p>The <code>Optimizer</code> applies rule batches that make the plan cheaper without changing its meaning: predicate pushdown, column pruning, constant folding, filter combination, boolean simplification, join reordering, and subquery rewriting. These are heuristic (rule-based) rewrites; statistics-driven choices like join strategy happen during physical planning and Adaptive Query Execution.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/sql/catalyst/src/main/scala/org/apache/spark/sql/catalyst/optimizer/Optimizer.scala#L100-L291">Optimizer.scala L100-L291 — default rule batches</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>SparkPlanner — logical to physical</summary>
+          <div class="details-body">
+            <p>Physical planning applies a list of <strong>strategies</strong> that pattern-match logical operators and emit physical <code>SparkPlan</code> operators (the <code>*Exec</code> classes). <code>JoinSelection</code> decides between broadcast, sort-merge, and shuffle-hash joins; <code>FileSourceStrategy</code> turns a scan into a file read with pushed-down filters; <code>BasicOperators</code> maps the simple cases. The planner takes the first complete candidate.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/sql/core/src/main/scala/org/apache/spark/sql/execution/SparkPlanner.scala#L31-L57">SparkPlanner.scala L31-L57 — the strategy list</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/sql/core/src/main/scala/org/apache/spark/sql/execution/SparkStrategies.scala#L906-L949">SparkStrategies.scala L906-L949 — BasicOperators</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>SparkPlan — where SQL meets RDDs</summary>
+          <div class="details-body">
+            <p>A <code>SparkPlan</code> is a physical operator. Its <code>doExecute()</code> returns an <code>RDD[InternalRow]</code> — the bridge back to the RDD engine. <code>InternalRow</code> (and its binary form <code>UnsafeRow</code>) is Tungsten's compact, off-heap-friendly row layout that flows through these RDDs, avoiding Java object overhead.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/sql/core/src/main/scala/org/apache/spark/sql/execution/SparkPlan.scala#L197-L202">SparkPlan.scala L197-L202 — execute</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/sql/core/src/main/scala/org/apache/spark/sql/execution/SparkPlan.scala#L338-L343">SparkPlan.scala L338-L343 — doExecute returns RDD[InternalRow]</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Tungsten: whole-stage code generation</summary>
+          <div class="details-body">
+            <p>A naive operator tree calls <code>next()</code> through many virtual method calls per row (the "volcano" model). <code>CollapseCodegenStages</code>, a preparation rule, fuses a chain of codegen-capable operators (scan → filter → project) into a <em>single generated Java class</em> with one tight loop. <code>WholeStageCodegenExec.doExecute()</code> compiles that source at runtime and runs it, falling back to normal execution if compilation fails. This is the largest single performance feature in modern Spark SQL.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/sql/core/src/main/scala/org/apache/spark/sql/execution/WholeStageCodegenExec.scala#L673-L749">WholeStageCodegenExec.scala L673-L749 — doCodeGen &amp; doExecute</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/sql/core/src/main/scala/org/apache/spark/sql/execution/WholeStageCodegenExec.scala#L914-L994">WholeStageCodegenExec.scala L914-L994 — CollapseCodegenStages</a></p>
+          </div>
+        </details>
+      </section>
+
+      <section class="section panel searchable">
+        <h2>The payoff: one engine, two front ends</h2>
+        <p>Because Catalyst lowers everything to a <code>SparkPlan</code> and then to an <code>RDD[InternalRow]</code>, a SQL query and a hand-written RDD job share the same scheduler, shuffle, memory, and executor machinery described on the other pages. The difference is that the SQL front end knows the <em>schema</em> and the <em>relational semantics</em>, so it can optimize aggressively (pruning columns, pushing filters into scans, picking join algorithms) before a single task is scheduled.</p>
+      </section>
+
+      <section class="section grid searchable">
+        <div class="panel">
+          <h2>Key takeaways</h2>
+          <ul>
+            <li>SQL/DataFrames compile through analyze → optimize → plan → prepare → RDD.</li>
+            <li>Everything is a <code>TreeNode</code>; every optimization is a <code>Rule</code> run to a fixed point.</li>
+            <li><code>SparkPlan.doExecute</code> returns an <code>RDD[InternalRow]</code> — the link to the core engine.</li>
+            <li>Whole-stage codegen fuses operators into one compiled loop over <code>UnsafeRow</code>s.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h2>External references</h2>
+          <ul>
+            <li><a href="https://dl.acm.org/doi/10.1145/2723372.2742797">Spark SQL paper (SIGMOD 2015)</a></li>
+            <li><a href="https://www.databricks.com/blog/2015/04/13/deep-dive-into-spark-sqls-catalyst-optimizer.html">Deep dive into Catalyst</a></li>
+            <li><a href="https://www.databricks.com/blog/2016/05/23/apache-spark-as-a-compiler-joining-a-billion-rows-per-second-on-a-laptop.html">Whole-stage codegen (Tungsten)</a></li>
+            <li><a href="https://spark.apache.org/docs/latest/sql-performance-tuning.html">SQL performance tuning</a></li>
+          </ul>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>Code references are GitHub permalinks pinned to commit <code>583e5bb0010b52a0201a092985b09b0b2c264a6a</code>.</p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

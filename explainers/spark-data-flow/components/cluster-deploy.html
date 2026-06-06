@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cluster &amp; Deploy — Spark Data Flow</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>Apache Spark Data Flow</strong>
+        <span>apache/spark @ <code>583e5bb</code></span>
+      </div>
+      <nav class="nav" aria-label="Component pages">
+        <a href="../index.html">Overview</a>
+        <a href="driver-and-context.html">Driver &amp; SparkContext</a>
+        <a href="rdd-and-lineage.html">RDD &amp; Lineage</a>
+        <a href="scheduler.html">DAG &amp; Task Scheduling</a>
+        <a href="execution-and-memory.html">Executor, Storage &amp; Memory</a>
+        <a href="shuffle.html">Shuffle</a>
+        <a href="spark-sql-catalyst.html">Spark SQL &amp; Catalyst</a>
+        <a href="structured-streaming.html">Structured Streaming</a>
+        <a href="cluster-deploy.html" aria-current="page">Cluster &amp; Deploy</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="topbar">
+        <div>
+          <h1>Deployment: how processes get placed on a cluster</h1>
+          <p class="lead">Before any scheduling happens, the driver and executor processes have to exist. <code>spark-submit</code> launches the application; a cluster manager (Standalone, YARN, or Kubernetes) places the driver and executor JVMs. This page shows the launch path and the Standalone master/worker protocol as the clearest example.</p>
+        </div>
+        <div class="controls">
+          <input type="search" placeholder="Filter blocks" aria-label="Filter blocks" data-search>
+          <button type="button" data-expand-all>Expand all</button>
+          <button type="button" data-collapse-all>Collapse all</button>
+        </div>
+      </div>
+      <p class="meta" data-search-count></p>
+
+      <section class="section panel searchable">
+        <h2>Control plane vs. data plane, again</h2>
+        <pre><code>spark-submit
+   │ parse args, set cluster manager from master URL
+   ▼
+DRIVER (your SparkContext)
+   │ registers the application, requests executors
+   ▼
+CLUSTER MANAGER (Standalone Master / YARN RM / K8s API)
+   │ picks nodes with free resources
+   ▼
+WORKER NODES launch EXECUTOR JVMs
+   │ each executor connects back to the DRIVER
+   ▼
+DRIVER schedules tasks straight onto executors  (cluster manager steps aside)</code></pre>
+        <p>The key idea: the cluster manager only handles <em>process placement and lifecycle</em>. Once executors register with the driver, all task scheduling flows directly between driver and executors, exactly as described on the scheduling page.</p>
+      </section>
+
+      <section class="section grid">
+        <details open class="searchable">
+          <summary>spark-submit — the universal launcher</summary>
+          <div class="details-body">
+            <p><code>SparkSubmit</code> parses arguments, prepares the classpath, and dispatches based on the action (submit, kill, request status). <code>prepareSubmitEnvironment</code> reads the master URL to choose the cluster manager — <code>spark://</code> → Standalone, <code>yarn</code>, <code>k8s://</code>, or <code>local</code> — and the deploy mode. In client mode it runs your main class in the submitting JVM; in cluster mode it asks the cluster manager to launch the driver on a worker.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/deploy/SparkSubmit.scala#L70-L100">SparkSubmit.scala L70-L100 — doSubmit</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/deploy/SparkSubmit.scala#L243-L265">SparkSubmit.scala L243-L265 — choosing the cluster manager</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Client mode vs. cluster mode</summary>
+          <div class="details-body">
+            <p>In <strong>client</strong> mode the driver runs wherever you typed <code>spark-submit</code> (your laptop, an edge node); executors run on the cluster and connect back to it. This is great for interactive shells but ties the application's life to your local process. In <strong>cluster</strong> mode the driver itself is shipped to and run on a cluster node, so the application survives your client disconnecting — the right choice for production jobs.</p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Standalone Master — the resource broker</summary>
+          <div class="details-body">
+            <p>The Standalone <code>Master</code> is an RPC endpoint that tracks registered workers, applications, and drivers. When a driver's <code>StandaloneAppClient</code> sends <code>RegisterApplication</code>, the master records it and runs <code>schedule()</code>. <code>startExecutorsOnWorkers</code> is a simple FIFO scheduler that spreads executors across workers with free cores and memory, then <code>launchExecutor</code> sends a <code>LaunchExecutor</code> message to the chosen worker.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/deploy/master/Master.scala#L291-L304">Master.scala L291-L304 — RegisterApplication</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/deploy/master/Master.scala#L831-L847">Master.scala L831-L847 — startExecutorsOnWorkers</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Standalone Worker — the process launcher</summary>
+          <div class="details-body">
+            <p>A <code>Worker</code> registers its capacity with the master and waits. On <code>LaunchExecutor</code> it creates a work directory and an <code>ExecutorRunner</code> that spawns a separate <code>CoarseGrainedExecutorBackend</code> JVM; on <code>LaunchDriver</code> (cluster mode) it spawns the driver via a <code>DriverRunner</code>. The newly started executor connects back to the driver, not to the master.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/deploy/worker/Worker.scala#L601-L662">Worker.scala L601-L662 — LaunchExecutor</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>How an executor joins the driver</summary>
+          <div class="details-body">
+            <p>After the master sends <code>LaunchExecutor</code>, it notifies the driver with <code>ExecutorAdded</code>. The executor process starts, registers with the driver's <code>CoarseGrainedSchedulerBackend</code>, and from then on receives <code>LaunchTask</code> messages directly. This is the seam where deployment hands off to scheduling: the same <code>CoarseGrainedExecutorBackend</code> is used regardless of whether YARN, Kubernetes, or Standalone launched it.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/deploy/master/Master.scala#L998-L1006">Master.scala L998-L1006 — launchExecutor &amp; ExecutorAdded</a></p>
+          </div>
+        </details>
+      </section>
+
+      <section class="section panel searchable">
+        <h2>The cluster managers compared</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Manager</th><th>Master URL</th><th>How executors are placed</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Standalone</td><td><code>spark://host:7077</code></td><td>Spark's own Master/Worker daemons; FIFO across workers.</td></tr>
+              <tr><td>YARN</td><td><code>yarn</code></td><td>Executors run as YARN containers requested from the ResourceManager.</td></tr>
+              <tr><td>Kubernetes</td><td><code>k8s://https://...</code></td><td>Driver and executors run as pods created via the K8s API.</td></tr>
+              <tr><td>Local</td><td><code>local[*]</code></td><td>Driver and "executors" are threads in one JVM — for development.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>All four present the same <code>SchedulerBackend</code> to the rest of Spark, which is why a job written and tested with <code>local[*]</code> runs unchanged on a thousand-node YARN or Kubernetes cluster.</p>
+      </section>
+
+      <section class="section grid searchable">
+        <div class="panel">
+          <h2>Key takeaways</h2>
+          <ul>
+            <li><code>spark-submit</code> chooses the cluster manager from the master URL.</li>
+            <li>Client mode runs the driver locally; cluster mode ships it onto the cluster.</li>
+            <li>The cluster manager only places processes; the driver schedules tasks directly.</li>
+            <li>Executors are always <code>CoarseGrainedExecutorBackend</code> JVMs, regardless of manager.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h2>External references</h2>
+          <ul>
+            <li><a href="https://spark.apache.org/docs/latest/submitting-applications.html">Submitting applications</a></li>
+            <li><a href="https://spark.apache.org/docs/latest/spark-standalone.html">Standalone mode</a></li>
+            <li><a href="https://spark.apache.org/docs/latest/running-on-yarn.html">Running on YARN</a></li>
+            <li><a href="https://spark.apache.org/docs/latest/running-on-kubernetes.html">Running on Kubernetes</a></li>
+          </ul>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>Code references are GitHub permalinks pinned to commit <code>583e5bb0010b52a0201a092985b09b0b2c264a6a</code>.</p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

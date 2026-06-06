@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Apache Spark Data Flow — Overview</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script src="assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>Apache Spark Data Flow</strong>
+        <span>apache/spark @ <code>583e5bb</code></span>
+      </div>
+      <nav class="nav" aria-label="Component pages">
+        <a href="index.html" aria-current="page">Overview</a>
+        <a href="components/driver-and-context.html">Driver &amp; SparkContext</a>
+        <a href="components/rdd-and-lineage.html">RDD &amp; Lineage</a>
+        <a href="components/scheduler.html">DAG &amp; Task Scheduling</a>
+        <a href="components/execution-and-memory.html">Executor, Storage &amp; Memory</a>
+        <a href="components/shuffle.html">Shuffle</a>
+        <a href="components/spark-sql-catalyst.html">Spark SQL &amp; Catalyst</a>
+        <a href="components/structured-streaming.html">Structured Streaming</a>
+        <a href="components/cluster-deploy.html">Cluster &amp; Deploy</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="topbar">
+        <div>
+          <h1>From your program to distributed computation</h1>
+          <p class="lead">A guided tour of how Apache Spark turns a user program into work that runs across a cluster. It follows one piece of data from the driver, through the scheduler, onto executors, across a shuffle, and back. Code references are GitHub permalinks pinned to commit <code>583e5bb0010b52a0201a092985b09b0b2c264a6a</code>.</p>
+        </div>
+        <div class="controls">
+          <input type="search" placeholder="Filter blocks" aria-label="Filter blocks" data-search>
+          <button type="button" data-expand-all>Expand all</button>
+          <button type="button" data-collapse-all>Collapse all</button>
+        </div>
+      </div>
+      <p class="meta" data-search-count></p>
+
+      <section class="section panel searchable">
+        <h2>The mental model in one paragraph</h2>
+        <p>A Spark application has one <strong>driver</strong> process and many <strong>executor</strong> processes. The driver runs your code and holds a <code>SparkContext</code> (or a <code>SparkSession</code> for SQL/DataFrames). When you transform data, Spark does not compute anything; it records a lazy <strong>lineage graph</strong> of RDDs. When you call an <strong>action</strong>, the driver hands the lineage to the <code>DAGScheduler</code>, which cuts it into <strong>stages</strong> at shuffle boundaries and submits each stage as a set of <strong>tasks</strong>. The <code>TaskScheduler</code> sends tasks to executors over a <code>SchedulerBackend</code>. Each executor runs tasks, reads and writes blocks through its <code>BlockManager</code>, exchanges data through the <strong>shuffle</strong> system, and reports results back to the driver.</p>
+      </section>
+
+      <section class="section panel searchable">
+        <h2>The two planes: control and data</h2>
+        <pre><code>             CONTROL PLANE                                  DATA PLANE
+        ┌───────────────────────────┐               ┌───────────────────────────┐
+        │           DRIVER           │               │         EXECUTOR(S)        │
+        │                            │   tasks       │                            │
+        │  SparkContext / Session    │ ───────────►  │  CoarseGrainedExecutor     │
+        │    DAGScheduler            │               │    Executor + TaskRunner   │
+        │    TaskSchedulerImpl       │ ◄───────────  │    BlockManager            │
+        │    SchedulerBackend        │   results     │    ShuffleManager          │
+        │    MapOutputTrackerMaster  │   heartbeats  │    MemoryManager           │
+        └─────────────┬──────────────┘               └─────────────┬──────────────┘
+                      │ asks for executors                         │ shuffle files
+                      ▼                                            ▼
+        ┌───────────────────────────┐               ┌───────────────────────────┐
+        │   CLUSTER MANAGER          │               │   LOCAL DISK / REMOTE      │
+        │  Standalone / YARN / K8s   │               │   BLOCK TRANSFER SERVICE   │
+        └───────────────────────────┘               └───────────────────────────┘</code></pre>
+        <p>The driver is the <strong>control plane</strong>: it decides what to run and where. Executors are the <strong>data plane</strong>: they hold cached partitions, run task code, and move shuffle data between each other. A cluster manager only places processes; it does not participate in scheduling individual tasks.</p>
+      </section>
+
+      <section class="section panel searchable">
+        <h2>One job, end to end</h2>
+        <p>Click a step to highlight the block that explains it. Every step is also detailed on a dedicated component page.</p>
+        <div class="flow">
+          <button class="flow-step" data-flow-step="boot">
+            <span class="step-label">1. Driver boot</span>
+            <span><code>new SparkContext(conf)</code> builds <code>SparkEnv</code> (serializer, block manager, map output tracker) and the scheduler stack.</span>
+          </button>
+          <button class="flow-step" data-flow-step="lineage">
+            <span class="step-label">2. Build lineage (lazy)</span>
+            <span>Transformations such as <code>map</code> and <code>filter</code> return new RDDs linked by <code>Dependency</code> edges. Nothing executes yet.</span>
+          </button>
+          <button class="flow-step" data-flow-step="action">
+            <span class="step-label">3. Action triggers a job</span>
+            <span><code>collect</code>/<code>count</code> call <code>SparkContext.runJob</code>, the single entry point for all actions.</span>
+          </button>
+          <button class="flow-step" data-flow-step="stages">
+            <span class="step-label">4. Plan stages</span>
+            <span>The <code>DAGScheduler</code> walks the lineage and cuts it into a <code>ResultStage</code> plus ancestor <code>ShuffleMapStage</code>s at shuffle boundaries.</span>
+          </button>
+          <button class="flow-step" data-flow-step="tasks">
+            <span class="step-label">5. Submit tasks</span>
+            <span>Each ready stage becomes a <code>TaskSet</code>; the <code>TaskSchedulerImpl</code> assigns tasks to executors using locality.</span>
+          </button>
+          <button class="flow-step" data-flow-step="run">
+            <span class="step-label">6. Run on executors</span>
+            <span>A <code>TaskRunner</code> deserializes the task and calls <code>RDD.iterator</code>, which computes or reads a cached/checkpointed partition.</span>
+          </button>
+          <button class="flow-step" data-flow-step="shuffle">
+            <span class="step-label">7. Shuffle exchange</span>
+            <span>Map tasks write partitioned files; the <code>MapOutputTracker</code> records locations; reduce tasks fetch their slices.</span>
+          </button>
+          <button class="flow-step" data-flow-step="result">
+            <span class="step-label">8. Return results</span>
+            <span>Result tasks send values back to the driver, which assembles the action's return value.</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="section grid">
+        <details open class="searchable" data-flow-target="boot">
+          <summary>1. The driver builds its runtime first</summary>
+          <div class="details-body">
+            <p>Constructing a <code>SparkContext</code> is the moment a Spark application comes alive. It clones the <code>SparkConf</code>, creates a <code>SparkEnv</code> (the container of shared services: serializer, <code>BlockManager</code>, <code>MapOutputTracker</code>, shuffle and memory managers), then builds the scheduler trio: a <code>SchedulerBackend</code>, a <code>TaskSchedulerImpl</code>, and a <code>DAGScheduler</code>.</p>
+            <p>The factory <code>createTaskScheduler</code> matches on the master URL (<code>local[*]</code>, <code>spark://</code>, YARN, Kubernetes) and picks the right backend, which is how the same code runs on a laptop or a thousand-node cluster.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/SparkContext.scala#L599-L603">SparkContext.scala L599-L603 — scheduler creation</a></p>
+            <p>Full detail: <a href="components/driver-and-context.html">Driver &amp; SparkContext</a>.</p>
+          </div>
+        </details>
+
+        <details open class="searchable" data-flow-target="lineage">
+          <summary>2. Transformations only describe the computation</summary>
+          <div class="details-body">
+            <p>An <code>RDD</code> is an immutable, partitioned collection defined by five properties: its partitions, a <code>compute</code> function, a list of dependencies, an optional partitioner, and optional preferred locations. A transformation like <code>map</code> simply wraps the parent in a new <code>MapPartitionsRDD</code> — it builds a node in a graph rather than moving data.</p>
+            <p>The <strong>type</strong> of dependency decides everything downstream: a <code>NarrowDependency</code> (map, filter) can be pipelined; a <code>ShuffleDependency</code> forces a data exchange and therefore a stage boundary.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/rdd/RDD.scala#L69-L83">RDD.scala L69-L83 — the five properties</a></p>
+            <p>Full detail: <a href="components/rdd-and-lineage.html">RDD &amp; Lineage</a>.</p>
+          </div>
+        </details>
+
+        <details open class="searchable" data-flow-target="action">
+          <summary>3. Actions are the only thing that launches work</summary>
+          <div class="details-body">
+            <p>Transformations are lazy; <strong>actions</strong> are eager. <code>collect</code>, <code>count</code>, <code>reduce</code>, and <code>save</code> all funnel through <code>SparkContext.runJob</code>, documented in the source as "the main entry point for all actions in Spark." It cleans the user closure, logs the call site, and delegates to <code>DAGScheduler.runJob</code>.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/SparkContext.scala#L2471-L2499">SparkContext.scala L2471-L2499 — runJob</a></p>
+            <p>Full detail: <a href="components/rdd-and-lineage.html">RDD &amp; Lineage</a>.</p>
+          </div>
+        </details>
+
+        <details open class="searchable" data-flow-target="stages">
+          <summary>4. The DAGScheduler turns a graph into stages</summary>
+          <div class="details-body">
+            <p>The <code>DAGScheduler</code> is the high-level, stage-oriented scheduler. It breaks the RDD graph at shuffle boundaries: narrow dependencies are pipelined into one stage, while each shuffle dependency creates a barrier between a <code>ShuffleMapStage</code> (which writes map output) and the stage that reads it. Every job ends in exactly one <code>ResultStage</code>.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/scheduler/DAGScheduler.scala#L58-L72">DAGScheduler.scala L58-L72 — stage boundaries</a></p>
+            <p>Full detail: <a href="components/scheduler.html">DAG &amp; Task Scheduling</a>.</p>
+          </div>
+        </details>
+
+        <details open class="searchable" data-flow-target="tasks">
+          <summary>5. Stages become TaskSets placed by locality</summary>
+          <div class="details-body">
+            <p>When a stage's parents are ready, <code>submitMissingTasks</code> builds one task per missing partition and submits them as a <code>TaskSet</code>. The <code>TaskSchedulerImpl</code> hands each <code>TaskSet</code> to a <code>TaskSetManager</code>, then fills executor "offers" by walking locality levels from <code>PROCESS_LOCAL</code> to <code>ANY</code>, preferring executors that already hold the data.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/scheduler/TaskSchedulerImpl.scala#L512-L520">TaskSchedulerImpl.scala L512-L520 — resourceOffers</a></p>
+            <p>Full detail: <a href="components/scheduler.html">DAG &amp; Task Scheduling</a>.</p>
+          </div>
+        </details>
+
+        <details open class="searchable" data-flow-target="run">
+          <summary>6. Executors deserialize and run each task</summary>
+          <div class="details-body">
+            <p>The driver sends a <code>LaunchTask</code> message; the executor's backend decodes the <code>TaskDescription</code> and calls <code>Executor.launchTask</code>, which submits a <code>TaskRunner</code> to a thread pool. The runner deserializes the task, fetches dependencies, and calls <code>task.run</code>. Inside, the task calls <code>RDD.iterator</code>, which returns cached data, reads a checkpoint, or calls <code>compute</code> to materialize the partition.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/rdd/RDD.scala#L334-L340">RDD.scala L334-L340 — iterator</a></p>
+            <p>Full detail: <a href="components/execution-and-memory.html">Executor, Storage &amp; Memory</a>.</p>
+          </div>
+        </details>
+
+        <details open class="searchable" data-flow-target="shuffle">
+          <summary>7. The shuffle moves data between stages</summary>
+          <div class="details-body">
+            <p>A <code>ShuffleMapTask</code> sorts its records by target partition and writes a single data file plus an index file, then reports a <code>MapStatus</code> to the driver's <code>MapOutputTrackerMaster</code>. A downstream reduce task asks the tracker where its blocks live and fetches contiguous byte ranges from each map output through the block transfer service.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/shuffle/sort/SortShuffleManager.scala#L30-L45">SortShuffleManager.scala L30-L45 — sort-based shuffle</a></p>
+            <p>Full detail: <a href="components/shuffle.html">Shuffle</a>.</p>
+          </div>
+        </details>
+
+        <details open class="searchable" data-flow-target="result">
+          <summary>8. Results flow back and the job completes</summary>
+          <div class="details-body">
+            <p>A <code>ResultTask</code> runs the action's function over its partition and sends the value to the driver (inline for small results, via the block manager for large ones). The <code>DAGScheduler</code> records each completion; when the <code>ResultStage</code> has all partitions, the job's <code>JobWaiter</code> wakes up and <code>runJob</code> returns.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/scheduler/ResultTask.scala#L55-L72">ResultTask.scala L55-L72 — ResultTask</a></p>
+            <p>Full detail: <a href="components/scheduler.html">DAG &amp; Task Scheduling</a>.</p>
+          </div>
+        </details>
+      </section>
+
+      <section class="section searchable">
+        <h2>The core objects you will keep meeting</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Object</th>
+                <th>Role in the data flow</th>
+                <th>Defined in</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>SparkContext</code></td>
+                <td>Driver-side entry point; creates the runtime and is the gateway to every action.</td>
+                <td><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/SparkContext.scala#L86">SparkContext.scala</a></td>
+              </tr>
+              <tr>
+                <td><code>SparkEnv</code></td>
+                <td>Container of shared runtime services, reachable on any node via <code>SparkEnv.get</code>.</td>
+                <td><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/SparkEnv.scala#L64-L76">SparkEnv.scala</a></td>
+              </tr>
+              <tr>
+                <td><code>RDD[T]</code></td>
+                <td>The lazy, partitioned collection; the unit of lineage.</td>
+                <td><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/rdd/RDD.scala#L84-L87">RDD.scala</a></td>
+              </tr>
+              <tr>
+                <td><code>Dependency</code></td>
+                <td>An edge between RDDs; narrow vs. shuffle decides stage boundaries.</td>
+                <td><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/Dependency.scala#L41-L43">Dependency.scala</a></td>
+              </tr>
+              <tr>
+                <td><code>Stage</code></td>
+                <td>A set of parallel tasks over one RDD, bounded by shuffles.</td>
+                <td><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/scheduler/Stage.scala#L56-L64">Stage.scala</a></td>
+              </tr>
+              <tr>
+                <td><code>Task</code></td>
+                <td>The serializable unit of work shipped to an executor.</td>
+                <td><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/scheduler/Task.scala#L61-L74">Task.scala</a></td>
+              </tr>
+              <tr>
+                <td><code>BlockManager</code></td>
+                <td>Per-node store for cached partitions, broadcast, and shuffle blocks.</td>
+                <td><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/storage/BlockManager.scala#L182-L194">BlockManager.scala</a></td>
+              </tr>
+              <tr>
+                <td><code>MapOutputTracker</code></td>
+                <td>Driver registry of where each shuffle map output lives.</td>
+                <td><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/MapOutputTracker.scala#L549-L556">MapOutputTracker.scala</a></td>
+              </tr>
+              <tr>
+                <td><code>SparkSession</code></td>
+                <td>Entry point for SQL and DataFrames; wraps a <code>SparkContext</code>.</td>
+                <td><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/sql/core/src/main/scala/org/apache/spark/sql/classic/SparkSession.scala#L92-L99">SparkSession.scala</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section grid searchable">
+        <div class="panel">
+          <h2>Component pages</h2>
+          <ul>
+            <li><a href="components/driver-and-context.html">Driver &amp; SparkContext</a>: boot sequence, <code>SparkConf</code>, <code>SparkEnv</code>, the scheduler trio.</li>
+            <li><a href="components/rdd-and-lineage.html">RDD &amp; Lineage</a>: the five properties, transformations vs. actions, dependencies, partitioning, caching.</li>
+            <li><a href="components/scheduler.html">DAG &amp; Task Scheduling</a>: stages, tasks, <code>TaskSetManager</code>, locality, retries, fault recovery.</li>
+            <li><a href="components/execution-and-memory.html">Executor, Storage &amp; Memory</a>: <code>TaskRunner</code>, <code>BlockManager</code>, unified memory.</li>
+            <li><a href="components/shuffle.html">Shuffle</a>: sort-based shuffle, writers/readers, the map output tracker.</li>
+            <li><a href="components/spark-sql-catalyst.html">Spark SQL &amp; Catalyst</a>: logical plans, the optimizer, physical planning, Tungsten codegen.</li>
+            <li><a href="components/structured-streaming.html">Structured Streaming</a>: the micro-batch loop, offsets, checkpoints, exactly-once.</li>
+            <li><a href="components/cluster-deploy.html">Cluster &amp; Deploy</a>: <code>spark-submit</code>, deploy modes, Standalone master/worker.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h2>External references</h2>
+          <ul>
+            <li><a href="https://people.csail.mit.edu/matei/papers/2012/nsdi_spark.pdf">RDD paper (NSDI 2012)</a> — the original abstraction.</li>
+            <li><a href="https://www.usenix.org/system/files/conference/nsdi12/nsdi12-final138.pdf">Resilient Distributed Datasets (full)</a></li>
+            <li><a href="https://dl.acm.org/doi/10.1145/2723372.2742797">Spark SQL paper (SIGMOD 2015)</a> — Catalyst and DataFrames.</li>
+            <li><a href="https://dl.acm.org/doi/10.1145/3242153.3242155">Structured Streaming paper (SIGMOD 2018)</a></li>
+            <li><a href="https://spark.apache.org/docs/latest/cluster-overview.html">Spark cluster mode overview</a></li>
+            <li><a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html">RDD programming guide</a></li>
+            <li><a href="https://spark.apache.org/docs/latest/sql-programming-guide.html">Spark SQL guide</a></li>
+            <li><a href="https://spark.apache.org/docs/latest/tuning.html">Memory tuning guide</a></li>
+          </ul>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>An educational walkthrough of <a href="https://github.com/apache/spark">apache/spark</a>. All code references are GitHub permalinks pinned to commit <code>583e5bb0010b52a0201a092985b09b0b2c264a6a</code>. Spark is licensed under Apache-2.0.</p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

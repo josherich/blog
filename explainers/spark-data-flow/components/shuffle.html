@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shuffle — Spark Data Flow</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>Apache Spark Data Flow</strong>
+        <span>apache/spark @ <code>583e5bb</code></span>
+      </div>
+      <nav class="nav" aria-label="Component pages">
+        <a href="../index.html">Overview</a>
+        <a href="driver-and-context.html">Driver &amp; SparkContext</a>
+        <a href="rdd-and-lineage.html">RDD &amp; Lineage</a>
+        <a href="scheduler.html">DAG &amp; Task Scheduling</a>
+        <a href="execution-and-memory.html">Executor, Storage &amp; Memory</a>
+        <a href="shuffle.html" aria-current="page">Shuffle</a>
+        <a href="spark-sql-catalyst.html">Spark SQL &amp; Catalyst</a>
+        <a href="structured-streaming.html">Structured Streaming</a>
+        <a href="cluster-deploy.html">Cluster &amp; Deploy</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="topbar">
+        <div>
+          <h1>Shuffle: the all-to-all data exchange</h1>
+          <p class="lead">A shuffle is how data moves between stages when a child partition depends on many parent partitions — the work behind <code>reduceByKey</code>, <code>groupBy</code>, <code>join</code>, and repartitioning. It is the most expensive operation in Spark, so its design (sort-based, file-backed, location-tracked) is worth understanding in detail.</p>
+        </div>
+        <div class="controls">
+          <input type="search" placeholder="Filter blocks" aria-label="Filter blocks" data-search>
+          <button type="button" data-expand-all>Expand all</button>
+          <button type="button" data-collapse-all>Collapse all</button>
+        </div>
+      </div>
+      <p class="meta" data-search-count></p>
+
+      <section class="section panel searchable">
+        <h2>Map side writes, reduce side fetches</h2>
+        <pre><code>MAP STAGE (M tasks)                      REDUCE STAGE (R tasks)
+each map task:                           each reduce task r:
+  sort records by target partition         ask MapOutputTracker:
+  write ONE data file + ONE index file       "where are blocks for partition r?"
+  data: [part0][part1]...[partR-1]         fetch contiguous byte ranges from
+  index: byte offsets of each part           every map output (local + remote)
+  report MapStatus to driver               merge / aggregate the fetched records
+
+        map output file (per map task)
+        ┌──────┬──────┬──────┬──────┐      reduce task r reads the r-th slice
+        │ p0   │ p1   │ p2   │ p3   │ ───► from each map file using the index
+        └──────┴──────┴──────┴──────┘</code></pre>
+      </section>
+
+      <section class="section grid">
+        <details open class="searchable">
+          <summary>ShuffleManager — the pluggable interface</summary>
+          <div class="details-body">
+            <p>The <code>ShuffleManager</code> trait is the contract between the engine and a shuffle implementation, selected by <code>spark.shuffle.manager</code> and created on both driver and executors. The driver <code>registerShuffle</code>s; map tasks call <code>getWriter</code>; reduce tasks call <code>getReader</code> for a range of map indices and partitions; and <code>shuffleBlockResolver</code> turns block ids into physical locations.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/shuffle/ShuffleManager.scala#L38-L96">ShuffleManager.scala L38-L96 — the trait</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>SortShuffleManager — why one file per map task</summary>
+          <div class="details-body">
+            <p>Sort-based shuffle sorts incoming records by their target partition id and writes them to a <em>single</em> map output file, with reducers fetching contiguous regions. This keeps the number of files at O(map tasks) instead of O(map × reduce), which is what made shuffles scale to large clusters. If the data is too large to fit in memory, sorted runs spill to disk and are merged.</p>
+            <p>There are two write paths. The <strong>serialized</strong> path operates on serialized bytes (less GC, cache-efficient pointer sorting) and is used when there is no map-side combine, the serializer supports relocation (e.g. Kryo), and there are ≤ 16,777,216 partitions. Everything else uses the <strong>deserialized</strong> path.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/shuffle/sort/SortShuffleManager.scala#L30-L73">SortShuffleManager.scala L30-L73 — design &amp; write paths</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/shuffle/sort/SortShuffleManager.scala#L90-L176">SortShuffleManager.scala L90-L176 — registerShuffle, getReader, getWriter</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>The writer: ExternalSorter to a partitioned file</summary>
+          <div class="details-body">
+            <p><code>SortShuffleWriter.write</code> feeds all records into an <code>ExternalSorter</code> (which sorts and spills as needed), opens a map output writer, writes each partition's bytes in order, and produces a <code>MapStatus</code> describing the block manager that holds the file and the byte length of each partition. That <code>MapStatus</code> is what gets registered with the driver and later read by reducers.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/shuffle/sort/SortShuffleWriter.scala#L65-L89">SortShuffleWriter.scala L65-L89 — write</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/shuffle/IndexShuffleBlockResolver.scala#L46-L63">IndexShuffleBlockResolver.scala L46-L63 — data + index layout</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>The reader: fetch, then optionally re-sort</summary>
+          <div class="details-body">
+            <p><code>BlockStoreShuffleReader.read</code> opens a <code>ShuffleBlockFetcherIterator</code> over the <code>(BlockManagerId, blocks)</code> list that the manager obtained from the tracker. It streams remote blocks (with limits on in-flight bytes), deserializes each into key/value pairs, applies a map-side combiner if present, and re-sorts on the reduce side only when a key ordering is required (e.g. <code>sortByKey</code>).</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/shuffle/BlockStoreShuffleReader.scala#L72-L112">BlockStoreShuffleReader.scala L72-L112 — read</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>IndexShuffleBlockResolver — reading just your slice</summary>
+          <div class="details-body">
+            <p>Each map task writes a <code>.data</code> file and a <code>.index</code> file of partition offsets. When a reducer requests partition <code>r</code>, <code>getBlockData</code> reads the start and end offsets from the index and returns a <code>FileSegmentManagedBuffer</code> pointing at exactly that region of the data file — no copy, no scan of other partitions. This is the mechanism that makes the single-file design efficient to read.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/shuffle/IndexShuffleBlockResolver.scala#L616-L660">IndexShuffleBlockResolver.scala L616-L660 — getBlockData</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>MapOutputTracker — the location directory</summary>
+          <div class="details-body">
+            <p>The tracker answers the reduce side's central question: "for shuffle X and partition r, which executors hold the blocks and how big are they?" The <code>MapOutputTrackerMaster</code> on the driver records a <code>MapStatus</code> per map task; the <code>MapOutputTrackerWorker</code> on executors caches that information, fetching it over RPC on a miss. An <strong>epoch</strong> counter is incremented whenever outputs are lost, so executors know to discard stale cached locations after a failure.</p>
+            <pre><code>reduce task → MapOutputTrackerWorker.getMapSizesByExecutorId(shuffleId, ...)
+            → (cache miss) RPC to MapOutputTrackerMaster
+            → Seq[(BlockManagerId, Seq[(blockId, size, mapIndex)])]
+            → ShuffleBlockFetcherIterator</code></pre>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/MapOutputTracker.scala#L549-L623">MapOutputTracker.scala L549-L623 — base tracker &amp; the reduce-side API</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/MapOutputTracker.scala#L1314-L1324">MapOutputTracker.scala L1314-L1324 — getMapSizesByExecutorId</a></p>
+          </div>
+        </details>
+      </section>
+
+      <section class="section panel searchable">
+        <h2>Why shuffles dominate cost</h2>
+        <p>A shuffle materializes intermediate data to disk and moves much of it across the network. It is also a hard synchronization barrier: the reduce stage cannot start until enough map output exists. That is why so much of Spark tuning — partition counts, partitioners, broadcast joins, adaptive query execution, and push-based shuffle — is ultimately about <em>avoiding</em> or <em>shrinking</em> shuffles. The number of reduce partitions is set by the partitioner (for RDDs) or <code>spark.sql.shuffle.partitions</code> (for SQL, default 200).</p>
+      </section>
+
+      <section class="section grid searchable">
+        <div class="panel">
+          <h2>Key takeaways</h2>
+          <ul>
+            <li>Map tasks write one sorted data file plus an index; reducers fetch contiguous slices.</li>
+            <li>The single-file design keeps file counts O(map) instead of O(map × reduce).</li>
+            <li>The <code>MapOutputTracker</code> directory plus its epoch make fetches correct under failure.</li>
+            <li>Shuffles are a barrier and the main target of performance tuning.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h2>External references</h2>
+          <ul>
+            <li><a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html#shuffle-operations">Shuffle operations guide</a></li>
+            <li><a href="https://spark.apache.org/docs/latest/sql-performance-tuning.html#adaptive-query-execution">Adaptive Query Execution</a></li>
+            <li><a href="https://issues.apache.org/jira/browse/SPARK-30602">SPARK-30602 — push-based shuffle (Magnet)</a></li>
+          </ul>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>Code references are GitHub permalinks pinned to commit <code>583e5bb0010b52a0201a092985b09b0b2c264a6a</code>.</p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

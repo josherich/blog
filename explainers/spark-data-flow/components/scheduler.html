@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DAG &amp; Task Scheduling — Spark Data Flow</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>Apache Spark Data Flow</strong>
+        <span>apache/spark @ <code>583e5bb</code></span>
+      </div>
+      <nav class="nav" aria-label="Component pages">
+        <a href="../index.html">Overview</a>
+        <a href="driver-and-context.html">Driver &amp; SparkContext</a>
+        <a href="rdd-and-lineage.html">RDD &amp; Lineage</a>
+        <a href="scheduler.html" aria-current="page">DAG &amp; Task Scheduling</a>
+        <a href="execution-and-memory.html">Executor, Storage &amp; Memory</a>
+        <a href="shuffle.html">Shuffle</a>
+        <a href="spark-sql-catalyst.html">Spark SQL &amp; Catalyst</a>
+        <a href="structured-streaming.html">Structured Streaming</a>
+        <a href="cluster-deploy.html">Cluster &amp; Deploy</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="topbar">
+        <div>
+          <h1>Scheduling: job → stages → tasks → executors</h1>
+          <p class="lead">Two schedulers cooperate. The <code>DAGScheduler</code> is high-level and stage-oriented: it turns a lineage graph into a DAG of stages. The <code>TaskScheduler</code> is low-level: it places individual tasks onto executor cores with locality and retries. This page follows a job through both.</p>
+        </div>
+        <div class="controls">
+          <input type="search" placeholder="Filter blocks" aria-label="Filter blocks" data-search>
+          <button type="button" data-expand-all>Expand all</button>
+          <button type="button" data-collapse-all>Collapse all</button>
+        </div>
+      </div>
+      <p class="meta" data-search-count></p>
+
+      <section class="section panel searchable">
+        <h2>The scheduling pipeline</h2>
+        <pre><code>action → sc.runJob
+   │
+   ▼
+DAGScheduler.submitJob  ──► event loop ──► handleJobSubmitted
+   │                                            │
+   │   createResultStage + ancestor ShuffleMapStages (split at shuffles)
+   │                                            ▼
+   │                                        submitStage  (parents first)
+   │                                            ▼
+   │                                       submitMissingTasks
+   │                                            │  builds ShuffleMapTask / ResultTask
+   ▼                                            ▼
+TaskSchedulerImpl.submitTasks  ──►  TaskSetManager (one per stage attempt)
+   │
+   ▼
+SchedulerBackend.reviveOffers ──► resourceOffers ──► launchTasks ──► EXECUTOR
+   ▲                                                                     │
+   └──────────────── statusUpdate / taskEnded ◄──────────────────────────┘</code></pre>
+      </section>
+
+      <section class="section grid">
+        <details open class="searchable">
+          <summary>DAGScheduler — the stage-oriented planner</summary>
+          <div class="details-body">
+            <p>The class doc describes it precisely: it "computes a DAG of stages for each job, keeps track of which RDDs and stage outputs are materialized, and finds a minimal schedule." It also chooses preferred locations for tasks based on cache and shuffle-output placement. It runs on a single-threaded event loop, so all scheduling state mutations are serialized and free of locks.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/scheduler/DAGScheduler.scala#L58-L72">DAGScheduler.scala L58-L72 — role &amp; stage boundaries</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/scheduler/DAGScheduler.scala#L124-L132">DAGScheduler.scala L124-L132 — class definition</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>submitJob is asynchronous; runJob blocks</summary>
+          <div class="details-body">
+            <p><code>submitJob</code> validates the partitions, assigns a job id, posts a <code>JobSubmitted</code> event to the event loop, and immediately returns a <code>JobWaiter</code>. <code>runJob</code> is a thin wrapper that calls <code>submitJob</code> and then blocks on that waiter, re-throwing any failure with the driver's stack trace attached. This separation lets the event loop process scheduling decisions without holding up the calling thread.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/scheduler/DAGScheduler.scala#L984-L1027">DAGScheduler.scala L984-L1027 — submitJob</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/scheduler/DAGScheduler.scala#L1043-L1067">DAGScheduler.scala L1043-L1067 — runJob</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Splitting the graph into stages</summary>
+          <div class="details-body">
+            <p><code>handleJobSubmitted</code> builds a <code>ResultStage</code> for the action. To find its parents, the scheduler walks the RDD graph: when it hits a <code>ShuffleDependency</code> it records a parent-stage boundary and creates (or reuses) a <code>ShuffleMapStage</code> for that shuffle; narrow dependencies are followed straight through. Stages keyed by shuffle id are shared across jobs, so a reused shuffle is not recomputed.</p>
+            <pre><code>getShuffleDependenciesAndResourceProfiles(rdd):
+  for each dependency while walking up the graph:
+    case shuffleDep: ShuffleDependency =&gt; record as parent boundary
+    case narrowDep:  NarrowDependency  =&gt; keep walking up</code></pre>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/scheduler/DAGScheduler.scala#L801-L815">DAGScheduler.scala L801-L815 — finding shuffle boundaries</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/scheduler/DAGScheduler.scala#L528-L603">DAGScheduler.scala L528-L603 — getOrCreate / createShuffleMapStage</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>ResultStage vs. ShuffleMapStage</summary>
+          <div class="details-body">
+            <p>Every job is exactly one <code>ResultStage</code> plus zero or more ancestor <code>ShuffleMapStage</code>s. A <code>ResultStage</code> carries the action's function and the partition indices to compute; finishing all its tasks completes the job. A <code>ShuffleMapStage</code> is intermediate: its tasks write shuffle map output, and it is "available" only when every partition's output has been registered with the <code>MapOutputTracker</code> — not merely when its tasks finish.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/scheduler/ResultStage.scala#L30-L65">ResultStage.scala L30-L65</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/scheduler/ShuffleMapStage.scala#L37-L96">ShuffleMapStage.scala L37-L96</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>submitMissingTasks — stage becomes a TaskSet</summary>
+          <div class="details-body">
+            <p>Once a stage's parents are available, this method asks which partitions are still missing, computes preferred locations for each, serializes the task binary — <code>(rdd, shuffleDep)</code> for a map stage or <code>(rdd, func)</code> for a result stage — and constructs one <code>ShuffleMapTask</code> or <code>ResultTask</code> per partition. It then calls <code>taskScheduler.submitTasks(new TaskSet(...))</code>.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/scheduler/DAGScheduler.scala#L1635-L1845">DAGScheduler.scala L1635-L1845 — submitMissingTasks</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>The two task kinds</summary>
+          <div class="details-body">
+            <p>A <code>ShuffleMapTask</code> runs on a map stage: it iterates its partition and writes the records out through the shuffle writer, returning a <code>MapStatus</code> (block location and per-partition sizes). A <code>ResultTask</code> runs on the final stage: it applies <code>func(context, rdd.iterator(...))</code> and returns the value to the driver. Both extend <code>Task</code>, whose <code>run</code> sets up the <code>TaskContext</code> and memory manager before calling the subclass's <code>runTask</code>.</p>
+            <pre><code>Task.run        // sets TaskContext, memory, then →
+  ShuffleMapTask.runTask  → writes shuffle data → MapStatus
+  ResultTask.runTask      → func(ctx, rdd.iterator) → result value</code></pre>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/scheduler/Task.scala#L34-L43">Task.scala L34-L43 — the two kinds</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/scheduler/ShuffleMapTask.scala#L82-L112">ShuffleMapTask.scala L82-L112 — runTask</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/scheduler/ResultTask.scala#L78-L94">ResultTask.scala L78-L94 — runTask</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>TaskSchedulerImpl.resourceOffers — placing tasks</summary>
+          <div class="details-body">
+            <p>The backend periodically presents <code>WorkerOffer</code>s (executor id, host, free cores). <code>resourceOffers</code> is the core assignment routine: it registers new executors, filters unhealthy ones, sorts the active task sets by scheduling pool priority (FIFO or fair), and for each task set walks locality levels — <code>PROCESS_LOCAL → NODE_LOCAL → NO_PREF → RACK_LOCAL → ANY</code> — handing offers to the <code>TaskSetManager</code> until they are full. It returns a list of <code>TaskDescription</code>s grouped per executor.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/scheduler/TaskSchedulerImpl.scala#L243-L285">TaskSchedulerImpl.scala L243-L285 — submitTasks</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/scheduler/TaskSchedulerImpl.scala#L512-L520">TaskSchedulerImpl.scala L512-L520 — resourceOffers</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>TaskSetManager — locality, delay scheduling, retries</summary>
+          <div class="details-body">
+            <p>One <code>TaskSetManager</code> owns a single stage attempt. It buckets pending tasks by executor, host, and rack so it can answer offers at the tightest possible locality. <strong>Delay scheduling</strong> means it will briefly reject a less-local offer, waiting for a better one, before falling back. On failure it retries a task up to <code>maxTaskFailures</code> times by re-queuing it; a <code>FetchFailed</code> is special — it makes the set a "zombie" and lets the <code>DAGScheduler</code> resubmit the whole map stage.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/scheduler/TaskSetManager.scala#L40-L61">TaskSetManager.scala L40-L61 — role &amp; class</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/scheduler/TaskSetManager.scala#L461-L525">TaskSetManager.scala L461-L525 — resourceOffer / delay scheduling</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>SchedulerBackend — launching on executors</summary>
+          <div class="details-body">
+            <p>The <code>CoarseGrainedSchedulerBackend</code> keeps a registry of live executors. <code>reviveOffers</code> (called from <code>submitTasks</code> and on a timer) triggers <code>makeOffers</code>, which builds a <code>WorkerOffer</code> per executor, calls <code>resourceOffers</code>, and then <code>launchTasks</code>. <code>launchTasks</code> reserves cores on the executor's record and sends a <code>LaunchTask</code> RPC carrying the serialized <code>TaskDescription</code>. When a task finishes, the status update frees those cores and re-offers them.</p>
+            <pre><code>submitTasks → reviveOffers → makeOffers → resourceOffers
+            → launchTasks → (RPC) LaunchTask → executor</code></pre>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/scheduler/cluster/CoarseGrainedSchedulerBackend.scala#L372-L456">CoarseGrainedSchedulerBackend.scala L372-L456 — makeOffers &amp; launchTasks</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Completion, the MapOutputTracker, and recovery</summary>
+          <div class="details-body">
+            <p>When a <code>ShuffleMapTask</code> succeeds, the <code>DAGScheduler</code> registers its <code>MapStatus</code> with the <code>MapOutputTrackerMaster</code>; when the whole map stage finishes it bumps the tracker's epoch and submits the waiting child stages. If a reduce task reports a <code>FetchFailed</code>, the scheduler unregisters the lost map outputs and resubmits both the failed map stage and the stage that depends on it. The epoch number stamped on every task lets stale completions from before a failure be ignored.</p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/scheduler/DAGScheduler.scala#L2955-L2985">DAGScheduler.scala L2955-L2985 — map stage completion</a></p>
+            <p class="coderef"><a href="https://github.com/apache/spark/blob/583e5bb0010b52a0201a092985b09b0b2c264a6a/core/src/main/scala/org/apache/spark/scheduler/DAGScheduler.scala#L2395-L2518">DAGScheduler.scala L2395-L2518 — FetchFailed handling</a></p>
+          </div>
+        </details>
+      </section>
+
+      <section class="section panel searchable">
+        <h2>Who owns what</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Layer</th><th>Owns</th><th>Hands off</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>DAGScheduler</code></td><td>Job DAG, stage boundaries, shuffle bookkeeping, stage retries</td><td>A <code>TaskSet</code> per ready stage</td></tr>
+              <tr><td><code>TaskSchedulerImpl</code></td><td>Task-set priority, executor offers, within-stage task retries</td><td><code>TaskDescription</code> lists</td></tr>
+              <tr><td><code>TaskSetManager</code></td><td>Per-stage task state, locality, speculation</td><td>Serialized task + launch metadata</td></tr>
+              <tr><td><code>SchedulerBackend</code></td><td>Executor registry, RPC to executors</td><td><code>LaunchTask</code> messages</td></tr>
+              <tr><td><code>MapOutputTracker</code></td><td>Shuffle output locations and the epoch</td><td>Lookups for reduce-side fetch</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section grid searchable">
+        <div class="panel">
+          <h2>Key takeaways</h2>
+          <ul>
+            <li>Stages are cut at shuffle boundaries; the last stage of a job is always a <code>ResultStage</code>.</li>
+            <li>A map stage is "done" only when its outputs are registered, not when its tasks return.</li>
+            <li>Locality and delay scheduling try hard to run a task where its data already lives.</li>
+            <li>Within-stage retries are the <code>TaskSetManager</code>'s job; stage-level retries are the <code>DAGScheduler</code>'s.</li>
+            <li>The map output tracker's epoch is the clock that makes fault recovery consistent.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h2>External references</h2>
+          <ul>
+            <li><a href="https://spark.apache.org/docs/latest/job-scheduling.html">Job scheduling guide</a></li>
+            <li><a href="https://spark.apache.org/docs/latest/tuning.html#data-locality">Data locality</a></li>
+            <li><a href="https://www.eecs.berkeley.edu/Pubs/TechRpts/2013/EECS-2013-235.html">Delay scheduling (Zaharia et al.)</a></li>
+          </ul>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>Code references are GitHub permalinks pinned to commit <code>583e5bb0010b52a0201a092985b09b0b2c264a6a</code>.</p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
