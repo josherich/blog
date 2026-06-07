@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Audio system — raylib Data Flow</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>raylib Data Flow</strong>
+        <span>raysan5/raylib @ <code>22509ab</code></span>
+      </div>
+      <nav class="nav" aria-label="Component pages">
+        <a href="../index.html">Overview</a>
+        <a href="frame-lifecycle.html">Frame lifecycle</a>
+        <a href="rlgl-batching.html">rlgl &amp; batching</a>
+        <a href="platform-backends.html">Platform backends</a>
+        <a href="textures-and-images.html">Textures &amp; images</a>
+        <a href="models-and-3d.html">Models &amp; 3D</a>
+        <a href="audio-system.html" aria-current="page">Audio system</a>
+        <a href="modules-and-build.html">Modules &amp; build</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="topbar">
+        <div>
+          <h1>Audio system: miniaudio mixing</h1>
+          <p class="lead"><code>raudio.c</code> is the most isolated raylib module — no OpenGL. Audio is opt-in: call <code>InitAudioDevice()</code> separately from <code>InitWindow()</code>. Playback uses miniaudio's device callback to mix linked <code>AudioBuffer</code> nodes.</p>
+        </div>
+        <div class="controls">
+          <input type="search" placeholder="Filter blocks" aria-label="Filter blocks" data-search>
+          <button type="button" data-expand-all>Expand all</button>
+          <button type="button" data-collapse-all>Collapse all</button>
+        </div>
+      </div>
+      <p class="meta" data-search-count></p>
+
+      <section class="section panel searchable">
+        <h2>Startup and load</h2>
+        <pre><code>InitAudioDevice()
+  ├─ ma_context_init()
+  ├─ ma_device_init(..., OnSendAudioDataToDevice)
+  └─ ma_device_start()
+
+Sound s = LoadSound("hit.wav")
+  ├─ LoadWave() → dr_wav / stb_vorbis / dr_mp3 / …
+  ├─ LoadSoundFromWave()
+  │     ma_convert_frames() → device format (float32 stereo)
+  │     LoadAudioBuffer() → linked list AUDIO.Buffer
+  └─ UnloadWave()
+
+PlaySound(s) → PlayAudioBuffer()</code></pre>
+        <p class="coderef"><a href="https://github.com/raysan5/raylib/blob/22509ab/src/raudio.c#L465-L520">raudio.c — InitAudioDevice</a></p>
+      </section>
+
+      <section class="section panel searchable">
+        <h2>Mixing callback (each audio buffer period)</h2>
+        <pre><code>OnSendAudioDataToDevice(pDevice, pFramesOut, ..., frameCount)
+  ├─ memset output to silence
+  ├─ ma_mutex_lock(AUDIO.System.lock)
+  ├─ for each AudioBuffer in linked list:
+  │     if playing && !paused:
+  │         read frames (static sound or stream)
+  │         MixAudioFrames(out, in, volume, pitch, pan)
+  └─ ma_mutex_unlock()</code></pre>
+        <p class="coderef"><a href="https://github.com/raysan5/raylib/blob/22509ab/src/raudio.c#L2560">raudio.c L2560+ — OnSendAudioDataToDevice</a></p>
+      </section>
+
+      <section class="section grid">
+        <details open class="searchable">
+          <summary>Sound vs Music vs AudioStream</summary>
+          <div class="details-body">
+            <ul>
+              <li><strong>Sound</strong> — fully decoded static buffer in RAM, low latency replay</li>
+              <li><strong>Music</strong> — streaming decoder (OGG, MP3, XM, MOD) refills buffer over time</li>
+              <li><strong>AudioStream</strong> — raw PCM you push with <code>UpdateAudioStream</code></li>
+            </ul>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Format conversion at load time</summary>
+          <div class="details-body">
+            <p>Sounds are converted to the device format at load (<code>ma_convert_frames</code>) rather than during mixing — simpler mixer, more memory for 8/16-bit sources.</p>
+            <p class="coderef"><a href="https://github.com/raysan5/raylib/blob/22509ab/src/raudio.c#L945-L975">raudio.c — LoadSoundFromWave</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Threading model</summary>
+          <div class="details-body">
+            <p>Mixing runs on miniaudio's audio thread. A mutex protects the buffer list — documented as not real-time safe but acceptable for games. Main thread calls <code>PlaySound</code>, <code>StopSound</code>, etc.</p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Compile without audio</summary>
+          <div class="details-body">
+            <p><code>-DSUPPORT_MODULE_RAUDIO=0</code> or CMake <code>-DCUSTOMIZE_BUILD=ON -DSUPPORT_MODULE_RAUDIO=OFF</code> removes <code>raudio.c</code> from the build entirely.</p>
+          </div>
+        </details>
+      </section>
+
+      <footer class="footer">
+        <p><a href="models-and-3d.html">← Models &amp; 3D</a> · <a href="modules-and-build.html">Modules &amp; build →</a></p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Platform backends — raylib Data Flow</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>raylib Data Flow</strong>
+        <span>raysan5/raylib @ <code>22509ab</code></span>
+      </div>
+      <nav class="nav" aria-label="Component pages">
+        <a href="../index.html">Overview</a>
+        <a href="frame-lifecycle.html">Frame lifecycle</a>
+        <a href="rlgl-batching.html">rlgl &amp; batching</a>
+        <a href="platform-backends.html" aria-current="page">Platform backends</a>
+        <a href="textures-and-images.html">Textures &amp; images</a>
+        <a href="models-and-3d.html">Models &amp; 3D</a>
+        <a href="audio-system.html">Audio system</a>
+        <a href="modules-and-build.html">Modules &amp; build</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="topbar">
+        <div>
+          <h1>Platform backends: compile-time selection</h1>
+          <p class="lead">raylib supports many targets by swapping the platform implementation textually included into <code>rcore.c</code>. CMake/Makefile/Zig must agree on the same <code>PLATFORM_*</code> preprocessor define.</p>
+        </div>
+        <div class="controls">
+          <input type="search" placeholder="Filter blocks" aria-label="Filter blocks" data-search>
+          <button type="button" data-expand-all>Expand all</button>
+          <button type="button" data-collapse-all>Collapse all</button>
+        </div>
+      </div>
+      <p class="meta" data-search-count></p>
+
+      <section class="section panel searchable">
+        <h2>Platform picker</h2>
+        <p>Tap a backend to see its define, source file, and notes.</p>
+        <div class="platform-grid" data-platform-grid>
+          <button type="button" class="platform-card" data-platform="glfw"><strong>Desktop GLFW</strong><code>default</code></button>
+          <button type="button" class="platform-card" data-platform="sdl"><strong>SDL</strong><code>SDL2 / SDL3</code></button>
+          <button type="button" class="platform-card" data-platform="rgfw"><strong>RGFW</strong><code>lightweight</code></button>
+          <button type="button" class="platform-card" data-platform="drm"><strong>DRM / Pi</strong><code>KMS</code></button>
+          <button type="button" class="platform-card" data-platform="web"><strong>Web</strong><code>Emscripten</code></button>
+          <button type="button" class="platform-card" data-platform="android"><strong>Android</strong><code>NDK</code></button>
+          <button type="button" class="platform-card" data-platform="memory"><strong>Memory</strong><code>headless</code></button>
+        </div>
+        <div class="arch-detail panel" style="margin-top:16px" aria-live="polite">
+          <p><strong>Define:</strong> <code data-platform-define>—</code></p>
+          <p><strong>File:</strong> <code data-platform-file>—</code></p>
+          <p data-platform-notes>—</p>
+        </div>
+      </section>
+
+      <section class="section panel searchable">
+        <h2>Preprocessor dispatch in rcore.c</h2>
+        <pre><code>#if defined(PLATFORM_DESKTOP)
+    #define PLATFORM_DESKTOP_GLFW
+#endif
+
+#if defined(PLATFORM_DESKTOP_GLFW)
+    #include "platforms/rcore_desktop_glfw.c"
+#elif defined(PLATFORM_DESKTOP_SDL)
+    #include "platforms/rcore_desktop_sdl.c"
+#elif defined(PLATFORM_DRM)
+    #include "platforms/rcore_drm.c"
+// ... etc
+#endif</code></pre>
+        <p class="coderef"><a href="https://github.com/raysan5/raylib/blob/22509ab/src/rcore.c#L509-L535">rcore.c L509–535</a></p>
+        <div class="callout callout-warn">
+          <p>Platform <code>.c</code> files are <strong>not</strong> separate translation units — they share <code>CORE</code> and static platform state with <code>rcore.c</code> (unity-build style).</p>
+        </div>
+      </section>
+
+      <section class="section grid">
+        <details open class="searchable">
+          <summary>Platform contract — required functions</summary>
+          <div class="details-body">
+            <ul>
+              <li><code>int InitPlatform(void)</code> / <code>void ClosePlatform(void)</code></li>
+              <li><code>void SwapScreenBuffer(void)</code></li>
+              <li><code>void PollInputEvents(void)</code></li>
+              <li><code>bool WindowShouldClose(void)</code></li>
+              <li>Window/monitor/cursor/clipboard helpers</li>
+            </ul>
+            <p>Template: <code>platforms/rcore_template.c</code></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>GLFW InitPlatform (desktop default)</summary>
+          <div class="details-body">
+            <ol>
+              <li><code>glfwInit()</code> with RL_* alloc wrappers</li>
+              <li>Window hints from <code>CORE.Window.flags</code> (MSAA, resizable, HiDPI…)</li>
+              <li>OpenGL version from <code>rlGetVersion()</code></li>
+              <li><code>glfwCreateWindow</code>, <code>glfwMakeContextCurrent</code></li>
+              <li><code>rlLoadExtensions(glfwGetProcAddress)</code></li>
+              <li>Register input/window callbacks → update <code>CORE.Input</code></li>
+            </ol>
+            <p class="coderef"><a href="https://github.com/raysan5/raylib/blob/22509ab/src/platforms/rcore_desktop_glfw.c#L1436">rcore_desktop_glfw.c — InitPlatform</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>rglfw.c — vendored GLFW</summary>
+          <div class="details-body">
+            <p>When not using system GLFW, <code>rglfw.c</code> compiles all <code>external/glfw/src/*.c</code> into one object. CMake uses <code>GlfwImport.cmake</code>; Makefile links <code>rglfw.o</code> separately.</p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>CMake PLATFORM mapping</summary>
+          <div class="details-body">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>CMake -DPLATFORM</th><th>C define</th></tr></thead>
+                <tbody>
+                  <tr><td>Desktop</td><td>PLATFORM_DESKTOP → GLFW</td></tr>
+                  <tr><td>SDL</td><td>PLATFORM_DESKTOP_SDL</td></tr>
+                  <tr><td>RGFW</td><td>PLATFORM_DESKTOP_RGFW</td></tr>
+                  <tr><td>Web</td><td>PLATFORM_WEB</td></tr>
+                  <tr><td>DRM</td><td>PLATFORM_DRM</td></tr>
+                  <tr><td>Android</td><td>PLATFORM_ANDROID</td></tr>
+                  <tr><td>Memory</td><td>PLATFORM_MEMORY</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <footer class="footer">
+        <p><a href="rlgl-batching.html">← rlgl &amp; batching</a> · <a href="textures-and-images.html">Textures &amp; images →</a></p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

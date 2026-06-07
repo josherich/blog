@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Frame lifecycle — raylib Data Flow</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>raylib Data Flow</strong>
+        <span>raysan5/raylib @ <code>22509ab</code></span>
+      </div>
+      <nav class="nav" aria-label="Component pages">
+        <a href="../index.html">Overview</a>
+        <a href="frame-lifecycle.html" aria-current="page">Frame lifecycle</a>
+        <a href="rlgl-batching.html">rlgl &amp; batching</a>
+        <a href="platform-backends.html">Platform backends</a>
+        <a href="textures-and-images.html">Textures &amp; images</a>
+        <a href="models-and-3d.html">Models &amp; 3D</a>
+        <a href="audio-system.html">Audio system</a>
+        <a href="modules-and-build.html">Modules &amp; build</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="topbar">
+        <div>
+          <h1>Frame lifecycle: InitWindow through CloseWindow</h1>
+          <p class="lead">raylib does not provide <code>main()</code> or a game loop. The contract is: initialize once, loop until close, shut down. This page traces that contract through <code>CORE</code> state and the functions every example uses.</p>
+        </div>
+        <div class="controls">
+          <input type="search" placeholder="Filter blocks" aria-label="Filter blocks" data-search>
+          <button type="button" data-expand-all>Expand all</button>
+          <button type="button" data-collapse-all>Collapse all</button>
+        </div>
+      </div>
+      <p class="meta" data-search-count></p>
+
+      <section class="section panel searchable">
+        <h2>Minimal program shape</h2>
+        <pre><code>#include "raylib.h"
+
+int main(void)
+{
+    InitWindow(800, 450, "my game");
+    SetTargetFPS(60);
+
+    while (!WindowShouldClose())
+    {
+        // update logic here
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+        DrawText("Hello", 190, 200, 20, DARKGRAY);
+        EndDrawing();
+    }
+
+    CloseWindow();
+    return 0;
+}</code></pre>
+        <p class="coderef"><a href="https://github.com/raysan5/raylib/blob/22509ab/examples/core/core_basic_window.c">examples/core/core_basic_window.c</a></p>
+      </section>
+
+      <section class="section panel searchable">
+        <h2>InitWindow sequence</h2>
+        <pre><code>InitWindow(w, h, title)
+  ├─ init CORE.Window, CORE.Input (exit key = ESC)
+  ├─ InitPlatform()          // GLFW: glfwInit, create window, GL context
+  ├─ rlglInit(renderW, renderH)   // default texture, shader, batch
+  ├─ SetupViewport(...)
+  ├─ LoadFontDefault()       // if SUPPORT_MODULE_RTEXT
+  ├─ SetShapesTexture(...)   // share font atlas with rshapes batching
+  └─ SetRandomSeed(time(NULL))</code></pre>
+        <div class="callout callout-warn">
+          <p><strong>Failure mode:</strong> If <code>InitPlatform()</code> returns non-zero, <code>InitWindow</code> logs a warning and returns early. <code>IsWindowReady()</code> stays false and <code>WindowShouldClose()</code> returns true immediately.</p>
+        </div>
+      </section>
+
+      <section class="section grid">
+        <details open class="searchable">
+          <summary>BeginDrawing — start of draw phase</summary>
+          <div class="details-body">
+            <p>Updates <code>CORE.Time.current</code> and <code>CORE.Time.update</code> (seconds since last <code>BeginDrawing</code>). Resets modelview with <code>rlLoadIdentity()</code> and applies <code>CORE.Window.screenScale</code> for Retina/HiDPI.</p>
+            <p>Does <em>not</em> clear the framebuffer — you must call <code>ClearBackground</code> or draw over previous contents.</p>
+            <p class="coderef"><a href="https://github.com/raysan5/raylib/blob/22509ab/src/rcore.c#L858-L872">rcore.c L858–872</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>EndDrawing — flush, present, poll</summary>
+          <div class="details-body">
+            <ol>
+              <li><code>rlDrawRenderBatchActive()</code> — flush 2D batch to GPU</li>
+              <li><code>SwapScreenBuffer()</code> — platform (e.g. <code>glfwSwapBuffers</code>)</li>
+              <li>Measure draw time; <code>WaitTime()</code> if under target frame time</li>
+              <li><code>PollInputEvents()</code> — update keyboard/mouse/gamepad state</li>
+              <li>Increment <code>CORE.Time.frameCounter</code></li>
+            </ol>
+            <p class="coderef"><a href="https://github.com/raysan5/raylib/blob/22509ab/src/rcore.c#L875-L917">rcore.c L875–917</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Render modes that flush the batch</summary>
+          <div class="details-body">
+            <p>Switching render context always calls <code>rlDrawRenderBatchActive()</code> first:</p>
+            <ul>
+              <li><code>BeginMode2D</code> / <code>EndMode2D</code> — 2D camera matrix</li>
+              <li><code>BeginMode3D</code> / <code>EndMode3D</code> — perspective + depth test</li>
+              <li><code>BeginTextureMode</code> / <code>EndTextureMode</code> — render to FBO</li>
+              <li><code>BeginShaderMode</code> — custom shader</li>
+            </ul>
+            <p>Mixing 2D and 3D in one frame requires these pairs — otherwise batch state and GL state desync.</p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>WindowShouldClose and ESC</summary>
+          <div class="details-body">
+            <p>On GLFW, <code>PollInputEvents</code> sets <code>CORE.Window.shouldClose</code> from <code>glfwWindowShouldClose</code>, then resets the GLFW flag so closing is driven by raylib's state. <code>CORE.Input.Keyboard.exitKey</code> defaults to <code>KEY_ESCAPE</code>.</p>
+            <p class="coderef"><a href="https://github.com/raysan5/raylib/blob/22509ab/src/platforms/rcore_desktop_glfw.c#L1407-L1410">rcore_desktop_glfw.c L1407–1410</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>CloseWindow teardown</summary>
+          <div class="details-body">
+            <p><code>UnloadFontDefault()</code> → <code>rlglClose()</code> → <code>ClosePlatform()</code> (e.g. <code>glfwTerminate</code>). Sets <code>CORE.Window.ready = false</code>.</p>
+            <p class="coderef"><a href="https://github.com/raysan5/raylib/blob/22509ab/src/rcore.c#L723-L738">rcore.c L723–738</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>CORE global state</summary>
+          <div class="details-body">
+            <p><code>CoreData CORE</code> holds nested structs:</p>
+            <ul>
+              <li><code>Window</code> — dimensions, flags, shouldClose, screenScale matrix</li>
+              <li><code>Input.Keyboard/Mouse/Touch/Gamepad</code> — current + previous state arrays</li>
+              <li><code>Time</code> — current, update, draw, frame, target FPS interval</li>
+            </ul>
+            <p class="coderef"><a href="https://github.com/raysan5/raylib/blob/22509ab/src/rcore.c#L296-L399">rcore.c L296–399 — CoreData</a></p>
+          </div>
+        </details>
+      </section>
+
+      <section class="section demo-panel searchable">
+        <h2>Frame loop simulator</h2>
+        <p>Same demo as the overview — step through poll → draw → flush → swap.</p>
+        <div class="demo-toolbar">
+          <button type="button" data-demo-play>Play loop</button>
+          <button type="button" data-demo-step>Step</button>
+          <button type="button" data-demo-reset>Reset</button>
+        </div>
+        <div class="demo-canvas-wrap">
+          <canvas data-frame-demo aria-label="Frame loop animation"></canvas>
+        </div>
+        <div class="demo-stats">
+          <div class="stat-box"><strong data-stat-frame>0</strong><span>Frame #</span></div>
+          <div class="stat-box"><strong data-stat-step>Poll input</strong><span>Phase</span></div>
+          <div class="stat-box"><strong data-stat-verts>0</strong><span>Batch verts</span></div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p><a href="../index.html">← Overview</a> · <a href="rlgl-batching.html">rlgl &amp; batching →</a></p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
