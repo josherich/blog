@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modules &amp; build — raylib Data Flow</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>raylib Data Flow</strong>
+        <span>raysan5/raylib @ <code>22509ab</code></span>
+      </div>
+      <nav class="nav" aria-label="Component pages">
+        <a href="../index.html">Overview</a>
+        <a href="frame-lifecycle.html">Frame lifecycle</a>
+        <a href="rlgl-batching.html">rlgl &amp; batching</a>
+        <a href="platform-backends.html">Platform backends</a>
+        <a href="textures-and-images.html">Textures &amp; images</a>
+        <a href="models-and-3d.html">Models &amp; 3D</a>
+        <a href="audio-system.html">Audio system</a>
+        <a href="modules-and-build.html" aria-current="page">Modules &amp; build</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="topbar">
+        <div>
+          <h1>Modules, config, and build systems</h1>
+          <p class="lead">raylib is configured at compile time through <code>src/config.h</code> and platform defines. Three build paths are maintained: GNU Make, CMake, and Zig.</p>
+        </div>
+        <div class="controls">
+          <input type="search" placeholder="Filter blocks" aria-label="Filter blocks" data-search>
+          <button type="button" data-expand-all>Expand all</button>
+          <button type="button" data-collapse-all>Collapse all</button>
+        </div>
+      </div>
+      <p class="meta" data-search-count></p>
+
+      <section class="section panel searchable">
+        <h2>Source files → library</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>File</th><th>Module flag</th><th>Role</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>rcore.c</code></td><td>mandatory</td><td>Core + included platform</td></tr>
+              <tr><td><code>rlgl.h</code></td><td>mandatory</td><td>GL impl inside rcore</td></tr>
+              <tr><td><code>rshapes.c</code></td><td>SUPPORT_MODULE_RSHAPES</td><td>2D draw + collision</td></tr>
+              <tr><td><code>rtextures.c</code></td><td>SUPPORT_MODULE_RTEXTURES</td><td>Images &amp; textures</td></tr>
+              <tr><td><code>rtext.c</code></td><td>SUPPORT_MODULE_RTEXT</td><td>Fonts (needs rtextures)</td></tr>
+              <tr><td><code>rmodels.c</code></td><td>SUPPORT_MODULE_RMODELS</td><td>3D models</td></tr>
+              <tr><td><code>raudio.c</code></td><td>SUPPORT_MODULE_RAUDIO</td><td>Audio</td></tr>
+              <tr><td><code>rglfw.c</code></td><td>desktop GLFW</td><td>Vendored GLFW (separate .o in Make)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="coderef"><a href="https://github.com/raysan5/raylib/blob/22509ab/src/CMakeLists.txt#L32-L47">src/CMakeLists.txt — raylib_sources</a></p>
+      </section>
+
+      <section class="section grid">
+        <details open class="searchable">
+          <summary>GNU Make (common on Linux)</summary>
+          <div class="details-body">
+            <pre><code>cd raylib/src
+make PLATFORM=PLATFORM_DESKTOP
+
+cd raylib/examples
+make core/core_basic_window
+./core/core_basic_window</code></pre>
+            <p>Key flags: <code>PLATFORM</code>, <code>GRAPHICS</code>, <code>RAYLIB_BUILD_MODE=RELEASE</code>, <code>RAYLIB_CONFIG_FLAGS</code> for custom defines.</p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>CMake</summary>
+          <div class="details-body">
+            <pre><code>cmake -B build -DPLATFORM=Desktop -DBUILD_EXAMPLES=ON
+cmake --build build
+./build/examples/core/core_basic_window</code></pre>
+            <p><code>CUSTOMIZE_BUILD=ON</code> exposes every <code>SUPPORT_*</code> flag. <code>OPENGL_VERSION</code> selects graphics API.</p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Zig build</summary>
+          <div class="details-body">
+            <pre><code>zig build
+zig build core_basic_window    # run example</code></pre>
+            <p>Options: <code>-Dplatform=glfw|sdl2|drm|…</code>, <code>-Dopengl_version=gles_2</code>, module toggles <code>-Draudio=false</code>, etc.</p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Public headers</summary>
+          <div class="details-body">
+            <ul>
+              <li><code>raylib.h</code> — main API</li>
+              <li><code>raymath.h</code> — math (standalone with RAYMATH_IMPLEMENTATION)</li>
+              <li><code>rlgl.h</code> — GL layer (standalone with RLGL_IMPLEMENTATION)</li>
+              <li><code>rcamera.h</code>, <code>rgestures.h</code> — optional helpers</li>
+            </ul>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Tooling in repo</summary>
+          <div class="details-body">
+            <ul>
+              <li><code>tools/rlparser</code> — parses <code>raylib.h</code> → JSON/XML for bindings</li>
+              <li><code>tools/rexm</code> — validates and updates the examples collection</li>
+            </ul>
+            <p>No unit test suite — CI compiles library + examples on Linux, Windows, macOS, Android, Web.</p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Notable config defaults</summary>
+          <div class="details-body">
+            <ul>
+              <li><code>SUPPORT_CUSTOM_FRAME_CONTROL 0</code> — EndDrawing owns swap/poll</li>
+              <li><code>SUPPORT_GPU_SKINNING 0</code> — CPU bone skinning default</li>
+              <li><code>SUPPORT_FILEFORMAT_JPG 0</code> — JPG off unless enabled</li>
+              <li><code>RL_DEFAULT_BATCH_BUFFER_ELEMENTS 4096</code> — batch capacity</li>
+            </ul>
+            <p class="coderef"><a href="https://github.com/raysan5/raylib/blob/22509ab/src/config.h">config.h</a></p>
+          </div>
+        </details>
+      </section>
+
+      <section class="section panel searchable">
+        <h2>Dependency direction</h2>
+        <pre><code>raylib.h (types)
+    │
+rcore ──► rlgl ◄── rshapes, rtextures, rtext, rmodels
+    │              rtext ──► rtextures
+    │              rmodels ──► rtextures, raymath
+    └──► platform/*.c (included)
+
+raudio ──► miniaudio (independent)</code></pre>
+      </section>
+
+      <footer class="footer">
+        <p><a href="audio-system.html">← Audio system</a> · <a href="../index.html">Overview</a></p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

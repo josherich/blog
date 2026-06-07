@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>raylib Data Flow — Overview</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script src="assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>raylib Data Flow</strong>
+        <span>raysan5/raylib @ <code>22509ab</code></span>
+      </div>
+      <nav class="nav" aria-label="Component pages">
+        <a href="index.html" aria-current="page">Overview</a>
+        <a href="components/frame-lifecycle.html">Frame lifecycle</a>
+        <a href="components/rlgl-batching.html">rlgl &amp; batching</a>
+        <a href="components/platform-backends.html">Platform backends</a>
+        <a href="components/textures-and-images.html">Textures &amp; images</a>
+        <a href="components/models-and-3d.html">Models &amp; 3D</a>
+        <a href="components/audio-system.html">Audio system</a>
+        <a href="components/modules-and-build.html">Modules &amp; build</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="topbar">
+        <div>
+          <h1>From InitWindow to pixels on screen</h1>
+          <p class="lead">An interactive tour of how raylib turns your C game loop into windowed graphics and audio. raylib is a library — you own <code>main()</code> and the loop. This guide follows one frame from initialization through batched 2D draws, optional 3D mesh rendering, and input polling.</p>
+        </div>
+        <div class="controls">
+          <input type="search" placeholder="Filter blocks" aria-label="Filter blocks" data-search>
+          <button type="button" data-expand-all>Expand all</button>
+          <button type="button" data-collapse-all>Collapse all</button>
+        </div>
+      </div>
+      <p class="meta" data-search-count></p>
+
+      <section class="section panel searchable">
+        <h2>The mental model in one paragraph</h2>
+        <p>raylib is a <strong>modular C library</strong> built around two mandatory pieces — <code>rcore</code> (window, input, timing) and <code>rlgl</code> (OpenGL abstraction) — plus optional modules for shapes, textures, text, 3D models, and audio. You call <code>InitWindow()</code>, which boots a platform backend (GLFW by default), creates an OpenGL context, and initializes rlgl's default shader and render batch. Each frame you call <code>BeginDrawing()</code>, issue draw calls that accumulate geometry into a batch, then <code>EndDrawing()</code> flushes the batch, swaps buffers, limits FPS, and polls input. There is no built-in scene graph or entity system — just functions.</p>
+      </section>
+
+      <section class="section panel searchable">
+        <h2>Interactive architecture map</h2>
+        <p>Tap a module to see what it does and how it fits. Mandatory modules are marked.</p>
+        <div class="arch-map" data-arch-map>
+          <div class="arch-row">
+            <button type="button" class="arch-node" data-arch-node="app"><strong>Your main()</strong><span>Game loop owner</span></button>
+          </div>
+          <div class="arch-row">
+            <button type="button" class="arch-node" data-arch-node="rcore"><strong>rcore</strong><span><span class="badge badge-mandatory">mandatory</span></span></button>
+            <button type="button" class="arch-node" data-arch-node="platform"><strong>platform</strong><span>GLFW / SDL / …</span></button>
+          </div>
+          <div class="arch-row">
+            <button type="button" class="arch-node" data-arch-node="rlgl"><strong>rlgl</strong><span><span class="badge badge-mandatory">mandatory</span></span></button>
+          </div>
+          <div class="arch-row">
+            <button type="button" class="arch-node" data-arch-node="rshapes"><strong>rshapes</strong><span>2D primitives</span></button>
+            <button type="button" class="arch-node" data-arch-node="rtextures"><strong>rtextures</strong><span>Images &amp; textures</span></button>
+            <button type="button" class="arch-node" data-arch-node="rtext"><strong>rtext</strong><span>Fonts &amp; text</span></button>
+          </div>
+          <div class="arch-row">
+            <button type="button" class="arch-node" data-arch-node="rmodels"><strong>rmodels</strong><span>3D meshes</span></button>
+            <button type="button" class="arch-node" data-arch-node="raudio"><strong>raudio</strong><span>miniaudio</span></button>
+          </div>
+          <div class="arch-detail panel" aria-live="polite">
+            <h3 data-arch-title>Module</h3>
+            <p data-arch-body>Select a module above.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section demo-panel searchable">
+        <h2>Frame loop simulator</h2>
+        <p>What <code>EndDrawing()</code> does each frame on desktop (when <code>SUPPORT_CUSTOM_FRAME_CONTROL</code> is off). Use <strong>Step</strong> or <strong>Play</strong> on mobile.</p>
+        <div class="demo-toolbar">
+          <button type="button" data-demo-play>Play loop</button>
+          <button type="button" data-demo-step>Step</button>
+          <button type="button" data-demo-reset>Reset</button>
+        </div>
+        <div class="demo-canvas-wrap">
+          <canvas data-frame-demo aria-label="Frame loop animation"></canvas>
+        </div>
+        <div class="demo-stats">
+          <div class="stat-box"><strong data-stat-frame>0</strong><span>Frame #</span></div>
+          <div class="stat-box"><strong data-stat-step>Poll input</strong><span>Current phase</span></div>
+          <div class="stat-box"><strong data-stat-verts>0</strong><span>Batch vertices</span></div>
+        </div>
+      </section>
+
+      <section class="section panel searchable">
+        <h2>Layer diagram</h2>
+        <pre><code>  YOUR CODE                    RAYLIB MODULES                 PLATFORM / GPU
+ ┌─────────────┐            ┌──────────────────┐           ┌─────────────────┐
+ │ main()      │  InitWindow│ rcore.c          │InitPlatform│ rcore_desktop_  │
+ │ while loop  │───────────►│  CORE global     │───────────►│ glfw.c          │
+ │ Draw*()     │            │  BeginDrawing    │           │  GLFW window    │
+ └─────────────┘            │  EndDrawing      │           │  GL context     │
+       │                    └────────┬─────────┘           └────────┬────────┘
+       │                             │ rlglInit / rlBegin            │ glfwSwapBuffers
+       ▼                             ▼                               ▼
+ DrawRectangle ──► rshapes ──► rlgl batch ──► glDrawElements ──► framebuffer
+ DrawTexture  ──► rtextures ──► rlLoadTexture
+ DrawModel    ──► rmodels  ──► DrawMesh (VAO, bypasses batch)
+ PlaySound    ──► raudio   ──► miniaudio callback (separate thread)</code></pre>
+      </section>
+
+      <section class="section panel searchable">
+        <h2>One frame, end to end</h2>
+        <p>Tap a step to jump to its explanation below.</p>
+        <div class="flow">
+          <button type="button" class="flow-step" data-flow-step="init">
+            <span class="step-label">0. InitWindow (once)</span>
+            <span><code>InitPlatform()</code> → <code>rlglInit()</code> → <code>LoadFontDefault()</code>. Sets up <code>CORE</code> and GPU defaults.</span>
+          </button>
+          <button type="button" class="flow-step" data-flow-step="begin">
+            <span class="step-label">1. BeginDrawing</span>
+            <span>Record <code>CORE.Time.update</code>, reset modelview, apply HiDPI <code>screenScale</code>.</span>
+          </button>
+          <button type="button" class="flow-step" data-flow-step="draw">
+            <span class="step-label">2. Draw calls</span>
+            <span><code>DrawRectangle</code>, <code>DrawTexturePro</code>, <code>DrawText</code> → <code>rlBegin</code>/<code>rlVertex</code>/<code>rlEnd</code> into batch.</span>
+          </button>
+          <button type="button" class="flow-step" data-flow-step="flush">
+            <span class="step-label">3. EndDrawing — flush</span>
+            <span><code>rlDrawRenderBatchActive()</code> uploads batch and issues GL draw calls.</span>
+          </button>
+          <button type="button" class="flow-step" data-flow-step="swap">
+            <span class="step-label">4. Swap &amp; timing</span>
+            <span><code>SwapScreenBuffer()</code>, <code>WaitTime()</code> for target FPS, <code>PollInputEvents()</code>.</span>
+          </button>
+          <button type="button" class="flow-step" data-flow-step="input">
+            <span class="step-label">5. Input queries</span>
+            <span><code>IsKeyPressed</code> compares <code>previousKeyState</code> vs <code>currentKeyState</code> updated during poll.</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="section grid">
+        <details open class="searchable" data-flow-target="init">
+          <summary>0. Startup: InitWindow</summary>
+          <div class="details-body">
+            <p><code>InitWindow</code> in <code>rcore.c</code> initializes <code>CORE.Window</code> and <code>CORE.Input</code>, calls platform <code>InitPlatform()</code> (e.g. GLFW window + GL context), then <code>rlglInit(width, height)</code> which creates the 1×1 default texture, default shader, and render batch.</p>
+            <p class="coderef"><a href="https://github.com/raysan5/raylib/blob/22509ab/src/rcore.c#L585-L720">rcore.c L585–720 — InitWindow</a></p>
+            <p>Full detail: <a href="components/frame-lifecycle.html">Frame lifecycle</a>.</p>
+          </div>
+        </details>
+
+        <details open class="searchable" data-flow-target="begin">
+          <summary>1. BeginDrawing resets the frame</summary>
+          <div class="details-body">
+            <p><code>BeginDrawing</code> captures update-phase delta time and resets the modelview matrix, applying <code>CORE.Window.screenScale</code> for HiDPI displays. It does not clear the screen — call <code>ClearBackground</code> yourself.</p>
+            <p class="coderef"><a href="https://github.com/raysan5/raylib/blob/22509ab/src/rcore.c#L858-L872">rcore.c L858–872 — BeginDrawing</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable" data-flow-target="draw">
+          <summary>2. Draw calls batch 2D geometry</summary>
+          <div class="details-body">
+            <p>Even solid rectangles bind a shared white texture and emit quads via <code>rlBegin(RL_QUADS)</code>. Text draws each glyph with <code>DrawTexturePro</code>. State changes (new texture/shader) or buffer overflow trigger a batch flush mid-frame.</p>
+            <p class="coderef"><a href="https://github.com/raysan5/raylib/blob/22509ab/src/rshapes.c#L738-L795">rshapes.c L738–795 — DrawRectanglePro</a></p>
+            <p>Full detail: <a href="components/rlgl-batching.html">rlgl &amp; batching</a>.</p>
+          </div>
+        </details>
+
+        <details open class="searchable" data-flow-target="flush">
+          <summary>3. EndDrawing flushes the batch</summary>
+          <div class="details-body">
+            <p>The first line of <code>EndDrawing</code> is <code>rlDrawRenderBatchActive()</code>, which uploads accumulated vertices and draws with the active shader (default MVP + texture0).</p>
+            <p class="coderef"><a href="https://github.com/raysan5/raylib/blob/22509ab/src/rcore.c#L875-L917">rcore.c L875–917 — EndDrawing</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable" data-flow-target="swap">
+          <summary>4. Buffer swap and frame pacing</summary>
+          <div class="details-body">
+            <p>Unless custom frame control is enabled, <code>EndDrawing</code> calls <code>SwapScreenBuffer()</code> (platform), measures draw time, <code>WaitTime()</code> to hit <code>SetTargetFPS</code>, then <code>PollInputEvents()</code>.</p>
+            <p class="coderef"><a href="https://github.com/raysan5/raylib/blob/22509ab/src/platforms/rcore_desktop_glfw.c#L1397-L1411">rcore_desktop_glfw.c — PollInputEvents</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable" data-flow-target="input">
+          <summary>5. Input is edge-detected per frame</summary>
+          <div class="details-body">
+            <p><code>IsKeyPressed</code> returns true when a key transitioned from up to down since the last poll. Window close is tracked in <code>CORE.Window.shouldClose</code>, updated from GLFW each frame.</p>
+            <p class="coderef"><a href="https://github.com/raysan5/raylib/blob/22509ab/src/rcore.c#L3802-L3812">rcore.c L3802–3812 — IsKeyPressed</a></p>
+          </div>
+        </details>
+      </section>
+
+      <section class="section searchable">
+        <h2>Core objects</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Object</th><th>Role</th><th>Defined in</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>CORE</code></td><td>Global window, input, timing state</td><td><code>rcore.c</code></td></tr>
+              <tr><td><code>RLGL</code></td><td>Render batch, shaders, GL state</td><td><code>rlgl.h</code></td></tr>
+              <tr><td><code>Image</code></td><td>CPU pixel buffer (RAM)</td><td><code>raylib.h</code></td></tr>
+              <tr><td><code>Texture2D</code></td><td>GPU texture handle + metadata</td><td><code>raylib.h</code></td></tr>
+              <tr><td><code>Font</code></td><td>Glyph atlas texture + metrics</td><td><code>raylib.h</code></td></tr>
+              <tr><td><code>Mesh</code> / <code>Model</code></td><td>3D geometry + materials on GPU</td><td><code>raylib.h</code></td></tr>
+              <tr><td><code>Sound</code></td><td>Static audio buffer in mixer list</td><td><code>raudio.c</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section grid searchable">
+        <div class="panel">
+          <h2>Component pages</h2>
+          <ul>
+            <li><a href="components/frame-lifecycle.html">Frame lifecycle</a> — InitWindow, loop, EndDrawing, CloseWindow</li>
+            <li><a href="components/rlgl-batching.html">rlgl &amp; batching</a> — immediate mode, flush rules, interactive batch demo</li>
+            <li><a href="components/platform-backends.html">Platform backends</a> — compile-time selection, GLFW boot</li>
+            <li><a href="components/textures-and-images.html">Textures &amp; images</a> — LoadFileData → stb → rlLoadTexture</li>
+            <li><a href="components/models-and-3d.html">Models &amp; 3D</a> — LoadModel, DrawMesh, BeginMode3D</li>
+            <li><a href="components/audio-system.html">Audio system</a> — miniaudio callback mixing</li>
+            <li><a href="components/modules-and-build.html">Modules &amp; build</a> — config.h, Make, CMake, Zig</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h2>External references</h2>
+          <ul>
+            <li><a href="https://github.com/raysan5/raylib">raysan5/raylib</a> — source repository</li>
+            <li><a href="https://www.raylib.com/cheatsheet/cheatsheet.html">raylib cheatsheet</a></li>
+            <li><a href="https://github.com/raysan5/raylib/wiki/raylib-architecture">raylib architecture wiki</a></li>
+            <li><a href="https://www.raylib.com/examples.html">Live examples</a></li>
+          </ul>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>Educational walkthrough of <a href="https://github.com/raysan5/raylib">raysan5/raylib</a>. Code links pinned to commit <code>22509ab</code>. raylib is licensed under zlib/libpng.</p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

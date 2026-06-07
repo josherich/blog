@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Models &amp; 3D — raylib Data Flow</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>raylib Data Flow</strong>
+        <span>raysan5/raylib @ <code>22509ab</code></span>
+      </div>
+      <nav class="nav" aria-label="Component pages">
+        <a href="../index.html">Overview</a>
+        <a href="frame-lifecycle.html">Frame lifecycle</a>
+        <a href="rlgl-batching.html">rlgl &amp; batching</a>
+        <a href="platform-backends.html">Platform backends</a>
+        <a href="textures-and-images.html">Textures &amp; images</a>
+        <a href="models-and-3d.html" aria-current="page">Models &amp; 3D</a>
+        <a href="audio-system.html">Audio system</a>
+        <a href="modules-and-build.html">Modules &amp; build</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="topbar">
+        <div>
+          <h1>Models and 3D rendering</h1>
+          <p class="lead"><code>rmodels.c</code> loads geometry into <code>Mesh</code> CPU arrays, uploads to VAO/VBO via <code>UploadMesh</code>, and draws with per-material shaders through <code>DrawMesh</code>. The 2D render batch is flushed before entering 3D mode.</p>
+        </div>
+        <div class="controls">
+          <input type="search" placeholder="Filter blocks" aria-label="Filter blocks" data-search>
+          <button type="button" data-expand-all>Expand all</button>
+          <button type="button" data-collapse-all>Collapse all</button>
+        </div>
+      </div>
+      <p class="meta" data-search-count></p>
+
+      <section class="section panel searchable">
+        <h2>LoadModel flow</h2>
+        <pre><code>LoadModel("scene.gltf")
+  ├─ extension dispatch:
+  │     .obj  → LoadOBJ (tinyobj_loader_c)
+  │     .gltf → LoadGLTF (cgltf)
+  │     .iqm  → LoadIQM
+  │     .m3d  → LoadM3D
+  │
+  ├─ model.transform = MatrixIdentity()
+  ├─ for each mesh: UploadMesh(&mesh, false)  → GPU VAO/VBO
+  └─ if no materials: create default white material + default shader</code></pre>
+        <p class="coderef"><a href="https://github.com/raysan5/raylib/blob/22509ab/src/rmodels.c#L1102-L1137">rmodels.c L1102–1137 — LoadModel</a></p>
+      </section>
+
+      <section class="section panel searchable">
+        <h2>Draw path in one frame</h2>
+        <pre><code>BeginMode3D(camera)          // flush batch, set projection + view, depth on
+DrawModel(model, pos, scale, tint)
+  └─ DrawModelEx
+       ├─ build scale × rotate × translate matrix
+       ├─ model.transform = model.transform × matTransform  ⚠ mutates model
+       └─ for each mesh:
+            tint material diffuse color
+            upload bone matrices if skeletal
+            DrawMesh(mesh, material, model.transform)
+EndMode3D()                  // flush, restore 2D ortho, depth off</code></pre>
+        <p class="coderef"><a href="https://github.com/raysan5/raylib/blob/22509ab/src/rmodels.c#L3922-L3963">rmodels.c — DrawModelEx</a></p>
+      </section>
+
+      <section class="section grid">
+        <details open class="searchable">
+          <summary>DrawMesh (GL 3.3 / ES2)</summary>
+          <div class="details-body">
+            <ol>
+              <li><code>rlEnableShader(material.shader.id)</code></li>
+              <li>Set uniforms: <code>colDiffuse</code>, <code>matModel</code>, <code>matView</code>, <code>matProjection</code>, <code>matNormal</code></li>
+              <li>Bind material texture maps to texture slots 0…N</li>
+              <li>Enable VAO / bind VBOs per attribute location</li>
+              <li><code>rlDrawVertexArrayElements</code> or indexed draw</li>
+            </ol>
+            <p class="coderef"><a href="https://github.com/raysan5/raylib/blob/22509ab/src/rmodels.c#L1478">rmodels.c L1478+ — DrawMesh</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>BeginMode3D matrix setup</summary>
+          <div class="details-body">
+            <p>Pushes projection matrix, sets frustum or ortho from <code>camera.fovy</code> and aspect ratio (<code>currentFbo.width/height</code>), loads view matrix from <code>MatrixLookAt</code>, enables depth test.</p>
+            <p class="coderef"><a href="https://github.com/raysan5/raylib/blob/22509ab/src/rcore.c#L941-L993">rcore.c — BeginMode3D / EndMode3D</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Model data structures</summary>
+          <div class="details-body">
+            <ul>
+              <li><code>Mesh</code> — vertices, texcoords, normals, indices, bone weights, vaoId, vboId[]</li>
+              <li><code>Material</code> — shader + maps[] (diffuse, normal, roughness, …)</li>
+              <li><code>Model</code> — meshes[], materials[], meshMaterial[], skeleton, boneMatrices</li>
+            </ul>
+            <p class="coderef"><a href="https://github.com/raysan5/raylib/blob/22509ab/src/raylib.h#L345-L433">raylib.h — Mesh, Material, Model</a></p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Skeletal animation</summary>
+          <div class="details-body">
+            <p><code>UpdateModelAnimation</code> computes bone transforms; <code>DrawModelEx</code> uploads <code>boneMatrices</code> to shader when <code>SHADER_LOC_MATRIX_BONETRANSFORMS</code> is available. GPU skinning off by default (<code>SUPPORT_GPU_SKINNING 0</code>) — CPU skinning via <code>mesh.animVertices</code>.</p>
+          </div>
+        </details>
+
+        <details open class="searchable">
+          <summary>Billboards</summary>
+          <div class="details-body">
+            <p><code>DrawBillboardPro</code> builds a camera-facing quad in 3D space and draws via textured vertices (still uses rl immediate path, not mesh VAO).</p>
+          </div>
+        </details>
+      </section>
+
+      <div class="callout searchable">
+        <p><strong>Caution:</strong> <code>DrawModelEx</code> multiplies into <code>model.transform</code> each call. Reset with <code>model.transform = MatrixIdentity()</code> if you reuse the same model at multiple positions per frame.</p>
+      </div>
+
+      <footer class="footer">
+        <p><a href="textures-and-images.html">← Textures &amp; images</a> · <a href="audio-system.html">Audio system →</a></p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
