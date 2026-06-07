@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spark — Architecture &amp; Runtime</title>
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body>
+<header>
+  <h1>Apache Spark — Architecture</h1>
+  <nav>
+    <a href="index.html">Overview</a>
+    <a href="architecture.html" class="active">Architecture</a>
+    <a href="execution.html">Execution Flows</a>
+    <a href="modules.html">Core Modules</a>
+    <a href="runtime.html">Runtime &amp; Errors</a>
+    <a href="guide.html">Tests &amp; Learning Path</a>
+  </nav>
+</header>
+<main>
+
+<h2>3. Main runtime architecture</h2>
+
+<h3>Problem solved</h3>
+<p>Spark solves <strong>large-scale data-parallel computation</strong> with a unified programming model. Users write declarative or functional transformations; Spark handles partitioning, scheduling, fault tolerance (lineage recomputation), shuffle, and data locality. It integrates with Hadoop-compatible filesystems, Hive metastore, and cloud object stores.</p>
+
+<h3>Runtime components</h3>
+
+<div class="diagram">                    ┌──────────────── Driver JVM ────────────────┐
+                    │  SparkSession / SparkContext                  │
+                    │  DAGScheduler, TaskSchedulerImpl              │
+                    │  BlockManagerMaster, MapOutputTrackerMaster   │
+                    │  SparkUI, LiveListenerBus                     │
+                    │  [Connect] SparkConnectService (gRPC)         │
+                    └───────────────┬───────────────────────────────┘
+                                    │ RpcEnv (Netty)
+              ┌─────────────────────┼─────────────────────┐
+              ▼                     ▼                     ▼
+     ┌────────────────┐   ┌────────────────┐   ┌────────────────┐
+     │ Executor JVM   │   │ Executor JVM   │   │ Executor JVM   │
+     │ BlockManager   │   │ BlockManager   │   │ BlockManager   │
+     │ ShuffleManager │   │ ShuffleManager │   │ ShuffleManager │
+     │ Task threads   │   │ Task threads   │   │ Task threads   │
+     └────────────────┘   └────────────────┘   └────────────────┘</div>
+
+<h3>Core abstractions</h3>
+<table>
+<tr><th>Abstraction</th><th>Location</th><th>Meaning</th></tr>
+<tr><td><code>RDD[T]</code></td><td><code>core/.../rdd/RDD.scala</code></td><td>Immutable partitioned collection with lineage</td></tr>
+<tr><td><code>Dependency</code></td><td><code>core/.../Dependency.scala</code></td><td>Narrow (pipeline) vs <code>ShuffleDependency</code> (stage break)</td></tr>
+<tr><td><code>Stage</code></td><td><code>core/.../scheduler/Stage.scala</code></td><td>ShuffleMapStage or ResultStage — set of tasks on same RDD op chain</td></tr>
+<tr><td><code>Task</code></td><td><code>core/.../scheduler/Task.scala</code></td><td>ShuffleMapTask or ResultTask — unit sent to one core</td></tr>
+<tr><td><code>LogicalPlan</code></td><td><code>sql/catalyst/.../logical/</code></td><td>Unresolved/resolved relational algebra tree</td></tr>
+<tr><td><code>SparkPlan</code></td><td><code>sql/core/.../execution/SparkPlan.scala</code></td><td>Physical operator tree (<code>*Exec</code> suffix)</td></tr>
+<tr><td><code>QueryExecution</code></td><td><code>sql/core/.../execution/QueryExecution.scala</code></td><td>Lazy pipeline: analyze → optimize → plan → execute</td></tr>
+<tr><td><code>SparkEnv</code></td><td><code>core/.../SparkEnv.scala</code></td><td>Per-JVM runtime bag: serializer, RpcEnv, BlockManager, etc.</td></tr>
+</table>
+
+<h3>Data flows</h3>
+<ol>
+  <li><strong>Input:</strong> Hadoop <code>FileSystem</code>, DataSource V2 connectors, JDBC, Kafka (via connector), in-memory collections.</li>
+  <li><strong>Shuffle:</strong> Map tasks write partitioned files (sort-based by default via <code>SortShuffleManager</code>); reduce tasks fetch via <code>BlockStoreClient</code>.</li>
+  <li><strong>Cache:</strong> <code>BlockManager</code> stores serialized/deserialized blocks in memory or spills to disk (<code>StorageLevel</code>).</li>
+  <li><strong>Output:</strong> Actions collect to driver, write to sinks (Parquet, ORC, Hive tables), or stream via Structured Streaming sinks.</li>
+</ol>
+
+<h3>Control flows</h3>
+<ul>
+  <li><strong>Job submission:</strong> Action → <code>SparkContext.runJob</code> → <code>DAGScheduler.submitJob</code> → event loop → <code>TaskScheduler.submitTasks</code>.</li>
+  <li><strong>Resource offers:</strong> <code>CoarseGrainedSchedulerBackend</code> receives executor registrations, sends <code>LaunchTask</code> RPC messages.</li>
+  <li><strong>Failure recovery:</strong> Task failures retried by <code>TaskSchedulerImpl</code>; shuffle fetch failures trigger stage resubmit in <code>DAGScheduler</code>.</li>
+  <li><strong>SQL planning:</strong> <code>SessionState.executePlan</code> creates <code>QueryExecution</code>; each lazy val advances one compiler phase.</li>
+</ul>
+
+<h3>External systems</h3>
+<table>
+<tr><th>System</th><th>Integration point</th></tr>
+<tr><td>HDFS / S3 / GCS / ABFS</td><td>Hadoop <code>FileSystem</code>, <code>hadoop-cloud/</code>, DataSource readers</td></tr>
+<tr><td>Hive Metastore</td><td><code>sql/hive/HiveExternalCatalog.scala</code></td></tr>
+<tr><td>YARN</td><td><code>resource-managers/yarn/</code>, <code>--master yarn</code></td></tr>
+<tr><td>Kubernetes</td><td><code>resource-managers/kubernetes/core/</code>, <code>--master k8s://...</code></td></tr>
+<tr><td>Kafka</td><td><code>connector/kafka-0-10-sql/</code></td></tr>
+<tr><td>JDBC databases</td><td><code>sql/core/.../jdbc/</code></td></tr>
+<tr><td>History server / event log</td><td><code>core/.../deploy/history/</code></td></tr>
+<tr><td>Metrics (JMX, Prometheus sink)</td><td><code>core/.../metrics/</code></td></tr>
+</table>
+
+<h3>Startup sequence (driver, client mode)</h3>
+<div class="diagram">spark-submit MyApp
+  → launcher.Main builds java command
+  → SparkSubmit.doSubmit → runMain (user main)
+  → SparkSession.builder.getOrCreate()
+      → SparkContext(conf)
+          → SparkEnv.createDriverEnv
+          → createTaskScheduler (Local / Standalone / YARN / K8s backend)
+          → new DAGScheduler
+          → taskScheduler.start → backend.start
+          → blockManager.initialize
+          → SparkUI.bind
+  → application runs until sc.stop() or JVM exit</div>
+
+<h3>Startup sequence (executor)</h3>
+<div class="diagram">CoarseGrainedExecutorBackend.main
+  → RpcEnv + fetch SparkAppConfig from driver
+  → SparkEnv.createExecutorEnv
+  → RegisterExecutor RPC to driver
+  → new Executor(...) — thread pool ready
+  → await LaunchTask messages</div>
+
+<h2>System purpose — mental model for engineers</h2>
+
+<p>When debugging Spark, ask four questions:</p>
+<ol>
+  <li><strong>What graph?</strong> RDD lineage or Catalyst <code>df.queryExecution.executedPlan</code>.</li>
+  <li><strong>What stages?</strong> Spark UI / <code>DAGScheduler</code> stage list — shuffle boundaries.</li>
+  <li><strong>Where is data?</strong> Block manager cache, shuffle files, or source partitions.</li>
+  <li><strong>Who schedules?</strong> Driver <code>TaskScheduler</code> + cluster manager for containers.</li>
+</ol>
+
+<p>Spark is <strong>not</strong> a classic request/response server. User-facing "requests" are actions or streaming micro-batches that enqueue jobs on an internal event-driven scheduler.</p>
+
+<p><a href="execution.html">Next: Key execution flows →</a></p>
+
+</main>
+</body>
+</html>
