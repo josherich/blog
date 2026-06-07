@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elasticsearch — Execution Flows</title>
+<link rel="stylesheet" href="share.css">
+</head>
+<body>
+<header>
+  <h1>Elasticsearch — Execution Flows</h1>
+  <p class="meta">End-to-end traces with call chains</p>
+  <nav>
+    <a href="index.html">Overview</a>
+    <a href="architecture.html">Architecture</a>
+    <a href="execution.html" class="active">Execution Flows</a>
+    <a href="modules.html">Core Modules</a>
+    <a href="data.html">Data &amp; Interfaces</a>
+    <a href="runtime.html">Runtime &amp; Errors</a>
+    <a href="guide.html">Tests &amp; Learning Path</a>
+  </nav>
+</header>
+<main>
+
+<div class="toolbar">
+  <button type="button" data-expand="open">Expand all</button>
+  <button type="button" data-expand="closed">Collapse all</button>
+</div>
+
+<h2>4. Key execution flows</h2>
+
+<!-- Flow 1 -->
+<details open>
+<summary>Flow A — Node startup</summary>
+<div class="body">
+<table>
+<tr><th>Trigger</th><td><code>bin/elasticsearch</code> or <code>./gradlew run</code></td></tr>
+<tr><th>Entry</th><td><code>Elasticsearch.main</code></td></tr>
+</table>
+<h4>Call chain</h4>
+<pre>ServerLauncher → ServerCli → Elasticsearch.main
+  initPhase1() → Bootstrap, Environment, LogConfigurator
+  initPhase2() → PluginsLoader, JarHell, EntitlementBootstrap
+  initPhase3() → new Node(env, pluginsLoader); node.start()</pre>
+<h4>Key structures</h4>
+<ul>
+  <li><code>ServerArgs</code> — config path, daemonize, pid file</li>
+  <li><code>PluginBundle</code> list — modules + plugins</li>
+  <li><code>Injector</code> — all singleton services</li>
+  <li><code>GatewayMetaState</code> — reads <code>metadata/</code> under data path</li>
+</ul>
+<h4>Side effects</h4>
+<p>Transport port bound; cluster join initiated; metadata recovered from disk; HTTP opened; PID file written; CLI receives <code>SERVER_READY_MARKER</code>.</p>
+<h4>Failure modes</h4>
+<ul>
+  <li>Bootstrap checks fail → <code>NodeValidationException</code> → exit before HTTP</li>
+  <li>Plugin load / entitlement failure → startup abort in phase 2</li>
+  <li>Lucene version mismatch → assertion in <code>checkLucene()</code></li>
+  <li>No master within timeout → warning, node may stay yellow</li>
+</ul>
+<div class="refs">
+<a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/bootstrap/Elasticsearch.java#L94">Elasticsearch.main</a>
+<a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/node/Node.java#L277">Node.start</a>
+</div>
+</div>
+</details>
+
+<!-- Flow 2 -->
+<details open>
+<summary>Flow B — Index document (PUT /{index}/_doc/{id})</summary>
+<div class="body">
+<table>
+<tr><th>Trigger</th><td>HTTP PUT with JSON body</td></tr>
+<tr><th>Validation</th><td><code>RestIndexAction.prepareRequest</code> parses params; <code>IndexRequest.validate()</code> on transport side</td></tr>
+</table>
+<h4>Call chain</h4>
+<pre>HttpServerTransport.dispatchRequest
+  → RestController.dispatchRequest (PathTrie route match)
+  → RestIndexAction.prepareRequest → IndexRequest
+  → NodeClient.index → TransportIndexAction
+  → TransportBulkAction (single-item bulk wrapper)
+  → BulkOperation.groupRequestsByShards (uses ClusterState routing)
+  → TransportShardBulkAction (TransportWriteAction)
+  → IndexShard.applyIndexOperationOnPrimary
+  → InternalEngine.index(Index)
+  → replicate to replicas → RestToXContentListener</pre>
+<h4>Key structures</h4>
+<ul>
+  <li><code>IndexRequest</code> — index, id, routing, source, version, if_seq_no</li>
+  <li><code>ShardId</code> — (index UUID, shard number)</li>
+  <li><code>ParsedDocument</code> — mapped Lucene fields from JSON</li>
+  <li><code>Engine.IndexResult</code> — CREATED / UPDATED / CONFLICT</li>
+</ul>
+<h4>Side effects</h4>
+<p>Lucene document added; translog append; seq_no assigned; optional refresh; dynamic mapping may trigger async master task; auto-create index if allowed.</p>
+<h4>Failure modes</h4>
+<ul>
+  <li><code>ClusterBlockException</code> — write block on index/cluster</li>
+  <li><code>VersionConflictEngineException</code> — optimistic concurrency</li>
+  <li><code>MapperParsingException</code> — bad document for mapping</li>
+  <li>Replica not acked — depends on <code>wait_for_active_shards</code></li>
+</ul>
+<div class="refs">
+<a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/rest/action/document/RestIndexAction.java#L126">RestIndexAction</a>
+<a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/action/bulk/TransportBulkAction.java">TransportBulkAction</a>
+<a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/index/engine/InternalEngine.java#L1224">InternalEngine.index</a>
+</div>
+</div>
+</details>
+
+<!-- Flow 3 -->
+<details open>
+<summary>Flow C — Search (GET /{index}/_search)</summary>
+<div class="body">
+<table>
+<tr><th>Trigger</th><td>HTTP GET/POST with query DSL body</td></tr>
+<tr><th>Coordinator</th><td>Node receiving request (often same as HTTP node)</td></tr>
+</table>
+<h4>Call chain</h4>
+<pre>RestSearchAction.prepareRequest → SearchRequest
+  → RestCancellableNodeClient.execute(TransportSearchAction)
+  → TransportSearchAction.executeRequest
+      resolve indices (ClusterState + IndexNameExpressionResolver)
+      build SearchShardIterator list
+  → SearchQueryThenFetchAsyncAction
+  → SearchTransportService.sendExecuteQuery (per shard, parallel)
+  → SearchService.executeQueryPhase
+  → QueryPhase.execute(SearchContext)
+  → [optional] fetch phase
+  → SearchPhaseController.merge
+  → RestRefCountedChunkedToXContentListener</pre>
+<h4>Key structures</h4>
+<ul>
+  <li><code>SearchSourceBuilder</code> — query, aggs, sort, from/size, timeout</li>
+  <li><code>ShardSearchRequest</code> — per-shard slice of the search</li>
+  <li><code>SearchContext</code> — IndexSearcher, collectors, aggregations</li>
+  <li><code>SearchResponse</code> — merged hits, aggs, profile, shard failures</li>
+</ul>
+<h4>Side effects</h4>
+<p>Opens/acquires index readers; may populate request/query cache; registers cancellable <code>SearchTask</code>; telemetry via <code>SearchResponseMetrics</code>.</p>
+<h4>Failure modes</h4>
+<ul>
+  <li>Read blocks → <code>ClusterBlockException</code> before fan-out</li>
+  <li>Partial shard failures — controlled by <code>allow_partial_search_results</code></li>
+  <li>Timeout / cancel via HTTP channel close</li>
+  <li>Circuit breaker on large aggs</li>
+</ul>
+<div class="refs">
+<a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/rest/action/search/RestSearchAction.java">RestSearchAction</a>
+<a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/action/search/TransportSearchAction.java">TransportSearchAction</a>
+<a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/search/SearchService.java#L816">SearchService.executeQueryPhase</a>
+</div>
+</div>
+</details>
+
+<!-- Flow 4 -->
+<details open>
+<summary>Flow D — Cluster state update (e.g. create index)</summary>
+<div class="body">
+<h4>Call chain</h4>
+<pre>REST PUT /{index} → MetadataCreateIndexService
+  → createIndexTaskQueue.submitTask(CreateIndexClusterStateUpdateTask)
+  → MasterService.executeAndPublishBatch
+      executor.execute(BatchExecutionContext) → new ClusterState
+      patchVersions(...)
+      clusterStatePublisher.publish
+  → Coordinator.publish → transport to all nodes
+  → ClusterApplierService.applyChanges
+      IndicesClusterStateService.applyClusterState
+  → BatchedRerouteService.reroute (often follows)</pre>
+<h4>Key structures</h4>
+<ul>
+  <li><code>ClusterStateTaskExecutor</code> — batch mutator</li>
+  <li><code>ClusterChangedEvent</code> — diff for appliers</li>
+  <li><code>Metadata</code> / <code>IndexMetadata</code> — index settings, mappings</li>
+  <li><code>RoutingTable</code> — shard assignments after reroute</li>
+</ul>
+<h4>Side effects</h4>
+<p>Cluster state version++; persisted to disk on master via <code>PersistedClusterStateService</code>; appliers create indices/shard folders; ack listeners complete REST response.</p>
+<h4>Failure modes</h4>
+<ul>
+  <li><code>NotMasterException</code> — submitter lost mastership</li>
+  <li><code>ProcessClusterEventTimeoutException</code> — queue wait exceeded</li>
+  <li>Publication failure → master may step down</li>
+  <li><code>acknowledged: false</code> — timeout waiting for node acks</li>
+</ul>
+<div class="refs">
+<a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/cluster/service/MasterService.java#L336">MasterService.executeAndPublishBatch</a>
+<a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/cluster/coordination/Coordinator.java#L1666">Coordinator.publish</a>
+<a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/cluster/service/ClusterApplierService.java#L538">ClusterApplierService.applyChanges</a>
+</div>
+</div>
+</details>
+
+<!-- Flow 5 -->
+<details open>
+<summary>Flow E — Shard allocation &amp; recovery</summary>
+<div class="body">
+<h4>Master path (decision)</h4>
+<pre>BatchedRerouteService.reroute
+  → AllocationService.reroute
+  → BalancedShardsAllocator.allocate
+      allocateUnassigned / moveShards / balance
+  → new RoutingTable in ClusterState → publish</pre>
+<h4>Data node path (materialization)</h4>
+<pre>ClusterApplierService → IndicesClusterStateService.applyClusterState
+  → createOrUpdateShard → indicesService.createShard
+  → RecoverySource (empty store | peer | snapshot)
+  → PeerRecoverySourceService / RecoveryTarget
+  → ShardStateAction.shardStarted → master marks STARTED</pre>
+<h4>Key structures</h4>
+<ul>
+  <li><code>RoutingAllocation</code> — mutable workspace for deciders</li>
+  <li><code>AllocationDeciders</code> — disk watermark, awareness, throttling</li>
+  <li><code>UnassignedInfo</code> — reason, delayed allocation timer</li>
+  <li><code>RecoveryState</code> — phase tracking for recovery API</li>
+</ul>
+<h4>Failure modes</h4>
+<ul>
+  <li>No valid shard copy — shard stays UNASSIGNED (cluster RED)</li>
+  <li>Disk threshold decider — prevents allocation</li>
+  <li>Recovery failure — reroute with new failure count</li>
+  <li>Shard lock contention — retry in <code>createShardWhenLockAvailable</code></li>
+</ul>
+<div class="refs">
+<a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/cluster/routing/allocation/AllocationService.java#L448">AllocationService.reroute</a>
+<a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/indices/cluster/IndicesClusterStateService.java#L291">IndicesClusterStateService</a>
+</div>
+</div>
+</details>
+
+<h3>Shared REST dispatch</h3>
+<p>All REST handlers converge on <code>RestController.dispatchRequest</code>, which matches <code>MethodHandlers</code> in a <code>PathTrie</code>, applies <code>RestInterceptor</code> filters (security, product origin), dispatches to <code>RestHandler.handleRequest</code>, and maps exceptions to HTTP status via <code>ExceptionHandling</code>.</p>
+<div class="refs">
+<a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/rest/RestController.java#L533">RestController.dispatchRequest</a>
+</div>
+
+<p>← <a href="architecture.html">Architecture</a> · <a href="modules.html">Core Modules →</a></p>
+</main>
+<script src="site.js"></script>
+</body>
+</html>

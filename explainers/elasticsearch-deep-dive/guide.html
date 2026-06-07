@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elasticsearch — Tests &amp; Learning Path</title>
+<link rel="stylesheet" href="share.css">
+</head>
+<body>
+<header>
+  <h1>Elasticsearch — Tests &amp; Learning Path</h1>
+  <p class="meta">Build, deploy, top files, risks, open questions</p>
+  <nav>
+    <a href="index.html">Overview</a>
+    <a href="architecture.html">Architecture</a>
+    <a href="execution.html">Execution Flows</a>
+    <a href="modules.html">Core Modules</a>
+    <a href="data.html">Data &amp; Interfaces</a>
+    <a href="runtime.html">Runtime &amp; Errors</a>
+    <a href="guide.html" class="active">Tests &amp; Learning Path</a>
+  </nav>
+</header>
+<main>
+
+<h2>10. Tests</h2>
+
+<h3>Framework</h3>
+<p>JUnit 4.13.2 on RandomizedTesting runner 2.8.2. Base class <code>ESTestCase</code> in <code>test/framework</code>. Lucene test framework for index-level tests.</p>
+
+<h3>Test tiers</h3>
+<table>
+<tr><th>Tier</th><th>Gradle task</th><th>Source dir</th><th>What it proves</th></tr>
+<tr><td>Unit</td><td><code>test</code></td><td><code>src/test/java</code></td><td>Class-level logic with mocks</td></tr>
+<tr><td>Internal cluster</td><td><code>internalClusterTest</code></td><td><code>src/internalClusterTest/java</code></td><td>Multi-node in one JVM (<code>ESIntegTestCase</code>)</td></tr>
+<tr><td>YAML REST</td><td><code>yamlRestTest</code></td><td><code>src/yamlRestTest/</code></td><td>REST API contract from JSON spec</td></tr>
+<tr><td>Java REST</td><td><code>javaRestTest</code></td><td><code>src/javaRestTest/java</code></td><td>Black-box cluster via HTTP</td></tr>
+<tr><td>BWC</td><td><code>bwcTest</code></td><td><code>distribution/bwc/</code></td><td>Upgrade from old ES versions</td></tr>
+</table>
+
+<h3>Commands</h3>
+<pre>./gradlew check                              # full verification
+./gradlew test                               # all unit tests
+./gradlew :server:test --tests 'org.elasticsearch.package.ClassName'
+./gradlew internalClusterTest
+./gradlew :rest-api-spec:yamlRestTest
+./gradlew run                                # run ES from source
+./gradlew localDistro                        # build tarball</pre>
+
+<h3>What tests reveal</h3>
+<ul>
+  <li>YAML REST tests are the authoritative REST behavior spec — if YAML passes, API contract is correct.</li>
+  <li><code>ESIntegTestCase</code> tests prove cluster state transitions (allocation, recovery) end-to-end.</li>
+  <li><code>InternalEngineTests</code> specify durability, seq_no, and conflict semantics.</li>
+  <li><code>muted-tests.yml</code> lists flaky tests temporarily excluded from CI — signals fragile areas.</li>
+</ul>
+
+<h3>Likely gaps</h3>
+<ul>
+  <li>Full ESS cloud/stateless object-store paths — mostly x-pack QA, not vanilla OSS tests.</li>
+  <li>Extreme scale (millions of shards) — benchmarked, not CI-tested.</li>
+  <li>Exhaustive failure injection for network partitions — some in <code>qa/</code>, not complete.</li>
+</ul>
+
+<h2>11. Build, run, deploy</h2>
+
+<h3>Build</h3>
+<pre>export JAVA_HOME=/path/to/jdk-21
+./gradlew localDistro          # platform tarball → distribution/archives/
+./gradlew :distribution:archives:linux-tar:assemble
+./gradlew buildDockerImage</pre>
+<p>Evidence: <code>BUILDING.md</code>, <code>TESTING.asciidoc</code>, <code>CONTRIBUTING.md</code>.</p>
+
+<h3>Run locally</h3>
+<pre>./gradlew run
+# default: basic license, security ON, elastic:password
+./gradlew run -Dtests.es.xpack.security.enabled=false
+./gradlew run --debug-jvm</pre>
+
+<h3>Deploy</h3>
+<ul>
+  <li>Tar/zip/deb/rpm from <code>distribution/</code></li>
+  <li>Docker images via <code>distribution/docker</code> Gradle tasks</li>
+  <li>Elastic Cloud uses separate orchestration; <code>stateless</code> x-pack plugin targets object-store architecture</li>
+  <li>CI: Buildkite (<code>.buildkite/</code>) + GitHub Actions</li>
+</ul>
+
+<h2>12. Most important files to understand first</h2>
+<table>
+<tr><th>#</th><th>File</th><th>Why</th></tr>
+<tr><td>1</td><td><a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/bootstrap/Elasticsearch.java">bootstrap/Elasticsearch.java</a></td><td>JVM entry, 3-phase init</td></tr>
+<tr><td>2</td><td><a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/node/Node.java">node/Node.java</a></td><td>Start/stop ordering of all services</td></tr>
+<tr><td>3</td><td><a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/node/NodeConstruction.java">node/NodeConstruction.java</a></td><td>Guice wiring, plugin registration</td></tr>
+<tr><td>4</td><td><a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/cluster/ClusterState.java">cluster/ClusterState.java</a></td><td>Central metadata object</td></tr>
+<tr><td>5</td><td><a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/cluster/service/MasterService.java">cluster/service/MasterService.java</a></td><td>Cluster state mutation pipeline</td></tr>
+<tr><td>6</td><td><a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/rest/RestController.java">rest/RestController.java</a></td><td>HTTP routing &amp; errors</td></tr>
+<tr><td>7</td><td><a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/action/support/TransportAction.java">action/support/TransportAction.java</a></td><td>Action execution pattern</td></tr>
+<tr><td>8</td><td><a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/action/bulk/TransportBulkAction.java">action/bulk/TransportBulkAction.java</a></td><td>Indexing coordinator</td></tr>
+<tr><td>9</td><td><a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/index/shard/IndexShard.java">index/shard/IndexShard.java</a></td><td>Shard-level operations hub</td></tr>
+<tr><td>10</td><td><a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/index/engine/InternalEngine.java">index/engine/InternalEngine.java</a></td><td>Lucene + translog integration</td></tr>
+<tr><td>11</td><td><a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/search/SearchService.java">search/SearchService.java</a></td><td>Shard search execution</td></tr>
+<tr><td>12</td><td><a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/action/search/TransportSearchAction.java">action/search/TransportSearchAction.java</a></td><td>Distributed search coordinator</td></tr>
+<tr><td>13</td><td><a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/indices/cluster/IndicesClusterStateService.java">indices/cluster/IndicesClusterStateService.java</a></td><td>Applies routing to local shards</td></tr>
+<tr><td>14</td><td><a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/cluster/routing/allocation/AllocationService.java">cluster/routing/allocation/AllocationService.java</a></td><td>Shard placement</td></tr>
+<tr><td>15</td><td><a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/plugins/Plugin.java">plugins/Plugin.java</a></td><td>Extension model</td></tr>
+<tr><td>16</td><td><a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/action/ActionModule.java">action/ActionModule.java</a></td><td>Action registration catalog</td></tr>
+<tr><td>17</td><td><a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/cluster/coordination/Coordinator.java">cluster/coordination/Coordinator.java</a></td><td>Election &amp; publication</td></tr>
+<tr><td>18</td><td><a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/test/framework/src/main/java/org/elasticsearch/test/ESTestCase.java">test/ESTestCase.java</a></td><td>Test conventions</td></tr>
+</table>
+
+<h2>13. Things that are confusing or risky</h2>
+<ul>
+  <li><strong>Master vs coordinating vs data roles</strong> — any node can coordinate searches; only master-eligible nodes vote; data nodes hold shards.</li>
+  <li><strong>Bulk-only index path</strong> — single index is wrapped as bulk; debugging must trace through <code>BulkOperation</code>.</li>
+  <li><strong>Async everywhere</strong> — stack traces cross thread pools; use action tracing / slow logs.</li>
+  <li><strong>Wire protocol evolution</strong> — mixed-version clusters require <code>TransportVersion</code> guards on every new field.</li>
+  <li><strong>Multi-project migration</strong> — APIs and <code>ClusterState</code> still transitioning; watch <code>@FixForMultiProject</code>.</li>
+  <li><strong>Stateless vs classic</strong> — x-pack stateless replaces local durability with object store; completely different engine path (<code>StatelessPlugin</code>).</li>
+  <li><code>NodeConstruction</code> size — 1800+ lines; hard to navigate; use IDE structure view filtered by package.</li>
+  <li><strong>Test flakiness</strong> — check <code>muted-tests.yml</code> before assuming your change broke CI.</li>
+</ul>
+
+<h2>14. Suggested learning path</h2>
+<ol>
+  <li>Read <code>README.asciidoc</code> + <code>CONTRIBUTING.md</code> for build/run.</li>
+  <li>Trace <code>Elasticsearch.main</code> → <code>Node.start</code> (startup mental model).</li>
+  <li>Pick one REST call: set breakpoint in <code>RestIndexAction</code>, follow into <code>InternalEngine.index</code>.</li>
+  <li>Read <code>ClusterState</code> javadoc + one executor (<code>MetadataCreateIndexService</code>).</li>
+  <li>Run <code>./gradlew :server:test --tests InternalEngineTests</code> and read tests as spec.</li>
+  <li>Trace search: <code>RestSearchAction</code> → <code>SearchService.executeQueryPhase</code>.</li>
+  <li>Read <code>IndicesClusterStateService</code> for allocation → shard creation link.</li>
+  <li>Explore one module (<code>lang-painless</code>) to learn plugin SPI.</li>
+  <li>Skim x-pack <code>core</code> + <code>security</code> if touching auth.</li>
+  <li>Read YAML REST test for your API in <code>rest-api-spec</code>.</li>
+</ol>
+
+<h2>15. Open questions</h2>
+<p>Items not fully determined from static code review alone:</p>
+<ul>
+  <li><strong>Production ESS topology</strong> — exact orchestration of stateless index/search roles in cloud (code exists in x-pack stateless but deployment wiring is external).</li>
+  <li><strong>Default thread pool sizes</strong> — depend on node specs and settings; need runtime config docs + <code>ThreadPool</code> settings at deploy time.</li>
+  <li><strong>Feature flag defaults</strong> — some behavior gated by <code>FeatureService</code> cluster features; defaults change between minor versions.</li>
+  <li><strong>Exact publication latency SLOs</strong> — implementation has timeouts but operational targets are product/SLA, not in repo.</li>
+  <li><strong>Complete entitlement policy surface</strong> — evolving with JDK versions; need running JVM to enumerate effective policies.</li>
+</ul>
+
+<div class="note">
+  Full pinned source: <a href="https://github.com/elastic/elasticsearch/tree/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6">github.com/elastic/elasticsearch @ f96bad22</a>
+</div>
+
+<p>← <a href="runtime.html">Runtime &amp; Errors</a> · <a href="index.html">Back to Overview</a></p>
+</main>
+</body>
+</html>

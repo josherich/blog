@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elasticsearch — Core Modules</title>
+<link rel="stylesheet" href="share.css">
+</head>
+<body>
+<header>
+  <h1>Elasticsearch — Core Modules</h1>
+  <p class="meta">Module-by-module responsibilities</p>
+  <nav>
+    <a href="index.html">Overview</a>
+    <a href="architecture.html">Architecture</a>
+    <a href="execution.html">Execution Flows</a>
+    <a href="modules.html" class="active">Core Modules</a>
+    <a href="data.html">Data &amp; Interfaces</a>
+    <a href="runtime.html">Runtime &amp; Errors</a>
+    <a href="guide.html">Tests &amp; Learning Path</a>
+  </nav>
+</header>
+<main>
+
+<div class="toolbar">
+  <button type="button" data-expand="open">Expand all</button>
+  <button type="button" data-expand="closed">Collapse all</button>
+</div>
+
+<h2>5. Core modules</h2>
+
+<details open>
+<summary><code>server/</code> — the kernel</summary>
+<div class="body">
+<p><strong>Responsibility:</strong> Entire node runtime not delegated to modules/x-pack.</p>
+<p><strong>Key packages:</strong></p>
+<ul>
+  <li><code>bootstrap</code> — <code>Elasticsearch</code>, <code>BootstrapChecks</code></li>
+  <li><code>node</code> — <code>Node</code>, <code>NodeConstruction</code></li>
+  <li><code>cluster</code> — <code>ClusterState</code>, routing, allocation, coordination</li>
+  <li><code>action</code> — all transport actions (bulk, search, admin)</li>
+  <li><code>index</code> — shard, engine, translog, mapper, merge</li>
+  <li><code>search</code> — query DSL, aggregations, <code>SearchService</code></li>
+  <li><code>rest</code> — HTTP handler layer</li>
+  <li><code>transport</code> — inter-node RPC</li>
+  <li><code>gateway</code> — metadata persistence</li>
+  <li><code>indices</code> — <code>IndicesService</code>, cluster-state listener</li>
+</ul>
+<p><strong>Depends on:</strong> <code>libs/core</code>, <code>libs/x-content</code>, Lucene, Log4j, Guice.</p>
+<p><strong>Depended on by:</strong> every module plugin at runtime (classpath).</p>
+<p><strong>Invariants:</strong> Cluster state updates only on master; shard writes primary-first; transport thread must not block on Lucene.</p>
+</div>
+</details>
+
+<details open>
+<summary><code>libs/</code> — shared foundations</summary>
+<div class="body">
+<table>
+<tr><th>Lib</th><th>Purpose</th></tr>
+<tr><td><code>core</code></td><td>Base exceptions, collections, <code>BytesReference</code>, ref counting</td></tr>
+<tr><td><code>x-content</code></td><td>JSON/SMILE/CBOR parsing (<code>XContentParser</code>)</td></tr>
+<tr><td><code>cli</code></td><td>Command-line utilities for distribution tools</td></tr>
+<tr><td><code>entitlement</code></td><td>JDK 24+ sandbox policy enforcement for plugins</td></tr>
+<tr><td><code>native</code></td><td>JNI: zstd, vectorization hooks, process limits</td></tr>
+<tr><td><code>plugin-api</code></td><td>Stable plugin surface (new SPI direction)</td></tr>
+<tr><td><code>ssl-config</code></td><td>TLS context building shared with x-pack security</td></tr>
+</table>
+</div>
+</details>
+
+<details open>
+<summary><code>modules/</code> — bundled plugins</summary>
+<div class="body">
+<table>
+<tr><th>Module</th><th>Role</th></tr>
+<tr><td><code>transport-netty4</code></td><td><code>Netty4Plugin</code> — HTTP + transport implementations</td></tr>
+<tr><td><code>lang-painless</code></td><td>Default scripting language for aggs/runtime fields</td></tr>
+<tr><td><code>ingest-common</code></td><td>Built-in ingest processors (grok, date, set…)</td></tr>
+<tr><td><code>reindex</code></td><td>Reindex / update-by-query / delete-by-query actions</td></tr>
+<tr><td><code>repository-s3|gcs|azure</code></td><td>Snapshot repositories to cloud object stores</td></tr>
+<tr><td><code>analysis-common</code></td><td>Standard analyzers, token filters</td></tr>
+<tr><td><code>aggregations</code></td><td>Many agg implementations registered via <code>SearchPlugin</code></td></tr>
+<tr><td><code>data-streams</code></td><td>Data stream metadata, rollover hooks</td></tr>
+<tr><td><code>mapper-extras</code></td><td>Additional field types (dense_vector extras, etc.)</td></tr>
+<tr><td><code>parent-join</code></td><td><code>join</code> field type for parent/child</td></tr>
+<tr><td><code>rank-eval</code></td><td>Ranking evaluation API</td></tr>
+<tr><td><code>kibana</code></td><td>System index descriptors for Kibana</td></tr>
+</table>
+<p>Each module is a JAR with <code>plugin-descriptor.properties</code> and one or more <code>Plugin</code> implementations.</p>
+</div>
+</details>
+
+<details open>
+<summary><code>x-pack/plugin/</code> — licensed features (selected)</summary>
+<div class="body">
+<table>
+<tr><th>Plugin</th><th>Role</th></tr>
+<tr><td><code>core</code></td><td>X-Pack foundation, license checking, unified setup</td></tr>
+<tr><td><code>security</code></td><td>Authn/z, TLS, role mappings, audit</td></tr>
+<tr><td><code>ml</code></td><td>Machine learning jobs, model deployment</td></tr>
+<tr><td><code>esql</code></td><td>ES|QL query language (ANTLR parser, columnar exec)</td></tr>
+<tr><td><code>sql</code></td><td>SQL translator to search DSL</td></tr>
+<tr><td><code>ccr</code></td><td>Cross-cluster replication</td></tr>
+<tr><td><code>ilm</code> / <code>slm</code></td><td>Index / snapshot lifecycle management</td></tr>
+<tr><td><code>watcher</code></td><td>Alerting on scheduled queries</td></tr>
+<tr><td><code>stateless</code></td><td>Object-store-backed shard engine (cloud architecture)</td></tr>
+<tr><td><code>autoscaling</code></td><td>Capacity signals for orchestrators</td></tr>
+<tr><td><code>async-search</code></td><td>Long-running search persistence</td></tr>
+</table>
+<p><strong>Non-obvious:</strong> Even "basic" distributions load a subset of x-pack; license level gates features at runtime via <code>LicenseService</code>.</p>
+</div>
+</details>
+
+<details open>
+<summary>Important server subsystems (within <code>server/</code>)</summary>
+<div class="body">
+
+<h4><code>action/</code> — transport action layer</h4>
+<p><code>ActionModule</code> registers hundreds of <code>TransportAction</code> instances. Pattern: <code>TransportFooAction extends TransportMasterNodeAction</code> (cluster) or <code>TransportBarAction extends TransportAction</code> (data).</p>
+<p><code>TransportAction.execute</code> runs <code>ActionFilter</code> chain then <code>doExecute</code> on a configured <code>Executor</code> (thread pool).</p>
+
+<h4><code>index/mapper/</code> — document mapping</h4>
+<p><code>DocumentMapper</code>, <code>MappingLookup</code>, field mappers (<code>TextFieldMapper</code>, <code>KeywordFieldMapper</code>, …). Parses JSON source into <code>ParsedDocument</code> with Lucene fields. Dynamic mapping triggers <code>MappingUpdatedAction</code> cluster task.</p>
+
+<h4><code>index/engine/</code> — per-shard storage engine</h4>
+<p><code>Engine</code> interface; <code>InternalEngine</code> is default. Handles index/delete/get, refresh, flush, merge, translog retention. <code>EngineFactory</code> pluggable (used by x-pack stateless for <code>IndexEngine</code>/<code>SearchEngine</code>).</p>
+
+<h4><code>search/</code> — query execution</h4>
+<p><code>SearchModule</code> registers queries, aggs, highlighters, suggesters. <code>QueryPhase</code> builds Lucene <code>Weight</code>, collects top docs. <code>FetchPhase</code> loads stored fields / source.</p>
+
+<h4><code>cluster/coordination/</code> — master election</h4>
+<p><code>Coordinator</code> implements pre-voting, leader checks, publication. Replaces legacy Zen discovery. Persists voting configuration in cluster state.</p>
+
+<h4><code>gateway/</code> — metadata on disk</h4>
+<p><code>PersistedClusterStateService</code> writes cluster metadata to disk (Lucid-format data under <code>data/</code>). <code>GatewayService</code> blocks indices until state recovered.</p>
+
+</div>
+</details>
+
+<h3>Dependency direction</h3>
+<div class="diagram">libs/*  ←  server  ←  modules/* / plugins/* / x-pack/*
+                ↑
+         distribution (packages server + modules into tar/docker)
+                ↑
+         client/rest (HTTP only, no server)</div>
+
+<p>Plugins never depend on each other directly at compile time; they interact only through registries and cluster state.</p>
+
+<p>← <a href="execution.html">Execution Flows</a> · <a href="data.html">Data &amp; Interfaces →</a></p>
+</main>
+<script src="site.js"></script>
+</body>
+</html>

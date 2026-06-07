@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elasticsearch — Data &amp; Interfaces</title>
+<link rel="stylesheet" href="share.css">
+</head>
+<body>
+<header>
+  <h1>Elasticsearch — Data &amp; Interfaces</h1>
+  <p class="meta">Persistence, serialization, external APIs</p>
+  <nav>
+    <a href="index.html">Overview</a>
+    <a href="architecture.html">Architecture</a>
+    <a href="execution.html">Execution Flows</a>
+    <a href="modules.html">Core Modules</a>
+    <a href="data.html" class="active">Data &amp; Interfaces</a>
+    <a href="runtime.html">Runtime &amp; Errors</a>
+    <a href="guide.html">Tests &amp; Learning Path</a>
+  </nav>
+</header>
+<main>
+
+<h2>6. Data model and persistence</h2>
+
+<h3>Domain entities</h3>
+<table>
+<tr><th>Entity</th><th>Representation</th><th>Storage</th></tr>
+<tr><td>Index</td><td><code>IndexMetadata</code> in cluster state</td><td>Persisted metadata + on-disk shard dirs</td></tr>
+<tr><td>Shard</td><td><code>IndexShard</code> + <code>ShardRouting</code></td><td><code>{data}/nodes/{id}/indices/{uuid}/{shard_id}/</code></td></tr>
+<tr><td>Document</td><td>Lucene docs + <code>_source</code> stored field</td><td>Segments under <code>index/</code></td></tr>
+<tr><td>Translog</td><td><code>Translog</code> / <code>TranslogWriter</code></td><td><code>translog/</code> directory per shard</td></tr>
+<tr><td>Cluster state</td><td><code>ClusterState</code> object</td><td>In-memory all nodes; persisted on master</td></tr>
+<tr><td>Snapshot</td><td><code>RepositoryData</code> in blob store</td><td>S3/GCS/fs repository</td></tr>
+</table>
+
+<h3>On-disk shard layout</h3>
+<pre>{data.path}/nodes/{nodeId}/indices/{indexUUID}/{shardId}/
+  translog/          ← write-ahead log (durability before flush)
+  index/             ← Lucene segments (_0.si, _0.cfs, …)
+  state/             ← shard state (seq_no, retention leases)</pre>
+
+<h3>Write path durability</h3>
+<ol>
+  <li>Operation appended to translog (configurable <code>durability: request|async</code>)</li>
+  <li>Indexed into Lucene buffer (in-memory)</li>
+  <li>Refresh makes visible to search (new searcher on <code>ReferenceManager</code>)</li>
+  <li>Flush commits Lucene segments; translog generation trimmed per retention policy</li>
+</ol>
+<div class="refs">
+<a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/index/translog/Translog.java">Translog.java</a>
+<a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/index/engine/InternalEngine.java">InternalEngine.java</a>
+</div>
+
+<h3>Sequence numbers &amp; versioning</h3>
+<p>Each write gets a monotonic <code>_seq_no</code> and <code>_primary_term</code> on the primary. Replicas apply operations in order. Optimistic concurrency uses <code>if_seq_no</code> / <code>if_primary_term</code>. Global checkpoint tracks replication progress.</p>
+
+<h3>Cluster state serialization</h3>
+<p><code>ClusterState</code> implements <code>NamedWriteable</code> — binary wire format for publication. Metadata also serialized to XContent for APIs. <code>PersistedClusterStateService</code> writes incremental metadata commits (similar in spirit to Lucene commits).</p>
+
+<h3>Mapping &amp; document parsing</h3>
+<p>JSON source → <code>XContentParser</code> → <code>DocumentParser</code> → <code>ParsedDocument</code> → Lucene <code>Document</code>. Field types define indexing (inverted index, doc values, norms). Dynamic templates control auto-mapping.</p>
+
+<h3>Configuration</h3>
+<table>
+<tr><th>Source</th><th>Format</th><th>Loaded into</th></tr>
+<tr><td><code>config/elasticsearch.yml</code></td><td>YAML</td><td><code>Settings</code></td></tr>
+<tr><td><code>config/jvm.options</code></td><td>JVM flags</td><td>ServerCli launcher</td></tr>
+<tr><td><code>config/log4j2.properties</code></td><td>Log4j</td><td><code>LogConfigurator</code></td></tr>
+<tr><td>Keystore</td><td>Binary secrets</td><td><code>SecureSettings</code></td></tr>
+<tr><td>Env vars</td><td><code>ES_*</code> (via settings)</td><td>Some settings allow env substitution</td></tr>
+</table>
+
+<h2>7. External interfaces</h2>
+
+<h3>REST API</h3>
+<p>Spec-driven: <code>rest-api-spec/src/main/resources/rest-api-spec/api/*.json</code> defines paths, methods, params. Handlers implement <code>RestHandler</code> with <code>Route</code> declarations. API versioning via <code>RestApiVersion</code> and compatibility headers (<code>REST_API_COMPATIBILITY.md</code>).</p>
+
+<h3>Transport (internal RPC)</h3>
+<p>Binary protocol over TCP (Netty). Actions addressed by name string. Used for inter-node replication, search fan-out, cluster state publication. Not a supported public API (Java transport client removed).</p>
+
+<h3>Java REST client</h3>
+<p><code>client/rest</code> — low-level HTTP; <code>RestClient</code> wraps Apache HttpClient/async. Sniffer discovers nodes.</p>
+
+<h3>Repository / snapshot API</h3>
+<p><code>RepositoriesService</code> manages <code>Repository</code> implementations. Snapshots are incremental segment-level backups to blob stores.</p>
+
+<h3>Cross-cluster search/replication</h3>
+<p>Remote clusters configured in settings; <code>RemoteTransportClient</code> (x-pack) opens connections to remote coordinators.</p>
+
+<h3>System indices</h3>
+<p>Hidden indices (Kibana, ML, security) with descriptor metadata in <code>SystemIndices</code>. Access controlled via headers and security plugin.</p>
+
+<div class="note">
+  <strong>External references:</strong>
+  <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/rest-apis.html">REST APIs reference</a> ·
+  <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html">Index API</a> ·
+  <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html">Search API</a> ·
+  <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshot-restore.html">Snapshot/restore</a>
+</div>
+
+<p>← <a href="modules.html">Core Modules</a> · <a href="runtime.html">Runtime &amp; Errors →</a></p>
+</main>
+</body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elasticsearch — Runtime &amp; Errors</title>
+<link rel="stylesheet" href="share.css">
+</head>
+<body>
+<header>
+  <h1>Elasticsearch — Runtime &amp; Errors</h1>
+  <p class="meta">Error handling, concurrency, lifecycle, code walkthroughs</p>
+  <nav>
+    <a href="index.html">Overview</a>
+    <a href="architecture.html">Architecture</a>
+    <a href="execution.html">Execution Flows</a>
+    <a href="modules.html">Core Modules</a>
+    <a href="data.html">Data &amp; Interfaces</a>
+    <a href="runtime.html" class="active">Runtime &amp; Errors</a>
+    <a href="guide.html">Tests &amp; Learning Path</a>
+  </nav>
+</header>
+<main>
+
+<div class="toolbar">
+  <button type="button" data-expand="open">Expand all</button>
+  <button type="button" data-expand="closed">Collapse all</button>
+</div>
+
+<h2>8. Error handling and edge cases</h2>
+
+<h3>Exception hierarchy</h3>
+<p>Most failures extend <code>ElasticsearchException</code>, carrying HTTP status via <code>status()</code>. REST layer maps exceptions in <code>RestController</code> / <code>ElasticsearchException</code> to JSON error bodies with <code>type</code>, <code>reason</code>, <code>stack_trace</code> (if enabled).</p>
+<ul>
+  <li><code>ElasticsearchStatusException</code> — explicit REST status</li>
+  <li><code>ClusterBlockException</code> — index/cluster blocked (read/write/metadata)</li>
+  <li><code>IndexNotFoundException</code>, <code>DocumentMissingException</code></li>
+  <li><code>VersionConflictEngineException</code> — OCC failure at engine</li>
+  <li><code>CircuitBreakingException</code> — JVM heap / request breaker tripped</li>
+</ul>
+
+<h3>ActionListener pattern</h3>
+<p>Async throughout: transport actions take <code>ActionListener&lt;Response&gt;</code>. Composed via <code>ActionListener#delegateFailure</code>, <code>SubscribableListener</code>. Failures propagate to listener without blocking threads.</p>
+
+<h3>Validation layers</h3>
+<ol>
+  <li>REST param parsing (<code>RestRequest</code>)</li>
+  <li><code>ActionRequest#validate()</code> → <code>ActionRequestValidationException</code></li>
+  <li>Cluster blocks check (master actions, search, bulk)</li>
+  <li>Shard-level engine exceptions (per bulk item)</li>
+</ol>
+
+<h3>Retries</h3>
+<ul>
+  <li>Clients expected to retry 429/503 with backoff (not automatic in server)</li>
+  <li>Internal: peer recovery retries, snapshot retries, repository blob retries</li>
+  <li>Master task resubmission on <code>NotMasterException</code> in some paths</li>
+</ul>
+
+<h3>Circuit breakers</h3>
+<p><code>CircuitBreakerService</code> tracks in-flight bytes (fielddata, request, accounting). <code>RestController</code> checks in-flight HTTP breaker before dispatch. Search aggregations use <code>BreakerService</code> on big structures.</p>
+
+<h2>9. Concurrency and lifecycle</h2>
+
+<h3>Thread pools</h3>
+<table>
+<tr><th>Pool</th><th>Typical work</th></tr>
+<tr><td><code>write</code></td><td>Indexing, bulk shard ops</td></tr>
+<tr><td><code>search</code></td><td>Query/fetch phases</td></tr>
+<tr><td><code>search_coordination</code></td><td>Search coordinator merge</td></tr>
+<tr><td><code>management</code></td><td>Cluster state tasks (master)</td></tr>
+<tr><td><code>generic</code></td><td>Misc async work</td></tr>
+<tr><td><code>snapshot</code></td><td>Snapshot threads</td></tr>
+<tr><td><code>refresh</code></td><td>Scheduled refresh</td></tr>
+</table>
+<p><strong>Rule:</strong> <code>TransportService</code> threads must not execute blocking Lucene IO; shard operations use <code>Engine</code> with internal locking / <code>AsyncIOProcessor</code> for translog fsync.</p>
+
+<h3>Locking &amp; consistency</h3>
+<ul>
+  <li><strong>Primary shard</strong> — single writer; seq_no ordering</li>
+  <li><strong>Engine</strong> — <code>KeyedLock</code> per id for concurrent index/delete same doc</li>
+  <li><strong>Cluster state</strong> — single-threaded master service; immutable published states</li>
+  <li><strong>IndexShard</strong> — <code>ReentrantLock</code> for engine lifecycle</li>
+  <li><strong>Translog</strong> — fsync serialisation via <code>AsyncIOProcessor</code></li>
+</ul>
+
+<h3>Cancellation</h3>
+<p><code>TaskManager</code> registers tasks with parent links. Search uses <code>CancellableTask</code>; HTTP channel close triggers cancel. <code>SearchTaskWatchdog</code> kills long searches.</p>
+
+<h3>Shutdown</h3>
+<pre>Node.close() → reverse start order
+  HTTP stop → cluster leave → indices close → thread pool shutdown
+  Plugins LifecycleComponent.stop() → NodeEnvironment.close()</pre>
+<p>Shard flush on close attempts to persist translog + Lucene commit.</p>
+
+<h3>Security-sensitive paths</h3>
+<ul>
+  <li>x-pack <code>Security</code> plugin — <code>ActionFilter</code> for authz before actions</li>
+  <li><code>EntitlementBootstrap</code> — limits plugin native/file/network access (JDK 24+)</li>
+  <li><code>SecureSettings</code> — keystore secrets never logged</li>
+  <li>Scripting sandbox — Painless whitelist; other langs restricted</li>
+</ul>
+
+<h2>10. Important code walkthroughs</h2>
+
+<details open>
+<summary>Walkthrough 1 — <code>TransportAction.execute</code></summary>
+<div class="body">
+<p><strong>Purpose:</strong> Universal entry for all named actions (index, search, admin).</p>
+<ol>
+  <li><code>execute(task, request, listener)</code> calls <code>handleExecution</code>.</li>
+  <li>Registers task with <code>TaskManager</code> (for cancellation, headers).</li>
+  <li>Runs each <code>ActionFilter</code> in order (security, logging).</li>
+  <li>Dispatches <code>doExecute</code> on the action's <code>Executor</code> thread pool.</li>
+  <li>Listener receives response or exception; resources released via <code>Releasables</code>.</li>
+</ol>
+<p><strong>Why it matters:</strong> Adding a new API requires a new <code>TransportAction</code> subclass + registration in <code>ActionModule</code> + optional <code>RestHandler</code>. Forgetting registration → "No handler for action".</p>
+<p><strong>Break risk:</strong> Running <code>doExecute</code> on wrong executor can block transport threads and stall the cluster.</p>
+<div class="refs">
+<a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/action/support/TransportAction.java#L58">TransportAction.execute</a>
+</div>
+</div>
+</details>
+
+<details open>
+<summary>Walkthrough 2 — <code>InternalEngine.index</code></summary>
+<div class="body">
+<p><strong>Purpose:</strong> Apply a single index operation on the primary with Lucene + translog semantics.</p>
+<ol>
+  <li><code>indexingStrategyForOperation</code> decides: index, update, duplicate, skip (soft delete).</li>
+  <li>On primary origin: assign <code>seqNo</code> via <code>generateSeqNoForOperationOnPrimary</code>.</li>
+  <li>Add to translog for durability.</li>
+  <li>Update Lucene via <code>IndexWriter</code> (add/update document).</li>
+  <li>Return <code>IndexResult</code> with version, seqNo, failure.</li>
+</ol>
+<p><strong>Edge cases:</strong> Version conflicts return failure without indexing; soft deletes use <code>SoftDeletesRetentionMergePolicy</code>; append-only mode skips update path.</p>
+<p><strong>Break risk:</strong> Incorrect seq_no assignment corrupts replica consistency; translog/Lucene ordering bugs lose durability.</p>
+<div class="refs">
+<a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/index/engine/InternalEngine.java#L1224">InternalEngine.index</a>
+</div>
+</div>
+</details>
+
+<details open>
+<summary>Walkthrough 3 — <code>MasterService.executeAndPublishBatch</code></summary>
+<div class="body">
+<p><strong>Purpose:</strong> Atomically run queued cluster-state tasks and publish one new state.</p>
+<ol>
+  <li>Drain task batch from priority queue.</li>
+  <li>Call executor's <code>execute(BatchExecutionContext)</code> — tasks mutate builder starting from previous state.</li>
+  <li><code>patchVersions</code> bumps cluster state version and term metadata.</li>
+  <li>If changed, call <code>publishClusterStateUpdate</code> → <code>Coordinator.publish</code>.</li>
+  <li>On success, run task listeners; on failure, <code>onBatchFailure</code>.</li>
+</ol>
+<p><strong>Why batched:</strong> Amortizes publication cost; related tasks (e.g. multiple mapping updates) merge into one state version.</p>
+<p><strong>Break risk:</strong> Non-deterministic executor → divergent states across master re-elections; must be pure function of inputs + previous state.</p>
+<div class="refs">
+<a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/cluster/service/MasterService.java#L336">MasterService.executeAndPublishBatch</a>
+</div>
+</div>
+</details>
+
+<details open>
+<summary>Walkthrough 4 — <code>RestController.dispatchRequest</code></summary>
+<div class="body">
+<p><strong>Purpose:</strong> Route HTTP request to handler with filters and error handling.</p>
+<ol>
+  <li>Resolve route from <code>PathTrie</code> by method + path.</li>
+  <li>Apply <code>RestInterceptor</code> chain (security, product checks).</li>
+  <li>Parse <code>RestApiVersion</code> from headers/params.</li>
+  <li>Call <code>handler.prepareRequest</code> → returns <code>RestChannelConsumer</code>.</li>
+  <li>Consumer runs with <code>NodeClient</code>, writes to <code>RestChannel</code>.</li>
+  <li>Uncaught exceptions → JSON error response with appropriate status.</li>
+</ol>
+<p><strong>Break risk:</strong> Consuming request body twice; missing ref-count release on chunked responses.</p>
+<div class="refs">
+<a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/rest/RestController.java#L533">RestController.dispatchRequest</a>
+</div>
+</div>
+</details>
+
+<h2>11. Non-obvious insights</h2>
+
+<details open>
+<summary>Hidden coupling &amp; conventions</summary>
+<div class="body">
+<ul>
+  <li><strong>Everything is an action.</strong> Even single-doc index goes through bulk machinery (<code>TransportIndexAction</code> → <code>TransportBulkAction</code>).</li>
+  <li><strong>Cluster state is the source of truth</strong> for routing; data nodes cache it via applier thread — stale cache window is bounded by publication latency.</li>
+  <li><strong>Guice injector</strong> is built once; services are singletons. Testing uses <code>NodeConstruction</code> with test overrides.</li>
+  <li><strong>NamedWriteable registry</strong> must list every custom type serialized over transport — forgetting breaks wire compatibility.</li>
+  <li><strong>TransportVersion vs Version</strong> — wire protocol evolves separately from release version.</li>
+  <li><strong>Project metadata</strong> — ES 9.x multi-project work adds <code>ProjectMetadata</code> layer inside <code>ClusterState</code> (<code>@FixForMultiProject</code> annotations mark migration).</li>
+  <li><strong>System indices</strong> — hard-coded descriptors; Kibana/ML depend on exact names and mappings.</li>
+  <li><strong>RandomizedTesting</strong> — tests run with random seeds, time zones, Lucene codecs; failures need <code>-Dtests.seed</code> to reproduce.</li>
+  <li><strong>Entitlements</strong> — new plugin sandbox; policy patches loaded from <code>es.entitlements.policy.*</code> resources in phase 2 bootstrap.</li>
+  <li><strong>Performance hot paths</strong> — avoid object allocation in bulk indexing; Lucene merge scheduling affects write latency; search uses <code>IndexSearcher</code> thread pool per shard.</li>
+</ul>
+</div>
+</details>
+
+<h2>12. Architecture diagrams</h2>
+
+<h3>Request flow (index)</h3>
+<div class="diagram">Client
+  │ HTTP PUT
+  ▼
+Netty HTTP ──► RestController ──► RestIndexAction
+  │                                  │
+  │                                  ▼
+  │                            TransportBulkAction
+  │                                  │
+  │                    ┌─────────────┴─────────────┐
+  │                    ▼                           ▼
+  │            [coordinating node]          [primary shard node]
+  │            route by ClusterState          TransportShardBulkAction
+  │                                         IndexShard → InternalEngine
+  │                                         replicate → replica nodes
+  ▼
+JSON response ◄── RestToXContentListener</div>
+
+<h3>Cluster state lifecycle</h3>
+<div class="diagram">[Master node]
+  MasterService task queue
+       │ execute executor
+       ▼
+  new ClusterState (version N+1)
+       │ Coordinator.publish
+       ▼
+  transport broadcast ──────────────────────┐
+       │                                     │
+       ▼                                     ▼
+[Data node A]                          [Data node B]
+  ClusterApplierService.applyChanges
+       │
+       ▼
+  IndicesClusterStateService
+  (create shard / update routing / delete index)</div>
+
+<p>← <a href="data.html">Data &amp; Interfaces</a> · <a href="guide.html">Tests &amp; Learning Path →</a></p>
+</main>
+<script src="site.js"></script>
+</body>
+</html>
