@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>raylib — rtext (Fonts &amp; Text)</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="brand" href="index.html">raylib Data Flow</a>
+  <a href="index.html">Overview</a>
+  <a href="rcore.html">rcore</a>
+  <a href="rlgl.html">rlgl</a>
+  <a href="rshapes.html">rshapes</a>
+  <a href="rtextures.html">rtextures</a>
+  <a href="rtext.html" class="active">rtext</a>
+  <a href="rmodels.html">rmodels</a>
+  <a href="raudio.html">raudio</a>
+</nav>
+
+<main>
+  <h1 class="page-title">rtext — Fonts &amp; Text Rendering</h1>
+  <p class="page-subtitle"><code>src/rtext.c</code> loads fonts (TTF, sprite fonts, etc.), builds a GPU glyph atlas (<code>Font.texture</code>), and renders strings as a sequence of textured quads — the same 2D batch path as textures.</p>
+
+  <details open>
+    <summary>Font Structure</summary>
+    <div class="details-body">
+      <p>A <code>Font</code> is not a GPU object by itself — it bundles metadata plus one atlas texture:</p>
+      <ul>
+        <li><code>texture</code> — <code>Texture2D</code> atlas containing all glyph bitmaps</li>
+        <li><code>recs[]</code> — source rectangle in atlas per glyph index</li>
+        <li><code>glyphs[]</code> — advance, offset, and codepoint mapping</li>
+        <li><code>baseSize</code> — reference pixel height for scaling</li>
+      </ul>
+      <p>At startup, rcore calls <code>LoadFontDefault()</code> which embeds a small bitmap font (DejaVu-derived) so <code>DrawText</code> works without loading external files.</p>
+      <a class="src-link" href="https://github.com/raysan5/raylib/blob/22509ab2d4b1e1b9b8fb874c05b08ae9a26d44d8/src/rtext.c#L337-L405">LoadFont / LoadFontEx</a>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Font Loading Flow</summary>
+    <div class="details-body">
+      <div class="flow-diagram">LoadFont("myfont.ttf")
+  → LoadFontEx(file, fontSize, codepoints, count)
+      │
+      ├─ stb_truetype / external decoder → rasterize glyphs to bitmap
+      ├─ pack glyphs into atlas Image (CPU)
+      ├─ LoadTextureFromImage(atlas)  → Font.texture (GPU)
+      └─ fill recs[], glyphs[] with metrics</div>
+      <p>TTF loading uses <code>stb_truetype</code> (in <code>src/external/</code>). You can restrict codepoints with <code>LoadFontEx</code> to keep atlas size small — important for CJK.</p>
+      <a class="src-link" href="https://github.com/raysan5/raylib/blob/22509ab2d4b1e1b9b8fb874c05b08ae9a26d44d8/src/rtext.c#L387-L405">LoadFontEx</a>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Text Drawing Flow</summary>
+    <div class="details-body">
+      <pre><code>void DrawText(const char *text, int posX, int posY, int fontSize, Color color)
+{
+    DrawTextEx(GetFontDefault(), text, position, fontSize, spacing, color);
+}
+
+void DrawTextEx(Font font, const char *text, Vector2 position, ...)
+{
+    for each UTF-8 codepoint in text:
+        if codepoint == '\n' → advance line
+        else DrawTextCodepoint(font, codepoint, position + offset, ...);
+}
+
+void DrawTextCodepoint(Font font, int codepoint, Vector2 position, ...)
+{
+    int index = GetGlyphIndex(font, codepoint);
+    Rectangle srcRec = font.recs[index];     // atlas region
+    Rectangle dstRec = { position + offset, scaled size };
+    DrawTexturePro(font.texture, srcRec, dstRec, {0,0}, 0, tint);
+}</code></pre>
+      <a class="src-link" href="https://github.com/raysan5/raylib/blob/22509ab2d4b1e1b9b8fb874c05b08ae9a26d44d8/src/rtext.c#L1193-L1285">DrawText → DrawTextCodepoint</a>
+      <p>Each character is one <code>DrawTexturePro</code> call → four vertices in the rlgl batch. Long strings mean many quads but still batched by texture (single atlas = efficient).</p>
+    </div>
+  </details>
+
+  <details open>
+    <summary>UTF-8 Handling</summary>
+    <div class="details-body">
+      <p><code>GetCodepointNext</code> walks the input byte string, decoding UTF-8 into Unicode codepoints. <code>GetGlyphIndex</code> maps a codepoint to an atlas index, falling back to <code>'?'</code> for missing glyphs.</p>
+      <p>Spacing uses <code>glyphs[index].advanceX</code> scaled by <code>fontSize / baseSize</code>. Line breaks respect <code>textLineSpacing</code> (set via <code>SetTextLineSpacing</code>).</p>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Rotated Text</summary>
+    <div class="details-body">
+      <pre><code>void DrawTextPro(Font font, const char *text, Vector2 position,
+                 Vector2 origin, float rotation, ...)
+{
+    rlPushMatrix();
+        rlTranslatef(position.x, position.y, 0);
+        rlRotatef(rotation, 0, 0, 1);
+        rlTranslatef(-origin.x, -origin.y, 0);
+        DrawTextEx(font, text, (Vector2){0, 0}, ...);
+    rlPopMatrix();
+}</code></pre>
+      <a class="src-link" href="https://github.com/raysan5/raylib/blob/22509ab2d4b1e1b9b8fb874c05b08ae9a26d44d8/src/rtext.c#L1250-L1261">DrawTextPro</a>
+      <p>Uses rlgl's matrix stack — vertices are transformed before entering the batch when <code>transformRequired</code> is set.</p>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Text Measurement (CPU)</summary>
+    <div class="details-body">
+      <p><code>MeasureText</code>, <code>MeasureTextEx</code> iterate codepoints and sum advance widths without touching the GPU. Useful for centering UI labels.</p>
+      <p><code>DrawTextCodepoints</code> skips UTF-8 decoding when you already have an int array — handy for internationalization tables.</p>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Connection to rshapes</summary>
+    <div class="details-body">
+      <p>The default font atlas provides the white pixel region that <a href="rshapes.html">rshapes</a> uses for solid fills. This design choice unifies batching: shapes and text share one texture bind when drawn interleaved (same atlas for default font + shapes, or default 1×1 texture otherwise).</p>
+      <a class="src-link" href="https://github.com/raysan5/raylib/blob/22509ab2d4b1e1b9b8fb874c05b08ae9a26d44d8/src/rcore.c#L685-L702">InitWindow shapes/font wiring</a>
+    </div>
+  </details>
+
+  <details open>
+    <summary>External References</summary>
+    <div class="details-body">
+      <ul class="ref-list">
+        <li><a href="https://github.com/nothings/stb/blob/master/stb_truetype.h">stb_truetype</a> — font rasterization</li>
+        <li><a href="https://en.wikipedia.org/wiki/Typeface#Font_metrics">Font metrics</a> — advance, bearing, baseline concepts</li>
+        <li><a href="https://www.utf8.com/">UTF-8 overview</a></li>
+        <li><a href="https://www.raylib.com/examples.html">raylib examples — text category</a></li>
+      </ul>
+    </div>
+  </details>
+</main>
+
+</body>
+</html>

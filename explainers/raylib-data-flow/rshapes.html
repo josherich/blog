@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>raylib — rshapes (2D Primitives)</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="brand" href="index.html">raylib Data Flow</a>
+  <a href="index.html">Overview</a>
+  <a href="rcore.html">rcore</a>
+  <a href="rlgl.html">rlgl</a>
+  <a href="rshapes.html" class="active">rshapes</a>
+  <a href="rtextures.html">rtextures</a>
+  <a href="rtext.html">rtext</a>
+  <a href="rmodels.html">rmodels</a>
+  <a href="raudio.html">raudio</a>
+</nav>
+
+<main>
+  <h1 class="page-title">rshapes — 2D Primitives</h1>
+  <p class="page-subtitle"><code>src/rshapes.c</code> implements immediate-mode 2D drawing: pixels, lines, circles, rectangles, polygons, splines. Every function computes vertex positions in CPU and submits them through rlgl's batch.</p>
+
+  <details open>
+    <summary>Drawing Pipeline</summary>
+    <div class="details-body">
+      <div class="flow-diagram">DrawRectangle(x, y, w, h, color)
+  → DrawRectangleV → DrawRectanglePro
+      │
+      ├─ compute 4 corner vertices (rotation optional)
+      │
+      ├─ rlSetTexture(shapesTexture.id)   ← white pixel from default font atlas
+      ├─ rlBegin(RL_QUADS)
+      │     rlColor4ub(...)
+      │     rlTexCoord2f(...)  rlVertex2f(...)  × 4
+      └─ rlEnd()
+            │
+            ▼ (batched until flush — see rlgl.html)</div>
+      <a class="src-link" href="https://github.com/raysan5/raylib/blob/22509ab2d4b1e1b9b8fb874c05b08ae9a26d44d8/src/rshapes.c#L719-L816">DrawRectanglePro</a>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Why Shapes Use a Texture</summary>
+    <div class="details-body">
+      <p>Even solid-color rectangles go through the textured quad path. At init, rcore calls <code>SetShapesTexture</code> with a 1×1 white region from the default font atlas. This lets shapes, text, and textures share the same shader and batch — only the source texture atlas differs.</p>
+      <pre><code>// InitWindow (rcore.c) wires font white pixel into shapes:
+SetShapesTexture(GetFontDefault().texture, (Rectangle){ rec.x+1, rec.y+1, ... });</code></pre>
+      <a class="src-link" href="https://github.com/raysan5/raylib/blob/22509ab2d4b1e1b9b8fb874c05b08ae9a26d44d8/src/rcore.c#L685-L702">SetShapesTexture at init</a>
+      <p>When rtext is disabled, rshapes falls back to rlgl's 1×1 default texture instead.</p>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Primitive Types</summary>
+    <div class="details-body">
+      <table>
+        <thead>
+          <tr><th>Category</th><th>Functions</th><th>rlgl mode</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Pixels</td><td><code>DrawPixel</code></td><td><code>RL_POINTS</code></td></tr>
+          <tr><td>Lines</td><td><code>DrawLine</code>, <code>DrawLineEx</code>, <code>DrawLineBezier</code></td><td><code>RL_LINES</code> / triangles for thick lines</td></tr>
+          <tr><td>Circles</td><td><code>DrawCircle</code>, <code>DrawCircleSector</code></td><td>Triangle fan approximated as <code>RL_TRIANGLES</code></td></tr>
+          <tr><td>Rects</td><td><code>DrawRectangle</code>, gradients, rounded</td><td><code>RL_QUADS</code> or <code>RL_TRIANGLES</code></td></tr>
+          <tr><td>Polygons</td><td><code>DrawPoly</code>, <code>DrawSpline*</code></td><td>Custom vertex loops</td></tr>
+        </tbody>
+      </table>
+      <p>Circles and arcs tessellate into triangle segments. The <code>segments</code> parameter controls smoothness vs vertex count.</p>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Example: Filled Rectangle</summary>
+    <div class="details-body">
+      <pre><code>void DrawRectanglePro(Rectangle rec, Vector2 origin, float rotation, Color color)
+{
+    // 1. Compute 4 corners (with optional rotation matrix)
+    Vector2 topLeft, topRight, bottomLeft, bottomRight;
+
+    // 2. Submit as textured quad
+    rlSetTexture(GetShapesTexture().id);
+    rlBegin(RL_QUADS);
+        rlColor4ub(color.r, color.g, color.b, color.a);
+        rlTexCoord2f(...); rlVertex2f(topLeft.x, topLeft.y);
+        rlTexCoord2f(...); rlVertex2f(bottomLeft.x, bottomLeft.y);
+        rlTexCoord2f(...); rlVertex2f(bottomRight.x, bottomRight.y);
+        rlTexCoord2f(...); rlVertex2f(topRight.x, topRight.y);
+    rlEnd();
+    rlSetTexture(0);
+}</code></pre>
+      <p>Gradient rectangles set per-vertex colors with different <code>rlColor4ub</code> calls before each vertex — the default shader interpolates color across the quad.</p>
+      <a class="src-link" href="https://github.com/raysan5/raylib/blob/22509ab2d4b1e1b9b8fb874c05b08ae9a26d44d8/src/rshapes.c#L831-L863">DrawRectangleGradientEx</a>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Collision Helpers</summary>
+    <div class="details-body">
+      <p>rshapes also provides pure-CPU geometry helpers used by game logic (not GPU): <code>CheckCollisionRecs</code>, <code>CheckCollisionCircles</code>, <code>CheckCollisionPointRec</code>, etc. These read rectangle/circle parameters directly — no rlgl involvement.</p>
+      <a class="src-link" href="https://github.com/raysan5/raylib/blob/22509ab2d4b1e1b9b8fb874c05b08ae9a26d44d8/src/rshapes.c#L2300-L2400">collision functions region</a>
+    </div>
+  </details>
+
+  <details open>
+    <summary>Connections</summary>
+    <div class="details-body">
+      <ul>
+        <li><strong>Upstream:</strong> <a href="rcore.html">rcore</a> sets shapes texture at init; <a href="rlgl.html">rlgl</a> batches vertices</li>
+        <li><strong>Parallel:</strong> <a href="rtextures.html">rtextures</a> draws images the same way (textured quads) — shapes just use a solid white texel</li>
+        <li><strong>Shared path with text:</strong> <a href="rtext.html">rtext</a> ultimately calls <code>DrawTexturePro</code> for each glyph</li>
+      </ul>
+    </div>
+  </details>
+
+  <details open>
+    <summary>External References</summary>
+    <div class="details-body">
+      <ul class="ref-list">
+        <li><a href="https://en.wikipedia.org/wiki/Polygon_triangulation">Polygon triangulation</a> — how circles/arcs become triangle fans</li>
+        <li><a href="https://www.raylib.com/examples.html">raylib examples — shapes category</a></li>
+      </ul>
+    </div>
+  </details>
+</main>
+
+</body>
+</html>
