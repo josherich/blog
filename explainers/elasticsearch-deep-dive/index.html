@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elasticsearch — Codebase Deep Dive</title>
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body>
+<header>
+  <h1>Elasticsearch — Codebase Deep Dive</h1>
+  <p class="meta">Pinned to commit <code>f96bad22</code> · ES 9.5.0 · Lucene 10.4.0</p>
+  <nav>
+    <a href="index.html" class="active">Overview</a>
+    <a href="architecture.html">Architecture</a>
+    <a href="execution.html">Execution Flows</a>
+    <a href="modules.html">Core Modules</a>
+    <a href="data.html">Data &amp; Interfaces</a>
+    <a href="runtime.html">Runtime &amp; Errors</a>
+    <a href="guide.html">Tests &amp; Learning Path</a>
+  </nav>
+</header>
+<main>
+
+<div class="toolbar">
+  <button type="button" data-expand="open">Expand all</button>
+  <button type="button" data-expand="closed">Collapse all</button>
+</div>
+
+<h2>1. Executive mental model</h2>
+
+<p>Elasticsearch is a <strong>distributed search and analytics engine</strong> written primarily in Java. Each cluster is a set of JVM processes called <em>nodes</em>. Nodes share a single logical view of data through a replicated, master-coordinated <strong>cluster state</strong>. User-facing work arrives over HTTP (REST) or the internal binary <strong>transport</strong> protocol; both ultimately dispatch to named <strong>actions</strong> (<code>TransportAction</code> subclasses) that read or mutate <strong>shards</strong> — Lucene indexes with an Elasticsearch-specific translog, mapping layer, and replication machinery.</p>
+
+<div class="diagram">┌─────────────────────────────────────────────────────────────────────┐
+│  Clients: REST (9200), Java REST client, transport client (internal) │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                │
+┌───────────────────────────────▼─────────────────────────────────────┐
+│  Node boundary (one JVM)                                             │
+│  HttpServerTransport → RestController → Rest*Action handlers         │
+│       → NodeClient.execute(actionName) → TransportAction             │
+├─────────────────────────────────────────────────────────────────────┤
+│  Cluster coordination (master-elected)                               │
+│  MasterService (mutate state) → Coordinator.publish → appliers       │
+│  ClusterState = Metadata + RoutingTable + Blocks + Coordination      │
+├─────────────────────────────────────────────────────────────────────┤
+│  Data plane (every data node)                                        │
+│  IndicesClusterStateService → IndexShard → Engine (InternalEngine)   │
+│       → Lucene IndexWriter + Translog + replication                  │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                │
+         ┌──────────────────────┼──────────────────────┐
+         ▼                      ▼                      ▼
+   Local filesystem      Remote repositories      External systems
+   (data path)           (S3, GCS, Azure…)         (Kibana, ML, LDAP…)</div>
+
+<p><strong>How to reason about changes:</strong></p>
+<ul>
+  <li><strong>Metadata mutations</strong> (create index, mapping, settings) are master-only cluster-state tasks batched by <code>MasterService</code>, published to all nodes, applied by <code>ClusterApplierService</code>.</li>
+  <li><strong>Document writes</strong> route to a primary shard by routing key, execute on the shard engine, replicate to in-sync replicas, then respond.</li>
+  <li><strong>Searches</strong> fan out from a coordinating node to shard copies, execute Lucene queries locally, merge results.</li>
+  <li><strong>Plugins/modules</strong> extend registries (actions, mappers, aggregations, repositories, network) wired during <code>NodeConstruction</code> via Guice.</li>
+</ul>
+
+<div class="note">
+  <strong>External references:</strong>
+  <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/elasticsearch-intro.html">Elasticsearch docs — introduction</a> ·
+  <a href="https://lucene.apache.org/core/">Apache Lucene</a> ·
+  <a href="https://en.wikipedia.org/wiki/Raft_(algorithm)">Raft-style leader election</a> (ES uses its own <code>Coordinator</code>, not vanilla Raft) ·
+  <a href="https://github.com/google/guice">Google Guice</a> (dependency injection in the node)
+</div>
+
+<h2>2. Repository map</h2>
+
+<h3>What kind of project</h3>
+<p>A <strong>Gradle multi-project Java monorepo</strong> shipping a server distribution (tar/zip/deb/rpm/docker), optional plugins, REST API specs, client libraries, and extensive QA. Version <code>9.5.0</code> per <a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/build-tools-internal/version.properties">build-tools-internal/version.properties</a>. Licensed under Elastic License 2.0 / SSPL / AGPL depending on component.</p>
+
+<h3>Languages, runtimes, build tools</h3>
+<table>
+<tr><th>Technology</th><th>Role</th><th>Evidence</th></tr>
+<tr><td>Java 21+</td><td>Build toolchain (<code>CONTRIBUTING.md</code>)</td><td>JDK required to compile</td></tr>
+<tr><td>Bundled JDK 26</td><td>Runtime shipped in distribution</td><td><code>version.properties</code> <code>bundled_jdk</code></td></tr>
+<tr><td>Gradle 9.5</td><td>Build orchestration</td><td><code>gradle/wrapper/gradle-wrapper.properties</code></td></tr>
+<tr><td>Apache Lucene 10.4</td><td>Inverted-index storage &amp; search</td><td><code>InternalEngine</code>, <code>version.properties</code></td></tr>
+<tr><td>Netty 4.1</td><td>HTTP &amp; transport I/O</td><td><code>modules/transport-netty4</code></td></tr>
+<tr><td>Log4j 2</td><td>Logging</td><td><code>Elasticsearch.main</code> → <code>LogConfigurator</code></td></tr>
+<tr><td>Guice</td><td>Node service wiring</td><td><code>NodeConstruction</code>, <code>org.elasticsearch.injection.guice</code></td></tr>
+<tr><td>JUnit 4 + RandomizedTesting</td><td>Test runner</td><td><code>TESTING.asciidoc</code>, <code>ESTestCase</code></td></tr>
+</table>
+
+<h3>Top-level directories</h3>
+<table>
+<tr><th>Directory</th><th>Why it exists</th><th>Central?</th></tr>
+<tr><td><code>server/</code></td><td>Core node: bootstrap, cluster, indices, search, REST, transport, gateway persistence</td><td><span class="tag core">Core</span></td></tr>
+<tr><td><code>libs/</code></td><td>Shared libraries extracted from server (x-content, cli, entitlement, native, plugin-api)</td><td><span class="tag core">Core</span></td></tr>
+<tr><td><code>modules/</code></td><td>Built-in plugins bundled with every distribution (painless, reindex, netty transport, repos)</td><td><span class="tag core">Core</span></td></tr>
+<tr><td><code>x-pack/</code></td><td>Commercial/licensed features: security, ML, ESQL, CCR, watcher, autoscaling, stateless</td><td><span class="tag core">Core</span> (when enabled)</td></tr>
+<tr><td><code>plugins/</code></td><td>Optional installable plugins (HDFS repo, mapper extras)</td><td>Peripheral</td></tr>
+<tr><td><code>distribution/</code></td><td>Packaging: archives, docker images, OS packages, launchers (<code>ServerLauncher</code>)</td><td>Build/ship</td></tr>
+<tr><td><code>client/</code></td><td>Java low-level REST client &amp; sniffer</td><td>API surface</td></tr>
+<tr><td><code>rest-api-spec/</code></td><td>Machine-readable REST definitions + YAML REST tests</td><td>Contract/tests</td></tr>
+<tr><td><code>test/</code></td><td>Shared test framework, fixtures (S3, AWS), test clusters Gradle plugin</td><td>Infra</td></tr>
+<tr><td><code>qa/</code></td><td>Cross-module integration &amp; packaging QA projects</td><td>Tests</td></tr>
+<tr><td><code>docs/</code></td><td>User documentation (AsciiDoc/MDX)</td><td>Docs</td></tr>
+<tr><td><code>build-tools-internal/</code></td><td>Gradle plugins: <code>run</code> task, test clusters, release</td><td>Tooling</td></tr>
+<tr><td><code>benchmarks/</code></td><td>JMH microbenchmarks</td><td>Perf</td></tr>
+</table>
+
+<h3>Entry points</h3>
+<table>
+<tr><th>Entry</th><th>Class / script</th><th>Path</th></tr>
+<tr><td>Production server JVM</td><td><code>org.elasticsearch.bootstrap.Elasticsearch#main</code></td><td><a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/bootstrap/Elasticsearch.java#L94">Elasticsearch.java</a></td></tr>
+<tr><td>Process launcher (scripts)</td><td><code>org.elasticsearch.server.launcher.ServerLauncher</code></td><td><code>distribution/tools/server-launcher/</code></td></tr>
+<tr><td>CLI preparer</td><td><code>org.elasticsearch.server.cli.ServerCli</code></td><td><code>distribution/tools/server-cli/</code></td></tr>
+<tr><td>Dev run from checkout</td><td><code>./gradlew run</code></td><td><code>build-tools-internal/.../elasticsearch.run.gradle</code></td></tr>
+<tr><td>Plugin CLI</td><td><code>elasticsearch-plugin</code></td><td><code>distribution/tools/plugin-cli/</code></td></tr>
+<tr><td>REST API</td><td><code>RestController#dispatchRequest</code></td><td>HTTP :9200 default</td></tr>
+<tr><td>Internal actions</td><td><code>TransportAction#execute</code></td><td>Registered in <code>ActionModule</code></td></tr>
+</table>
+
+<h3>Configuration vs generated vs tests</h3>
+<ul>
+  <li><strong>Configuration:</strong> <code>config/elasticsearch.yml</code>, <code>config/jvm.options</code>, keystore — parsed into <code>Settings</code> / <code>Environment</code></li>
+  <li><strong>Generated:</strong> ESQL ANTLR parsers, entitlement policy patches, build-info, some x-pack SPI metadata</li>
+  <li><strong>Tests:</strong> <code>src/test/java</code> (unit), <code>src/internalClusterTest/java</code>, <code>src/yamlRestTest/java</code>, <code>src/javaRestTest/java</code></li>
+  <li><strong>CI:</strong> <code>.buildkite/</code>, <code>.github/workflows/</code></li>
+</ul>
+
+<details open>
+<summary>Why <code>server/</code> is the kernel</summary>
+<div class="body">
+<p>Every user operation — index, search, snapshot, cluster reroute — is implemented or orchestrated under <code>server/src/main/java/org/elasticsearch/</code>. Modules and x-pack plugins register handlers into the same registries (<code>ActionModule</code>, <code>SearchModule</code>, <code>NetworkModule</code>) during node construction. Removing <code>server</code> leaves no runnable node.</p>
+<p>The <code>libs/</code> split exists to share code with clients and plugin API without pulling the entire server classpath.</p>
+</div>
+</details>
+
+<details open>
+<summary>Module auto-discovery in Gradle</summary>
+<div class="body">
+<p><code>settings.gradle</code> explicitly lists distribution and test projects, then auto-includes everything under <code>libs/</code>, <code>modules/</code>, <code>plugins/</code>, <code>qa/</code>, and <code>x-pack/</code> via <code>addSubProjects</code>. Each subdirectory with a <code>build.gradle</code> becomes a Gradle subproject — which is why there are hundreds of build targets.</p>
+<div class="refs">
+<a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/settings.gradle#L161-L168">settings.gradle — addSubProjects</a>
+</div>
+</div>
+</details>
+
+<p>Continue to <a href="architecture.html">Main Runtime Architecture →</a></p>
+
+</main>
+<script src="site.js"></script>
+</body>
+</html>

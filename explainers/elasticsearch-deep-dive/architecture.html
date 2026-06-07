@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elasticsearch — Architecture</title>
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body>
+<header>
+  <h1>Elasticsearch — Architecture</h1>
+  <p class="meta">Runtime components, entry points, lifecycle</p>
+  <nav>
+    <a href="index.html">Overview</a>
+    <a href="architecture.html" class="active">Architecture</a>
+    <a href="execution.html">Execution Flows</a>
+    <a href="modules.html">Core Modules</a>
+    <a href="data.html">Data &amp; Interfaces</a>
+    <a href="runtime.html">Runtime &amp; Errors</a>
+    <a href="guide.html">Tests &amp; Learning Path</a>
+  </nav>
+</header>
+<main>
+
+<h2>3. Main runtime architecture</h2>
+
+<h3>Runtime components</h3>
+<table>
+<tr><th>Component</th><th>Class</th><th>Responsibility</th></tr>
+<tr><td>Node shell</td><td><code>Node</code></td><td>Lifecycle of all services; holds Guice <code>Injector</code></td></tr>
+<tr><td>Cluster service</td><td><code>ClusterService</code></td><td>Facade over master + applier threads</td></tr>
+<tr><td>Master path</td><td><code>MasterService</code></td><td>Serializes cluster-state update tasks on elected master</td></tr>
+<tr><td>Follower path</td><td><code>ClusterApplierService</code></td><td>Applies published cluster state locally</td></tr>
+<tr><td>Election &amp; publish</td><td><code>Coordinator</code></td><td>Leader election, state publication, commit</td></tr>
+<tr><td>Transport</td><td><code>TransportService</code></td><td>Inter-node RPC; action routing</td></tr>
+<tr><td>HTTP</td><td><code>HttpServerTransport</code></td><td>REST listener (Netty implementation in module)</td></tr>
+<tr><td>Indices</td><td><code>IndicesService</code></td><td>Creates/removes <code>IndexService</code> / <code>IndexShard</code></td></tr>
+<tr><td>Shard</td><td><code>IndexShard</code></td><td>Per-shard indexing, search, recovery, engine</td></tr>
+<tr><td>Engine</td><td><code>InternalEngine</code></td><td>Lucene + translog + seq_no logic</td></tr>
+<tr><td>Allocation</td><td><code>AllocationService</code></td><td>Decides shard placement; invoked via reroute tasks</td></tr>
+<tr><td>Gateway</td><td><code>GatewayMetaState</code></td><td>Persists/recovers cluster metadata on disk</td></tr>
+<tr><td>Thread pools</td><td><code>ThreadPool</code></td><td><code>write</code>, <code>search</code>, <code>management</code>, <code>generic</code>, etc.</td></tr>
+</table>
+
+<h3>Core abstractions</h3>
+<ul>
+  <li><strong><code>ClusterState</code></strong> — immutable snapshot: <code>Metadata</code>, <code>RoutingTable</code>, <code>ClusterBlocks</code>, <code>CoordinationMetadata</code>. Documented as conceptually immutable in the class javadoc.</li>
+  <li><strong><code>ShardRouting</code></strong> — assignment lifecycle: UNASSIGNED → INITIALIZING → STARTED (or RELOCATING).</li>
+  <li><strong><code>ActionType&lt;Response&gt;</code></strong> — named action string (e.g. <code>indices:data/write/bulk</code>) bound to a <code>TransportAction</code>.</li>
+  <li><strong><code>Plugin</code></strong> — extension point; sub-interfaces (<code>ActionPlugin</code>, <code>SearchPlugin</code>, …) register capabilities.</li>
+  <li><strong><code>Engine.Operation</code></strong> — index/delete/noop at Lucene layer with seq_no / version semantics.</li>
+</ul>
+
+<h3>Startup lifecycle</h3>
+<div class="diagram">bin/elasticsearch
+  → ServerLauncher (CLI JVM)
+  → ServerCli preparer (settings, keystore, JVM args)
+  → Elasticsearch.main (server JVM)
+      initPhase1: Environment, logging, ServerArgs
+      initPhase2: natives, JarHell, plugins, entitlements
+      initPhase3: new Node(...); node.start()
+          plugin LifecycleComponents.start()
+          IndicesService.start()
+          TransportService.start()
+          GatewayMetaState.start()     ← load persisted metadata
+          BootstrapChecks (if HTTP about to open)
+          Coordinator.start()
+          ClusterService.start()
+          Coordinator.startInitialJoin()
+          [wait for master if configured]
+          HttpServerTransport.start()
+          sendCliMarker(SERVER_READY)
+  main() returns; keep-alive thread holds JVM</div>
+
+<details open>
+<summary>Node.start() ordering (evidence)</summary>
+<div class="body">
+<p><code>Node.start()</code> deliberately starts transport before HTTP, runs gateway metadata recovery, validates bootstrap checks, then joins the cluster and only then binds REST. HTTP starts last so clients cannot hit a half-initialized node.</p>
+<div class="refs">
+<a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/node/Node.java#L277">Node.java — start()</a>
+<a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/bootstrap/Elasticsearch.java#L433">Elasticsearch.java — initPhase3</a>
+</div>
+</div>
+</details>
+
+<h3>NodeConstruction — the wiring diagram</h3>
+<p><code>NodeConstruction.prepareConstruction()</code> is the composition root: loads plugins, builds <code>SettingsModule</code>, <code>NetworkModule</code>, <code>ClusterModule</code>, <code>IndicesModule</code>, <code>ActionModule</code>, creates Guice injector, returns a <code>NodeConstruction</code> handle consumed by <code>Node</code>'s constructor.</p>
+<p>Key side effect: every <code>TransportAction</code> and REST handler is registered here; missing registration → action not found at runtime.</p>
+<div class="refs">
+<a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/node/NodeConstruction.java">NodeConstruction.java</a>
+</div>
+
+<h3>Control flow vs data flow</h3>
+<div class="diagram">CONTROL (cluster metadata):
+  REST/admin API → TransportMasterNodeAction → MasterService task queue
+    → executor mutates ClusterState → Coordinator.publish
+    → all nodes ClusterApplierService.applyChanges
+    → IndicesClusterStateService creates/drops shards
+
+DATA (documents):
+  REST bulk/index → TransportBulkAction → per-shard TransportShardBulkAction
+    → IndexShard → InternalEngine → Lucene IndexWriter + Translog
+    → replication to replica shards (TransportReplicationAction)
+
+DATA (search):
+  REST search → TransportSearchAction (coordinator)
+    → SearchTransportService → SearchService.executeQueryPhase
+    → QueryPhase / FetchPhase → merge SearchResponse</div>
+
+<h3>External systems</h3>
+<table>
+<tr><th>System</th><th>Integration point</th></tr>
+<tr><td>Local filesystem</td><td><code>NodeEnvironment</code> — data, logs, shard stores</td></tr>
+<tr><td>Remote object stores</td><td><code>RepositoryPlugin</code> — S3/GCS/Azure modules</td></tr>
+<tr><td>LDAP/OIDC/SAML</td><td>x-pack <code>security</code> realm plugins</td></tr>
+<tr><td>Kibana</td><td>HTTP consumer; system indices (<code>kibana</code> module)</td></tr>
+<tr><td>Apache Kafka / Beats</td><td>Ingest pipelines, Elastic Agent (outside this repo)</td></tr>
+<tr><td>Cloud orchestration</td><td>Autoscaling x-pack plugin; ESS docker exports in distribution</td></tr>
+<tr><td>ML models</td><td>x-pack ML plugin; inference ingest processors</td></tr>
+</table>
+
+<h2>Plugin and module system</h2>
+<p>Built-in <code>modules/</code> are plugins loaded from <code>modules/</code> directory in the distribution. Optional plugins install under <code>plugins/</code>. <code>PluginsLoader</code> scans JARs, validates entitlements, instantiates <code>Plugin</code> subclasses.</p>
+<p>Plugin hooks used everywhere:</p>
+<ul>
+  <li><code>createComponents()</code> — register lifecycle services</li>
+  <li><code>getActions()</code> — extra transport actions</li>
+  <li><code>getRestHandlers()</code> — REST routes</li>
+  <li><code>onIndexModule()</code> — per-index listeners, custom engines</li>
+  <li><code>getSettings()</code> — declare <code>Setting&lt;T&gt;</code> keys</li>
+</ul>
+<div class="refs">
+<a href="https://github.com/elastic/elasticsearch/blob/f96bad22f27a781f7b32478a6dee8d1fe0b43ad6/server/src/main/java/org/elasticsearch/plugins/Plugin.java">Plugin.java</a>
+</div>
+
+<p>← <a href="index.html">Overview</a> · <a href="execution.html">Execution Flows →</a></p>
+</main>
+</body>
+</html>
