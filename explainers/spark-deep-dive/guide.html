@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spark — Tests, Build &amp; Learning Path</title>
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body>
+<header>
+  <h1>Apache Spark — Tests &amp; Learning Path</h1>
+  <nav>
+    <a href="index.html">Overview</a>
+    <a href="architecture.html">Architecture</a>
+    <a href="execution.html">Execution Flows</a>
+    <a href="modules.html">Core Modules</a>
+    <a href="runtime.html">Runtime &amp; Errors</a>
+    <a href="guide.html" class="active">Tests &amp; Learning Path</a>
+  </nav>
+</header>
+<main>
+
+<h2>10. Tests</h2>
+
+<h3>Frameworks</h3>
+<table>
+<tr><th>Language</th><th>Framework</th><th>Base class / runner</th></tr>
+<tr><td>Scala</td><td>ScalaTest <code>AnyFunSuite</code></td><td><code>SparkFunSuite</code></td></tr>
+<tr><td>Java</td><td>JUnit 5 (Jupiter)</td><td><code>*Suite.java</code>, <code>*Test.java</code></td></tr>
+<tr><td>Python</td><td>stdlib <code>unittest</code></td><td><code>PySparkTestCase</code>, <code>python/run-tests.py</code></td></tr>
+<tr><td>UI</td><td>Jest 30</td><td><code>ui-test/tests/*.test.js</code></td></tr>
+</table>
+
+<h3>Test types</h3>
+<ul>
+  <li><strong>Unit:</strong> Catalyst rule tests, serializer tests, individual RDD ops with <code>local[2]</code></li>
+  <li><strong>Integration:</strong> Full SQL queries, Hive metastore (often Derby embedded), streaming with memory sinks</li>
+  <li><strong>Cluster-ish:</strong> <code>local-cluster</code> mode simulates multiple executors in one JVM</li>
+  <li><strong>Tagged slow/extended:</strong> <code>@Tag(SlowSQLTest)</code>, <code>ExtendedYarnTest</code> — skipped in default CI</li>
+  <li><strong>Docker/K8s IT:</strong> <code>connector/docker-integration-tests</code>, <code>kubernetes/integration-tests</code></li>
+</ul>
+
+<h3>What tests reveal about intended behavior</h3>
+<ul>
+  <li><code>DAGSchedulerSuite</code> — stage boundaries, fetch failure recovery, cache tracking</li>
+  <li><code>QueryExecutionSuite</code> / <code>SQLQueryTestSuite</code> — golden SQL plans and results</li>
+  <li><code>StreamingQuerySuite</code> — micro-batch offset progression</li>
+  <li><code>SparkConnect*</code> suites — client/server protocol parity with classic API</li>
+</ul>
+
+<h3>What appears less covered</h3>
+<ul>
+  <li>Full multi-node failure chaos (partial — mostly simulated)</li>
+  <li>Every connector combination with real cloud services (Docker ITs cover some)</li>
+  <li>Performance regressions (separate benchmarking, not unit tests)</li>
+</ul>
+
+<h3>How to run tests</h3>
+<pre># Full suite (long)
+./dev/run-tests
+
+# Specific modules
+./dev/run-tests --parallelism 1 --modules core,sql
+
+# Maven single module
+./build/mvn -pl :spark-core_2.13 test
+
+# Python
+./python/run-tests --modules pyspark-sql --python-executables=python3.12
+
+# With tags
+./dev/run-tests --included-tags org.apache.spark.tags.ExtendedSQLTest</pre>
+
+<h3>Test fixtures</h3>
+<p><code>SparkContext</code> often created per suite with <code>local[2]</code> and <code>spark.testing=true</code>. Temporary dirs via <code>Utils.createTempDir</code>. Shared test JARs in <code>core/target/...</code>. Module dependency graph in <code>dev/sparktestsupport/modules.py</code> determines which suites run when files change.</p>
+
+<h2>11. Build, run, and deploy</h2>
+
+<h3>Install dependencies</h3>
+<ul>
+  <li>JDK 17+ (Temurin recommended per README)</li>
+  <li>Maven (bootstrapped by <code>./build/mvn</code>)</li>
+  <li>Python 3.11+ for PySpark development</li>
+  <li>Node.js for UI tests (optional)</li>
+</ul>
+
+<h3>Build</h3>
+<pre># Standard build
+./build/mvn -DskipTests clean package
+
+# With cluster profiles
+./build/mvn -Pyarn -Phive -Pkubernetes -DskipTests clean package
+
+# SBT (dev)
+./build/sbt package
+
+# Distribution tarball
+./dev/make-distribution.sh --tgz -Pyarn -Pkubernetes</pre>
+
+<h3>Run locally</h3>
+<pre>./bin/spark-shell
+./bin/pyspark
+./bin/spark-submit --class org.apache.spark.examples.SparkPi \
+  examples/jars/spark-examples_*.jar
+
+# Standalone mini-cluster
+./sbin/start-master.sh
+./sbin/start-worker.sh spark://localhost:7077</pre>
+
+<h3>Configuration</h3>
+<ul>
+  <li>Copy <code>conf/spark-defaults.conf.template</code> → <code>conf/spark-defaults.conf</code></li>
+  <li><code>--conf key=value</code> on submit; <code>SparkConf</code> in code</li>
+  <li><code>SPARK_HOME</code>, <code>JAVA_HOME</code>, <code>HADOOP_CONF_DIR</code> (for YARN/HDFS)</li>
+</ul>
+
+<h3>Deployment</h3>
+<table>
+<tr><th>Target</th><th>Mechanism</th></tr>
+<tr><td>Standalone</td><td><code>sbin/start-*</code>, fat jars in <code>assembly/target</code></td></tr>
+<tr><td>YARN</td><td><code>spark-submit --master yarn --deploy-mode cluster</code></td></tr>
+<tr><td>Kubernetes</td><td><code>--master k8s://https://...</code>, docker images via <code>bin/docker-image-tool.sh</code></td></tr>
+<tr><td>PyPI</td><td><code>python/packaging/classic/setup.py</code> → <code>pyspark</code> package bundles JARs</td></tr>
+<tr><td>Maven Central</td><td>Release workflow <code>.github/workflows/release.yml</code></td></tr>
+<tr><td>Docs site</td><td><code>docs/</code> + GitHub Pages workflow</td></tr>
+</table>
+
+<h3>CI</h3>
+<p>63 GitHub Actions workflows. Primary: <code>build_main.yml</code> → reusable <code>build_and_test.yml</code> (SBT precompile + <code>dev/run-tests</code> matrix). Separate Maven path in <code>maven_test.yml</code>. Python/Java version matrices on branch-specific workflows.</p>
+
+<h2>12. Most important files to understand first</h2>
+
+<table>
+<tr><th>#</th><th>File</th><th>Why</th></tr>
+<tr><td>1</td><td><code>core/.../SparkContext.scala</code></td><td>Driver bootstrap, job submission API</td></tr>
+<tr><td>2</td><td><code>core/.../rdd/RDD.scala</code></td><td>Foundational abstraction and actions</td></tr>
+<tr><td>3</td><td><code>core/.../scheduler/DAGScheduler.scala</code></td><td>Stage-oriented scheduling, failures</td></tr>
+<tr><td>4</td><td><code>core/.../scheduler/TaskSchedulerImpl.scala</code></td><td>Task dispatch, locality, retries</td></tr>
+<tr><td>5</td><td><code>core/.../executor/Executor.scala</code></td><td>Task execution on workers</td></tr>
+<tr><td>6</td><td><code>core/.../SparkEnv.scala</code></td><td>Runtime service locator per JVM</td></tr>
+<tr><td>7</td><td><code>core/.../deploy/SparkSubmit.scala</code></td><td>How apps launch on clusters</td></tr>
+<tr><td>8</td><td><code>sql/core/.../classic/SparkSession.scala</code></td><td>Primary user entry for SQL</td></tr>
+<tr><td>9</td><td><code>sql/core/.../execution/QueryExecution.scala</code></td><td>SQL compilation pipeline</td></tr>
+<tr><td>10</td><td><code>sql/catalyst/.../analysis/Analyzer.scala</code></td><td>Name/type resolution rules</td></tr>
+<tr><td>11</td><td><code>sql/catalyst/.../optimizer/Optimizer.scala</code></td><td>Logical rewrite rules</td></tr>
+<tr><td>12</td><td><code>sql/core/.../execution/SparkPlan.scala</code></td><td>Physical execution contract</td></tr>
+<tr><td>13</td><td><code>core/.../storage/BlockManager.scala</code></td><td>Cache and block transfer</td></tr>
+<tr><td>14</td><td><code>core/.../shuffle/sort/SortShuffleManager.scala</code></td><td>Default shuffle implementation</td></tr>
+<tr><td>15</td><td><code>sql/connect/server/.../SparkConnectService.scala</code></td><td>Modern remote client architecture</td></tr>
+<tr><td>16</td><td><code>core/.../internal/config/package.scala</code></td><td>All typed configuration keys</td></tr>
+<tr><td>17</td><td><code>bin/spark-class</code> + <code>launcher/.../Main.java</code></td><td>Process bootstrap chain</td></tr>
+<tr><td>18</td><td><code>python/pyspark/java_gateway.py</code></td><td>PySpark JVM bridge</td></tr>
+</table>
+
+<h2>13. Things that are confusing or risky</h2>
+<ul>
+  <li><strong>Two streaming systems</strong> — legacy DStreams vs Structured Streaming; docs and imports differ.</li>
+  <li><strong>Classic vs Connect API</strong> — Connect client has no local <code>SparkContext</code>; debugging requires server logs.</li>
+  <li><strong>Hive vs V2 catalog</strong> — table resolution paths differ; <code>spark.sql.catalogImplementation</code> matters.</li>
+  <li><strong>Global <code>SparkEnv</code></strong> — implicit state complicates testing and embedding.</li>
+  <li><strong>Closure serialization</strong> — capturing non-serializable objects fails at runtime, not compile time.</li>
+  <li><strong>Shuffle + dynamic allocation</strong> — requires external shuffle service or risk losing shuffle files.</li>
+  <li><strong>AQE</strong> — plan at runtime may differ from <code>explain()</code> without <code>AdaptiveSparkPlanExec</code> awareness.</li>
+  <li><strong>Version skew</strong> — PySpark pip package must match cluster Spark version.</li>
+</ul>
+
+<h2>14. Suggested learning path for a new engineer</h2>
+
+<ol>
+  <li><strong>Read</strong> <code>README.md</code>, run <code>./bin/spark-shell</code> and <code>spark.range(1000).count()</code>.</li>
+  <li><strong>Trace submit:</strong> <code>bin/spark-submit</code> → <code>launcher/Main.java</code> → <code>SparkSubmit.scala</code>.</li>
+  <li><strong>Core model:</strong> <code>RDD.scala</code> (doc comment) → <code>Dependency.scala</code> → <code>DAGScheduler.scala</code> (header comment).</li>
+  <li><strong>Run one test:</strong> <code>DAGSchedulerSuite</code> in IDE or Maven to see stage creation.</li>
+  <li><strong>SQL path:</strong> <code>SparkSession.sql</code> → <code>QueryExecution</code> lazy vals → <code>SparkPlan.execute</code>.</li>
+  <li><strong>Catalyst:</strong> Pick one optimizer rule (e.g. <code>PushDownPredicates</code>) and follow <code>RuleExecutor</code>.</li>
+  <li><strong>Executor:</strong> <code>CoarseGrainedExecutorBackend</code> + <code>Executor.TaskRunner</code>.</li>
+  <li><strong>Storage/shuffle:</strong> <code>BlockManager</code>, <code>SortShuffleManager</code>.</li>
+  <li><strong>Deploy:</strong> Skim YARN <code>Client.scala</code> or K8s submit path for your target environment.</li>
+  <li><strong>Connect (if relevant):</strong> <code>SparkConnectService</code> → <code>SparkConnectPlanExecution</code>.</li>
+  <li><strong>Streaming (if relevant):</strong> <code>MicroBatchExecution.scala</code> + checkpoint layout.</li>
+</ol>
+
+<h2>15. Open questions</h2>
+<p>These cannot be fully answered from code alone without running clusters at scale:</p>
+<ul>
+  <li>Exact production tuning for a specific cloud (instance types, shuffle service sizing) — docs give guidelines, not proofs.</li>
+  <li>Real-world performance vs Databricks Runtime optimizations (some APIs are OSS stubs or differ in commercial builds).</li>
+  <li>Complete connector compatibility matrix for every cloud vendor fork of Hadoop FS.</li>
+  <li>Which deprecated code paths will be removed in which release — check JIRA/SPARK tickets and release notes.</li>
+  <li>Operational SLOs for Spark Connect at N concurrent sessions — requires load testing.</li>
+</ul>
+
+<div class="note">
+  <strong>Source revision:</strong> Analysis based on shallow clone of <code>apache/spark</code> master at Spark <code>5.0.0-SNAPSHOT</code> (June 2026). Line numbers and class names may shift on other branches (e.g. <code>branch-4.x</code>).
+</div>
+
+<p><a href="index.html">← Back to overview</a></p>
+
+</main>
+</body>
+</html>

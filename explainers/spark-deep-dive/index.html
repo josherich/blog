@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apache Spark — Codebase Deep Dive</title>
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body>
+<header>
+  <h1>Apache Spark — Codebase Deep Dive</h1>
+  <nav>
+    <a href="index.html" class="active">Overview</a>
+    <a href="architecture.html">Architecture</a>
+    <a href="execution.html">Execution Flows</a>
+    <a href="modules.html">Core Modules</a>
+    <a href="runtime.html">Runtime &amp; Errors</a>
+    <a href="guide.html">Tests &amp; Learning Path</a>
+  </nav>
+</header>
+<main>
+
+<h2>1. Executive mental model</h2>
+
+<p>Apache Spark is a <strong>distributed batch and stream analytics engine</strong>. It exposes high-level APIs (Scala, Java, Python, R) that compile user programs into a graph of parallel tasks executed on a cluster of JVM processes. The codebase at <code>github.com/apache/spark</code> (version <code>5.0.0-SNAPSHOT</code> in master) is a large polyglot monorepo centered on Scala 2.13 and Java 17+.</p>
+
+<p>Think of Spark in three stacked layers:</p>
+
+<div class="diagram">┌─────────────────────────────────────────────────────────────┐
+│  User APIs: SparkSession, Dataset/DataFrame, RDD, Streaming   │
+├─────────────────────────────────────────────────────────────┤
+│  Compiler: Catalyst (SQL), RDD lineage graph (Core)           │
+├─────────────────────────────────────────────────────────────┤
+│  Runtime: DAGScheduler → TaskScheduler → Executors            │
+│           BlockManager, ShuffleManager, RpcEnv, SparkEnv      │
+└─────────────────────────────────────────────────────────────┘
+         ▲                              │
+         │  cluster managers            │  HDFS, S3, Kafka, Hive,
+         │  (YARN, K8s, Standalone)     │  JDBC, cloud FS, etc.
+         └──────────────────────────────┘</div>
+
+<p><strong>Driver vs executor:</strong> One JVM (the <em>driver</em>) holds <code>SparkContext</code>, builds the execution plan, and schedules work. Worker JVMs (<em>executors</em>) run tasks, cache blocks, and write shuffle data. In <code>local[*]</code> mode, driver and executors share one process.</p>
+
+<p><strong>Lazy evaluation:</strong> Transformations build a logical graph (RDD lineage or Catalyst <code>LogicalPlan</code>) without running cluster work. Actions (<code>count</code>, <code>collect</code>, writing sinks) trigger job submission.</p>
+
+<p><strong>Two query paths coexist:</strong></p>
+<ul>
+  <li><strong>RDD API</strong> — lineage graph → stages at shuffle boundaries → tasks.</li>
+  <li><strong>SQL/DataFrame API</strong> — SQL text or DataFrame ops → Catalyst parse/analyze/optimize → physical <code>SparkPlan</code> → RDD → same scheduler.</li>
+</ul>
+
+<p><strong>Spark Connect</strong> (since 3.4+, heavily expanded) splits client and server: the client builds protobuf plans; the server runs the classic Catalyst + <code>QueryExecution</code> stack and returns Arrow batches over gRPC.</p>
+
+<h2>2. Repository map</h2>
+
+<h3>What kind of project</h3>
+<p>Apache Spark is an open-source <strong>distributed computing framework</strong>, not a web app or database server. It is packaged as Maven/SBT modules, assembled into a tarball with <code>bin/</code> launch scripts, and deployed on YARN, Kubernetes, or Spark Standalone.</p>
+
+<h3>Languages, runtimes, build tools</h3>
+<table>
+<tr><th>Technology</th><th>Role</th><th>Evidence</th></tr>
+<tr><td>Scala 2.13</td><td>Primary implementation language for core, SQL, streaming</td><td><code>pom.xml</code> artifact <code>spark-parent_2.13</code></td></tr>
+<tr><td>Java 17+</td><td>Launcher, network, some core/tests</td><td><code>README.md</code>, <code>launcher/</code></td></tr>
+<tr><td>Python 3.11+</td><td>PySpark via Py4J</td><td><code>python/pyspark/</code>, <code>pyproject.toml</code></td></tr>
+<tr><td>R (deprecated)</td><td>SparkR bindings</td><td><code>R/</code>, README note</td></tr>
+<tr><td>Apache Maven</td><td>Official build &amp; release</td><td><code>./build/mvn</code>, root <code>pom.xml</code></td></tr>
+<tr><td>SBT</td><td>Developer/CI fast iteration</td><td><code>project/SparkBuild.scala</code>, <code>./build/sbt</code></td></tr>
+<tr><td>Protobuf/gRPC</td><td>Spark Connect wire protocol</td><td><code>sql/connect/</code></td></tr>
+</table>
+
+<h3>Top-level directories</h3>
+
+<table>
+<tr><th>Directory</th><th>Role</th><th>Central vs peripheral</th></tr>
+<tr><td><code>core/</code></td><td>RDD, scheduling, deploy, RPC, storage, shuffle — the engine kernel</td><td><span class="tag core">Core</span></td></tr>
+<tr><td><code>sql/</code></td><td>Catalyst compiler, execution engine, Hive, Connect, pipelines</td><td><span class="tag core">Core</span></td></tr>
+<tr><td><code>common/</code></td><td>Shared libs: network, unsafe memory, kvstore, utils</td><td><span class="tag core">Core</span></td></tr>
+<tr><td><code>launcher/</code></td><td>Minimal JVM to construct <code>java</code> command lines</td><td><span class="tag core">Core</span> (bootstrap)</td></tr>
+<tr><td><code>resource-managers/</code></td><td>YARN and Kubernetes integration</td><td><span class="tag core">Core</span> (when deployed)</td></tr>
+<tr><td><code>python/</code></td><td>PySpark client library and tests</td><td><span class="tag core">Core</span> (API surface)</td></tr>
+<tr><td><code>streaming/</code></td><td>Legacy DStream API (pre-Structured Streaming)</td><td>Peripheral (legacy)</td></tr>
+<tr><td><code>sql/.../streaming/</code></td><td>Structured Streaming (micro-batch, state store)</td><td><span class="tag core">Core</span></td></tr>
+<tr><td><code>mllib/</code>, <code>graphx/</code></td><td>ML and graph algorithms on RDDs/DataFrames</td><td>Peripheral (libraries)</td></tr>
+<tr><td><code>connector/</code></td><td>Kafka, Avro, Protobuf, Kinesis connectors</td><td>Peripheral (integrations)</td></tr>
+<tr><td><code>assembly/</code></td><td>Fat JAR / distribution assembly</td><td>Build infra</td></tr>
+<tr><td><code>bin/</code>, <code>sbin/</code></td><td>CLI entry scripts, cluster daemons</td><td>Entry points</td></tr>
+<tr><td><code>conf/</code></td><td>Template configs (<code>spark-defaults.conf.template</code>)</td><td>Configuration</td></tr>
+<tr><td><code>examples/</code></td><td>Sample apps (Pi, etc.)</td><td>Peripheral</td></tr>
+<tr><td><code>docs/</code></td><td>User-facing documentation site source</td><td>Docs</td></tr>
+<tr><td><code>dev/</code></td><td>Test runners, release scripts, lint</td><td>Tooling</td></tr>
+<tr><td><code>.github/workflows/</code></td><td>CI (63 workflow files)</td><td>Infra</td></tr>
+<tr><td><code>repl/</code></td><td>Scala REPL integration</td><td>Peripheral</td></tr>
+<tr><td><code>udf/</code></td><td>External UDF worker over gRPC</td><td>Peripheral (extension)</td></tr>
+<tr><td><code>ui-test/</code></td><td>Jest tests for Spark UI static assets</td><td>Tests</td></tr>
+</table>
+
+<h3>Entry points</h3>
+<table>
+<tr><th>Entry</th><th>Path</th><th>Main class</th></tr>
+<tr><td><code>spark-submit</code></td><td><code>bin/spark-submit</code> → <code>bin/spark-class</code></td><td><code>org.apache.spark.deploy.SparkSubmit</code></td></tr>
+<tr><td>Launcher bootstrap</td><td><code>bin/spark-class</code></td><td><code>org.apache.spark.launcher.Main</code></td></tr>
+<tr><td>Interactive Scala</td><td><code>bin/spark-shell</code></td><td><code>org.apache.spark.repl.Main</code></td></tr>
+<tr><td>Interactive Python</td><td><code>bin/pyspark</code></td><td>Py4J gateway → JVM shell</td></tr>
+<tr><td>SQL CLI</td><td><code>bin/spark-sql</code></td><td>SQL shell main via SparkSubmit</td></tr>
+<tr><td>Standalone master</td><td><code>sbin/start-master.sh</code></td><td><code>org.apache.spark.deploy.master.Master</code></td></tr>
+<tr><td>Standalone worker</td><td><code>sbin/start-worker.sh</code></td><td><code>org.apache.spark.deploy.worker.Worker</code></td></tr>
+<tr><td>Executor process</td><td>Launched by cluster manager</td><td><code>org.apache.spark.executor.CoarseGrainedExecutorBackend</code></td></tr>
+<tr><td>Spark Connect server</td><td>Started with Spark app / dedicated command</td><td><code>org.apache.spark.sql.connect.service.SparkConnectService</code></td></tr>
+<tr><td>In-process API</td><td>User code</td><td><code>SparkSession.builder().getOrCreate()</code></td></tr>
+</table>
+
+<h3>Configuration vs generated vs tests</h3>
+<ul>
+  <li><strong>Configuration:</strong> <code>conf/*.template</code>, <code>SparkConf</code>, <code>SQLConf</code>, typed keys in <code>core/.../internal/config/package.scala</code></li>
+  <li><strong>Generated:</strong> Protobuf classes from <code>sql/connect</code>, Antlr parsers in Catalyst, build-info in <code>build/spark-build-info</code></li>
+  <li><strong>Tests:</strong> <code>&lt;module&gt;/src/test/scala/**</code> (ScalaTest), <code>src/test/java/**</code> (JUnit 5), <code>python/pyspark/**/tests/</code> (unittest)</li>
+  <li><strong>Scripts:</strong> <code>dev/run-tests.py</code>, <code>dev/make-distribution.sh</code>, <code>build/mvn</code>, <code>build/sbt</code></li>
+</ul>
+
+<div class="note">
+  <strong>Why <code>core/</code> is central:</strong> Every API path eventually calls <code>SparkContext.runJob</code>, uses <code>SparkEnv</code> singletons on each JVM, and depends on <code>DAGScheduler</code> + <code>BlockManager</code>. SQL is a compiler layered on top; without core, nothing runs on a cluster.
+</div>
+
+<p>Continue to <a href="architecture.html">Architecture &amp; Runtime Components →</a></p>
+
+</main>
+</body>
+</html>

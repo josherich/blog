@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spark — Runtime, Errors &amp; Concurrency</title>
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body>
+<header>
+  <h1>Apache Spark — Runtime &amp; Errors</h1>
+  <nav>
+    <a href="index.html">Overview</a>
+    <a href="architecture.html">Architecture</a>
+    <a href="execution.html">Execution Flows</a>
+    <a href="modules.html">Core Modules</a>
+    <a href="runtime.html" class="active">Runtime &amp; Errors</a>
+    <a href="guide.html">Tests &amp; Learning Path</a>
+  </nav>
+</header>
+<main>
+
+<h2>8. Error handling and edge cases</h2>
+
+<h3>Error handling patterns</h3>
+<table>
+<tr><th>Layer</th><th>Pattern</th><th>Examples</th></tr>
+<tr><td>Core</td><td>Typed error objects</td><td><code>SparkCoreErrors</code>, <code>SparkException</code></td></tr>
+<tr><td>SQL</td><td><code>AnalysisException</code>, <code>QueryExecutionErrors</code></td><td>Unresolved column, type mismatch</td></tr>
+<tr><td>Tasks</td><td>Serialize failure reason back to driver</td><td><code>ExceptionFailure</code>, <code>FetchFailed</code></td></tr>
+<tr><td>Scheduler</td><td>Retry with limits</td><td><code>maxTaskFailures</code>, stage abort</td></tr>
+<tr><td>Logging</td><td>Structured logging (Log4j2)</td><td><code>spark.log.structuredLogging.enabled</code></td></tr>
+</table>
+
+<h3>Task failure flow</h3>
+<div class="diagram">Executor: task throws
+  → TaskRunner catches → statusUpdate(FAILED, reason)
+  → TaskSchedulerImpl.statusUpdate
+      → if FetchFailed → DAGScheduler.handleTaskCompletion (resubmit stage)
+      → else if attempts &lt; max → retry on another executor
+      → else → abort stage → fail job</div>
+
+<h3>Shuffle fetch failure</h3>
+<p>When a map output file is missing (executor lost), <code>FetchFailed</code> propagates to <code>DAGScheduler</code>, which invalidates the map stage and resubmits it. This is distinct from generic task failure — evidence in <code>DAGScheduler.scala</code> header comments (lines 106–114).</p>
+
+<h3>SQL analysis vs execution errors</h3>
+<ul>
+  <li><strong>Analysis:</strong> Thrown during <code>analyzer.executeAndCheck</code> before any job — fail fast in driver.</li>
+  <li><strong>Execution:</strong> Data issues (divide by zero, corrupt files) surface as task failures or <code>SparkException</code> at action time.</li>
+  <li><strong>Lazy analysis:</strong> Some errors deferred until action if <code>isLazyAnalysis</code> is true.</li>
+</ul>
+
+<h3>Security-sensitive paths</h3>
+<ul>
+  <li><code>SecurityManager</code> — RPC auth, servlet filters for UI</li>
+  <li><code>spark.authenticate</code>, network crypto settings</li>
+  <li>Delegation tokens for YARN/HDFS (<code>HadoopDelegationTokenManager</code>)</li>
+  <li>User-provided code in UDFs — runs with full executor privileges (sandboxing not provided by default)</li>
+  <li>Spark Connect — session isolation via <code>SparkConnectSessionManager</code></li>
+</ul>
+
+<h2>9. Concurrency and lifecycle</h2>
+
+<h3>Concurrency model</h3>
+<table>
+<tr><th>Component</th><th>Model</th></tr>
+<tr><td><code>DAGScheduler</code></td><td>Single-threaded event loop (<code>DAGSchedulerEventProcessLoop</code>)</td></tr>
+<tr><td><code>TaskSchedulerImpl</code></td><td>Thread-safe; synchronized task set managers</td></tr>
+<tr><td><code>Executor</code></td><td>Thread pool — one thread per task slot (<code>spark.executor.cores</code>)</td></tr>
+<tr><td><code>BlockManager</code></td><td>Fine-grained locks per block; master RPC serialized</td></tr>
+<tr><td><code>SparkContext</code></td><td>Documented as not thread-safe for all ops; SQL uses <code>withActive</code> session guard</td></tr>
+<tr><td>Structured Streaming</td><td>Micro-batch driver thread + concurrent state store maintenance</td></tr>
+</table>
+
+<h3>Retries and timeouts</h3>
+<ul>
+  <li><code>spark.task.maxFailures</code> (default 4) — per-task retries</li>
+  <li><code>spark.network.timeout</code> — RPC and shuffle timeout</li>
+  <li><code>spark.speculation</code> — duplicate slow tasks on other nodes</li>
+  <li><code>RpcTimeout</code> on endpoint asks — <code>RpcTimeoutException</code></li>
+  <li>Tests: <code>SparkFunSuite</code> wraps tests in 20-minute timeout (<code>spark.test.timeout</code>)</li>
+</ul>
+
+<h3>Cancellation</h3>
+<ul>
+  <li><code>sc.cancelJob(jobId)</code>, <code>sc.cancelAllJobs()</code></li>
+  <li>SQL: <code>spark.sql.execution.interruptOnCancel</code></li>
+  <li>Task kill via <code>TaskScheduler.cancelTasks</code> → executor <code>KillTask</code> message</li>
+  <li>Streaming: <code>query.stop()</code> gracefully commits or rolls back batch</li>
+</ul>
+
+<h3>Resource cleanup</h3>
+<ul>
+  <li><code>SparkContext.stop()</code> — stops DAGScheduler, TaskScheduler, RpcEnv, BlockManager</li>
+  <li><code>ContextCleaner</code> — weak references to RDDs/shuffles for GC of unused lineage</li>
+  <li><code>ShutdownHookManager</code> — JVM shutdown hook registered in SparkContext</li>
+  <li>Stage/job data structures cleared on completion (DAGScheduler invariant)</li>
+  <li><code>SQLExecution</code> clears execution ID thread locals after actions</li>
+</ul>
+
+<h3>Dynamic allocation</h3>
+<p><code>ExecutorAllocationManager</code> (<code>core/.../scheduler/dynalloc/</code>) requests/kills executors based on load when <code>spark.dynamicAllocation.enabled=true</code>. Requires external shuffle service for safe shrink.</p>
+
+<h3>Consistency assumptions</h3>
+<ul>
+  <li><strong>Not transactional</strong> across stages — output committers provide file-level exactly-once for writes</li>
+  <li><strong>Streaming:</strong> At-least-once by default; exactly-once with transactional sinks + checkpoint</li>
+  <li><strong>Cache:</strong> Best-effort replication (<code>StorageLevel</code>); not durable</li>
+  <li><strong>Idempotency:</strong> Task retries must be deterministic or use commit protocols</li>
+</ul>
+
+<h2>11. Non-obvious insights</h2>
+
+<h3>Hidden coupling</h3>
+<ul>
+  <li><code>SparkEnv.get</code> used throughout executors — hard to unit test without full env</li>
+  <li>SQL <code>QueryExecution</code> nested instances must share transaction-aware <code>Analyzer</code></li>
+  <li>Python UDF performance depends on batch size and Arrow enablement — crosses Python/JVM boundary</li>
+  <li>Shuffle registration happens at <code>ShuffleDependency</code> construction, not at run time</li>
+</ul>
+
+<h3>Implicit conventions</h3>
+<ul>
+  <li>Physical operators end with <code>Exec</code> suffix</li>
+  <li>Config keys defined as typed <code>ConfigBuilder</code> entries in <code>internal/config</code></li>
+  <li>Tests named <code>*Suite.scala</code> extending <code>SparkFunSuite</code></li>
+  <li>Module names in <code>dev/sparktestsupport/modules.py</code> drive CI test selection</li>
+</ul>
+
+<h3>Magic constants / globals</h3>
+<ul>
+  <li><code>SparkContext.activeContext</code> — one context per JVM</li>
+  <li>Default parallelism from <code>spark.default.parallelism</code> or executor cores × instances</li>
+  <li>UI port 4040 increments if busy</li>
+  <li><code>PYTHONHASHSEED=0</code> set in <code>bin/spark-submit</code> for deterministic Python hashing</li>
+</ul>
+
+<h3>Generated code</h3>
+<ul>
+  <li>Catalyst expression codegen produces Java source strings, compiled at runtime via Janino</li>
+  <li>Connect protobufs generated at build time</li>
+  <li>Antlr SQL parser from grammar files</li>
+</ul>
+
+<h3>Performance-sensitive code</h3>
+<ul>
+  <li><code>WholeStageCodegenExec</code> — hot query path</li>
+  <li><code>UnsafeRow</code> / <code>common/unsafe</code> — off-heap columnar bytes</li>
+  <li><code>SortShuffleWriter</code> — disk I/O patterns for shuffle</li>
+  <li><code>TungstenAggregation</code> — hash aggregation in SQL</li>
+  <li>Broadcast join threshold (<code>spark.sql.autoBroadcastJoinThreshold</code>)</li>
+</ul>
+
+<h3>Backward compatibility</h3>
+<ul>
+  <li>Config entries often have legacy fallbacks (<code>LEGACY_*</code> configs)</li>
+  <li>MiMa (binary compatibility) checks on public artifacts via SBT plugin</li>
+  <li>Spark Connect protocol versioned separately from core</li>
+  <li>R API marked deprecated in README</li>
+</ul>
+
+<h3>Architecture diagram: failure domains</h3>
+<div class="diagram">┌──────────── Driver failure ────────────┐
+│  Lose entire app unless checkpoint/       │
+│  streaming recovery from durable log      │
+└───────────────────────────────────────────┘
+
+┌──────────── Executor failure ─────────────┐
+│  Tasks retried; shuffle blocks rebuilt    │
+│  if not using external shuffle service    │
+└───────────────────────────────────────────┘
+
+┌──────────── Task failure ─────────────────┐
+│  Retry on another executor (bounded)      │
+└───────────────────────────────────────────┘</div>
+
+<p><a href="guide.html">Next: Tests, build &amp; learning path →</a></p>
+
+</main>
+</body>
+</html>

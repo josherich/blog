@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spark — Execution Flows</title>
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body>
+<header>
+  <h1>Apache Spark — Execution Flows</h1>
+  <nav>
+    <a href="index.html">Overview</a>
+    <a href="architecture.html">Architecture</a>
+    <a href="execution.html" class="active">Execution Flows</a>
+    <a href="modules.html">Core Modules</a>
+    <a href="runtime.html">Runtime &amp; Errors</a>
+    <a href="guide.html">Tests &amp; Learning Path</a>
+  </nav>
+</header>
+<main>
+
+<h2>4. Key execution flows</h2>
+
+<h3>Flow A: spark-submit → user application</h3>
+
+<table>
+<tr><th>Step</th><th>Component</th><th>Detail</th></tr>
+<tr><td>Trigger</td><td>Shell</td><td><code>bin/spark-submit --class com.example.App app.jar</code></td></tr>
+<tr><td>1</td><td><code>spark-class</code></td><td>Runs <code>org.apache.spark.launcher.Main</code> with minimal classpath (<code>launcher/target/.../classes</code> + jars)</td></tr>
+<tr><td>2</td><td><code>SparkSubmitCommandBuilder</code></td><td>Builds full <code>java</code> command: classpath, memory, main class <code>SparkSubmit</code></td></tr>
+<tr><td>3</td><td><code>SparkSubmit.doSubmit</code></td><td>Parses args via <code>SparkSubmitArguments</code>, builds <code>SparkConf</code></td></tr>
+<tr><td>4</td><td><code>prepareSubmitEnvironment</code></td><td>Sets master URL routing, deploy mode (client/cluster), child main class for cluster mode</td></tr>
+<tr><td>5</td><td><code>runMain</code></td><td>Loads user JAR; reflects <code>main</code> method (client) or submits to YARN/K8s/Standalone (cluster)</td></tr>
+</table>
+
+<p><strong>Validation:</strong> Master URL format, deploy mode compatibility, primary resource existence — in <code>SparkSubmitArguments</code> and <code>SparkSubmitUtils</code>.</p>
+<p><strong>Failure modes:</strong> Missing JAR, invalid master, classpath conflicts, cluster manager rejection.</p>
+
+<h3>Flow B: RDD action (e.g. <code>rdd.count()</code>)</h3>
+
+<div class="diagram">Trigger: rdd.count()
+  │
+  ├─ RDD.count()                    [RDD.scala ~1320]
+  │     └─ sc.runJob(rdd, getIteratorSize)
+  │
+  ├─ SparkContext.runJob            [SparkContext.scala ~2481]
+  │     └─ dagScheduler.runJob
+  │
+  ├─ DAGScheduler.submitJob       [DAGScheduler.scala ~984]
+  │     └─ eventProcessLoop.post(JobSubmitted)
+  │
+  ├─ handleJobSubmitted             [~1400]
+  │     └─ createResultStage from final RDD
+  │     └─ submitStage (recursive for missing parents)
+  │
+  ├─ submitMissingTasks             [~1635]
+  │     └─ new TaskSet(ShuffleMapTask | ResultTask)
+  │
+  ├─ TaskSchedulerImpl.submitTasks [TaskSchedulerImpl.scala ~243]
+  │     └─ schedulableBuilder.addTaskSetManager
+  │     └─ backend.reviveOffers()
+  │
+  ├─ CoarseGrainedSchedulerBackend.launchTasks
+  │     └─ executorEndpoint.send(LaunchTask)
+  │
+  └─ Executor.TaskRunner.run        [Executor.scala ~806]
+        ├─ deserialize Task
+        ├─ task.run(taskAttemptId, attemptNumber, ...)
+        │     └─ rdd.compute(partition, context)
+        └─ statusUpdate(FINISHED) → DAGScheduler.handleTaskCompletion</div>
+
+<p><strong>Data structures:</strong> <code>ActiveJob</code>, <code>Stage</code>, <code>TaskSet</code>, <code>TaskDescription</code> (serialized to executor).</p>
+<p><strong>Side effects:</strong> Shuffle files written (map stages), blocks cached if persisted, metrics posted to <code>LiveListenerBus</code>.</p>
+<p><strong>Output:</strong> Aggregated count returned to driver via <code>JobWaiter</code>.</p>
+<p><strong>Failures:</strong> Task retry (<code>spark.task.maxFailures</code>); stage retry on fetch failure; job fails if stage exceeds <code>spark.stage.maxConsecutiveAttempts</code>.</p>
+
+<h3>Flow C: SQL query (<code>spark.sql("SELECT ...").collect()</code>)</h3>
+
+<div class="diagram">Trigger: spark.sql(...).collect()
+  │
+  ├─ SparkSession.sql               [classic/SparkSession.scala ~528]
+  │     └─ sqlParser.parsePlanWithParameters → LogicalPlan
+  │     └─ Dataset.ofRows(session, plan)
+  │
+  ├─ SessionState.executePlan
+  │     └─ new QueryExecution(session, logical)
+  │
+  ├─ QueryExecution phases (lazy):
+  │     analyzed    ← analyzer.executeAndCheck
+  │     optimizedPlan ← SparkOptimizer.executeAndTrack
+  │     sparkPlan   ← SparkPlanner.plan (strategies)
+  │     executedPlan ← prepareForExecution (AQE, exchanges, codegen)
+  │
+  ├─ Dataset.collect                [classic/Dataset.scala]
+  │     └─ SQLExecution.withNewExecutionId(qe)
+  │     └─ executedPlan.executeCollect()
+  │
+  ├─ SparkPlan.execute → RDD[InternalRow]
+  │     └─ (may include WholeStageCodegenExec, FileSourceScanExec, ...)
+  │
+  └─ Same DAGScheduler path as Flow B</div>
+
+<p><strong>Validation:</strong> Catalyst <code>CheckAnalysis</code> during <code>analyzer.executeAndCheck</code>; type checking, unresolved attributes rejected.</p>
+<p><strong>Business logic:</strong> Optimizer rules (predicate pushdown, join reorder) in Catalyst; physical strategy selection in <code>SparkStrategies</code>.</p>
+
+<h3>Flow D: PySpark action</h3>
+
+<div class="diagram">Trigger: df.count() in Python
+  │
+  ├─ pyspark/sql/dataframe.py calls JVM via Py4J
+  │
+  ├─ classic Dataset.count() on JVM (same as Flow C)
+  │
+  └─ Python UDF partitions (if any):
+        Executor launches python/worker.py
+        Socket communication + serialized rows</div>
+
+<p><strong>Gateway startup:</strong> <code>python/pyspark/java_gateway.py:launch_gateway</code> spawns <code>bin/spark-submit pyspark-shell-main</code>, connects Py4J to JVM.</p>
+<p><strong>Failure modes:</strong> Py4J connection loss, Python worker OOM, serializer mismatch.</p>
+
+<h3>Flow E: Structured Streaming micro-batch</h3>
+
+<div class="diagram">Trigger: StreamingQueryManager.start() + ProcessingTime trigger
+  │
+  ├─ MicroBatchExecution            [MicroBatchExecution.scala]
+  │     └─ StreamExecution.runBatch loop
+  │
+  ├─ Read offsets from checkpoint (offsets/ log)
+  │     └─ IncrementalExecution extends QueryExecution
+  │
+  ├─ Plan batch: logical + offset metadata
+  │     └─ execute write plan (WriteToDataSourceV2Exec)
+  │
+  ├─ Commit offsets + state store checkpoint
+  │
+  └─ Standard Spark job scheduling per batch</div>
+
+<p><strong>State:</strong> <code>StateStore</code> on executors, checkpoint dir on durable FS (<code>spark.sql.streaming.checkpointLocation</code>).</p>
+<p><strong>Failures:</strong> Batch retry from checkpoint; state schema evolution errors; sink commit failures.</p>
+
+<h3>Flow F: Spark Connect client query</h3>
+
+<div class="diagram">Client: connect.SparkSession.sql(...).collect()
+  │
+  ├─ Builds proto.Plan locally (connect/Dataset.scala)
+  │
+  ├─ SparkConnectClient.execute → gRPC ExecutePlanRequest
+  │
+  Server:
+  ├─ SparkConnectService.executePlan
+  ├─ SparkConnectExecutePlanHandler → ExecuteHolder
+  ├─ SparkConnectPlanner.transformRelation → LogicalPlan
+  ├─ Dataset.ofRows → QueryExecution (classic path)
+  └─ Results streamed as Arrow batches in ExecutePlanResponse</div>
+
+<h2>10. Important code walkthroughs</h2>
+
+<h3>Walkthrough 1: RDD five properties</h3>
+<p>File: <code>core/src/main/scala/org/apache/spark/rdd/RDD.scala</code></p>
+<p>The class docstring (lines 69–76) defines the contract every scheduler relies on:</p>
+<pre>// Partitions, compute(split, context), dependencies,
+// optional Partitioner, optional preferred locations</pre>
+<p><code>map</code> creates <code>MapPartitionsRDD</code> with <code>OneToOneDependency</code> — narrow, same stage. <code>reduceByKey</code> introduces <code>ShuffleDependency</code> which registers shuffle with <code>ShuffleManager</code> at construction time (<code>Dependency.scala</code>).</p>
+<p><strong>If changed incorrectly:</strong> Wrong partitions → incorrect results; missing shuffle registration → fetch failures; broken preferred locations → slow scans.</p>
+
+<h3>Walkthrough 2: DAGScheduler stage submission</h3>
+<p>File: <code>core/src/main/scala/org/apache/spark/scheduler/DAGScheduler.scala</code></p>
+<p>The header comment (lines 58–123) is essential reading — defines Jobs, Stages, Tasks, cache tracking, and failure recovery invariants.</p>
+<p><code>submitStage</code> walks backward until all parent shuffle map stages are complete, then calls <code>submitMissingTasks</code>. Shuffle map stages produce output tracked by <code>MapOutputTrackerMaster</code>.</p>
+<p><strong>If changed incorrectly:</strong> Memory leaks in long sessions (failure to clear <code>jobIdToStageIds</code>); duplicate task submission; incorrect stage retry logic.</p>
+
+<h3>Walkthrough 3: QueryExecution lazy phases</h3>
+<p>File: <code>sql/core/src/main/scala/org/apache/spark/sql/execution/QueryExecution.scala</code></p>
+<p>Each phase is a separate lazy val instrumented by <code>QueryPlanningTracker</code>. Transaction-aware analysis (lines 103–120) shows nested queries must inherit analyzer for connector transactions — subtle coupling easy to miss.</p>
+<p><code>executedPlan.execute()</code> produces <code>RDD[InternalRow]</code>, bridging SQL to core.</p>
+
+<h3>Walkthrough 4: Executor TaskRunner</h3>
+<p>File: <code>core/src/main/scala/org/apache/spark/executor/Executor.scala</code> (~806+)</p>
+<p>Per-task: classloader isolation for REPL/artifacts, deserialize task, update epoch for shuffle map output cache, run <code>task.run</code>, report metrics. Kill checks before and during execution via <code>TaskKilledException</code>.</p>
+
+<p><a href="modules.html">Next: Core modules →</a> · <a href="runtime.html">Runtime &amp; errors →</a></p>
+
+</main>
+</body>
+</html>

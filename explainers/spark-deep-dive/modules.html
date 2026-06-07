@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spark — Core Modules</title>
+<link rel="stylesheet" href="_shared.css">
+</head>
+<body>
+<header>
+  <h1>Apache Spark — Core Modules</h1>
+  <nav>
+    <a href="index.html">Overview</a>
+    <a href="architecture.html">Architecture</a>
+    <a href="execution.html">Execution Flows</a>
+    <a href="modules.html" class="active">Core Modules</a>
+    <a href="runtime.html">Runtime &amp; Errors</a>
+    <a href="guide.html">Tests &amp; Learning Path</a>
+  </nav>
+</header>
+<main>
+
+<h2>5. Core modules (module-by-module)</h2>
+
+<h3><code>core/</code> — distributed runtime kernel</h3>
+<p><strong>Responsibility:</strong> RDD API, scheduling, shuffle, block storage, RPC, deployment, UI.</p>
+<p><strong>Public API:</strong> <code>org.apache.spark.SparkContext</code>, <code>SparkConf</code>, <code>org.apache.spark.rdd.RDD</code>, <code>org.apache.spark.sql.SparkSession</code> re-exports (via SQL module).</p>
+<p><strong>Key internals:</strong></p>
+<ul>
+  <li><code>DAGScheduler</code>, <code>TaskSchedulerImpl</code>, <code>CoarseGrainedSchedulerBackend</code></li>
+  <li><code>BlockManager</code>, <code>MemoryStore</code>, <code>DiskStore</code></li>
+  <li><code>SortShuffleManager</code>, <code>MapOutputTracker</code></li>
+  <li><code>RpcEnv</code>, <code>NettyBlockTransferService</code></li>
+  <li><code>deploy/</code> — <code>SparkSubmit</code>, Standalone Master/Worker</li>
+</ul>
+<p><strong>Depends on:</strong> <code>common/network-*</code>, <code>common/unsafe</code>, Hadoop client libs.</p>
+<p><strong>Depended on by:</strong> All other Spark modules.</p>
+<p><strong>Invariants:</strong> One active <code>SparkContext</code> per JVM; shuffle IDs globally unique per app; stage cleanup when jobs complete.</p>
+
+<h3><code>sql/catalyst/</code> — query compiler</h3>
+<p><strong>Responsibility:</strong> SQL parsing, analysis, optimization, expression trees, rule engine.</p>
+<p><strong>Public API:</strong> Mostly <code>private[sql]</code> / developer — <code>ParserInterface</code>, <code>Analyzer</code>, <code>Optimizer</code>, <code>LogicalPlan</code>, <code>Rule[T]</code>.</p>
+<p><strong>Key classes:</strong> <code>RuleExecutor</code> (fixed-point batches), <code>CatalystSqlParser</code>, <code>TreeNode</code> (transformations via patterns).</p>
+<p><strong>Pattern:</strong> Compiler passes — batches of <code>Rule[LogicalPlan]</code> applied until fixpoint.</p>
+<p><strong>Non-obvious:</strong> Catalyst is largely cluster-agnostic; no RDD references in logical plans.</p>
+
+<h3><code>sql/core/</code> — SQL runtime</h3>
+<p><strong>Responsibility:</strong> Physical planning, execution operators, session state, classic API, Structured Streaming runtime.</p>
+<p><strong>Public API:</strong> <code>org.apache.spark.sql.classic.SparkSession</code>, <code>Dataset</code>, <code>DataFrameReader/Writer</code>.</p>
+<p><strong>Key classes:</strong> <code>QueryExecution</code>, <code>SparkPlan</code>, <code>SparkPlanner</code>, <code>SQLExecution</code>, <code>FileSourceScanExec</code>, <code>AdaptiveSparkPlanExec</code>.</p>
+<p><strong>Depends on:</strong> catalyst, core.</p>
+
+<h3><code>sql/hive/</code> — Hive metastore integration</h3>
+<p><strong>Responsibility:</strong> <code>HiveExternalCatalog</code>, Hive SerDe tables, <code>HiveTableScanExec</code>.</p>
+<p><strong>Activation:</strong> <code>SparkSession.builder.enableHiveSupport()</code> → <code>HiveSessionStateBuilder</code>.</p>
+<p><strong>Peripheral when:</strong> Using only DataSource V2 / in-memory catalog.</p>
+
+<h3><code>sql/connect/</code> — decoupled client/server</h3>
+<table>
+<tr><th>Submodule</th><th>Role</th></tr>
+<tr><td><code>connect/common</code></td><td>Client <code>SparkSession</code>, <code>SparkConnectClient</code>, proto plan builders</td></tr>
+<tr><td><code>connect/server</code></td><td><code>SparkConnectService</code> gRPC, <code>SparkConnectPlanner</code>, session manager</td></tr>
+<tr><td><code>connect/client/jvm</code></td><td>JVM client packaging</td></tr>
+<tr><td><code>connect/shims</code></td><td>Version compatibility shims</td></tr>
+</table>
+<p><strong>Critical invariant:</strong> Server reuses classic <code>QueryExecution</code> — Connect is transport + plan deserialization, not a separate engine.</p>
+
+<h3><code>launcher/</code> — bootstrap only</h3>
+<p><strong>Responsibility:</strong> Construct JVM commands without loading full Spark.</p>
+<p><strong>API:</strong> <code>SparkLauncher</code> (Java), <code>Main</code>, <code>SparkSubmitCommandBuilder</code>.</p>
+<p><strong>Why separate:</strong> Keeps shell scripts fast; classpath computed before heavy Spark classes load.</p>
+
+<h3><code>common/</code> — shared infrastructure</h3>
+<table>
+<tr><th>Module</th><th>Purpose</th></tr>
+<tr><td><code>network-common</code></td><td>Netty RPC, transport config</td></tr>
+<tr><td><code>network-shuffle</code></td><td>External shuffle service protocol</td></tr>
+<tr><td><code>network-yarn</code></td><td>YARN shuffle integration</td></tr>
+<tr><td><code>unsafe</code></td><td>Off-heap memory access for Tungsten</td></tr>
+<tr><td><code>kvstore</code></td><td>RocksDB/InMemory KV for UI history</td></tr>
+<tr><td><code>sketch</code></td><td>Approximate algorithms (Bloom, quantiles)</td></tr>
+</table>
+
+<h3><code>resource-managers/</code></h3>
+<p><strong>YARN:</strong> <code>Client.scala</code>, <code>ApplicationMaster.scala</code>, <code>YarnSchedulerBackend.scala</code>.</p>
+<p><strong>Kubernetes:</strong> <code>org.apache.spark.deploy.k8s</code> — pod spec builders, driver/executor pod lifecycle.</p>
+<p><strong>Standalone:</strong> Lives in <code>core/deploy/master</code> and <code>core/deploy/worker</code> — not under resource-managers.</p>
+
+<h3><code>python/pyspark/</code></h3>
+<p><strong>Responsibility:</strong> Python API mirroring JVM; Py4J bridge; Python worker for UDFs/Pandas UDFs.</p>
+<p><strong>Key files:</strong> <code>java_gateway.py</code>, <code>worker.py</code>, <code>sql/</code>, <code>connect/</code>.</p>
+<p><strong>Type:</strong> Glue + API — heavy lifting on JVM.</p>
+
+<h3><code>streaming/</code> (legacy DStreams)</h3>
+<p>Old micro-batch API over RDDs. Structured Streaming in <code>sql/core/.../execution/streaming/</code> is the maintained path.</p>
+
+<h3><code>mllib/</code>, <code>graphx/</code></h3>
+<p>Algorithm libraries built on RDDs/DataFrames. Important for ML users but not scheduling core.</p>
+
+<h3><code>connector/</code></h3>
+<p>Kafka, Avro, Protobuf, Kinesis — optional Maven modules, DataSource V1/V2 implementations.</p>
+
+<h2>6. Data model and persistence</h2>
+
+<h3>Domain entities (in-memory)</h3>
+<table>
+<tr><th>Entity</th><th>Representation</th></tr>
+<tr><td>Row (SQL)</td><td><code>InternalRow</code> (Catalyst), <code>Row</code> (user-facing)</td></tr>
+<tr><td>Schema</td><td><code>StructType</code>, <code>StructField</code></td></tr>
+<tr><td>Table metadata</td><td><code>CatalogTable</code>, V2 <code>Table</code> via <code>TableCatalog</code></td></tr>
+<tr><td>Block</td><td><code>BlockId</code> (e.g. <code>rdd_123_4</code>, <code>shuffle_0_0_0</code>)</td></tr>
+<tr><td>Shuffle metadata</td><td><code>MapStatus</code>, index files + data files on disk</td></tr>
+<tr><td>Streaming offset</td><td><code>OffsetSeqMetadata</code>, JSON in checkpoint dir</td></tr>
+<tr><td>State store</td><td>Versioned key-value per operator + partition (<code>HDFSBackedStateStore</code>)</td></tr>
+</table>
+
+<h3>No ORM / app database</h3>
+<p>Spark itself does not persist application domain data in an internal database. Metadata goes to:</p>
+<ul>
+  <li><strong>Hive Metastore</strong> (external DB) via <code>HiveExternalCatalog</code></li>
+  <li><strong>In-memory catalog</strong> (<code>SessionCatalog</code>) for temp views</li>
+  <li><strong>Event log</strong> — JSON files for Spark UI replay (<code>spark.eventLog.dir</code>)</li>
+  <li><strong>Checkpoint dirs</strong> — streaming state and offsets on Hadoop FS</li>
+  <li><strong>KVStore</strong> — UI elements in memory/RocksDB (<code>common/kvstore</code>)</li>
+</ul>
+
+<h3>Serialization</h3>
+<ul>
+  <li><strong>Default:</strong> Kryo (<code>spark.serializer</code>) with registrator for common types</li>
+  <li><strong>Closure:</strong> <code>closureSerializer</code> for task bytecode + captured variables</li>
+  <li><strong>SQL:</strong> <code>Encoder</code> / expression codegen for row serialization</li>
+  <li><strong>Connect:</strong> Protobuf plans + Apache Arrow for result batches</li>
+  <li><strong>Shuffle:</strong> Pluggable <code>Serializer</code> on shuffle records</li>
+</ul>
+
+<h3>Config formats</h3>
+<ul>
+  <li><code>SparkConf</code> — string key/value, typed accessors in <code>config._</code> objects</li>
+  <li><code>SQLConf</code> — session-level SQL settings (<code>spark.sql.*</code>)</li>
+  <li><code>conf/spark-defaults.conf</code> — deployment defaults</li>
+  <li><code>conf/spark-env.sh</code> — env vars (<code>SPARK_MASTER_HOST</code>, etc.)</li>
+</ul>
+
+<h3>Data lifecycle example (batch write)</h3>
+<div class="diagram">Parquet files on S3
+  → FileSourceScanExec reads splits
+  → InternalRow in executor memory (possibly off-heap via UnsafeRow)
+  → shuffle (optional) → sort/aggregate Exec
+  → DataSourceWriterCommitMessage
+  → committed files on S3 (transactional commit via OutputCommitter)</div>
+
+<h2>7. External interfaces (summary)</h2>
+
+<table>
+<tr><th>Interface</th><th>Protocol / format</th><th>Entry</th></tr>
+<tr><td>CLI</td><td>shell scripts</td><td><code>bin/*</code></td></tr>
+<tr><td>Scala/Java API</td><td>in-process</td><td><code>SparkSession</code>, <code>SparkContext</code></td></tr>
+<tr><td>Python API</td><td>Py4J TCP</td><td><code>pyspark</code></td></tr>
+<tr><td>Spark Connect</td><td>gRPC + Protobuf + Arrow</td><td><code>SparkConnectClient</code></td></tr>
+<tr><td>JDBC/ODBC</td><td>Thrift JDBC</td><td><code>sql/hive-thriftserver</code></td></tr>
+<tr><td>REST submission</td><td>JSON</td><td><code>core/.../deploy/rest/</code></td></tr>
+<tr><td>Filesystem</td><td>Hadoop FileSystem API</td><td>DataSources, checkpoints</td></tr>
+<tr><td>Plugin SPI</td><td><code>ServiceLoader</code></td><td><code>ExternalClusterManager</code>, DataSource V2, catalog plugins</td></tr>
+</table>
+
+<h2>Dependencies and architecture patterns</h2>
+
+<h3>Dependency direction</h3>
+<div class="diagram">python/R APIs  →  sql/api  →  sql/core  →  sql/catalyst
+                                    ↓
+                                  core  →  common/*
+                                    ↓
+                            hadoop-client, netty</div>
+
+<h3>Patterns in use</h3>
+<ul>
+  <li><strong>Lineage-based DAG scheduler</strong> — not a general-purpose workflow engine</li>
+  <li><strong>Rule-based query compiler</strong> (Catalyst) — similar to functional compiler passes</li>
+  <li><strong>Volcano-style iterator model</strong> — <code>SparkPlan.execute()</code> produces RDD pipelines</li>
+  <li><strong>Whole-stage codegen</strong> — fuses operators into generated Java for hot paths</li>
+  <li><strong>Adaptive Query Execution (AQE)</strong> — re-optimizes mid-query based on runtime stats</li>
+  <li><strong>Plugin / SPI</strong> — cluster managers, catalogs, data sources via Java ServiceLoader</li>
+</ul>
+
+<h3>Coupling vs separation</h3>
+<table>
+<tr><th>Clean separation</th><th>Tight coupling</th></tr>
+<tr><td>Catalyst logical vs physical plans</td><td><code>SparkEnv</code> global singleton</td></tr>
+<tr><td>SchedulerBackend trait vs implementations</td><td>SQL ↔ Core via RDD bridge (necessary)</td></tr>
+<tr><td>DataSource V2 connector API</td><td>Hive module patches SessionState builder</td></tr>
+<tr><td>Launcher vs core classpath</td><td>PySpark requires matching JVM/Python versions</td></tr>
+</table>
+
+<p><a href="runtime.html">Next: Error handling &amp; concurrency →</a></p>
+
+</main>
+</body>
+</html>
