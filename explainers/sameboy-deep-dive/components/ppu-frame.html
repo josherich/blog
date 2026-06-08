@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PPU Frame Render — SameBoy</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>SameBoy Deep Dive</strong>
+        <span>Flow C: PPU frame</span>
+      </div>
+      <nav class="nav">
+        <a href="../index.html">← Overview</a>
+        <a href="sdl-startup.html">SDL startup</a>
+        <a href="cpu-memory-cycle.html">CPU / memory cycle</a>
+        <a href="ppu-frame.html" aria-current="page">PPU frame</a>
+        <a href="save-state.html">Save states</a>
+        <a href="libretro-frame.html">Libretro frame</a>
+      </nav>
+    </aside>
+    <main class="content">
+      <h1>Flow C: PPU frame rendering</h1>
+      <p class="lead">The Picture Processing Unit (implemented entirely in <code>display.c</code>) is advanced by <code>GB_display_run</code> on every <code>GB_advance_cycles</code> call. A complete frame ends at <code>GB_display_vblank</code>.</p>
+
+      <section class="section searchable">
+        <h2>Trigger</h2>
+        <p>Implicit — any CPU bus cycle advances the PPU by the same T-cycle count via <code>GB_advance_cycles</code> → <code>GB_display_run(gb, cycles, false)</code>.</p>
+      </section>
+
+      <section class="section searchable">
+        <h2>LCD timing overview</h2>
+        <div class="diagram">One scanline (456 T-cycles @ 4.19 MHz):
+  Mode 2 (OAM Search)     80 T
+  Mode 3 (Pixel Transfer) 172–291 T (variable)
+  Mode 0 (H-Blank)        remainder
+
+144 visible lines + 10 V-Blank lines = 154 lines/frame
+
+GB_display_run uses GB_BATCHABLE_STATE_MACHINE:
+  display states 1–22+ encode fetcher, FIFO push, HBlank, VBlank
+
+End of frame → GB_display_vblank(GB_VBLANK_TYPE_NORMAL_FRAME)
+  → gb->vblank_just_occured = true
+  → vblank_callback(gb, type)
+  → GB_rewind_push (in GB_run)</div>
+      </section>
+
+      <details open class="searchable">
+        <summary>GB_display_run — state machine entry</summary>
+        <div class="details-body">
+          <p><code>GB_display_run</code> (<code>display.c:1533</code>) is the PPU heartbeat:</p>
+          <ul>
+            <li>Handles window Y trigger scheduling (<code>wy_check_scheduled</code>)</li>
+            <li>Splits cycles at line boundaries when batch would cross <code>LINE_LENGTH</code></li>
+            <li>DMG STOP mode: PPU frozen except artificial vblank for timing</li>
+            <li>Runs <code>GB_BATCHABLE_STATE_MACHINE(gb, display, cycles, 2, !force)</code> — states 1–17+ for pixel pipeline</li>
+          </ul>
+          <p>The state machine implements: tile fetch (2 bytes per tile), BG FIFO, OAM sprite sorting, priority mixing, CGB palette indexing, and STAT interrupt line updates.</p>
+          <p><a href="https://github.com/LIJI32/SameBoy/blob/208ba4afabffab9edde416f2dbb8ae459e34adb8/Core/display.c#L1533-L1618">GB_display_run</a></p>
+        </div>
+      </details>
+
+      <details open class="searchable">
+        <summary>Pixel output path</summary>
+        <div class="details-body">
+          <p>Rendered pixels write to <code>gb->screen</code> (uint32_t ARGB buffer allocated by frontend or core):</p>
+          <ol>
+            <li>PPU computes palette index per pixel</li>
+            <li><code>rgb_encode_callback</code> converts (or internal <code>GB_convert_rgb15</code> for CGB)</li>
+            <li>Border tiles composited when <code>border_mode != NEVER</code> (DMG/CGB/SGB borders)</li>
+            <li>SGB HLE may render border and palettes via <code>GB_sgb_render</code> in vblank</li>
+          </ol>
+          <p>Screen dimensions: 160×144 game area; bordered modes use larger buffer (<code>BORDERED_WIDTH</code> × <code>BORDERED_HEIGHT</code>).</p>
+          <p>Frontends call <code>GB_set_pixels_output(gb, buffer)</code> to set write pointer; updated each vblank after buffer swap.</p>
+        </div>
+      </details>
+
+      <details open class="searchable">
+        <summary>GB_display_vblank — frame completion</summary>
+        <div class="details-body">
+          <p>At frame end (<code>display.c:173</code>):</p>
+          <ol>
+            <li>Sets <code>vblank_just_occured = true</code> (consumed by <code>GB_run</code>)</li>
+            <li>Updates debugger CPU usage counters</li>
+            <li>SGB: <code>GB_sgb_render</code> if HLE SGB active</li>
+            <li>Turbo: <code>GB_timing_sync_turbo</code> may skip render and fire <code>GB_VBLANK_TYPE_SKIPPED_FRAME</code></li>
+            <li>LCD off: fill screen white/black per model</li>
+            <li>Normal path: invoke <code>vblank_callback(gb, type)</code></li>
+            <li><code>GB_handle_rumble</code>, <code>GB_timing_sync</code></li>
+          </ol>
+          <p>Vblank types: <code>NORMAL_FRAME</code>, <code>SKIPPED_FRAME</code>, <code>REPEAT</code> (CGB frame repeat), <code>LCD_OFF</code>, <code>ARTIFICIAL</code> (STOP mode DMG).</p>
+          <p><a href="https://github.com/LIJI32/SameBoy/blob/208ba4afabffab9edde416f2dbb8ae459e34adb8/Core/display.c#L173-L220">GB_display_vblank</a></p>
+        </div>
+      </details>
+
+      <details open class="searchable">
+        <summary>Key video section fields</summary>
+        <div class="details-body">
+          <table>
+            <tr><th>Field</th><th>Role</th></tr>
+            <tr><td><code>bg_fifo</code>, <code>oam_fifo</code></td><td>8-entry pixel FIFOs</td></tr>
+            <tr><td><code>visible_objects[10]</code></td><td>Sprites on current line</td></tr>
+            <tr><td><code>current_line</code>, <code>cycles_for_line</code></td><td>LY and intra-line position</td></tr>
+            <tr><td><code>display_state</code></td><td>State machine phase (1–22+)</td></tr>
+            <tr><td><code>background_palettes[32]</code></td><td>CGB BG palette RAM</td></tr>
+            <tr><td><code>oam[160]</code></td><td>Sprite attribute table</td></tr>
+            <tr><td><code>frame_skip_state</code></td><td>LCD enable/disable edge handling</td></tr>
+          </table>
+        </div>
+      </details>
+
+      <section class="section searchable">
+        <h2>Failure modes and accuracy risks</h2>
+        <ul>
+          <li>STAT mode delay TODO — simplifying PPU states may break STAT IRQ tests</li>
+          <li>Mode 3 duration varies with sprite count — wrong object limit → graphical glitches</li>
+          <li>HDMA during mode 3 conflicts — <code>dma_ppu_vram_conflict</code> tracks bus fights</li>
+          <li>Disabling rendering (<code>disable_rendering</code>) used by tester — must not skip vblank flag incorrectly</li>
+        </ul>
+        <p>External reference: <a href="https://gbdev.io/pandocs/LCDC.html">Pan Docs — LCD Timing</a></p>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

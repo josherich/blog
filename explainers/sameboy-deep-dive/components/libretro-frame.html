@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Libretro Frame — SameBoy</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>SameBoy Deep Dive</strong>
+        <span>Flow E: Libretro</span>
+      </div>
+      <nav class="nav">
+        <a href="../index.html">← Overview</a>
+        <a href="sdl-startup.html">SDL startup</a>
+        <a href="cpu-memory-cycle.html">CPU / memory cycle</a>
+        <a href="ppu-frame.html">PPU frame</a>
+        <a href="save-state.html">Save states</a>
+        <a href="libretro-frame.html" aria-current="page">Libretro frame</a>
+      </nav>
+    </aside>
+    <main class="content">
+      <h1>Flow E: Libretro host-driven frame</h1>
+      <p class="lead">The libretro core inverts control: RetroArch calls <code>retro_run()</code> once per host frame, and SameBoy must produce exactly one emulated frame of video and audio per call.</p>
+
+      <section class="section searchable">
+        <h2>Trigger</h2>
+        <p>RetroArch (or any libretro frontend) calls <code>retro_run()</code> at display refresh rate.</p>
+      </section>
+
+      <section class="section searchable">
+        <h2>Lifecycle vs SDL</h2>
+        <div class="diagram">SDL model:                    Libretro model:
+─────────────                 ─────────────────
+while (true)                  retro_run() {  // once per host frame
+  GB_run()  // partial           poll input
+}                               GB_run_frame() OR sync GB_run x2
+vblank_callback presents          video_cb(frame)
+                                audio_batch_cb(samples)
+                              }</div>
+      </section>
+
+      <details open class="searchable">
+        <summary>Initialization — retro_load_game</summary>
+        <div class="details-body">
+          <ol>
+            <li><code>retro_init()</code> — one-time setup</li>
+            <li><code>retro_load_game(info)</code> — allocate <code>gameboy[0]</code>, <code>GB_init</code>, load ROM from <code>info->data</code></li>
+            <li><code>init_for_current_model()</code> — register callbacks, set options from <code>check_variables()</code></li>
+            <li>Boot ROM from <code>retro_system_directory</code> or embedded C arrays (<code>dmg_boot.c</code>, etc.)</li>
+            <li><code>retro_load_game_special</code> — 2-player link: <code>emulated_devices = 2</code>, serial callbacks wired</li>
+          </ol>
+          <p>Libretro build disables rewind, debugger, cheats via compile flags in <code>libretro/Makefile.common</code>.</p>
+          <p><a href="https://github.com/LIJI32/SameBoy/blob/208ba4afabffab9edde416f2dbb8ae459e34adb8/libretro/libretro.c">libretro.c</a></p>
+        </div>
+      </details>
+
+      <details open class="searchable">
+        <summary>retro_run — single player</summary>
+        <div class="details-body">
+          <pre><code>void retro_run(void) {
+    if (variable_update) check_variables();
+    GB_update_keys_status();  // input_poll_cb + input_state_cb
+
+    GB_run_frame(&gameboy[0]);  // loops GB_run until vblank
+
+    video_cb(frame_buf, width, height, pitch);
+    upload_output_audio_buffer();  // audio_batch_cb
+}</code></pre>
+          <p><code>GB_run_frame</code> (<code>gb.c:1228</code>) temporarily enables turbo without frame skip, loops <code>GB_run</code> until <code>vblank_just_occured</code>, returns nanoseconds elapsed.</p>
+          <p>Pixels written during emulation to <code>frame_buf</code> slice via <code>GB_set_pixels_output</code>.</p>
+          <p><a href="https://github.com/LIJI32/SameBoy/blob/208ba4afabffab9edde416f2dbb8ae459e34adb8/Core/gb.c#L1228-L1249">GB_run_frame</a></p>
+        </div>
+      </details>
+
+      <details open class="searchable">
+        <summary>retro_run — link cable (2 players)</summary>
+        <div class="details-body">
+          <p>Alternates <code>GB_run</code> on GB0 and GB1 using cycle debt (<code>delta</code>) until both <code>vblank1_occurred</code> and <code>vblank2_occurred</code>:</p>
+          <pre><code>while (!vblank1_occurred || !vblank2_occurred) {
+    if (delta >= 0) delta -= GB_run(&gameboy[0]);
+    else            delta += GB_run(&gameboy[1]);
+}</code></pre>
+          <p>Serial bit callbacks connect the two instances for link cable games. Frame buffer composited side-by-side into <code>frame_buf</code>.</p>
+        </div>
+      </details>
+
+      <details open class="searchable">
+        <summary>Configuration — core options</summary>
+        <div class="details-body">
+          <p>Options defined in <code>libretro_core_options.inc</code>, read in <code>check_variables()</code>:</p>
+          <ul>
+            <li>Model (DMG/CGB/SGB/auto)</li>
+            <li>Color correction, palette, border mode</li>
+            <li>RTC mode, link cable enable</li>
+            <li>Audio output (mono/stereo), rumble</li>
+            <li>Screen layout (1×, 2× side-by-side)</li>
+          </ul>
+          <p>Applied via <code>GB_set_*</code> API — same as other frontends, different config source.</p>
+        </div>
+      </details>
+
+      <details open class="searchable">
+        <summary>Audio and video output</summary>
+        <div class="details-body">
+          <p><strong>Video:</strong> <code>rgb_encode_callback</code> writes to <code>frame_buf</code>; after frame, <code>video_cb</code> hands buffer to RetroArch (with pitch). <code>lcd_status_callback</code> retains last frame when LCD turned off.</p>
+          <p><strong>Audio:</strong> <code>audio_callback</code> accumulates interleaved int16 samples in <code>output_audio_buffer</code>; flushed at end of <code>retro_run</code> via <code>audio_batch_cb</code>.</p>
+          <p><strong>Rumble:</strong> <code>retro_rumble_interface</code> queried in <code>rumble_callback</code>.</p>
+        </div>
+      </details>
+
+      <section class="section searchable">
+        <h2>Failure modes</h2>
+        <ul>
+          <li>Host calls <code>retro_run</code> without <code>retro_load_game</code> → undefined (guarded by static state)</li>
+          <li>Link cable with only one loaded game → serial callbacks no-op</li>
+          <li>Option change mid-frame → applied at start of next <code>retro_run</code> when <code>GET_VARIABLE_UPDATE</code></li>
+        </ul>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

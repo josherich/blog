@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SameBoy Codebase Deep Dive</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <script src="assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>SameBoy Deep Dive</strong>
+        <span>Commit 208ba4a · LIJI32/SameBoy</span>
+      </div>
+      <nav class="nav" aria-label="Sections">
+        <a href="index.html" aria-current="page">Overview</a>
+        <div class="nav-group">Execution flows</div>
+        <a href="components/sdl-startup.html">SDL startup &amp; main loop</a>
+        <a href="components/cpu-memory-cycle.html">CPU / memory cycle</a>
+        <a href="components/ppu-frame.html">PPU frame render</a>
+        <a href="components/save-state.html">Save states &amp; BESS</a>
+        <a href="components/libretro-frame.html">Libretro frame</a>
+        <div class="nav-group">Sections</div>
+        <a href="#executive">1. Mental model</a>
+        <a href="#repo-map">2. Repository map</a>
+        <a href="#architecture">3. Runtime architecture</a>
+        <a href="#flows">4. Key flows</a>
+        <a href="#modules">5. Core modules</a>
+        <a href="#data">6. Data &amp; persistence</a>
+        <a href="#external">7. External interfaces</a>
+        <a href="#errors">8. Error handling</a>
+        <a href="#concurrency">9. Concurrency</a>
+        <a href="#tests">10. Tests</a>
+        <a href="#build">11. Build &amp; deploy</a>
+        <a href="#files">12. Key files</a>
+        <a href="#risks">13. Risks</a>
+        <a href="#learning">14. Learning path</a>
+        <a href="#questions">15. Open questions</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <div class="topbar">
+        <div>
+          <h1>Codebase Deep Dive: SameBoy</h1>
+          <p class="lead">SameBoy is a cycle-accurate Game Boy (DMG) and Game Boy Color (CGB) emulator written in portable C. This document explains how the core emulation engine, frontends, and tooling fit together — with emphasis on dataflow, timing synchronization, and execution paths. Analysis is based on the repository at commit <code>208ba4afabffab9edde416f2dbb8ae459e34adb8</code>.</p>
+        </div>
+        <div class="controls">
+          <input type="search" placeholder="Filter blocks" aria-label="Filter blocks" data-search>
+          <button type="button" data-expand-all>Expand all</button>
+          <button type="button" data-collapse-all>Collapse all</button>
+        </div>
+      </div>
+      <p class="meta" data-search-count></p>
+
+      <!-- Section 1 -->
+      <section id="executive" class="section searchable">
+        <h2>1. Executive mental model</h2>
+        <p>Think of SameBoy as a <strong>single monolithic state machine</strong> (<code>GB_gameboy_t</code>) advanced by bus-cycle-accurate CPU emulation, with peripheral hardware (PPU, APU, timers, DMA, MBC) synchronized through a central <code>GB_advance_cycles()</code> hub. Frontends are thin hosts that call <code>GB_run()</code> in a loop and receive pixels, audio samples, and events through C callbacks.</p>
+        <div class="diagram">┌─────────────────────────────────────────────────────────────┐
+│  Frontend (SDL / Cocoa / iOS / libretro)                    │
+│  - main loop calls GB_run() or GB_run_frame()               │
+│  - registers vblank, audio, input, boot ROM callbacks       │
+└──────────────────────────┬──────────────────────────────────┘
+                           │ callbacks ↑  GB_set_* ↓ config
+┌──────────────────────────▼──────────────────────────────────┐
+│  Core (Core/*.c) — portable C, no platform deps             │
+│                                                             │
+│  GB_run() → GB_cpu_run() → cycle_read/write               │
+│                    ↓                                        │
+│            GB_advance_cycles()  ← timing hub                │
+│              ├─ GB_joypad_run                                 │
+│              ├─ GB_apu_run                                    │
+│              ├─ GB_display_run  (PPU)                       │
+│              ├─ GB_dma_run                                    │
+│              ├─ ir_run, rtc_run                             │
+│                                                             │
+│  GB_gameboy_t = all saved hardware state                    │
+└─────────────────────────────────────────────────────────────┘</div>
+        <p><strong>Key insight:</strong> <code>GB_run()</code> does <em>not</em> emulate a full frame. It runs one CPU quantum (one instruction, interrupt service, halt cycle, or STOP-mode tick). Frontends loop until <code>vblank_just_occured</code> is set, or libretro uses <code>GB_run_frame()</code> which loops internally. Video presentation happens in the <code>vblank_callback</code>, not inside <code>GB_run()</code>.</p>
+        <p>External references: <a href="https://gbdev.io/pandocs/">Pan Docs</a> (hardware spec), <a href="https://deepwiki.com/LIJI32/SameBoy">DeepWiki SameBoy index</a>, <a href="https://github.com/LIJI32/SameBoy/blob/master/BESS.md">BESS save-state format</a>.</p>
+      </section>
+
+      <!-- Section 2 -->
+      <section id="repo-map" class="section searchable">
+        <h2>2. Repository map</h2>
+        <details open>
+          <summary>What kind of project this is</summary>
+          <div class="details-body">
+            <p>SameBoy is a <strong>native desktop/mobile emulator</strong> — not a web app, not a server. It ships multiple GUI frontends around one shared emulation core, plus a headless tester, libretro core, and open-source boot ROMs.</p>
+            <p><span class="tag">C</span> <span class="tag">Objective-C</span> <span class="tag">Makefile</span> <span class="tag">rgbds</span> <span class="tag">SDL2</span> <span class="tag">Metal/OpenGL</span></p>
+          </div>
+        </details>
+        <details open>
+          <summary>Top-level directories</summary>
+          <div class="details-body">
+            <table>
+              <tr><th>Path</th><th>Role</th><th>Central vs peripheral</th></tr>
+              <tr><td><code>Core/</code></td><td>Emulation engine: CPU, memory, PPU (<code>display.c</code>), APU, MBC, timing, debugger, save states, cheats, rewind, SGB HLE</td><td><strong>Central</strong></td></tr>
+              <tr><td><code>SDL/</code></td><td>Cross-platform frontend (Linux, Windows, BSD). Entry: <code>main.c</code></td><td>Peripheral (host)</td></tr>
+              <tr><td><code>Cocoa/</code></td><td>macOS native app with debugger UI, link cable, camera. Entry: <code>main.m</code> → <code>GBApp.m</code></td><td>Peripheral</td></tr>
+              <tr><td><code>iOS/</code></td><td>Touch UI, Metal rendering, ROM library. Entry: <code>main.m</code></td><td>Peripheral</td></tr>
+              <tr><td><code>libretro/</code></td><td>RetroArch core. Entry: <code>retro_run()</code> in <code>libretro.c</code></td><td>Peripheral</td></tr>
+              <tr><td><code>AppleCommon/</code></td><td>Shared Metal/GL view, audio client for Cocoa+iOS</td><td>Glue</td></tr>
+              <tr><td><code>BootROMs/</code></td><td>SameBoot — rgbds assembly sources for DMG/CGB/SGB boot ROMs</td><td>Supporting assets</td></tr>
+              <tr><td><code>Tester/</code></td><td>Headless ROM runner for CI regression (screenshot hashing)</td><td>Test infra</td></tr>
+              <tr><td><code>Shaders/</code></td><td>GLSL scaling filters for SDL</td><td>Peripheral</td></tr>
+              <tr><td><code>JoyKit/</code></td><td>Game controller abstraction (macOS)</td><td>Peripheral</td></tr>
+              <tr><td><code>Misc/</code>, <code>HexFiend/</code>, <code>QuickLook/</code>, <code>Windows/</code>, <code>FreeDesktop/</code></td><td>Utilities, hex editor plugin, Quick Look, Windows helpers, .desktop files</td><td>Peripheral</td></tr>
+              <tr><td><code>.github/workflows/</code></td><td>CI: build all targets + sanity ROM tests</td><td>Infra</td></tr>
+            </table>
+          </div>
+        </details>
+        <details open>
+          <summary>Entry points and configuration</summary>
+          <div class="details-body">
+            <table>
+              <tr><th>File</th><th>Type</th></tr>
+              <tr><td><code>SDL/main.c:main()</code></td><td>SDL CLI/GUI entry</td></tr>
+              <tr><td><code>Cocoa/main.m</code></td><td>macOS <code>NSApplicationMain</code></td></tr>
+              <tr><td><code>iOS/main.m</code></td><td>iOS <code>UIApplicationMain</code></td></tr>
+              <tr><td><code>libretro/libretro.c:retro_init/load_game/run</code></td><td>Libretro API</td></tr>
+              <tr><td><code>Tester/main.c:main()</code></td><td>Headless test runner</td></tr>
+              <tr><td><code>Makefile</code></td><td>Primary build system</td></tr>
+              <tr><td><code>version.mk</code></td><td><code>VERSION := 1.0.3</code></td></tr>
+              <tr><td><code>sameboy.pc.in</code></td><td>pkg-config template for <code>libsameboy</code></td></tr>
+            </table>
+          </div>
+        </details>
+      </section>
+
+      <!-- Section 3 -->
+      <section id="architecture" class="section searchable">
+        <h2>3. Main runtime architecture</h2>
+        <details open>
+          <summary>Core abstractions</summary>
+          <div class="details-body">
+            <ul>
+              <li><code>GB_gameboy_t</code> — opaque (public) or fully expanded (internal) struct holding all hardware state, split into <code>GB_SECTION</code> blocks for save states.</li>
+              <li><code>GB_model_t</code> — DMG, MGB, SGB, SGB2, CGB, CGB0, AGB, etc. (<code>Core/model.h</code>).</li>
+              <li>Callback function pointers in the <code>unsaved</code> section — bridge to frontends without platform deps in Core.</li>
+              <li><code>GB_UNIT</code> state machines in <code>timing.h</code> — batchable per-component timing (display, div, APU channels).</li>
+            </ul>
+            <p><a href="https://github.com/LIJI32/SameBoy/blob/208ba4afabffab9edde416f2dbb8ae459e34adb8/Core/gb.h#L400-L860">gb.h — GB_gameboy_t sections</a></p>
+          </div>
+        </details>
+        <details open>
+          <summary>Startup lifecycle</summary>
+          <div class="details-body">
+            <ol>
+              <li><code>GB_init(gb, model)</code> — zero state, allocate WRAM/VRAM by model, set defaults, call <code>GB_reset()</code>, load default border tiles.</li>
+              <li>Frontend registers callbacks (<code>GB_set_vblank_callback</code>, <code>GB_apu_set_sample_callback</code>, etc.).</li>
+              <li><code>GB_load_rom()</code> — mmap/copy ROM, parse header via <code>GB_configure_cart()</code>, set MBC type.</li>
+              <li><code>GB_load_battery()</code> — restore MBC RAM + RTC from <code>.sav</code>.</li>
+              <li>Boot ROM load via <code>boot_rom_load_callback</code> (frontend provides file or embedded ROM).</li>
+              <li>Main loop: <code>GB_run()</code> until exit.</li>
+            </ol>
+            <p><a href="https://github.com/LIJI32/SameBoy/blob/208ba4afabffab9edde416f2dbb8ae459e34adb8/Core/gb.c#L164-L194">GB_init</a> · <a href="https://github.com/LIJI32/SameBoy/blob/208ba4afabffab9edde416f2dbb8ae459e34adb8/SDL/main.c#L1166-L1298">SDL run() setup and loop</a></p>
+          </div>
+        </details>
+      </section>
+
+      <!-- Section 4 -->
+      <section id="flows" class="section searchable">
+        <h2>4. Key execution flows</h2>
+        <p>Five end-to-end paths with dedicated walkthrough pages:</p>
+        <div class="flow">
+          <a class="flow-step" href="components/sdl-startup.html">
+            <span class="step-label">Flow A — SDL startup</span>
+            <span>CLI → prefs → GB_init → ROM load → callback registration → <code>while(true) GB_run()</code></span>
+          </a>
+          <a class="flow-step" href="components/cpu-memory-cycle.html">
+            <span class="step-label">Flow B — CPU/memory cycle</span>
+            <span><code>GB_cpu_run</code> → <code>cycle_read</code> → <code>GB_read_memory</code> → <code>GB_advance_cycles</code></span>
+          </a>
+          <a class="flow-step" href="components/ppu-frame.html">
+            <span class="step-label">Flow C — PPU frame</span>
+            <span><code>GB_display_run</code> state machine → line render → <code>GB_display_vblank</code> → callback</span>
+          </a>
+          <a class="flow-step" href="components/save-state.html">
+            <span class="step-label">Flow D — Save state</span>
+            <span>Section serialization → external RAM blobs → optional BESS footer</span>
+          </a>
+          <a class="flow-step" href="components/libretro-frame.html">
+            <span class="step-label">Flow E — Libretro frame</span>
+            <span><code>retro_run</code> → input poll → <code>GB_run_frame</code> → <code>video_cb</code> / <code>audio_batch_cb</code></span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Section 5 -->
+      <section id="modules" class="section searchable">
+        <h2>5. Core modules</h2>
+        <details open>
+          <summary>Core/ — emulation engine</summary>
+          <div class="details-body">
+            <table>
+              <tr><th>Module</th><th>Responsibility</th><th>Key API</th><th>Depends on</th></tr>
+              <tr><td><code>gb.c</code></td><td>Orchestration, ROM/battery I/O, borders, <code>GB_run</code></td><td><code>GB_init</code>, <code>GB_run</code>, <code>GB_load_rom</code></td><td>All subsystems</td></tr>
+              <tr><td><code>sm83_cpu.c</code></td><td>SM83 CPU, opcode table, bus conflicts</td><td><code>GB_cpu_run</code> (internal)</td><td>memory, timing</td></tr>
+              <tr><td><code>memory.c</code></td><td>Address decode, OAM bug, DMA</td><td><code>GB_read_memory</code>, <code>GB_write_memory</code></td><td>mbc, display, apu</td></tr>
+              <tr><td><code>mbc.c</code></td><td>Cartridge banking MBC1-7, HuC, TPP1, camera</td><td><code>GB_configure_cart</code>, <code>GB_reset_mbc</code></td><td>—</td></tr>
+              <tr><td><code>display.c</code></td><td>PPU — LCD timing, FIFO rendering, palettes</td><td><code>GB_display_run</code>, <code>GB_display_vblank</code></td><td>timing, memory</td></tr>
+              <tr><td><code>apu.c</code></td><td>4-channel audio, band-limited synthesis, 96kHz output</td><td><code>GB_apu_run</code>, <code>GB_apu_set_sample_callback</code></td><td>timing</td></tr>
+              <tr><td><code>timing.c</code></td><td><code>GB_advance_cycles</code> hub, DIV/TIMA, serial, turbo sync</td><td><code>GB_advance_cycles</code></td><td>joypad, apu, display, dma</td></tr>
+              <tr><td><code>joypad.c</code></td><td>Key matrix, debouncing, faux analog</td><td><code>GB_set_key_state</code>, <code>GB_joypad_run</code></td><td>timing</td></tr>
+              <tr><td><code>save_state.c</code></td><td>Native + BESS save/load</td><td><code>GB_save_state</code>, <code>GB_load_state</code></td><td>gb.h layout</td></tr>
+              <tr><td><code>debugger.c</code></td><td>CLI debugger, breakpoints, symbols</td><td><code>GB_debugger_run</code>, <code>GB_debugger_break</code></td><td>sm83_disassembler</td></tr>
+              <tr><td><code>sgb.c</code></td><td>Super Game Boy HLE (border, palettes, intro)</td><td>Internal</td><td>display, apu</td></tr>
+              <tr><td><code>rewind.c</code></td><td>Compressed rewind ring buffer</td><td><code>GB_rewind_push/pop</code></td><td>save_state (no BESS)</td></tr>
+            </table>
+          </div>
+        </details>
+        <details open>
+          <summary>Frontends — glue, not business logic</summary>
+          <div class="details-body">
+            <p>SDL (<code>SDL/main.c</code>, <code>gui.c</code>, <code>audio.c</code>), Cocoa (<code>Cocoa/Document.m</code>, <code>GBView.m</code>), iOS (<code>GBViewController.m</code>), libretro (<code>libretro.c</code>). Each translates OS events → <code>GB_set_key_state</code> and callbacks → OS audio/video APIs. No emulation accuracy logic lives here.</p>
+          </div>
+        </details>
+      </section>
+
+      <!-- Section 6 -->
+      <section id="data" class="section searchable">
+        <h2>6. Data model and persistence</h2>
+        <details open>
+          <summary>In-memory state (GB_gameboy_t sections)</summary>
+          <div class="details-body">
+            <table>
+              <tr><th>Section</th><th>Contents</th><th>Saved?</th></tr>
+              <tr><td><code>header</code></td><td>Magic, version (15)</td><td>Yes</td></tr>
+              <tr><td><code>core_state</code></td><td>Registers AF–PC, IME, flags, model</td><td>Yes</td></tr>
+              <tr><td><code>dma</code></td><td>OAM DMA, HDMA state</td><td>Yes</td></tr>
+              <tr><td><code>mbc</code></td><td>Bank registers, rumble, camera regs</td><td>Yes</td></tr>
+              <tr><td><code>hram</code></td><td>HRAM + I/O registers FF80–FFFF</td><td>Yes</td></tr>
+              <tr><td><code>timing</code></td><td>DIV, TIMA, serial, joypad bounce</td><td>Yes</td></tr>
+              <tr><td><code>apu</code></td><td>Channel state (not output buffer)</td><td>Yes</td></tr>
+              <tr><td><code>rtc</code></td><td>MBC3/TPP1 real-time clock</td><td>Yes</td></tr>
+              <tr><td><code>video</code></td><td>VRAM pointer is external; OAM, palettes, PPU state saved</td><td>Partial + blob</td></tr>
+              <tr><td><code>unsaved</code></td><td>ROM/RAM pointers, callbacks, debugger, rewind</td><td>No</td></tr>
+            </table>
+            <p>External heap blobs: <code>rom</code>, <code>ram</code>, <code>vram</code>, <code>mbc_ram</code> — serialized as trailing blocks in save files.</p>
+          </div>
+        </details>
+        <details open>
+          <summary>File formats</summary>
+          <div class="details-body">
+            <ul>
+              <li><strong>ROM</strong> — raw <code>.gb</code> / <code>.gbc</code>; header parsed at <code>0x0100–0x014F</code></li>
+              <li><strong>Battery</strong> — <code>.sav</code> beside ROM (MBC RAM + RTC); multiple legacy formats supported in <code>gb.c</code></li>
+              <li><strong>Save state</strong> — section-ordered binary + optional <a href="https://github.com/LIJI32/SameBoy/blob/master/BESS.md">BESS</a> footer for cross-emulator compatibility</li>
+              <li><strong>Cheats</strong> — <code>.cht</code> text format</li>
+              <li><strong>SDL prefs</strong> — binary <code>prefs.bin</code> (<code>SDL/configuration.c</code>)</li>
+              <li><strong>Cocoa/iOS</strong> — <code>NSUserDefaults</code> keys like <code>GBEmulatedModel</code>, <code>GBRight</code></li>
+              <li><strong>Libretro</strong> — core options via <code>RETRO_ENVIRONMENT_GET_VARIABLE</code></li>
+            </ul>
+          </div>
+        </details>
+      </section>
+
+      <!-- Section 7 -->
+      <section id="external" class="section searchable">
+        <h2>7. External interfaces</h2>
+        <details open>
+          <summary>What the system talks to</summary>
+          <div class="details-body">
+            <table>
+              <tr><th>Interface</th><th>Used by</th><th>Purpose</th></tr>
+              <tr><td>Filesystem</td><td>All</td><td>ROM, .sav, save states, boot ROMs, cheats, symbols</td></tr>
+              <tr><td>SDL2 / Metal / OpenGL</td><td>SDL, Apple frontends</td><td>Window, input, GPU rendering, shaders</td></tr>
+              <tr><td>Core Audio / SDL Audio / AVAudioEngine</td><td>Cocoa, iOS, SDL</td><td>96 kHz PCM output</td></tr>
+              <tr><td>Libretro API</td><td>libretro.c</td><td>RetroArch integration</td></tr>
+              <tr><td>Host clock (<code>time()</code>)</td><td>RTC, WorkBoy</td><td>Real-time clock advancement</td></tr>
+              <tr><td>Serial callbacks</td><td>Cocoa link cable, printer, WorkBoy</td><td>Bit-banged serial between two GB instances or accessories</td></tr>
+              <tr><td>Camera callbacks</td><td>Cocoa, iOS</td><td>Game Boy Camera sensor pixels</td></tr>
+            </table>
+            <p>No network, database, or cloud services in the core product.</p>
+          </div>
+        </details>
+      </section>
+
+      <!-- Section 8 -->
+      <section id="errors" class="section searchable">
+        <h2>8. Error handling and edge cases</h2>
+        <details open>
+          <summary>Patterns</summary>
+          <div class="details-body">
+            <ul>
+              <li><strong>Return codes:</strong> <code>GB_load_rom</code>, <code>GB_save_state</code>, <code>GB_load_battery</code> return <code>0</code> on success, negative on failure.</li>
+              <li><strong>Assertions:</strong> <code>GB_ASSERT_NOT_RUNNING</code> prevents re-entrant <code>GB_run</code>; debug-only thread checks on callback registration.</li>
+              <li><strong>Logging:</strong> <code>GB_log(gb, fmt, ...)</code> → optional <code>log_callback</code>; SDL can capture to message boxes.</li>
+              <li><strong>Tester crash detection:</strong> stack overflow, halt-with-IE=0 deadlock, infinite <code>0xFF</code> at <code>0x38</code>.</li>
+              <li><strong>Graceful degradation:</strong> unreadable <code>.sav</code> path logs warning; RTC reset if timestamp implausible.</li>
+            </ul>
+            <p>Failure modes: corrupt ROM header → <code>GB_configure_cart</code> may default to ROM-only; save state version mismatch → load rejected; audio backpressure in SDL drops samples when queue &gt; freq/8.</p>
+          </div>
+        </details>
+      </section>
+
+      <!-- Section 9 -->
+      <section id="concurrency" class="section searchable">
+        <h2>9. Concurrency and lifecycle</h2>
+        <details open>
+          <summary>Threading model</summary>
+          <div class="details-body">
+            <ul>
+              <li><strong>Core is single-threaded.</strong> <code>running_thread_id</code> tracks the emulation thread; callbacks must not call <code>GB_run</code> re-entrantly.</li>
+              <li><strong>Cocoa:</strong> emulation on <code>NSThread</code> (<code>Document.m -run</code>); UI on main thread; atomic blocks for debugger.</li>
+              <li><strong>iOS:</strong> serial GCD queue <code>_runQueue</code> for <code>GB_run</code>.</li>
+              <li><strong>SDL:</strong> single-threaded main loop; input polled via <code>update_input_hint_callback</code> from timing code.</li>
+              <li><strong>Libretro:</strong> host-thread driven; no internal threads.</li>
+              <li><strong>Tester:</strong> optional <code>--jobs N</code> forks processes (Unix only).</li>
+            </ul>
+            <p>Turbo mode skips PPU rendering and may skip vblank callbacks unless <code>enable_skipped_frame_vblank_callbacks</code> is set. Rewind pushes state on each vblank (compressed).</p>
+          </div>
+        </details>
+      </section>
+
+      <!-- Section 10 -->
+      <section id="tests" class="section searchable">
+        <h2>10. Tests</h2>
+        <details open>
+          <summary>Framework and coverage</summary>
+          <div class="details-body">
+            <p><strong>Framework:</strong> Custom headless runner (<code>Tester/main.c</code>), not unit tests. CI compares SHA1 of output BMP screenshots.</p>
+            <p><strong>CI ROMs</strong> (<code>.github/actions/sanity_tests.sh</code>): <code>cgb_sound.gb</code>, <code>cgb-acid2.gbc</code>, <code>dmg-acid2.gb</code>, <code>dmg_sound-2.gb</code>, <code>oam_bug-2.gb</code>.</p>
+            <p><strong>Run locally:</strong></p>
+            <pre><code>make tester CONF=release
+./build/bin/tester/sameboy_tester --cgb --length 10 path/to/rom.gb</code></pre>
+            <p><strong>Covered:</strong> PPU accuracy (Acid2), APU (blargg sound ROMs), OAM bug, basic crash detection.</p>
+            <p><strong>Uncovered:</strong> Individual MBC edge cases, debugger commands, frontend UI, link cable timing, most cheat paths — no automated tests found.</p>
+          </div>
+        </details>
+      </section>
+
+      <!-- Section 11 -->
+      <section id="build" class="section searchable">
+        <h2>11. Build, run, and deploy</h2>
+        <details open>
+          <summary>Commands</summary>
+          <div class="details-body">
+            <pre><code># Dependencies: clang, make, rgbds, cppp, libsdl2 (SDL port)
+git clone https://github.com/LIJI32/SameBoy.git
+cd SameBoy
+make                    # sdl on Linux, cocoa on macOS
+make all CONF=release   # sdl + tester + libretro + lib (+ cocoa on macOS)
+make -C libretro        # libretro core only
+./build/bin/SDL/sameboy game.gb
+
+# CI equivalent
+make -j all CONF=release
+.github/actions/sanity_tests.sh</code></pre>
+            <p><strong>Deploy:</strong> GitHub Actions builds artifacts on push to <code>master</code>; libretro branch auto-synced via <code>update_libretro.sh</code>; macOS releases as <code>.app</code>, iOS as IPA/deb; FreeDesktop <code>make install</code>.</p>
+            <p><strong>Config:</strong> <code>CONF=debug|release|native_release|fat_release</code>, <code>BOOTROMS_DIR=</code>, <code>DATA_DIR=</code>, <code>DISABLE_DEBUGGER=1</code> (lib only).</p>
+          </div>
+        </details>
+      </section>
+
+      <!-- Section 12 -->
+      <section id="files" class="section searchable">
+        <h2>12. Most important files to understand first</h2>
+        <details open>
+          <summary>Ranked list</summary>
+          <div class="details-body">
+            <ol>
+              <li><code>Core/gb.h</code> — entire public API and state layout</li>
+              <li><code>Core/gb.c</code> — <code>GB_init</code>, <code>GB_run</code>, ROM/battery lifecycle</li>
+              <li><code>Core/timing.c</code> — <code>GB_advance_cycles</code>, the synchronization hub</li>
+              <li><code>Core/sm83_cpu.c</code> — CPU execution and bus-cycle timing</li>
+              <li><code>Core/memory.c</code> — memory map, side effects, OAM bug</li>
+              <li><code>Core/display.c</code> — PPU (largest accuracy-critical file)</li>
+              <li><code>Core/apu.c</code> — audio generation</li>
+              <li><code>Core/mbc.c</code> — cartridge hardware</li>
+              <li><code>Core/save_state.c</code> — persistence format</li>
+              <li><code>SDL/main.c</code> — reference frontend integration</li>
+              <li><code>libretro/libretro.c</code> — alternative frame-driven host model</li>
+              <li><code>Makefile</code> — how everything is wired together</li>
+            </ol>
+          </div>
+        </details>
+      </section>
+
+      <!-- Section 13 -->
+      <section id="risks" class="section searchable">
+        <h2>13. Things that are confusing or risky</h2>
+        <details open>
+          <summary>Non-obvious insights</summary>
+          <div class="details-body">
+            <ul>
+              <li><strong>8 MHz cycle units:</strong> Internal cycle counters use 8 MHz units; DMG divides by 2 in <code>GB_advance_cycles</code> when not in double-speed CGB mode.</li>
+              <li><strong><code>GB_run</code> ≠ one frame:</strong> Easy to misread; use <code>GB_run_frame</code> or loop on <code>vblank_just_occured</code>.</li>
+              <li><strong>Bus conflicts:</strong> <code>sm83_cpu.c</code> has per-register conflict maps for DMG/CGB/SGB — changing I/O timing can break Acid2-style tests.</li>
+              <li><strong>PPU state machine:</strong> 20+ states in <code>display.c</code>; STAT mode bits intentionally delayed 4 T-cycles (see TODO in source).</li>
+              <li><strong>Opaque struct:</strong> Public builds hide <code>GB_gameboy_t</code> layout; define <code>GB_INTERNAL</code> when hacking Core.</li>
+              <li><strong>Libretro strips features:</strong> Built with <code>GB_DISABLE_REWIND</code>, <code>GB_DISABLE_DEBUGGER</code>, etc.</li>
+              <li><strong>Band-limited init:</strong> <code>apu.c</code> uses <code>__attribute__((constructor))</code> — runs at library load.</li>
+              <li><strong>SGB intro hack:</strong> Special path in <code>GB_run</code> advances PPU without CPU during intro animation.</li>
+              <li><strong>Save state version:</strong> <code>STRUCT_VERSION 15</code> — bumping requires migration logic in <code>save_state.c</code>.</li>
+            </ul>
+          </div>
+        </details>
+      </section>
+
+      <!-- Section 14 -->
+      <section id="learning" class="section searchable">
+        <h2>14. Suggested learning path</h2>
+        <details open>
+          <summary>Ordered reading list</summary>
+          <div class="details-body">
+            <ol>
+              <li>Read <code>README.md</code> and skim <a href="https://deepwiki.com/LIJI32/SameBoy">DeepWiki overview</a></li>
+              <li>Study <code>Core/gb.h</code> — <code>GB_SECTION</code> layout and public functions</li>
+              <li>Trace <code>GB_init</code> → <code>GB_reset</code> in <code>gb.c</code></li>
+              <li>Read <code>GB_run</code> and follow into <code>GB_cpu_run</code> (<code>sm83_cpu.c</code>)</li>
+              <li>Understand <code>GB_advance_cycles</code> in <code>timing.c</code></li>
+              <li>Pick one bus operation: <code>GB_read_memory</code> for I/O register side effects</li>
+              <li>Skim <code>display.c</code> <code>GB_display_run</code> state machine header</li>
+              <li>Read SDL <code>run()</code> in <code>SDL/main.c</code> for callback wiring</li>
+              <li>Run <code>make tester</code> on <code>dmg-acid2.gb</code> and inspect output BMP</li>
+              <li>Explore <code>debugger.c</code> if modifying CPU or memory behavior</li>
+            </ol>
+          </div>
+        </details>
+      </section>
+
+      <!-- Section 15 -->
+      <section id="questions" class="section searchable">
+        <h2>15. Open questions</h2>
+        <details open>
+          <summary>Cannot be determined from code alone</summary>
+          <div class="details-body">
+            <ul>
+              <li>Exact hardware behavior for several TODO-marked timing cases (ISR IF read timing, STOP mode DMA, MGB OAM bug variants).</li>
+              <li>Whether Windows <code>tester</code> target is intentionally broken (Makefile links incomplete object set).</li>
+              <li>Production release cadence and signing process for macOS/iOS builds.</li>
+              <li>Which real-hardware tests were used to validate each <code>bitwise_glitch</code> OAM corruption variant.</li>
+              <li>Performance characteristics on low-end ARM without profiling data in repo.</li>
+            </ul>
+          </div>
+        </details>
+      </section>
+
+      <p class="meta small">Generated from analysis of <a href="https://github.com/LIJI32/SameBoy">LIJI32/SameBoy</a> at commit 208ba4a. See component pages for step-by-step execution traces.</p>
+    </main>
+  </div>
+</body>
+</html>

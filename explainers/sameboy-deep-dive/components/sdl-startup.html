@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SDL Startup &amp; Main Loop — SameBoy</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>SameBoy Deep Dive</strong>
+        <span>Flow A: SDL startup</span>
+      </div>
+      <nav class="nav">
+        <a href="../index.html">← Overview</a>
+        <a href="sdl-startup.html" aria-current="page">SDL startup</a>
+        <a href="cpu-memory-cycle.html">CPU / memory cycle</a>
+        <a href="ppu-frame.html">PPU frame</a>
+        <a href="save-state.html">Save states</a>
+        <a href="libretro-frame.html">Libretro frame</a>
+      </nav>
+    </aside>
+    <main class="content">
+      <h1>Flow A: SDL startup and main loop</h1>
+      <p class="lead">End-to-end trace from process start through ROM load to the perpetual <code>GB_run()</code> loop. This is the reference integration pattern for custom frontends.</p>
+
+      <section class="section searchable">
+        <h2>Trigger</h2>
+        <p>User runs <code>./sameboy game.gb</code> or opens SameBoy from the desktop.</p>
+      </section>
+
+      <section class="section searchable">
+        <h2>Call chain</h2>
+        <div class="diagram">main()                          [SDL/main.c:1443]
+  ├─ SDL_Init, parse CLI flags
+  ├─ load_configuration()         prefs.bin
+  ├─ SDL_CreateWindow, init audio/OpenGL
+  └─ run(filename)                [SDL/main.c:~1100]
+       ├─ GB_init(&gb, model)     [Core/gb.c:164]
+       ├─ register callbacks      [SDL/main.c:1168-1193]
+       ├─ GB_load_rom / GB_load_isx
+       ├─ GB_load_battery (.sav)
+       ├─ GB_load_cheats (.cht)
+       └─ while (true)             [SDL/main.c:1273]
+            ├─ handle rewind / pause
+            ├─ GB_run(&gb)          [Core/gb.c:1190]
+            └─ handle_pending_command() → may goto restart</div>
+      </section>
+
+      <details open class="searchable">
+        <summary>Step 1 — main() bootstrap</summary>
+        <div class="details-body">
+          <p><code>main()</code> initializes SDL subsystems (video, audio, events), parses flags (<code>--model</code>, <code>--fullscreen</code>, <code>--stop-debugger</code>), loads <code>prefs.bin</code> from beside the binary or <code>SDL_GetPrefPath("","SameBoy")</code>, creates the window, and calls <code>run(rom_path)</code>.</p>
+          <p>Configuration lives in global <code>configuration_t</code> (<code>SDL/configuration.c</code>): key bindings, scale factor, color correction, rewind length, rumble mode, etc.</p>
+          <p><a href="https://github.com/LIJI32/SameBoy/blob/208ba4afabffab9edde416f2dbb8ae459e34adb8/SDL/main.c#L1443">main() entry</a></p>
+        </div>
+      </details>
+
+      <details open class="searchable">
+        <summary>Step 2 — GB_init and callback registration</summary>
+        <div class="details-body">
+          <p>On first ROM load, <code>run()</code> calls <code>GB_init(&gb, model)</code> which allocates WRAM/VRAM, zeroes state, calls <code>GB_reset()</code>, and loads default border tile data.</p>
+          <p>SDL then wires the core to OS services:</p>
+          <table>
+            <tr><th>Registration</th><th>Handler</th><th>Purpose</th></tr>
+            <tr><td><code>GB_set_boot_rom_load_callback</code></td><td><code>load_boot_rom</code></td><td>Load <code>dmg_boot.bin</code> etc. from DATA_DIR</td></tr>
+            <tr><td><code>GB_set_vblank_callback</code></td><td><code>vblank</code></td><td>Flip buffers, render texture, poll input</td></tr>
+            <tr><td><code>GB_set_pixels_output</code></td><td><code>active_pixel_buffer</code></td><td>Indexed pixel write target</td></tr>
+            <tr><td><code>GB_set_rgb_encode_callback</code></td><td><code>rgb_encode</code></td><td>Palette index → ARGB32</td></tr>
+            <tr><td><code>GB_apu_set_sample_callback</code></td><td><code>gb_audio_callback</code></td><td>Queue PCM to SDL audio</td></tr>
+            <tr><td><code>GB_set_update_input_hint_callback</code></td><td><code>handle_events</code></td><td>Poll SDL events mid-frame</td></tr>
+            <tr><td><code>GB_set_rumble_callback</code></td><td><code>rumble</code></td><td>Gamepad rumble</td></tr>
+          </table>
+          <p><a href="https://github.com/LIJI32/SameBoy/blob/208ba4afabffab9edde416f2dbb8ae459e34adb8/SDL/main.c#L1166-L1193">Callback registration</a></p>
+        </div>
+      </details>
+
+      <details open class="searchable">
+        <summary>Step 3 — ROM and peripheral file load</summary>
+        <div class="details-body">
+          <p><code>GB_load_rom(&gb, filename)</code> reads the file into <code>gb->rom</code>, computes CRC32, calls <code>GB_configure_cart()</code> to detect MBC type from header byte <code>0x0147</code>.</p>
+          <p>Side files loaded by path substitution:</p>
+          <ul>
+            <li><code>game.sav</code> → <code>GB_load_battery</code> (MBC RAM + RTC)</li>
+            <li><code>game.cht</code> → <code>GB_load_cheats</code></li>
+            <li><code>game.sym</code> + bundled <code>registers.sym</code> → debugger symbols</li>
+          </ul>
+          <p>If <code>GBEmulatedModel</code> is "auto", model may change after ROM load (<code>model_to_use()</code>).</p>
+          <p><a href="https://github.com/LIJI32/SameBoy/blob/208ba4afabffab9edde416f2dbb8ae459e34adb8/SDL/main.c#L1220-L1268">ROM and sidecar loading</a></p>
+        </div>
+      </details>
+
+      <details open class="searchable">
+        <summary>Step 4 — Main emulation loop</summary>
+        <div class="details-body">
+          <p>The infinite loop is <strong>not</strong> frame-based:</p>
+          <pre><code>while (true) {
+    if (paused || rewind_paused) {
+        SDL_WaitEvent(NULL);
+        handle_events(&gb);
+    } else {
+        if (do_rewind) GB_rewind_pop(&gb);
+        GB_run(&gb);  // one CPU quantum
+    }
+    if (handle_pending_command()) goto restart;
+}</code></pre>
+          <p><strong>Validation:</strong> CLI model flag, ROM readability (error dialog via log capture).</p>
+          <p><strong>Business logic:</strong> All in Core; SDL only sets <code>pending_command</code> flags for reset/save/load state from hotkeys.</p>
+          <p><strong>State writes:</strong> Core mutates <code>GB_gameboy_t</code>; SDL writes <code>prefs.bin</code> on exit via <code>atexit</code>.</p>
+          <p><strong>Errors:</strong> Load failures show SDL message box; unreadable save path logs warning.</p>
+          <p><a href="https://github.com/LIJI32/SameBoy/blob/208ba4afabffab9edde416f2dbb8ae459e34adb8/SDL/main.c#L1272-L1298">Main loop</a></p>
+        </div>
+      </details>
+
+      <details open class="searchable">
+        <summary>Step 5 — vblank presentation (output path)</summary>
+        <div class="details-body">
+          <p>When PPU completes a frame, <code>GB_display_vblank</code> sets <code>vblank_just_occured</code> and invokes <code>vblank_callback</code>. SDL's <code>vblank()</code>:</p>
+          <ol>
+            <li>Calls <code>handle_events(gb)</code> again (input at frame boundary)</li>
+            <li>Optionally blends previous frame (<code>configuration.blending_mode</code>)</li>
+            <li><code>render_texture()</code> → OpenGL shader or SDL_Renderer blit</li>
+            <li>Swaps pixel buffers and re-points <code>GB_set_pixels_output</code></li>
+          </ol>
+          <p>Audio flows independently via <code>gb_audio_callback</code> on each APU sample batch, with queue backpressure at freq/8.</p>
+        </div>
+      </details>
+
+      <section class="section searchable">
+        <h2>Failure modes</h2>
+        <ul>
+          <li>Missing boot ROM → callback returns false; game may run without boot animation</li>
+          <li>Re-entrant <code>GB_run</code> → assertion in debug builds</li>
+          <li><code>goto restart</code> on model switch — full re-init path, must re-register callbacks if <code>GB_free</code> called</li>
+        </ul>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

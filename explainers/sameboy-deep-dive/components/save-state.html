@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Save States &amp; BESS — SameBoy</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>SameBoy Deep Dive</strong>
+        <span>Flow D: Save states</span>
+      </div>
+      <nav class="nav">
+        <a href="../index.html">← Overview</a>
+        <a href="sdl-startup.html">SDL startup</a>
+        <a href="cpu-memory-cycle.html">CPU / memory cycle</a>
+        <a href="ppu-frame.html">PPU frame</a>
+        <a href="save-state.html" aria-current="page">Save states</a>
+        <a href="libretro-frame.html">Libretro frame</a>
+      </nav>
+    </aside>
+    <main class="content">
+      <h1>Flow D: Save state serialization</h1>
+      <p class="lead">SameBoy's save state system mirrors the <code>GB_SECTION</code> layout in <code>gb.h</code>, enabling versioned migration and optional BESS cross-emulator compatibility.</p>
+
+      <section class="section searchable">
+        <h2>Trigger</h2>
+        <ul>
+          <li>User hotkey / menu → <code>GB_save_state(gb, path)</code></li>
+          <li>Rewind → <code>GB_save_state_to_buffer_no_bess</code> each vblank</li>
+          <li>Debugger undo → internal buffer save</li>
+        </ul>
+      </section>
+
+      <section class="section searchable">
+        <h2>On-disk layout</h2>
+        <div class="diagram">SameBoy native format (sequential):
+┌──────────────────────────────────────┐
+│ header     (magic, version=15)       │
+│ core_state (CPU registers, flags)    │
+│ dma                                  │
+│ mbc                                  │
+│ hram       (HRAM + IO registers)     │
+│ timing                               │
+│ apu                                  │
+│ rtc                                  │
+│ video      (PPU state, not VRAM ptr) │
+│ accessory  (printer/workboy)         │
+├──────────────────────────────────────┤
+│ [optional] GB_sgb_t blob if HLE SGB  │
+├──────────────────────────────────────┤
+│ mbc_ram blob (size-prefixed)         │
+│ ram blob                             │
+│ vram blob                            │
+├──────────────────────────────────────┤
+│ BESS footer (optional):              │
+│   NAME, INFO, CORE, XOAM, SGB, RTC  │
+└──────────────────────────────────────┘</div>
+      </section>
+
+      <details open class="searchable">
+        <summary>GB_SECTION macro design</summary>
+        <div class="details-body">
+          <p>From <code>save_state.h</code>, each section in <code>gb.h</code> uses:</p>
+          <pre><code>GB_SECTION(name,
+    // fields...
+)</code></pre>
+          <p>This generates offsetof/size metadata used by <code>save_state_internal</code> to read/write each block independently. <code>STRUCT_VERSION</code> (currently 15) in header validates compatibility on load.</p>
+          <p>The <code>unsaved</code> section is <strong>never</strong> serialized — callbacks, ROM pointers, debugger state, rewind buffers are re-established by the frontend after load.</p>
+          <p><a href="https://github.com/LIJI32/SameBoy/blob/208ba4afabffab9edde416f2dbb8ae459e34adb8/Core/gb.h#L46">STRUCT_VERSION</a> · <a href="https://github.com/LIJI32/SameBoy/blob/208ba4afabffab9edde416f2dbb8ae459e34adb8/Core/save_state.c#L14-L22">Section alignment asserts</a></p>
+        </div>
+      </details>
+
+      <details open class="searchable">
+        <summary>Save path — GB_save_state</summary>
+        <div class="details-body">
+          <ol>
+            <li><code>GB_ASSERT_NOT_RUNNING</code> — must not save mid-instruction</li>
+            <li>Serialize each section to file via <code>save_state_internal</code></li>
+            <li>Append external memory: MBC RAM, WRAM, VRAM with size headers</li>
+            <li>Optionally write BESS blocks for mGBA/BizHawk interoperability</li>
+          </ol>
+          <p>In-memory variant: <code>GB_save_state_to_buffer</code> / <code>GB_get_save_state_size</code>.</p>
+          <p>Rewind uses <code>_no_bess</code> variants for smaller/faster snapshots.</p>
+        </div>
+      </details>
+
+      <details open class="searchable">
+        <summary>Load path — GB_load_state</summary>
+        <div class="details-body">
+          <ol>
+            <li>Read header magic and version — reject if incompatible</li>
+            <li>Validate model matches or allow cross-model rules</li>
+            <li>Restore sections in order; remap MBC bank pointers via <code>GB_update_mbc_mappings</code></li>
+            <li>Load RAM/VRAM/MBC RAM blobs — validate sizes against cart config</li>
+            <li>Parse BESS footer if present (import from other emulators)</li>
+            <li>Re-sync PPU: <code>GB_display_sync</code>, palette caches</li>
+          </ol>
+          <p><code>GB_get_state_model</code> reads model from file without full load.</p>
+          <p>Failure returns negative errno-style codes; corrupt files do not partially apply (atomic read into buffer first for memory loads).</p>
+        </div>
+      </details>
+
+      <details open class="searchable">
+        <summary>BESS format (cross-emulator)</summary>
+        <div class="details-body">
+          <p>Documented in <a href="https://github.com/LIJI32/SameBoy/blob/master/BESS.md">BESS.md</a>. Key blocks in <code>save_state.c</code>:</p>
+          <ul>
+            <li><code>BESS_CORE_t</code> — registers, IE, IO, RAM/VRAM/OAM buffer descriptors</li>
+            <li><code>BESS_XOAM_t</code> — extra OAM (CGB)</li>
+            <li><code>BESS_SGB_t</code> — SGB border/palette state</li>
+            <li><code>BESS_INFO_t</code> — ROM title + checksum</li>
+          </ul>
+          <p>SameBoy writes BESS footers on save for interoperability; can load BESS from mGBA and others with best-effort semantics.</p>
+          <p><a href="https://github.com/LIJI32/SameBoy/blob/208ba4afabffab9edde416f2dbb8ae459e34adb8/Core/save_state.c#L24-L99">BESS struct definitions</a></p>
+        </div>
+      </details>
+
+      <details open class="searchable">
+        <summary>Battery saves (related but distinct)</summary>
+        <div class="details-body">
+          <p><code>GB_save_battery</code> / <code>GB_load_battery</code> in <code>gb.c</code> persist only MBC external RAM + RTC — not full CPU/PPU state. Supports multiple legacy formats (VBA, TPP1, HuC3). Triggered on vblank when <code>battery_dirty</code> or on exit.</p>
+        </div>
+      </details>
+
+      <section class="section searchable">
+        <h2>Failure modes</h2>
+        <ul>
+          <li>Version mismatch → load rejected (user must use matching SameBoy version)</li>
+          <li>ROM changed since save → BESS INFO checksum may warn</li>
+          <li>Saving during <code>GB_run</code> → assertion failure</li>
+          <li>Rewind buffer OOM → rewind silently stops pushing (check <code>GB_rewind_pop</code> return)</li>
+        </ul>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
