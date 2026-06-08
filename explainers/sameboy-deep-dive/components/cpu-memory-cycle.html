@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CPU / Memory Cycle — SameBoy</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <strong>SameBoy Deep Dive</strong>
+        <span>Flow B: CPU cycle</span>
+      </div>
+      <nav class="nav">
+        <a href="../index.html">← Overview</a>
+        <a href="sdl-startup.html">SDL startup</a>
+        <a href="cpu-memory-cycle.html" aria-current="page">CPU / memory cycle</a>
+        <a href="ppu-frame.html">PPU frame</a>
+        <a href="save-state.html">Save states</a>
+        <a href="libretro-frame.html">Libretro frame</a>
+      </nav>
+    </aside>
+    <main class="content">
+      <h1>Flow B: CPU instruction and memory access cycle</h1>
+      <p class="lead">The heart of SameBoy's accuracy: every memory access is a bus cycle that advances all hardware in lockstep.</p>
+
+      <section class="section searchable">
+        <h2>Trigger</h2>
+        <p>Frontend calls <code>GB_run(gb)</code> → <code>GB_cpu_run(gb)</code>.</p>
+      </section>
+
+      <section class="section searchable">
+        <h2>Architecture diagram</h2>
+        <div class="diagram">GB_run()
+  └─ GB_cpu_run()
+       ├─ [STOP mode?] → GB_advance_cycles(4/8), return
+       ├─ [HALT / interrupt dispatch]
+       │    └─ cycle_read/write → GB_advance_cycles per M-cycle
+       └─ Fetch opcode at PC
+            ├─ opcodes[opcode](gb, opcode)   // 256-entry table
+            ├─ flush_pending_cycles()
+            └─ GB_advance_cycles(remaining)
+
+cycle_read(addr):
+  if pending_cycles: GB_advance_cycles(pending_cycles)
+  data = GB_read_memory(gb, addr)
+  pending_cycles = 4
+  return data
+
+GB_advance_cycles(cycles):          [timing.c:511]
+  GB_joypad_run(gb, cycles)
+  GB_apu_run(gb, false)
+  GB_display_run(gb, cycles, false)
+  GB_dma_run(gb)
+  ir_run(gb, cycles)
+  rtc_run(gb, cycles)</div>
+      </section>
+
+      <details open class="searchable">
+        <summary>GB_cpu_run — entry and branches</summary>
+        <div class="details-body">
+          <p><code>GB_cpu_run</code> handles several paths before normal opcode fetch:</p>
+          <ol>
+            <li><strong>STOP mode</strong> (<code>gb->stopped</code>): advance 4 cycles, check JOYP to wake</li>
+            <li><strong>Interrupt service</strong> when <code>IME && (IE & IF)</code>: push PC, jump to vector, clear IF bit — with OAM bug side effects on stack operations</li>
+            <li><strong>HALT wake</strong> without IME: exit halt, optionally start HDMA</li>
+            <li><strong>Normal:</strong> read opcode byte, optional HDMA trigger, <code>execution_callback</code> hook, dispatch <code>opcodes[opcode]</code></li>
+          </ol>
+          <p>IME toggle from <code>EI</code> instruction is deferred: <code>ime_toggle</code> applies at start of next instruction.</p>
+          <p><a href="https://github.com/LIJI32/SameBoy/blob/208ba4afabffab9edde416f2dbb8ae459e34adb8/Core/sm83_cpu.c#L1606-L1670">GB_cpu_run start</a></p>
+        </div>
+      </details>
+
+      <details open class="searchable">
+        <summary>cycle_read / cycle_write — bus-cycle timing</summary>
+        <div class="details-body">
+          <p>Each memory access:</p>
+          <ol>
+            <li>Flushes <code>pending_cycles</code> via <code>GB_advance_cycles</code> (advances PPU/APU/timer by prior instruction cycles)</li>
+            <li>Sets <code>address_bus</code></li>
+            <li>Calls <code>GB_read_memory</code> or <code>GB_write_memory</code></li>
+            <li>Sets <code>pending_cycles = 4</code> (one M-cycle = 4 T-cycles in 8MHz units after speed adjustment)</li>
+          </ol>
+          <p><strong>Bus conflicts:</strong> For I/O writes in FF00–FF7F, <code>cycle_write</code> selects a per-model <code>conflict_map</code> (DMG, CGB, CGB double-speed, SGB) determining whether CPU and PPU "see" old or new values when accessing the same register in the same cycle.</p>
+          <p><a href="https://github.com/LIJI32/SameBoy/blob/208ba4afabffab9edde416f2dbb8ae459e34adb8/Core/sm83_cpu.c#L85-L94">cycle_read</a> · <a href="https://github.com/LIJI32/SameBoy/blob/208ba4afabffab9edde416f2dbb8ae459e34adb8/Core/sm83_cpu.c#L31-L83">conflict maps</a></p>
+        </div>
+      </details>
+
+      <details open class="searchable">
+        <summary>GB_read_memory — address decoding</summary>
+        <div class="details-body">
+          <p>Top-level decode in <code>GB_read_memory</code> (<code>memory.c:776</code>):</p>
+          <table>
+            <tr><th>Range</th><th>Handler</th><th>Notes</th></tr>
+            <tr><td>0000–7FFF</td><td><code>read_mbc_rom</code></td><td>Cartridge ROM, bank switched</td></tr>
+            <tr><td>8000–9FFF</td><td><code>read_vram</code></td><td>VRAM; PPU may block during mode 3</td></tr>
+            <tr><td>A000–BFFF</td><td><code>read_mbc_ram</code></td><td>External RAM or RTC registers</td></tr>
+            <tr><td>C000–DFFF</td><td><code>read_ram</code></td><td>WRAM (banked on CGB)</td></tr>
+            <tr><td>E000–FDFF</td><td>Echo of C000–DDFF</td><td></td></tr>
+            <tr><td>FE00–FE9F</td><td>OAM</td><td>Blocked during DMA and certain PPU modes</td></tr>
+            <tr><td>FF00–FF7F</td><td><code>read_high_memory</code></td><td>I/O registers</td></tr>
+            <tr><td>FF80–FFFE</td><td>HRAM</td><td></td></tr>
+            <tr><td>FFFF</td><td>IE register</td><td></td></tr>
+          </table>
+          <p>I/O reads fan out: <code>GB_IO_LY</code> syncs PPU first; APU registers via <code>GB_apu_read</code>; joypad via <code>GB_joypad_read</code>.</p>
+          <p><strong>Cheats:</strong> <code>read_memory_callback</code> can intercept; cheat hash may override values.</p>
+          <p><a href="https://github.com/LIJI32/SameBoy/blob/208ba4afabffab9edde416f2dbb8ae459e34adb8/Core/memory.c#L776">GB_read_memory</a></p>
+        </div>
+      </details>
+
+      <details open class="searchable">
+        <summary>GB_write_memory — side effects</summary>
+        <div class="details-body">
+          <p>Notable write side effects:</p>
+          <ul>
+            <li><code>0xFF46</code> (DMA) — starts OAM DMA, sets <code>dma_cycles</code></li>
+            <li><code>0xFF40</code> (LCDC) — may call <code>GB_lcd_off</code>, schedule frame repeat</li>
+            <li><code>0xFF41</code> (STAT) — <code>GB_STAT_update</code></li>
+            <li><code>0xFF04–07</code> — timer/divider; <code>GB_emulate_timer_glitch</code> on TAC change</li>
+            <li><code>0xFF4D</code> (KEY1) — CGB speed switch countdown</li>
+            <li>MBC range 0000–7FFF, A000–BFFF — <code>write_mbc</code> updates bank pointers</li>
+          </ul>
+          <p><code>GB_trigger_oam_bug</code> called on specific inc/dec patterns affecting OAM region (DMG only).</p>
+        </div>
+      </details>
+
+      <details open class="searchable">
+        <summary>Important data structures per cycle</summary>
+        <div class="details-body">
+          <ul>
+            <li><code>gb->pending_cycles</code> — T-cycles to advance before next bus access</li>
+            <li><code>gb->address_bus</code>, <code>gb->data_bus</code> — open bus emulation</li>
+            <li><code>gb->cycles_since_run</code> — returned by <code>GB_run</code> (8 MHz units)</li>
+            <li><code>gb->accessed_oam_row</code> — for OAM corruption tracking</li>
+          </ul>
+        </div>
+      </details>
+
+      <section class="section searchable">
+        <h2>What breaks if changed incorrectly</h2>
+        <ul>
+          <li>Skipping <code>GB_advance_cycles</code> in <code>cycle_read</code> → PPU/APU desync, Acid2 failures</li>
+          <li>Wrong conflict map → raster effects (SCX/STAT glitches) break</li>
+          <li>Calling <code>GB_read_memory</code> without PPU sync on LY/STAT → wrong mode interrupts</li>
+          <li>Removing OAM bug → <code>oam_bug-2.gb</code> test fails</li>
+        </ul>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
