@@ -39,7 +39,7 @@ But they're pre-counterfeit blue pill boards. Oh, they were worth a million doll
 
 In other **Hackaday** news this week, we are judging the **Green Powered Challenge**. We're recording early this week. So our judges are still out. And consequently, I don't know what the results are yet. But they should be coming out anytime soon now. Possibly even already out as you hear this podcast. So if the results are out for the **Green Powered Challenge**, give it a look on **Hackaday**.
 
-And speaking of next week, **Hackaday Europe** is next week. If you are at all interested in joining us down in **LECO, Italy**, please come along. You'll find the link for tickets and the workshops and all that over at **hackaday.com**. I'll throw the link in the show notes. Can't wait.
+And speaking of next week, **Hackaday Europe** is next week. If you are at all interested in joining us down in **Lecco, Italy**, please come along. You'll find the link for tickets and the workshops and all that over at **hackaday.com**. I'll throw the link in the show notes. Can't wait.
 
 Mailbag? You have to read this one, right? I have to read a bunch of them now. Who uses words? Who's using the written word in 2026? Yeah, last week we got nothing but spam in the mailbag. This week, the good news is we still got spam for the **Streamflow Ultra K2B4 pump**. I don't even know what it is, but it actually sounds like something I'm interested in. I still got the B1 version. I got to upgrade.
 
@@ -81,7 +81,7 @@ The answer is definitely yes.
 I think picking the one or two would be the hardest one.  
 I could say, for me, several things come to mind.
 
-But definitely the most common thing around me would be the firmware that **Aaron Christoffel** did for the cheap Bluetooth thermometers.  
+But definitely the most common thing around me would be the firmware that **Aaron Christophel** did for the cheap Bluetooth thermometers.  
 I have, I probably have a dozen of them in almost every room of the house, all over the place.  
 And they're all running his firmware.  
 Or, as he would point out, because I've actually communicated with him back and forth about this a little bit, the project has sort of taken a life of its own.  
@@ -133,11 +133,11 @@ This is really cool, and here's why it's cool.
 I think that's a lot more compelling to read about than just, somebody made a thing.  
 I download a thing and play around with it before I even write the first word of the post because I want to be able to say, "this is legit."  
 I'm looking around me right now.
-There's also, I rebuilt **Ted Yapo's Tridilad** project, which was a super low-power LED driver circuit, basically.
+There's also, I rebuilt **Ted Yapo's TritiLED** project, which was a super low-power LED driver circuit, basically.
 
 It pulses them with a low-duty cycle, but super, super, super low-power. And actually, I've got one on my bed downstairs that I taped to the corner of my bed so that I don't stub my toe on it when I'm sneaking in late at night and my wife is sleeping. Thing's been running for, God, also six years or so, but I have a bunch of the little versions of his circuit that I made myself kicking around all over the place here. They're fun.
 
-This is one of those things, once, ages ago, when 3D printing was not what it is now, **Mike Stitch** asked me,
+This is one of those things, once, ages ago, when 3D printing was not what it is now, **Mike Szczys** asked me,
 
 > "Yeah, sure, 3D printing, it's good for making tabletop figures, but can you actually make anything useful with it?"
 
@@ -145,7 +145,7 @@ And I just looked around me, and I could find 40 or 50 3D printed useful things 
 
 And I have a bad feeling it's probably like this with things that I have seen on **Hackaday**, too. There's my drawer full of microcontrollers. How many of those was I turned onto by **Hackaday**? Probably all of them. Debugger over there, definitely read about that on **Hackaday**.
 
-- Oh, yeah, **Bus Pirate**, **Arty Boy**.
+- Oh, yeah, **Bus Pirate**, **Arty**.
 - I got all kinds of stuff that we...
 
 I forgot that Mike was a secret 3D printing skeptic for a very long time. Yeah, right? I wonder if he... Does he finally have a printer? I'm sure he's listening. Mike, if you have a printer, let us know. Did you finally cave? Anyway, Michael, hope we answered your question for you. That's a good one. That's a great one. And I know neither of us even scratched the surface here.
@@ -162,12 +162,12 @@ It's actually a sound I recorded myself. You weren't making a pen, were you? I w
 
 I was so close to buying a pen lathe. I almost bought one. I was even asking people, you want pens? You want pens? I don't even use pens. What do I need a pen lathe for? But whatever. If you have no good guess, write in something funny anyway, because I have a feeling not many people are going to get this one, and if nobody gets it, we'll raffle among the wrong answers.
 
-All right. Well, my first hack this week comes from **I12BP8**, probably his or her real name, I guess. That sounds like a totally legit name. **TagTinker** lets you hack electronic shelf labels. These are those e-ink shelf displays. I didn't realize that there were some of them that are kind of old enough / simple enough that they used infrared codes to reprogram them. I think all the kind of modern ones we've seen have used radio, but apparently there is a supply of old infrared ones out there, and if you find one and want to program it yourself, all you need to do is figure out the right IR blinky patterns to send it, and that's what this is about.
+All right. Well, my first hack this week comes from **i12bp8**, probably his or her real name, I guess. That sounds like a totally legit name. **TagTinker** lets you hack electronic shelf labels. These are those e-ink shelf displays. I didn't realize that there were some of them that are kind of old enough / simple enough that they used infrared codes to reprogram them. I think all the kind of modern ones we've seen have used radio, but apparently there is a supply of old infrared ones out there, and if you find one and want to program it yourself, all you need to do is figure out the right IR blinky patterns to send it, and that's what this is about.
 
-Well, **TagTinker** is a **Flipper Zero** application, but as **I12BP8** points out, you can also run the same thing on just an **ESP32** with an infrared LED on it, and the same code will run just fine. If you head on over to the GitHub, it's a complete library along with a nice web page to upload images, and this is really cool. I really want to find some of these old tags that A, are dumb enough that all you have to do is blink at them to get them to display, and B, start playing with it. This is one of those that looks really, really fun.
+Well, **TagTinker** is a **Flipper Zero** application, but as **i12bp8** points out, you can also run the same thing on just an **ESP32** with an infrared LED on it, and the same code will run just fine. If you head on over to the GitHub, it's a complete library along with a nice web page to upload images, and this is really cool. I really want to find some of these old tags that A, are dumb enough that all you have to do is blink at them to get them to display, and B, start playing with it. This is one of those that looks really, really fun.
 
-It builds on work from quite a long time ago done by **FurTech**, and I was, oh, this actually sounds familiar, and so I went digging on **Hackaday**, and lo and behold, the original hack, this is epic, dates back to May 2014. So, a mere 12 years ago was when **FurTech** was looking into these devices and found that
-**Because** they use a non-standard **infrared** protocol, couldn't get it working with anything else that used regular **IRDA**.
+It builds on work from quite a long time ago done by **furrtek**, and I was, oh, this actually sounds familiar, and so I went digging on **Hackaday**, and lo and behold, the original hack, this is epic, dates back to May 2014. So, a mere 12 years ago was when **furrtek** was looking into these devices and found that
+because they use a non-standard **infrared** protocol, couldn't get it working with anything else that used regular **IRDA**.
 
 And according to the write-up, this includes PDAs:
 - **Palm Pilots**
@@ -184,9 +184,9 @@ Once you have a working system, I guess you don't change it, right? Infrared, I 
 
 That was the one thing with the project, actually, the **Tag Tinker** project. It's kind of hard to say. It would be cool if there was a compatibility list, because, I mean, they have the pictures of them here, but there's at least two different ones pictured, although they appear to be different size variants of the same thing. So, I'd be curious to see how many tags are actually susceptible to this, and what are they? Not even for anything illicit, necessarily, but if I wanted to go and try to find these things on eBay or whatever to use for my own purposes, now that they can be controlled, it would be nice to know what the hell they're called. I'll have a look at them. I think the dead giveaway is the little black **IR** receiver that's on there.
 
-Well, yeah, right. The examples that **i12BP8** has on the website here both look very similar. Both have an **RGB LED** as well, so it must blink codes back to the programmer. I don't know. There's a lot of speculation about whether this is run by a central LED network blinking out codes, but my guess is that it's much more pedestrian than that, and that people had a handheld unit, and they would just go around, type the price in, point it up at the thing, and upload the image to it, or upload the new price to it. It's just when you used to go around with a price gun sticking labels on things. It's just the same, but blinking IR codes out instead.
+Well, yeah, right. The examples that **i12bp8** has on the website here both look very similar. Both have an **RGB LED** as well, so it must blink codes back to the programmer. I don't know. There's a lot of speculation about whether this is run by a central LED network blinking out codes, but my guess is that it's much more pedestrian than that, and that people had a handheld unit, and they would just go around, type the price in, point it up at the thing, and upload the image to it, or upload the new price to it. It's just when you used to go around with a price gun sticking labels on things. It's just the same, but blinking IR codes out instead.
 
-On the **FurTech** page, there actually is a very low-res, I guess, again, we're talking about stuff from 2014, I guess. Very low-res picture of somebody using some kind of handheld thing to enter it in, I suppose.
+On the **furrtek** page, there actually is a very low-res, I guess, again, we're talking about stuff from 2014, I guess. Very low-res picture of somebody using some kind of handheld thing to enter it in, I suppose.
 
 So, "Pricer", I thought, was just a, something was written on there, but apparently that's the name of the company. Oh, okay. The two tags say **Pricer** on them, but that's just also the name of the company making price tags.
 
@@ -236,7 +236,7 @@ His goal is to make it do nice regular speed pan shots, but then also to enable 
 - One is that it has to be able to move very small distances to make the time-lapse work.
 - And the other is that it has to work very smoothly to do real-time motion stuff.
 
-And he found that he was having problems, especially with the ladder here. And it was jerky and jumpy. And that's actually what this build has in common with the other camera slider build we featured this week. The **Hyperfix** is also having camera slider problems. "Camera slider build instead of buy goes awry." It's funny, he also has this steppiness problem. And both of them, I think, conclude that it is in their software that they're trying to drive the thing.
+And he found that he was having problems, especially with the ladder here. And it was jerky and jumpy. And that's actually what this build has in common with the other camera slider build we featured this week. The **HyperFix** is also having camera slider problems. "Camera slider build instead of buy goes awry." It's funny, he also has this steppiness problem. And both of them, I think, conclude that it is in their software that they're trying to drive the thing.
 
 **CNC Dan**, as the name would imply, has a lot of CNC home machining equipment at home. And that means that his particular slider has a bunch of custom-built aluminum parts. And he is not afraid to use bearings to smooth things out or big reduction gears coupled with timing belts to give the stepper motors that he's using a little bit of a chance at moving smoothly here. But then, when it comes time to writing the software, the first versions of this are jumpy and jerky and absolutely no fun.
 
@@ -248,7 +248,7 @@ Talk about stuff that you're inspired by on **Hackaday**. I always want to make 
 
 There are so many of these out there, and thankfully, a lot of them are **open source**, at least to some degree. So I think if this is something you're into, certainly look around at what's out there. And not everybody has to reinvent the wheel. I suppose have at it. But definitely take a look at some of the stuff that's been done before. Because it really is incredible what they're accomplishing with spare parts and little printed bits.
 
-The irony of this all is that **CNC Dan**, CNC's in his name. And the first thought I had for this firmware is, "run **Gerbil** on it." Like, run a known, established motor controller software. And Gerbil has nice acceleration profiles in there. You can tell it to limit acceleration. You can make it as smooth as you want.
+The irony of this all is that **CNC Dan**, CNC's in his name. And the first thought I had for this firmware is, "run **GRBL** on it." Like, run a known, established motor controller software. And GRBL has nice acceleration profiles in there. You can tell it to limit acceleration. You can make it as smooth as you want.
 "What do **CNC Dan**'s **CNC** machines run on?
 
 ```
@@ -257,9 +257,9 @@ G-code.
 
 Why couldn't he make his camera slider run on **G-code**?
 
-And just throw one of the nice modern **ESP32** **Gerbil** interpreters on there.
+And just throw one of the nice modern **ESP32** **GRBL** interpreters on there.
 
-**Fluid NC** even has a little web interface.
+**FluidNC** even has a little web interface.
 
 That's the way I would do it if I were approaching this project.
 
@@ -273,9 +273,9 @@ And the Hyperfix who has problems with having the **Arduino** that he's using no
 
 Any time past 2010, I think, you do not want to be writing your own stepper driver at that level.
 
-Just put **Gerbil** on the thing and move on.
+Just put **GRBL** on the thing and move on.
 
-But the irony that he took these things off of the machine that already spoke **G-code** and un-G-coded it.
+But the irony that he took these things off of the machine that already spoke **G-code** and un-GRBL'd it.
 
 What an irony that his parents named him **CNC Dan**, too.
 
@@ -404,17 +404,17 @@ So because of both the smaller size of the antennas and the less demanding trace
 And you could maybe do this **NFC charging hack** in smaller and smaller devices.  
 So that's what I think is particularly interesting about this, is that this brings a wireless charging system down to a scale that is much more convenient for our type of project.  
 The tradeoff, of course, is then you're limited in the amount of power you can get across.  
-But if your device doesn't need megawatts, if it really is just a small, few **millwatts** electronics project, that may be totally sufficient and frees you up from having to put big copper coils in it.
+But if your device doesn't need megawatts, if it really is just a small, few **milliwatts** electronics project, that may be totally sufficient and frees you up from having to put big copper coils in it.
 
 All right. Well, my three quick hacks this week start off with **learn electronics repair matching transistors**.  
 This is kind of a long lost art, forging your own horseshoes, who needs to match the analog characteristics of different transistors these days?  
 Well, you might.  
 If you're building any kind of high power device with the transistors and you're using a bunch of them in parallel to share the load, you want to make sure that one of them doesn't run hot and then cascade out and take all the load itself.  
 Or if you're building audiophile amplifiers, you want your push transistor and your pull transistor to be well matched with each other.  
-There are tons of reasons to do this, but raise your hand out there if you've ever thrown a bunch of transistors on your desk and pick the ones with the most similar HBE.  
+There are tons of reasons to do this, but raise your hand out there if you've ever thrown a bunch of transistors on your desk and pick the ones with the most similar hFE.  
 I'm guessing I'm the only person with a hand up right now.
 
-**Michael Fitzmaier**, a tool for testing **CANopen** networks.  
+**Michael Fitzmayer**, a tool for testing **CANopen** networks.  
 CANopen is a particular flavor of **CAN** networks, but this is actually a piece of software that works for basically any **CAN** network.  
 And it's really neat.  
 It just gives you a terminal that decodes all of the signals going on.  
@@ -428,7 +428,7 @@ You'll find that as well.
 This one is sweet.  
 Just the basics in the terminal.
 
-Last up, **Ella Hobica**, a digital audio recorder for **Toslink**.  
+Last up, **Elehobica**, a digital audio recorder for **Toslink**.  
 This is really the simplest device in a way.  
 It's a **Pi Pico** that understands the digital audio format that the various laser and **Toslink** audio transmission systems use and just takes the audio data and stores it to an **SD card**.  
 It's an almost no-cost device that lets you take digital audio in and save it to an **SD card**.  
@@ -500,7 +500,7 @@ And this is kind of the next logical step after pumping water up high and lettin
 
 And we've seen a few projects on **Hackaday** where people have started experimenting with this technology themselves. I'm going to put the links in the show notes for you. Again, it's as simple as getting the right chemistry together, getting the right membrane together and pumping fluids through. It is not tricky at all. And actually, as I'm looking through **Hackaday** for this, I found one that **Zoe** just wrote up back in March that uses **no pump**. Instead, it uses the **magnetohydrodynamic effect**, which makes a bunch of sense because you've already got ionized fluids. Why not just push them along magnetohydrodynamically? And I think the answer is because it's much more efficient to do it with a pump. Cool idea to make a no pump battery.
 
-To answer your question about the efficiency, I went and looked it up, and they're saying **75% to 90% efficient**. Oh, wow. That's not bad. It's not at the level of **lithium ion**, but it surely is not at the level of the rusty batteries either. This is significantly more efficient than **iron air**. And what? **75% to 90% is kind of NICAD performance.** So not bad. No super dangerous chemicals. I like it. I like it. Pump and membrane maintenance is the big downside. But at some scale, that's not a problem relative to keeping an entire container full of **lithium ion** cells from going up in flames.
+To answer your question about the efficiency, I went and looked it up, and they're saying **75% to 90% efficient**. Oh, wow. That's not bad. It's not at the level of **lithium ion**, but it surely is not at the level of the rusty batteries either. This is significantly more efficient than **iron air**. And what? **75% to 90% is kind of NiCad performance.** So not bad. No super dangerous chemicals. I like it. I like it. Pump and membrane maintenance is the big downside. But at some scale, that's not a problem relative to keeping an entire container full of **lithium ion** cells from going up in flames.
 Now I want to see somebody come to **Supercon** with a backpack, **flow battery**.
 
 These ones we're looking at here that you put in the **show notes** are surprisingly small.
@@ -642,7 +642,7 @@ And that, so maybe **2030** isn't unreasonable, actually.
 
 > Quote, this is a meaningful milestone as the aviation industry continues to make progress toward an unleaded future.
 
-We congratulate **VP Racing** and **Leyendel Basel**, which is the company that makes the fuel in question for the work they've done and blah, blah, blah, blah, blah.
+We congratulate **VP Racing** and **LyondellBasell**, which is the company that makes the fuel in question for the work they've done and blah, blah, blah, blah, blah.
 
 That's pretty cool.
 
