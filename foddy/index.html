@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Over It — a hammer-climbing homage</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #2b3247;
+               touch-action: none; overscroll-behavior: none; }
+  #game { display: block; cursor: none; touch-action: none; }
+  .ui { position: fixed; font-family: Georgia, 'Times New Roman', serif; color: #fff;
+        user-select: none; -webkit-user-select: none; pointer-events: none; }
+  #hud { top: calc(14px + env(safe-area-inset-top, 0px));
+         left: calc(18px + env(safe-area-inset-left, 0px));
+         text-shadow: 0 1px 3px rgba(0,0,0,.45); }
+  #hud-height { font-size: 28px; font-weight: bold; }
+  #hud-best, #hud-time { font-size: 14px; opacity: .85; }
+  #msg { left: 50%; bottom: 12%; transform: translateX(-50%);
+         font-style: italic; font-size: 22px; text-align: center; max-width: 70vw;
+         text-shadow: 0 1px 4px rgba(0,0,0,.6); transition: opacity .5s; }
+  #keys { right: calc(18px + env(safe-area-inset-right, 0px));
+          top: calc(14px + env(safe-area-inset-top, 0px));
+          font-size: 13px; opacity: .7; text-align: right;
+          text-shadow: 0 1px 3px rgba(0,0,0,.45); }
+  .when-touch { display: none; }
+  .overlay { inset: 0; display: flex; flex-direction: column; align-items: center;
+             justify-content: center; background: rgba(20, 22, 34, .72);
+             pointer-events: auto; cursor: pointer; text-align: center; padding: 24px; }
+  .overlay h1 { font-size: 42px; margin: 0 0 14px; font-weight: normal; letter-spacing: 1px; }
+  .overlay p { font-size: 17px; line-height: 1.6; max-width: min(520px, 86vw); margin: 6px 0; opacity: .9; }
+  .overlay .small { font-size: 13px; opacity: .6; margin-top: 22px; }
+  .hidden { display: none !important; opacity: 0; }
+
+  /* ---- mobile ---- */
+  #mobile-controls { position: fixed; z-index: 5; display: none;
+    right: calc(14px + env(safe-area-inset-right, 0px));
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px)); }
+  #mobile-controls button { width: 54px; height: 54px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.35); background: rgba(25, 28, 42, .55);
+    color: #fff; font-size: 26px; line-height: 1; touch-action: manipulation; }
+  @media (pointer: coarse) {
+    #mobile-controls { display: flex; gap: 10px; }
+    .when-touch { display: inline; }
+    .when-mouse { display: none; }
+  }
+  @media (max-width: 600px) {
+    #hud-height { font-size: 22px; }
+    #msg { font-size: 18px; max-width: 84vw; }
+    .overlay h1 { font-size: 30px; }
+    .overlay p { font-size: 15px; }
+  }
+
+  /* ---- map editor ---- */
+  #editor-panel { position: fixed; top: 12px; right: 12px; width: 232px;
+    background: rgba(22, 25, 38, .92); border: 1px solid rgba(255,255,255,.15);
+    border-radius: 8px; padding: 12px; color: #e8e8f0;
+    font: 13px/1.45 system-ui, sans-serif; user-select: none; z-index: 10; }
+  #editor-panel h2 { margin: 0 0 8px; font-size: 15px; font-weight: 600; }
+  #editor-panel .ed-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+  #editor-panel button { background: #39415c; color: #e8e8f0; border: 1px solid #565f80;
+    border-radius: 5px; padding: 4px 8px; font-size: 12px; cursor: pointer; }
+  #editor-panel button:hover { background: #495270; }
+  #editor-mats { display: grid; grid-template-columns: repeat(9, 1fr); gap: 4px; margin-bottom: 8px; }
+  .ed-swatch { width: 20px; height: 20px; padding: 0 !important; border-width: 2px !important;
+    border-radius: 4px !important; }
+  .ed-swatch.current { outline: 2px solid #4fd6e8; }
+  #editor-info { font-size: 11px; opacity: .85; min-height: 28px; margin-bottom: 8px; }
+  #editor-tips { font-size: 11px; opacity: .6; margin-top: 8px; }
+  #editor-io { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+    background: rgba(10, 12, 20, .6); z-index: 20; }
+  #editor-io .box { background: #1c2030; border: 1px solid #565f80; border-radius: 8px;
+    padding: 14px; width: min(560px, 90vw); }
+  #editor-io textarea { width: 100%; height: 200px; background: #12141f; color: #cdd3e8;
+    border: 1px solid #39415c; border-radius: 5px; font: 11px/1.4 monospace; box-sizing: border-box; }
+  #editor-io .ed-row { display: flex; gap: 8px; margin-top: 8px; }
+  #editor-io button { background: #39415c; color: #e8e8f0; border: 1px solid #565f80;
+    border-radius: 5px; padding: 5px 10px; cursor: pointer; }
+</style>
+</head>
+<body>
+<canvas id="game"></canvas>
+
+<div id="hud" class="ui">
+  <div id="hud-height">0.0 m</div>
+  <div id="hud-best">best 0.0 m</div>
+  <div id="hud-time">0:00</div>
+</div>
+<div id="keys" class="ui"><span class="when-mouse">move mouse — swing hammer<br>R — start over<br>E — map editor</span><span
+  class="when-touch">drag anywhere — swing hammer</span></div>
+<div id="msg" class="ui hidden"></div>
+
+<div id="mobile-controls">
+  <button id="btn-restart" aria-label="start over">↻</button>
+</div>
+
+<div id="editor-panel" class="hidden">
+  <h2>Map editor</h2>
+  <div class="ed-row">
+    <button id="ed-add-box">+ box</button>
+    <button id="ed-add-circle">+ circle</button>
+    <button id="ed-add-poly">+ poly</button>
+  </div>
+  <div class="ed-row">
+    <button id="ed-dup">duplicate</button>
+    <button id="ed-del">delete</button>
+  </div>
+  <div id="editor-mats"></div>
+  <div id="editor-info">click a piece to select</div>
+  <div class="ed-row">
+    <button id="ed-export">export</button>
+    <button id="ed-import">import</button>
+    <button id="ed-reset">reset map</button>
+  </div>
+  <div class="ed-row">
+    <button id="ed-play">▶ play (E)</button>
+  </div>
+  <div id="editor-tips">drag = move · square = resize · orange dot = rotate ·
+    poly: drag verts, dbl-click edge adds, right-click removes · wheel = zoom ·
+    drag sky = pan · arrows nudge · ctrl+Z undo · ctrl+D dup · T teleports the
+    climber to the cursor · edits autosave in this browser</div>
+</div>
+
+<div id="editor-io" class="hidden">
+  <div class="box">
+    <textarea id="editor-io-text" spellcheck="false" placeholder="paste map JSON here"></textarea>
+    <div class="ed-row">
+      <button id="ed-io-apply">apply import</button>
+      <button id="ed-io-close">close</button>
+    </div>
+  </div>
+</div>
+
+<div id="help" class="ui overlay">
+  <h1>Over It</h1>
+  <p>A man. A pot. A hammer. A mountain of junk.</p>
+  <p>Move the mouse — or drag a finger anywhere — to swing the hammer around you.
+     <b>Push</b> the head into the ground to vault yourself upward.
+     <b>Hook</b> a ledge and pull toward yourself to climb.
+     <b>Whip</b> it in circles to spin with real momentum.</p>
+  <p>There are no checkpoints. Falling is part of the trip.</p>
+  <p class="small">click or tap anywhere to begin — a canvas homage to
+     <i>Getting Over It with Bennett Foddy</i></p>
+</div>
+
+<div id="win" class="ui overlay hidden">
+  <h1>You got over it.</h1>
+  <p>The antenna hums. There is nothing left above you.</p>
+  <p id="win-time"></p>
+  <p class="small">click or tap to climb again</p>
+</div>
+
+<script src="dist/foddy.js"></script>
+</body>
+</html>
