@@ -35,11 +35,15 @@
   #mobile-controls { position: fixed; z-index: 5; display: none;
     right: calc(14px + env(safe-area-inset-right, 0px));
     bottom: calc(14px + env(safe-area-inset-bottom, 0px)); }
-  #mobile-controls button { width: 54px; height: 54px; border-radius: 50%;
+  #mobile-controls-top { position: fixed; z-index: 5; display: none;
+    right: calc(14px + env(safe-area-inset-right, 0px));
+    top: calc(42px + env(safe-area-inset-top, 0px)); }
+  #mobile-controls button, #mobile-controls-top button {
+    width: 54px; height: 54px; border-radius: 50%;
     border: 1px solid rgba(255,255,255,.35); background: rgba(25, 28, 42, .55);
     color: #fff; font-size: 26px; line-height: 1; touch-action: manipulation; }
   @media (pointer: coarse) {
-    #mobile-controls { display: flex; gap: 10px; }
+    #mobile-controls, #mobile-controls-top { display: flex; gap: 10px; }
     .when-touch { display: inline; }
     .when-mouse { display: none; }
   }
@@ -91,6 +95,9 @@
 
 <div id="mobile-controls">
   <button id="btn-restart" aria-label="start over">↻</button>
+</div>
+<div id="mobile-controls-top">
+  <button id="btn-editor" aria-label="map editor">✎</button>
 </div>
 
 <div id="editor-panel" class="hidden">
