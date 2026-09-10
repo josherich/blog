@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {BlockWell} from '../src/blocks.js';
+import {World} from '../src/world.js';
+import {stages} from '../src/stages.js';
+test('full rows clear and rows above fall into place',()=>{const b=new BlockWell(2,{width:8,height:8});b.pieces=[];b.grid[7].fill(0);b.grid[6][3]=1;assert.equal(b.clearRows(),1);assert.equal(b.lines,1);assert.equal(b.grid[7][3],1);assert.ok(b.grid[0].every(v=>v===null));});
+test('falling blocks cannot overlap another player or settled cells',()=>{const b=new BlockWell(2,{width:12,height:10});const p=b.pieces[0],q=b.pieces[1];assert.equal(b.fits({...p,x:q.x,y:q.y,cells:q.cells}),false);b.grid[5][p.x]=1;assert.equal(b.fits({...p,y:5}),false);});
+test('rotation uses wall kicks and hard drop locks a piece into the shared board',()=>{const b=new BlockWell(1,{width:8,height:8});const p=b.pieces[0];p.x=0;assert.ok(b.rotate(p));assert.ok(b.fits(p));b.update(1/60,[{jump:true}]);assert.equal(b.grid.flat().filter(x=>x!==null).length,3);assert.notEqual(b.pieces[0],p);});
+test('a blocked spawn tops out rather than overwriting settled blocks',()=>{const b=new BlockWell(1,{width:8,height:8});b.grid[0].fill(0);b.spawn(0);assert.ok(b.over);assert.ok(b.grid[0].every(x=>x===0));});
+test('timer rejects the old five-second objective and accepts a sum under 0.80',()=>{const w=new World(stages[8],2);w.clocks=[{value:5,stopped:true},{value:5,stopped:true}];w.update(1/60,[]);assert.equal(w.hasKey,false);w.clocks=[{value:.24,stopped:true},{value:.41,stopped:true}];w.update(1/60,[]);assert.equal(w.hasKey,true);});
+test('horizontal fan changes horizontal position without an upward velocity impulse',()=>{const w=new World(stages[17],2),p=w.players[0];p.x=720;p.y=430;p.vy=0;w.update(1/60,[]);assert.ok(p.x<720);assert.ok(p.vy>=0);});
+test('downward lift approaches its target gradually instead of teleporting',()=>{const w=new World(stages[4],2),lift=w.entities[1];lift.active=true;const before=lift.y;w.update(1/60,[]);assert.ok(lift.y>before&&lift.y<before+2);});
