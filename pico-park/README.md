@@ -31,7 +31,7 @@ Walk through friends horizontally, land on their heads vertically, and jump off 
 
 ## Stage fidelity and references
 
-The user-provided [gameplay playlist](https://www.youtube.com/playlist?list=PL03GkmF32okT9-Q7l-d8C2luZ8cUEBbQI) now supplements the screenshot gallery. Stages **1, 2, 5, 9, 18, 19 and 20** have gameplay-informed corrections. See [VIDEO-REFERENCE-NOTES.md](VIDEO-REFERENCE-NOTES.md) for timestamps, implemented changes and unresolved mismatches. Every built-in stage has a direct Walkthrough link.
+The user-provided [gameplay playlist](https://www.youtube.com/playlist?list=PL03GkmF32okT9-Q7l-d8C2luZ8cUEBbQI) now supplements the screenshot gallery. Stages **1, 2, 5, 8, 9, 18, 19 and 20** have gameplay-informed corrections. See [VIDEO-REFERENCE-NOTES.md](VIDEO-REFERENCE-NOTES.md) for timestamps, implemented changes and unresolved mismatches. Every built-in stage has a direct Walkthrough link.
 
 The [Classic Edition wiki gallery](https://pico-park.fandom.com/wiki/PICO_PARK:_Classic_Edition) was inspected for **all 20 cooperative stage screenshots**, in its original order. Stage 21 is Battle Mode and is excluded. These are playable, screenshot-based reconstructions, not a verified exact port of the original game. The source screenshots are stage-selection previews, not executable rules or complete walkthroughs. Geometry has been scaled/adapted; names are original; inferred mechanics are listed below. Exact original timing, enemy AI, per-player layout changes, and undocumented mechanics are not asserted to match.
 
@@ -46,7 +46,7 @@ The [official merchandise page](https://picoparkgame.com/en/merch/) restricts it
 | 05 | Two numbered platforms and high exit | Upward left lift, downward middle lift, moving vertical barrier and right platform |
 | 06 | Low basketball goal | Pick up and throw ball; score to unlock exit |
 | 07 | A number above every cat, “ALL 7” | Each cat cycles its own number to seven |
-| 08 | Ball chute and enclosed platforms | Switch releases ball platform; recover and shoot into lower opening |
+| 08 | Sealed ball chamber with three tilting ramps | Exterior weight platforms tilt all ramps; roll the ball onto the internal switch to release the key below |
 | 09 | Individual clocks and timing objective | Stop clocks with positive combined time below 0.80 seconds; use again to restart |
 | 10 | Brick wall and paddles | Shared ball, cat paddles, clear all bricks; missed balls respawn |
 | 11 | Raised basketball goal | Throw into elevated hoop, ballistic aim assist |
@@ -125,3 +125,7 @@ Mode options: `normal`, `numbers` (`target`), `timers` (`sumLimit`, default 0.8)
 - `vendor/kontra.min.js`, `vendor/LICENSE-kontra`: pinned engine and MIT attribution.
 
 Tests cover physics, stacking, lifts, gate scaling, keys/exits, puzzle objectives, failure states, schema rejection, and simulations of all 20 stages with 2 and 10 cats. They are not a complete all-stage multiplayer playthrough or proof of exact original-game fidelity.
+
+### Tilt-course stages
+
+Stage 8 uses `mode:"tilt"`, two `balance` entities (`side:"left"` / `"right"`), and a `course` object. `ramps` contains `[x,y,width]` entries; `ball` is its spawn center; `button` is `[x,y,width,height]`. `left`, `right`, and `floor` bound the sealed chamber; `maxTilt` is in radians. Standing on the side platforms changes the shared ramp angle. The ball cannot be picked up. The switch releases a key below the chamber. `src/marble.js` implements sloped ball contacts, rolling, and automatic retry after a missed switch. Exact original tilt speed and acceleration remain tuned approximations.

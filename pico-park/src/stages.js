@@ -12,7 +12,13 @@ export const stages=[
  stage(5,'Going up','Ride the numbered lifts together. The key is on the lower floor.',{spawn:[60,472],key:[75,402],door:[855,82],platforms:[floor,[20,300,400,18],[550,320,160,18],[270,122,670,18]],entities:[{type:'lift',x:75,y:288,w:130,h:12,toY:150,need:2,fixedNeed:true},{type:'lift',x:422,y:310,w:126,h:12,toY:400,need:7},{type:'moving',x:780,y:450,w:80,h:10,axis:'y',travel:135,speed:0.5},{type:'moving',x:270,y:140,w:8,h:160,axis:'x',travel:280,speed:0.4}]}),
  stage(6,'Nothing but net','Use S / ↓ beside the ball to pick it up, then use again to shoot toward the hoop.',{mode:'basket',key:null,spawn:[280,472],entities:[{type:'hoop',x:888,y:447,w:38,h:12}],ball:[795,473],goal:1}),
  stage(7,'Lucky sevens','Each cat owns a number. Use S / ↓ to cycle yours. Make every number seven.',{mode:'numbers',key:null,entities:[],target:7}),
- stage(8,'A little pinball','Reach the switch to release the ball. Get it through the lower opening.',{spawn:[340,472],key:null,mode:'basket',goal:1,ball:[260,125],platforms:[floor,[140,38,18,312],[805,38,18,312],[140,350,555,16],[755,350,68,16],[345,214,305,12],[240,280,310,12],[55,452,135,12],[800,452,110,12],[710,420,55,12]],entities:[{type:'moving',x:60,y:450,w:78,h:10,axis:'y',travel:250,speed:0.6},{type:'button',x:662,y:342,target:'release'},{type:'hoop',x:697,y:477,w:70,h:10},{type:'cannon',x:278,y:48},{type:'bridge',id:'release',x:240,y:148,w:310,h:12}]}),
+ stage(8,'A balancing act','Stand on the side platforms to tilt the ramps. Roll the ball right, left, then right onto the switch.',{
+  mode:'tilt',spawn:[380,472],door:[464,460],key:null,
+  platforms:[floor,[145,20,22,328],[793,20,22,328],[145,328,670,20],
+   [220,478,44,22],[220,456,22,22],[696,478,44,22],[718,456,22,22]],
+  entities:[{type:'balance',side:'left',x:55,y:450,w:148,h:10},{type:'balance',side:'right',x:757,y:450,w:148,h:10}],
+  course:{ramps:[[248,118,345],[363,188,345],[248,258,345]],ball:[300,64],button:[685,320,22,8],left:167,right:793,floor:328,maxTilt:0.13}
+ }),
  stage(9,'Perfect timing','Stop every clock with S / ↓. Their combined time must be above 0 and below 0.80 seconds. Use again to restart.',{mode:'timers',key:null,spawn:[110,472],platforms:[floor,[95,320,735,16]],sumLimit:0.8}),
  stage(10,'Brick by brick','Move your cat under the ball. Clear the bricks together; jumping adds speed.',{mode:'breakout',key:null,spawn:[80,472],door:[470,460]}),
  stage(11,'Aim a little higher','Pick up the ball with S / ↓. Jump and shoot toward the raised basket.',{mode:'basket',key:null,spawn:[280,472],ball:[800,442],goal:1,entities:[{type:'hoop',x:885,y:340,w:42,h:12}],platforms:[floor,[875,362,65,16]]}),

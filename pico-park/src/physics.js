@@ -31,9 +31,16 @@ export function validateStage(s){
  point(s.spawn,'spawn');point(s.door,'door');if(s.key)point(s.key,'key');
  if(!Array.isArray(s.platforms))throw Error('platforms must be an array.');
  for(const [i,r] of s.platforms.entries()){if(!Array.isArray(r)||r.length!==4||!r.every(Number.isFinite)||r[2]<=0||r[3]<=0)throw Error('Invalid platform '+i);}
- const types=['gate','crate','lift','moving','button','spring','spikes','checkpoint','pipe','hoop','cannon','fan','bridge','extend','switch'];
+ const types=['balance','gate','crate','lift','moving','button','spring','spikes','checkpoint','pipe','hoop','cannon','fan','bridge','extend','switch'];
  if(s.entities&&!Array.isArray(s.entities))throw Error('entities must be an array.');
  for(const e of s.entities||[]){if(!types.includes(e.type))throw Error('Unknown entity type: '+e.type);if(!Number.isFinite(e.x)||!Number.isFinite(e.y))throw Error('Entities need numeric x and y.');for(const k of ['w','h','travel','speed','need','toX','toY'])if(e[k]!==undefined&&!Number.isFinite(e[k]))throw Error(k+' must be numeric.');if(e.w!==undefined&&e.w<=0||e.h!==undefined&&e.h<=0)throw Error('Entity dimensions must be positive.');}
- if(s.mode!==undefined&&!['normal','numbers','timers','breakout','basket','coins','tower','tetris','stop'].includes(s.mode))throw Error('Unknown mode.');
+ if(s.mode!==undefined&&!['normal','numbers','timers','breakout','basket','coins','tower','tetris','stop','tilt'].includes(s.mode))throw Error('Unknown mode.');
+ if(s.mode==='tilt'){
+  const c=s.course;if(!c||!Array.isArray(c.ramps)||!c.ramps.length)throw Error('Tilt mode needs course.ramps.');
+  point(c.ball,'course.ball');
+  if(!Array.isArray(c.button)||c.button.length!==4||!c.button.every(Number.isFinite)||c.button[2]<=0||c.button[3]<=0)throw Error('course.button must be [x,y,width,height].');
+  for(const r of c.ramps)if(!Array.isArray(r)||r.length!==3||!r.every(Number.isFinite)||r[2]<=0)throw Error('Ramps must be [x,y,width].');
+  if(!['left','right'].every(side=>(s.entities||[]).some(e=>e.type==='balance'&&e.side===side)))throw Error('Tilt mode needs left and right balance platforms.');
+ }
  return s;
 }

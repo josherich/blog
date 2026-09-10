@@ -1,7 +1,8 @@
+import {MarbleCourse} from './marble.js';
 import {BlockWell} from './blocks.js';
 import {actor,rect,overlap,near,stepActor,moveBody,validateStage,GRAVITY} from './physics.js';
 export const COLORS=['#69cbb1','#eead55','#e793ad','#8b9ddd','#b5ce60','#af91d3','#e37e67','#72bed0','#b29c84','#a4aaa7'];
-const defaults={gate:[32,90],crate:[38,38],lift:[100,12],moving:[90,12],button:[25,8],spring:[40,10],spikes:[40,12],checkpoint:[15,28],pipe:[36,36],number:[32,32],timer:[64,28],hoop:[42,12],cannon:[25,30],fan:[120,180],extend:[100,14],bridge:[100,14],switch:[18,9],tetris:[30,30]};
+const defaults={balance:[148,10],gate:[32,90],crate:[38,38],lift:[100,12],moving:[90,12],button:[25,8],spring:[40,10],spikes:[40,12],checkpoint:[15,28],pipe:[36,36],number:[32,32],timer:[64,28],hoop:[42,12],cannon:[25,30],fan:[120,180],extend:[100,14],bridge:[100,14],switch:[18,9],tetris:[30,30]};
 export class World{
  constructor(stage,count=2){
   validateStage(stage);stage={mode:'normal',...stage};this.stage=structuredClone(stage);this.count=count;this.time=0;this.won=false;this.failed=false;this.reason='';this.hasKey=false;this.events=[];this.score=0;this.particles=[];
@@ -16,10 +17,11 @@ export class World{
   this.coins=[];if(stage.mode==='coins')for(let y=80;y<=440;y+=72)for(let x=68;x<=900;x+=90)this.coins.push(rect(x,y,10,15));
   this.bricks=[];if(stage.mode==='breakout')for(let y=80;y<150;y+=18)for(let x=65;x<900;x+=42)this.bricks.push(rect(x,y,39,15,{color:COLORS[Math.floor((y-80)/18)]}));
   if(stage.mode==='breakout'||stage.mode==='basket')this.ball={x:(stage.ball||[480,350])[0],y:(stage.ball||[480,350])[1],w:12,h:12,vx:stage.mode==='breakout'?150:0,vy:stage.mode==='breakout'?-230:0,held:-1};
+  this.course=stage.mode==='tilt'?new MarbleCourse(stage.course):null;
   this.well=stage.mode==='tetris'?new BlockWell(count,{goal:stage.goal||10}):null;
  }
  emit(type,x=480,y=270){this.events.push(type);for(let i=0;i<10;i++)this.particles.push({x,y,vx:Math.sin(i*2.4)*70,vy:-40-Math.cos(i)*50,life:0.7,color:COLORS[i]});}
- solids(){return [...this.walls,...this.platforms,...this.entities.filter(e=>['gate','crate','lift','moving','bridge','extend'].includes(e.type)&&!e.open)];}
+ solids(){return [...this.walls,...this.platforms,...this.entities.filter(e=>['gate','crate','lift','moving','bridge','extend','balance'].includes(e.type)&&!e.open)];}
  fail(reason){if(this.failed||this.won)return;this.failed=true;this.reason=reason;this.emit('fail');}
  grantKey(){if(!this.hasKey){this.hasKey=true;this.emit('key',this.door.x,this.door.y);}}
  update(dt,inputs=[]){
@@ -27,8 +29,15 @@ export class World{
   for(const p of this.particles){p.life-=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=250*dt;}this.particles=this.particles.filter(p=>p.life>0);
   const alive=this.players.filter(p=>!p.exited);
   const uses=this.players.map((p,i)=>{const use=!!inputs[i]?.use&&!p.wasUse;p.wasUse=!!inputs[i]?.use;return use;});
+  if(this.course){
+   const pads=this.entities.filter(e=>e.type==='balance');
+   const weight=side=>{const pad=pads.find(e=>e.side===side);return alive.filter(p=>{let support=p.support;const seen=new Set();while(support&&this.players.includes(support)&&!seen.has(support)){seen.add(support);support=support.support;}return support===pad;}).length;};
+   this.course.update(dt,weight('left'),weight('right'));
+   if(this.course.solved&&!this.key&&!this.hasKey){this.key=rect(472,424,16,23);this.emit('switch',480,420);}
+  }
   for(const e of this.entities){
    const ox=e.x,oy=e.y;
+   if(e.type==='balance')e.y=e.originY+(e.side==='right'?1:-1)*(this.course?.angle||0)*270;
    if(e.type==='gate'&&!e.pushable&&!e.open){const gathered=alive.filter(p=>p.y+p.h>e.y&&p.y<e.y+e.h&&p.x+p.w>e.x-75&&p.x<e.x+e.w+75);if(gathered.length>=e.need){e.open=true;this.emit('switch',e.x,e.y+e.h/2);}}
    if(e.type==='button'&&alive.some(p=>overlap(rect(p.x,p.y, p.w,p.h+5),e))){e.active=true;for(const target of this.entities.filter(q=>q.id===e.target))target.active=true;}
    if(e.type==='lift'){
