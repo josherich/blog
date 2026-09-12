@@ -2,7 +2,7 @@ import {MarbleCourse} from './marble.js';
 import {BlockWell} from './blocks.js';
 import {actor,rect,overlap,near,stepActor,moveBody,validateStage,GRAVITY} from './physics.js';
 export const COLORS=['#69cbb1','#eead55','#e793ad','#8b9ddd','#b5ce60','#af91d3','#e37e67','#72bed0','#b29c84','#a4aaa7'];
-const defaults={balance:[148,10],gate:[32,90],crate:[38,38],lift:[100,12],moving:[90,12],button:[25,8],spring:[40,10],spikes:[40,12],checkpoint:[15,28],pipe:[36,36],number:[32,32],timer:[64,28],hoop:[42,12],cannon:[25,30],fan:[120,180],extend:[100,14],bridge:[100,14],switch:[18,9],tetris:[30,30]};
+const defaults={balance:[148,10],gate:[32,90],crate:[38,38],lift:[100,12],moving:[90,12],button:[25,8],spring:[40,10],spikes:[40,12],checkpoint:[15,28],pipe:[36,36],number:[32,32],timer:[64,28],hoop:[42,12],cannon:[25,30],keybox:[30,38],fan:[120,180],extend:[100,14],bridge:[100,14],switch:[18,9],tetris:[30,30]};
 export class World{
  constructor(stage,count=2){
   validateStage(stage);stage={mode:'normal',...stage};this.stage=structuredClone(stage);this.count=count;this.time=0;this.won=false;this.failed=false;this.reason='';this.hasKey=false;this.events=[];this.score=0;this.particles=[];
@@ -10,15 +10,19 @@ export class World{
   this.entities=(stage.entities||[]).map((e,i)=>({...rect(e.x,e.y,...defaults[e.type]),...e,originX:e.x,originY:e.y,need:e.need?Math.max(1,e.fixedNeed?Math.min(count,e.need):Math.ceil(e.need*count/10)):0,active:false,open:false,id:e.id||'e'+i}));
   const spawnFloor=this.platforms.find(r=>r.x<=stage.spawn[0]&&r.x+r.w>=stage.spawn[0]+22&&r.y>=stage.spawn[1]+28&&r.y<=stage.spawn[1]+60);
   const columns=spawnFloor?Math.max(1,Math.min(count,Math.floor((spawnFloor.x+spawnFloor.w-stage.spawn[0])/25))):count;
-  this.players=Array.from({length:count},(_,i)=>actor(stage.spawn[0]+(i%columns)*25,stage.spawn[1]-Math.floor(i/columns)*29,i));
+  this.sharedControl=stage.mode==='shared'?{matched:false,input:{}}:null;
+  this.players=Array.from({length:this.sharedControl?1:count},(_,i)=>actor(stage.spawn[0]+(i%columns)*25,stage.spawn[1]-Math.floor(i/columns)*29,i));
   if(stage.id===15||stage.id===16){for(let i=0;i<count;i++){this.players[i].x=stage.spawn[0]+(i%4)*24;this.players[i].y=stage.spawn[1]-Math.floor(i/4)*29;}}
   this.door=rect(...stage.door,32,40);this.key=stage.key?rect(stage.key[0],stage.key[1]-(stage.keyStack?(count-2)*18:0),16,23):null;
   this.numbers=Array.from({length:count},(_,i)=>(i*3+4)%10);this.clocks=Array.from({length:count},()=>({value:0,stopped:false}));
   this.coins=[];if(stage.mode==='coins')for(let y=80;y<=440;y+=72)for(let x=68;x<=900;x+=90)this.coins.push(rect(x,y,10,15));
   this.bricks=[];if(stage.mode==='breakout')for(let y=80;y<150;y+=18)for(let x=65;x<900;x+=42)this.bricks.push(rect(x,y,39,15,{color:COLORS[Math.floor((y-80)/18)]}));
   if(stage.mode==='breakout'||stage.mode==='basket')this.ball={x:(stage.ball||[480,350])[0],y:(stage.ball||[480,350])[1],w:12,h:12,vx:stage.mode==='breakout'?150:0,vy:stage.mode==='breakout'?-230:0,held:-1};
+  if(stage.mode==='cannon'){this.cannonBall=null;this.cannonRetry=0;}
+  this.ghost=stage.mode==='ghost'?{...rect(...stage.ghost.spawn,28,32),direction:2,cycleTime:0,watched:true,delivered:false}:null;
   this.course=stage.mode==='tilt'?new MarbleCourse(stage.course):null;
   this.well=stage.mode==='tetris'?new BlockWell(count,{goal:stage.goal||10}):null;
+  this.tether=stage.mode==='tether'?{restLength:58,maxLength:112,stiffness:13,jumpBoost:180,...stage.tether}:null;
  }
  emit(type,x=480,y=270){this.events.push(type);for(let i=0;i<10;i++)this.particles.push({x,y,vx:Math.sin(i*2.4)*70,vy:-40-Math.cos(i)*50,life:0.7,color:COLORS[i]});}
  solids(){return [...this.walls,...this.platforms,...this.entities.filter(e=>['gate','crate','lift','moving','bridge','extend','balance'].includes(e.type)&&!e.open)];}
@@ -26,7 +30,17 @@ export class World{
  grantKey(){if(!this.hasKey){this.hasKey=true;this.emit('key',this.door.x,this.door.y);}}
  update(dt,inputs=[]){
   if(this.won||this.failed)return;dt=Math.min(dt,1/30);this.time+=dt;
+  for(const p of this.players)if(p.tetherLift)p.tetherLift=Math.max(0,p.tetherLift-dt);
   for(const p of this.particles){p.life-=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=250*dt;}this.particles=this.particles.filter(p=>p.life>0);
+  if(this.sharedControl){
+   const actions=['up','down','left','right','use'];
+   const votes=Array.from({length:this.count},(_,i)=>({...inputs[i],up:!!(inputs[i]?.up||inputs[i]?.jump)}));
+   const matched=actions.every(action=>votes.every(v=>!!v[action]===!!votes[0][action]));
+   const agreed=Object.fromEntries(actions.map(action=>[action,matched&&!!votes[0][action]]));
+   if(agreed.left&&agreed.right||agreed.up&&agreed.down)for(const action of actions)agreed[action]=false;
+   this.sharedControl={matched:matched&&actions.some(action=>agreed[action]),input:agreed};
+   inputs=[{...agreed,jump:agreed.up,use:agreed.use||agreed.down}];
+  }
   const alive=this.players.filter(p=>!p.exited);
   const uses=this.players.map((p,i)=>{const use=!!inputs[i]?.use&&!p.wasUse;p.wasUse=!!inputs[i]?.use;return use;});
   if(this.course){
@@ -38,7 +52,8 @@ export class World{
   for(const e of this.entities){
    const ox=e.x,oy=e.y;
    if(e.type==='balance')e.y=e.originY+(e.side==='right'?1:-1)*(this.course?.angle||0)*270;
-   if(e.type==='gate'&&!e.pushable&&!e.open){const gathered=alive.filter(p=>p.y+p.h>e.y&&p.y<e.y+e.h&&p.x+p.w>e.x-75&&p.x<e.x+e.w+75);if(gathered.length>=e.need){e.open=true;this.emit('switch',e.x,e.y+e.h/2);}}
+   if(e.type==='gate'&&e.opensWithKey&&!e.open&&this.hasKey){e.open=true;this.emit('switch',e.x,e.y+e.h/2);}
+   if(e.type==='gate'&&!e.pushable&&!e.opensWithKey&&!e.open){const gathered=alive.filter(p=>p.y+p.h>e.y&&p.y<e.y+e.h&&p.x+p.w>e.x-75&&p.x<e.x+e.w+75);if(gathered.length>=e.need){e.open=true;this.emit('switch',e.x,e.y+e.h/2);}}
    if(e.type==='button'&&alive.some(p=>overlap(rect(p.x,p.y, p.w,p.h+5),e))){e.active=true;for(const target of this.entities.filter(q=>q.id===e.target))target.active=true;}
    if(e.type==='lift'){
     const onboard=alive.filter(p=>p.x+p.w>e.x&&p.x<e.x+e.w&&p.y+p.h<=e.y+8&&p.y+p.h>=e.y-110);
@@ -71,13 +86,15 @@ export class World{
    if(this.stage.mode==='stop'&&this.time%7>4.5){if(input.left||input.right||input.jump){this.fail('The light was red! Wait for green before moving.');return;}}
    const prevSupport=p.support;
    if(prevSupport&&this.players.includes(prevSupport))p.x+=prevSupport.vx*dt;
+   const tetherBoost=this.tether&&input.jump&&!p.wasJump&&p.grounded?this.tetherJumpBoost(p):0;
    stepActor(p,this.well&&!this.hasKey?{}:input,solids,this.players,dt);
+   if(tetherBoost&&p.vy<0){p.vy-=tetherBoost;p.tetherLift=.16;}
    for(const e of this.entities){
     if(e.type==='spring'&&overlap(rect(p.x,p.y,p.w,p.h+5),e)&&p.vy>=0){p.vy=this.stage.mode==='coins'?-1050:-760;p.grounded=false;this.events.push('jump');}
     if(e.type==='fan'){const carrier=this.entities.find(q=>q.id===e.attach);if(carrier)e.y=carrier.y-e.h;if(e.direction==='left'){if(overlap(p,rect(e.x-(e.reach||320),e.y-30,e.reach||320,e.h+60)))moveBody(p,-(e.force||110)*dt,0,solids);}else if(overlap(p,rect(e.x,e.y-180,e.w,e.h+180))){p.vy=-360;p.y-=200*dt;}}
     if(e.type==='spikes'&&overlap(p,e))p.y=600;
     if(e.type==='checkpoint'&&near(p,e,45)){this.checkpoint=[e.x,e.y-5];e.active=true;}
-    if(e.type==='pipe'&&uses[p.id]&&near(p,e,60)){p.x=e.toX;p.y=e.toY;p.vy=0;this.emit('switch',p.x,p.y);}
+    if(e.type==='pipe'&&!e.ghostOnly&&uses[p.id]&&near(p,e,60)){p.x=e.toX;p.y=e.toY;p.vy=0;this.emit('switch',p.x,p.y);}
     if(e.type==='switch'&&uses[p.id]&&near(p,e,50))this.time=Math.floor(this.time/7)*7+4.55;
    }
    if(p.y>565){if([4,17].includes(this.stage.id)){[p.x,p.y]=this.checkpoint||this.stage.spawn;p.vy=0;this.emit('reset',p.x,p.y);}else{this.fail('A friend took a tumble. Everyone gets another try.');return;}}
@@ -85,12 +102,78 @@ export class World{
    this.coins=this.coins.filter(c=>{if(overlap(p,c)){this.score++;this.events.push('coin');return false;}return true;});
    if(this.hasKey&&near(p,this.door,40)&&input.use){p.exited=true;this.emit('exit',p.x,p.y);}
   }
+  if(this.tether)this.updateTethers(dt,solids);
+  if(this.ghost)this.updateGhost(dt);
   this.updatePuzzle(dt,inputs,uses,solids);
   if(this.stage.timeLimit&&this.time>=this.stage.timeLimit&&!this.hasKey)this.fail('Time is up. Sweep the coins together and try again.');
-  if(this.players.every(p=>p.exited)){this.won=true;this.emit('win');}
+ if(this.players.every(p=>p.exited)){this.won=true;this.emit('win');}
+ }
+ updateGhost(dt){
+  const g=this.ghost;if(g.delivered||this.hasKey)return;
+  // Facing persists after releasing a movement key; walls do not hide a player's gaze.
+  g.watched=this.players.some(p=>!p.exited&&(g.x+g.w/2-p.x-p.w/2)*p.facing>=0);
+  if(g.watched){
+   g.cycleTime+=dt;
+   while(g.cycleTime>=this.stage.ghost.cycle){g.cycleTime-=this.stage.ghost.cycle;g.direction=(g.direction+1)%4;}
+  }else{
+   const [dx,dy]=[[1,0],[0,1],[-1,0],[0,-1]][g.direction];
+   moveBody(g,dx*this.stage.ghost.speed*dt,dy*this.stage.ghost.speed*dt,this.solids());
+   g.x=Math.max(20,Math.min(940-g.w,g.x));g.y=Math.max(20,Math.min(520-g.h,g.y));
+   const pipe=this.entities.find(e=>e.type==='pipe'&&e.ghostOnly);
+   if(pipe&&overlap(g,pipe)){
+    g.delivered=true;this.key=rect(pipe.toX,pipe.toY,16,23);this.emit('switch',pipe.x,pipe.y);
+   }
+  }
+ }
+ tetherJumpBoost(p){
+  const i=this.players.indexOf(p),neighbors=[this.players[i-1],this.players[i+1]].filter(Boolean);
+  const px=p.x+p.w/2,py=p.y+p.h/2;
+  const loaded=neighbors.some(q=>{
+   if(q.exited)return false;
+   const qx=q.x+q.w/2,qy=q.y+q.h/2;
+   return qy>py+12&&Math.hypot(qx-px,qy-py)>this.tether.restLength;
+  });
+  return loaded?this.tether.jumpBoost:0;
+ }
+ updateTethers(dt,solids){
+  const {restLength,maxLength,stiffness}=this.tether;
+  for(let i=0;i<this.players.length-1;i++){
+   const a=this.players[i],b=this.players[i+1];if(a.exited||b.exited)continue;
+   const ax=a.x+a.w/2,ay=a.y+a.h/2,bx=b.x+b.w/2,by=b.y+b.h/2,dx=bx-ax,dy=by-ay,d=Math.hypot(dx,dy);if(d<=restLength||d===0)continue;
+   const ux=dx/d,uy=dy/d,excess=d-restLength;
+   // Spring toward the resting length, but never permit the wire to remain beyond its hard limit.
+   const correction=Math.min(excess,Math.max(excess*stiffness*dt,d-maxLength));
+   const aGrounded=a.grounded,bGrounded=b.grounded;
+   const aLifting=(a.tetherLift||0)>0&&by>ay,bLifting=(b.tetherLift||0)>0&&ay>by;
+   const aShare=aLifting&&!bLifting?0:bLifting&&!aLifting?1:bGrounded&&!aGrounded?1:aGrounded&&!bGrounded?0:.5,bShare=1-aShare;
+   const pull=(p,pullX,pullY)=>{
+    if(pullX===0&&pullY===0)return;
+    const wasGrounded=p.grounded,support=p.support;
+    moveBody(p,pullX,pullY,solids);
+    // A sideways tug along a platform must not consume the next frame's coyote/jump state.
+    if(wasGrounded&&Math.abs(pullY)<.5){p.grounded=true;p.support=support;}
+   };
+   pull(a,ux*correction*aShare,uy*correction*aShare);
+   pull(b,-ux*correction*bShare,-uy*correction*bShare);
+   const impulse=Math.min(240,excess*4)*dt;
+   a.vy+=uy*impulse*aShare;b.vy-=uy*impulse*bShare;
+  }
  }
  updatePuzzle(dt,inputs,uses,solids){
   const mode=this.stage.mode;
+  if(mode==='cannon'){
+   const setup=this.stage.cannon;
+   if(!this.cannonBall){
+    this.cannonRetry-=dt;
+    if(this.cannonRetry<=0)this.cannonBall={x:setup.spawn[0],y:setup.spawn[1],w:14,h:14,vx:-setup.speed,vy:0};
+   }else{
+    const b=this.cannonBall,oldY=b.y;b.vy+=600*dt;b.x+=b.vx*dt;b.y+=b.vy*dt;
+    const catcher=this.players.find(p=>!p.exited&&b.vy>0&&overlap(p,b)&&oldY+b.h<=p.y+8);
+    if(catcher){b.y=catcher.y-b.h;b.vy=-Math.max(250,Math.abs(b.vy)*0.82);this.emit('jump',b.x,b.y);}
+    if(b.x<=setup.targetX){this.cannonBall=null;this.key=rect(61,439,16,23);this.emit('key',70,452);}
+    else if(solids.some(r=>overlap(b,r))||b.y>540){this.cannonBall=null;this.cannonRetry=setup.retry;this.emit('reset',b.x,b.y);}
+   }
+  }
   if(mode==='numbers'){uses.forEach((u,i)=>{if(u)this.numbers[i]=(this.numbers[i]+1)%10;});if(this.numbers.every(n=>n===(this.stage.target||7)))this.grantKey();}
   if(mode==='timers'){
    this.clocks.forEach((c,i)=>{if(!c.stopped)c.value+=dt;if(uses[i]){if(c.stopped){c.value=0;c.stopped=false;}else c.stopped=true;}});

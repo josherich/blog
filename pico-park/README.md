@@ -31,7 +31,7 @@ Walk through friends horizontally, land on their heads vertically, and jump off 
 
 ## Stage fidelity and references
 
-The user-provided [gameplay playlist](https://www.youtube.com/playlist?list=PL03GkmF32okT9-Q7l-d8C2luZ8cUEBbQI) now supplements the screenshot gallery. Stages **1, 2, 5, 8, 9, 18, 19 and 20** have gameplay-informed corrections. See [VIDEO-REFERENCE-NOTES.md](VIDEO-REFERENCE-NOTES.md) for timestamps, implemented changes and unresolved mismatches. Every built-in stage has a direct Walkthrough link.
+The user-provided [gameplay playlist](https://www.youtube.com/playlist?list=PL03GkmF32okT9-Q7l-d8C2luZ8cUEBbQI) now supplements the screenshot gallery. Stages **1, 2, 5, 8, 9, 11, 13, 18, 19 and 20** have gameplay-informed corrections. See [VIDEO-REFERENCE-NOTES.md](VIDEO-REFERENCE-NOTES.md) for timestamps, implemented changes and unresolved mismatches. Every built-in stage has a direct Walkthrough link.
 
 The [Classic Edition wiki gallery](https://pico-park.fandom.com/wiki/PICO_PARK:_Classic_Edition) was inspected for **all 20 cooperative stage screenshots**, in its original order. Stage 21 is Battle Mode and is excluded. These are playable, screenshot-based reconstructions, not a verified exact port of the original game. The source screenshots are stage-selection previews, not executable rules or complete walkthroughs. Geometry has been scaled/adapted; names are original; inferred mechanics are listed below. Exact original timing, enemy AI, per-player layout changes, and undocumented mechanics are not asserted to match.
 
@@ -49,18 +49,18 @@ The [official merchandise page](https://picoparkgame.com/en/merch/) restricts it
 | 08 | Sealed ball chamber with three tilting ramps | Exterior weight platforms tilt all ramps; roll the ball onto the internal switch to release the key below |
 | 09 | Individual clocks and timing objective | Stop clocks with positive combined time below 0.80 seconds; use again to restart |
 | 10 | Brick wall and paddles | Shared ball, cat paddles, clear all bricks; missed balls respawn |
-| 11 | Raised basketball goal | Throw into elevated hoop, ballistic aim assist |
+| 11 | Cannon, incoming ball and caged key | Keep the ball airborne by bouncing it across cat bodies into the key box |
 | 12 | Coin field, spring floor and countdown | Collect all coins in 70 seconds, high spring bounce |
-| 13 | Winding corridor, collapsing tiles | Traverse exterior to key, interior to exit; bridge collapses |
-| 14 | Roof pipe and enclosed exit | Moving platforms to roof and pipe back into room |
+| 13 | Tethered cats, winding solid corridor, keyed right hatch | Lower a tethered friend to the key; the hatch opens, giving access to the exterior underpass and inner exit corridor |
+| 14 | Ghost, roof pipe and enclosed exit | Persistent player gaze freezes the key-carrying ghost; its stopped arrow cycles four directions; looking away moves it toward the delivery pipe |
 | 15 | Low start, high exit and key | Group platform rises, then crosses the room |
 | 16 | Three platforms marked “10” | Three whole-crew lifts, permanently raised once activated |
-| 17 | Extended course with flags and pipe | Stepping stones, moving platforms, spring, checkpoints and pipe; no enemy AI |
+| 17 | Shared gamepad course with flags and pipe | One shared cat, unanimous controller input and a top-center gamepad indicator. Video-scaled bottom stones, left staircase, raised platform rims, pipe pedestal, two vertical lifts and checkpoint ledges; no enemy AI |
 | 18 | Gap and fan beside high key | Spring, tiny island, moving fan platform and leftward wind |
 | 19 | Colored falling-block compartments, target 10 | Shared falling-block well: move, rotate, hard drop, clear ten rows; top-out fails |
 | 20 | Two gates, light and “DON’T PUSH!” button | Key route, pushable falling crates, green/red movement rule; button triggers red |
 
-The tower, ghost/pipe route, number puzzle and exact stop-light timing remain approximations. The falling-block and summed-timer objectives now use video evidence, with adapted controls. Future fidelity work can replace stage data or the corresponding mode without rewriting movement or UI. References were inspected September 9, 2026.
+The tower, number puzzle and exact stop-light timing remain approximations. Stage 14 implements gaze-controlled ghost steering; its speed and arrow cadence are tuned. Stage 17 geometry is scaled from the walkthrough; lift timing remains approximate. The falling-block and summed-timer objectives now use video evidence, with adapted controls. Future fidelity work can replace stage data or the corresponding mode without rewriting movement or UI. References were inspected September 9, 2026.
 
 ## Create a stage without changing engine code
 
@@ -94,7 +94,7 @@ Every entity has `type`, `x`, `y`; optional `w`, `h` override default dimensions
 
 | Type | Additional properties | Behavior |
 | --- | --- | --- |
-| `gate` | `need`, optional `pushable:true` | Default: proximity activation. Pushable: stays solid and slides when enough cats push in the same direction |
+| `gate` | `need`, optional `pushable:true` or `opensWithKey:true` | Default: proximity activation. Pushable: stays solid and slides when enough cats push in the same direction. A keyed gate remains solid until the shared key is collected |
 | `crate` | `need` | Solid, gravity-driven, pushes when enough nearby cats walk into it |
 | `lift` | `need`, `toY`, optional `id` | Counts cats above its deck, moves up or down toward toY at 65 px/s and latches |
 | `moving` | `axis: "x" / "y"`, `travel`, `speed` | Sinusoidal motion from origin; x travels right, y travels upward |
@@ -110,7 +110,7 @@ Every entity has `type`, `x`, `y`; optional `w`, `h` override default dimensions
 | `cannon` | — | Decorative ball chute |
 | `switch` | — | Use triggers the red phase in stop mode |
 
-Mode options: `normal`, `numbers` (`target`), `timers` (`sumLimit`, default 0.8), `basket` (`ball:[x,y]`, `goal`), `breakout`, `coins` (`timeLimit`), `tower`, `tetris` (`goal`), `stop`. Arcade modes generate their own objects and grant the shared key when solved, so use `key:null`. Tower mode moves the activated platform horizontally after reaching y=130. Currently basketball completes after one basket; `goal` is fixed at 1 in shipped basketball stages.
+Mode options: `normal`, `tether` (`tether:{restLength,maxLength,stiffness,jumpBoost}`), `numbers` (`target`), `timers` (`sumLimit`, default 0.8), `basket` (`ball:[x,y]`, `goal`), `cannon` (`cannon:{spawn,targetX,speed,retry}`), `breakout`, `coins` (`timeLimit`), `tower`, `tetris` (`goal`), `stop`. Tether mode connects adjacent cats with a visible elastic wire; a cat jumping against the weight of a lower hanging teammate receives the configured extra impulse. Arcade modes generate their own objects and grant the shared key when solved, so use `key:null`. Tower mode moves the activated platform horizontally after reaching y=130. Currently basketball completes after one basket; `goal` is fixed at 1 in shipped basketball stages.
 
 ### Files
 
@@ -129,3 +129,5 @@ Tests cover physics, stacking, lifts, gate scaling, keys/exits, puzzle objective
 ### Tilt-course stages
 
 Stage 8 uses `mode:"tilt"`, two `balance` entities (`side:"left"` / `"right"`), and a `course` object. `ramps` contains `[x,y,width]` entries; `ball` is its spawn center; `button` is `[x,y,width,height]`. `left`, `right`, and `floor` bound the sealed chamber; `maxTilt` is in radians. Standing on the side platforms changes the shared ramp angle. The ball cannot be picked up. The switch releases a key below the chamber. `src/marble.js` implements sloped ball contacts, rolling, and automatic retry after a missed switch. Exact original tilt speed and acceleration remain tuned approximations.
+
+Stage 17 uses matching held inputs from every selected controller to move one shared cat. P1 uses WASD + E (Use), P2 arrows + Enter, P3 IJKL + O, P4 TFGH + Y. Up jumps; Down or Use activates pipes and the exit. Matching direction-plus-jump combinations work; mismatched combinations do nothing. Gamepads use the D-pad/stick, A for Up/jump and B for Use. Tab switching is disabled in this mode.
