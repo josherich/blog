@@ -1,0 +1,12 @@
+{
+  "name": "web-image",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server/server.mjs",
+    "start": "node server/server.mjs",
+    "check": "node --check src/app.js && node --check src/core/engine.js && node --check src/core/geometry.js && node --check src/ui/main-menu.js && node --check src/ui/size-position.js && node --check src/ui/cloud-ui.js && node --check src/services/api.js && node --check server/mock-backend.mjs && node --check server/server.mjs",
+    "test": "node --test tests/geometry.test.mjs tests/menu.test.mjs tests/backend.test.mjs"
+  }
+}

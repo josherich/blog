@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Photo editor — Web Image</title>
+        <link rel="stylesheet" href="styles/style.css" />
+    </head>
+    <body>
+        <header>
+            <button class="icon" id="menu" aria-label="Main menu"></button>
+            <input
+                id="document-name"
+                aria-label="Document name"
+                value="photo_2026-09-13 23.07.25"
+            /><span id="save-status" title="Saved in this browser"></span>
+            <div class="header-spacer"></div>
+            <button class="icon" id="undo" aria-label="Undo" disabled></button
+            ><button class="icon" id="redo" aria-label="Redo" disabled></button
+            ><button id="zoom-button">100%⌄</button
+            ><button class="icon" id="share" aria-label="Save project"></button
+            ><button class="primary pill" id="download">Download</button
+            ><span class="header-divider"></span
+            ></button
+            ><button class="icon" id="apps" aria-label="App switcher"></button
+            ><button class="avatar" id="account" aria-label="Local account">
+                C
+            </button>
+        </header>
+        <main id="workspace">
+            <div id="canvas-wrap">
+                <canvas
+                    id="canvas"
+                    width="1280"
+                    height="960"
+                    aria-label="Image editing canvas"
+                ></canvas>
+                <div id="selection"></div>
+            </div>
+            <nav id="tools" aria-label="Tools"></nav>
+            <aside class="panel" id="tool-panel"></aside>
+            <aside class="panel" id="layers-panel"></aside>
+            <nav id="right-tools" aria-label="Workspace panels"></nav>
+            <div id="context-bar"></div>
+            <div id="drop-zone">Drop an image to start editing</div>
+        </main>
+        <div id="popover" class="panel" hidden></div>
+        <dialog id="dialog"></dialog>
+        <div id="toast" role="status"></div>
+        <input type="file" id="file-input" accept="image/*" hidden /><input
+            type="file"
+            id="project-input"
+            accept=".json"
+            hidden
+        />
+        <script type="module" src="src/app.js"></script>
+    </body>
+</html>
