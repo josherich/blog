@@ -92,4 +92,9 @@ export function render(c,w,selected){
  for(const p of w.particles){c.globalAlpha=p.life/.7;c.fillStyle=p.color;c.fillRect(p.x,p.y,4,4);}c.globalAlpha=1;
  if(w.hasKey)text(c,`${w.players.filter(p=>p.exited).length} / ${w.players.length} HOME`,480,38,10,'#659071');
  if(w.stage.mode==='coins')text(c,`${w.coins.length} COINS LEFT`,480,48,13);
+ const shown=w.stage.timeLimit&&!w.hasKey?Math.max(0,w.stage.timeLimit-w.time):w.time;
+ const hint=w.stage.hint||'Find the key and bring everyone home.';
+ text(c,hint.length>72?hint.slice(0,71)+'…':hint,30,534,9,'#557061','left');
+ text(c,w.hasKey?'◆ KEY FOUND':'◇ KEY MISSING',480,534,9,w.hasKey?'#40614e':'#6d7f6b','center');
+ text(c,`${String(Math.floor(shown/60)).padStart(2,'0')}:${String(Math.floor(shown%60)).padStart(2,'0')}`,930,534,9,'#557061','right');
 }

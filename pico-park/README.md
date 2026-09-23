@@ -15,7 +15,7 @@ Requires Node 18+ for the local server/tests. Any static HTTP server works for t
 
 ## Play
 
-Select 2–10 cats. All 20 stages are available from the start. Progress and best clear times are saved in browser localStorage. Refreshing starts at stage 1 but preserves clears.
+The page shows only the fullscreen game. Crew size (2–10 cats), sound, controls and the Stage workshop live in the settings modal behind the gear button (top right). Stages advance from the win screen. Progress and best clear times are saved in browser localStorage. Refreshing starts at stage 1 but preserves clears.
 
 | Player | Move | Jump | Use / enter |
 | --- | --- | --- | --- |
@@ -31,7 +31,7 @@ Walk through friends horizontally, land on their heads vertically, and jump off 
 
 ## Stage fidelity and references
 
-The user-provided [gameplay playlist](https://www.youtube.com/playlist?list=PL03GkmF32okT9-Q7l-d8C2luZ8cUEBbQI) now supplements the screenshot gallery. Stages **1, 2, 5, 8, 9, 11, 13, 18, 19 and 20** have gameplay-informed corrections. See [VIDEO-REFERENCE-NOTES.md](VIDEO-REFERENCE-NOTES.md) for timestamps, implemented changes and unresolved mismatches. Every built-in stage has a direct Walkthrough link.
+The user-provided [gameplay playlist](https://www.youtube.com/playlist?list=PL03GkmF32okT9-Q7l-d8C2luZ8cUEBbQI) now supplements the screenshot gallery. Stages **1, 2, 5, 8, 9, 11, 13, 18, 19 and 20** have gameplay-informed corrections. See [VIDEO-REFERENCE-NOTES.md](VIDEO-REFERENCE-NOTES.md) for timestamps, implemented changes and unresolved mismatches. Every built-in stage keeps its walkthrough video URL in the stage JSON `reference` field.
 
 The [Classic Edition wiki gallery](https://pico-park.fandom.com/wiki/PICO_PARK:_Classic_Edition) was inspected for **all 20 cooperative stage screenshots**, in its original order. Stage 21 is Battle Mode and is excluded. These are playable, screenshot-based reconstructions, not a verified exact port of the original game. The source screenshots are stage-selection previews, not executable rules or complete walkthroughs. Geometry has been scaled/adapted; names are original; inferred mechanics are listed below. Exact original timing, enemy AI, per-player layout changes, and undocumented mechanics are not asserted to match.
 
@@ -66,7 +66,7 @@ The tower, number puzzle and exact stop-light timing remain approximations. Stag
 
 For stage 19, left/right moves your falling piece, use rotates it, and jump hard-drops it. Platform movement resumes once ten rows are cleared.
 
-Open **Stage workshop** under the game. Load a stage, edit JSON, and press **Play custom stage**. Validation errors appear inline. Export JSON to save a copy. Custom play never writes official stage progress.
+Open the gear button (top right) and find **Stage workshop** in the settings modal. Load a stage, edit JSON, and press **Play custom stage**. Validation errors appear inline. Export JSON to save a copy. Custom play never writes official stage progress.
 
 Example:
 
@@ -86,7 +86,7 @@ Example:
 
 All positions are **pixels in a 960 × 540 room**, with (0,0) at the top left. Platforms use `[x,y,width,height]`; the key and door use top-left `[x,y]`. Cats are 22 × 28. Gravity is 1100 px/s², movement 190 px/s, full jump 460 px/s (about 96 px upward). Add 28 px for every friend in a stack. Avoid obstructing the crew spawn (additional cats are spaced 25 px apart, stacking into rows on narrow starting platforms). Outer walls are at x=0–20 and x=940–960; floor is specified by each stage. Falling below the room fails the team, except checkpoint courses 4 and 17.
 
-To add a permanent stage, append a `stage(21, 'Name', 'Hint', {...})` entry to `src/stages.js`. `stage()` supplies the normal floor, key, door, spawn, and normal mode. The UI enumerates the array automatically. Update the static “20 stages” copy in index.html/main.js if extending the built-in catalog beyond Classic Edition.
+To add a permanent stage, append a `stage(21, 'Name', 'Hint', {...})` entry to `src/stages.js`. `stage()` supplies the normal floor, key, door, spawn, and normal mode. The UI enumerates the array automatically.
 
 ### Entities
 

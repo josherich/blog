@@ -3,97 +3,58 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <meta name="theme-color" content="#f6f3ec" />
+        <meta name="theme-color" content="#e8eedf" />
         <title>Pico Park · World Mode</title>
         <link rel="stylesheet" href="style.css" />
     </head>
     <body>
-        <header>
-            <a class="brand" href="./"
-                ><span class="mini-cat"></span>PICO PARK</a
-            ><button id="sound" aria-pressed="false">Sound off</button>
-        </header>
-        <main>
-            <section class="intro">
-                <div>
-                    <p class="eyebrow">LOCAL CO-OP · 2–10 PLAYERS</p>
-                    <h1>Better <span>together.</span></h1>
-                    <p>
-                        Find the key. Help your friends. Get everyone to the
-                        door.
-                    </p>
-                </div>
-                <div class="progress">
-                    <strong id="progress">00 <span>/ 20</span></strong
-                    ><span>STAGES CLEARED</span>
-                </div>
-            </section>
-            <section class="game-shell">
-                <div class="game-toolbar">
-                    <div>
-                        <span class="live-dot"></span><b>WORLD MODE</b
-                        ><span class="divider">/</span
-                        ><span id="stage-label">01 · A helping paw</span>
-                    </div>
-                    <div>
-                        <a id="walkthrough" target="_blank" rel="noreferrer"
-                            >Walkthrough ↗</a
-                        ><button id="restart" title="Restart (R)">
-                            ↻ <span>Restart</span></button
-                        ><button id="pause" title="Pause (Esc)">
-                            Ⅱ <span>Pause</span></button
-                        ><button id="fullscreen" title="Fullscreen">⛶</button>
-                    </div>
-                </div>
-                <div class="canvas-wrap">
-                    <canvas
-                        id="game"
-                        width="960"
-                        height="540"
-                        tabindex="0"
-                        aria-label="Cooperative platform game. Player 1 uses A D to move, W to jump, S to interact. Player 2 uses arrow keys."
-                    ></canvas>
-                    <div
-                        id="overlay"
-                        class="overlay hidden"
-                        role="dialog"
-                        aria-modal="true"
-                    >
-                        <p id="overlay-kicker" class="eyebrow">
-                            TAKE A BREATHER
-                        </p>
-                        <h2 id="overlay-title">Paused.</h2>
-                        <p id="overlay-text"></p>
-                        <button id="resume" class="primary">
-                            Keep playing →
-                        </button>
-                    </div>
-                </div>
-                <div class="game-status">
-                    <span id="hint"
-                        >Work together to open the numbered gates.</span
-                    >
-                    <div>
-                        <span id="key-status">◇ KEY MISSING</span
-                        ><span id="timer">00:00</span>
-                    </div>
-                </div>
-            </section>
-            <section class="bottom-grid">
-                <div class="worlds">
+        <button
+            id="gear"
+            class="gear"
+            aria-label="Settings"
+            aria-controls="settings"
+            aria-expanded="false"
+        >
+            ⚙
+        </button>
+        <main class="game-shell">
+            <canvas
+                id="game"
+                width="960"
+                height="540"
+                tabindex="0"
+                aria-label="Cooperative platform game. Player 1 uses A D to move, W to jump, S to interact. Player 2 uses arrow keys."
+            ></canvas>
+            <div
+                id="overlay"
+                class="overlay hidden"
+                role="dialog"
+                aria-modal="true"
+            >
+                <p id="overlay-kicker" class="eyebrow">TAKE A BREATHER</p>
+                <h2 id="overlay-title">Paused.</h2>
+                <p id="overlay-text"></p>
+                <button id="resume" class="primary">Keep playing →</button>
+            </div>
+        </main>
+        <div
+            id="settings"
+            class="settings hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Settings"
+        >
+            <div class="settings-card">
+                <button
+                    id="settings-close"
+                    class="settings-close"
+                    aria-label="Close settings"
+                >
+                    ×
+                </button>
+                <section>
                     <div class="section-title">
-                        <h2>Your next little adventure</h2>
-                        <span>20 STAGES · CLASSIC EDITION</span>
-                    </div>
-                    <div id="stages" class="stages"></div>
-                    <p class="small-note">
-                        Every stage is available. Your clears and best times
-                        stay on this device.
-                    </p>
-                </div>
-                <aside>
-                    <div class="section-title">
-                        <h2>The crew</h2>
+                        <h2>Controls &amp; how to play</h2>
                         <label
                             ><select
                                 id="players"
@@ -123,7 +84,7 @@
                         stay put. Gamepads support extra friends.
                     </p>
                     <details>
-                        <summary>All controls & how to play</summary>
+                        <summary>All controls &amp; how to play</summary>
                         <p>
                             P3: J / L, I jump, K use. P4: F / H, T jump, G use.
                             P5–P10: gamepads, or select a cat with Tab and use
@@ -137,45 +98,37 @@
                             Changing crew size restarts the stage.
                         </p>
                     </details>
-                </aside>
-            </section>
-            <details class="editor">
-                <summary>
-                    <span>✎ Stage workshop</span
-                    ><span>Create something worth solving.</span>
-                </summary>
-                <p>
-                    Edit the JSON for this stage, then play it immediately.
-                    Export to share or add it to <code>src/stages.js</code>.
-                    Coordinates use a 960 × 540 canvas. See README for the
-                    entity guide.
-                </p>
-                <textarea
-                    id="stage-json"
-                    spellcheck="false"
-                    aria-label="Stage JSON"
-                ></textarea>
-                <div>
-                    <button id="load-json">Load current stage</button
-                    ><button id="play-json" class="primary">
-                        Play custom stage</button
-                    ><button id="export-json">Export JSON</button
-                    ><span id="editor-status" role="status"></span>
-                </div>
-            </details>
-        </main>
-        <footer>
-            <span></span
-            ><span
-                >Unofficial fan recreation · Original canvas artwork ·
-                <a
-                    href="https://www.youtube.com/playlist?list=PL03GkmF32okT9-Q7l-d8C2luZ8cUEBbQI"
-                    target="_blank"
-                    rel="noreferrer"
-                    >Video references ↗</a
-                ></span
-            >
-        </footer>
+                </section>
+                <section>
+                    <div class="section-title"><h2>Sound</h2></div>
+                    <button id="sound" aria-pressed="false">Sound off</button>
+                </section>
+                <section class="editor">
+                    <div class="section-title">
+                        <h2>Stage workshop</h2>
+                        <span>CREATE SOMETHING WORTH SOLVING</span>
+                    </div>
+                    <p>
+                        Edit the JSON for this stage, then play it immediately.
+                        Export to share or add it to <code>src/stages.js</code>.
+                        Coordinates use a 960 × 540 canvas. See README for the
+                        entity guide.
+                    </p>
+                    <textarea
+                        id="stage-json"
+                        spellcheck="false"
+                        aria-label="Stage JSON"
+                    ></textarea>
+                    <div>
+                        <button id="load-json">Load current stage</button
+                        ><button id="play-json" class="primary">
+                            Play custom stage</button
+                        ><button id="export-json">Export JSON</button
+                        ><span id="editor-status" role="status"></span>
+                    </div>
+                </section>
+            </div>
+        </div>
         <script src="vendor/kontra.min.js"></script>
         <script type="module" src="src/main.js"></script>
     </body>
