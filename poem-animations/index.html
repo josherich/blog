@@ -1,0 +1,1431 @@
+nde<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Leather, Lamp, and Canvas</title>
+<meta name="description" content="A step-by-step guide to drawing and animating Chinese shadow puppetry (皮影戏) with the Canvas 2D API — from a glowing screen to a riveted horse and rider.">
+<style>
+:root{
+  --bg:#f6f0e4; --fg:#2b1f16; --muted:#7a6553; --accent:#a8301b; --rule:#e0d2ba; --panel:#eee3cf;
+  --code-bg:#1c140f; --code-fg:#eadcc6; --frame:#241009;
+  --k:#e8905e; --s:#b7c47c; --n:#dca75e; --c:#85705d; --f:#ecc98f;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,"Songti SC",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){ --bg:#15100c; --fg:#e8ddcc; --muted:#a8927b; --accent:#e56d4f; --rule:#2f251c; --panel:#1f1812; --code-bg:#0f0b08; }
+}
+:root[data-theme="dark"]{ --bg:#15100c; --fg:#e8ddcc; --muted:#a8927b; --accent:#e56d4f; --rule:#2f251c; --panel:#1f1812; --code-bg:#0f0b08; }
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:19px/1.72 var(--serif);overflow-x:hidden}
+main{max-width:740px;margin:0 auto;padding:0 20px 120px}
+.wide{width:min(900px,calc(100vw - 32px));margin-left:50%;transform:translateX(-50%)}
+header.top{padding:64px 0 18px}
+.kicker{font:600 13px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(34px,6vw,54px);line-height:1.08;margin:14px 0 14px;font-weight:600;letter-spacing:-.01em}
+.dek{font-size:21px;color:var(--muted);margin:0 0 18px;font-style:italic}
+.meta{font:14px/1.4 var(--sans);color:var(--muted)}
+h2{font-size:30px;line-height:1.2;margin:72px 0 6px;font-weight:600}
+h2 .n{font:600 14px var(--sans);color:var(--accent);display:block;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+h3{font-size:21px;margin:34px 0 4px}
+p{margin:0 0 20px}
+a{color:var(--accent)}
+em{font-style:italic}
+hr{border:0;border-top:1px solid var(--rule);margin:56px 0}
+code{font:0.84em var(--mono);background:var(--panel);padding:2px 5px;border-radius:4px}
+blockquote{margin:24px 0;padding:4px 0 4px 20px;border-left:3px solid var(--accent);color:var(--muted);font-style:italic}
+ul,ol{padding-left:24px;margin:0 0 20px} li{margin:4px 0}
+.toc{font:15px/1.5 var(--sans);columns:2;column-gap:28px;background:var(--panel);padding:18px 22px;border-radius:10px;margin:26px 0 8px}
+.toc a{color:var(--fg);text-decoration:none;display:block;padding:2px 0;break-inside:avoid}
+.toc a:hover{color:var(--accent)} .toc b{color:var(--accent);font-weight:600;margin-right:6px}
+@media (max-width:640px){.toc{columns:1}}
+/* code */
+.code{margin:22px 0 26px;border-radius:10px;background:var(--code-bg);color:var(--code-fg);overflow:hidden}
+.code .file{font:600 12px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:#b89d80;padding:11px 16px;border-bottom:1px solid #2f2319;display:flex;justify-content:space-between}
+.code .file span{color:#6f5c4a;font-weight:500;text-transform:none;letter-spacing:0}
+.code pre code{background:none;padding:0;font:inherit;color:inherit;border-radius:0}
+.code pre{margin:0;padding:14px 16px 16px;overflow-x:auto;font:13.5px/1.6 var(--mono);tab-size:2}
+.code .k{color:var(--k)} .code .s{color:var(--s)} .code .n{color:var(--n)} .code .c{color:var(--c);font-style:italic} .code .f{color:var(--f)}
+details.src{margin:-8px 0 30px}
+details.src summary{cursor:pointer;font:600 13px var(--sans);color:var(--muted);letter-spacing:.04em;padding:6px 0;list-style:none}
+details.src summary::before{content:"▸ ";color:var(--accent)} details.src[open] summary::before{content:"▾ "}
+details.src .code{margin-top:6px}
+/* demos */
+figure.demo{margin:30px 0 18px;padding:14px;background:var(--frame);border-radius:14px;box-shadow:0 1px 0 rgba(255,255,255,.04) inset,0 18px 40px -24px rgba(0,0,0,.6)}
+figure.demo canvas{display:block;width:100%;height:auto;border-radius:3px;background:#0b0604;outline:1px solid rgba(214,166,90,.35);outline-offset:3px;touch-action:none}
+figure.demo canvas.checker{background:repeating-conic-gradient(#6d6d6d 0 25%,#9a9a9a 0 50%) 0 0/18px 18px}
+.controls{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding:14px 4px 2px;font:13px/1.2 var(--sans);color:#d9c3a3}
+.controls:empty{display:none}
+.controls label,.controls .lbl{display:flex;align-items:center;gap:8px}
+.controls input[type=range]{width:130px;accent-color:#e0795a}
+.controls input[type=checkbox]{accent-color:#e0795a;width:15px;height:15px}
+.controls output{font:12px var(--mono);color:#b89d80;min-width:34px}
+.seg{display:inline-flex;border:1px solid #5a3d28;border-radius:999px;overflow:hidden}
+.seg button,.controls>button{font:13px var(--sans);color:#d9c3a3;background:transparent;border:0;padding:6px 12px;cursor:pointer}
+.controls>button{border:1px solid #5a3d28;border-radius:999px}
+.seg button+button{border-left:1px solid #5a3d28}
+.seg button.on{background:#e0795a;color:#1c0f08}
+figure.demo figcaption{font:14px/1.5 var(--sans);color:#b59b7d;padding:10px 4px 0}
+figure.demo .err{color:#ff9a7a;font:13px var(--mono);white-space:pre-wrap;padding:8px}
+figure.hero{margin-top:26px}
+figure.demo.wide{margin-left:50%}
+.diagram{margin:26px 0;color:var(--fg)} .diagram svg{width:100%;height:auto;display:block}
+.note{font:15px/1.6 var(--sans);background:var(--panel);border-radius:10px;padding:14px 18px;margin:0 0 22px}
+.note b{color:var(--accent)}
+footer{font:14px var(--sans);color:var(--muted);border-top:1px solid var(--rule);margin-top:70px;padding-top:24px}
+</style>
+</head>
+<body>
+<main>
+
+<header class="top">
+  <div class="kicker">Canvas 2D · Generative art · Tutorial</div>
+  <h1>Leather, Lamp, and Canvas</h1>
+  <p class="dek">How to draw and animate Chinese shadow puppetry in code, step by step, from a glowing sheet of paper to a riveted horse and rider.</p>
+  <div class="meta">A 20-minute read · 15 live demos · every code block on this page is the code that runs</div>
+</header>
+
+<figure class="demo hero wide" id="hero" data-w="800" data-h="450">
+  <canvas></canvas>
+  <figcaption>The finished piece. By the end of this article you'll have built every part of it: the lamp, the carved leather, the jointed puppets, the rods, and the timeline.</figcaption>
+</figure>
+<script type="text/x-demo" data-for="hero" data-hidden>
+const S = makeStage(demo.canvas, demo.W, demo.H);
+demo.loop(t => runShow(S, t + 4));   // start with the lamp already lit
+</script>
+
+<p>皮影戏 (<em>píyǐng xì</em>, “leather-shadow theatre”) is more than two thousand years old. A performer holds flat, jointed figures cut from donkey or ox hide against a paper screen. A lamp burns behind them, and the audience on the other side watches coloured shadows. The hide is scraped so thin that it turns translucent. It's dyed red, green and ochre, then carved with thousands of tiny holes, so each figure glows like stained glass and is laced with pinpricks of light.</p>
+
+<p>I recently made a <a href="gu-yi-li-qi.html">shadow-puppet animation of the Tang poem 古意</a> entirely in code, with no images or libraries. This article walks through the technique in the order you'd build it. We start with an empty lit screen and add one idea at a time. We'll end with puppets built as trees of carved parts, a horse that gallops, soft rod shadows, and a small timeline that runs the show.</p>
+
+<nav class="toc">
+  <a href="#physics"><b>0</b>What we are simulating</a>
+  <a href="#screen"><b>1</b>The screen is the light</a>
+  <a href="#multiply"><b>2</b>Shadows multiply</a>
+  <a href="#layer"><b>3</b>A layer to cut into</a>
+  <a href="#part"><b>4</b>One piece of leather</a>
+  <a href="#carving"><b>5</b>A carver’s vocabulary</a>
+  <a href="#paths"><b>6</b>Shapes as paths</a>
+  <a href="#joints"><b>7</b>Joints and rivets</a>
+  <a href="#ik"><b>8</b>Reaching with IK</a>
+  <a href="#tree"><b>9</b>A puppet is a tree</a>
+  <a href="#warrior"><b>10</b>Assembling a warrior</a>
+  <a href="#procedural"><b>11</b>Pieces made of math</a>
+  <a href="#acting"><b>12</b>Bringing it to life</a>
+  <a href="#horse"><b>13</b>Puppets inside puppets</a>
+  <a href="#depth"><b>14</b>Depth, blur, and rods</a>
+  <a href="#show"><b>15</b>Directing a scene</a>
+</nav>
+
+<!-- ─────────────────────────────────────────────────────────── 0 -->
+<h2 id="physics"><span class="n">Step 0</span>What we are simulating</h2>
+
+<p>Before writing any code, it helps to be precise about the physics, because every visual decision later follows from it. There are three objects: a <strong>lamp</strong>, a <strong>puppet</strong> and a <strong>screen</strong>. The audience sees only the screen.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 760 250" role="img" aria-label="A lamp on the left shines past a puppet onto a paper screen; the puppet's shadow has a dark core and a soft penumbra, larger when the puppet is further from the screen.">
+  <defs>
+    <radialGradient id="lampg"><stop offset="0" stop-color="#ffd48a"/><stop offset="1" stop-color="#ffd48a" stop-opacity="0"/></radialGradient>
+  </defs>
+  <circle cx="80" cy="125" r="60" fill="url(#lampg)"/>
+  <circle cx="80" cy="125" r="14" fill="#f2b04f" stroke="currentColor" stroke-width="1.5"/>
+  <g stroke="var(--accent)" stroke-width="1" opacity=".55" fill="none">
+    <line x1="80" y1="111" x2="600" y2="46"/><line x1="80" y1="139" x2="600" y2="74"/>
+    <line x1="80" y1="111" x2="600" y2="206"/><line x1="80" y1="139" x2="600" y2="178"/>
+  </g>
+  <path d="M345,80 l10,-4 l6,8 l-2,28 l8,6 l-6,40 l-10,0 l-4,-38 l-6,-6z" fill="currentColor" opacity=".85"/>
+  <line x1="352" y1="160" x2="330" y2="240" stroke="currentColor" stroke-width="2" opacity=".45"/>
+  <rect x="598" y="18" width="8" height="214" fill="#e9d3a4" stroke="currentColor" stroke-width="1"/>
+  <rect x="606" y="74" width="7" height="104" fill="currentColor" opacity=".9"/>
+  <rect x="606" y="46" width="7" height="28" fill="currentColor" opacity=".35"/>
+  <rect x="606" y="178" width="7" height="28" fill="currentColor" opacity=".35"/>
+  <g font-family="-apple-system,Helvetica,Arial,sans-serif" font-size="13" fill="currentColor">
+    <text x="80" y="206" text-anchor="middle">lamp (size L)</text>
+    <text x="352" y="62" text-anchor="middle">puppet + rod</text>
+    <text x="602" y="14" text-anchor="middle">screen</text>
+    <text x="624" y="130">umbra</text><text x="624" y="62" opacity=".7">penumbra</text>
+    <text x="700" y="130" opacity=".7">audience →</text>
+  </g>
+  <g stroke="currentColor" stroke-width="1" opacity=".6" font-family="-apple-system,Helvetica,Arial,sans-serif" font-size="13" fill="currentColor">
+    <line x1="80" y1="236" x2="598" y2="236"/><text x="330" y="232" stroke="none" text-anchor="middle">D</text>
+    <line x1="356" y1="222" x2="598" y2="222"/><text x="478" y="218" stroke="none" text-anchor="middle">d</text>
+  </g>
+</svg>
+</div>
+
+<p>Four facts follow, and each one becomes a technique:</p>
+<ol>
+  <li><strong>The screen emits light, and shadows only take light away.</strong> A shadow can darken the screen or tint it, but it can never be brighter than the lamp behind it. In compositing terms that's <em>multiply</em>.</li>
+  <li><strong>Leather is translucent and dyed.</strong> A red piece doesn't paint red over the screen. It filters the lamp, so a red piece is brighter near the hot-spot and darker at the edges.</li>
+  <li><strong>Carving removes material.</strong> A hole in the leather lets the full lamp through, so holes show exactly what the screen shows, including its gradient and grain.</li>
+  <li><strong>Distance from the screen changes the shadow.</strong> A puppet at distance <code>d</code> from the screen, with the lamp at <code>D</code>, casts a shadow magnified by <code>D / (D − d)</code>, with a soft edge about <code>L·d / (D − d)</code> wide. Pressed flat against the paper, it's sharp and life-size. Pulled back toward the lamp, it grows, softens and fades.</li>
+</ol>
+<p>Keep those four facts in mind. Almost every line of code below implements one of them.</p>
+
+<!-- ─────────────────────────────────────────────────────────── 1 -->
+<h2 id="screen"><span class="n">Step 1</span>The screen is the light</h2>
+
+<p>We'll need a little noise throughout for flicker, sway and grain. A 1-D value noise is enough: hash the integers, then smoothly interpolate between them. It's cheap, deterministic and smooth, which is the texture of a hand that's never quite still.</p>
+
+<script type="text/x-lib" data-file="math.js">
+const TAU = Math.PI * 2;
+const lerp = (a, b, t) => a + (b - a) * t;
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const ease = t => { t = clamp(t); return t * t * (3 - 2 * t); };      // smoothstep
+const hash = i => { const s = Math.sin(i * 127.1 + 311.7) * 43758.5453; return s - Math.floor(s); };
+function noise(x) {                        // smooth 1-D value noise in [0, 1]
+  const i = Math.floor(x), f = x - i, u = f * f * (3 - 2 * f);
+  return lerp(hash(i), hash(i + 1), u);
+}
+const snoise = x => noise(x) * 2 - 1;      // signed, in [-1, 1]
+// one coordinate of a cubic Bézier, handy for procedural shapes
+const bez = (a, b, c, d, u) => { const v = 1 - u; return v*v*v*a + 3*v*v*u*b + 3*v*u*u*c + u*u*u*d; };
+</script>
+
+<p>The screen is a radial gradient that's hot near the lamp and falls off to a deep umber at the edges. Two details make it feel alive. The hot-spot <em>drifts</em> a few pixels, driven by slow noise, because a real flame moves. After the scene is drawn we multiply in a sheet of paper grain, a vignette, and a warm grey whose brightness flickers. That grey multiply also serves as our dimmer, and a dimmer flame is a redder flame, so the blue channel falls fastest.</p>
+
+<script type="text/x-lib" data-file="screen.js">
+const SCREEN_WARM  = ['#f7e0ae', '#d89c5c', '#5a2a0e'];
+const SCREEN_NIGHT = ['#e3d9c5', '#a09381', '#2a221d'];
+
+function drawScreen(c, w, h, t, tint = SCREEN_WARM) {
+  // the flame wanders: the hot-spot is never perfectly still
+  const lx = w * (0.46 + 0.025 * snoise(t * 0.21)), ly = h * (0.4 + 0.025 * snoise(t * 0.27 + 4));
+  const g = c.createRadialGradient(lx, ly, 10, lx, ly, Math.hypot(w, h) * 0.62);
+  g.addColorStop(0, tint[0]); g.addColorStop(0.5, tint[1]); g.addColorStop(1, tint[2]);
+  c.fillStyle = g; c.fillRect(0, 0, w, h);
+}
+
+function makePaper(w = 800, h = 450) {     // generated once, reused by every stage
+  const cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+  const g = cv.getContext('2d'), img = g.createImageData(w, h), d = img.data;
+  for (let i = 0; i < w * h; i++) {
+    const x = i % w, y = (i / w) | 0;
+    const v = 238 + 10 * Math.random() + 6 * snoise(x * 0.02 + y * 0.013);
+    d[i * 4] = v; d[i * 4 + 1] = v - 3; d[i * 4 + 2] = v - 9; d[i * 4 + 3] = 255;
+  }
+  g.putImageData(img, 0, 0);
+  for (let i = 0; i < 900; i++) {          // a few fibres
+    const x = Math.random() * w, y = Math.random() * h, a = Math.random() * TAU, l = 4 + Math.random() * 16;
+    g.strokeStyle = `rgba(110,80,50,${0.05 + Math.random() * 0.08})`; g.lineWidth = 0.5;
+    g.beginPath(); g.moveTo(x, y); g.lineTo(x + Math.cos(a) * l, y + Math.sin(a) * l); g.stroke();
+  }
+  return cv;
+}
+const PAPER = makePaper();
+
+// grain, vignette, flicker, and the lamp dimmer, all applied after the scene
+function lampFinish(c, w, h, t, bright = 1, o = {}) {
+  c.save();
+  if (o.grain !== false) { c.globalCompositeOperation = 'multiply'; c.globalAlpha = 0.7; c.drawImage(PAPER, 0, 0, w, h); c.globalAlpha = 1; }
+  if (o.vignette !== false) {
+    const v = c.createRadialGradient(w / 2, h * 0.45, h * 0.3, w / 2, h * 0.45, w * 0.62);
+    v.addColorStop(0, 'rgba(40,14,4,0)'); v.addColorStop(1, 'rgba(40,14,4,0.5)');
+    c.globalCompositeOperation = 'source-over'; c.fillStyle = v; c.fillRect(0, 0, w, h);
+  }
+  const f = o.flicker === false ? 1 : 1 - 0.035 * noise(t * 3.1) - 0.02 * noise(t * 11.3);
+  const b = bright * f;                   // a dimmer flame is also a redder one
+  c.globalCompositeOperation = 'multiply';
+  c.fillStyle = `rgb(${255 * b | 0},${255 * b ** 1.12 | 0},${255 * b ** 1.35 | 0})`;
+  c.fillRect(0, 0, w, h);
+  c.restore();
+}
+</script>
+
+<figure class="demo" id="d-screen" data-w="800" data-h="360">
+  <canvas></canvas><div class="controls"></div>
+  <figcaption>An empty screen. Toggle each finishing pass to see what it adds, and drag the lamp slider to watch the colour temperature fall as the flame dims.</figcaption>
+</figure>
+<script type="text/x-demo" data-for="d-screen">
+const cv = demo.canvas, dpr = Math.min(devicePixelRatio || 1, 2);
+cv.width = demo.W * dpr; cv.height = demo.H * dpr;
+const X = cv.getContext('2d');
+const grain = demo.toggle('paper grain', true), vig = demo.toggle('vignette', true), flick = demo.toggle('flicker', true);
+const lamp = demo.slider('lamp', 0.05, 1, 1);
+demo.loop(t => {
+  X.setTransform(dpr, 0, 0, dpr, 0, 0);
+  drawScreen(X, demo.W, demo.H, t);
+  lampFinish(X, demo.W, demo.H, t, lamp(), { grain: grain(), vignette: vig(), flicker: flick() });
+});
+</script>
+
+<!-- ─────────────────────────────────────────────────────────── 2 -->
+<h2 id="multiply"><span class="n">Step 2</span>Shadows multiply</h2>
+
+<p>The obvious first attempt is to paint shapes on top of the screen in colour. With the default <code>source-over</code> compositing, a semi-transparent red leaf blends toward a flat red. It sits <em>on</em> the screen like a sticker, and it looks the same whether it's in the hot-spot or in the dim corner.</p>
+
+<p>Physically, the leather <em>filters</em> the light: every channel of the screen is scaled by the leather's transmittance. That's exactly what <code>globalCompositeOperation = 'multiply'</code> computes. The result is <code>screen × leather</code> per channel, so a filter can never brighten the screen, overlapping pieces grow darker and richer, and the lamp's gradient shows through every piece. Switch the mode in the demo and watch the leaves as they drift across the hot-spot.</p>
+
+<figure class="demo" id="d-multiply" data-w="800" data-h="360">
+  <canvas></canvas><div class="controls"></div>
+  <figcaption>The same four translucent pieces, composited two ways. With multiply, overlaps deepen and the screen’s glow survives inside each colour.</figcaption>
+</figure>
+<script type="text/x-demo" data-for="d-multiply">
+const S = makeStage(demo.canvas, demo.W, demo.H);
+const mode = demo.choice('blend', ['source-over', 'multiply'], 'source-over');
+const leaf = new Path2D('M0,-120 C70,-80 80,40 0,120 C-80,40 -70,-80 0,-120Z');
+const pieces = [[300, HIDE.red, -0.5], [400, HIDE.green, 0.2], [500, HIDE.ochre, 0.7], [620, HIDE.black, -0.2]];
+demo.loop(t => {
+  S.begin(t);
+  const X = S.X;
+  X.save(); X.globalCompositeOperation = mode();
+  pieces.forEach(([x, col, a], i) => {
+    X.save(); X.translate(x + 110 * Math.sin(t * 0.35 + i * 1.7), 180 + 20 * Math.sin(t * 0.5 + i));
+    X.rotate(a + 0.2 * Math.sin(t * 0.4 + i)); X.fillStyle = col; X.fill(leaf); X.restore();
+  });
+  X.restore();
+  S.end(t);
+});
+</script>
+
+<p>One consequence is useful: <strong>multiply is commutative</strong>. It doesn't matter whether the horse or the mountain is multiplied first, so we're free to group things into layers by <em>blur</em> instead of by stacking order. We'll lean on that in Step 14.</p>
+
+<!-- ─────────────────────────────────────────────────────────── 3 -->
+<h2 id="layer"><span class="n">Step 3</span>A layer to cut into</h2>
+
+<p>Carving means <em>erasing</em>. The Canvas tool for erasing is <code>destination-out</code>: wherever you draw, existing pixels become transparent. If we carve directly on the main canvas, we erase the <em>screen</em> as well as the leather. The hole shows whatever is behind the <code>&lt;canvas&gt;</code> element, which in the demo below is a grey checkerboard.</p>
+
+<p>The fix is structural. Every puppet is drawn onto an offscreen, transparent <strong>figure layer</strong>. Holes cut there reveal nothing, so they're transparent. We then multiply the whole layer onto the screen, and the holes let the lamp through untouched. The same function takes a blur radius, which later becomes our depth of field.</p>
+
+<script type="text/x-lib" data-file="stage.js">
+function makeStage(canvas, w, h) {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = w * dpr; canvas.height = h * dpr;
+  const X = canvas.getContext('2d');                       // the screen
+  const fig = document.createElement('canvas');            // the figure layer
+  fig.width = canvas.width; fig.height = canvas.height;
+  const F = fig.getContext('2d');
+  const toStage = c => c.setTransform(dpr, 0, 0, dpr, 0, 0);  // draw in CSS-pixel units
+  const rods = [];
+
+  // Draw puppets into a clean layer, then multiply that layer onto the screen.
+  function layer(blur, draw, alpha = 1) {
+    F.setTransform(1, 0, 0, 1, 0, 0); F.globalCompositeOperation = 'source-over';
+    F.clearRect(0, 0, fig.width, fig.height);
+    toStage(F); draw(F);
+    X.save(); X.setTransform(1, 0, 0, 1, 0, 0);
+    X.globalCompositeOperation = 'multiply'; X.globalAlpha = alpha;
+    if (blur > 0) X.filter = `blur(${blur * dpr}px)`;
+    X.drawImage(fig, 0, 0);
+    X.restore();
+  }
+
+  // Control rods (Step 14): remember where each one attaches, in stage units…
+  function rod(c, x, y, lean = 30) {
+    const p = c.getTransform().transformPoint(new DOMPoint(x, y));
+    rods.push([p.x / dpr, p.y / dpr, lean]);
+  }
+  // …and draw them all at the end as one soft, far-from-the-screen layer.
+  function drawRods() {
+    if (!rods.length) return;
+    const list = rods.splice(0);
+    layer(2.4, c => {
+      c.lineCap = 'round'; c.strokeStyle = 'rgba(34,20,10,0.5)';
+      for (const [x, y, lean] of list) {
+        c.lineWidth = 3.2; c.beginPath(); c.moveTo(x, y); c.lineTo(x + lean, h + 40); c.stroke();
+        c.lineWidth = 1.5; c.beginPath(); c.arc(x, y, 3.5, 0, TAU); c.stroke();
+      }
+    }, 0.75);
+  }
+
+  const begin = (t, tint) => { toStage(X); X.globalCompositeOperation = 'source-over'; drawScreen(X, w, h, t, tint); };
+  const end = (t, bright = 1) => { drawRods(); toStage(X); lampFinish(X, w, h, t, bright); };
+  return { X, F, w, h, dpr, layer, rod, begin, end, toStage };
+}
+</script>
+
+<figure class="demo" id="d-layer" data-w="800" data-h="360">
+  <canvas class="checker"></canvas><div class="controls"></div>
+  <figcaption>Carving on the main canvas punches through to the page (the checkerboard). Carving on the figure layer punches through to the lamp.</figcaption>
+</figure>
+<script type="text/x-demo" data-for="d-layer">
+const S = makeStage(demo.canvas, demo.W, demo.H);
+const where = demo.choice('carve on', ['main canvas', 'figure layer'], 'main canvas');
+const disc = circle(0, 0, 120), holes = pat.all(pat.dots(-130, -130, 130, 130, 24, 6.5), c => spiral(c, 0, 0, 40, 1.8, 3));
+demo.loop(t => {
+  const piece = c => { c.save(); c.translate(400, 180); c.rotate(t * 0.15); part(c, disc, HIDE.red, holes, 2.5); c.restore(); };
+  S.begin(t);
+  if (where() === 'main canvas') {
+    S.X.save(); S.X.globalCompositeOperation = 'multiply'; piece(S.X); S.X.restore();   // the bug
+  } else {
+    S.layer(0, piece);                                                                   // the fix
+    S.end(t);
+  }
+});
+</script>
+
+<p>Two small things in <code>makeStage</code> matter. We draw in CSS-pixel “stage units” and let <code>toStage</code> apply the device-pixel ratio, so every coordinate in this article is resolution-independent. And <code>begin</code>/<code>end</code> bracket each frame: the screen first, then the finish passes last. From now on a frame looks like <code>S.begin(t)</code>, a few <code>S.layer(...)</code> calls, then <code>S.end(t)</code>.</p>
+
+<!-- ─────────────────────────────────────────────────────────── 4 -->
+<h2 id="part"><span class="n">Step 4</span>One piece of leather</h2>
+
+<p>Real pi ying figures are assembled from dozens of separate pieces. Each piece goes through the same three steps: it's <em>dyed</em>, it's <em>carved</em>, and its silhouette reads as a crisp dark edge where the hide is thickest. That becomes the one drawing primitive everything else is built on:</p>
+
+<script type="text/x-lib" data-file="part.js">
+const INK = 'rgba(22,11,5,0.97)';
+const HIDE = {   // dyed hide: translucent, so the lamp's gradient shows through
+  red: 'rgba(160,36,20,0.84)', red2: 'rgba(118,22,12,0.9)', green: 'rgba(34,94,64,0.82)',
+  teal: 'rgba(30,82,92,0.8)', ochre: 'rgba(200,132,38,0.74)', brown: 'rgba(96,52,24,0.86)',
+  black: 'rgba(28,16,9,0.93)', dark: 'rgba(18,9,4,0.96)', blue: 'rgba(42,66,112,0.78)',
+  face: 'rgba(240,214,170,0.08)', skin: 'rgba(236,200,150,0.18)', pale: 'rgba(236,212,160,0.22)'
+};
+
+function part(c, path, fill, carve, lw = 2) {
+  if (fill) { c.fillStyle = fill; c.fill(path); }             // 1. dye
+  if (carve) {                                                 // 2. carve
+    c.save();
+    c.clip(path);                                              //    never cut outside the piece
+    c.globalCompositeOperation = 'destination-out';            //    whatever we draw becomes a hole
+    c.fillStyle = c.strokeStyle = '#000'; c.lineCap = c.lineJoin = 'round';
+    carve(c);
+    c.restore();
+  }
+  if (lw) {                                                    // 3. the dark cut edge
+    c.lineJoin = c.lineCap = 'round'; c.lineWidth = lw; c.strokeStyle = INK; c.stroke(path);
+  }
+}
+</script>
+
+<p>Two design choices here pay off later. A <code>carve</code> is simply a function that draws, so any Canvas drawing code becomes a carving tool. The clip keeps holes inside the piece, so a carving pattern can be lazy and cover a whole bounding box. The order also matters: the outline is stroked <em>after</em> carving, so holes that run into the edge are closed off by it, the way a carver always leaves a rim of hide.</p>
+
+<p>Look at the colours in <code>HIDE</code>. They're dyes, not paints. <code>face</code> has an alpha of 0.08, which is almost clear leather. That's how pi ying “hollow faces” (空脸) work: a heroic or young character's face is carved away entirely except for a fine profile line.</p>
+
+<figure class="demo" id="d-part" data-w="800" data-h="360">
+  <canvas></canvas><div class="controls"></div>
+  <figcaption>The same gourd-shaped piece at each of the three steps: dye only, dyed and carved, and finished with its inked edge.</figcaption>
+</figure>
+<script type="text/x-demo" data-for="d-part">
+const S = makeStage(demo.canvas, demo.W, demo.H);
+const gourd = new Path2D('M0,-100 C22,-100 26,-72 16,-58 C52,-44 64,0 56,34 C48,78 18,100 0,100 C-18,100 -48,78 -56,34 C-64,0 -52,-44 -16,-58 C-26,-72 -22,-100 0,-100Z');
+const carve = pat.all(pat.dots(-60, 60, 60, 90, 9, 2), c => { spiral(c, 0, 26, 30, 1.8, 2.6); spiral(c, 0, -78, 9, 1.4, 1.6); },
+  pat.scales(-60, -50, 60, -14, 12, 1.6));
+const steps = [[null, 0, '1 · dye'], [carve, 0, '2 · carve'], [carve, 2.4, '3 · ink the edge']];
+demo.loop(t => {
+  S.begin(t);
+  S.layer(0, c => steps.forEach(([cv, lw], i) => {
+    c.save(); c.translate(180 + i * 220, 170 + 4 * Math.sin(t + i)); c.rotate(0.05 * Math.sin(t * 0.7 + i));
+    part(c, gourd, HIDE.green, cv, lw); c.restore();
+  }));
+  S.X.save(); S.X.globalCompositeOperation = 'multiply'; S.X.fillStyle = '#3a2210';
+  S.X.font = '15px -apple-system, Helvetica, sans-serif'; S.X.textAlign = 'center';
+  steps.forEach(([, , label], i) => S.X.fillText(label, 180 + i * 220, 322)); S.X.restore();
+  S.end(t);
+});
+</script>
+
+<!-- ─────────────────────────────────────────────────────────── 5 -->
+<h2 id="carving"><span class="n">Step 5</span>A carver’s vocabulary</h2>
+
+<p>Traditional carvers work with a small set of cuts: rows of round punches, overlapping fish-scale arcs for armour, lattice for windows, spiral “cloud” curls, and long slits that follow a contour. Each one becomes a <em>pattern factory</em>, a function that takes a region and returns a carve function. Factories compose with <code>pat.all</code>.</p>
+
+<script type="text/x-lib" data-file="patterns.js">
+const pat = {
+  // staggered rows of round punches
+  dots: (x0, y0, x1, y1, sp, r) => c => {
+    let row = 0;
+    for (let y = y0; y <= y1; y += sp * 0.87, row++)
+      for (let x = x0 + (row & 1) * sp / 2; x <= x1; x += sp) { c.beginPath(); c.arc(x, y, r, 0, TAU); c.fill(); }
+  },
+  // fish-scale arcs: the classic armour cut
+  scales: (x0, y0, x1, y1, sp, lw = 1.2) => c => {
+    c.lineWidth = lw; let row = 0;
+    for (let y = y0; y <= y1; y += sp * 0.72, row++)
+      for (let x = x0 + (row & 1) * sp / 2; x <= x1; x += sp) { c.beginPath(); c.arc(x, y, sp * 0.42, 0.12 * Math.PI, 0.88 * Math.PI); c.stroke(); }
+  },
+  lattice: (x0, y0, x1, y1, sp, lw = 1.2) => c => {
+    c.lineWidth = lw; c.beginPath();
+    for (let x = x0; x <= x1; x += sp) { c.moveTo(x, y0); c.lineTo(x, y1); }
+    for (let y = y0; y <= y1; y += sp) { c.moveTo(x0, y); c.lineTo(x1, y); }
+    c.stroke();
+  },
+  // slits that follow a path, e.g. a fold line in a robe
+  slit: (d, lw = 1.4) => c => { c.lineWidth = lw; c.stroke(new Path2D(d)); },
+  all: (...fs) => c => fs.forEach(f => f && f(c)),
+};
+
+// the cloud curl (云纹): an inward spiral
+function spiral(c, cx, cy, r, turns = 1.6, lw = 1.4, dir = 1) {
+  c.lineWidth = lw; c.beginPath();
+  for (let i = 0; i <= 40; i++) {
+    const u = i / 40, a = dir * u * turns * TAU, rr = r * (1 - u * 0.85);
+    c.lineTo(cx + Math.cos(a) * rr, cy + Math.sin(a) * rr);
+  }
+  c.stroke();
+}
+</script>
+
+<figure class="demo" id="d-patterns" data-w="800" data-h="340">
+  <canvas></canvas><div class="controls"></div>
+  <figcaption>The five cuts on identical shield shapes. Change the dye to see how each one reads against a different colour.</figcaption>
+</figure>
+<script type="text/x-demo" data-for="d-patterns">
+const S = makeStage(demo.canvas, demo.W, demo.H);
+const dye = demo.choice('dye', ['red', 'green', 'ochre', 'black'], 'red');
+const shield = new Path2D('M-58,-70 L58,-70 L58,10 C58,50 30,70 0,86 C-30,70 -58,50 -58,10Z');
+const cuts = [
+  ['dots', pat.dots(-60, -66, 60, 86, 13, 3.2)],
+  ['scales', pat.scales(-60, -62, 60, 90, 16, 2)],
+  ['lattice', pat.lattice(-60, -64, 60, 90, 16, 3)],
+  ['spirals', c => { spiral(c, -26, -34, 20, 1.6, 2.4); spiral(c, 26, -34, 20, 1.6, 2.4, -1); spiral(c, 0, 26, 26, 1.8, 2.6); }],
+  ['slits', pat.all(pat.slit('M-40,-60 C-30,0 -20,40 0,78', 2.2), pat.slit('M40,-60 C30,0 20,40 0,78', 2.2), pat.slit('M0,-60 L0,60', 2.2))],
+];
+demo.loop(t => {
+  S.begin(t);
+  S.layer(0, c => cuts.forEach(([, cut], i) => {
+    c.save(); c.translate(100 + i * 150, 150 + 3 * Math.sin(t + i)); part(c, shield, HIDE[dye()], cut, 2.4); c.restore();
+  }));
+  S.X.save(); S.X.globalCompositeOperation = 'multiply'; S.X.fillStyle = '#3a2210';
+  S.X.font = '15px -apple-system, Helvetica, sans-serif'; S.X.textAlign = 'center';
+  cuts.forEach(([name], i) => S.X.fillText(name, 100 + i * 150, 290)); S.X.restore();
+  S.end(t);
+});
+</script>
+
+<p>Because holes pass the lamp straight through, a carved piece is always <em>brighter</em> than an uncarved one of the same dye. Carving is how pi ying makers controlled value. Heavy armour cuts turn a dark hide into a glittering mid-tone, and a black horse becomes readable through carved swirls on its shoulder and hip.</p>
+
+<!-- ─────────────────────────────────────────────────────────── 6 -->
+<h2 id="paths"><span class="n">Step 6</span>Shapes as paths</h2>
+
+<p>Where do the silhouettes come from? I author every piece as an SVG path string and hand it to <code>Path2D</code>, which accepts SVG path syntax directly. Path strings are compact, easy to tweak by hand, and they render with the browser's native path code. They're also immutable, so parsing each string once and caching the result is free performance:</p>
+
+<script type="text/x-lib" data-file="paths.js">
+const PATHS = new Map();
+const P = d => { let p = PATHS.get(d); if (!p) PATHS.set(d, p = new Path2D(d)); return p; };
+const circle = (x, y, r) => { const p = new Path2D(); p.arc(x, y, r, 0, TAU); return p; };
+
+// A tapered limb hanging from its joint at (0,0) down the +y axis.
+const limb = (L, w0, w1) => P(`M${-w0 / 2},0 Q${-w0 * 0.6},${L / 2} ${-w1 / 2},${L} Q0,${L + w1 * 0.75} ${w1 / 2},${L}
+  Q${w0 * 0.6},${L / 2} ${w0 / 2},0 Q0,${-w0 * 0.75} ${-w0 / 2},0Z`);
+
+function rivet(c, x = 0, y = 0, r = 2.4) { c.beginPath(); c.arc(x, y, r, 0, TAU); c.fillStyle = INK; c.fill(); }
+</script>
+
+<p>The most important decision isn't a function, though. It's a <strong>convention for local coordinates</strong>, used by every piece:</p>
+<ul>
+  <li>Figures face <strong>right</strong> (+x), and y points <strong>down</strong>. To face left, flip with <code>scale(-1, 1)</code>.</li>
+  <li>A piece's origin <code>(0, 0)</code> is <strong>the rivet that attaches it to its parent</strong>. A forearm's origin is the elbow, and a head's origin is the base of the neck.</li>
+  <li>A limb at rest hangs <strong>down the +y axis</strong>, so a rotation of 0 means “hanging straight down”.</li>
+</ul>
+<p>With that convention, rotating a piece is just <code>c.rotate(angle)</code>, and it swings about the correct joint without any offset arithmetic. The demo shows the warrior's head, which we'll use shortly, with its origin at the neck and the anchor points of its face path overlaid.</p>
+
+<figure class="demo" id="d-paths" data-w="800" data-h="420">
+  <canvas></canvas><div class="controls"></div>
+  <figcaption>The warrior’s head at 5× scale. The crosshair is the local origin (the neck rivet); the dots are the anchor and control points of the face path.</figcaption>
+</figure>
+<script type="text/x-demo" data-for="d-paths">
+const S = makeStage(demo.canvas, demo.W, demo.H);
+const guides = demo.toggle('construction', true), nod = demo.slider('rotate', -0.5, 0.5, 0);
+const headNode = WARRIOR.kids.find(n => n.name === 'head');
+const head = { ...headNode, at: [0, 0], back: headNode.back.filter(n => n.name !== 'feathers') };
+const pts = W_PATHS.face.match(/-?\d*\.?\d+/g).map(Number);
+demo.loop(t => {
+  S.begin(t);
+  const pose = { t, wind: 0.3, head: nod() };
+  S.layer(0, c => { c.translate(400, 400); c.scale(5, 5); drawRig(c, head, pose); });
+  if (guides()) {
+    const X = S.X; X.save(); X.translate(400, 400); X.rotate(nod());
+    X.strokeStyle = 'rgba(168,48,27,0.8)'; X.fillStyle = 'rgba(168,48,27,0.9)'; X.lineWidth = 1;
+    X.beginPath(); X.moveTo(-160, 0); X.lineTo(160, 0); X.moveTo(0, 20); X.lineTo(0, -330); X.stroke();
+    X.font = '13px -apple-system, Helvetica, sans-serif'; X.fillText('+x', 145, -8); X.fillText('+y ↓', 6, 18);
+    X.setLineDash([3, 4]); X.beginPath();
+    for (let i = 0; i < pts.length; i += 2) X.lineTo(pts[i] * 5, pts[i + 1] * 5);
+    X.stroke(); X.setLineDash([]);
+    for (let i = 0; i < pts.length; i += 2) { X.beginPath(); X.arc(pts[i] * 5, pts[i + 1] * 5, 3, 0, TAU); X.fill(); }
+    X.restore();
+  }
+  S.end(t);
+});
+</script>
+
+<p>That face path is only a dozen curve segments, and the profile line does all the characterisation. Pi ying faces are a study in economy: a straight forehead-to-nose line, one long eye slit that sweeps back toward the temple, and a single stroke for a brow.</p>
+
+<!-- ─────────────────────────────────────────────────────────── 7 -->
+<h2 id="joints"><span class="n">Step 7</span>Joints and rivets</h2>
+
+<p>A real puppet's pieces are held together with knotted thread through a hole, so each joint is a free pivot. In Canvas terms a joint is three calls: <code>translate</code> to the joint, <code>rotate</code> by the joint angle, then draw the child in its own local space. Because the transform stack composes, a forearm drawn inside the upper arm's transform automatically follows the shoulder. Here is an arm written out by hand:</p>
+
+<figure class="demo" id="d-arm" data-w="800" data-h="380">
+  <canvas></canvas><div class="controls"></div>
+  <figcaption>Shoulder → elbow → hand. Each piece is drawn in the coordinate system its parent leaves behind.</figcaption>
+</figure>
+<script type="text/x-demo" data-for="d-arm">
+const S = makeStage(demo.canvas, demo.W, demo.H);
+const shoulder = demo.slider('shoulder', -2.6, 1.2, -0.6), elbow = demo.slider('elbow', -2.4, 0, -1.1);
+const pivots = demo.toggle('show pivots', true);
+demo.loop(t => {
+  S.begin(t);
+  const marks = [];
+  const mark = c => marks.push(c.getTransform().transformPoint(new DOMPoint(0, 0)));
+  S.layer(0, c => {
+    c.translate(330, 360); c.scale(3.2, 3.2);
+    part(c, P(W_PATHS.torso), HIDE.red, pat.scales(-20, -74, 20, -8, 8), 1.4);  // just for context
+    c.translate(6, -72);                                          // ── the shoulder rivet
+    c.rotate(shoulder() + 0.04 * Math.sin(t * 1.3));
+    part(c, limb(30, 15, 12), HIDE.red, null, 1.2); mark(c);
+    c.translate(0, 30);                                           // ── the elbow, in upper-arm space
+    c.rotate(elbow());
+    part(c, limb(28, 12, 9), HIDE.ochre, pat.dots(-6, 4, 6, 24, 5, 1), 1.2); rivet(c, 0, 0, 1.6); mark(c);
+    c.translate(0, 28);                                           // ── the wrist, in forearm space
+    part(c, circle(0, 2, 5.6), HIDE.skin, null, 1); mark(c);
+  });
+  if (pivots()) {
+    const X = S.X; X.save(); X.setTransform(1, 0, 0, 1, 0, 0);
+    X.strokeStyle = '#a8301b'; X.lineWidth = 2 * S.dpr;
+    marks.forEach(p => { X.beginPath(); X.arc(p.x, p.y, 9 * S.dpr, 0, TAU); X.stroke(); });
+    X.restore();
+  }
+  S.end(t);
+});
+</script>
+
+<p>Notice the torso line in the source: <code>c.translate(330, 60); c.scale(3.2, 3.2)</code>. It places the whole assembly with one transform, and nothing inside the arm knows or cares. Also notice the tiny <code>0.04 * Math.sin(t * 1.3)</code> added to the shoulder. That's the first piece of <em>animation</em> in this article, and we'll come back to that kind of tiny, constant motion in Step 12.</p>
+
+<!-- ─────────────────────────────────────────────────────────── 8 -->
+<h2 id="ik"><span class="n">Step 8</span>Reaching: two-bone IK</h2>
+
+<p>Setting angles by hand is fine for a flailing arm, but acting usually starts from a <em>target</em>: the hand should be on the pipa's neck, on the spear shaft, or at the lips holding a flute. Two-bone inverse kinematics solves this exactly with the law of cosines. With upper length <code>L1</code>, lower length <code>L2</code>, and distance <code>d</code> from shoulder to target, the elbow's interior angle comes straight out of the triangle.</p>
+
+<script type="text/x-lib" data-file="ik.js">
+// Angles (shoulder, elbow) so that a two-piece limb hanging from (sx,sy)
+// reaches (tx,ty). `bend` picks which way the elbow folds (+1 or -1).
+function ik(sx, sy, tx, ty, L1, L2, bend = 1) {
+  const dx = tx - sx, dy = ty - sy;
+  const d = clamp(Math.hypot(dx, dy), Math.abs(L1 - L2) + 0.01, L1 + L2 - 0.01);
+  const base = Math.atan2(-dx, dy);          // angle that points a "hanging" limb at the target
+  const al = Math.acos(clamp((L1 * L1 + d * d - L2 * L2) / (2 * L1 * d), -1, 1));
+  const be = Math.acos(clamp((L1 * L1 + L2 * L2 - d * d) / (2 * L1 * L2), -1, 1));
+  return [base + bend * al, -bend * (Math.PI - be)];
+}
+</script>
+
+<p>Two details are specific to our conventions. First, <code>base = atan2(-dx, dy)</code> rather than the usual <code>atan2(dy, dx)</code>, because a limb at angle 0 hangs down +y instead of pointing along +x. Second, the distance is clamped to the reachable range. A puppet's arm should straighten toward an unreachable target rather than produce <code>NaN</code> and vanish. Drag the target in the demo, including outside the dashed reach circle.</p>
+
+<figure class="demo" id="d-ik" data-w="800" data-h="380">
+  <canvas></canvas><div class="controls"></div>
+  <figcaption>Drag anywhere to move the target. When you let go, it wanders on its own. The elbow toggle flips the solution.</figcaption>
+</figure>
+<script type="text/x-demo" data-for="d-ik">
+const S = makeStage(demo.canvas, demo.W, demo.H);
+const bend = demo.choice('elbow', ['down', 'up'], 'down');
+const sx = 330, sy = 130, k = 3.2, L1 = 30 * k, L2 = 28 * k;
+let tx = 470, ty = 250;
+demo.loop(t => {
+  if (demo.pointer.down) { tx = demo.pointer.x; ty = demo.pointer.y; }
+  else { tx = lerp(tx, 400 + 150 * Math.sin(t * 0.6), 0.02); ty = lerp(ty, 200 + 110 * Math.sin(t * 1.1), 0.02); }
+  const [a1, a2] = ik(sx, sy, tx, ty, L1, L2, bend() === 'down' ? 1 : -1);
+  S.begin(t);
+  S.layer(0, c => {
+    c.translate(sx, sy); c.scale(k, k);
+    c.rotate(a1); part(c, limb(30, 15, 12), HIDE.red, null, 1.2);
+    c.translate(0, 30); c.rotate(a2); part(c, limb(28, 12, 9), HIDE.ochre, null, 1.2); rivet(c, 0, 0, 1.6);
+    c.translate(0, 28); part(c, circle(0, 2, 5.6), HIDE.skin, null, 1);
+  });
+  const X = S.X; X.save(); X.strokeStyle = '#a8301b'; X.lineWidth = 1.5; X.setLineDash([5, 6]);
+  X.beginPath(); X.arc(sx, sy, L1 + L2, 0, TAU); X.stroke(); X.setLineDash([]);
+  X.beginPath(); X.arc(tx, ty, 10, 0, TAU); X.moveTo(tx - 16, ty); X.lineTo(tx + 16, ty); X.moveTo(tx, ty - 16); X.lineTo(tx, ty + 16); X.stroke();
+  X.restore();
+  S.end(t);
+});
+</script>
+
+<!-- ─────────────────────────────────────────────────────────── 9 -->
+<h2 id="tree"><span class="n">Step 9</span>A puppet is a tree</h2>
+
+<p>Writing <code>translate/rotate/draw</code> by hand is fine for three pieces. A pi ying general has over thirty: four back flags, two pheasant plumes, a helmet, a brim, a neck guard, a chest mirror, a belt, fish-scale armour, and more. The arm example contains the answer already. Each piece has a parent, a rivet position in the parent's space, an angle, and children. That's a <strong>tree</strong>, and once a puppet is data, one short recursive function can draw it.</p>
+
+<script type="text/x-lib" data-file="rig.js">
+// node = { name, at:[x,y], rot, path, fill, carve, lw, draw(c, pose, opt), rivet, rod:[x,y,lean],
+//          back:[…children painted behind me], kids:[…children painted in front of me] }
+function drawRig(c, node, pose, opt = {}) {
+  c.save();
+  let [x, y] = node.at || [0, 0];
+  if (opt.explode && (x || y)) {              // exploded view: slide pieces out along their rivet
+    const d = Math.hypot(x, y); x += x / d * opt.explode; y += y / d * opt.explode;
+  }
+  c.translate(x, y);
+  c.rotate((node.rot || 0) + (pose[node.name] || 0));   // the pose is just a table of angles
+
+  for (const k of node.back || []) drawRig(c, k, pose, opt);
+  const drawable = node.path || node.draw;
+  if (!drawable || !opt.budget || opt.budget.n-- > 0) {   // `budget` lets us assemble step by step
+    if (node.path) part(c, node.path, node.fill, node.carve, node.lw ?? 2);
+    if (node.draw) { c.save(); node.draw(c, pose, opt); c.restore(); }
+    if (node.rivet) rivet(c, 0, 0, node.rivet);
+    if (node.rod && opt.rods) opt.rods.rod(c, ...node.rod);
+  }
+  if (opt.marks && node.at) {
+    const p = c.getTransform().transformPoint(new DOMPoint(0, 0)); opt.marks.push([p.x, p.y, node.name]);
+  }
+  for (const k of node.kids || []) drawRig(c, k, pose, opt);
+  c.restore();
+}
+
+// the order pieces are painted in, which is also the order you'd assemble them
+function paintOrder(node, out = []) {
+  for (const k of node.back || []) paintOrder(k, out);
+  if (node.path || node.draw) out.push(node.name);
+  for (const k of node.kids || []) paintOrder(k, out);
+  return out;
+}
+</script>
+
+<p>A few ideas are packed into those thirty lines:</p>
+<ul>
+  <li><strong>Pose is separate from structure.</strong> The tree never changes. Animation means producing a new <code>pose</code> object, <code>{ nearArm: -0.4, head: 0.1, … }</code>, keyed by node name. One rig can be posed a hundred ways, and one pose function can drive any rig that uses the same names.</li>
+  <li><strong><code>back</code> and <code>kids</code> encode depth.</strong> In a flat puppet, z-order is paint order. The far arm is painted before the torso, and the near arm after it. Putting both lists on every node lets a child sit behind its own parent, which you need for a head whose plumes sweep behind the helmet.</li>
+  <li><strong><code>draw</code> is the escape hatch.</strong> Some pieces aren't fixed paths: feathers that bend in the wind, a tassel that always hangs down. A node can supply a function instead, and it still gets the joint transform for free.</li>
+  <li><strong>Debug views are free.</strong> The <code>explode</code>, <code>budget</code> and <code>marks</code> options exist purely so we can <em>look</em> at the construction. That's the next demo.</li>
+</ul>
+
+<!-- ─────────────────────────────────────────────────────────── 10 -->
+<h2 id="warrior"><span class="n">Step 10</span>Assembling a warrior</h2>
+
+<p>Here is the full general as data. Read it top to bottom and you're reading the paint order. The hips are the root. Behind them are the back flags, the far arm and both legs. In front of them are the skirt, torso, chest mirror, belt, head, shoulder guard, and finally the near arm, which holds the spear.</p>
+
+<script type="text/x-lib" data-file="warrior.js">
+const W_PATHS = {
+  torso: 'M-18,0 C-24,-28 -22,-58 -13,-78 L13,-80 C21,-60 23,-30 17,0Z',
+  skirt: 'M-22,-6 L19,-6 C24,14 29,32 32,50 C12,57 -12,57 -32,49 C-29,30 -26,12 -22,-6Z',
+  belt: 'M-23,-10 L20,-10 L21,-1 L-24,-1Z',
+  pauldron: 'M-12,-80 C4,-90 24,-82 22,-64 C16,-57 2,-57 -12,-64Z',
+  face: 'M-4,0 C-5,-8 -10,-16 -13,-24 L-14,-34 L12,-38 C13,-35 16,-31 21,-27 C19,-25 17,-25 16,-24 C17,-22 17,-20 15,-19 C16,-17 15,-14 13,-12 C9,-9 6,-6 5,0Z',
+  helm: 'M-18,-29 C-22,-48 -8,-58 6,-54 C14,-51 17,-43 15,-35 C4,-38 -8,-35 -18,-29Z',
+  brim: 'M-19,-30 C-8,-37 4,-40 16,-36 L16,-32 C4,-35 -8,-32 -18,-26Z',
+  flap: 'M-17,-30 C-25,-22 -25,-12 -20,-3 L-11,-10 C-13,-17 -13,-24 -12,-29Z',
+  brow: 'M16,-33.2 C11,-34.6 6,-35.2 1,-37.8 C5,-34 10,-32.6 16,-32Z',
+  boot: 'M-8,-4 L7,-4 L9,7 C16,8 21,10 22,15 L-9,15Z',
+  spearHead: 'M0,-44 C7,-30 8,-12 4,0 L-4,0 C-8,-12 -7,-30 0,-44Z',
+};
+const WARRIOR_FEET = 99;   // hips → sole, for standing a warrior on the ground
+
+function leg(side, x, fill) {
+  return { name: side + 'Thigh', at: [x, 8], path: limb(36, 17, 15), fill, lw: 1.4, kids: [
+    { name: side + 'Shin', at: [0, 36], path: limb(40, 15, 12), fill, lw: 1.4, rivet: 1.6, kids: [
+      { name: side + 'Boot', at: [0, 40], path: P(W_PATHS.boot), fill: HIDE.dark, lw: 1.4 }]}]};
+}
+
+const WARRIOR = {
+  name: 'hips',
+  back: [
+    { name: 'flags', at: [-10, -70], draw: (c, p) => backFlags(c, p.t, p.wind) },
+    { name: 'farArm', at: [-2, -74], path: limb(30, 14, 11), fill: HIDE.red2, lw: 1.5, kids: [
+      { name: 'farFore', at: [0, 30], path: limb(28, 11, 9), fill: HIDE.ochre, lw: 1.5, rivet: 1.8, kids: [
+        { name: 'farHand', at: [0, 28], path: circle(0, 2, 5.5), fill: HIDE.skin, lw: 1.2 }]}]},
+    leg('far', -8, HIDE.dark),
+    leg('near', 6, HIDE.blue),
+  ],
+  kids: [
+    { name: 'skirt', path: P(W_PATHS.skirt), fill: HIDE.green, carve: pat.scales(-34, -2, 40, 56, 9), lw: 1.8 },
+    { name: 'torso', path: P(W_PATHS.torso), fill: HIDE.red, carve: pat.scales(-20, -74, 20, -8, 8), rod: [0, -76, -40] },
+    { name: 'mirror', path: circle(6, -46, 9), fill: HIDE.ochre, lw: 1.5,
+      carve: c => { c.lineWidth = 1.3; c.beginPath(); c.arc(6, -46, 5, 0, TAU); c.stroke(); } },
+    { name: 'belt', path: P(W_PATHS.belt), fill: HIDE.ochre, carve: pat.dots(-22, -8, 20, -2, 6, 1.1), lw: 1.4 },
+    { name: 'head', at: [1, -80], path: P(W_PATHS.face), fill: HIDE.face, lw: 1.5,
+      back: [
+        { name: 'feathers', draw: (c, p) => feathers(c, p) },
+        { name: 'neckGuard', path: P(W_PATHS.flap), fill: HIDE.green, carve: pat.scales(-24, -28, -10, -4, 5, 1), lw: 1.4 }],
+      kids: [
+        { name: 'features', draw: faceFeatures },
+        { name: 'helmet', path: P(W_PATHS.helm), fill: HIDE.ochre, carve: pat.dots(-14, -50, 12, -38, 5, 1), lw: 1.6 },
+        { name: 'brim', path: P(W_PATHS.brim), fill: HIDE.red, lw: 1.3 },
+        { name: 'plume', draw: plume }] },
+    { name: 'pauldron', path: P(W_PATHS.pauldron), fill: HIDE.ochre, carve: c => spiral(c, 6, -71, 7, 1.5, 1.3), lw: 1.8 },
+    { name: 'nearArm', at: [6, -72], path: limb(30, 15, 12), fill: HIDE.red, lw: 1.5, rivet: 2.2, kids: [
+      { name: 'nearFore', at: [0, 30], path: limb(28, 12, 9), fill: HIDE.ochre, lw: 1.5, rivet: 1.8, kids: [
+        { name: 'nearHand', at: [0, 28], path: circle(0, 2, 5.6), fill: HIDE.skin, lw: 1.2, rod: [0, 2, 30], kids: [
+          { name: 'spear', at: [0, 2], draw: spear }]}]}]},
+  ],
+};
+
+function faceFeatures(c) {
+  c.fillStyle = INK; c.fill(P(W_PATHS.brow));                       // one sweeping brow
+  c.strokeStyle = INK; c.lineWidth = 1.2;
+  c.beginPath(); c.moveTo(14.5, -30.2); c.quadraticCurveTo(9, -32.4, 2.5, -30.8);
+  c.quadraticCurveTo(9, -29.4, 14.5, -30.2); c.stroke();            // the long pi ying eye
+  c.beginPath(); c.arc(10.5, -30.6, 1.2, 0, TAU); c.fill();
+  c.beginPath(); c.moveTo(15.5, -21.2); c.lineTo(12, -21); c.stroke();
+}
+function plume(c, p) {
+  c.lineWidth = 2; c.strokeStyle = INK; c.beginPath(); c.moveTo(-3, -54); c.lineTo(-4, -62); c.stroke();
+  part(c, circle(-4, -66, 5), HIDE.red, c => { c.beginPath(); c.arc(-4, -66, 1.6, 0, TAU); c.fill(); }, 1.3);
+  tassel(c, -5, -62, 4, 12, p.t, -p.wind);
+}
+function spear(c, p) {
+  const up = p.spearUp || 150, dn = 110;
+  c.lineCap = 'round'; c.strokeStyle = INK; c.lineWidth = 4.4;
+  c.beginPath(); c.moveTo(0, dn); c.lineTo(0, -up); c.stroke();
+  c.strokeStyle = 'rgba(170,110,50,0.55)'; c.lineWidth = 1.4; c.stroke();   // a paler core reads as wood
+  tassel(c, 0, -up + 3, 7, 24, p.t, -p.wind * 0.6);
+  c.translate(0, -up);
+  part(c, P(W_PATHS.spearHead), HIDE.ochre, c => { c.lineWidth = 1.3; c.beginPath(); c.moveTo(0, -34); c.lineTo(0, -8); c.stroke(); }, 1.6);
+  c.fillStyle = INK; c.fillRect(-5, 0, 10, 4);
+}
+
+// A pose from intentions: where the spear hand is, how the spear leans, sitting or standing.
+function warriorPose(t, o = {}) {
+  const p = { t, wind: o.wind ?? 0.4, head: o.head ?? 0, spearUp: o.spearUp };
+  const hand = o.hand || [30, -38];
+  [p.nearArm, p.nearFore] = ik(6, -72, hand[0], hand[1], 30, 28, 1);
+  [p.farArm, p.farFore] = ik(-2, -74, 20, -36, 30, 28, 1);
+  p.spear = (o.spear ?? 0) - p.nearArm - p.nearFore;   // cancel the arm: the spear keeps its own angle
+  if (o.sit) for (const s of ['near', 'far']) { p[s + 'Thigh'] = -1.38; p[s + 'Shin'] = 1.5; p[s + 'Boot'] = -0.12; }
+  return p;
+}
+</script>
+
+<p>Look at the last function. <code>warriorPose</code> is where animation stops being about angles and becomes about <em>intentions</em>. The caller says where the hand should be and how the spear should lean. IK turns the hand position into arm angles, and one line solves a subtle problem. The spear is a child of the hand, so it inherits the shoulder and elbow rotations. To keep it at the angle we asked for, we subtract them: <code>spear − nearArm − nearFore</code>. Any prop that's held but has its own orientation, like a fan, a cup or a flute, needs the same counter-rotation.</p>
+
+<figure class="demo" id="d-assemble" data-w="800" data-h="500">
+  <canvas></canvas><div class="controls"></div>
+  <figcaption>Scrub “pieces” to assemble the warrior in paint order. “Explode” slides every riveted piece outward along its joint, and “pivots” marks each rivet.</figcaption>
+</figure>
+<script type="text/x-demo" data-for="d-assemble">
+const S = makeStage(demo.canvas, demo.W, demo.H);
+const order = paintOrder(WARRIOR);
+const pieces = demo.slider('pieces', 1, order.length, order.length, 1);
+const explode = demo.slider('explode', 0, 40, 0, 1);
+const pivots = demo.toggle('pivots', false);
+demo.loop(t => {
+  S.begin(t);
+  const marks = pivots() ? [] : null, pose = warriorPose(t, { head: 0.03 * Math.sin(t), wind: 0.4 + 0.2 * snoise(t * 0.5) });
+  S.layer(0, c => {
+    c.translate(390, 480 - WARRIOR_FEET * 1.2); c.scale(1.2, 1.2);
+    drawRig(c, WARRIOR, pose, { budget: { n: pieces() }, explode: explode(), marks });
+  });
+  const X = S.X; X.save(); X.setTransform(1, 0, 0, 1, 0, 0);
+  X.font = `${13 * S.dpr}px -apple-system, Helvetica, sans-serif`;
+  if (marks) for (const [x, y, name] of marks) {
+    X.strokeStyle = X.fillStyle = '#a8301b'; X.lineWidth = 1.5 * S.dpr;
+    X.beginPath(); X.arc(x, y, 5 * S.dpr, 0, TAU); X.stroke(); X.fillText(name, x + 8 * S.dpr, y - 6 * S.dpr);
+  }
+  X.globalCompositeOperation = 'multiply'; X.fillStyle = '#3a2210'; X.font = `${15 * S.dpr}px -apple-system, Helvetica, sans-serif`;
+  X.fillText(`${pieces()} / ${order.length} · ${order[pieces() - 1]}`, 24 * S.dpr, 34 * S.dpr);
+  X.restore();
+  S.end(t);
+});
+</script>
+
+<p>Scrub slowly through the first dozen pieces and the value of paint order becomes concrete. The back flags go on first, and at that stage they're just four pennants floating in space. The far arm and far leg follow. They're darker than their near twins because they're dyed with darker hides, which is how the craft fakes depth without perspective. Only then do the skirt and torso cover their tops. Try exploding the figure fully: every piece slides away from its parent along the direction of its own rivet, like a museum mount.</p>
+
+<!-- ─────────────────────────────────────────────────────────── 11 -->
+<h2 id="procedural"><span class="n">Step 11</span>Pieces made of math</h2>
+
+<p>The warrior references five functions we haven't written: <code>feathers</code>, <code>backFlags</code>, <code>tassel</code>, and the <code>strip</code> and <code>localDir</code> helpers underneath them. They're the parts that can't be a fixed path, because their shape <em>is</em> their motion.</p>
+
+<h3>Gravity in the puppet’s own frame</h3>
+<p>A tassel hangs toward the ground. But a tassel drawn inside the spear's transform lives in a coordinate system that has been rotated by the shoulder, the elbow and the spear, and possibly mirrored if the warrior faces left. Which way is “down” in that frame? We ask the transform directly: invert the current matrix and push the world vector <code>(0, 1)</code> through it. This one idea makes every dangling thing on every puppet correct, whatever its parents are doing.</p>
+
+<script type="text/x-lib" data-file="procedural.js">
+// A direction given in stage space, expressed in the current local frame.
+function localDir(c, vx, vy) {
+  const m = c.getTransform().inverse();
+  const x = m.a * vx + m.c * vy, y = m.b * vx + m.d * vy, l = Math.hypot(x, y) || 1;
+  return [x / l, y / l];
+}
+
+// Silk strands that always fall toward the ground (plus a little wind in x).
+function tassel(c, x, y, n, len, t, windX = 0, col = 'rgba(160,32,18,0.88)', lw = 1.8) {
+  const [gx, gy] = localDir(c, windX * 0.8, 1);
+  c.strokeStyle = col; c.lineWidth = lw; c.lineCap = 'round';
+  for (let i = 0; i < n; i++) {
+    const s = (i - (n - 1) / 2) * 1.5, sway = 2.5 * snoise(t * 2 + i * 0.7);
+    c.beginPath(); c.moveTo(x + s, y);
+    c.quadraticCurveTo(x + s + gx * len * 0.5, y + gy * len * 0.5,
+                       x + s * 1.8 + gx * len - gy * sway, y + gy * len + gx * sway);
+    c.stroke();
+  }
+}
+
+// A pheasant tail feather: a tapered ribbon along a quadratic curve, with cut bars.
+function feather(c, x0, y0, cx, cy, x1, y1, w) {
+  const N = 30, L = [], R = [], M = [];
+  for (let i = 0; i <= N; i++) {
+    const u = i / N, v = 1 - u;
+    const x = v * v * x0 + 2 * v * u * cx + u * u * x1, y = v * v * y0 + 2 * v * u * cy + u * u * y1;
+    const dx = 2 * v * (cx - x0) + 2 * u * (x1 - cx), dy = 2 * v * (cy - y0) + 2 * u * (y1 - cy);
+    const l = Math.hypot(dx, dy) || 1, ww = w * (1 - u * 0.8) + 0.4, nx = -dy / l * ww, ny = dx / l * ww;
+    L.push([x + nx, y + ny]); R.push([x - nx, y - ny]); M.push([x, y, nx, ny]);
+  }
+  const p = new Path2D(); p.moveTo(...L[0]);
+  L.forEach(q => p.lineTo(...q)); for (let i = N; i >= 0; i--) p.lineTo(...R[i]); p.closePath();
+  part(c, p, 'rgba(46,26,12,0.9)', c => {
+    c.lineWidth = 1.1;
+    for (let i = 2; i < N; i += 2) { const [x, y, nx, ny] = M[i]; c.beginPath(); c.moveTo(x - nx * .7, y - ny * .7); c.lineTo(x + nx * .7, y + ny * .7); c.stroke(); }
+  }, 0.9);
+}
+function feathers(c, p) {
+  const sw = snoise(p.t * 0.8) * 10 + p.wind * 14;           // slow sway + wind pushes the tips back
+  feather(c, -4, -54, -34, -150, -130 - sw, -160 + sw * 0.6, 3.4);
+  feather(c, -2, -54, -8, -160, -96 - sw * 1.2, -196 + sw * 0.8, 3.2);
+}
+
+// Sleeves, sashes, capes: a centre-line whose heading is bent by a travelling wave.
+function strip(c, x, y, a0, N, seg, w0, w1, t, amp, freq, fill, grav = 0) {
+  let px = x, py = y, a = a0; const pts = [[px, py, a]];
+  for (let i = 1; i <= N; i++) {
+    const k = i / N;
+    a += amp * Math.sin(t * freq - i * 0.55) * (0.3 + k) * 3 / N   // wave travels from root to tip
+       + grav * (Math.PI / 2 - a) / N;                              // and slowly droops
+    px += Math.cos(a) * seg; py += Math.sin(a) * seg; pts.push([px, py, a]);
+  }
+  const Lp = [], Rp = [];
+  pts.forEach(([px, py, a], i) => {
+    const w = lerp(w0, w1, i / N) / 2, nx = -Math.sin(a) * w, ny = Math.cos(a) * w;
+    Lp.push([px + nx, py + ny]); Rp.push([px - nx, py - ny]);
+  });
+  const p = new Path2D(); p.moveTo(...Lp[0]);
+  Lp.forEach(q => p.lineTo(...q)); for (let i = Rp.length - 1; i >= 0; i--) p.lineTo(...Rp[i]); p.closePath();
+  part(c, p, fill, pat.dots(-600, -600, 600, 600, 10, 1.3), 1.3);
+}
+
+// The four triangular flags (靠旗) worn on an opera general's back.
+function backFlags(c, t, wind) {
+  const cols = [HIDE.green, HIDE.red, HIDE.green, HIDE.red];
+  for (let i = 0; i < 4; i++) {
+    c.save(); c.rotate(-0.66 + i * 0.2 + 0.04 * snoise(t * 1.1 + i * 1.7));
+    c.lineWidth = 2.4; c.strokeStyle = INK; c.lineCap = 'round';
+    c.beginPath(); c.moveTo(0, 0); c.lineTo(0, -98); c.stroke();
+    const tip = -42 - 10 * wind, wv = 4 * Math.sin(t * 2.6 + i * 0.9);
+    const f = new Path2D();
+    f.moveTo(0, -94); f.quadraticCurveTo(tip * 0.55, -86 + wv, tip, -68 + wv);
+    f.quadraticCurveTo(tip * 0.5, -46 - wv * 0.5, 0, -32); f.closePath();
+    part(c, f, cols[i], pat.dots(-60, -80, -4, -40, 7, 1.3), 1.5);
+    rivet(c, 0, -100, 3);
+    c.restore();
+  }
+}
+</script>
+
+<h3>Travelling waves</h3>
+<p><code>strip</code> is the workhorse for anything made of cloth. It walks along a centre-line one segment at a time, and at each step it bends the heading a little by <code>sin(t·freq − i·0.55)</code>. The <code>− i·0.55</code> is the whole trick. Each segment sees the same wave a little later than the one before it, so the motion <em>travels</em> from root to tip the way a flag ripples, instead of the whole strip wobbling in unison. The amplitude grows toward the tip, <code>(0.3 + k)</code>, because the root is held and the tail is free. <code>grav</code> pulls the heading gently toward straight down.</p>
+
+<figure class="demo" id="d-wind" data-w="800" data-h="400">
+  <canvas></canvas><div class="controls"></div>
+  <figcaption>A specimen board. The staff on the right rotates continuously, but its tassel keeps falling toward the ground, because it asks the transform which way is down.</figcaption>
+</figure>
+<script type="text/x-demo" data-for="d-wind">
+const S = makeStage(demo.canvas, demo.W, demo.H);
+const wind = demo.slider('wind', 0, 1.5, 0.5);
+demo.loop(t => {
+  S.begin(t);
+  const w = wind();
+  S.layer(0, c => {
+    // a feather pair on a stand
+    c.save(); c.translate(140, 330); part(c, P('M-24,0 L24,0 L18,14 L-18,14Z'), HIDE.black, null, 1.5);
+    feathers(c, { t, wind: w }); c.restore();
+    // a flag pole with the back flags
+    c.save(); c.translate(330, 340); backFlags(c, t, w); c.restore();
+    // three sashes pinned at the top, streaming with the wind
+    [HIDE.teal, HIDE.red, HIDE.pale].forEach((col, i) => {
+      rivet(c, 450 + i * 40, 60, 4);
+      strip(c, 450 + i * 40, 60, Math.PI / 2 - w * 0.9, 14, 18, 12, 6, t + i * 1.1, 0.25 + w * 0.25, 1.6 + i * 0.2, col, 0.6);
+    });
+    // a spinning staff whose tassel always hangs down
+    c.save(); c.translate(690, 190); c.rotate(t * 0.8);
+    c.lineWidth = 5; c.strokeStyle = INK; c.beginPath(); c.moveTo(0, -90); c.lineTo(0, 90); c.stroke();
+    tassel(c, 0, -90, 7, 34, t, w); tassel(c, 0, 90, 7, 34, t, w); rivet(c, 0, 0, 5);
+    c.restore();
+  });
+  S.end(t);
+});
+</script>
+
+<!-- ─────────────────────────────────────────────────────────── 12 -->
+<h2 id="acting"><span class="n">Step 12</span>Bringing it to life</h2>
+
+<p>We now have a posable puppet, and the remaining question is <em>which</em> poses, over time. Everything I animate is a pure function of time, <code>pose = f(t)</code>, with no stored state or physics integration. That makes any moment reproducible, lets you scrub or skip, and keeps frame-rate hiccups from accumulating. Within that rule there are four ingredients, and nearly every motion in the finished piece is a sum of them.</p>
+
+<ol>
+  <li><strong>Cycles</strong> are <code>sin(t·ω)</code> for anything periodic, like breathing, walking and rippling. Use a different frequency for each part, so the parts never line up and nothing looks mechanical.</li>
+  <li><strong>Noise</strong> is <code>snoise(t·ω)</code> for anything held. A puppeteer's hand is never perfectly still, and a few pixels of low-frequency noise on the rod hand is the difference between a puppet and a sprite.</li>
+  <li><strong>Beats</strong> are eased ramps: <code>ease((t − start) / duration)</code>. An acting beat rises, holds and settles, and you build it by multiplying a rising ramp by a falling one. Blend any pose value toward the beat pose with <code>lerp(rest, beat, k)</code>.</li>
+  <li><strong>Secondary motion</strong> is the tassels, feathers and flags from Step 11. They respond to the same wind value and lag behind the body, so you get follow-through without extra work.</li>
+</ol>
+
+<p>There's also one move that's pure shadow theatre, the <strong>turn</strong>. A puppeteer flips a flat figure to face the other way, and for a moment the audience sees it as a sliver. We do the same with <code>scale(cos(π·k), 1)</code> as <code>k</code> eases from 0 to 1.</p>
+
+<figure class="demo" id="d-acting" data-w="800" data-h="500">
+  <canvas></canvas><div class="controls"></div>
+  <figcaption>Three performances of the same rig. Every value is a function of time; switch beats at any moment and nothing breaks.</figcaption>
+</figure>
+<script type="text/x-demo" data-for="d-acting">
+const S = makeStage(demo.canvas, demo.W, demo.H);
+const act = demo.choice('beat', ['idle', 'salute', 'turn'], 'salute');
+demo.loop(t => {
+  const o = { wind: 0.35 + 0.3 * snoise(t * 0.4) };
+  // cycles + noise: breathing, and a hand that is never perfectly still
+  o.head = 0.03 * Math.sin(t * 1.3);
+  o.hand = [30 + 1.6 * snoise(t * 0.9), -38 + 1.6 * snoise(t * 1.1 + 5)];
+  o.spear = 0.03 * snoise(t * 0.7);
+  let facing = 1;
+  if (act() === 'salute') {
+    const b = t % 4;                                        // a 4-second beat
+    const k = ease(b / 0.6) * (1 - ease((b - 2.4) / 0.9));  // rise fast, hold, settle slowly
+    o.hand = [lerp(o.hand[0], 36, k), lerp(o.hand[1], -98, k)];
+    o.spear = lerp(o.spear, -0.35, k); o.head = lerp(o.head, -0.16, k);
+  }
+  if (act() === 'turn') {
+    const n = Math.floor(t / 3), k = ease((t % 3) / 0.7);    // flip every three seconds
+    facing = Math.cos(Math.PI * (n + k));
+    if (Math.abs(facing) < 0.03) facing = 0.03 * Math.sign(facing || 1);  // never a degenerate matrix
+  }
+  S.begin(t);
+  S.layer(0, c => {
+    part(c, P('M-10,460 L810,460 L810,510 L-10,510Z'), 'rgba(50,28,14,0.8)', null, 2);
+    c.translate(400, 460 - WARRIOR_FEET * 1.05); c.scale(1.05 * facing, 1.05);
+    drawRig(c, WARRIOR, warriorPose(t, o), { rods: S });
+  });
+  S.end(t);
+});
+</script>
+
+<p>The salute beat is worth reading closely: <code>ease(b / 0.6) * (1 − ease((b − 2.4) / 0.9))</code>. It rises in 0.6 s, holds, then settles over 0.9 s. Fast in and slow out is the classic shape of a deliberate gesture. The turn guards against <code>facing</code> reaching exactly zero, because a zero scale makes the matrix non-invertible and <code>localDir</code> would return garbage for one frame.</p>
+
+<!-- ─────────────────────────────────────────────────────────── 13 -->
+<h2 id="horse"><span class="n">Step 13</span>Puppets inside puppets</h2>
+
+<p>The tree pays off most here. A horse is another rig, with far legs in <code>back</code>, a body, a neck riveted at the withers, and near legs in <code>kids</code>. One of its nodes is a saddle whose <code>draw</code> function calls <code>drawRig</code> again with the <em>warrior</em>. A rider is simply a subtree grafted onto the horse. He inherits every bob and pitch of the gallop without a line of coordination code, and he keeps his own pose table.</p>
+
+<script type="text/x-lib" data-file="horse.js">
+const H_PATHS = {
+  body: 'M92,-8 C100,-30 80,-48 55,-46 C20,-40 -30,-44 -60,-44 C-95,-44 -112,-22 -108,5 C-106,28 -92,40 -72,40 C-40,44 10,46 45,40 C70,36 88,22 92,-8Z',
+  neck: 'M-22,-10 C-12,-50 10,-82 38,-98 L44,-112 L50,-99 C62,-98 72,-90 80,-78 C90,-62 98,-50 104,-40 C107,-33 102,-26 94,-27 C88,-27 84,-30 80,-30 C74,-40 60,-50 50,-52 C40,-50 34,-40 30,-28 C26,-8 30,10 24,22 L-8,22Z',
+  hoof: 'M-6,-3 L7,-3 L10,10 L-8,10Z',
+  cloth: 'M-50,-46 L24,-46 C28,-20 28,0 24,18 C12,24 0,16 -12,22 C-24,16 -36,24 -46,18 C-54,-2 -54,-26 -50,-46Z',
+  saddle: 'M-34,-46 C-32,-58 -24,-62 -18,-52 L10,-52 C14,-62 22,-64 24,-50 L20,-42 L-30,-42Z',
+};
+const HORSE_FEET = 143;   // body centre → hoof, walking
+
+function horseLeg(name, at, front, fill) {
+  const [L1, L2, w0, w1, w2] = front ? [60, 58, 21, 13, 10] : [64, 56, 32, 13, 10];
+  return { name: name + 'U', at, path: limb(L1, w0, w1), fill, lw: 1.7, rivet: 2.8, kids: [
+    { name: name + 'L', at: [0, L1], path: limb(L2, w1, w2), fill, lw: 1.7, rivet: 2.2, kids: [
+      { name: name + 'H', at: [0, L2], path: P(H_PATHS.hoof), fill: HIDE.dark, lw: 1.3 }]}]};
+}
+
+const HORSE = {
+  name: 'body', path: P(H_PATHS.body), fill: HIDE.black, lw: 2.2, rod: [-40, -40, -60],
+  carve: c => {                                     // swirls on shoulder and hip, a row of punches
+    spiral(c, 52, 4, 14, 1.6, 1.6); spiral(c, -74, -6, 16, 1.6, 1.6, -1);
+    for (let x = -62; x <= 44; x += 8) { c.beginPath(); c.arc(x, 30 + 0.0006 * x * x, 1.7, 0, TAU); c.fill(); }
+  },
+  back: [
+    horseLeg('ff', [64, 16], true, HIDE.dark), horseLeg('fh', [-64, 10], false, HIDE.dark),
+    { name: 'tail', at: [-104, -26], draw: horseTail }],
+  kids: [
+    { name: 'cloth', path: P(H_PATHS.cloth), fill: HIDE.red, carve: pat.dots(-46, -36, 18, 10, 8, 1.7), lw: 1.8 },
+    { name: 'saddle', path: P(H_PATHS.saddle), fill: HIDE.ochre, lw: 1.8 },
+    { name: 'neck', at: [62, -30], path: P(H_PATHS.neck), fill: HIDE.black, lw: 2.2,
+      carve: c => { c.beginPath(); c.ellipse(66, -80, 5.5, 3, 0.5, 0, TAU); c.fill(); spiral(c, 6, -20, 10, 1.4, 1.4); },
+      back: [{ name: 'mane', draw: horseMane }],
+      kids: [{ name: 'bridle', draw: bridle }] },
+    { name: 'chest', at: [86, 10], draw: (c, p) => {
+        part(c, circle(0, 0, 8), HIDE.red, null, 1.3); tassel(c, 0, 5, 7, 20, p.t, -p.flow); } },
+    horseLeg('nf', [56, 18], true, HIDE.black), horseLeg('nh', [-72, 12], false, HIDE.black),
+    { name: 'seat', at: [-6, -52], draw: (c, p, opt) => {        // ← a puppet inside a puppet
+        if (!p.rider) return;
+        c.scale(1.22, 1.22); drawRig(c, WARRIOR, p.rider, opt); } },
+  ],
+};
+
+function horseTail(c, p) {
+  c.strokeStyle = INK; c.lineCap = 'round';
+  for (let i = 0; i < 7; i++) {
+    const sw = snoise(p.t * 1.4 + i * 0.8) * 7, f = p.flow;
+    c.lineWidth = 7.5 - i * 0.8; c.beginPath(); c.moveTo(0, 0);
+    c.bezierCurveTo(-26, -14 + i * 2, -44 - f * 30, 6 + i * 6 - f * 20, -54 - f * 60 + sw, 70 + i * 9 - f * 62 + sw * 0.4);
+    c.stroke();
+  }
+}
+function horseMane(c, p) {                    // a zig-zag grown along the crest curve
+  const base = [], tip = [], N = 12;
+  for (let i = 0; i <= N; i++) {
+    const u = i / N, x = bez(-22, -12, 10, 38, u), y = bez(-10, -50, -82, -98, u);
+    const dx = bez(-22, -12, 10, 38, u + 0.01) - x, dy = bez(-10, -50, -82, -98, u + 0.01) - y, l = Math.hypot(dx, dy);
+    const len = 15 + 7 * Math.sin(i * 1.9);
+    base.push([x, y]);
+    tip.push([x + dy / l * len - p.flow * 16 + 3 * snoise(p.t * 2.2 + i * 0.7), y - dx / l * len + 5 + p.flow * 4]);
+  }
+  const m = new Path2D(); m.moveTo(...base[0]);
+  for (let i = 0; i < N; i++) { m.lineTo(...tip[i]); m.lineTo((base[i][0] + base[i + 1][0]) / 2 + 2, (base[i][1] + base[i + 1][1]) / 2 + 2); }
+  m.lineTo(...base[N]); m.lineTo(base[N][0] - 2, base[N][1] + 8); m.lineTo(base[0][0] + 4, base[0][1] + 6); m.closePath();
+  c.fillStyle = INK; c.fill(m);
+}
+function bridle(c, p) {
+  c.strokeStyle = 'rgba(210,150,50,0.9)'; c.lineWidth = 2.4; c.beginPath();
+  c.moveTo(56, -92); c.quadraticCurveTo(64, -62, 80, -40); c.lineTo(96, -46); c.moveTo(62, -58); c.lineTo(92, -68); c.stroke();
+  part(c, circle(52, -40, 6), HIDE.red, null, 1.2); tassel(c, 52, -36, 7, 18, p.t, -p.flow);
+}
+
+// Leg angles over one stride. Front legs fold at the knee on the forward swing;
+// hind legs flex at the hock. `ph` is the stride phase in radians.
+function horseGait(gait, ph) {
+  const S = Math.sin, C = Math.cos, pos = x => Math.max(0, x), PI = Math.PI;
+  if (gait === 'gallop') {
+    const f = p => [-(0.3 + 0.75 * S(p)), 1.7 * pos(C(p)) ** 1.3];
+    const h = p => [0.35 + 0.65 * S(p), -(0.35 + pos(-C(p)) ** 1.2)];
+    return { nf: f(ph), ff: f(ph - 0.5), nh: h(ph - 0.9), fh: h(ph - 1.4) };
+  }
+  if (gait === 'walk') {
+    const f = p => [-0.32 * S(p), 1.2 * pos(C(p)) ** 2];
+    const h = p => [0.3 + 0.28 * S(p), -(0.32 + 0.8 * pos(-C(p)) ** 2)];
+    return { nf: f(ph), ff: f(ph + PI), nh: h(ph + PI / 2), fh: h(ph + PI * 1.5) };
+  }
+  return { nf: [-0.04, 0.04], ff: [0.1, -0.02], nh: [0.34, -0.36], fh: [0.24, -0.28] };
+}
+function horsePose(t, gait = 'stand', strides = 0) {
+  const ph = strides * TAU, legs = horseGait(gait, ph);
+  const p = { t, flow: gait === 'gallop' ? 1 : 0.3, bob: 0 };
+  for (const k in legs) { p[k + 'U'] = legs[k][0]; p[k + 'L'] = legs[k][1]; }
+  if (gait === 'gallop') { p.bob = 7 * Math.cos(ph - 0.4); p.body = 0.032 * Math.sin(ph); p.neck = 0.13 * Math.sin(ph + 1); }
+  else if (gait === 'walk') { p.bob = 2.2 * Math.sin(ph * 2); p.body = 0.012 * Math.sin(ph); p.neck = 0.07 * Math.sin(ph * 2 + 0.6); }
+  else { p.bob = 0.8 * Math.sin(t * 1.3); p.neck = 0.035 * Math.sin(t * 0.7); }
+  return p;
+}
+</script>
+
+<p>The gait functions are the most “tuned” code in the project, so it's worth explaining how they came about. Each leg gets two angles, the upper segment and the lower one, driven by one stride phase. The upper segment swings sinusoidally. The lower segment folds only during the forward swing, which is where <code>cos(p)</code> is positive, and it straightens as the leg reaches. That's why the fold term is wrapped in <code>max(0, …)</code>. The four legs share the stride but take different phase offsets. A walk uses quarter-cycle offsets, giving four beats. The gallop uses a tight fan of offsets, so the front pair reaches together while the hind pair pushes, which is the stylised “flying gallop” of Chinese horse art. The body bob and pitch, and the neck's counter-nod, are all tied to the same phase, which is why it reads as one animal instead of five parts.</p>
+
+<figure class="demo" id="d-horse" data-w="800" data-h="480">
+  <canvas></canvas><div class="controls"></div>
+  <figcaption>The ground scrolls at the gait's speed while the puppet stays roughly in place, the way a puppeteer walks a horse across a painted landscape.</figcaption>
+</figure>
+<script type="text/x-demo" data-for="d-horse">
+const S = makeStage(demo.canvas, demo.W, demo.H);
+const gait = demo.choice('gait', ['stand', 'walk', 'gallop'], 'walk');
+const riding = demo.toggle('rider', true), pivots = demo.toggle('pivots', false);
+let strides = 0, ground = 0;
+demo.loop((t, dt) => {
+  const g = gait(), rate = { stand: 0, walk: 0.9, gallop: 1.9 }[g];
+  strides += dt * rate; ground += dt * rate * 120;
+  const hp = horsePose(t, g, strides);
+  if (riding()) hp.rider = warriorPose(t, {
+    sit: true, wind: hp.flow, spear: g === 'gallop' ? 1.05 : -0.14, spearUp: 170,
+    hand: g === 'gallop' ? [34, -44] : [26, -40], head: g === 'gallop' ? -0.26 : 0.02 * Math.sin(t) });
+  S.begin(t);
+  S.layer(1.6, c => mountains(c, { w: S.w, h: S.h, seed: 2, base: 330, amp: 90, freq: 0.006, scroll: ground * 0.3, fill: 'rgba(66,36,18,0.45)' }));
+  const marks = pivots() ? [] : null;
+  S.layer(0, c => {
+    part(c, P('M-10,440 L810,440 L810,490 L-10,490Z'), 'rgba(50,28,14,0.84)', null, 2);
+    for (let i = 0; i < 9; i++) tuft(c, ((i * 137 - ground) % 900 + 900) % 900 - 50, 442, 1 + hash(i) * 0.6, t);
+    c.translate(360, 440 - HORSE_FEET * 0.82 + hp.bob * 0.82); c.scale(0.82, 0.82);
+    if (g === 'gallop' && riding()) hp.rider.hips = 0.3;       // lean the rider into the gallop
+    drawRig(c, HORSE, hp, { rods: S, marks });
+  });
+  if (marks) { const X = S.X; X.save(); X.setTransform(1, 0, 0, 1, 0, 0); X.strokeStyle = '#a8301b'; X.lineWidth = 1.5 * S.dpr;
+    for (const [x, y] of marks) { X.beginPath(); X.arc(x, y, 4 * S.dpr, 0, TAU); X.stroke(); } X.restore(); }
+  S.end(t);
+});
+</script>
+
+<p>One line in the demo source deserves a highlight: <code>hp.rider.hips = 0.3</code>. The rider's root node is named <code>hips</code>, so setting that key rotates the entire warrior forward at the saddle. He leans into the gallop, and his flags, feathers and spear go with him. Because a pose is just a dictionary, you can add or override one key without touching anything else.</p>
+
+<!-- ─────────────────────────────────────────────────────────── 14 -->
+<h2 id="depth"><span class="n">Step 14</span>Depth, blur, and control rods</h2>
+
+<p>Back to fact four from the start. A shadow's softness depends on how far the object is from the screen. This is where <code>layer(blur, …)</code> earns its first argument, and where the commutativity of multiply from Step 2 matters: we can group elements by distance, blur each group once, and composite in any order.</p>
+
+<p>For scenery that means a few flat layers: far hills blurred heavily and faintly dyed, nearer hills less so, and the puppets crisp. For a puppet that the performer pulls <em>away</em> from the screen, the physics gives three coupled changes. It grows by <code>D / (D − d)</code>, its edge softens by roughly <code>L·d / (D − d)</code>, and it fades as the penumbra spreads the same shadow over a larger area. The slider below moves the warrior along that path.</p>
+
+<script type="text/x-lib" data-file="scenery.js">
+function ridgeY(o, x) {             // ridged noise: 1 − |noise| makes sharp peaks
+  const u = (x + (o.scroll || 0)) * o.freq; let v = 0, a = 1, n = 0;
+  for (let k = 0; k < 3; k++) { v += a * (1 - Math.abs(snoise(u * 2 ** k + o.seed * 7.1 + k * 3.7))); n += a; a *= 0.5; }
+  return o.base - o.amp * v / n;
+}
+function mountains(c, o) {
+  const p = new Path2D(); p.moveTo(-10, o.h + 10);
+  for (let x = -10; x <= o.w + 10; x += 6) p.lineTo(x, ridgeY(o, x));
+  p.lineTo(o.w + 10, o.h + 10); p.closePath();
+  part(c, p, o.fill, c => {         // strata: dashed cuts that follow the ridge line
+    c.lineWidth = 1.4; c.setLineDash([14, 7]);
+    for (let k = 1; k <= 3; k++) { c.beginPath(); for (let x = -10; x <= o.w + 10; x += 10) c.lineTo(x, ridgeY(o, x) + k * 15); c.stroke(); }
+  }, 2);
+}
+const CLOUD = 'M-60,10 C-82,10 -86,-14 -66,-20 C-64,-42 -36,-46 -26,-30 C-20,-54 16,-56 22,-32 C34,-46 62,-40 58,-18 C76,-16 80,6 62,10 C88,12 108,0 116,-14 C114,8 92,24 60,20 C40,18 20,14 0,16 C-22,18 -42,14 -60,10Z';
+function cloud(c, x, y, s, fill) {  // the ruyi cloud (如意云)
+  c.save(); c.translate(x, y); c.scale(s, s);
+  part(c, P(CLOUD), fill, c => { spiral(c, -50, -8, 13, 1.4, 2.2, -1); spiral(c, -3, -22, 15, 1.5, 2.2, -1); spiral(c, 38, -14, 12, 1.4, 2.2, -1); }, 2.2);
+  c.restore();
+}
+function tuft(c, x, y, s, t) {
+  c.save(); c.translate(x, y); c.scale(s, s); c.strokeStyle = INK; c.lineCap = 'round';
+  for (let i = 0; i < 6; i++) {
+    const a = -0.9 + i * 0.36, l = 18 + 8 * hash(i + x), sw = 3 * Math.sin(t * 1.5 + i + x * 0.03);
+    c.lineWidth = 2.2 - i * 0.2; c.beginPath(); c.moveTo(0, 0);
+    c.quadraticCurveTo(Math.sin(a) * l * 0.4, -l * 0.6, Math.sin(a) * l + sw, -l * Math.cos(a * 0.6)); c.stroke();
+  }
+  c.restore();
+}
+// Light that isn't shadow — sun, moon, lantern — is *added* to the screen with 'screen'.
+function glowDisc(c, x, y, r, rgb, halo = 0.3) {
+  c.save(); c.globalCompositeOperation = 'screen';
+  let g = c.createRadialGradient(x, y, r * 0.5, x, y, r * 3);
+  g.addColorStop(0, `rgba(${rgb},${halo})`); g.addColorStop(1, `rgba(${rgb},0)`);
+  c.fillStyle = g; c.fillRect(x - r * 3, y - r * 3, r * 6, r * 6);
+  g = c.createRadialGradient(x, y, 0, x, y, r);
+  g.addColorStop(0, `rgba(${rgb},0.75)`); g.addColorStop(0.93, `rgba(${rgb},0.6)`); g.addColorStop(1, `rgba(${rgb},0)`);
+  c.fillStyle = g; c.beginPath(); c.arc(x, y, r, 0, TAU); c.fill();
+  c.restore();
+}
+</script>
+
+<figure class="demo" id="d-depth" data-w="800" data-h="480">
+  <canvas></canvas><div class="controls"></div>
+  <figcaption>Slide the warrior from the paper toward the lamp: larger, softer, paler. The rods are always far from the screen, so their shadows are always soft.</figcaption>
+</figure>
+<script type="text/x-demo" data-for="d-depth">
+const S = makeStage(demo.canvas, demo.W, demo.H);
+const dist = demo.slider('distance from screen', 0, 1, 0);
+const rods = demo.toggle('control rods', true);
+demo.loop(t => {
+  S.begin(t);
+  S.layer(4, c => mountains(c, { w: S.w, h: S.h, seed: 3, base: 300, amp: 120, freq: 0.004, scroll: t * 4, fill: 'rgba(96,56,30,0.3)' }));
+  S.layer(1.5, c => { mountains(c, { w: S.w, h: S.h, seed: 5, base: 400, amp: 80, freq: 0.006, scroll: t * 10, fill: 'rgba(66,36,18,0.55)' });
+                      cloud(c, 140 + t * 6 % 700, 90, 0.7, 'rgba(120,70,40,0.3)'); });
+  const d = dist(), D = 1.6;                    // lamp distance, in the same arbitrary units
+  const grow = D / (D - d * 0.6), blur = 10 * d * 0.6 / (D - d * 0.6), alpha = 1 / (grow * grow) ** 0.6;
+  S.layer(blur, c => {
+    c.translate(400, 250); c.scale(grow, grow); c.translate(-400, -250);   // magnify about the lamp's axis
+    c.translate(400, 470 - WARRIOR_FEET);
+    drawRig(c, WARRIOR, warriorPose(t, { hand: [30 + snoise(t) * 2, -40], head: 0.03 * Math.sin(t) }), { rods: rods() && S });
+  }, alpha);
+  S.end(t);
+});
+</script>
+
+<p>Look again at <code>rod()</code> and <code>drawRods()</code> in <code>stage.js</code>. As each rig is drawn, any node with a <code>rod</code> asks the current transform where its attachment point lands on the stage, using <code>getTransform().transformPoint()</code>, the same trick as <code>localDir</code>. The points are collected, and after all the layers, they're drawn together as lines running off the bottom of the frame, in one layer blurred by 2.4 px. Rods are held away from the screen by the performer's hands, so they should always be the softest shadows in the frame. Their faint presence tells the audience, without saying so, that a person is working these figures.</p>
+
+<!-- ─────────────────────────────────────────────────────────── 15 -->
+<h2 id="show"><span class="n">Step 15</span>Directing a scene</h2>
+
+<p>The last layer of abstraction is time at the scale of a performance. A show is a list of scenes. Each scene has a duration, a screen tint, fade times and a <code>draw(S, lt, t)</code> that receives <em>local</em> time <code>lt</code>, measured from the start of the scene, and global time <code>t</code>, for things that shouldn't reset like flicker and wind. Between scenes the lamp dims almost to black, exactly as a theatre would, and that dimness hides the scene change. The text is inked one character at a time down a vertical column, each character sharpening from a blur and settling a few pixels, like ink soaking into paper.</p>
+
+<script type="text/x-lib" data-file="show.js">
+const KAI = '"Kaiti SC","STKaiti","KaiTi","BiauKai","Songti SC","STSong",serif';
+
+function inkText(S, text, x, y, size, lt, start, every = 0.3) {
+  const c = S.X; c.save();
+  c.font = `${size}px ${KAI}`; c.textAlign = 'center'; c.textBaseline = 'middle';
+  c.globalCompositeOperation = 'multiply'; c.fillStyle = 'rgb(30,14,6)';
+  [...text].forEach((ch, i) => {
+    const a = ease((lt - start - i * every) / 1.1);          // each character has its own entrance
+    if (a <= 0) return;
+    c.globalAlpha = a * 0.9;
+    c.filter = a < 1 ? `blur(${(1 - a) * 5 * S.dpr}px)` : 'none';
+    c.fillText(ch, x, y + i * size * 1.15 + (1 - a) * 5);
+  });
+  c.restore();
+  return start + text.length * every;                         // when the last character lands
+}
+function seal(S, x, y, lt, start, size = 30) {                // the red name-seal, stamped last
+  const a = ease((lt - start) / 0.5); if (a <= 0) return;
+  const c = S.X; c.save(); c.translate(x, y); c.scale(1 + (1 - a) * 0.25, 1 + (1 - a) * 0.25);
+  c.globalAlpha = a * 0.9; c.globalCompositeOperation = 'multiply';
+  c.fillStyle = 'rgb(178,34,22)'; c.fillRect(-size / 2, -size / 2, size, size);
+  c.globalCompositeOperation = 'source-over'; c.fillStyle = 'rgba(245,224,190,0.92)';
+  c.font = `${size * 0.4}px ${KAI}`; c.textAlign = 'center'; c.textBaseline = 'middle';
+  c.fillText('李', size * 0.2, -size * 0.2); c.fillText('颀', size * 0.2, size * 0.2);
+  c.fillText('之', -size * 0.2, -size * 0.2); c.fillText('印', -size * 0.2, size * 0.2);
+  c.restore();
+}
+
+const GROUND = 408;
+const SHOW = [
+  { dur: 9, tint: SCREEN_WARM, fadeIn: 2.4, fadeOut: 1.1,       // 男儿事长征 — he rides out
+    draw(S, lt, t) {
+      glowDisc(S.X, 170, 110, 40, '255,236,200');
+      S.layer(3.2, c => mountains(c, { w: S.w, h: S.h, seed: 1, base: 310, amp: 130, freq: 0.004, scroll: lt * 6, fill: 'rgba(96,56,30,0.3)' }));
+      S.layer(1.2, c => {
+        mountains(c, { w: S.w, h: S.h, seed: 2, base: 380, amp: 90, freq: 0.006, scroll: lt * 22, fill: 'rgba(66,36,18,0.6)' });
+        cloud(c, 90 + lt * 9, 80, 0.55, 'rgba(120,70,40,0.35)');
+      });
+      const x = lerp(170, 330, ease(lt / 4.5));
+      S.layer(0, c => {
+        part(c, P(`M-10,${GROUND} L810,${GROUND} L810,460 L-10,460Z`), 'rgba(50,28,14,0.84)', null, 2);
+        for (let i = 0; i < 9; i++) tuft(c, ((i * 131 - lt * 70) % 900 + 900) % 900 - 50, GROUND + 3, 0.8 + hash(i) * 0.5, t);
+        const hp = horsePose(t, 'walk', lt * 0.9);
+        hp.rider = warriorPose(t, { sit: true, spear: -0.14, spearUp: 170, hand: [26, -40], head: 0.02 * Math.sin(t * 0.6) });
+        c.translate(x, GROUND - HORSE_FEET * 0.6 + hp.bob * 0.6); c.scale(0.6, 0.6);
+        drawRig(c, HORSE, hp, { rods: S });
+      });
+      inkText(S, '男儿事长征', 740, 70, 34, lt, 1.6);
+    } },
+  { dur: 10, tint: SCREEN_NIGHT, fadeIn: 1.2, fadeOut: 2.4,       // 未得报恩不能归 — he turns back to the frontier
+    draw(S, lt, t) {
+      glowDisc(S.X, 560, 100, 34, '255,250,232', 0.35);
+      S.layer(3.2, c => mountains(c, { w: S.w, h: S.h, seed: 7, base: 330, amp: 120, freq: 0.004, fill: 'rgba(40,34,30,0.35)' }));
+      const turn = ease((lt - 5) / 0.8);
+      let facing = -Math.cos(Math.PI * turn);                     // the flip
+      if (Math.abs(facing) < 0.03) facing = 0.03 * Math.sign(facing || 1);
+      const gust = 0.5 + 0.4 * snoise(t * 0.5);
+      S.layer(0, c => {
+        part(c, P(`M-10,${GROUND} C200,${GROUND - 20} 500,${GROUND - 10} 810,${GROUND - 40} L810,460 L-10,460Z`), 'rgba(40,28,20,0.86)', null, 2);
+        c.translate(330, GROUND - 14 - WARRIOR_FEET * 0.95); c.scale(0.95 * facing, 0.95);
+        drawRig(c, WARRIOR, warriorPose(t, {
+          wind: gust, head: lerp(0.2, -0.1, turn),                 // head bowed toward home, then raised
+          hand: [30, lerp(-38, -70, turn)], spear: lerp(-0.05, -0.2, turn) }), { rods: S });
+      });
+      const done = inkText(S, '未得报恩不能归', 740, 60, 30, lt, 1.2, 0.28);
+      seal(S, 740, 60 + 7 * 30 * 1.15 + 14, lt, done + 1.2);
+    } },
+];
+const SHOW_LENGTH = SHOW.reduce((a, s) => a + s.dur, 0);
+
+function runShow(S, time) {
+  let lt = time % SHOW_LENGTH, i = 0;
+  while (lt >= SHOW[i].dur) lt -= SHOW[i++].dur;
+  const sc = SHOW[i];
+  S.begin(time, sc.tint);
+  sc.draw(S, lt, time);
+  const lamp = Math.min(ease(lt / sc.fadeIn), ease((sc.dur - lt) / sc.fadeOut));
+  const catching = i === 0 && lt < sc.fadeIn ? 0.85 + 0.15 * snoise(time * 14) : 1;   // the wick catches
+  S.end(time, lerp(0.04, 1, lamp) * catching);
+}
+</script>
+
+<figure class="demo" id="d-show" data-w="800" data-h="450">
+  <canvas></canvas><div class="controls"></div>
+  <figcaption>The same show as the opening banner, with a scrubber. Pause and drag through the lamp cue between scenes, or through the flip at 14 seconds.</figcaption>
+</figure>
+<script type="text/x-demo" data-for="d-show">
+const S = makeStage(demo.canvas, demo.W, demo.H);
+const play = demo.toggle('play', true);
+const scrub = demo.slider('time', 0, SHOW_LENGTH - 0.01, 0, 0.01);
+let clock = 0;
+demo.loop((t, dt) => {
+  if (play()) { clock = (clock + dt) % SHOW_LENGTH; scrub.set(clock); } else clock = scrub();
+  runShow(S, clock);
+});
+</script>
+
+<p>Because every pose, ripple and flicker is a pure function of time, the scrubber just works. There's no replay and no hidden state; <code>runShow(S, 14.2)</code> always draws the same frame. That's what made the full piece manageable. Seven scenes, each timed against its lines of verse, could be jumped into, paused and screenshotted at any second while I tuned them.</p>
+
+<!-- ─────────────────────────────────────────────────────────── notes -->
+<hr>
+<h2 id="perf"><span class="n">Afterword</span>Performance and pitfalls</h2>
+
+<ul>
+  <li><strong>Reuse the figure layer.</strong> One offscreen canvas per stage, cleared and reused for every layer. A full-canvas <code>drawImage</code> with multiply is fast on the GPU, while allocating canvases every frame is not.</li>
+  <li><strong>Blur a layer, not a piece.</strong> <code>ctx.filter = 'blur()'</code> costs roughly the same whether the layer contains one mountain or thirty soldiers, so group by depth. Blur radii are in <em>device</em> pixels, so multiply by the DPR. Where <code>ctx.filter</code> isn't supported, drawing the layer into a smaller canvas and scaling it back up is an acceptable fake.</li>
+  <li><strong>Cap the device-pixel ratio.</strong> Rendering at 3× on a phone quadruples the fill cost for detail nobody can see through a paper screen. I cap at 2.</li>
+  <li><strong>Cache static paths, build dynamic ones.</strong> <code>P()</code> caches every fixed silhouette. Feathers, strips and manes are rebuilt each frame, and that's fine because they're small.</li>
+  <li><strong>Carving is cheap until it isn't.</strong> Each carve is a <code>clip</code> plus <code>destination-out</code> drawing. Thirty soldiers with fish-scale armour means thousands of arcs. For distant, blurred crowds, pass a simpler carve or none, since nobody can see scales through four pixels of blur.</li>
+  <li><strong>Never let a matrix collapse.</strong> A turn that scales to exactly 0 makes <code>inverse()</code> return NaNs, and every tassel on that puppet disappears for a frame.</li>
+  <li><strong>Only animate what's on screen.</strong> The demos on this page share one <code>requestAnimationFrame</code> loop and pause when scrolled out of view, using an <code>IntersectionObserver</code>.</li>
+</ul>
+
+<h2 id="end"><span class="n">Coda</span>Why this works</h2>
+
+<p>Looking back, the result depends much less on drawing skill than on a handful of honest choices. The screen is the only source of light. Colour is a filter, so everything multiplies. Carving is subtraction, so it happens in a separate layer. Every piece swings about its own rivet, so a puppet is a tree and a pose is a table. Distance becomes blur, and time is the only input. Once those are in place, a new character is mostly a few path strings and a list of parts. The medium's constraints, flat pieces, dyed hide, one lamp, happen to be very good constraints for code.</p>
+
+<p>If you build something with this, start the way the craft does: cut one piece, hold it up to the light, and see how it glows.</p>
+
+<footer>
+  All drawing on this page is generated live by the code blocks above. There are no images, fonts or libraries. The finished animation is <a href="gu-yi-li-qi.html">古意 · 李颀</a>.
+</footer>
+
+</main>
+
+<script>
+/* ── page runtime: runs library blocks, mounts demos, renders code ─────────── */
+(function () {
+  const KW = /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|(`(?:\\.|[^`\\])*`|'(?:\\.|[^'\\\n])*'|"(?:\\.|[^"\\\n])*")|\b(const|let|var|function|return|if|else|for|of|in|new|while|break|continue|true|false|null|undefined|this|typeof)\b|\b(\d+(?:\.\d+)?)\b|([A-Za-z_$][\w$]*)(?=\s*\()/g;
+  const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  function highlight(src) {
+    let out = '', last = 0;
+    for (const m of src.matchAll(KW)) {
+      out += esc(src.slice(last, m.index));
+      const cls = m[1] ? 'c' : m[2] ? 's' : m[3] ? 'k' : m[4] ? 'n' : 'f';
+      out += `<span class="${cls}">${esc(m[0])}</span>`; last = m.index + m[0].length;
+    }
+    return out + esc(src.slice(last));
+  }
+  const tidy = s => s.replace(/^\n+|\s+$/g, '');
+  function codeBlock(src, title, note) {
+    const d = document.createElement('div'); d.className = 'code';
+    d.innerHTML = `<div class="file">${esc(title)}<span>${note || ''}</span></div><pre><code>${highlight(tidy(src))}</code></pre>`;
+    return d;
+  }
+
+  // 1. library blocks: shown in place, executed in document order as global scripts
+  for (const s of document.querySelectorAll('script[type="text/x-lib"]')) {
+    const src = s.textContent, lines = tidy(src).split('\n').length;
+    s.after(codeBlock(src, s.dataset.file, lines + ' lines'));
+    const run = document.createElement('script'); run.textContent = src; document.body.appendChild(run);
+  }
+
+  // 2. demos
+  const DEMOS = [];
+  function mount(fig, src) {
+    const canvas = fig.querySelector('canvas'), bar = fig.querySelector('.controls');
+    const W = +(fig.dataset.w || 800), H = +(fig.dataset.h || 450);
+    const entry = { fig, fn: null, t: 0, last: 0, visible: false };
+    const add = el => { bar && bar.appendChild(el); return el; };
+    const demo = {
+      canvas, W, H, pointer: { x: W / 2, y: H / 2, down: false },
+      slider(label, min, max, value, step = 0.01) {
+        const l = add(document.createElement('label'));
+        l.innerHTML = `${label} <input type="range" min="${min}" max="${max}" step="${step}" value="${value}"><output></output>`;
+        const inp = l.querySelector('input'), out = l.querySelector('output');
+        const show = () => out.textContent = (+inp.value).toFixed(step >= 1 ? 0 : 2);
+        inp.addEventListener('input', show); show();
+        const get = () => +inp.value; get.set = v => { inp.value = v; show(); }; return get;
+      },
+      toggle(label, value = false) {
+        const l = add(document.createElement('label'));
+        l.innerHTML = `<input type="checkbox"${value ? ' checked' : ''}> ${label}`;
+        const inp = l.querySelector('input'); return () => inp.checked;
+      },
+      choice(label, options, value) {
+        const wrap = add(document.createElement('span')); wrap.className = 'lbl'; wrap.textContent = label + ' ';
+        const seg = document.createElement('span'); seg.className = 'seg'; wrap.appendChild(seg);
+        let cur = value ?? options[0];
+        for (const o of options) {
+          const b = document.createElement('button'); b.type = 'button'; b.textContent = o; if (o === cur) b.className = 'on';
+          b.onclick = () => { cur = o; seg.querySelectorAll('button').forEach(x => x.className = x === b ? 'on' : ''); };
+          seg.appendChild(b);
+        }
+        return () => cur;
+      },
+      loop(fn) { entry.fn = fn; },
+    };
+    const toStage = e => { const r = canvas.getBoundingClientRect(); demo.pointer.x = (e.clientX - r.left) / r.width * W; demo.pointer.y = (e.clientY - r.top) / r.height * H; };
+    canvas.addEventListener('pointerdown', e => { demo.pointer.down = true; toStage(e); canvas.setPointerCapture(e.pointerId); });
+    canvas.addEventListener('pointermove', toStage);
+    canvas.addEventListener('pointerup', () => demo.pointer.down = false);
+    canvas.addEventListener('pointercancel', () => demo.pointer.down = false);
+    try { new Function('demo', src)(demo); if (entry.fn) entry.fn(0, 0); }
+    catch (err) { const e = document.createElement('div'); e.className = 'err'; e.textContent = String(err && err.stack || err); fig.appendChild(e); console.error(err); }
+    DEMOS.push(entry);
+    return entry;
+  }
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    const d = DEMOS.find(d => d.fig === e.target); if (!d) return;
+    d.visible = e.isIntersecting; d.last = performance.now();
+  }), { rootMargin: '100px' });
+  for (const s of document.querySelectorAll('script[type="text/x-demo"]')) {
+    const fig = document.getElementById(s.dataset.for);
+    if (!('hidden' in s.dataset)) {
+      const det = document.createElement('details'); det.className = 'src';
+      det.innerHTML = '<summary>Demo source</summary>';
+      det.appendChild(codeBlock(s.textContent, 'demo · ' + s.dataset.for.replace(/^d-/, ''), 'the code running above'));
+      fig.after(det);
+    }
+    mount(fig, s.textContent); io.observe(fig);
+  }
+  function tick(now) {
+    for (const d of DEMOS) if (d.visible && d.fn && !document.hidden) {
+      const dt = Math.min(0.1, (now - d.last) / 1000); d.last = now; d.t += dt;
+      try { d.fn(d.t, dt); } catch (err) { console.error(err); d.fn = null; }
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
