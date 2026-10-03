@@ -86,14 +86,15 @@
         var FALLBACK_STACK = '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"';
         var SAMPLE = '\u4E2D\u6587\u793A\u4F8B';
 
-        // Each Computer Grass style is a stylesheet of ~100 unicode-range chunks
+        // Each style is a stylesheet of unicode-range chunks
         // (see tools/grass-font/build.py); the browser only fetches the chunks that
         // contain characters actually being rendered.
         var fontOptions = [
           { id: 'default', name: 'Default', note: 'System font', stack: FALLBACK_STACK },
           { id: 'computer-grass', name: 'Computer Grass', note: 'Chinese text', css: '/fonts/grass/grass.css' },
           { id: 'computer-grass-regular', name: 'Computer Grass Regular', note: 'Chinese text', css: '/fonts/grass-regular/grass.css' },
-          { id: 'computer-grass-running', name: 'Computer Grass Running', note: 'Chinese text', css: '/fonts/grass-running/grass.css' }
+          { id: 'computer-grass-running', name: 'Computer Grass Running', note: 'Chinese text', css: '/fonts/grass-running/grass.css' },
+          { id: 'qiji-combo', name: 'Qiji Combo', note: 'Chinese text', css: '/fonts/qiji-combo/grass.css' }
         ];
         fontOptions.forEach(function (opt) {
           if (opt.css) opt.stack = '"' + opt.name + '", ' + FALLBACK_STACK;

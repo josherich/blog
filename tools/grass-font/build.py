@@ -27,13 +27,15 @@ from fontTools.ttLib.tables._g_l_y_f import GlyphCoordinates
 sys.setrecursionlimit(10000)
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-# style -> (source TTF, output dir, CSS family, (eps, min_extent, min_area))
+# style -> (source font, output dir, CSS family, (eps, min_extent, min_area) or None, glyphs per chunk)
 # "grass" and "running" are traced from thousands of tiny polygons and need heavy
-# simplification; "regular" has clean outlines, so it only gets light touching.
+# simplification; "regular" and "qiji" have clean outlines (simplifier = None).
+# Qiji Combo has ~21k glyphs at ~0.9 KB each, so it gets bigger chunks to keep the file count down.
 STYLES = {
-    "grass": ("ComputerGrassGrass.ttf", "grass", "Computer Grass", (1.5, 6, 4)),
-    "regular": ("ComputerGrassRegular.ttf", "grass-regular", "Computer Grass Regular", (0, 0, 0)),
-    "running": ("ComputerGrassRunning.ttf", "grass-running", "Computer Grass Running", (1.5, 6, 4)),
+    "grass": ("ComputerGrassGrass.ttf", "grass", "Computer Grass", (1.5, 6, 4), 60),
+    "regular": ("ComputerGrassRegular.ttf", "grass-regular", "Computer Grass Regular", None, 60),
+    "running": ("ComputerGrassRunning.ttf", "grass-running", "Computer Grass Running", (1.5, 6, 4), 60),
+    "qiji": ("qiji-combo.woff2", "qiji-combo", "Qiji Combo", None, 80),
 }
 CJK = re.compile("[㐀-䶿一-鿿豈-﫿]")
 CONTENT_DIRS = ["_posts", "_layouts", "_includes", "_drafts"]
@@ -213,8 +215,9 @@ def build_chunk(job):
     sub.populate(unicodes=cps)
     sub.subset(f)
     glyf = f["glyf"]
-    for name in f.getGlyphOrder():
-        simplify_glyph(glyf[name], glyf, *params)
+    if params:
+        for name in f.getGlyphOrder():
+            simplify_glyph(glyf[name], glyf, *params)
     path = os.path.join(outdir, "g%03d.woff2" % idx)
     f.flavor = "woff2"
     f.save(path)
@@ -224,13 +227,21 @@ def build_chunk(job):
 # ----------------------------------------------------------------------- main --
 
 def build_style(style, args, counts, edges, zipf_frequency):
-    src_name, out_name, family, params = STYLES[style]
+    src_name, out_name, family, params, chunk_size = STYLES[style]
     src = os.path.join(ROOT, "fonts", src_name)
     out = os.path.join(ROOT, "fonts", out_name)
-    if args.eps is not None:
+    if args.eps is not None and params:
         params = (args.eps, args.min_extent, args.min_area)
     t0 = time.time()
     print("== %s (%s)" % (style, family))
+    if src.endswith(".woff2"):
+        # WOFF2 must be fully decompressed on every open; do it once so workers can load the TTF lazily.
+        ttf = src[:-len(".woff2")] + ".ttf"
+        if not os.path.exists(ttf):
+            f = TTFont(src)
+            f.flavor = None
+            f.save(ttf)
+        src = ttf
 
     font = TTFont(src, lazy=True)
     cmap = dict(font.getBestCmap())
@@ -258,7 +269,8 @@ def build_style(style, args, counts, edges, zipf_frequency):
         return (-(site > 0), -site, -zipf, min(cps))
 
     order = sorted(by_glyph.items(), key=score)
-    chunks = [order[i:i + args.chunk] for i in range(0, len(order), args.chunk)]
+    chunk_size = args.chunk or chunk_size
+    chunks = [order[i:i + chunk_size] for i in range(0, len(order), chunk_size)]
     if args.limit:
         chunks = chunks[:args.limit]
 
@@ -294,7 +306,7 @@ def main():
     ap.add_argument("--eps", type=float, default=None, help="override simplifier settings for the style")
     ap.add_argument("--min-extent", type=float, default=6)
     ap.add_argument("--min-area", type=float, default=4)
-    ap.add_argument("--chunk", type=int, default=60, help="glyphs per WOFF2 file")
+    ap.add_argument("--chunk", type=int, default=0, help="glyphs per WOFF2 file (default: per style)")
     ap.add_argument("--jobs", type=int, default=os.cpu_count())
     ap.add_argument("--limit", type=int, default=0, help="only build the first N chunks (testing)")
     args = ap.parse_args()

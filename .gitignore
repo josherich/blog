@@ -64,3 +64,6 @@ _site
 
 # Computer Grass source font (375 MB, over GitHub limit); built chunks in fonts/grass/ are committed
 fonts/*.ttf
+
+# Qiji Combo source (built chunks in fonts/qiji-combo/ are committed)
+fonts/*.woff2
