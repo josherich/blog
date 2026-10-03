@@ -56,6 +56,139 @@
   float: right;
 }
 
+.site .footer .footer-tools {
+  float: right;
+  margin-top: 1.1em;
+}
+
+.site .footer .font-btn {
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: #0366d6;
+  cursor: pointer;
+}
+
+.site .footer .font-btn:hover {
+  color: #024ea4;
+  text-decoration: underline;
+}
+
+html.font-custom body {
+  font-family: var(--cn-font);
+}
+
+.font-modal[hidden] {
+  display: none;
+}
+
+.font-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.font-modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.font-modal-card {
+  position: relative;
+  width: 260px;
+  max-width: calc(100vw - 40px);
+  padding: 14px 16px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+  color: #333;
+  line-height: 1.5;
+}
+
+.font-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.font-modal-header h3 {
+  margin: 0;
+  font-size: 1em;
+  font-weight: 600;
+}
+
+.font-modal-close {
+  border: none;
+  background: none;
+  padding: 0 2px;
+  font-size: 20px;
+  line-height: 1;
+  color: #999;
+  cursor: pointer;
+}
+
+.font-modal-close:hover {
+  color: #333;
+}
+
+.font-modal-option {
+  display: block;
+  width: 100%;
+  margin: 2px 0;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  text-align: left;
+  font: inherit;
+  color: #333;
+  cursor: pointer;
+}
+
+.font-modal-option:hover {
+  background: #f2f2f2;
+}
+
+.font-modal-option.selected {
+  background: #eef4ff;
+}
+
+.font-option-label {
+  display: block;
+  font-weight: 600;
+}
+
+.font-option-check {
+  margin-left: 6px;
+  color: #0366d6;
+}
+
+.font-option-note {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  color: #999;
+}
+
+.font-option-sample {
+  display: block;
+  margin-top: 2px;
+  font-size: 15px;
+  color: #555;
+}
+
 .site .footer .rss img {
   border: 0;
 }

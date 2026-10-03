@@ -63,8 +63,174 @@
             <br/>
           </p>
         </div>
+        <div class="footer-tools">
+          <button type="button" class="font-btn" id="fontBtn">Font</button>
+        </div>
       </div>
     </div>
+
+    <div class="font-modal" id="fontModal" hidden>
+      <div class="font-modal-backdrop" data-font-close></div>
+      <div class="font-modal-card" role="dialog" aria-modal="true" aria-labelledby="fontModalTitle">
+        <div class="font-modal-header">
+          <h3 id="fontModalTitle">Font</h3>
+          <button type="button" class="font-modal-close" data-font-close aria-label="Close">&times;</button>
+        </div>
+        <div class="font-modal-list" id="fontModalList"></div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        var STORAGE_KEY = 'josherich-font';
+        var FALLBACK_STACK = '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"';
+        var SAMPLE = '\u4E2D\u6587\u793A\u4F8B';
+
+        // Each Computer Grass style is a stylesheet of ~100 unicode-range chunks
+        // (see tools/grass-font/build.py); the browser only fetches the chunks that
+        // contain characters actually being rendered.
+        var fontOptions = [
+          { id: 'default', name: 'Default', note: 'System font', stack: FALLBACK_STACK },
+          { id: 'computer-grass', name: 'Computer Grass', note: 'Chinese text', css: '/fonts/grass/grass.css' },
+          { id: 'computer-grass-regular', name: 'Computer Grass Regular', note: 'Chinese text', css: '/fonts/grass-regular/grass.css' },
+          { id: 'computer-grass-running', name: 'Computer Grass Running', note: 'Chinese text', css: '/fonts/grass-running/grass.css' }
+        ];
+        fontOptions.forEach(function (opt) {
+          if (opt.css) opt.stack = '"' + opt.name + '", ' + FALLBACK_STACK;
+        });
+
+        var modal = document.getElementById('fontModal');
+        var listEl = document.getElementById('fontModalList');
+        var openBtn = document.getElementById('fontBtn');
+        var current = 'default';
+
+        function pageCjk() {
+          var seen = {}, out = '';
+          (document.body.innerText.match(/[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]/g) || []).forEach(function (ch) {
+            if (!seen[ch]) { seen[ch] = 1; out += ch; }
+          });
+          return out;
+        }
+
+        function loadSheet(opt) {
+          if (opt.sheet) return opt.sheet;
+          opt.sheet = new Promise(function (resolve, reject) {
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = opt.css;
+            link.onload = resolve;
+            link.onerror = function () { reject(new Error('stylesheet failed')); };
+            document.head.appendChild(link);
+          }).catch(function (err) {
+            opt.sheet = null;
+            throw err;
+          });
+          return opt.sheet;
+        }
+
+        // Fetch the chunks needed for `text`; keeps opt.state ('loading' | 'loaded' | 'error').
+        function loadFont(opt, text) {
+          if (!document.fonts || !document.fonts.load) {
+            opt.state = 'error';
+            return Promise.resolve();
+          }
+          opt.state = 'loading';
+          return loadSheet(opt).then(function () {
+            return document.fonts.load('1em "' + opt.name + '"', text);
+          }).then(function () {
+            opt.state = 'loaded';
+          }, function () {
+            opt.state = 'error';
+          }).then(render);
+        }
+
+        function setFont(id, persist) {
+          current = id;
+          var root = document.documentElement;
+          var opt = fontOptions.filter(function (o) { return o.id === id; })[0];
+          if (opt && opt.css) {
+            loadFont(opt, pageCjk() || SAMPLE);
+            root.style.setProperty('--cn-font', opt.stack);
+            root.classList.add('font-custom');
+          } else {
+            root.classList.remove('font-custom');
+          }
+          if (persist) {
+            try { localStorage.setItem(STORAGE_KEY, id); } catch (e) {}
+          }
+          render();
+        }
+
+        function render() {
+          listEl.innerHTML = '';
+          fontOptions.forEach(function (opt) {
+            var selected = current === opt.id;
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'font-modal-option' + (selected ? ' selected' : '');
+
+            var label = document.createElement('span');
+            label.className = 'font-option-label';
+            label.textContent = opt.name;
+            if (selected) {
+              var check = document.createElement('span');
+              check.className = 'font-option-check';
+              check.textContent = '\u2713';
+              label.appendChild(check);
+            }
+            btn.appendChild(label);
+
+            var note = document.createElement('span');
+            note.className = 'font-option-note';
+            if (selected && opt.state === 'loading') {
+              note.textContent = 'Loading\u2026';
+            } else if (selected && opt.state === 'error') {
+              note.textContent = 'Failed to load font';
+            } else {
+              note.textContent = opt.note;
+            }
+            btn.appendChild(note);
+
+            var sample = document.createElement('span');
+            sample.className = 'font-option-sample';
+            sample.style.fontFamily = opt.stack;
+            sample.textContent = SAMPLE + ' Aa';
+            btn.appendChild(sample);
+
+            btn.addEventListener('click', function () {
+              setFont(opt.id, true);
+            });
+            listEl.appendChild(btn);
+          });
+        }
+
+        function openModal() {
+          modal.hidden = false;
+          // preview each style in its own sample
+          fontOptions.forEach(function (opt) {
+            if (opt.css && !opt.state) loadFont(opt, SAMPLE);
+          });
+          render();
+        }
+
+        function closeModal() {
+          modal.hidden = true;
+        }
+
+        openBtn.addEventListener('click', openModal);
+        modal.addEventListener('click', function (e) {
+          if (e.target.hasAttribute('data-font-close')) closeModal();
+        });
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && !modal.hidden) closeModal();
+        });
+
+        var saved = null;
+        try { saved = localStorage.getItem(STORAGE_KEY); } catch (e) {}
+        if (fontOptions.some(function (o) { return o.css && o.id === saved; })) setFont(saved, false);
+        render();
+      })();
+    </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-29751795-8"></script>
     <script>
       window.dataLayer = window.dataLayer || [];

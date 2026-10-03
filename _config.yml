@@ -25,3 +25,6 @@ plugins:
   - jekyll-feed
   - jekyll-watch
   - jemoji
+exclude:
+  - tools
+  - fonts/*.ttf

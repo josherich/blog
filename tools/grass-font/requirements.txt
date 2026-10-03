@@ -1,0 +1,4 @@
+fonttools
+brotli
+opencc-python-reimplemented
+wordfreq
