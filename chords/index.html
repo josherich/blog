@@ -1,0 +1,1195 @@
+<title>Chord Reading Studio</title>
+<meta name="description" content="Learn to sight-read piano chords on the grand staff: C major triads, common progressions, small pieces, then other keys.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: curriculum rail on the left, one key per page in the lesson column, a piano dock pinned to the bottom edge */
+:root{
+  --paper:#F3F6F5; --surface:#FFFFFF; --ink:#15201E; --muted:#586965; --rule:#D3DDDA;
+  --accent:#0D6A61; --accent-ink:#FFFFFF; --accent-soft:#D9EEEA;
+  --play:#B86200; --play-soft:#FBE8CF;
+  --maj:#0D6A61; --min:#3D4DA6; --dim:#A6461F;
+  --ok:#1F7A3A; --bad:#B3261E;
+  --dock:#E6ECEA; --key-white:#FBFBF8; --key-edge:#B9C2BF; --key-black:#1A1D1C;
+  --font-display:'Bodoni Moda', 'Didot', 'Bodoni 72', Georgia, serif;
+  --font-body:'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --dock-h:150px; --kw:30px; --bw:19px; --kh:104px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1413; --surface:#161F1E; --ink:#E3ECEA; --muted:#94A6A1; --rule:#2A3634;
+    --accent:#4FC2B2; --accent-ink:#04201C; --accent-soft:#17403A;
+    --play:#F2A73F; --play-soft:#45300F;
+    --maj:#4FC2B2; --min:#9CA8F2; --dim:#F0946A;
+    --ok:#5CCB7C; --bad:#F2867C;
+    --dock:#111918; --key-white:#E6EAE8; --key-edge:#7E8986; --key-black:#070909;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1413; --surface:#161F1E; --ink:#E3ECEA; --muted:#94A6A1; --rule:#2A3634;
+  --accent:#4FC2B2; --accent-ink:#04201C; --accent-soft:#17403A;
+  --play:#F2A73F; --play-soft:#45300F;
+  --maj:#4FC2B2; --min:#9CA8F2; --dim:#F0946A;
+  --ok:#5CCB7C; --bad:#F2867C;
+  --dock:#111918; --key-white:#E6EAE8; --key-edge:#7E8986; --key-black:#070909;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.6 var(--font-body);-webkit-font-smoothing:antialiased}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+a{color:var(--accent)}
+
+.app{display:grid;grid-template-columns:250px minmax(0,1fr);max-width:1240px;margin:0 auto}
+.rail{position:sticky;top:env(safe-area-inset-top,0px);align-self:start;max-height:calc(100vh - var(--dock-h));overflow:auto;padding:28px 22px 24px 24px;border-right:1px solid var(--rule);display:flex;flex-direction:column;gap:18px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:19px;font-weight:600;line-height:1.15}
+.brand svg{flex:none;color:var(--accent)}
+.rail-sub{margin:0;color:var(--muted);font-size:13px}
+.rail-h{margin:0 0 8px;font:500 11px/1 var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.keylist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;counter-reset:k}
+.keylist button{width:100%;display:grid;grid-template-columns:22px 1fr auto;align-items:baseline;gap:6px;padding:7px 8px;border:0;border-radius:6px;background:transparent;text-align:left}
+.keylist button:hover{background:var(--accent-soft)}
+.keylist button[aria-current="page"]{background:var(--ink);color:var(--paper)}
+.keylist .kn{font:500 11px var(--font-mono);color:inherit;opacity:.6}
+.keylist .kt{font-weight:500}
+.keylist .ks{font:500 12px var(--font-mono);opacity:.75;white-space:nowrap}
+.keylist .kbest{grid-column:2/4;font:400 11px var(--font-mono);opacity:.7}
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--rule);border-radius:7px;padding:2px;gap:2px;background:var(--surface)}
+.rail .seg{display:flex;width:100%}
+.rail .seg button{flex:1;padding:4px 2px;font-size:12.5px}
+.seg button{border:0;background:transparent;padding:4px 10px;border-radius:5px;font-size:13px;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.rail-note{font-size:12.5px;color:var(--muted);margin:6px 0 0}
+
+main{min-width:0;padding-block:36px calc(var(--dock-h) + 48px);padding-inline:44px}
+.lesson{max-width:840px}
+.key-head{display:flex;flex-direction:column;gap:14px;padding-bottom:26px;border-bottom:1px solid var(--rule)}
+.eyebrow{margin:0;font:500 12px var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+h1{margin:0;font-family:var(--font-display);font-weight:500;font-size:clamp(42px,7vw,72px);line-height:1;letter-spacing:-.01em;text-wrap:balance}
+h1 em{font-style:italic;font-weight:400;color:var(--accent)}
+.facts{display:flex;flex-wrap:wrap;gap:10px 34px;margin:4px 0 0}
+.facts div{display:flex;flex-direction:column;gap:2px}
+.facts dt{font:500 11px var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.facts dd{margin:0;font-size:16px;font-weight:500}
+.intro{margin:0;max-width:64ch;font-size:16.5px}
+.toc{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13.5px}
+.toc a{text-decoration:none;color:var(--muted);border-bottom:1px solid var(--rule)}
+.toc a:hover{color:var(--accent);border-color:var(--accent)}
+
+.sec{padding-block:38px 8px;display:flex;flex-direction:column;gap:14px;scroll-margin-top:16px}
+.sec h2{margin:0;display:flex;align-items:baseline;gap:12px;font-family:var(--font-display);font-weight:500;font-size:30px;line-height:1.15;text-wrap:balance}
+.sec h2 .n{font:500 13px var(--font-mono);color:var(--accent);min-width:1.4em}
+.sec p{margin:0;max-width:66ch}
+.sec .lede{color:var(--ink)}
+.muted{color:var(--muted)}
+.tips{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px;max-width:66ch}
+
+.score-card{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:14px 16px 12px;display:flex;flex-direction:column;gap:10px}
+.score{color:var(--ink);min-height:60px;overflow-x:auto}
+.score svg{display:block}
+.score .abcjs-note,.score .abcjs-rest{cursor:pointer}
+.score .abcjs-note:hover path{fill:var(--accent)}
+.score .hl path,.score .hl text{fill:var(--play)}
+.score .abcjs-annotation{font-family:var(--font-body)}
+.transport{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding-top:10px;border-top:1px solid var(--rule)}
+.btn-play{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:7px;background:var(--accent);color:var(--accent-ink);padding:7px 14px 7px 12px;font-weight:600;font-size:14px}
+.btn-play svg{width:12px;height:12px}
+.btn-play[aria-pressed="true"]{background:var(--play);color:var(--surface)}
+.tempo{display:inline-flex;align-items:center;gap:4px;font:500 13px var(--font-mono);font-variant-numeric:tabular-nums}
+.tempo button{width:26px;height:26px;border:1px solid var(--rule);border-radius:6px;background:var(--surface);line-height:1}
+.tempo output{min-width:2.4em;text-align:right}
+.tempo .unit{color:var(--muted);font-size:12px}
+.tog{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;color:var(--muted);cursor:pointer}
+.tog input{accent-color:var(--accent);margin:0}
+.transport select{border:1px solid var(--rule);border-radius:6px;background:var(--surface);padding:4px 6px;font-size:13.5px}
+.hint{margin-left:auto;font-size:12.5px;color:var(--muted)}
+
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--rule);background:var(--surface);border-radius:999px;padding:5px 13px;font-size:14px}
+.chip:hover{border-color:var(--accent)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip .rn{font-family:var(--font-display);font-style:italic;margin-left:6px;opacity:.85}
+.about{display:flex;flex-direction:column;gap:6px}
+.about h3{margin:0;font-size:18px;font-weight:600;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}
+.about h3 .rns{font-family:var(--font-display);font-style:italic;font-weight:400;color:var(--accent);font-size:19px}
+.about .by{font-size:13px;color:var(--muted);font-weight:400}
+.opts{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center}
+.opt{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+
+.family{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+.fam{display:flex;flex-direction:column;align-items:flex-start;gap:2px;border:1px solid var(--rule);background:var(--surface);border-radius:8px;padding:10px 10px 9px;text-align:left}
+.fam:hover{border-color:var(--accent)}
+.fam .num{font-family:var(--font-display);font-style:italic;font-size:26px;line-height:1.05}
+.fam .nm{font-weight:600}
+.fam .tones{font:400 12px var(--font-mono);color:var(--muted)}
+.fam .q{font:500 10.5px var(--font-mono);letter-spacing:.06em;text-transform:uppercase}
+.q-maj{color:var(--maj)} .q-min{color:var(--min)} .q-dim{color:var(--dim)}
+
+.shapes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.shape{border-top:2px solid var(--ink);padding-top:10px;display:flex;flex-direction:column;gap:4px}
+.shape h3{margin:0;font-size:15px;font-weight:600}
+.shape .tn{font:500 13px var(--font-mono);color:var(--accent)}
+.shape p{font-size:14px;color:var(--muted)}
+.rule-box{border:1px solid var(--accent);background:var(--accent-soft);border-radius:8px;padding:12px 14px;max-width:66ch}
+.rule-box strong{font-weight:600}
+
+.drill{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:18px;align-items:start}
+.drill-score{display:flex;justify-content:center;align-items:center;overflow:hidden;min-height:200px;border:1px solid var(--rule);border-radius:8px;background:var(--paper)}
+.drill-side{display:flex;flex-direction:column;gap:12px;min-width:0}
+.answers{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:6px}
+.ans{border:1px solid var(--rule);background:var(--surface);border-radius:7px;padding:8px 6px;display:flex;flex-direction:column;align-items:center;gap:0;font-weight:600;font-size:16px}
+.ans small{font-family:var(--font-display);font-style:italic;font-weight:400;color:var(--muted);font-size:13px}
+.ans:hover{border-color:var(--accent)}
+.ans.right{background:var(--ok);border-color:var(--ok);color:var(--surface)}
+.ans.right small,.ans.wrong small{color:inherit}
+.ans.wrong{background:var(--bad);border-color:var(--bad);color:var(--surface)}
+.feedback{min-height:48px;font-size:15px}
+.feedback .ok{color:var(--ok);font-weight:600}
+.feedback .bad{color:var(--bad);font-weight:600}
+.entered{font:500 14px var(--font-mono);color:var(--muted)}
+.stats{display:flex;flex-wrap:wrap;gap:6px 20px;font:500 13px var(--font-mono);font-variant-numeric:tabular-nums;color:var(--muted)}
+.stats b{color:var(--ink);font-weight:500}
+.row{display:flex;flex-wrap:wrap;gap:8px}
+.btn{border:1px solid var(--rule);background:var(--surface);border-radius:7px;padding:6px 12px;font-size:14px}
+.btn:hover{border-color:var(--accent)}
+.btn-primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+.next-key{margin-top:40px;padding-top:20px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.next-key button{border:0;background:none;padding:0;text-align:left;display:flex;flex-direction:column;gap:2px}
+.next-key .lbl{font:500 11px var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.next-key .big{font-family:var(--font-display);font-size:26px;font-style:italic;color:var(--accent)}
+.next-key .nx{text-align:right;align-items:flex-end;margin-left:auto}
+
+/* piano dock */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--dock);border-top:1px solid var(--rule);padding-bottom:env(safe-area-inset-bottom,0px)}
+.dock-bar{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;padding:7px 16px;max-width:1240px;margin:0 auto}
+.dock-title{font:500 11px var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.dock-hint{font-size:12.5px;color:var(--muted)}
+.dock-hint kbd{font:500 11px var(--font-mono);border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:0 4px;background:var(--surface);color:var(--ink)}
+.dock-bar .sp{margin-left:auto}
+.btn-ghost{border:1px solid var(--rule);background:var(--surface);border-radius:6px;padding:3px 10px;font-size:12.5px}
+.kb-scroll{overflow-x:auto;padding:0 16px 12px;scrollbar-width:thin}
+.kb{position:relative;height:var(--kh);margin:0 auto;touch-action:none;user-select:none;-webkit-user-select:none}
+.key{position:absolute;top:0}
+.key.white{width:var(--kw);height:100%;background:var(--key-white);border:1px solid var(--key-edge);border-radius:0 0 5px 5px}
+.key.black{width:var(--bw);height:62%;background:var(--key-black);z-index:2;border-radius:0 0 4px 4px;box-shadow:inset 0 -3px 0 rgba(255,255,255,.12)}
+.key .lab{position:absolute;left:0;right:0;bottom:5px;text-align:center;font:500 10.5px/1 var(--font-mono);pointer-events:none}
+.key.white .lab{color:#6B7673}
+.key.black .lab{color:#DDE3E1;bottom:4px;font-size:9.5px}
+.key .fg{position:absolute;left:0;right:0;text-align:center;font:600 12px/1 var(--font-mono);pointer-events:none}
+.key.white .fg{bottom:22px}
+.key.black .fg{bottom:16px}
+.key.white.mid::after{content:"";position:absolute;left:50%;top:8px;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--key-edge)}
+.key.on-play{background:var(--accent)}
+.key.on-play .lab,.key.on-play .fg{color:var(--accent-ink)}
+.key.on-user{background:var(--play)}
+.key.on-user .lab,.key.on-user .fg{color:#FFFFFF}
+.dock.collapsed .kb-scroll{display:none}
+
+@media (max-width:900px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .rail{position:static;max-height:none;border-right:0;border-bottom:1px solid var(--rule);padding:18px 16px 16px;gap:12px}
+  .rail-sub{display:none}
+  .keylist{flex-direction:row;overflow-x:auto;gap:4px;padding-bottom:4px}
+  .keylist li{flex:none}
+  .keylist button{grid-template-columns:auto auto;padding:6px 10px;border:1px solid var(--rule)}
+  .keylist .kn,.keylist .kbest{display:none}
+  main{padding-inline:16px;padding-block:24px calc(var(--dock-h) + 32px)}
+  .family{grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:104px;overflow-x:auto;padding-bottom:4px}
+  .shapes{grid-template-columns:minmax(0,1fr)}
+  .drill{grid-template-columns:minmax(0,1fr)}
+  :root{--kw:26px;--bw:16px;--kh:86px}
+  .hint{margin-left:0;width:100%}
+  .dock-hint{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+
+<div class="app">
+  <aside class="rail" aria-label="Lessons">
+    <div class="brand">
+      <svg width="34" height="30" viewBox="0 0 34 30" aria-hidden="true"><g stroke="currentColor" stroke-width="1" opacity=".55"><line x1="0" y1="5" x2="34" y2="5"/><line x1="0" y1="10" x2="34" y2="10"/><line x1="0" y1="15" x2="34" y2="15"/><line x1="0" y1="20" x2="34" y2="20"/><line x1="0" y1="25" x2="34" y2="25"/></g><g fill="currentColor"><ellipse cx="17" cy="25" rx="4.2" ry="2.9" transform="rotate(-20 17 25)"/><ellipse cx="17" cy="15" rx="4.2" ry="2.9" transform="rotate(-20 17 15)"/><ellipse cx="17" cy="5" rx="4.2" ry="2.9" transform="rotate(-20 17 5)"/></g></svg>
+      <span>Chord Reading Studio</span>
+    </div>
+    <p class="rail-sub">Read piano chords on the grand staff, one key at a time. Start with C major and work down the list.</p>
+    <div>
+      <h4 class="rail-h">Path</h4>
+      <ol class="keylist" id="keylist"></ol>
+    </div>
+    <div>
+      <h4 class="rail-h">Chord labels on scores</h4>
+      <div class="seg" id="labels-seg" role="group" aria-label="Chord labels">
+        <button type="button" data-v="both">Both</button><button type="button" data-v="names">Names</button><button type="button" data-v="numerals">Numerals</button><button type="button" data-v="none">None</button>
+      </div>
+      <p class="rail-note">Turn labels off to practise reading without help.</p>
+    </div>
+  </aside>
+  <main id="main"><div class="lesson" id="lesson"></div></main>
+</div>
+
+<div class="dock" id="dock">
+  <div class="dock-bar">
+    <span class="dock-title">Keyboard</span>
+    <span class="dock-hint">Computer keys <kbd>A</kbd>–<kbd>K</kbd> play from <span id="kb-base">C4</span>, black keys on <kbd>W</kbd> <kbd>E</kbd> <kbd>T</kbd> <kbd>Y</kbd> <kbd>U</kbd> · <kbd>Z</kbd> <kbd>X</kbd> shift octave</span>
+    <span class="sp"></span>
+    <label class="tog"><input type="checkbox" id="kb-names" checked> Note names</label>
+    <button type="button" class="btn-ghost" id="kb-midi">Connect MIDI</button>
+    <button type="button" class="btn-ghost" id="kb-toggle" aria-expanded="true">Hide keys</button>
+  </div>
+  <div class="kb-scroll" id="kb-scroll"><div class="kb" id="kb"></div></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/abcjs/6.4.4/abcjs-basic-min.js"></script>
+<script>
+'use strict';
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('crs.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('crs.' + k, JSON.stringify(v)); } catch (e) {} }
+};
+const prefs = Object.assign({ labels: 'both', keyNames: true }, store.get('prefs', {}));
+const labelFlags = () => ({ names: prefs.labels === 'both' || prefs.labels === 'names', numerals: prefs.labels === 'both' || prefs.labels === 'numerals' });
+
+/* ---------------- theory ---------------- */
+const LET = 'CDEFGAB', STEP = [0, 2, 4, 5, 7, 9, 11];
+const ACC = { '-2': '𝄫', '-1': '♭', '0': '', '1': '♯', '2': '𝄪' };
+const mod = (a, n) => ((a % n) + n) % n;
+const pcOf = n => mod(STEP[n.L] + n.acc, 12);
+const midiOf = n => 12 * (n.oct + 1) + STEP[n.L] + n.acc;
+const nameOf = n => LET[n.L] + ACC[n.acc];
+const withOct = (n, o) => ({ L: n.L, acc: n.acc, oct: o });
+const mean = a => a.reduce((s, x) => s + x, 0) / a.length;
+const SHARP_ORDER = [3, 0, 4, 1, 5, 2, 6], FLAT_ORDER = [6, 2, 5, 1, 4, 0, 3];
+const RN = { i: 1, ii: 2, iii: 3, iv: 4, v: 5, vi: 6, vii: 7 };
+const DIATONIC = { major: ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'], minor: ['i', 'ii°', 'III', 'iv', 'V', 'VI', 'VII'] };
+const PRIMARY = { major: ['I', 'IV', 'V'], minor: ['i', 'iv', 'V'] };
+const QNAME = { maj: 'major', min: 'minor', dim: 'diminished' };
+
+const KEYS = [
+  { id: 'c-major', t: 'C', m: 'major' },
+  { id: 'g-major', t: 'G', m: 'major' },
+  { id: 'f-major', t: 'F', m: 'major' },
+  { id: 'a-minor', t: 'A', m: 'minor' },
+  { id: 'd-major', t: 'D', m: 'major' },
+  { id: 'bb-major', t: 'Bb', m: 'major' },
+  { id: 'e-minor', t: 'E', m: 'minor' },
+  { id: 'd-minor', t: 'D', m: 'minor' },
+  { id: 'a-major', t: 'A', m: 'major' },
+  { id: 'eb-major', t: 'Eb', m: 'major' }
+];
+const SCALE_FINGERS = {
+  Bb: { rh: '41231234', lh: '32143213' },
+  Eb: { rh: '31234123', lh: '32143213' },
+  F: { rh: '12341234', lh: '54321321' },
+  _: { rh: '12312345', lh: '54321321' }
+};
+
+function makeKey(def) {
+  const t = { L: LET.indexOf(def.t[0]), acc: def.t[1] === '#' ? 1 : def.t[1] === 'b' ? -1 : 0 };
+  const minor = def.m === 'minor';
+  const iv = minor ? [0, 2, 3, 5, 7, 8, 10] : [0, 2, 4, 5, 7, 9, 11];
+  const scale = iv.map((x, i) => {
+    const L = (t.L + i) % 7; let acc = mod(pcOf(t) + x - STEP[L], 12); if (acc > 6) acc -= 12;
+    return { L, acc };
+  });
+  const sig = [0, 0, 0, 0, 0, 0, 0]; scale.forEach(n => (sig[n.L] = n.acc));
+  const sharps = SHARP_ORDER.filter(L => sig[L] > 0).map(L => ({ L, acc: 1 }));
+  const flats = FLAT_ORDER.filter(L => sig[L] < 0).map(L => ({ L, acc: -1 }));
+  const acc = sharps.length ? sharps : flats;
+  const word = sharps.length ? 'sharp' : 'flat';
+  const sigText = acc.length ? `${acc.length} ${word}${acc.length > 1 ? 's' : ''}: ${acc.map(nameOf).join(', ')}` : 'No sharps or flats';
+  const sigShort = sharps.length ? sharps.length + '♯' : flats.length ? flats.length + '♭' : '0';
+  const mode = minor ? 'minor' : 'major';
+  return {
+    ...def, minor, mode, tonic: t, scale, sig, sigText, sigShort,
+    abc: def.t[0] + (t.acc > 0 ? '#' : t.acc < 0 ? 'b' : '') + (minor ? 'm' : ''),
+    tonicName: nameOf(t), name: nameOf(t) + ' ' + mode,
+    relative: minor ? nameOf(scale[2]) + ' major' : nameOf(scale[5]) + ' minor',
+    leading: minor ? { L: scale[6].L, acc: scale[6].acc + 1 } : scale[6]
+  };
+}
+
+function chordOf(key, rn) {
+  const m = /^([ivIV]+)(°?)$/.exec(rn);
+  const base = m[1], deg = RN[base.toLowerCase()];
+  const q = m[2] ? 'dim' : base === base.toUpperCase() ? 'maj' : 'min';
+  const sc = i => ({ ...key.scale[(deg - 1 + i) % 7] });
+  const root = sc(0), third = sc(2), fifth = sc(4);
+  if (key.minor && deg === 7 && q === 'dim') root.acc += 1;
+  const semis = (a, b) => mod(pcOf(b) - pcOf(a), 12);
+  const T = { maj: [4, 7], min: [3, 7], dim: [3, 6] }[q];
+  third.acc += T[0] - semis(root, third);
+  fifth.acc += T[1] - semis(root, fifth);
+  return { rn, deg, q, root, third, fifth, tones: [root, third, fifth], name: nameOf(root) + { maj: '', min: 'm', dim: '°' }[q] };
+}
+
+function placeIn(n, lo, hi) {
+  for (let o = 0; o < 9; o++) { const x = withOct(n, o), mm = midiOf(x); if (mm >= lo && mm <= hi) return x; }
+  return withOct(n, 3);
+}
+function above(n, m) { for (let o = 0; o < 9; o++) { const x = withOct(n, o); if (midiOf(x) > m) return x; } }
+function voicings(ch, lo, hi) {
+  const t = ch.tones, out = [];
+  for (let inv = 0; inv < 3; inv++) for (let o = 1; o < 7; o++) {
+    const ord = [t[inv], t[(inv + 1) % 3], t[(inv + 2) % 3]];
+    const ns = [withOct(ord[0], o)];
+    ns.push(above(ord[1], midiOf(ns[0])));
+    ns.push(above(ord[2], midiOf(ns[1])));
+    const ms = ns.map(midiOf);
+    if (ms[0] >= lo && ms[2] <= hi) out.push({ inv, notes: ns, ms });
+  }
+  return out;
+}
+function nearest(vs, prev) {
+  let best = null, bc = 1e9;
+  for (const v of vs) { const c = v.ms.reduce((s, x, i) => s + Math.abs(x - prev.ms[i]), 0) + (v.inv ? 0.25 : 0); if (c < bc) { bc = c; best = v; } }
+  return best;
+}
+function rhVoicing(ch, prev, mode) {
+  const root = voicings(ch, 55, 90).filter(v => v.inv === 0 && v.ms[0] >= 60 && v.ms[0] <= 71)[0];
+  if (mode === 'root' || !prev) return root;
+  return nearest(voicings(ch, 57, 81), prev) || root;
+}
+function lhVoicing(ch, prev) {
+  const vs = voicings(ch, 43, 62);
+  if (!prev) return vs.filter(v => v.inv === 0).sort((a, b) => Math.abs(mean(a.ms) - 52) - Math.abs(mean(b.ms) - 52))[0] || vs[0];
+  return nearest(vs, prev);
+}
+const bassOf = ch => placeIn(ch.root, 40, 51);
+
+/* ---------------- ABC score builder ---------------- */
+function durStr(q) {
+  const map = { 1: '', 2: '2', 3: '3', 4: '4', 6: '6', 0.5: '/2', 0.25: '/4', 1.5: '3/2', 0.75: '3/4' };
+  if (map[q] !== undefined) return map[q];
+  const n = Math.round(q * 8); let a = n, b = 8; while (b) [a, b] = [b, a % b];
+  return (n / a) + '/' + (8 / a);
+}
+function noteStr(n, key, state) {
+  const k = n.L + '_' + n.oct, cur = k in state ? state[k] : key.sig[n.L];
+  let s = '';
+  if (n.acc !== cur) { s = { '-2': '__', '-1': '_', '0': '=', '1': '^', '2': '^^' }[n.acc]; state[k] = n.acc; }
+  const ch = LET[n.L];
+  return s + (n.oct >= 5 ? ch.toLowerCase() + "'".repeat(n.oct - 5) : ch + ','.repeat(4 - n.oct));
+}
+const esc = s => String(s).replace(/"/g, '');
+function emitVoice(evs, key, barLen) {
+  let s = '', state = {}, barStart = 0, prev = null;
+  for (const ev of evs) {
+    if (barLen) while (ev.t >= barStart + barLen - 1e-6) { s += ' |'; barStart += barLen; state = {}; prev = null; }
+    const join = prev && prev.dur < 1 && ev.dur < 1 && Math.floor(prev.t + 1e-6) === Math.floor(ev.t + 1e-6) && !ev.above && !ev.below && prev.notes.length && ev.notes.length;
+    if (!join) s += ' ';
+    if (ev.above) s += '"^' + esc(ev.above) + '"';
+    if (ev.below) s += '"_' + esc(ev.below) + '"';
+    if (ev.deco) s += ev.deco;
+    ev.off = s.length;
+    const ns = ev.notes;
+    s += (ns.length === 0 ? 'z' : ns.length === 1 ? noteStr(ns[0], key, state) : '[' + ns.map(n => noteStr(n, key, state)).join('') + ']') + durStr(ev.dur);
+    prev = ev;
+  }
+  return s + ' |]';
+}
+function buildScore(key, meter, voices, o = {}) {
+  const barLen = meter ? meter[0] * 4 / meter[1] : 0;
+  let abc = `X:1\n${o.stretch ? '%%stretchlast 1\n' : ''}M:${meter ? meter[0] + '/' + meter[1] : 'none'}\nL:1/4\nK:${key.abc}\n`;
+  if (voices.length > 1) abc += `%%staves {${voices.map(v => v.id).join(' ')}}\n`;
+  voices.forEach(v => (abc += `V:${v.id} clef=${v.clef}\n`));
+  const events = []; let total = 0;
+  voices.forEach(v => {
+    const body = emitVoice(v.evs, key, barLen), prefix = `[V:${v.id}]`, base = abc.length + prefix.length;
+    v.evs.forEach(e => { e.abs = base + e.off; e.voice = v.id; events.push(e); total = Math.max(total, e.t + e.dur); });
+    abc += prefix + body + '\n';
+  });
+  return { abc, events, total, barLen: barLen || 4 };
+}
+
+/* ---------------- patterns ---------------- */
+function chunks(t, dur, size) { const out = []; let x = 0; while (x < dur - 1e-6) { const d = Math.min(size, dur - x); out.push([t + x, d]); x += d; } return out; }
+function rhPattern(p, v, t, dur) {
+  if (p === 'halves' && dur > 2) return chunks(t, dur, 2).map(([tt, d]) => ({ t: tt, dur: d, notes: v.notes }));
+  if (p === 'pulse') return chunks(t, dur, 1).map(([tt, d]) => ({ t: tt, dur: d, notes: v.notes }));
+  if (p === 'arp') { const idx = [0, 1, 2, 1]; return chunks(t, dur, 0.5).map(([tt, d], i) => ({ t: tt, dur: d, notes: [v.notes[idx[i % 4]]] })); }
+  return [{ t, dur, notes: v.notes }];
+}
+function lhPattern(p, ch, t, dur, block) {
+  const b = bassOf(ch), fifth = above(ch.fifth, midiOf(b)), oct = withOct(b, b.oct + 1);
+  if (p === 'octave') return [{ t, dur, notes: [b, oct] }];
+  if (p === 'block') return [{ t, dur, notes: block().notes }];
+  if (p === 'rootfifth' && dur >= 2) return [{ t, dur: dur / 2, notes: [b] }, { t: t + dur / 2, dur: dur / 2, notes: [fifth] }];
+  if (p === 'broken') { const cyc = [b, fifth, oct, fifth]; return chunks(t, dur, 0.5).map(([tt, d], i) => ({ t: tt, dur: d, notes: [cyc[i % 4]] })); }
+  if (p === 'waltz') { const v = block(); return chunks(t, dur, 1).map(([tt, d], i) => ({ t: tt, dur: d, notes: i === 0 ? [b] : v.notes })); }
+  return [{ t, dur, notes: [b] }];
+}
+const LAST_LH = { broken: 'octave', waltz: 'block', rootfifth: 'root' };
+
+function parseBars(str) {
+  return str.split('|').map(b => b.trim().split(/\s+/).filter(Boolean).map(tok => { const [rn, bt] = tok.split(':'); return { rn, beats: bt ? +bt : 0 }; }));
+}
+function degNote(key, deg, accMark, marks) {
+  const i = deg - 1, tL = key.tonic.L, sc = key.scale[i];
+  const oct = 4 + Math.floor((tL + i) / 7) + (marks.match(/'/g) || []).length - (marks.match(/,/g) || []).length;
+  return { L: sc.L, acc: sc.acc + (accMark === '#' ? 1 : accMark === 'b' ? -1 : 0), oct };
+}
+function parseMelody(key, str) {
+  const evs = []; let t = 0;
+  for (const tok of str.split(/\s+/)) {
+    if (!tok || tok === '|') continue;
+    const m = /^(?:(r)|([#b]?)([1-7])([,']*))(?::([\d.]+))?$/.exec(tok);
+    if (!m) { console.warn('bad token', tok); continue; }
+    const dur = m[5] ? +m[5] : 1;
+    evs.push({ t, dur, notes: m[1] ? [] : [degNote(key, +m[3], m[2], m[4] || '')] });
+    t += dur;
+  }
+  return evs;
+}
+
+function realize(key, bars, meter, o) {
+  const barLen = meter[0] * 4 / meter[1], lab = o.labels || labelFlags();
+  let RH = [], LH = [], pr = null, pl = null, t = 0;
+  const marks = [];
+  bars.forEach((bar, bi) => {
+    const fixed = bar.reduce((s, x) => s + (x.beats || 0), 0), free = bar.filter(x => !x.beats).length;
+    const each = free ? (barLen - fixed) / free : 0;
+    bar.forEach((seg, si) => {
+      const dur = seg.beats || each, ch = chordOf(key, seg.rn);
+      const last = o.endWhole && bi === bars.length - 1 && si === bar.length - 1;
+      const above_ = lab.names ? ch.name : null, below = lab.numerals ? ch.rn : null;
+      if (!o.melody) {
+        const v = rhVoicing(ch, pr, o.voicing); pr = v;
+        const evs = rhPattern(last ? 'whole' : o.rh, v, t, dur);
+        evs[0].above = above_; RH.push(...evs);
+      } else marks.push({ t, above: above_ });
+      const lp = last ? (LAST_LH[o.lh] || o.lh) : o.lh;
+      const lev = lhPattern(lp, ch, t, dur, () => (pl = lhVoicing(ch, pl)));
+      lev[0].below = below; LH.push(...lev);
+      t += dur;
+    });
+  });
+  if (o.melody) {
+    RH = parseMelody(key, o.melody);
+    marks.forEach(mk => {
+      if (!mk.above) return;
+      const r = RH.find(e => Math.abs(e.t - mk.t) < 1e-6 && e.notes.length);
+      if (r) r.above = mk.above; else { const l = LH.find(e => Math.abs(e.t - mk.t) < 1e-6); if (l) l.above = mk.above; }
+    });
+  }
+  return [{ id: 'RH', clef: 'treble', evs: RH }, { id: 'LH', clef: 'bass', evs: LH }];
+}
+
+/* ---------------- content ---------------- */
+const PROGS = {
+  major: [
+    { id: 'foundation', name: 'The foundation', bars: ['I', 'IV', 'V', 'I'], about: 'Home, away, tension, home. The cadence under hymns, folk songs and early rock.' },
+    { id: 'pop', name: 'Pop axis', bars: ['I', 'V', 'vi', 'IV'], about: 'The four-chord loop behind a huge number of pop songs since the 2000s.' },
+    { id: 'fifties', name: '’50s loop', bars: ['I', 'vi', 'IV', 'V'], about: 'Doo-wop’s favourite loop. The vi chord adds a wistful turn before the climb back to I.' },
+    { id: 'twofive', name: 'ii–V–I', bars: ['ii', 'V', 'I', 'I'], about: 'The strongest pull home in jazz standards. Each root falls by a fifth.' },
+    { id: 'axis-vi', name: 'Pop axis from vi', bars: ['vi', 'IV', 'I', 'V'], about: 'The same four chords as the pop axis, started on vi so the loop sounds darker.' },
+    { id: 'canon', name: 'Canon', bars: ['I', 'V', 'vi', 'iii', 'IV', 'I', 'IV', 'V'], about: 'Pachelbel’s eight-chord pattern. The bass walks down step by step.' },
+    { id: 'blues', name: '12-bar blues', bars: ['I', 'I', 'I', 'I', 'IV', 'IV', 'I', 'I', 'V', 'IV', 'I', 'V'], about: 'Three chords over twelve bars: the form behind blues, boogie-woogie and early rock and roll.' }
+  ],
+  minor: [
+    { id: 'cadence', name: 'Minor cadence', bars: ['i', 'iv', 'V', 'i'], about: 'The minor-key foundation. V is major here: its raised 7th pulls up to the tonic.' },
+    { id: 'epic', name: 'Epic loop', bars: ['i', 'VI', 'III', 'VII'], about: 'A minor loop common in rock ballads and film scores.' },
+    { id: 'andalusian', name: 'Andalusian cadence', bars: ['i', 'VII', 'VI', 'V'], about: 'Four chords stepping down to V. Heard from flamenco to surf rock.' },
+    { id: 'twofive', name: 'ii°–V–i', bars: ['ii°', 'V', 'i', 'i'], about: 'The minor version of the jazz cadence. ii° is a diminished triad.' },
+    { id: 'circle', name: 'Circle of fifths', bars: ['i', 'iv', 'VII', 'III', 'VI', 'ii°', 'V', 'i'], about: 'Each root falls a fifth. The engine behind many Baroque sequences.' }
+  ]
+};
+const PATTERNS = [
+  { id: 'whole', name: 'Whole notes', rh: 'whole', lh: 'root' },
+  { id: 'halves', name: 'Half notes', rh: 'halves', lh: 'rootfifth' },
+  { id: 'pulse', name: 'Quarter pulse', rh: 'pulse', lh: 'octave' },
+  { id: 'broken', name: 'Broken bass', rh: 'halves', lh: 'broken' },
+  { id: 'arp', name: 'Arpeggio', rh: 'arp', lh: 'root' }
+];
+const PIECES = {
+  major: [
+    { id: 'first-light', title: 'First Light', by: 'Practice piece', meter: [4, 4], tempo: 72, rh: 'whole', lh: 'root', voicing: 'smooth',
+      harmony: 'I | IV | V | I | I IV | I V | vi IV | V I',
+      about: 'Block chords in both hands. Bars 1–4 hold each chord for a whole bar; bars 5–8 change every two beats. Each right-hand chord moves to the nearest inversion, so look for which note stays put.' },
+    { id: 'twinkle', title: 'Twinkle, Twinkle, Little Star', by: 'Traditional', meter: [4, 4], tempo: 100, lh: 'root',
+      melody: '1 1 5 5 | 6 6 5:2 | 4 4 3 3 | 2 2 1:2 | 5 5 4 4 | 3 3 2:2 | 5 5 4 4 | 3 3 2:2 | 1 1 5 5 | 6 6 5:2 | 4 4 3 3 | 2 2 1:2',
+      harmony: 'I | IV I | IV I | V I | I IV | I V | I IV | I V | I | IV I | IV I | V I',
+      about: 'Melody in the right hand, one bass note per chord in the left. Read the bass note as the chord root: I, IV or V.' },
+    { id: 'ode', title: 'Ode to Joy', by: 'Ludwig van Beethoven, Symphony No. 9', meter: [4, 4], tempo: 100, lh: 'block',
+      melody: '3 3 4 5 | 5 4 3 2 | 1 1 2 3 | 3:1.5 2:0.5 2:2 | 3 3 4 5 | 5 4 3 2 | 1 1 2 3 | 2:1.5 1:0.5 1:2 | 2 2 3 1 | 2 3:0.5 4:0.5 3 1 | 2 3:0.5 4:0.5 3 2 | 1 2 5,:2 | 3 3 4 5 | 5 4 3 2 | 1 1 2 3 | 2:1.5 1:0.5 1:2',
+      harmony: 'I | V | I | V | I | V | I | V I | V I | V I | V | I V | I | V | I | V I',
+      about: 'The left hand holds full triads. Almost every bar is I or V, and V sits in an inversion so the hand barely moves.' },
+    { id: 'waltz', title: 'Little Waltz', by: 'Practice piece', meter: [3, 4], tempo: 112, lh: 'waltz',
+      melody: '3:2 5 | 2:2 5 | 1:2 3 | 4:2 6 | 5:2 1\' | 7:2 2\' | 1\' 6 7 | 1\':3',
+      harmony: 'I | V | vi | IV | I | V | IV:2 V:1 | I',
+      about: 'Waltz bass: the root on beat 1, the chord on beats 2 and 3. The melody spells each chord, so read it as broken chords rather than single notes.' },
+    { id: 'ballad', title: 'Ballad', by: 'Practice piece', meter: [4, 4], tempo: 76, rh: 'pulse', lh: 'broken', voicing: 'smooth', endWhole: true,
+      harmony: 'I | V | vi | IV | I | V | IV V | I',
+      about: 'Right hand repeats each chord in quarter notes; left hand rolls root, fifth, octave, fifth in eighths. Watch the inversions change in the right hand.' }
+  ],
+  minor: [
+    { id: 'lantern', title: 'Lantern', by: 'Practice piece', meter: [4, 4], tempo: 84, lh: 'block',
+      melody: '1 2 3 5 | 4 3 4 6 | 5 2 #7, 2 | 1:4 | 3 5 3 1 | 4 6 4 1 | #7, 2 5:2 | 1:4',
+      harmony: 'i | iv | V | i | i | iv | V | i',
+      about: 'i, iv and V in the left hand. In the V bars the melody uses the raised 7th: it carries an accidental every time.' },
+    { id: 'steps', title: 'Andalusian Steps', by: 'Practice piece', meter: [4, 4], tempo: 84, rh: 'halves', lh: 'octave', voicing: 'smooth', endWhole: true,
+      harmony: 'i | VII | VI | V | i | VII | VI | V | i',
+      about: 'Right-hand chords in half notes over left-hand octaves. The bass walks down a step each bar.' },
+    { id: 'minor-waltz', title: 'Minor Waltz', by: 'Practice piece', meter: [3, 4], tempo: 112, lh: 'waltz',
+      melody: '5:2 3 | 4:2 6 | #7,:2 2 | 1:3 | 3:2 1 | 4 6 4 | 2 #7, 2 | 1:3',
+      harmony: 'i | iv | V | i | VI | iv | V | i',
+      about: 'Waltz bass under a melody built from chord tones. Bar 5 brings in VI, the major chord a third below the tonic.' }
+  ]
+};
+
+/* ---------------- audio ---------------- */
+const A = { ctx: null };
+function ensureAudio() {
+  if (!A.ctx) {
+    const C = window.AudioContext || window.webkitAudioContext;
+    const ctx = new C(); A.ctx = ctx;
+    const comp = ctx.createDynamicsCompressor();
+    comp.threshold.value = -16; comp.ratio.value = 3; comp.attack.value = 0.003; comp.release.value = 0.25;
+    const master = ctx.createGain(); master.gain.value = 0.95;
+    comp.connect(master); master.connect(ctx.destination);
+    const bus = ctx.createGain(); bus.connect(comp);
+    const conv = ctx.createConvolver(), wet = ctx.createGain();
+    const len = Math.floor(ctx.sampleRate * 2.2), ir = ctx.createBuffer(2, len, ctx.sampleRate);
+    for (let c = 0; c < 2; c++) { const d = ir.getChannelData(c); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3.4); }
+    conv.buffer = ir; wet.gain.value = 0.16; bus.connect(conv); conv.connect(wet); wet.connect(comp);
+    const amps = [0, 1, 0.58, 0.33, 0.24, 0.14, 0.1, 0.07, 0.045, 0.03, 0.02, 0.014, 0.01, 0.007];
+    const re = new Float32Array(amps.length), im = new Float32Array(amps);
+    A.wave = ctx.createPeriodicWave(re, im);
+    const nb = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.06), ctx.sampleRate), nd = nb.getChannelData(0);
+    for (let i = 0; i < nd.length; i++) nd[i] = Math.random() * 2 - 1;
+    A.noise = nb; A.bus = bus;
+  }
+  if (A.ctx.state === 'suspended') A.ctx.resume();
+  return A.ctx;
+}
+function pianoNote(midi, when, vel = 0.6, dest = A.bus) {
+  const ctx = A.ctx, f = 440 * Math.pow(2, (midi - 69) / 12);
+  const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.Q.value = 0.5;
+  lp.frequency.setValueAtTime(Math.min(15000, f * (3 + vel * 12)), when);
+  lp.frequency.setTargetAtTime(Math.max(f * 1.6, 380), when + 0.02, 0.55);
+  const env = ctx.createGain(), rel = ctx.createGain();
+  const peak = 0.22 * vel * (midi < 48 ? 1.15 : 1), tau = 0.35 + 2.4 * Math.max(0, (100 - midi) / 64);
+  env.gain.setValueAtTime(0.0001, when);
+  env.gain.exponentialRampToValueAtTime(peak, when + 0.006);
+  env.gain.setTargetAtTime(peak * 0.42, when + 0.006, 0.09);
+  env.gain.setTargetAtTime(0, when + 0.28, tau);
+  const o1 = ctx.createOscillator(), o2 = ctx.createOscillator(), g2 = ctx.createGain();
+  o1.setPeriodicWave(A.wave); o2.setPeriodicWave(A.wave);
+  o1.frequency.value = f; o2.frequency.value = f; o2.detune.value = 4; g2.gain.value = 0.5;
+  o1.connect(lp); o2.connect(g2); g2.connect(lp); lp.connect(env); env.connect(rel); rel.connect(dest);
+  const nz = ctx.createBufferSource(), bp = ctx.createBiquadFilter(), ng = ctx.createGain();
+  nz.buffer = A.noise; bp.type = 'bandpass'; bp.frequency.value = Math.min(5000, f * 4); bp.Q.value = 1.1;
+  ng.gain.setValueAtTime(0.05 * vel, when); ng.gain.exponentialRampToValueAtTime(0.0001, when + 0.04);
+  nz.connect(bp); bp.connect(ng); ng.connect(rel);
+  nz.start(when); nz.stop(when + 0.06); o1.start(when); o2.start(when);
+  const hardStop = when + 10; o1.stop(hardStop); o2.stop(hardStop);
+  let done = false;
+  return {
+    release(at) {
+      if (done) return; done = true;
+      at = Math.max(at, when + 0.04);
+      rel.gain.setValueAtTime(1, at); rel.gain.setTargetAtTime(0, at, 0.08);
+      try { o1.stop(at + 0.6); o2.stop(at + 0.6); } catch (e) {}
+    }
+  };
+}
+function click(when, strong, dest) {
+  const ctx = A.ctx, o = ctx.createOscillator(), g = ctx.createGain();
+  o.frequency.value = strong ? 1650 : 1150;
+  g.gain.setValueAtTime(0.0001, when); g.gain.exponentialRampToValueAtTime(strong ? 0.35 : 0.22, when + 0.002); g.gain.exponentialRampToValueAtTime(0.0001, when + 0.05);
+  o.connect(g); g.connect(dest); o.start(when); o.stop(when + 0.07);
+}
+const velOf = ev => ev.voice === 'LH' ? 0.46 : ev.notes.length > 1 ? 0.5 : 0.66;
+function playNotesNow(notes, dur, vel = 0.55) {
+  const ctx = ensureAudio(), t = ctx.currentTime + 0.01;
+  notes.forEach(n => pianoNote(midiOf(n), t, vel).release(t + dur));
+}
+
+/* ---------------- keyboard ---------------- */
+const KB = { lo: 36, hi: 84, keys: {}, counts: { play: {}, user: {} }, base: 60 };
+function buildKeyboard() {
+  const kb = $('#kb'); let wi = 0;
+  for (let m = KB.lo; m <= KB.hi; m++) {
+    const pc = m % 12, black = [1, 3, 6, 8, 10].includes(pc);
+    const k = document.createElement('div');
+    k.className = 'key ' + (black ? 'black' : 'white') + (m === 60 ? ' mid' : '');
+    k.dataset.midi = m;
+    k.style.left = black ? `calc(var(--kw) * ${wi} - var(--bw) / 2)` : `calc(var(--kw) * ${wi})`;
+    if (!black) wi++;
+    k.innerHTML = `<span class="fg"></span><span class="lab">${pc === 0 ? 'C' + (m / 12 - 1) : ''}</span>`;
+    kb.appendChild(k); KB.keys[m] = k;
+  }
+  kb.style.width = `calc(var(--kw) * ${wi})`;
+  const active = new Map();
+  kb.addEventListener('pointerdown', e => {
+    const k = e.target.closest('.key'); if (!k) return;
+    e.preventDefault();
+    const m = +k.dataset.midi; active.set(e.pointerId, m); userOn(m);
+  });
+  const up = e => { if (active.has(e.pointerId)) { userOff(active.get(e.pointerId)); active.delete(e.pointerId); } };
+  kb.addEventListener('pointerup', up); kb.addEventListener('pointercancel', up); kb.addEventListener('pointerleave', up);
+  const sc = $('#kb-scroll');
+  requestAnimationFrame(() => { const c = KB.keys[60]; sc.scrollLeft = c.offsetLeft - sc.clientWidth / 2 + 60; });
+}
+function keyLabel(m, txt) { const k = KB.keys[m]; if (k) k.querySelector('.fg').textContent = txt || ''; }
+function light(m, kind, txt) {
+  const k = KB.keys[m]; if (!k) return;
+  const c = KB.counts[kind]; c[m] = (c[m] || 0) + 1;
+  k.classList.add('on-' + kind); if (txt != null) keyLabel(m, txt);
+}
+function unlight(m, kind) {
+  const k = KB.keys[m]; if (!k) return;
+  const c = KB.counts[kind]; c[m] = Math.max(0, (c[m] || 0) - 1);
+  if (!c[m]) { k.classList.remove('on-' + kind); if (!k.className.includes('on-')) keyLabel(m, ''); }
+}
+const held = {};
+function userOn(m) {
+  const ctx = ensureAudio();
+  if (held[m]) held[m].release(ctx.currentTime);
+  held[m] = pianoNote(m, ctx.currentTime + 0.005, 0.62);
+  light(m, 'user', prefs.keyNames ? spellMidi(m) : '');
+  if (drill) drill.onNote(m);
+}
+function userOff(m) {
+  if (held[m]) { held[m].release(A.ctx.currentTime); delete held[m]; }
+  unlight(m, 'user');
+}
+function spellMidi(m) {
+  const pc = m % 12, key = state.key;
+  if (key) { const all = key.scale.concat([key.leading]); const hit = all.find(n => pcOf(n) === pc); if (hit) return nameOf(hit); }
+  const flats = key && key.flats.length;
+  return (flats ? ['C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', 'B♭', 'B'] : ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'])[pc];
+}
+const KEYMAP = { a: 0, w: 1, s: 2, e: 3, d: 4, f: 5, t: 6, g: 7, y: 8, h: 9, u: 10, j: 11, k: 12, o: 13, l: 14, p: 15, ';': 16, "'": 17 };
+const typing = new Map();
+document.addEventListener('keydown', e => {
+  if (e.metaKey || e.ctrlKey || e.altKey || e.repeat) return;
+  if (e.target.closest && e.target.closest('input,select,textarea')) return;
+  const k = e.key.toLowerCase();
+  if (k === 'z' || k === 'x') { KB.base = Math.max(36, Math.min(72, KB.base + (k === 'z' ? -12 : 12))); $('#kb-base').textContent = 'C' + (KB.base / 12 - 1); return; }
+  if (k in KEYMAP) { const m = KB.base + KEYMAP[k]; if (m > KB.hi) return; typing.set(k, m); userOn(m); e.preventDefault(); }
+});
+document.addEventListener('keyup', e => { const k = e.key.toLowerCase(); if (typing.has(k)) { userOff(typing.get(k)); typing.delete(k); } });
+
+/* ---------------- score rendering + playback ---------------- */
+let shiftDown = false;
+document.addEventListener('pointerdown', e => { shiftDown = e.shiftKey; }, true);
+
+function drawScore(box, score, onClick, o = {}) {
+  const w = box.clientWidth || 600, narrow = w < 560;
+  const scale = o.scale || (narrow ? 0.82 : 1);
+  const opts = {
+    add_classes: true, scale, selectionColor: 'currentColor', dragging: false,
+    paddingtop: 4, paddingbottom: 4, paddingleft: 2, paddingright: 8,
+    staffwidth: o.staffwidth || Math.max(240, Math.floor(w / scale) - 22),
+    clickListener: ab => onClick && onClick(ab)
+  };
+  if (!o.nowrap) opts.wrap = { minSpacing: 1.5, maxSpacing: o.maxSpacing || 2.6, preferredMeasuresPerLine: o.perLine || (narrow ? 2 : 4) };
+  box.innerHTML = '<div class="score-in"></div>';
+  const inner = box.firstChild;
+  let vo = ABCJS.renderAbc(inner, score.abc, opts)[0];
+  const over = inner.getBoundingClientRect().width - w;
+  if (!o.staffwidth && over > 1) { opts.staffwidth -= Math.ceil(over / scale) + 4; vo = ABCJS.renderAbc(inner, score.abc, opts)[0]; }
+  const elems = [];
+  (vo.lines || []).forEach(l => (l.staff || []).forEach(st => st.voices.forEach(v => v.forEach(e => { if (e.el_type === 'note' && e.abselem) elems.push(e); }))));
+  score.events.forEach(ev => { const e = elems.find(x => x.startChar <= ev.abs && ev.abs < x.endChar); ev.g = e ? e.abselem.elemset : []; ev._on = false; });
+  return vo;
+}
+function evLabel(ev, i, n) { return ev.fingers ? ev.fingers[i] : prefs.keyNames ? nameOf(n) : ''; }
+function setEvOn(ev, on) {
+  if (!!ev._on === on) return; ev._on = on;
+  (ev.g || []).forEach(g => g.classList.toggle('hl', on));
+  ev.notes.forEach((n, i) => on ? light(midiOf(n), 'play', evLabel(ev, i, n)) : unlight(midiOf(n), 'play'));
+}
+
+const Player = {
+  run: null,
+  start(card) {
+    this.stop();
+    const ctx = ensureAudio(), sc = card.score, spb = 60 / card.tempo;
+    const evs = sc.events.filter(e => card.hands === 'both' || e.voice === card.hands);
+    const gain = ctx.createGain(); gain.connect(A.bus);
+    const lead = 0.12 + (card.countIn ? sc.barLen * spb : 0), t0 = ctx.currentTime + lead;
+    if (card.countIn) for (let b = 0; b < sc.barLen; b++) click(t0 - (sc.barLen - b) * spb, b === 0, gain);
+    this.run = { card, evs, spb, total: sc.total, t0, gain, next: null };
+    this.schedule(t0);
+    card.setPlaying(true);
+    const tick = () => {
+      const r = this.run; if (!r) return;
+      const b = (A.ctx.currentTime - r.t0) / r.spb;
+      if (r.card.loop && r.next == null && b > r.total - 1.5) { r.next = r.t0 + r.total * r.spb; this.schedule(r.next); }
+      if (b >= r.total) {
+        if (r.next != null) { r.evs.forEach(ev => setEvOn(ev, false)); r.t0 = r.next; r.next = null; }
+        else { this.stop(); return; }
+      }
+      const bb = (A.ctx.currentTime - r.t0) / r.spb;
+      r.evs.forEach(ev => setEvOn(ev, ev.notes.length > 0 && bb >= ev.t && bb < ev.t + ev.dur - 0.04));
+      r.raf = requestAnimationFrame(tick);
+    };
+    this.run.raf = requestAnimationFrame(tick);
+  },
+  schedule(t0) {
+    const r = this.run;
+    r.evs.forEach(ev => ev.notes.forEach(n => {
+      const at = t0 + ev.t * r.spb;
+      pianoNote(midiOf(n), at, velOf(ev), r.gain).release(at + ev.dur * r.spb - 0.03);
+    }));
+  },
+  stop() {
+    const r = this.run; if (!r) return;
+    this.run = null; cancelAnimationFrame(r.raf);
+    const now = A.ctx.currentTime;
+    r.gain.gain.setTargetAtTime(0, now, 0.03);
+    setTimeout(() => { try { r.gain.disconnect(); } catch (e) {} }, 400);
+    r.evs.forEach(ev => setEvOn(ev, false));
+    r.card.setPlaying(false);
+  }
+};
+
+let cards = [], drill = null;
+const PLAY_ICON = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1l9 5-9 5z" fill="currentColor"/></svg>';
+const STOP_ICON = '<svg viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="2" width="8" height="8" fill="currentColor"/></svg>';
+function cardHTML(id, o = {}) {
+  return `<div class="score-card" id="card-${id}">
+    <div class="score" id="score-${id}" aria-label="Score. Click a note or chord to hear it."></div>
+    <div class="transport">
+      <button type="button" class="btn-play" id="${id}-play" aria-pressed="false">${PLAY_ICON}<span>Play</span></button>
+      <div class="tempo" role="group" aria-label="Tempo"><button type="button" data-d="-4" aria-label="Slower">−</button><output id="${id}-bpm">80</output><span class="unit">bpm</span><button type="button" data-d="4" aria-label="Faster">+</button></div>
+      <label class="tog"><input type="checkbox" id="${id}-loop"> Loop</label>
+      <label class="tog"><input type="checkbox" id="${id}-count"> Count-in</label>
+      ${o.single ? '' : `<select id="${id}-hands" aria-label="Hands"><option value="both">Both hands</option><option value="RH">Right hand only</option><option value="LH">Left hand only</option></select>`}
+      <span class="hint">Click any note to hear it${o.single ? '' : ' · shift-click for one staff'}</span>
+    </div>
+  </div>`;
+}
+class ScoreCard {
+  constructor(id, build, o = {}) {
+    Object.assign(this, { id, build, tempo: o.tempo || 80, loop: false, countIn: false, hands: 'both', o });
+    this.el = $('#card-' + id); this.box = $('#score-' + id);
+    this.btn = $('#' + id + '-play'); this.bpm = $('#' + id + '-bpm');
+    this.bpm.textContent = this.tempo;
+    this.btn.addEventListener('click', () => (Player.run && Player.run.card === this) ? Player.stop() : Player.start(this));
+    $$('.tempo button', this.el).forEach(b => b.addEventListener('click', () => {
+      this.tempo = Math.max(40, Math.min(200, this.tempo + +b.dataset.d)); this.bpm.textContent = this.tempo;
+      if (Player.run && Player.run.card === this) Player.start(this);
+    }));
+    $('#' + id + '-loop').addEventListener('change', e => (this.loop = e.target.checked));
+    $('#' + id + '-count').addEventListener('change', e => (this.countIn = e.target.checked));
+    const h = $('#' + id + '-hands'); if (h) h.addEventListener('change', e => (this.hands = e.target.value));
+    cards.push(this); this.render();
+  }
+  render() {
+    if (Player.run && Player.run.card === this) Player.stop();
+    this.score = this.build();
+    drawScore(this.box, this.score, ab => this.clicked(ab), this.o);
+  }
+  clicked(ab) {
+    const ev = this.score.events.find(e => e.abs >= ab.startChar && e.abs < ab.endChar);
+    if (!ev || !ev.notes.length) return;
+    if (Player.run) Player.stop();
+    const group = shiftDown ? [ev] : this.score.events.filter(e => e === ev || (e.voice !== ev.voice && Math.abs(e.t - ev.t) < 1e-6 && e.notes.length));
+    const spb = 60 / this.tempo;
+    const dur = Math.max(0.7, Math.min(2.2, ev.dur * spb));
+    const ctx = ensureAudio(), t = ctx.currentTime + 0.01;
+    group.forEach(g => {
+      g.notes.forEach(n => pianoNote(midiOf(n), t, velOf(g)).release(t + dur));
+      setEvOn(g, true);
+      setTimeout(() => setEvOn(g, false), dur * 1000);
+    });
+  }
+  setPlaying(on) {
+    this.btn.setAttribute('aria-pressed', on);
+    this.btn.innerHTML = (on ? STOP_ICON : PLAY_ICON) + `<span>${on ? 'Stop' : 'Play'}</span>`;
+  }
+}
+
+/* ---------------- section builders ---------------- */
+const ev = (t, dur, notes, x = {}) => Object.assign({ t, dur, notes }, x);
+const N = (s) => { // 'C4', 'F#3', 'Bb2'
+  const m = /^([A-G])([#b]?)(-?\d)$/.exec(s);
+  return { L: LET.indexOf(m[1]), acc: m[2] === '#' ? 1 : m[2] === 'b' ? -1 : 0, oct: +m[3] };
+};
+
+function buildLandmarks(key) {
+  const rh = [ev(0, 4, []), ev(4, 4, []), ev(8, 4, []), ev(12, 4, [N('C4')], { above: 'Middle C' }), ev(16, 4, [N('G4')], { above: 'Treble G' }), ev(20, 4, [N('C5')], { above: 'Treble C' })];
+  const lh = [ev(0, 4, [N('C2')], { below: 'Low C' }), ev(4, 4, [N('C3')], { below: 'Bass C' }), ev(8, 4, [N('F3')], { below: 'Bass F' }), ev(12, 4, [N('C4')], { below: 'Middle C' }), ev(16, 4, []), ev(20, 4, [])];
+  return buildScore(key, [4, 4], [{ id: 'RH', clef: 'treble', evs: rh }, { id: 'LH', clef: 'bass', evs: lh }], { stretch: true });
+}
+function buildScale(key) {
+  const fg = SCALE_FINGERS[key.t] || SCALE_FINGERS._;
+  const rhT = withOct(key.tonic, 4), lhT = withOct(key.tonic, key.tonic.L >= 2 ? 2 : 3);
+  const run = (start, fingers) => {
+    const up = [];
+    for (let i = 0; i < 8; i++) {
+      const sc = key.scale[i % 7];
+      let acc = sc.acc; if (key.minor && i % 7 === 6) acc += 1;
+      up.push({ L: sc.L, acc, oct: start.oct + Math.floor((start.L + i) / 7) });
+    }
+    const fu = fingers.split('').map(Number);
+    const notes = up.concat(up.slice(0, 7).reverse()), fs = fu.concat(fu.slice(0, 7).reverse());
+    const evs = notes.map((n, i) => ev(i, 1, [n], { deco: `!${fs[i]}!`, fingers: [fs[i]] }));
+    evs.push(ev(15, 1, [], {}));
+    return evs;
+  };
+  return buildScore(key, [4, 4], [{ id: 'RH', clef: 'treble', evs: run(rhT, fg.rh) }, { id: 'LH', clef: 'bass', evs: run(lhT, fg.lh) }]);
+}
+function tonicVoicings(key) {
+  const ch = chordOf(key, key.minor ? 'i' : 'I');
+  const rh0 = voicings(ch, 50, 90).find(v => v.inv === 0 && v.ms[0] >= 55 && v.ms[0] <= 66);
+  const lh0 = voicings(ch, 36, 70).find(v => v.inv === 0 && v.ms[0] >= 41 && v.ms[0] <= 52);
+  const up = v0 => { const out = [v0]; for (let i = 1; i < 3; i++) { const p = out[i - 1].notes; const nn = [p[1], p[2], withOct(p[0], p[0].oct + 1)]; out.push({ inv: i, notes: nn, ms: nn.map(midiOf) }); } return out; };
+  return { ch, rh: up(rh0), lh: up(lh0) };
+}
+function buildTonic(key) {
+  const { rh, lh } = tonicVoicings(key);
+  const NAMES = ['Root position', '1st inversion', '2nd inversion'];
+  const RF = [[1, 3, 5], [1, 2, 5], [1, 3, 5]], LF = [[5, 3, 1], [5, 3, 1], [5, 2, 1]];
+  const R = [], L = [];
+  for (let i = 0; i < 3; i++) {
+    R.push(ev(i * 4, 4, rh[i].notes, { above: NAMES[i], below: RF[i].join('-'), fingers: RF[i] }));
+    L.push(ev(i * 4, 4, lh[i].notes, { below: LF[i].join('-'), fingers: LF[i] }));
+  }
+  return buildScore(key, [4, 4], [{ id: 'RH', clef: 'treble', evs: R }, { id: 'LH', clef: 'bass', evs: L }], { stretch: true });
+}
+function famVoicing(key, rn) {
+  const ch = chordOf(key, rn), i = ch.deg - 1;
+  const t4 = placeIn(key.tonic, 57, 68);
+  const rootOct = t4.oct + Math.floor((key.tonic.L + i) / 7);
+  const r = withOct(ch.root, rootOct), th = above(ch.third, midiOf(r)), fi = above(ch.fifth, midiOf(th));
+  const lt = placeIn(key.tonic, 40, 51), bo = lt.oct + Math.floor((key.tonic.L + i) / 7);
+  return { ch, rh: [r, th, fi], lh: [withOct(ch.root, bo)] };
+}
+function buildFamily(key) {
+  const R = [], L = [];
+  DIATONIC[key.mode].concat([DIATONIC[key.mode][0]]).forEach((rn, i) => {
+    const v = famVoicing(key, rn);
+    let rh = v.rh, lh = v.lh;
+    if (i === 7) { rh = rh.map(n => withOct(n, n.oct + 1)); lh = lh.map(n => withOct(n, n.oct + 1)); }
+    R.push(ev(i * 2, 2, rh, { above: v.ch.name }));
+    L.push(ev(i * 2, 2, lh, { below: v.ch.rn }));
+  });
+  return buildScore(key, [4, 4], [{ id: 'RH', clef: 'treble', evs: R }, { id: 'LH', clef: 'bass', evs: L }], { stretch: true });
+}
+
+/* ---------------- drill ---------------- */
+class Drill {
+  constructor(key) {
+    this.key = key;
+    this.o = Object.assign({ set: 'primary', inv: 'off', staff: 'treble', mode: 'name' }, store.get('drill', {}));
+    this.st = { n: 0, ok: 0, streak: 0, times: [] };
+    this.root = $('#drill-card');
+    $$('.seg[data-opt]', this.root).forEach(seg => {
+      const k = seg.dataset.opt;
+      $$('button', seg).forEach(b => {
+        b.setAttribute('aria-pressed', b.dataset.v === this.o[k]);
+        b.addEventListener('click', () => {
+          this.o[k] = b.dataset.v; store.set('drill', this.o);
+          $$('button', seg).forEach(x => x.setAttribute('aria-pressed', x === b));
+          this.next();
+        });
+      });
+    });
+    $('#drill-hear').addEventListener('click', () => this.hear());
+    $('#drill-next').addEventListener('click', () => this.next());
+    $('#drill-clear').addEventListener('click', () => { this.entered = []; this.showEntered(); });
+    this.next();
+  }
+  best() { return (store.get('best', {})[this.key.id]) || 0; }
+  next() {
+    clearTimeout(this.timer);
+    const set = (this.o.set === 'primary' ? PRIMARY : DIATONIC)[this.key.mode];
+    let rn; do { rn = set[Math.floor(Math.random() * set.length)]; } while (set.length > 1 && this.q && rn === this.q.ch.rn && Math.random() < 0.8);
+    const ch = chordOf(this.key, rn);
+    const clef = this.o.staff === 'mixed' ? (Math.random() < 0.5 ? 'treble' : 'bass') : this.o.staff;
+    const tr = clef === 'treble';
+    let vs = voicings(ch, tr ? 57 : 38, tr ? 84 : 64).filter(v => (this.o.inv === 'on' || v.inv === 0) && v.ms[0] >= (tr ? 59 : 41) && v.ms[0] <= (tr ? 70 : 53));
+    const v = vs[Math.floor(Math.random() * vs.length)];
+    this.q = { ch, v, clef, t0: performance.now(), done: false };
+    this.entered = [];
+    this.render();
+    $('#drill-feedback').innerHTML = this.o.mode === 'name'
+      ? '<span class="muted">Which chord is this?</span>'
+      : '<span class="muted">Play these exact three notes on the keyboard below (tap, computer keys or MIDI).</span>';
+    $('#drill-entered').hidden = this.o.mode !== 'play';
+    $('#drill-clear').hidden = this.o.mode !== 'play';
+    this.showEntered();
+    const ans = $('#drill-answers');
+    ans.hidden = this.o.mode !== 'name';
+    ans.innerHTML = set.map(r => { const c = chordOf(this.key, r); return `<button type="button" class="ans" data-rn="${r}">${c.name}<small>${r}</small></button>`; }).join('');
+    $$('.ans', ans).forEach(b => b.addEventListener('click', () => this.answer(b)));
+    this.stats();
+  }
+  render() {
+    if (!this.q) return;
+    const box = $('#drill-score');
+    const sc = buildScore(this.key, null, [{ id: 'RH', clef: this.q.clef, evs: [ev(0, 4, this.q.v.notes)] }]);
+    this.score = sc;
+    const narrow = box.clientWidth < 330;
+    drawScore(box, sc, () => this.hear(), { nowrap: true, scale: narrow ? 1.35 : 1.6, staffwidth: 130 });
+  }
+  hear() { if (this.q) { playNotesNow(this.q.v.notes, 1.4); this.flash(); } }
+  flash() {
+    const e = this.score.events[0]; setEvOn(e, true); setTimeout(() => setEvOn(e, false), 1300);
+  }
+  invName() { return ['root position', '1st inversion', '2nd inversion'][this.q.v.inv]; }
+  reveal() { const q = this.q; return `<b>${q.ch.name}</b> (${q.ch.rn}, ${QNAME[q.ch.q]}), ${this.invName()}: ${q.v.notes.map(n => nameOf(n) + n.oct).join(' ')}`; }
+  finish(ok, extra = '') {
+    const q = this.q; q.done = true;
+    const dt = (performance.now() - q.t0) / 1000;
+    this.st.n++;
+    if (ok) {
+      this.st.ok++; this.st.streak++; this.st.times.push(dt);
+      const b = store.get('best', {}); if (this.st.streak > (b[this.key.id] || 0)) { b[this.key.id] = this.st.streak; store.set('best', b); renderKeylist(); }
+    } else this.st.streak = 0;
+    $('#drill-feedback').innerHTML = (ok ? `<span class="ok">Correct.</span> ` : `<span class="bad">Not quite.</span> It’s `) + this.reveal() + (extra ? `<br><span class="muted">${extra}</span>` : '');
+    playNotesNow(q.v.notes, 1.2); this.flash();
+    this.stats();
+    if (ok) this.timer = setTimeout(() => this.next(), 1600);
+  }
+  answer(b) {
+    if (this.q.done) return;
+    const ok = b.dataset.rn === this.q.ch.rn;
+    b.classList.add(ok ? 'right' : 'wrong');
+    if (!ok) { const r = $(`.ans[data-rn="${CSS.escape(this.q.ch.rn)}"]`, this.root); if (r) r.classList.add('right'); }
+    this.finish(ok);
+  }
+  onNote(m) {
+    if (this.o.mode !== 'play' || !this.q || this.q.done) return;
+    if (!this.entered.includes(m)) this.entered.push(m);
+    this.showEntered();
+    if (this.entered.length < 3) return;
+    const want = this.q.v.ms.slice().sort((a, b) => a - b), got = this.entered.slice().sort((a, b) => a - b);
+    const exact = want.every((x, i) => x === got[i]);
+    const samePcs = !exact && want.map(x => x % 12).sort().join() === got.map(x => x % 12).sort().join();
+    setTimeout(() => this.finish(exact || samePcs, samePcs ? 'Right notes, different octave or spacing. Match the staff exactly next time.' : ''), 150);
+  }
+  showEntered() {
+    const el = $('#drill-entered'); if (!el) return;
+    el.textContent = 'Your notes: ' + (this.entered.length ? this.entered.map(m => spellMidi(m) + (Math.floor(m / 12) - 1)).join('  ') : '—');
+  }
+  stats() {
+    const s = this.st, avg = s.times.length ? (s.times.reduce((a, b) => a + b, 0) / s.times.length).toFixed(1) + 's' : '—';
+    $('#drill-stats').innerHTML = `<span>Correct <b>${s.ok}/${s.n}</b></span><span>Streak <b>${s.streak}</b></span><span>Best in this key <b>${this.best()}</b></span><span>Avg time <b>${avg}</b></span>`;
+  }
+}
+
+/* ---------------- page ---------------- */
+const state = { key: null, prog: 0, pattern: 'whole', voicing: 'smooth', piece: 0 };
+function segHTML(opt, items, cur) {
+  return `<div class="seg" data-opt="${opt}" role="group">${items.map(([v, l]) => `<button type="button" data-v="${v}" aria-pressed="${v === cur}">${l}</button>`).join('')}</div>`;
+}
+function renderKeylist() {
+  const best = store.get('best', {});
+  $('#keylist').innerHTML = KEYS.map((d, i) => {
+    const k = makeKey(d);
+    return `<li><button type="button" data-key="${d.id}" ${state.key && state.key.id === d.id ? 'aria-current="page"' : ''}><span class="kn">${String(i + 1).padStart(2, '0')}</span><span class="kt">${k.name}</span><span class="ks">${k.sigShort}</span>${best[d.id] ? `<span class="kbest">best drill streak ${best[d.id]}</span>` : ''}</button></li>`;
+  }).join('');
+  $$('#keylist button').forEach(b => b.addEventListener('click', () => go(b.dataset.key)));
+}
+function go(id) {
+  renderPage(id);
+  try { history.replaceState(null, '', '#' + id); } catch (e) {}
+  store.set('lastKey', id);
+  window.scrollTo({ top: 0 });
+}
+
+function renderPage(id) {
+  Player.stop();
+  const def = KEYS.find(k => k.id === id) || KEYS[0], idx = KEYS.indexOf(def), key = makeKey(def);
+  state.key = key; state.prog = 0; state.piece = 0; cards = []; drill = null;
+  renderKeylist();
+  const first = idx === 0, tonic = chordOf(key, key.minor ? 'i' : 'I');
+  const tn = tonic.tones.map(nameOf);
+  const prim = PRIMARY[key.mode].map(r => chordOf(key, r).name).join(', ');
+  const lt = nameOf(key.leading);
+  const intro = first
+    ? 'Start here. C major uses only the white keys, so you can learn to recognise chord shapes on the staff without tracking sharps or flats. Work through the sections in order, then move to the next key in the path.'
+    : key.minor
+      ? `${key.name} is the relative minor of ${key.relative}: same key signature, different home note. Its V chord needs a raised 7th, ${lt}, which is always written as an accidental.`
+      : `Same plan as C major, now with ${key.sigText}. The key signature changes what you play, not what you see: every triad still stacks line-line-line or space-space-space.`;
+  const secs = [];
+  if (first) secs.push({ id: 'staff', title: 'Reading the grand staff', html: `
+    <p>Piano music uses two staves joined by a brace. The treble clef on top is usually the right hand; the bass clef below is usually the left. Middle C sits on a short ledger line between them.</p>
+    <ul class="tips">
+      <li>Memorise a few landmark notes, then read everything else as a distance from them.</li>
+      <li>Notes a <b>3rd</b> apart skip one letter and go line to line or space to space. A triad is two 3rds stacked.</li>
+      <li>Low C, Bass C, Bass F, Middle C, Treble G and Treble C cover most of what you will read below.</li>
+    </ul>
+    ${cardHTML('staff')}` });
+  secs.push({ id: 'scale', title: 'The scale', html: `
+    <p>${key.minor
+      ? `This is the <b>harmonic minor</b> scale: natural minor with the 7th raised to ${lt}. That raised note is the 3rd of the V chord and gives minor keys their pull home.`
+      : first ? 'Eight notes from C to C, all white keys. Every chord in this unit is built only from these notes.' : `Every chord in this unit is built from these notes. The key signature (${key.sigText}) applies to every line, so it is written once at the start instead of on each note.`}
+      Play hands together, one octave apart. Finger numbers are printed above each note: 1 is the thumb, 5 the little finger.</p>
+    ${cardHTML('scale')}` });
+  secs.push({ id: 'tonic', title: `The ${key.tonicName} ${key.minor ? 'minor' : 'major'} chord`, html: `
+    <p>The tonic chord is ${tn.join('–')}: the 1st, 3rd and 5th notes of the scale. The same three notes can be stacked three ways. Each shape looks different on the staff, so learn to read them as shapes rather than note by note.</p>
+    ${cardHTML('tonic')}
+    <div class="shapes">
+      <div class="shape"><h3>Root position</h3><span class="tn">${tn[0]} · ${tn[1]} · ${tn[2]}</span><p>Three notes on three lines or three spaces, like a snowman. The bottom note names the chord.</p></div>
+      <div class="shape"><h3>1st inversion</h3><span class="tn">${tn[1]} · ${tn[2]} · ${tn[0]}</span><p>The root moves to the top. Two notes sit a 3rd apart, then a wider gap (a 4th) above them.</p></div>
+      <div class="shape"><h3>2nd inversion</h3><span class="tn">${tn[2]} · ${tn[0]} · ${tn[1]}</span><p>The gap moves to the bottom. The root is now the middle note.</p></div>
+    </div>
+    <p class="rule-box"><strong>One rule for every inversion:</strong> find the 4th (the gap). Its upper note is the root. No gap means root position, and the bottom note is the root.</p>` });
+  secs.push({ id: 'family', title: `Chords in ${key.name}`, html: `
+    <p>${key.minor
+      ? 'Build a triad on each scale note. In natural minor, v would be minor; raising the 7th turns it into a major <b>V</b>. III, VI and VII are major, i and iv are minor, ii° is diminished.'
+      : 'Build a triad on each scale note using only notes of the key. You get three major chords (I, IV, V), three minor (ii, iii, vi) and one diminished (vii°). Uppercase numerals are major; lowercase are minor.'}
+      Tap a chord to hear it and see it on the keyboard.</p>
+    <div class="family" id="fam-grid">${DIATONIC[key.mode].map(rn => { const c = chordOf(key, rn); return `<button type="button" class="fam" data-rn="${rn}"><span class="num q-${c.q}">${rn}</span><span class="nm">${c.name}</span><span class="tones">${c.tones.map(nameOf).join(' ')}</span><span class="q q-${c.q}">${QNAME[c.q]}</span></button>`; }).join('')}</div>
+    ${cardHTML('family')}` });
+  secs.push({ id: 'progressions', title: 'Common progressions', html: `
+    <p>Progressions are the chord sequences songs are built on. Read the chord names first, then switch labels to <i>None</i> in the side panel and read the shapes alone. <i>Smooth</i> voicing moves each chord to its nearest inversion, the way pianists actually play them.</p>
+    <div class="chips" id="prog-chips">${PROGS[key.mode].map((p, i) => `<button type="button" class="chip" data-i="${i}" aria-pressed="${i === 0}">${p.name}</button>`).join('')}</div>
+    <div class="about" id="prog-about"></div>
+    <div class="opts">
+      <div class="opt">Texture ${segHTML('pattern', PATTERNS.map(p => [p.id, p.name]), state.pattern)}</div>
+      <div class="opt">Voicing ${segHTML('voicing', [['smooth', 'Smooth'], ['root', 'Root position']], state.voicing)}</div>
+    </div>
+    ${cardHTML('prog')}` });
+  secs.push({ id: 'pieces', title: 'Practice pieces', html: `
+    <p>Short pieces that use only the chords above. Before playing, scan the left hand and name each chord, then read the melody against it. Start slow; raise the tempo once a run is clean.</p>
+    <div class="chips" id="piece-chips">${PIECES[key.mode].map((p, i) => `<button type="button" class="chip" data-i="${i}" aria-pressed="${i === 0}">${p.title}</button>`).join('')}</div>
+    <div class="about" id="piece-about"></div>
+    ${cardHTML('piece')}` });
+  secs.push({ id: 'drill', title: 'Sight-reading drill', html: `
+    <p>A chord appears with no label. Name it, or play it on the keyboard. Correct answers move on by themselves; your best streak for each key is saved in this browser.</p>
+    <div class="score-card" id="drill-card">
+      <div class="opts">
+        <div class="opt">Chords ${segHTML('set', [['primary', PRIMARY[key.mode].join(' ')], ['all', 'All seven']], '')}</div>
+        <div class="opt">Inversions ${segHTML('inv', [['off', 'Off'], ['on', 'On']], '')}</div>
+        <div class="opt">Staff ${segHTML('staff', [['treble', 'Treble'], ['bass', 'Bass'], ['mixed', 'Mixed']], '')}</div>
+        <div class="opt">Answer by ${segHTML('mode', [['name', 'Naming'], ['play', 'Playing']], '')}</div>
+      </div>
+      <div class="drill">
+        <div class="drill-score score" id="drill-score" aria-label="Chord to identify. Click to hear it."></div>
+        <div class="drill-side">
+          <div class="answers" id="drill-answers"></div>
+          <div class="entered" id="drill-entered" hidden></div>
+          <div class="feedback" id="drill-feedback" aria-live="polite"></div>
+          <div class="row">
+            <button type="button" class="btn" id="drill-hear">Hear it</button>
+            <button type="button" class="btn" id="drill-clear" hidden>Clear notes</button>
+            <button type="button" class="btn btn-primary" id="drill-next">Next chord</button>
+          </div>
+          <div class="stats" id="drill-stats"></div>
+        </div>
+      </div>
+    </div>` });
+
+  const prev = KEYS[idx - 1], next = KEYS[idx + 1];
+  $('#lesson').innerHTML = `
+    <header class="key-head">
+      <p class="eyebrow">Unit ${idx + 1} of ${KEYS.length} · ${key.minor ? 'Minor' : 'Major'} key</p>
+      <h1>${key.tonicName} <em>${key.mode}</em></h1>
+      <dl class="facts">
+        <div><dt>Key signature</dt><dd>${key.sigText}</dd></div>
+        <div><dt>${key.minor ? 'Relative major' : 'Relative minor'}</dt><dd>${key.relative}</dd></div>
+        <div><dt>Primary chords</dt><dd>${prim}</dd></div>
+      </dl>
+      <p class="intro">${intro}</p>
+      <nav class="toc" aria-label="Sections">${secs.map((s, i) => `<a href="#${s.id}">${i + 1}. ${s.title}</a>`).join('')}</nav>
+    </header>
+    ${secs.map((s, i) => `<section class="sec" id="${s.id}"><h2><span class="n">${String(i + 1).padStart(2, '0')}</span>${s.title}</h2>${s.html}</section>`).join('')}
+    <nav class="next-key" aria-label="Other keys">
+      ${prev ? `<button type="button" data-key="${prev.id}"><span class="lbl">Previous</span><span class="big">${makeKey(prev).name}</span></button>` : ''}
+      ${next ? `<button type="button" class="nx" data-key="${next.id}"><span class="lbl">Next key</span><span class="big">${makeKey(next).name}</span></button>` : ''}
+    </nav>`;
+  $$('.next-key button').forEach(b => b.addEventListener('click', () => go(b.dataset.key)));
+  $$('.toc a').forEach(a => a.addEventListener('click', e => { e.preventDefault(); const t = document.getElementById(a.getAttribute('href').slice(1)); if (t) t.scrollIntoView({ behavior: 'smooth' }); }));
+
+  if (first) new ScoreCard('staff', () => buildLandmarks(key), { tempo: 60, perLine: 6, maxSpacing: 5 });
+  new ScoreCard('scale', () => buildScale(key), { tempo: 88 });
+  new ScoreCard('tonic', () => buildTonic(key), { tempo: 50, perLine: 3, maxSpacing: 8 });
+  new ScoreCard('family', () => buildFamily(key), { tempo: 72 });
+
+  $$('#fam-grid .fam').forEach(b => b.addEventListener('click', () => {
+    const v = famVoicing(key, b.dataset.rn), notes = v.rh.concat(v.lh);
+    playNotesNow(notes, 1.3);
+    notes.forEach(n => light(midiOf(n), 'play', prefs.keyNames ? nameOf(n) : ''));
+    setTimeout(() => notes.forEach(n => unlight(midiOf(n), 'play')), 1300);
+  }));
+
+  // progressions
+  const progCard = new ScoreCard('prog', () => {
+    const p = PROGS[key.mode][state.prog], pat = PATTERNS.find(x => x.id === state.pattern);
+    return buildScore(key, [4, 4], realize(key, p.bars.map(rn => [{ rn }]), [4, 4], { rh: pat.rh, lh: pat.lh, voicing: state.voicing }), { stretch: true });
+  }, { tempo: 80 });
+  const progAbout = () => {
+    const p = PROGS[key.mode][state.prog];
+    $('#prog-about').innerHTML = `<h3>${p.name} <span class="rns">${p.bars.join(' – ')}</span></h3><p>${p.about} In ${key.name}: ${p.bars.map(r => chordOf(key, r).name).join(' – ')}.</p>`;
+  };
+  progAbout();
+  $$('#prog-chips .chip').forEach(b => b.addEventListener('click', () => {
+    state.prog = +b.dataset.i; $$('#prog-chips .chip').forEach(x => x.setAttribute('aria-pressed', x === b)); progAbout(); progCard.render();
+  }));
+  $$('#progressions .seg[data-opt]').forEach(seg => $$('button', seg).forEach(b => b.addEventListener('click', () => {
+    state[seg.dataset.opt] = b.dataset.v; $$('button', seg).forEach(x => x.setAttribute('aria-pressed', x === b)); progCard.render();
+  })));
+
+  // pieces
+  const pieceCard = new ScoreCard('piece', () => {
+    const p = PIECES[key.mode][state.piece];
+    return buildScore(key, p.meter, realize(key, parseBars(p.harmony), p.meter, { melody: p.melody, rh: p.rh, lh: p.lh, voicing: p.voicing || 'smooth', endWhole: p.endWhole }));
+  }, { tempo: PIECES[key.mode][0].tempo });
+  const pieceAbout = () => {
+    const p = PIECES[key.mode][state.piece];
+    $('#piece-about').innerHTML = `<h3>${p.title} <span class="by">${p.by} · ${p.meter.join('/')} · arranged in ${key.name}</span></h3><p>${p.about}</p>`;
+  };
+  pieceAbout();
+  $$('#piece-chips .chip').forEach(b => b.addEventListener('click', () => {
+    state.piece = +b.dataset.i; $$('#piece-chips .chip').forEach(x => x.setAttribute('aria-pressed', x === b));
+    const p = PIECES[key.mode][state.piece]; pieceCard.tempo = p.tempo; pieceCard.bpm.textContent = p.tempo;
+    pieceAbout(); pieceCard.render();
+  }));
+
+  drill = new Drill(key);
+}
+
+/* ---------------- global wiring ---------------- */
+function syncLabelsSeg() { $$('#labels-seg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === prefs.labels)); }
+$$('#labels-seg button').forEach(b => b.addEventListener('click', () => {
+  prefs.labels = b.dataset.v; store.set('prefs', prefs); syncLabelsSeg();
+  cards.filter(c => c.id === 'prog' || c.id === 'piece').forEach(c => c.render());
+}));
+syncLabelsSeg();
+$('#kb-names').checked = prefs.keyNames;
+$('#kb-names').addEventListener('change', e => { prefs.keyNames = e.target.checked; store.set('prefs', prefs); });
+$('#kb-toggle').addEventListener('click', e => {
+  const d = $('#dock'), c = d.classList.toggle('collapsed');
+  e.target.textContent = c ? 'Show keys' : 'Hide keys'; e.target.setAttribute('aria-expanded', !c);
+});
+$('#kb-midi').addEventListener('click', async e => {
+  const btn = e.target;
+  try {
+    if (!navigator.requestMIDIAccess) throw new Error('none');
+    const acc = await navigator.requestMIDIAccess();
+    const hook = () => acc.inputs.forEach(inp => (inp.onmidimessage = msg => {
+      const [s, n, v] = msg.data, cmd = s & 0xf0;
+      if (cmd === 0x90 && v > 0) userOn(n); else if (cmd === 0x80 || (cmd === 0x90 && v === 0)) userOff(n);
+    }));
+    hook(); acc.onstatechange = hook;
+    btn.textContent = acc.inputs.size ? `MIDI: ${acc.inputs.size} input${acc.inputs.size > 1 ? 's' : ''}` : 'MIDI: no device';
+  } catch (err) {
+    btn.textContent = 'MIDI unavailable here';
+    btn.title = 'This view blocks MIDI. Open the HTML file directly in Chrome or Edge to use a MIDI keyboard.';
+  }
+});
+const dockRO = new ResizeObserver(() => document.documentElement.style.setProperty('--dock-h', $('#dock').offsetHeight + 'px'));
+dockRO.observe($('#dock'));
+let lastW = 0, rt = null;
+new ResizeObserver(() => {
+  const w = $('#lesson').clientWidth; if (Math.abs(w - lastW) < 24) return; lastW = w;
+  clearTimeout(rt); rt = setTimeout(() => { cards.forEach(c => c.render()); if (drill) drill.render(); }, 150);
+}).observe($('#lesson'));
+
+buildKeyboard();
+const startId = (location.hash || '').slice(1);
+renderPage(KEYS.some(k => k.id === startId) ? startId : (store.get('lastKey', 'c-major')));
+lastW = $('#lesson').clientWidth;
+</script>
