@@ -1,7 +1,17 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-07T02:55:56.578Z",
+  "updatedAt": "2026-11-07T02:56:58.036Z",
   "posts": [
+    {
+      "id": "mw5tbah7ig8ws",
+      "path": "photos/media/2026-11-07-mw5tbah7ig8ws.jpg",
+      "mime": "image/jpeg",
+      "caption": "",
+      "createdAt": "2026-11-07T02:56:51.403Z",
+      "width": 4284,
+      "height": 5712,
+      "size": 3698501
+    },
     {
       "id": "mw5ta3j5t46mm",
       "path": "photos/media/2026-11-07-mw5ta3j5t46mm.jpg",
