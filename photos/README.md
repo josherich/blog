@@ -37,6 +37,8 @@ python3 -m http.server 8000
 
 Then open <http://localhost:8000/photos/>. The app reads `photos/data.json` from the site first, then falls back to the copy on the `gh-pages` branch.
 
+GitHub Pages gives `app.js` and `app.css` a long browser cache lifetime. When changing them, bump the `?v=` value on their `<link>`/`<script>` tags in `photos/index.html`.
+
 ## Changing the repository or branch
 
 Edit the constants at the top of `photos/app.js`:
@@ -46,4 +48,4 @@ var REPO = "josherich/blog";
 var BRANCH = "gh-pages";
 ```
 
-The CSP in `photos/index.html` only allows `api.github.com` and `raw.githubusercontent.com`, so update that too if you change hosts.
+The CSP in `photos/index.html` allows the GitHub API, `raw.githubusercontent.com`, and the Cloudflare analytics beacon; update it if you change hosts.
