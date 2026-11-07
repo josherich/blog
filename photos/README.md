@@ -6,6 +6,7 @@ A small Instagram-style photo timeline at `/photos/`. It is a static GitHub Page
 
 - `photos/data.json` is the timeline index.
 - `photos/media/` contains the uploaded originals. Nothing is cropped, filtered, or edited.
+- `photos/media/thumbs/` contains a 512×512 WebP center crop of each photo (JPEG if the browser cannot encode WebP). The grid uses these instead of the multi-megabyte originals; the feed and focused view still use the original.
 - The feed reads the Pages copy of `data.json` and the images under `/photos/`, with `raw.githubusercontent.com/josherich/blog/gh-pages/...` as a fallback. The uploading device keeps the new photo in memory and caches its metadata, so it appears immediately; other devices see it after the GitHub Pages build (usually under a minute).
 - Uploads create one atomic Git commit through the GitHub API: a new image blob, the updated `data.json`, a new tree, a commit, and a branch update.
 - The token is saved only in the browser's `localStorage`. No server is involved.
@@ -13,6 +14,7 @@ A small Instagram-style photo timeline at `/photos/`. It is a static GitHub Page
 ## Timeline behavior
 
 - The timeline renders four posts at a time and loads images only when they approach the viewport.
+- The grid renders 18 tiles at a time and loads the small `thumb` image for each tile, falling back to the original if a thumbnail is missing.
 - A link ending in `#post-<id>` opens a focused view with the target photo and up to two neighbors on each side. Use **Full timeline** to browse from the top.
 
 ## One-time setup on your phone
@@ -43,6 +45,12 @@ python3 -m http.server 8000
 Then open <http://localhost:8000/photos/>. The app reads `photos/data.json` from the site first, then falls back to the copy on the `gh-pages` branch.
 
 GitHub Pages gives `app.js` and `app.css` a long browser cache lifetime. When changing them, bump the `?v=` value on their `<link>`/`<script>` tags in `photos/index.html`.
+
+To backfill thumbnails for photos that predate the grid thumbnails, run the script from the repository root. It needs ImageMagick (`magick`) and is safe to re-run:
+
+```sh
+node photos/scripts/make-thumbs.mjs
+```
 
 ## Changing the repository or branch
 

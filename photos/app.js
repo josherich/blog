@@ -22,6 +22,9 @@
   var FEED_BATCH = 4;
   var GRID_BATCH = 18;
   var FOCUS_NEIGHBORS = 2;
+  var THUMB_SIZE = 512;
+  var THUMB_QUALITY = 0.8;
+  var THUMB_DIR = MEDIA_DIR + "thumbs/";
 
   var ALLOWED_TYPES = new Set([
     "image/jpeg",
@@ -56,6 +59,7 @@
     pending: readJSON(PENDING_KEY, []),
     deleted: readDeleted(),
     localPreviews: Object.create(null),
+    localThumbs: Object.create(null),
     selectedFile: null,
     previewUrl: null,
     uploading: false,
@@ -197,6 +201,10 @@
       height: Number(post.height) || null,
       size: Number(post.size) || null,
       mime: typeof post.mime === "string" ? post.mime : "",
+      thumb:
+        typeof post.thumb === "string" && post.thumb.indexOf(MEDIA_DIR) === 0
+          ? post.thumb.replace(/^\/+/, "")
+          : "",
     };
   }
 
@@ -271,6 +279,16 @@
 
   function rawImageURL(post) {
     return RAW_ROOT + encodePath(post.path);
+  }
+
+  function pagesThumbURL(post) {
+    if (!post.thumb) return "";
+    var relative = post.thumb.indexOf("photos/") === 0 ? post.thumb.slice("photos/".length) : post.thumb;
+    return new URL(relative, location.href).href;
+  }
+
+  function rawThumbURL(post) {
+    return post.thumb ? RAW_ROOT + encodePath(post.thumb) : "";
   }
 
   function permalink(post) {
@@ -412,35 +430,43 @@
 
             var tree = [];
 
-            var imagePromise = options.image
-              ? gh("/git/blobs", {
-                  token: token,
-                  method: "POST",
-                  body: { content: options.image.base64, encoding: "base64" },
-                }).then(function (blob) {
-                  tree.push({
-                    path: options.image.path,
-                    mode: "100644",
-                    type: "blob",
-                    sha: blob.sha,
-                  });
-                })
-              : Promise.resolve();
-
-            return imagePromise
-              .then(function () {
-                if (!options.removePath) return false;
-                return fileExistsAtRev(options.removePath, parentSha, token).then(function (exists) {
-                  if (exists) {
-                    tree.push({
-                      path: options.removePath,
-                      mode: "100644",
-                      type: "blob",
-                      sha: null,
-                    });
-                  }
-                  return true;
+            function uploadBlob(file) {
+              return gh("/git/blobs", {
+                token: token,
+                method: "POST",
+                body: { content: file.base64, encoding: "base64" },
+              }).then(function (blob) {
+                tree.push({
+                  path: file.path,
+                  mode: "100644",
+                  type: "blob",
+                  sha: blob.sha,
                 });
+              });
+            }
+
+            var uploads = [];
+            if (options.image) uploads.push(uploadBlob(options.image));
+            if (options.thumb) uploads.push(uploadBlob(options.thumb));
+
+            var removePaths = options.removePaths || (options.removePath ? [options.removePath] : []);
+
+            return Promise.all(uploads)
+              .then(function () {
+                return Promise.all(
+                  removePaths.map(function (path) {
+                    return fileExistsAtRev(path, parentSha, token).then(function (exists) {
+                      if (exists) {
+                        tree.push({
+                          path: path,
+                          mode: "100644",
+                          type: "blob",
+                          sha: null,
+                        });
+                      }
+                    });
+                  })
+                );
               })
               .then(function () {
                 return gh("/git/blobs", {
@@ -660,20 +686,50 @@
     attempt();
   }
 
-  function imageDimensions(file) {
+  // Load the photo once to read its dimensions and build the grid thumbnail.
+  // Doing both in one decode avoids holding two full-size bitmaps in memory.
+  function prepareImage(file) {
     return new Promise(function (resolve) {
       var url = URL.createObjectURL(file);
       var image = new Image();
       image.onload = function () {
-        resolve({
-          width: image.naturalWidth || null,
-          height: image.naturalHeight || null,
-        });
+        var width = image.naturalWidth || image.width || null;
+        var height = image.naturalHeight || image.height || null;
         URL.revokeObjectURL(url);
+        if (!width || !height) {
+          resolve({ width: null, height: null, thumb: null });
+          return;
+        }
+        // The grid is square with object-fit: cover, so store a square
+        // center crop. This keeps the thumbnail small and avoids upscaling.
+        var side = Math.min(width, height);
+        var size = Math.min(THUMB_SIZE, side);
+        var canvas = document.createElement("canvas");
+        canvas.width = size;
+        canvas.height = size;
+        var context = canvas.getContext("2d");
+        if (!context) {
+          resolve({ width: width, height: height, thumb: null });
+          return;
+        }
+        context.imageSmoothingQuality = "high";
+        context.drawImage(image, (width - side) / 2, (height - side) / 2, side, side, 0, 0, size, size);
+        canvasToThumbBlob(canvas).then(
+          function (blob) {
+            resolve({
+              width: width,
+              height: height,
+              thumb: { blob: blob, ext: blob.type === "image/webp" ? "webp" : "jpg" },
+            });
+          },
+          function () {
+            resolve({ width: width, height: height, thumb: null });
+          }
+        );
       };
       image.onerror = function () {
-        resolve({ width: null, height: null });
         URL.revokeObjectURL(url);
+        resolve({ width: null, height: null, thumb: null });
       };
       image.src = url;
     });
@@ -730,6 +786,30 @@
           "Could not convert this HEIC photo in the browser. On iPhone, use Settings → Camera → Formats → Most Compatible, or export it as JPEG."
         );
       });
+  }
+
+  function canvasToThumbBlob(canvas) {
+    return new Promise(function (resolve, reject) {
+      function encode(type) {
+        canvas.toBlob(
+          function (blob) {
+            if (!blob) {
+              reject(new Error("Could not encode the thumbnail."));
+              return;
+            }
+            // Some browsers silently fall back to PNG when WebP is unsupported.
+            if (type === "image/webp" && blob.type !== "image/webp") {
+              encode("image/jpeg");
+              return;
+            }
+            resolve(blob);
+          },
+          type,
+          THUMB_QUALITY
+        );
+      }
+      encode("image/webp");
+    });
   }
 
   /* ------------------------------------------------------------------ */
@@ -1223,7 +1303,11 @@
     image.decoding = "async";
 
     var gridSources = [];
-    if (state.localPreviews[post.id]) gridSources.push(state.localPreviews[post.id]);
+    if (state.localThumbs[post.id]) gridSources.push(state.localThumbs[post.id]);
+    if (post.thumb) {
+      gridSources.push(pagesThumbURL(post));
+      gridSources.push(rawThumbURL(post));
+    }
     gridSources.push(pagesImageURL(post));
     gridSources.push(rawImageURL(post));
     observeImage(image, gridSources, function () {
@@ -1639,30 +1723,39 @@
     var id = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
     var post = null;
     var uploadedFile = null;
+    var uploadedThumb = null;
 
     ensureWebFriendly(original)
       .then(function (file) {
-        return imageDimensions(file).then(function (dimensions) {
-          return { file: file, dimensions: dimensions };
+        return prepareImage(file).then(function (prepared) {
+          prepared.file = file;
+          return prepared;
         });
       })
       .then(function (prepared) {
         uploadedFile = prepared.file;
+        uploadedThumb = prepared.thumb;
         setAddBusy(true, "Reading photo…");
         return fileToBase64(prepared.file).then(function (base64) {
           var extension = extensionFor(prepared.file);
-          var path = MEDIA_DIR + createdAt.slice(0, 10) + "-" + id + "." + extension;
+          var base = createdAt.slice(0, 10) + "-" + id;
+          var path = MEDIA_DIR + base + "." + extension;
+          var thumbPath = prepared.thumb ? THUMB_DIR + base + "." + prepared.thumb.ext : "";
           post = {
             id: id,
             path: path,
+            thumb: thumbPath,
             mime: prepared.file.type || "application/octet-stream",
             caption: caption,
             createdAt: createdAt,
-            width: prepared.dimensions.width,
-            height: prepared.dimensions.height,
+            width: prepared.width,
+            height: prepared.height,
             size: prepared.file.size,
           };
-          return { base64: base64, post: post };
+          var thumbBase64 = prepared.thumb ? fileToBase64(prepared.thumb.blob) : Promise.resolve("");
+          return thumbBase64.then(function (thumbData) {
+            return { base64: base64, thumbBase64: thumbData, post: post };
+          });
         });
       })
       .then(function (payload) {
@@ -1670,12 +1763,18 @@
         return commitChanges({
           message: "Add photo " + payload.post.id,
           image: { path: payload.post.path, base64: payload.base64 },
+          thumb: payload.thumbBase64
+            ? { path: payload.post.thumb, base64: payload.thumbBase64 }
+            : null,
           newPost: payload.post,
         });
       })
       .then(function () {
         if (uploadedFile && post) {
           state.localPreviews[post.id] = URL.createObjectURL(uploadedFile);
+        }
+        if (uploadedThumb && post) {
+          state.localThumbs[post.id] = URL.createObjectURL(uploadedThumb.blob);
         }
         state.pending = dedupePosts([post].concat(state.pending)).slice(0, 20);
         writeJSON(PENDING_KEY, state.pending);
@@ -1824,7 +1923,7 @@
     showToast("Deleting…", { duration: 0 });
     commitChanges({
       message: "Delete photo " + post.id,
-      removePath: post.path,
+      removePaths: [post.path, post.thumb].filter(Boolean),
       removeId: post.id,
     })
       .then(function () {
@@ -1839,6 +1938,10 @@
         if (state.localPreviews[post.id]) {
           URL.revokeObjectURL(state.localPreviews[post.id]);
           delete state.localPreviews[post.id];
+        }
+        if (state.localThumbs[post.id]) {
+          URL.revokeObjectURL(state.localThumbs[post.id]);
+          delete state.localThumbs[post.id];
         }
         writeJSON(PENDING_KEY, state.pending);
         writeJSON(DELETED_KEY, state.deleted);
