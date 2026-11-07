@@ -482,6 +482,9 @@
       case 404:
         return "GitHub could not find the repository or file (404). Check the token's repository access.";
       case 422:
+        if (/rule violations|protected branch|pull request/i.test(error.message || "")) {
+          return "GitHub blocked the commit on gh-pages because of a branch rule. Allow your account to bypass the gh-pages ruleset, or push through a pull request.";
+        }
         return "GitHub could not apply the change (422). " + (error.message || "");
       default:
         return error.message || "Something went wrong. Try again.";
@@ -710,19 +713,29 @@
     if (post.width && post.height) {
       image.style.aspectRatio = post.width + " / " + post.height;
     }
-    image.src = imageURL(post);
+    var imageRetries = 0;
+    var imageSource = imageURL(post);
     image.addEventListener("error", function () {
+      if (imageRetries < 2) {
+        imageRetries += 1;
+        window.setTimeout(function () {
+          image.src = imageSource + (imageSource.indexOf("?") === -1 ? "?" : "&") + "retry=" + imageRetries;
+        }, 900 * imageRetries);
+        return;
+      }
+
       var fallback = el("div", "media-fallback");
       fallback.appendChild(icon("image", "icon"));
       var text = el("span", "", "This image cannot be shown in this browser.");
       fallback.appendChild(text);
       var link = el("a", "", "Open original");
-      link.href = imageURL(post);
+      link.href = imageSource;
       link.target = "_blank";
       link.rel = "noopener noreferrer";
       fallback.appendChild(link);
       media.replaceChildren(fallback);
     });
+    image.src = imageSource;
     media.appendChild(image);
     media.addEventListener("dblclick", function () {
       doubleTapLike(post.id, media);
@@ -819,11 +832,20 @@
       image.alt = post.caption ? "Photo: " + post.caption : "Photo";
       image.loading = "lazy";
       image.decoding = "async";
-      image.src = imageURL(post);
+      var gridRetries = 0;
+      var gridSource = imageURL(post);
       image.addEventListener("error", function () {
+        if (gridRetries < 2) {
+          gridRetries += 1;
+          window.setTimeout(function () {
+            image.src = gridSource + (gridSource.indexOf("?") === -1 ? "?" : "&") + "retry=" + gridRetries;
+          }, 900 * gridRetries);
+          return;
+        }
         image.remove();
         tile.appendChild(el("span", "grid-fallback", "—"));
       });
+      image.src = gridSource;
       tile.appendChild(image);
       tile.addEventListener("click", function () {
         openPostInFeed(post.id);
