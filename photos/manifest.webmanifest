@@ -1,0 +1,19 @@
+{
+  "name": "Josherich Photos",
+  "short_name": "Photos",
+  "description": "A small photo timeline.",
+  "start_url": "/photos/",
+  "scope": "/photos/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/images/icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
