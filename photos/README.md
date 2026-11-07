@@ -10,6 +10,11 @@ A small Instagram-style photo timeline at `/photos/`. It is a static GitHub Page
 - Uploads create one atomic Git commit through the GitHub API: a new image blob, the updated `data.json`, a new tree, a commit, and a branch update.
 - The token is saved only in the browser's `localStorage`. No server is involved.
 
+## Timeline behavior
+
+- The timeline renders four posts at a time and loads images only when they approach the viewport.
+- A link ending in `#post-<id>` opens a focused view with the target photo and up to two neighbors on each side. Use **Full timeline** to browse from the top.
+
 ## One-time setup on your phone
 
 1. Open <https://github.com/settings/personal-access-tokens/new>.

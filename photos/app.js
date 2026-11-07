@@ -19,6 +19,9 @@
   var USERNAME = "josherich";
   var MAX_BYTES = 95 * 1024 * 1024;
   var MAX_CAPTION = 2200;
+  var FEED_BATCH = 4;
+  var GRID_BATCH = 18;
+  var FOCUS_NEIGHBORS = 2;
 
   var ALLOWED_TYPES = new Set([
     "image/jpeg",
@@ -43,7 +46,8 @@
   var els = {};
   var toastTimer = null;
   var lastLoadedAt = 0;
-  var initialHashHandled = false;
+  var imageObserver = null;
+  var lazyJobs = typeof WeakMap === "function" ? new WeakMap() : null;
 
   var state = {
     posts: [],
@@ -58,6 +62,15 @@
     loading: false,
     activePostId: null,
     lastFocus: null,
+    focusedPostId: null,
+    focusScrollPending: false,
+    feedRendered: 0,
+    feedSentinel: null,
+    feedMoreObserver: null,
+    gridRendered: 0,
+    gridSentinel: null,
+    gridMoreObserver: null,
+    gridContainer: null,
   };
 
   state.pending = Array.isArray(state.pending) ? state.pending.filter(isUsablePost) : [];
@@ -559,7 +572,61 @@
   /* Image handling                                                     */
   /* ------------------------------------------------------------------ */
 
+  function getImageObserver() {
+    if (!("IntersectionObserver" in window) || !lazyJobs) return null;
+    if (!imageObserver) {
+      imageObserver = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            var image = entry.target;
+            var job = lazyJobs.get(image);
+            imageObserver.unobserve(image);
+            lazyJobs.delete(image);
+            if (job) loadImageWithFallback(image, job.sources, job.onFail);
+          });
+        },
+        { rootMargin: "900px 0px", threshold: 0.01 }
+      );
+    }
+    return imageObserver;
+  }
+
+  function observeImage(image, sources, onFail) {
+    image.classList.add("is-lazy");
+    var observer = getImageObserver();
+    if (!observer) {
+      loadImageWithFallback(image, sources, onFail);
+      return;
+    }
+    lazyJobs.set(image, { sources: sources, onFail: onFail });
+    observer.observe(image);
+  }
+
+  function cleanupLazyImages(container) {
+    if (!container || !imageObserver) return;
+    container.querySelectorAll("img").forEach(function (image) {
+      imageObserver.unobserve(image);
+    });
+  }
+
   function loadImageWithFallback(image, sources, onFail) {
+    if (image.dataset.alt) {
+      image.alt = image.dataset.alt;
+      delete image.dataset.alt;
+    }
+    image.addEventListener(
+      "load",
+      function () {
+        image.classList.remove("is-lazy");
+        if (image.dataset.autoRatio) {
+          image.style.aspectRatio = "";
+          delete image.dataset.autoRatio;
+        }
+      },
+      { once: true }
+    );
+
     var index = 0;
     var retry = 0;
     var done = false;
@@ -670,6 +737,7 @@
   /* ------------------------------------------------------------------ */
 
   function renderSkeletons() {
+    resetFeedObserver();
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < 2; i += 1) {
       var post = el("div", "skeleton-post");
@@ -699,6 +767,7 @@
   }
 
   function renderLoadError(error) {
+    resetFeedObserver();
     var wrapper = el("div", "error-box");
     wrapper.appendChild(icon("image", "icon"));
     wrapper.appendChild(el("h2", "", "Could not load photos"));
@@ -719,17 +788,237 @@
     if (error) console.warn("Photos load failed:", error);
   }
 
+  function resetFeedObserver() {
+    if (state.feedMoreObserver) {
+      state.feedMoreObserver.disconnect();
+      state.feedMoreObserver = null;
+    }
+    state.feedSentinel = null;
+    cleanupLazyImages(els.feed);
+  }
+
+  function resetGridObserver() {
+    if (state.gridMoreObserver) {
+      state.gridMoreObserver.disconnect();
+      state.gridMoreObserver = null;
+    }
+    state.gridSentinel = null;
+    cleanupLazyImages(els.grid);
+  }
+
+  function createSentinel() {
+    var sentinel = el("div", "load-sentinel");
+    sentinel.setAttribute("aria-hidden", "true");
+    return sentinel;
+  }
+
+  function createMoreObserver(callback) {
+    if (!("IntersectionObserver" in window)) return null;
+    return new IntersectionObserver(
+      function (entries) {
+        if (entries.some(function (entry) { return entry.isIntersecting; })) callback();
+      },
+      { rootMargin: "1000px 0px" }
+    );
+  }
+
   function renderFeed() {
+    resetFeedObserver();
+
     if (!state.posts.length) {
       renderEmpty();
       return;
     }
 
+    if (state.focusedPostId) {
+      renderFocusedFeed();
+      return;
+    }
+
+    renderTimeline();
+  }
+
+  function renderTimeline() {
+    state.feedRendered = 0;
+    state.feedSentinel = createSentinel();
+    els.feed.replaceChildren(state.feedSentinel);
+
+    state.feedMoreObserver = createMoreObserver(appendFeedBatch);
+    if (state.feedMoreObserver) state.feedMoreObserver.observe(state.feedSentinel);
+
+    appendFeedBatch();
+  }
+
+  function finishFeed() {
+    if (state.feedSentinel) {
+      state.feedSentinel.remove();
+      state.feedSentinel = null;
+    }
+    if (state.feedMoreObserver) {
+      state.feedMoreObserver.disconnect();
+      state.feedMoreObserver = null;
+    }
+  }
+
+  function appendFeedBatch() {
+    if (!state.feedSentinel || !state.feedSentinel.isConnected) return;
+    if (state.feedRendered >= state.posts.length) {
+      finishFeed();
+      return;
+    }
+
+    var end = Math.min(state.feedRendered + FEED_BATCH, state.posts.length);
     var fragment = document.createDocumentFragment();
-    state.posts.forEach(function (post, index) {
-      fragment.appendChild(renderPost(post, index));
-    });
+    for (var i = state.feedRendered; i < end; i += 1) {
+      fragment.appendChild(renderPost(state.posts[i], i));
+    }
+    els.feed.insertBefore(fragment, state.feedSentinel);
+    state.feedRendered = end;
+
+    if (state.feedRendered >= state.posts.length) {
+      finishFeed();
+    } else {
+      requestAnimationFrame(maybeFillFeed);
+    }
+  }
+
+  function maybeFillFeed() {
+    if (state.view !== "feed") return;
+    if (!state.feedSentinel || !state.feedSentinel.isConnected) return;
+    if (state.feedSentinel.getBoundingClientRect().top < window.innerHeight + 800) {
+      appendFeedBatch();
+    }
+  }
+
+  function renderFocusedFeed() {
+    var index = -1;
+    for (var i = 0; i < state.posts.length; i += 1) {
+      if (state.posts[i].id === state.focusedPostId) {
+        index = i;
+        break;
+      }
+    }
+
+    if (index < 0) {
+      clearHashSilently();
+      state.focusedPostId = null;
+      state.focusScrollPending = false;
+      renderTimeline();
+      return;
+    }
+
+    var start = Math.max(0, index - FOCUS_NEIGHBORS);
+    var end = Math.min(state.posts.length, index + FOCUS_NEIGHBORS + 1);
+    var fragment = document.createDocumentFragment();
+    fragment.appendChild(createFocusBanner(start, end));
+
+    for (var j = start; j < end; j += 1) {
+      var article = renderPost(state.posts[j], j - start);
+      if (state.posts[j].id === state.focusedPostId) article.classList.add("is-target");
+      fragment.appendChild(article);
+    }
+
     els.feed.replaceChildren(fragment);
+    scrollFocusedPostIntoView();
+  }
+
+  function createFocusBanner(start, end) {
+    var count = end - start;
+    var banner = el("div", "focus-banner");
+    var text = el("div", "focus-banner-text");
+    text.appendChild(el("strong", "", "Shared photo"));
+    text.appendChild(
+      el(
+        "span",
+        "",
+        count > 1
+          ? "Showing this photo and " + (count - 1) + " nearby " + (count - 1 === 1 ? "photo" : "photos") + "."
+          : "Showing this photo."
+      )
+    );
+    banner.appendChild(text);
+
+    var button = el("button", "btn ghost", "Full timeline");
+    button.type = "button";
+    button.setAttribute("aria-label", "View full timeline");
+    button.addEventListener("click", function () {
+      exitFocus(true);
+    });
+    banner.appendChild(button);
+    return banner;
+  }
+
+  function scrollFocusedPostIntoView() {
+    if (!state.focusScrollPending) return;
+    state.focusScrollPending = false;
+    requestAnimationFrame(function () {
+      var article = document.getElementById("post-" + state.focusedPostId);
+      if (!article) return;
+      var topbar = document.querySelector(".topbar");
+      var banner = els.feed.querySelector(".focus-banner");
+      var offset =
+        (topbar ? topbar.getBoundingClientRect().height : 0) +
+        (banner ? banner.getBoundingClientRect().height : 0) +
+        8;
+      var top = article.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top: Math.max(0, top), behavior: "auto" });
+    });
+  }
+
+  function getHashPostId() {
+    var match = /^#post-(.+)$/.exec(location.hash || "");
+    if (!match) return "";
+    try {
+      return decodeURIComponent(match[1]);
+    } catch (err) {
+      return match[1];
+    }
+  }
+
+  function clearHashSilently() {
+    if (location.hash) {
+      history.replaceState(null, "", location.pathname + location.search);
+    }
+  }
+
+  function applyHashFocus() {
+    var id = getHashPostId();
+
+    if (!id) {
+      if (state.focusedPostId) exitFocus(false);
+      return;
+    }
+
+    if (!state.posts.length && state.loading) return;
+
+    var exists = state.posts.some(function (post) {
+      return post.id === id;
+    });
+    if (!exists) {
+      clearHashSilently();
+      state.focusedPostId = null;
+      state.focusScrollPending = false;
+      if (state.view !== "feed") setView("feed");
+      else renderFeed();
+      showToast("Photo not found");
+      return;
+    }
+
+    state.focusedPostId = id;
+    state.focusScrollPending = true;
+    if (state.view !== "feed") setView("feed");
+    renderFeed();
+  }
+
+  function exitFocus(updateHistory) {
+    state.focusedPostId = null;
+    state.focusScrollPending = false;
+    if (updateHistory && location.hash) {
+      history.pushState(null, "", location.pathname + location.search);
+    }
+    if (state.view !== "feed") setView("feed");
+    else renderFeed();
+    window.scrollTo({ top: 0, behavior: "auto" });
   }
 
   function renderPost(post, index) {
@@ -762,18 +1051,22 @@
 
     var media = el("div", "post-media");
     var image = new Image();
-    image.alt = post.caption ? "Photo: " + post.caption : "Photo";
-    image.loading = index < 2 ? "eager" : "lazy";
+    var altText = post.caption ? "Photo: " + post.caption : "Photo";
+    image.alt = "";
+    image.dataset.alt = altText;
     image.decoding = "async";
     if (post.width && post.height) {
       image.style.aspectRatio = post.width + " / " + post.height;
+    } else {
+      image.style.aspectRatio = "4 / 5";
+      image.dataset.autoRatio = "1";
     }
     var sources = [];
     if (state.localPreviews[post.id]) sources.push(state.localPreviews[post.id]);
     sources.push(pagesImageURL(post));
     sources.push(rawImageURL(post));
 
-    loadImageWithFallback(image, sources, function () {
+    observeImage(image, sources, function () {
       var fallback = el("div", "media-fallback");
       fallback.appendChild(icon("image", "icon"));
       var text = el("span", "", "This image cannot be shown in this browser.");
@@ -853,6 +1146,7 @@
   }
 
   function renderGrid() {
+    resetGridObserver();
     els.grid.replaceChildren();
 
     var profile = el("div", "grid-profile");
@@ -873,37 +1167,98 @@
     }
 
     var grid = el("div", "photo-grid");
-    state.posts.forEach(function (post) {
-      var tile = el("button", "grid-tile");
-      tile.type = "button";
-      tile.setAttribute("aria-label", post.caption ? "Open photo: " + post.caption : "Open photo");
-      var image = new Image();
-      image.alt = post.caption ? "Photo: " + post.caption : "Photo";
-      image.loading = "lazy";
-      image.decoding = "async";
-      var gridSources = [];
-      if (state.localPreviews[post.id]) gridSources.push(state.localPreviews[post.id]);
-      gridSources.push(pagesImageURL(post));
-      gridSources.push(rawImageURL(post));
-      loadImageWithFallback(image, gridSources, function () {
-        image.remove();
-        tile.appendChild(el("span", "grid-fallback", "—"));
-      });
-      tile.appendChild(image);
-      tile.addEventListener("click", function () {
-        openPostInFeed(post.id);
-      });
-      grid.appendChild(tile);
-    });
     els.grid.appendChild(grid);
+
+    var sentinel = createSentinel();
+    els.grid.appendChild(sentinel);
+
+    state.gridContainer = grid;
+    state.gridSentinel = sentinel;
+    state.gridRendered = 0;
+    state.gridMoreObserver = createMoreObserver(appendGridBatch);
+    if (state.gridMoreObserver) state.gridMoreObserver.observe(sentinel);
+
+    appendGridBatch();
+  }
+
+  function appendGridBatch() {
+    if (!state.gridSentinel || !state.gridSentinel.isConnected) return;
+    if (state.gridRendered >= state.posts.length) {
+      finishGrid();
+      return;
+    }
+
+    var end = Math.min(state.gridRendered + GRID_BATCH, state.posts.length);
+    var fragment = document.createDocumentFragment();
+    for (var i = state.gridRendered; i < end; i += 1) {
+      fragment.appendChild(renderGridTile(state.posts[i]));
+    }
+    state.gridContainer.appendChild(fragment);
+    state.gridRendered = end;
+
+    if (state.gridRendered >= state.posts.length) {
+      finishGrid();
+    } else {
+      requestAnimationFrame(maybeFillGrid);
+    }
+  }
+
+  function maybeFillGrid() {
+    if (state.view !== "grid") return;
+    if (!state.gridSentinel || !state.gridSentinel.isConnected) return;
+    if (state.gridSentinel.getBoundingClientRect().top < window.innerHeight + 900) {
+      appendGridBatch();
+    }
+  }
+
+  function renderGridTile(post) {
+    var tile = el("button", "grid-tile");
+    tile.type = "button";
+    tile.setAttribute("aria-label", post.caption ? "Open photo: " + post.caption : "Open photo");
+
+    var image = new Image();
+    var altText = post.caption ? "Photo: " + post.caption : "Photo";
+    image.alt = "";
+    image.dataset.alt = altText;
+    image.decoding = "async";
+
+    var gridSources = [];
+    if (state.localPreviews[post.id]) gridSources.push(state.localPreviews[post.id]);
+    gridSources.push(pagesImageURL(post));
+    gridSources.push(rawImageURL(post));
+    observeImage(image, gridSources, function () {
+      image.remove();
+      tile.appendChild(el("span", "grid-fallback", "—"));
+    });
+
+    tile.appendChild(image);
+    tile.addEventListener("click", function () {
+      openPostInFeed(post.id);
+    });
+    return tile;
+  }
+
+  function finishGrid() {
+    if (state.gridSentinel) {
+      state.gridSentinel.remove();
+      state.gridSentinel = null;
+    }
+    if (state.gridMoreObserver) {
+      state.gridMoreObserver.disconnect();
+      state.gridMoreObserver = null;
+    }
   }
 
   function openPostInFeed(id) {
+    if (!state.posts.some(function (post) { return post.id === id; })) {
+      showToast("Photo not found");
+      return;
+    }
     setView("feed");
-    requestAnimationFrame(function () {
-      var article = document.getElementById("post-" + id);
-      if (article) article.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
+    if (getHashPostId() !== id) {
+      history.pushState(null, "", location.pathname + location.search + "#post-" + encodeURIComponent(id));
+    }
+    applyHashFocus();
   }
 
   function renderAll() {
@@ -999,10 +1354,22 @@
   /* Data loading                                                       */
   /* ------------------------------------------------------------------ */
 
-  function fetchJSON(url) {
-    return fetch(url, {
+  function fetchJSON(url, timeoutMs) {
+    var controller = null;
+    var timer = null;
+    if (timeoutMs && "AbortController" in window) {
+      controller = new AbortController();
+      timer = window.setTimeout(function () {
+        controller.abort();
+      }, timeoutMs);
+    }
+    var options = {
       cache: "no-store",
       headers: { Accept: "application/json" },
+    };
+    if (controller) options.signal = controller.signal;
+    return fetch(url, options).finally(function () {
+      if (timer) window.clearTimeout(timer);
     }).then(function (res) {
       if (!res.ok) {
         var error = new Error("HTTP " + res.status);
@@ -1023,7 +1390,22 @@
     if (options.initial && !state.posts.length) renderSkeletons();
 
     var dataPromise = fetchJSON("data.json?t=" + Date.now()).catch(function () {
-      return fetchJSON(DATA_BRANCH_URL + "?t=" + Date.now());
+      return fetchJSON(DATA_BRANCH_URL + "?t=" + Date.now(), 5000);
+    });
+
+    dataPromise = dataPromise.then(function (data) {
+      var hashId = getHashPostId();
+      if (!hashId) return data;
+      var hasPost = normalizePosts(data).some(function (post) {
+        return post.id === hashId;
+      });
+      var hasPending = state.pending.some(function (post) {
+        return post.id === hashId;
+      });
+      if (hasPost || hasPending) return data;
+      return fetchJSON(DATA_BRANCH_URL + "?t=" + Date.now(), 5000).catch(function () {
+        return data;
+      });
     });
 
     return dataPromise
@@ -1051,13 +1433,30 @@
             return !state.deleted[post.id];
           })
           .sort(byNewest);
+
+        var hashId = getHashPostId();
+        if (hashId) {
+          var exists = state.posts.some(function (post) {
+            return post.id === hashId;
+          });
+          if (!exists) {
+            clearHashSilently();
+            state.focusedPostId = null;
+            state.focusScrollPending = false;
+            showToast("Photo not found");
+          } else {
+            if (state.focusedPostId !== hashId || options.initial || options.notify) {
+              state.focusScrollPending = true;
+            }
+            state.focusedPostId = hashId;
+          }
+        } else if (state.focusedPostId) {
+          state.focusedPostId = null;
+          state.focusScrollPending = false;
+        }
+
         lastLoadedAt = Date.now();
         renderAll();
-
-        if (!initialHashHandled) {
-          initialHashHandled = true;
-          scrollToHash();
-        }
 
         if (options.notify) showToast("Timeline refreshed");
       })
@@ -1069,21 +1468,6 @@
         state.loading = false;
         els.refreshBtn.classList.remove("spinning");
       });
-  }
-
-  function scrollToHash() {
-    var match = /^#post-(.+)$/.exec(location.hash || "");
-    if (!match) return;
-    var id = decodeURIComponent(match[1]);
-    var post = state.posts.find(function (item) {
-      return item.id === id;
-    });
-    if (!post) return;
-    setView("feed");
-    requestAnimationFrame(function () {
-      var article = document.getElementById("post-" + id);
-      if (article) article.scrollIntoView({ block: "start" });
-    });
   }
 
   /* ------------------------------------------------------------------ */
@@ -1296,6 +1680,9 @@
         state.pending = dedupePosts([post].concat(state.pending)).slice(0, 20);
         writeJSON(PENDING_KEY, state.pending);
         state.posts = dedupePosts([post].concat(state.posts)).sort(byNewest);
+        state.focusedPostId = null;
+        state.focusScrollPending = false;
+        clearHashSilently();
         renderAll();
         setAddBusy(false);
         closeAdd();
@@ -1456,7 +1843,17 @@
         writeJSON(PENDING_KEY, state.pending);
         writeJSON(DELETED_KEY, state.deleted);
         writeJSON(LIKES_KEY, Array.from(state.liked));
+
+        var wasFocusedTarget = state.focusedPostId === post.id;
+        if (wasFocusedTarget) {
+          state.focusedPostId = null;
+          state.focusScrollPending = false;
+          clearHashSilently();
+        } else if (state.focusedPostId) {
+          state.focusScrollPending = true;
+        }
         renderAll();
+        if (wasFocusedTarget) window.scrollTo({ top: 0, behavior: "auto" });
         showToast("Photo deleted");
       })
       .catch(function (error) {
@@ -1570,11 +1967,24 @@
       if (event.key === "Escape") closeTopLayer();
     });
 
+    window.addEventListener("hashchange", applyHashFocus);
+
     document.addEventListener("visibilitychange", function () {
       if (!document.hidden && Date.now() - lastLoadedAt > 60000) {
         loadPosts({});
       }
     });
+
+    if (!("IntersectionObserver" in window)) {
+      window.addEventListener(
+        "scroll",
+        function () {
+          maybeFillFeed();
+          maybeFillGrid();
+        },
+        { passive: true }
+      );
+    }
 
     window.setInterval(updateTimes, 60000);
   }
