@@ -1,5 +1,16 @@
 {
   "version": 1,
-  "updatedAt": null,
-  "posts": []
+  "updatedAt": "2026-11-07T02:48:49.171Z",
+  "posts": [
+    {
+      "id": "mw5t0xstz8ww0",
+      "path": "photos/media/2026-11-07-mw5t0xstz8ww0.jpg",
+      "mime": "image/jpeg",
+      "caption": "",
+      "createdAt": "2026-11-07T02:48:48.413Z",
+      "width": 5712,
+      "height": 4284,
+      "size": 3568039
+    }
+  ]
 }
