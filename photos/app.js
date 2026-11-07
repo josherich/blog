@@ -260,10 +260,6 @@
     return RAW_ROOT + encodePath(post.path);
   }
 
-  function imageURL(post) {
-    return state.localPreviews[post.id] || pagesImageURL(post);
-  }
-
   function permalink(post) {
     return location.origin + location.pathname + "#post-" + encodeURIComponent(post.id);
   }

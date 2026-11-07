@@ -6,7 +6,7 @@ A small Instagram-style photo timeline at `/photos/`. It is a static GitHub Page
 
 - `photos/data.json` is the timeline index.
 - `photos/media/` contains the uploaded originals. Nothing is cropped, filtered, or edited.
-- The feed reads the Pages copy of `data.json` and the images under `/photos/`, with `raw.githubusercontent.com/josherich/blog/gh-pages/...` as a fallback. The uploading device caches the new photo locally so it appears immediately; other devices see it after the GitHub Pages build (usually under a minute).
+- The feed reads the Pages copy of `data.json` and the images under `/photos/`, with `raw.githubusercontent.com/josherich/blog/gh-pages/...` as a fallback. The uploading device keeps the new photo in memory and caches its metadata, so it appears immediately; other devices see it after the GitHub Pages build (usually under a minute).
 - Uploads create one atomic Git commit through the GitHub API: a new image blob, the updated `data.json`, a new tree, a commit, and a branch update.
 - The token is saved only in the browser's `localStorage`. No server is involved.
 
