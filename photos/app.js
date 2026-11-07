@@ -51,6 +51,7 @@
     liked: readLikes(),
     pending: readJSON(PENDING_KEY, []),
     deleted: readDeleted(),
+    localPreviews: Object.create(null),
     selectedFile: null,
     previewUrl: null,
     uploading: false,
@@ -250,8 +251,17 @@
     return (i === 0 ? Math.round(n) : n.toFixed(n >= 10 ? 0 : 1)) + " " + units[i];
   }
 
-  function imageURL(post) {
+  function pagesImageURL(post) {
+    var relative = post.path.indexOf("photos/") === 0 ? post.path.slice("photos/".length) : post.path;
+    return new URL(relative, location.href).href;
+  }
+
+  function rawImageURL(post) {
     return RAW_ROOT + encodePath(post.path);
+  }
+
+  function imageURL(post) {
+    return state.localPreviews[post.id] || pagesImageURL(post);
   }
 
   function permalink(post) {
@@ -553,6 +563,40 @@
   /* Image handling                                                     */
   /* ------------------------------------------------------------------ */
 
+  function loadImageWithFallback(image, sources, onFail) {
+    var index = 0;
+    var retry = 0;
+    var done = false;
+
+    function attempt() {
+      if (done) return;
+      if (index >= sources.length) {
+        done = true;
+        onFail();
+        return;
+      }
+      var source = sources[index];
+      if (retry && /^https?:/i.test(source)) {
+        source += (source.indexOf("?") === -1 ? "?" : "&") + "r=" + retry;
+      }
+      image.src = source;
+    }
+
+    image.addEventListener("error", function () {
+      if (done) return;
+      if (retry < 1) {
+        retry += 1;
+        window.setTimeout(attempt, 600);
+        return;
+      }
+      retry = 0;
+      index += 1;
+      window.setTimeout(attempt, 250);
+    });
+
+    attempt();
+  }
+
   function imageDimensions(file) {
     return new Promise(function (resolve) {
       var url = URL.createObjectURL(file);
@@ -728,29 +772,23 @@
     if (post.width && post.height) {
       image.style.aspectRatio = post.width + " / " + post.height;
     }
-    var imageRetries = 0;
-    var imageSource = imageURL(post);
-    image.addEventListener("error", function () {
-      if (imageRetries < 2) {
-        imageRetries += 1;
-        window.setTimeout(function () {
-          image.src = imageSource + (imageSource.indexOf("?") === -1 ? "?" : "&") + "retry=" + imageRetries;
-        }, 900 * imageRetries);
-        return;
-      }
+    var sources = [];
+    if (state.localPreviews[post.id]) sources.push(state.localPreviews[post.id]);
+    sources.push(pagesImageURL(post));
+    sources.push(rawImageURL(post));
 
+    loadImageWithFallback(image, sources, function () {
       var fallback = el("div", "media-fallback");
       fallback.appendChild(icon("image", "icon"));
       var text = el("span", "", "This image cannot be shown in this browser.");
       fallback.appendChild(text);
       var link = el("a", "", "Open original");
-      link.href = imageSource;
+      link.href = pagesImageURL(post);
       link.target = "_blank";
       link.rel = "noopener noreferrer";
       fallback.appendChild(link);
       media.replaceChildren(fallback);
     });
-    image.src = imageSource;
     media.appendChild(image);
     media.addEventListener("dblclick", function () {
       doubleTapLike(post.id, media);
@@ -847,20 +885,14 @@
       image.alt = post.caption ? "Photo: " + post.caption : "Photo";
       image.loading = "lazy";
       image.decoding = "async";
-      var gridRetries = 0;
-      var gridSource = imageURL(post);
-      image.addEventListener("error", function () {
-        if (gridRetries < 2) {
-          gridRetries += 1;
-          window.setTimeout(function () {
-            image.src = gridSource + (gridSource.indexOf("?") === -1 ? "?" : "&") + "retry=" + gridRetries;
-          }, 900 * gridRetries);
-          return;
-        }
+      var gridSources = [];
+      if (state.localPreviews[post.id]) gridSources.push(state.localPreviews[post.id]);
+      gridSources.push(pagesImageURL(post));
+      gridSources.push(rawImageURL(post));
+      loadImageWithFallback(image, gridSources, function () {
         image.remove();
         tile.appendChild(el("span", "grid-fallback", "—"));
       });
-      image.src = gridSource;
       tile.appendChild(image);
       tile.addEventListener("click", function () {
         openPostInFeed(post.id);
@@ -994,11 +1026,11 @@
 
     if (options.initial && !state.posts.length) renderSkeletons();
 
-    var remotePromise = fetchJSON(DATA_BRANCH_URL + "?t=" + Date.now()).catch(function () {
-      return fetchJSON("data.json?t=" + Date.now());
+    var dataPromise = fetchJSON("data.json?t=" + Date.now()).catch(function () {
+      return fetchJSON(DATA_BRANCH_URL + "?t=" + Date.now());
     });
 
-    return remotePromise
+    return dataPromise
       .then(function (data) {
         var remote = normalizePosts(data);
         var remoteIds = new Set(
@@ -1226,6 +1258,7 @@
     var createdAt = new Date().toISOString();
     var id = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
     var post = null;
+    var uploadedFile = null;
 
     ensureWebFriendly(original)
       .then(function (file) {
@@ -1234,6 +1267,7 @@
         });
       })
       .then(function (prepared) {
+        uploadedFile = prepared.file;
         setAddBusy(true, "Reading photo…");
         return fileToBase64(prepared.file).then(function (base64) {
           var extension = extensionFor(prepared.file);
@@ -1260,6 +1294,9 @@
         });
       })
       .then(function () {
+        if (uploadedFile && post) {
+          state.localPreviews[post.id] = URL.createObjectURL(uploadedFile);
+        }
         state.pending = dedupePosts([post].concat(state.pending)).slice(0, 20);
         writeJSON(PENDING_KEY, state.pending);
         state.posts = dedupePosts([post].concat(state.posts)).sort(byNewest);
@@ -1416,6 +1453,10 @@
         });
         state.liked.delete(post.id);
         state.deleted[post.id] = Date.now();
+        if (state.localPreviews[post.id]) {
+          URL.revokeObjectURL(state.localPreviews[post.id]);
+          delete state.localPreviews[post.id];
+        }
         writeJSON(PENDING_KEY, state.pending);
         writeJSON(DELETED_KEY, state.deleted);
         writeJSON(LIKES_KEY, Array.from(state.liked));

@@ -6,7 +6,7 @@ A small Instagram-style photo timeline at `/photos/`. It is a static GitHub Page
 
 - `photos/data.json` is the timeline index.
 - `photos/media/` contains the uploaded originals. Nothing is cropped, filtered, or edited.
-- The feed reads `data.json` and the images from `raw.githubusercontent.com/josherich/blog/gh-pages/...`, so a new upload shows up immediately instead of waiting for the GitHub Pages build.
+- The feed reads the Pages copy of `data.json` and the images under `/photos/`, with `raw.githubusercontent.com/josherich/blog/gh-pages/...` as a fallback. The uploading device caches the new photo locally so it appears immediately; other devices see it after the GitHub Pages build (usually under a minute).
 - Uploads create one atomic Git commit through the GitHub API: a new image blob, the updated `data.json`, a new tree, a commit, and a branch update.
 - The token is saved only in the browser's `localStorage`. No server is involved.
 
@@ -35,7 +35,7 @@ The page is plain HTML/CSS/JS with no build step. From the repository root:
 python3 -m http.server 8000
 ```
 
-Then open <http://localhost:8000/photos/>. If `photos/data.json` is not on the remote branch yet, the app falls back to the local copy.
+Then open <http://localhost:8000/photos/>. The app reads `photos/data.json` from the site first, then falls back to the copy on the `gh-pages` branch.
 
 ## Changing the repository or branch
 
