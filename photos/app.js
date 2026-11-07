@@ -14,6 +14,7 @@
   var TOKEN_KEY = "josherich.photos.token";
   var LIKES_KEY = "josherich.photos.likes";
   var PENDING_KEY = "josherich.photos.pending";
+  var DELETED_KEY = "josherich.photos.deleted";
 
   var USERNAME = "josherich";
   var MAX_BYTES = 95 * 1024 * 1024;
@@ -49,6 +50,7 @@
     view: "feed",
     liked: readLikes(),
     pending: readJSON(PENDING_KEY, []),
+    deleted: readDeleted(),
     selectedFile: null,
     previewUrl: null,
     uploading: false,
@@ -89,6 +91,19 @@
           })
         : []
     );
+  }
+
+  function readDeleted() {
+    var value = readJSON(DELETED_KEY, {});
+    var result = {};
+    var cutoff = Date.now() - 24 * 60 * 60 * 1000;
+    if (value && typeof value === "object") {
+      Object.keys(value).forEach(function (id) {
+        var timestamp = Number(value[id]);
+        if (id && isFinite(timestamp) && timestamp > cutoff) result[id] = timestamp;
+      });
+    }
+    return result;
   }
 
   function getToken() {
@@ -993,12 +1008,21 @@
         );
         var cutoff = Date.now() - 24 * 60 * 60 * 1000;
 
+        state.deleted = readDeleted();
         state.pending = state.pending.filter(function (post) {
-          return !remoteIds.has(post.id) && new Date(post.createdAt).getTime() > cutoff;
+          return (
+            !remoteIds.has(post.id) &&
+            !state.deleted[post.id] &&
+            new Date(post.createdAt).getTime() > cutoff
+          );
         });
         writeJSON(PENDING_KEY, state.pending);
 
-        state.posts = dedupePosts(state.pending.concat(remote)).sort(byNewest);
+        state.posts = dedupePosts(state.pending.concat(remote))
+          .filter(function (post) {
+            return !state.deleted[post.id];
+          })
+          .sort(byNewest);
         lastLoadedAt = Date.now();
         renderAll();
 
@@ -1391,7 +1415,9 @@
           return item.id !== post.id;
         });
         state.liked.delete(post.id);
+        state.deleted[post.id] = Date.now();
         writeJSON(PENDING_KEY, state.pending);
+        writeJSON(DELETED_KEY, state.deleted);
         writeJSON(LIKES_KEY, Array.from(state.liked));
         renderAll();
         showToast("Photo deleted");
